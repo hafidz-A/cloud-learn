@@ -56,7 +56,7 @@ function Chip({
         e.stopPropagation()
         if (!disabled) onTap()
       }}
-      className={`btn-3d min-h-11 rounded-xl border-2 px-3 py-1.5 text-left text-15 font-bold [touch-action:manipulation] ${l.className} ${
+      className={`btn-3d min-h-11 rounded-xl border-2 px-3 py-1.5 text-left text-15 font-bold hyphens-auto wrap-anywhere [touch-action:manipulation] ${l.className} ${
         isDragging ? 'opacity-40' : ''
       } ${disabled ? '' : 'cursor-grab'}`}
       style={{ '--edge': l.edge } as CSSProperties}

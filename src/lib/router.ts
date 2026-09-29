@@ -60,7 +60,33 @@ export function hrefFor(route: Route): string {
 // pop the history entry instead of stacking a second tab entry.
 let openedFlowInApp = false
 
+// A screen with unsaved work can hold the browser back button (the Android back
+// gesture): the hash change is undone and the screen is told instead, so it can
+// ask first. Leaving through navigate() or leaveFlow() is never held.
+let backBlocker: { href: string; onBlocked: () => void } | null = null
+
+/** Holds the back button on the current screen until the returned function is called. */
+export function blockBack(onBlocked: () => void): () => void {
+  const entry = { href: window.location.hash, onBlocked }
+  backBlocker = entry
+  return () => {
+    if (backBlocker === entry) backBlocker = null
+  }
+}
+
+if (typeof window !== 'undefined') {
+  // Registered before React subscribes, so a held change never reaches the router.
+  window.addEventListener('hashchange', (e) => {
+    if (!backBlocker || window.location.hash === backBlocker.href) return
+    e.stopImmediatePropagation()
+    // Going back popped the screen's entry; pushing it again restores the same history.
+    window.history.pushState(null, '', backBlocker.href)
+    backBlocker.onBlocked()
+  })
+}
+
 export function navigate(route: Route, { replace = false } = {}): void {
+  backBlocker = null
   const href = hrefFor(route)
   if (route.name !== 'tab' && !replace) openedFlowInApp = true
   if (replace) window.location.replace(href)
@@ -69,6 +95,7 @@ export function navigate(route: Route, { replace = false } = {}): void {
 
 /** Back to where a full-screen flow (lesson, practice, checkpoint) was opened from. */
 export function leaveFlow(fallback: Tab = 'home'): void {
+  backBlocker = null
   if (openedFlowInApp) {
     openedFlowInApp = false
     window.history.back()

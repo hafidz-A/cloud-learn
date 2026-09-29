@@ -105,3 +105,21 @@ test('leaving mid-lesson asks first and saves nothing', async ({ page }) => {
   await expect(page.locator('[data-node="u01-l1"]')).toHaveAttribute('data-node-state', 'active')
   await expect(page.getByLabel('XP hari ini 0 dari target 50')).toBeVisible()
 })
+
+test('the back button mid-lesson asks first, and pressing it again keeps playing', async ({ page }) => {
+  await startFromMap(page, 'u01-l1')
+  await next(page) // intro card
+  await answer(page, exercises[0])
+  await next(page)
+  const step = await main(page).getAttribute('data-step')
+  await page.evaluate(() => history.back())
+  await expect(page.getByRole('dialog', { name: 'Yakin mau berhenti?' })).toBeVisible()
+  await expect(main(page)).toHaveAttribute('data-step', step!)
+  await page.evaluate(() => history.back())
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await page.evaluate(() => history.back())
+  await page.getByRole('button', { name: 'Keluar', exact: true }).click()
+  await expect(page.locator('[data-node="u01-l1"]')).toHaveAttribute('data-node-state', 'active')
+  // The lesson entry is gone from history: back again leaves nothing to return to.
+  expect(page.url()).toMatch(/#\/$|\/$/)
+})

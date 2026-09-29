@@ -48,7 +48,7 @@ export function OptionList({
               aria-pressed={isSelected}
               disabled={locked}
               onClick={() => onToggle(option)}
-              className={`btn-3d flex min-h-14 w-full items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left text-17 font-semibold ${look.className} ${
+              className={`btn-3d flex min-h-14 w-full items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left text-17 font-semibold hyphens-auto ${look.className} ${
                 locked ? '' : 'cursor-pointer'
               }`}
               style={{ '--edge': look.edge } as CSSProperties}

@@ -39,7 +39,7 @@ export function MatchInput({ exercise, response, onChange, layout, reveal, locke
         aria-pressed={pressed}
         disabled={isLocked}
         onClick={onClick}
-        className={`btn-3d flex min-h-16 w-full items-center gap-2 rounded-2xl border-2 px-3 py-2 text-left text-15 font-bold ${l.className} ${isLocked ? '' : 'cursor-pointer'}`}
+        className={`btn-3d flex min-h-16 w-full items-center gap-2 rounded-2xl border-2 px-3 py-2 text-left text-15 font-bold hyphens-auto ${l.className} ${isLocked ? '' : 'cursor-pointer'}`}
         style={{ '--edge': l.edge } as CSSProperties}
       >
         <span

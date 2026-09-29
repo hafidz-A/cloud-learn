@@ -1,8 +1,8 @@
 import { BookOpen, RotateCcw, Sparkles, X } from 'lucide-react'
-import { useCallback, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { ProgressBar } from '../components/ProgressBar'
 import { INTROS_BY_CONCEPT } from '../content/course'
-import { leaveFlow } from '../lib/router'
+import { blockBack, leaveFlow } from '../lib/router'
 import { sound } from '../lib/sound'
 import { useProgress } from '../store/progress'
 import { ConceptSheet } from './ConceptSheet'
@@ -84,6 +84,12 @@ export function Player({
   // A lesson cannot start or go on without hearts.
   const outOfHearts = rules.hearts === 'lose' && heartsLeft <= 0 && !verdict
 
+  // Once something was answered, the back button asks first, like the close button.
+  // Pressing back again while the question is open closes it.
+  const started = Object.keys(session.firstTry).length > 0 || session.pos > 0
+  const holdBack = started && !finished && !outOfHearts
+  useEffect(() => (holdBack ? blockBack(() => setConfirmExit((open) => !open)) : undefined), [holdBack])
+
   if (finished) return <RunComplete {...finished} />
   if (outOfHearts) return <OutOfHearts />
 
@@ -119,8 +125,7 @@ export function Player({
     setFinished(done)
   }
 
-  const handleClose = () =>
-    Object.keys(session.firstTry).length === 0 && session.pos === 0 ? leaveFlow() : setConfirmExit(true)
+  const handleClose = () => (started ? setConfirmExit(true) : leaveFlow())
 
   return (
     <div className="flex min-h-dvh flex-col">

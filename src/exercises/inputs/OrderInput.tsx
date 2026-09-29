@@ -43,7 +43,7 @@ function Row({
       >
         <GripVertical size={20} aria-hidden="true" />
       </span>
-      <span className="flex-1 text-15 font-bold">
+      <span className="min-w-0 flex-1 text-15 font-bold hyphens-auto wrap-anywhere">
         {text}
         {note && <span className="block text-13 font-semibold text-tinta-lembut">{note}</span>}
       </span>

@@ -114,6 +114,10 @@ test('a domain mini exam can be flagged, submitted, scored, and reviewed', async
   await page.getByRole('radio', { name: 'Ditandai (1)' }).click()
   await expect(page.locator('article')).toHaveCount(1)
   await expect(page.locator('article')).toHaveAttribute('data-result', 'correct')
+
+  // The 14 unanswered questions count in the score but not in the review queue.
+  const review = await page.evaluate(() => JSON.parse(localStorage.getItem('langit-progress')!).state.review)
+  expect(Object.keys(review)).toEqual([])
 })
 
 test('long-pressing an abbreviation opens its glossary card', async ({ page }) => {
@@ -139,4 +143,45 @@ test('hearts can be turned off in settings', async ({ page }) => {
   await expect(page.getByLabel('Hearts dimatikan')).toBeVisible()
   await page.getByRole('radio', { name: /100 XP/ }).click()
   await expect(page.getByLabel('XP hari ini 0 dari target 100')).toBeVisible()
+})
+
+test.describe('on a 320px phone', () => {
+  test.use({ viewport: { width: 320, height: 640 } })
+
+  /** Text that sticks out of its card, or past the screen edge. */
+  const overflow = (page: Page) =>
+    page.evaluate(async () => {
+      await document.fonts.ready // the display font is wider than the fallback
+      const out: string[] = []
+      const W = document.documentElement.clientWidth
+      if (document.documentElement.scrollWidth > W) out.push(`page is ${document.documentElement.scrollWidth}px wide`)
+      const walker = document.createTreeWalker(document.querySelector('main')!, NodeFilter.SHOW_TEXT)
+      const range = document.createRange()
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        const box = n.parentElement?.closest('button') ?? document.querySelector('main')!
+        const b = box.getBoundingClientRect()
+        range.selectNodeContents(n)
+        for (const r of range.getClientRects()) if (r.width && (r.right > b.right + 1 || r.right > W)) out.push(n.textContent!.trim())
+      }
+      return out
+    })
+
+  test('match cards with abbreviations keep their text inside the card', async ({ page }) => {
+    await page.goto('/#/lesson/u07-l4')
+    for (let guard = 0; guard < 20; guard++) {
+      const id = (await main(page).getAttribute('data-item-id'))!
+      if (id === 'u07-l4-e4') break
+      const item = ITEMS.get(id)!
+      if (item.type !== 'intro') await answer(page, item)
+      await next(page)
+    }
+    await expect(page.locator('abbr[data-term="SMB"]').first()).toBeVisible()
+    expect(await overflow(page)).toEqual([])
+  })
+
+  test('long intro titles fit next to Awan', async ({ page }) => {
+    await page.goto('/#/lesson/u01-l2')
+    await expect(page.getByRole('heading', { name: 'Shared responsibility' })).toBeVisible()
+    expect(await overflow(page)).toEqual([])
+  })
 })

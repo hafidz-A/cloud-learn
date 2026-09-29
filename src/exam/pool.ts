@@ -16,15 +16,17 @@ export function examQuestion(id: string): ExamQuestion | undefined {
 }
 
 /**
- * Scores the attempt, feeds every answer into the concept stats (misses go to
- * the review queue, plan section 12.5), stores it in the history, and opens the result.
+ * Scores the attempt, feeds the answers into the concept stats (misses go to
+ * the review queue, plan section 12.5), stores it in the history, and opens the
+ * result. Unanswered questions count as wrong in the score, but say nothing about
+ * what the player knows, so they stay out of the stats and the review queue.
  */
 export function submitExam(attempt: ExamAttempt) {
   const { score, domainScores, results } = scoreAttempt(attempt, examQuestion)
   const store = useProgress.getState()
   for (const id of attempt.questionIds) {
     const q = examQuestion(id)
-    if (q && results[id]) store.recordAnswer(id, q.exercise.concept, results[id].correct)
+    if (q && results[id]?.answered) store.recordAnswer(id, q.exercise.concept, results[id].correct)
   }
   const finished: ExamAttempt = { ...attempt, finishedAt: new Date().toISOString(), score, domainScores }
   store.finishExam(finished)

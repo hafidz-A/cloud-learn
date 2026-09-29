@@ -39,7 +39,8 @@ export function IntroView({ intro, onDone }: { intro: IntroCard; onDone: () => v
         >
           <div className="flex items-center gap-3">
             <Mascot mood="netral" size={64} className="shrink-0" />
-            <h2 id="intro-title" className="font-display text-28 font-bold">
+            {/* Shrinks a little on narrow phones so long terms like "responsibility" fit next to Awan. */}
+            <h2 id="intro-title" className="min-w-0 font-display text-[clamp(22px,7.4vw,28px)] leading-[1.2] font-bold hyphens-auto wrap-break-word">
               {intro.title}
             </h2>
           </div>

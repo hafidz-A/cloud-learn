@@ -15,8 +15,10 @@ export function GlossaryText({ text }: { text: string }) {
   }
   if (last < text.length) parts.push(text.slice(last))
 
+  // One wrapping span keeps the text a single flex item inside flex buttons and
+  // lets a long word break instead of pushing past a narrow card.
   return (
-    <>
+    <span className="wrap-anywhere">
       {parts.map((p, i) =>
         typeof p === 'string' ? (
           <Fragment key={i}>{p}</Fragment>
@@ -31,6 +33,6 @@ export function GlossaryText({ text }: { text: string }) {
           </abbr>
         ),
       )}
-    </>
+    </span>
   )
 }

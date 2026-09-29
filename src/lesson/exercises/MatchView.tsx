@@ -71,7 +71,7 @@ export function MatchView({ exercise, answered, onVerdict }: ExerciseProps<Match
                 aria-pressed={state.selected === card.id}
                 aria-disabled={locked || undefined}
                 onClick={() => !locked && setState((s) => tapCard(s, card.id))}
-                className={`btn-3d flex min-h-16 flex-1 items-center justify-center rounded-2xl border-2 px-3 py-2 text-center text-15 font-bold ${look.className} ${
+                className={`btn-3d flex min-h-16 flex-1 items-center justify-center rounded-2xl border-2 px-3 py-2 text-center text-15 font-bold hyphens-auto ${look.className} ${
                   locked ? '' : 'cursor-pointer'
                 }`}
                 style={{ '--edge': look.edge } as CSSProperties}
