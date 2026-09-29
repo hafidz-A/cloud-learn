@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
-import { ITEMS, answer, main, next } from './helpers'
+import { answer, skipCards } from './helpers'
 
 // WCAG 2.1 AA scan of every main screen (plan section 7: "uji aksesibilitas").
 
@@ -19,6 +19,7 @@ for (const [name, hash] of [
   ['statistik', '/#/statistik'],
   ['glosarium', '/#/glosarium'],
   ['pengaturan', '/#/pengaturan'],
+  ['panduan unit', '/#/guide/u01-cloud-computing'],
 ] as const) {
   test(`${name} has no accessibility violations`, async ({ page }) => {
     await page.goto(hash)
@@ -28,11 +29,13 @@ for (const [name, hash] of [
 }
 
 test('lesson screens have no accessibility violations', async ({ page }) => {
-  await page.goto('/#/lesson/u07-l2')
-  await scan(page, 'intro card with diagram')
-  await next(page)
-  const item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+  await page.goto('/#/lesson/u01-l2')
+  await scan(page, 'learn card with diagram')
+  const item = await skipCards(page)
   await scan(page, `exercise ${item.type}`)
+  await page.getByRole('button', { name: 'Lihat materi' }).click()
+  await scan(page, 'material sheet')
+  await page.getByRole('button', { name: 'Kembali ke soal' }).click()
   await answer(page, item, { wrong: true })
   await scan(page, 'feedback sheet')
 })

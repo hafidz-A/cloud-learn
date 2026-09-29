@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { ITEMS, answer, isCard, lesson, main, next, play, skipCards } from './helpers'
+import { ITEMS, answer, isCard, lesson, main, next, play } from './helpers'
 
 test.use({ reducedMotion: 'reduce' })
 
@@ -129,10 +129,13 @@ test('a domain mini exam can be flagged, submitted, scored, and reviewed', async
 
 test('long-pressing an abbreviation opens its glossary card', async ({ page }) => {
   await page.goto('/#/lesson/u01-l2')
-  await skipCards(page)
-  await answer(page, ITEMS.get('u01-l2-e1')!)
-  await next(page) // the next statement mentions SaaS
   const abbr = page.locator('abbr[data-term="SaaS"]').first()
+  // Play until a card or question mentions SaaS.
+  for (let guard = 0; guard < 12 && !(await abbr.isVisible()); guard++) {
+    const item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    if (!isCard(item)) await answer(page, item)
+    await next(page)
+  }
   await expect(abbr).toBeVisible()
   const box = (await abbr.boundingBox())!
   await page.mouse.move(box.x + 4, box.y + 4)

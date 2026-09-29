@@ -28,8 +28,8 @@ export function GuideScreen({ unitId }: { unitId: string }) {
             <ChevronLeft size={28} />
           </button>
           <div className="min-w-0">
-            <p className="flex items-center gap-1.5 font-display text-13 font-semibold text-biru-dalam">
-              <BookOpen size={14} aria-hidden="true" />
+            <p className="flex items-center gap-1.5 font-display text-13 font-semibold text-tinta-lembut">
+              <BookOpen size={14} aria-hidden="true" className="text-biru-dalam" />
               Panduan unit {unitNumber(unit)}
             </p>
             <h1 className="font-display text-20 font-bold">{unit.title}</h1>
