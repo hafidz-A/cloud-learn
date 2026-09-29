@@ -1,7 +1,7 @@
 import { EXAM_TYPES } from '../content/examTypes'
 import { initialResponse, isComplete, judge, makeLayout, type Response } from '../exercises/logic'
 import { shuffle } from '../lib/shuffle'
-import type { ExamAttempt, ExamMode, Exercise, PathId, Progress } from '../lib/types'
+import type { CourseId, ExamAttempt, ExamMode, Exercise, PathId, Progress } from '../lib/types'
 
 // Exam page rules from LANGIT_AZ900_PLAN.md section 12.
 
@@ -96,7 +96,7 @@ export function pickWeak(
   return { questions: shuffle(picked, random), fromStats: true }
 }
 
-export function createAttempt(mode: ExamMode, questions: ExamQuestion[], domain?: PathId, random = Math.random): ExamAttempt {
+export function createAttempt(mode: ExamMode, questions: ExamQuestion[], domain?: PathId, random = Math.random, course: CourseId = 'az900'): ExamAttempt {
   const optionOrder: Record<string, number[]> = {}
   const responses: Record<string, unknown> = {}
   for (const { exercise } of questions) {
@@ -106,6 +106,7 @@ export function createAttempt(mode: ExamMode, questions: ExamQuestion[], domain?
   }
   return {
     id: `exam-${Date.now().toString(36)}`,
+    course,
     mode,
     domain,
     startedAt: new Date().toISOString(),
@@ -142,7 +143,7 @@ export function scoreAttempt(
   attempt: ExamAttempt,
   lookup: (id: string) => ExamQuestion | undefined,
 ): { score: number; domainScores: NonNullable<ExamAttempt['domainScores']>; results: Record<string, QuestionResult> } {
-  const domainScores = { 1: { right: 0, total: 0 }, 2: { right: 0, total: 0 }, 3: { right: 0, total: 0 } }
+  const domainScores: NonNullable<ExamAttempt['domainScores']> = {}
   const results: Record<string, QuestionResult> = {}
   let points = 0
   let max = 0
@@ -154,8 +155,9 @@ export function scoreAttempt(
     results[id] = { ...j, answered: isAnswered(q.exercise, response, attempt.optionOrder[id]) }
     points += j.points
     max += j.maxPoints
-    domainScores[q.path].right += j.points
-    domainScores[q.path].total += j.maxPoints
+    const domain = (domainScores[q.path] ??= { right: 0, total: 0 })
+    domain.right += j.points
+    domain.total += j.maxPoints
   }
   return { score: max ? Math.round((points / max) * 1000) : 0, domainScores, results }
 }
@@ -175,17 +177,17 @@ function avg(list: ExamAttempt[]): number {
 
 /** Domain with the lowest share of points across the given attempts. */
 export function weakestDomain(history: ExamAttempt[]): PathId | null {
-  const sums = { 1: { right: 0, total: 0 }, 2: { right: 0, total: 0 }, 3: { right: 0, total: 0 } }
+  const sums = new Map<PathId, { right: number; total: number }>()
   for (const a of history) {
-    if (!a.domainScores) continue
-    for (const p of [1, 2, 3] as PathId[]) {
-      sums[p].right += a.domainScores[p]?.right ?? 0
-      sums[p].total += a.domainScores[p]?.total ?? 0
+    for (const [key, score] of Object.entries(a.domainScores ?? {})) {
+      const sum = sums.get(Number(key)) ?? { right: 0, total: 0 }
+      sums.set(Number(key), { right: sum.right + score.right, total: sum.total + score.total })
     }
   }
-  const scored = ([1, 2, 3] as PathId[]).filter((p) => sums[p].total > 0)
+  const rate = (p: PathId) => sums.get(p)!.right / sums.get(p)!.total
+  const scored = [...sums.keys()].filter((p) => sums.get(p)!.total > 0).sort((a, b) => a - b)
   if (!scored.length) return null
-  return scored.sort((a, b) => sums[a].right / sums[a].total - sums[b].right / sums[b].total)[0]
+  return scored.sort((a, b) => rate(a) - rate(b))[0]
 }
 
 export function formatClock(totalSec: number): string {

@@ -1,4 +1,4 @@
-import type { Exercise, Fact, IntroCard, LearnCard, Lesson, LessonItem, Unit } from '../lib/types'
+import type { CourseId, Exercise, Fact, IntroCard, LearnCard, Lesson, LessonItem, Unit } from '../lib/types'
 import { courseCoverage } from './coverage'
 import { EXAM_TYPES } from './examTypes'
 import { isVisualName, VISUAL_NAMES, VISUALS_BY_CONCEPT } from './visuals'
@@ -284,7 +284,7 @@ function checkLearn(card: LearnCard, facts: Set<string>, push: (message: string,
 }
 
 function checkFact(fact: Fact, push: (message: string, level?: Issue['level']) => void) {
-  if (!/^f-[a-z0-9]+(-[a-z0-9]+)+$/.test(fact.id ?? '')) push(`fact id "${fact.id}" should look like "f-u07-zrs"`)
+  if (!/^(az104-)?f-[a-z0-9]+(-[a-z0-9]+)+$/.test(fact.id ?? '')) push(`fact id "${fact.id}" should look like "f-u07-zrs" (AZ-104: "az104-f-u04-reserved-ips")`)
   if (!fact.statement?.trim()) push(`fact "${fact.id}" has no statement`)
   checkEntraName([fact.statement ?? ''], push)
 }
@@ -329,7 +329,14 @@ function longRuns(lesson: Lesson): number {
   return longest > MAX_EXERCISE_RUN ? longest : 0
 }
 
-export function validateUnits(units: Unit[]): Issue[] {
+/** Per-course shape rules: AZ-104 (LANGIT_AZ104_PLAN.md sections 3-5) has 5 paths, 4-6 lessons, and 3-5 learn cards per lesson. */
+const COURSE_RULES: Record<CourseId, { prefix: string; paths: number; lessons: [number, number]; learnCards: [number, number] }> = {
+  az900: { prefix: '', paths: 3, lessons: [3, 5], learnCards: [2, 4] },
+  az104: { prefix: 'az104-', paths: 5, lessons: [4, 6], learnCards: [3, 5] },
+}
+
+export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[] {
+  const rules = COURSE_RULES[course]
   const issues: Issue[] = []
   const ids = new Set<string>()
   const introduced = new Set<string>() // concepts that already had a card, in course order
@@ -343,12 +350,16 @@ export function validateUnits(units: Unit[]): Issue[] {
     const claim = (id: string, where: string) => {
       if (ids.has(id)) pusher(where)(`duplicate id "${id}"`)
       ids.add(id)
+      // Plan section 3: without the prefix, AZ-104 progress would mix with AZ-900 progress in sync.
+      if (rules.prefix && !id?.startsWith(rules.prefix)) pusher(where)(`AZ-104 id "${id}" must start with "${rules.prefix}"`)
+      if (!rules.prefix && id?.startsWith('az104-')) pusher(where)(`AZ-900 id "${id}" must not start with "az104-"`)
     }
 
     claim(unit.id, uw)
-    if (!/^u\d{2}-[a-z0-9-]+$/.test(unit.id)) pusher(uw)('unit id must look like "u04-core-architecture"')
-    if (![1, 2, 3].includes(unit.path)) pusher(uw)('path must be 1, 2, or 3')
-    if (unit.lessons.length < 3 || unit.lessons.length > 5) pusher(uw)(`units should have 3-5 lessons, found ${unit.lessons.length}`, 'warn')
+    if (!new RegExp(`^${rules.prefix}u\\d{2}-[a-z0-9-]+$`).test(unit.id)) pusher(uw)(`unit id must look like "${rules.prefix}u04-core-architecture"`)
+    if (!Number.isInteger(unit.path) || unit.path < 1 || unit.path > rules.paths) pusher(uw)(`path must be 1 to ${rules.paths}`)
+    const [minLessons, maxLessons] = rules.lessons
+    if (unit.lessons.length < minLessons || unit.lessons.length > maxLessons) pusher(uw)(`units should have ${minLessons}-${maxLessons} lessons, found ${unit.lessons.length}`, 'warn')
     if (unit.facts !== undefined && !Array.isArray(unit.facts)) pusher(uw)('facts must be a list')
     for (const fact of unit.facts ?? []) {
       claim(fact.id, `${uw} > ${fact.id}`)
@@ -359,7 +370,7 @@ export function validateUnits(units: Unit[]): Issue[] {
       const lw = `${uw} > ${lesson.id}`
       const warn = (message: string) => pusher(lw)(message, 'warn')
       claim(lesson.id, lw)
-      const expectedLessonId = `${unit.id.slice(0, 3)}-l${li + 1}`
+      const expectedLessonId = `${/^(az104-)?u\d{2}/.exec(unit.id)?.[0]}-l${li + 1}`
       if (lesson.id !== expectedLessonId) pusher(lw)(`lesson id should be "${expectedLessonId}"`)
       if (!Array.isArray(lesson.items)) {
         pusher(lw)('lesson needs an "items" array (plan section 11)')
@@ -371,7 +382,8 @@ export function validateUnits(units: Unit[]): Issue[] {
       const learnCards = lesson.items.filter((i) => i.type === 'learn').length
       const intros = lesson.items.filter((i) => i.type === 'intro').length
       if (exercises.length < 8 || exercises.length > 12) warn(`lessons should have 8-12 exercises, found ${exercises.length}`)
-      if (reworked && (learnCards < 2 || learnCards > 4)) warn(`lessons should have 2-4 learn cards, found ${learnCards}`)
+      const [minCards, maxCards] = rules.learnCards
+      if (reworked && (learnCards < minCards || learnCards > maxCards)) warn(`lessons should have ${minCards}-${maxCards} learn cards, found ${learnCards}`)
       if (!reworked && intros > 3) warn(`a lesson introduces at most 3 new concepts, found ${intros} intro cards`)
       const types = new Set(exercises.map((e) => e.type))
       if (types.size < 4) warn(`lessons should use at least 4 exercise types, found ${types.size}`)

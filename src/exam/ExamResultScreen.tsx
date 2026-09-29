@@ -11,7 +11,7 @@ import { examQuestion } from './pool'
 
 /** Score, pass or fail, per-domain bars, and time used (plan section 12.5). No mascot, no celebration. */
 export function ExamResultScreen({ attemptId }: { attemptId: string }) {
-  const attempt = useProgress((s) => s.examHistory.find((a) => a.id === attemptId))
+  const attempt = useProgress((s) => [...s.examHistory, ...(s.courses.az104?.examHistory ?? [])].find((a) => a.id === attemptId))
 
   if (!attempt || attempt.score === undefined) {
     return (

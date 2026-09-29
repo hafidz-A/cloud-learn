@@ -116,6 +116,41 @@ describe('mergeProgress', () => {
     expect(m.resetAt).toBe('2026-09-01T08:00:00Z')
   })
 
+  it('merges AZ-104 progress with the same rules, apart from AZ-900 (LANGIT_AZ104_PLAN.md section 3)', () => {
+    const az104 = (lessons: Record<string, number>, concept: { right: number; wrong: number }) => ({
+      az104: {
+        lessonsDone: Object.fromEntries(Object.entries(lessons).map(([id, count]) => [id, { bestAccuracy: 1, completedAt: '2026-10-01T08:00:00Z', count }])),
+        checkpoints: {},
+        unitLevel: {},
+        review: {},
+        reviewRemoved: {},
+        conceptStats: { rbac: concept },
+        examHistory: [],
+      },
+    })
+    const a = data({ ...phone, courses: az104({ 'az104-u01-l1': 1 }, { right: 2, wrong: 1 }) })
+    const b = data({ ...pc, courses: az104({ 'az104-u01-l1': 2, 'az104-u01-l2': 1 }, { right: 1, wrong: 3 }) })
+    const m = mergeProgress(a, b)
+    expect(m.courses.az104?.lessonsDone['az104-u01-l1'].count).toBe(2)
+    expect(Object.keys(m.courses.az104!.lessonsDone)).toEqual(['az104-u01-l1', 'az104-u01-l2'])
+    expect(m.courses.az104?.conceptStats.rbac).toEqual({ right: 2, wrong: 3 })
+    // AZ-900 merges exactly as it did without AZ-104, and neither course leaks into the other.
+    const { courses: _, ...az900 } = m
+    const { courses: __, ...before } = mergeProgress(phone, pc)
+    expect(az900).toEqual(before)
+    expect(m.lessonsDone['az104-u01-l1']).toBeUndefined()
+    expect(stableJson(mergeProgress(b, a))).toBe(stableJson(m))
+  })
+
+  it('keeps AZ-104 progress when the other device runs an app version without it', () => {
+    const withAz104 = data({ ...phone, courses: { az104: { lessonsDone: { 'az104-u01-l1': { bestAccuracy: 1, completedAt: '2026-10-01T08:00:00Z', count: 1 } }, checkpoints: {}, unitLevel: {}, review: {}, reviewRemoved: {}, conceptStats: {}, examHistory: [] } } })
+    const old = { ...pc } as Partial<SyncData>
+    delete old.courses
+    const m = mergeProgress(withAz104, readSyncData(old, base)!)
+    expect(m.courses.az104?.lessonsDone['az104-u01-l1']).toBeDefined()
+    expect(mergeProgress(phone, pc).courses).toEqual({})
+  })
+
   it('keeps at most 100 finished exams', () => {
     const many = (prefix: string) => Array.from({ length: 80 }, (_, i) => exam(`${prefix}${i}`, `2026-09-${String(1 + (i % 28)).padStart(2, '0')}T0${i % 10}:00:00Z`))
     expect(mergeProgress(data({ examHistory: many('a') }), data({ examHistory: many('b') })).examHistory).toHaveLength(100)

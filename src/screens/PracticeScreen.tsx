@@ -1,17 +1,19 @@
 import { CalendarClock, Heart } from 'lucide-react'
 import { Button } from '../components/Button'
 import { Mascot } from '../components/Mascot'
-import { activeExercise, conceptName } from '../content/course'
+import { COURSES, activeExercise, conceptName } from '../content/course'
 import { dayKey, daysBetween } from '../lib/date'
 import { dueIds, REVIEW_STREAK_TO_CLEAR } from '../lib/review'
 import { navigate } from '../lib/router'
-import { MAX_HEARTS, useProgress } from '../store/progress'
+import { useActiveCourse } from '../store/course'
+import { MAX_HEARTS, useCourseProgress, useProgress } from '../store/progress'
 
 export function PracticeScreen() {
-  const review = useProgress((s) => s.review)
+  const course = useActiveCourse()
+  const { review, lessonsDone } = useCourseProgress(course)
   const hearts = useProgress((s) => s.hearts)
   const heartsOn = useProgress((s) => s.heartsEnabled)
-  const anyLessonDone = useProgress((s) => Object.keys(s.lessonsDone).length > 0)
+  const anyLessonDone = Object.keys(lessonsDone).length > 0
   const anyMistake = Object.keys(review).some((id) => activeExercise(id))
   const today = dayKey()
   const due = dueIds(review, today).filter((id) => activeExercise(id))
@@ -22,7 +24,10 @@ export function PracticeScreen() {
 
   return (
     <main className="space-y-5 px-4 pb-32 pt-6">
-      <h1 className="font-display text-28 font-bold">Latihan</h1>
+      <div>
+        <h1 className="font-display text-28 font-bold">Latihan</h1>
+        <p className="text-15 text-tinta-lembut">Course {COURSES[course].name}</p>
+      </div>
 
       <section className="rounded-2xl border-2 border-kabut bg-white p-4 shadow-[0_4px_0_var(--color-kabut)]">
         <div className="flex items-center gap-4">
@@ -63,7 +68,7 @@ export function PracticeScreen() {
                     {ref.exercise.prompt}
                   </p>
                   <p className="mt-1 text-13 text-tinta-lembut">
-                    {conceptName(ref.exercise.concept)} · benar {review[id].correctStreak}/{REVIEW_STREAK_TO_CLEAR} kali berturut-turut
+                    {conceptName(ref.exercise.concept, course)} · benar {review[id].correctStreak}/{REVIEW_STREAK_TO_CLEAR} kali berturut-turut
                   </p>
                 </li>
               )
@@ -87,7 +92,7 @@ export function PracticeScreen() {
                       {ref.exercise.prompt}
                     </p>
                     <p className="mt-1 text-13 text-tinta-lembut">
-                      {conceptName(ref.exercise.concept)} · {inDays === 1 ? 'besok' : `${inDays} hari lagi`}
+                      {conceptName(ref.exercise.concept, course)} · {inDays === 1 ? 'besok' : `${inDays} hari lagi`}
                     </p>
                   </div>
                 </li>

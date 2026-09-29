@@ -1,0 +1,32 @@
+{
+  "id": "az104-u08-storage-access",
+  "path": 3,
+  "title": "Akses ke storage",
+  "lessons": [
+    {
+      "id": "az104-u08-l1",
+      "title": "Firewall storage dan virtual network",
+      "items": []
+    },
+    {
+      "id": "az104-u08-l2",
+      "title": "Jenis SAS",
+      "items": []
+    },
+    {
+      "id": "az104-u08-l3",
+      "title": "Stored access policy",
+      "items": []
+    },
+    {
+      "id": "az104-u08-l4",
+      "title": "Access key",
+      "items": []
+    },
+    {
+      "id": "az104-u08-l5",
+      "title": "Akses berbasis identitas untuk Azure Files",
+      "items": []
+    }
+  ]
+}

@@ -10,6 +10,10 @@ dibackup (versi 77, md5 `f30c25b8…`); sesudahnya semua kunci progres masih ada
 penggabungan, fungsi baru juga menolak payload yang bukan objek JSON (aplikasi selalu
 mengirim objek). Poin 3 menunggu keputusan dan baru dipakai di tahap 6.
 
+**Tahap 1 selesai (29 September 2026):** kode aplikasi di 2.3 langkah 4 sudah dikerjakan
+(store progres versi 3, `courses` ikut disinkron, pemilih course, validator `az104-`, kerangka
+15 unit AZ-104 tanpa soal). Cek akhir di langkah 5: lihat bagian 4 di bawah.
+
 ## 1. Skema yang ada sekarang
 
 Sumber: `supabase/migrations/20260929120000_sync_progress.sql`, `src/sync/`, project Supabase "langit".
@@ -99,3 +103,14 @@ dan hak akses tidak berubah, jadi tidak ada celah baru.
 3. Ujian yang sedang berjalan: rencana bagian 9.2 menyebut sisa waktu disimpan di Supabase,
    tapi di AZ-900 ujian berjalan disimpan di perangkat saja (tidak disinkron). Untuk AZ-104,
    ikut cara AZ-900 (usulanku, karena bagian 9 minta "sama persis"), atau disinkron juga?
+
+## 4. Cek akhir tahap 1
+
+| Cek | Hasil |
+|---|---|
+| Pemilih course di lebar 390px dan 320px | Dua tombol AZ-900 / AZ-104 dengan `aria-pressed`, tidak ada teks keluar tombol, tidak ada scroll ke samping. Pilihan bertahan setelah reload |
+| AZ-104 terbuka tanpa syarat | Jalur 1 langsung terbuka tanpa progres AZ-900. 15 unit dan 72 lesson tampil "segera hadir" karena soalnya belum ditulis (tahap 4); checkpoint tanpa soal tidak bisa dimulai |
+| Latihan, Statistik, Ujian, Panduan mengikuti course | Ya. Ujian AZ-104 menampilkan "sedang disiapkan" (tahap 6); ujian AZ-900 tidak berubah |
+| XP dan streak | Satu untuk seluruh aplikasi, dihitung sekali (unit test `src/store/progress.test.ts`) |
+| Progres AZ-900 di Supabase | Versi 96: kunci sama dengan backup versi 77, progres yang bertambah berasal dari lesson yang kamu mainkan. Kode baru dijalankan pada data asli ini: progres, XP, streak, antrean review, statistik konsep, dan riwayat ujian AZ-900 tidak berubah setelah digabung |
+| BUGS_LOG | Semua "cara mengecek" yang relevan dijalankan: lint, typecheck, 128 unit test, validator konten, 46 tes e2e termasuk axe untuk layar AZ-104. Empat baris baru di bagian 3 |

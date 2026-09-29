@@ -1,0 +1,32 @@
+{
+  "id": "az104-u01-identity",
+  "path": 1,
+  "title": "User dan group di Microsoft Entra ID",
+  "lessons": [
+    {
+      "id": "az104-u01-l1",
+      "title": "Jenis dan properti user",
+      "items": []
+    },
+    {
+      "id": "az104-u01-l2",
+      "title": "Group",
+      "items": []
+    },
+    {
+      "id": "az104-u01-l3",
+      "title": "Lisensi",
+      "items": []
+    },
+    {
+      "id": "az104-u01-l4",
+      "title": "User eksternal",
+      "items": []
+    },
+    {
+      "id": "az104-u01-l5",
+      "title": "Reset password mandiri",
+      "items": []
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "az104-u13-app-service",
+  "path": 4,
+  "title": "Azure App Service",
+  "lessons": [
+    {
+      "id": "az104-u13-l1",
+      "title": "App Service plan",
+      "items": []
+    },
+    {
+      "id": "az104-u13-l2",
+      "title": "Membuat dan scaling app",
+      "items": []
+    },
+    {
+      "id": "az104-u13-l3",
+      "title": "Custom domain dan TLS",
+      "items": []
+    },
+    {
+      "id": "az104-u13-l4",
+      "title": "Backup dan jaringan",
+      "items": []
+    },
+    {
+      "id": "az104-u13-l5",
+      "title": "Deployment slot",
+      "items": []
+    }
+  ]
+}

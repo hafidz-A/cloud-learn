@@ -1,0 +1,27 @@
+{
+  "id": "az104-u10-arm-bicep",
+  "path": 4,
+  "title": "ARM template dan Bicep",
+  "lessons": [
+    {
+      "id": "az104-u10-l1",
+      "title": "Membaca ARM template",
+      "items": []
+    },
+    {
+      "id": "az104-u10-l2",
+      "title": "Membaca dan mengubah Bicep",
+      "items": []
+    },
+    {
+      "id": "az104-u10-l3",
+      "title": "Deploy",
+      "items": []
+    },
+    {
+      "id": "az104-u10-l4",
+      "title": "Export dan konversi",
+      "items": []
+    }
+  ]
+}

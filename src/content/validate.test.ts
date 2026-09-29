@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Fact, LearnCard, Lesson, LessonItem, Unit } from '../lib/types'
-import { UNITS } from './course'
+import { AZ104_UNITS, UNITS, courseOf } from './course'
 import { GLOSSARY } from './glossary'
 import { glossaryGaps, unexpandedAbbreviations, validateUnits, type Issue } from './validate'
 
@@ -13,6 +13,31 @@ export function blockingErrors(issues: Issue[], units: Unit[]): Issue[] {
   const reworked = new Set(units.filter((u) => Array.isArray(u.facts)).map((u) => u.id))
   return issues.filter((i) => i.level === 'error' && (!i.coverage || (i.unit !== undefined && reworked.has(i.unit))))
 }
+
+describe('AZ-104 content (LANGIT_AZ104_PLAN.md)', () => {
+  const issues = validateUnits(AZ104_UNITS, 'az104')
+
+  it('has all 15 units in order, on the 5 paths of section 3', () => {
+    expect(AZ104_UNITS.map((u) => u.id.slice(0, 9))).toEqual(Array.from({ length: 15 }, (_, i) => `az104-u${String(i + 1).padStart(2, '0')}`))
+    expect(AZ104_UNITS.map((u) => u.path)).toEqual([1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5])
+  })
+
+  it('has no content errors, and every id starts with "az104-"', () => {
+    expect(blockingErrors(issues, AZ104_UNITS)).toEqual([])
+    const ids = AZ104_UNITS.flatMap((u) => [u.id, ...(u.facts ?? []).map((f) => f.id), ...u.lessons.flatMap((l) => [l.id, ...l.items.map((i) => i.id)])])
+    expect(ids.filter((id) => courseOf(id) !== 'az104')).toEqual([])
+  })
+
+  it('shares no id with AZ-900', () => {
+    const az900 = new Set(UNITS.flatMap((u) => [u.id, ...u.lessons.flatMap((l) => [l.id, ...l.items.map((i) => i.id)])]))
+    expect(AZ104_UNITS.flatMap((u) => [u.id, ...u.lessons.map((l) => l.id)]).filter((id) => az900.has(id))).toEqual([])
+  })
+
+  it('rejects an AZ-104 id without the prefix', () => {
+    const bad: Unit = { id: 'az104-u01-identity', path: 1, title: 'x', lessons: [{ id: 'u01-l1', title: 'x', items: [] }] }
+    expect(validateUnits([bad], 'az104').some((i) => i.level === 'error' && i.message.includes('must start with "az104-"'))).toBe(true)
+  })
+})
 
 describe('course content', () => {
   const issues = validateUnits(UNITS)

@@ -28,6 +28,24 @@ for (const [name, hash] of [
   })
 }
 
+test('the AZ-104 course screens have no accessibility violations', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('langit-course', JSON.stringify({ state: { active: 'az104' }, version: 1 })))
+  for (const [name, hash] of [
+    ['home AZ-104', '/'],
+    ['latihan AZ-104', '/#/latihan'],
+    ['ujian AZ-104', '/#/ujian'],
+    ['statistik AZ-104', '/#/statistik'],
+    ['panduan unit AZ-104', '/#/guide/az104-u01-identity'],
+  ] as const) {
+    await page.goto(hash)
+    await page.waitForTimeout(300)
+    await scan(page, name)
+  }
+  await page.goto('/')
+  await page.locator('[data-node="az104-u01-l1"]').click()
+  await scan(page, 'AZ-104 lesson popover')
+})
+
 test('lesson screens have no accessibility violations', async ({ page }) => {
   await page.goto('/#/lesson/u01-l2')
   await scan(page, 'learn card with diagram')

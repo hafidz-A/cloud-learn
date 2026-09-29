@@ -1,12 +1,12 @@
-import { EXERCISES } from '../content/course'
+import { EXERCISES, courseOf } from '../content/course'
 import { navigate } from '../lib/router'
 import type { ExamAttempt } from '../lib/types'
 import { useProgress } from '../store/progress'
 import { isExamQuestion, scoreAttempt, type ExamQuestion } from './examLogic'
 
-/** Every examReady question in the course. */
+/** Every examReady AZ-900 question. AZ-104 gets its own pool with its exam page (plan stage 6). */
 export const EXAM_POOL: ExamQuestion[] = [...EXERCISES.values()]
-  .filter((r) => isExamQuestion(r.exercise))
+  .filter((r) => courseOf(r.unit.id) === 'az900' && isExamQuestion(r.exercise))
   .map((r) => ({ exercise: r.exercise, path: r.path }))
 
 const BY_ID = new Map(EXAM_POOL.map((q) => [q.exercise.id, q]))

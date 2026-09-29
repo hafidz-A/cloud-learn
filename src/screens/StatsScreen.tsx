@@ -2,10 +2,11 @@ import { BookCheck, Flame, Target, Zap } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { BarChart } from '../charts/BarChart'
 import { Meter } from '../charts/Meter'
-import { LESSONS_IN_ORDER, UNITS, UNIT_BY_CONCEPT, conceptName, unitNumber } from '../content/course'
+import { COURSES, UNIT_BY_CONCEPT, conceptName, lessonsInOrder, unitNumber } from '../content/course'
 import { addDays, dayKey } from '../lib/date'
 import { liveStreak } from '../lib/streak'
-import { useProgress } from '../store/progress'
+import { useActiveCourse } from '../store/course'
+import { useCourseProgress, useProgress } from '../store/progress'
 
 const DAY_SHORT = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
 const MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
@@ -35,6 +36,9 @@ function Card({ title, subtitle, children }: { title: string; subtitle?: string;
 
 export function StatsScreen() {
   const p = useProgress()
+  const course = useActiveCourse()
+  const c = useCourseProgress(course)
+  const lessons = lessonsInOrder(course)
   const today = dayKey()
   const days = Array.from({ length: 7 }, (_, i) => addDays(today, i - 6))
   const bars = days.map((d) => {
@@ -48,17 +52,20 @@ export function StatsScreen() {
     }
   })
 
-  const totals = Object.values(p.conceptStats).reduce((a, c) => ({ right: a.right + c.right, all: a.all + c.right + c.wrong }), { right: 0, all: 0 })
-  const lessonsDone = LESSONS_IN_ORDER.filter((l) => p.lessonsDone[l.lesson.id]).length
+  const totals = Object.values(c.conceptStats).reduce((a, c) => ({ right: a.right + c.right, all: a.all + c.right + c.wrong }), { right: 0, all: 0 })
+  const lessonsDone = lessons.filter((l) => c.lessonsDone[l.lesson.id]).length
 
-  const concepts = Object.entries(p.conceptStats)
+  const concepts = Object.entries(c.conceptStats)
     .map(([concept, s]) => ({ concept, ...s, total: s.right + s.wrong, rate: s.right / Math.max(1, s.right + s.wrong) }))
     .filter((c) => c.total > 0)
     .sort((a, b) => a.rate - b.rate || b.total - a.total)
 
   return (
     <main className="space-y-5 px-4 pb-32 pt-6">
-      <h1 className="font-display text-28 font-bold">Statistik</h1>
+      <div>
+        <h1 className="font-display text-28 font-bold">Statistik</h1>
+        <p className="text-15 text-tinta-lembut">XP dan streak untuk seluruh aplikasi; lesson, unit, dan konsep untuk course {COURSES[course].name}.</p>
+      </div>
 
       <div className="grid grid-cols-2 gap-3">
         <Tile icon={<Zap size={16} className="fill-matahari text-matahari-dalam" aria-hidden="true" />} label="Total XP" value={p.xp.toLocaleString('id-ID')} />
@@ -72,7 +79,7 @@ export function StatsScreen() {
           icon={<BookCheck size={16} className="text-biru-dalam" aria-hidden="true" />}
           label="Lesson selesai"
           value={`${lessonsDone}`}
-          detail={`dari ${LESSONS_IN_ORDER.length} lesson`}
+          detail={`dari ${lessons.length} lesson ${COURSES[course].name}`}
         />
         <Tile
           icon={<Target size={16} className="text-mint-dalam" aria-hidden="true" />}
@@ -88,14 +95,14 @@ export function StatsScreen() {
 
       <Card title="Penguasaan per unit" subtitle="Lesson selesai, level unit, dan akurasi terbaik rata-rata.">
         <ul className="space-y-4">
-          {UNITS.map((u) => {
-            const done = u.lessons.filter((l) => p.lessonsDone[l.id])
-            const best = done.length ? done.reduce((a, l) => a + p.lessonsDone[l.id].bestAccuracy, 0) / done.length : 0
+          {COURSES[course].units.map((u) => {
+            const done = u.lessons.filter((l) => c.lessonsDone[l.id])
+            const best = done.length ? done.reduce((a, l) => a + c.lessonsDone[l.id].bestAccuracy, 0) / done.length : 0
             return (
               <li key={u.id}>
                 <Meter
                   label={`Unit ${unitNumber(u)} · ${u.title}`}
-                  detail={`${done.length}/${u.lessons.length} lesson · level ${p.unitLevel[u.id] ?? 0}/3${done.length ? ` · akurasi ${Math.round(best * 100)}%` : ''}`}
+                  detail={`${done.length}/${u.lessons.length} lesson · level ${c.unitLevel[u.id] ?? 0}/3${done.length ? ` · akurasi ${Math.round(best * 100)}%` : ''}`}
                   value={done.length / u.lessons.length}
                   valueText={`${Math.round((done.length / u.lessons.length) * 100)}%`}
                 />
@@ -110,15 +117,15 @@ export function StatsScreen() {
           <p className="text-15 text-tinta-lembut">Belum ada data. Selesaikan satu lesson dulu.</p>
         ) : (
           <ul className="space-y-4">
-            {concepts.map((c) => {
-              const unit = UNIT_BY_CONCEPT.get(c.concept)
+            {concepts.map((k) => {
+              const unit = UNIT_BY_CONCEPT[course].get(k.concept)
               return (
-                <li key={c.concept}>
+                <li key={k.concept}>
                   <Meter
-                    label={conceptName(c.concept)}
-                    detail={`${c.right} dari ${c.total} benar${unit ? ` · Unit ${unitNumber(unit)}` : ''}`}
-                    value={c.rate}
-                    valueText={`${Math.round(c.rate * 100)}%`}
+                    label={conceptName(k.concept, course)}
+                    detail={`${k.right} dari ${k.total} benar${unit ? ` · Unit ${unitNumber(unit)}` : ''}`}
+                    value={k.rate}
+                    valueText={`${Math.round(k.rate * 100)}%`}
                   />
                 </li>
               )

@@ -1,0 +1,27 @@
+{
+  "id": "az104-u12-containers",
+  "path": 4,
+  "title": "Container",
+  "lessons": [
+    {
+      "id": "az104-u12-l1",
+      "title": "Azure Container Registry",
+      "items": []
+    },
+    {
+      "id": "az104-u12-l2",
+      "title": "Azure Container Instances",
+      "items": []
+    },
+    {
+      "id": "az104-u12-l3",
+      "title": "Azure Container Apps",
+      "items": []
+    },
+    {
+      "id": "az104-u12-l4",
+      "title": "Sizing dan scaling container",
+      "items": []
+    }
+  ]
+}

@@ -21,7 +21,8 @@ function fakeServer() {
         return route.fulfill({ json: 1 })
       }
       if (!row || row.version !== body.p_version) return route.fulfill({ json: null })
-      rows.set(body.p_code, { data: body.p_data, version: row.version + 1 })
+      // Top-level keys the caller leaves out are kept (s.data || p_data).
+      rows.set(body.p_code, { data: { ...(row.data as object), ...(body.p_data as object) }, version: row.version + 1 })
       return route.fulfill({ json: row.version + 1 })
     })
   return { rows, attach }

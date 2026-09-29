@@ -1,0 +1,27 @@
+{
+  "id": "az104-u02-rbac",
+  "path": 1,
+  "title": "Akses ke resource Azure (RBAC)",
+  "lessons": [
+    {
+      "id": "az104-u02-l1",
+      "title": "Role bawaan",
+      "items": []
+    },
+    {
+      "id": "az104-u02-l2",
+      "title": "Scope dan pewarisan",
+      "items": []
+    },
+    {
+      "id": "az104-u02-l3",
+      "title": "Membaca akses",
+      "items": []
+    },
+    {
+      "id": "az104-u02-l4",
+      "title": "Azure role vs Entra role",
+      "items": []
+    }
+  ]
+}

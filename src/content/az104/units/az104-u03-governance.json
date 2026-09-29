@@ -1,0 +1,32 @@
+{
+  "id": "az104-u03-governance",
+  "path": 1,
+  "title": "Subscription dan governance",
+  "lessons": [
+    {
+      "id": "az104-u03-l1",
+      "title": "Azure Policy",
+      "items": []
+    },
+    {
+      "id": "az104-u03-l2",
+      "title": "Efek policy dan remediasi",
+      "items": []
+    },
+    {
+      "id": "az104-u03-l3",
+      "title": "Lock dan tag",
+      "items": []
+    },
+    {
+      "id": "az104-u03-l4",
+      "title": "Resource group, subscription, management group",
+      "items": []
+    },
+    {
+      "id": "az104-u03-l5",
+      "title": "Kontrol biaya",
+      "items": []
+    }
+  ]
+}

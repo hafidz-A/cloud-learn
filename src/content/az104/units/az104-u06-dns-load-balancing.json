@@ -1,0 +1,27 @@
+{
+  "id": "az104-u06-dns-load-balancing",
+  "path": 2,
+  "title": "DNS dan load balancing",
+  "lessons": [
+    {
+      "id": "az104-u06-l1",
+      "title": "Azure DNS publik",
+      "items": []
+    },
+    {
+      "id": "az104-u06-l2",
+      "title": "Private DNS zone",
+      "items": []
+    },
+    {
+      "id": "az104-u06-l3",
+      "title": "Dasar load balancer",
+      "items": []
+    },
+    {
+      "id": "az104-u06-l4",
+      "title": "Troubleshooting load balancer",
+      "items": []
+    }
+  ]
+}

@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import { findCheckpoint, type Checkpoint } from '../content/course'
+import { courseOf, exercisesInPath, findCheckpoint, type Checkpoint } from '../content/course'
 import { formatDuration } from '../lib/date'
 import { leaveFlow, navigate } from '../lib/router'
 import { XP_CHECKPOINT, CHECKPOINT_PASS } from '../lib/scoring'
+import { useFollowCourse } from '../store/course'
 import { useProgress } from '../store/progress'
 import { Unavailable } from './LessonScreen'
 import { Player } from './Player'
 import { checkpointPlan } from './plans'
 
 function CheckpointRun({ cp }: { cp: Checkpoint }) {
+  useFollowCourse(cp.id)
   const completeCheckpoint = useProgress((s) => s.completeCheckpoint)
   const [plan] = useState(() => checkpointPlan(cp))
 
@@ -46,5 +48,8 @@ function CheckpointRun({ cp }: { cp: Checkpoint }) {
 export function CheckpointScreen({ checkpointId }: { checkpointId: string }) {
   const cp = findCheckpoint(checkpointId)
   if (!cp) return <Unavailable title="Checkpoint tidak ditemukan" body="Kembali ke home dan pilih checkpoint dari peta." />
+  // An empty run would score 0 of 0; wait until the path has exercises (AZ-104 while its content is written).
+  if (!exercisesInPath(courseOf(cp.id), cp.path).length)
+    return <Unavailable title="Checkpoint belum siap" body="Soal untuk jalur ini sedang disiapkan." />
   return <CheckpointRun cp={cp} />
 }

@@ -1,12 +1,12 @@
 import { BookOpen, Check, Crown, Lock, Star, Trophy } from 'lucide-react'
 import { useEffect, useEffectEvent, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Button } from '../components/Button'
-import { CHECKPOINTS, PATHS, UNITS, unitNumber, type Checkpoint } from '../content/course'
+import { COURSES, courseOf, unitNumber, type Checkpoint } from '../content/course'
 import { pathStates, type NodeState } from '../lib/path'
 import { navigate } from '../lib/router'
 import { CHECKPOINT_PASS, XP_CHECKPOINT, XP_PER_LESSON } from '../lib/scoring'
-import type { Lesson, Unit } from '../lib/types'
-import { useProgress } from '../store/progress'
+import type { CourseId, Lesson, Unit } from '../lib/types'
+import { useCourseProgress } from '../store/progress'
 
 const NODE_LOOK: Record<NodeState, { className: string; edge: string }> = {
   done: { className: 'bg-matahari text-tinta', edge: 'var(--color-matahari-dalam)' },
@@ -98,7 +98,7 @@ function LessonNode({
   selected: boolean
   onSelect: (open: boolean) => void
 }) {
-  const done = useProgress((s) => s.lessonsDone[lesson.id])
+  const done = useCourseProgress(courseOf(lesson.id)).lessonsDone[lesson.id]
   const look = NODE_LOOK[state]
   const offset = offsetFor(lessonIndex, unitIndex)
   const Icon = state === 'done' ? Check : state === 'locked' || state === 'soon' ? Lock : Star
@@ -172,7 +172,7 @@ function CheckpointNode({
   selected: boolean
   onSelect: (open: boolean) => void
 }) {
-  const result = useProgress((s) => s.checkpoints[checkpoint.id])
+  const result = useCourseProgress(courseOf(checkpoint.id)).checkpoints[checkpoint.id]
   const look = NODE_LOOK[state]
   const start = () => navigate({ name: 'checkpoint', checkpointId: checkpoint.id })
   return (
@@ -189,7 +189,7 @@ function CheckpointNode({
           className={`btn-3d flex min-h-[76px] cursor-pointer items-center justify-center gap-3 whitespace-nowrap rounded-3xl px-7 font-display text-20 font-bold ${look.className}`}
           style={{ '--edge': look.edge, '--depth': '6px' } as CSSProperties}
         >
-          {state === 'locked' ? <Lock size={28} strokeWidth={2.5} /> : <Trophy size={30} strokeWidth={2.5} />}
+          {state === 'locked' || state === 'soon' ? <Lock size={28} strokeWidth={2.5} /> : <Trophy size={30} strokeWidth={2.5} />}
           {checkpoint.title}
         </button>
       </div>
@@ -200,7 +200,9 @@ function CheckpointNode({
             {checkpoint.questionCount} soal campuran dari seluruh jalur {checkpoint.path}. Skor minimal{' '}
             {Math.round(CHECKPOINT_PASS * 100)}% untuk membuka jalur berikutnya.
           </p>
-          {state === 'locked' ? (
+          {state === 'soon' ? (
+            <p className="mt-2 text-15 text-tinta-lembut">Soal untuk jalur ini sedang disiapkan.</p>
+          ) : state === 'locked' ? (
             <p className="mt-2 text-15 text-tinta-lembut">Buka jalur ini dulu lewat checkpoint sebelumnya.</p>
           ) : (
             <>
@@ -222,8 +224,8 @@ function CheckpointNode({
 }
 
 function UnitCard({ unit }: { unit: Unit }) {
-  const lessonsDone = useProgress((s) => s.lessonsDone)
-  const level = useProgress((s) => s.unitLevel[unit.id] ?? 0)
+  const { lessonsDone, unitLevel } = useCourseProgress(courseOf(unit.id))
+  const level = unitLevel[unit.id] ?? 0
   const done = unit.lessons.filter((l) => lessonsDone[l.id]).length
   return (
     <div className="mx-4 mb-4 mt-6 rounded-2xl border-2 border-kabut bg-white px-4 py-3 shadow-[0_4px_0_var(--color-kabut)]">
@@ -261,13 +263,13 @@ function UnitCard({ unit }: { unit: Unit }) {
   )
 }
 
-/** The vertical, winding path of lessons and checkpoints on the home screen. */
-export function PathMap() {
-  const lessonsDone = useProgress((s) => s.lessonsDone)
-  const checkpointResults = useProgress((s) => s.checkpoints)
+/** The vertical, winding path of one course's lessons and checkpoints on the home screen. */
+export function PathMap({ course }: { course: CourseId }) {
+  const { paths: PATHS, units: UNITS, checkpoints: CHECKPOINTS } = COURSES[course]
+  const { lessonsDone, checkpoints: checkpointResults } = useCourseProgress(course)
   const states = useMemo(
-    () => pathStates({ lessonsDone, checkpoints: checkpointResults }),
-    [lessonsDone, checkpointResults],
+    () => pathStates(course, { lessonsDone, checkpoints: checkpointResults }),
+    [course, lessonsDone, checkpointResults],
   )
   const [selected, setSelected] = useState<Selected>(null)
 

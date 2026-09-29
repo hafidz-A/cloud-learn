@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { formatDuration } from '../lib/date'
 import { leaveFlow } from '../lib/router'
 import { XP_PER_LESSON } from '../lib/scoring'
-import { useProgress } from '../store/progress'
+import { useCourse } from '../store/course'
+import { courseProgress, useProgress } from '../store/progress'
 import { Unavailable } from './LessonScreen'
 import { Player } from './Player'
 import { practicePlan } from './plans'
@@ -10,7 +11,10 @@ import { practicePlan } from './plans'
 /** A practice session: review queue first, then exercises from finished lessons. */
 export function PracticeRun() {
   const completePractice = useProgress((s) => s.completePractice)
-  const [plan] = useState(() => practicePlan(useProgress.getState()))
+  const [plan] = useState(() => {
+    const course = useCourse.getState().active
+    return practicePlan(course, courseProgress(useProgress.getState(), course))
+  })
 
   if (plan.items.length === 0) {
     return <Unavailable title="Belum ada yang bisa dilatih" body="Selesaikan satu lesson dulu, lalu soalnya bisa dilatih ulang di sini." />

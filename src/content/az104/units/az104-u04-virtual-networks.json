@@ -1,0 +1,32 @@
+{
+  "id": "az104-u04-virtual-networks",
+  "path": 2,
+  "title": "Virtual network dan subnet",
+  "lessons": [
+    {
+      "id": "az104-u04-l1",
+      "title": "Perencanaan alamat",
+      "items": []
+    },
+    {
+      "id": "az104-u04-l2",
+      "title": "Public IP",
+      "items": []
+    },
+    {
+      "id": "az104-u04-l3",
+      "title": "VNet peering",
+      "items": []
+    },
+    {
+      "id": "az104-u04-l4",
+      "title": "User-defined route",
+      "items": []
+    },
+    {
+      "id": "az104-u04-l5",
+      "title": "Troubleshooting koneksi",
+      "items": []
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import type { ExamAttempt, Progress } from '../lib/types'
+import type { CourseProgress, ExamAttempt, Progress } from '../lib/types'
 
 // Merging two devices' progress (plan stage 8). The rules only ever keep the
 // larger count, the union, or the newest change, so merging is safe to repeat:
@@ -29,6 +29,7 @@ export const SYNC_KEYS = [
   'settingsAt',
   'heartsAt',
   'resetAt',
+  'courses',
 ] as const satisfies readonly (keyof SyncData)[]
 
 export function toSyncData(p: Progress): SyncData {
@@ -65,11 +66,11 @@ function newerEntry(x: ReviewEntry, y: ReviewEntry): ReviewEntry {
 }
 
 /** Review queue: for each exercise, the newest of "in the queue" and "left the queue" wins. */
-function mergeReview(a: SyncData, b: SyncData): Pick<SyncData, 'review' | 'reviewRemoved'> {
+function mergeReview(a: CourseProgress, b: CourseProgress): Pick<CourseProgress, 'review' | 'reviewRemoved'> {
   const entries = mergeRecords(a.review, b.review, newerEntry)
   const removed = mergeRecords(a.reviewRemoved ?? {}, b.reviewRemoved ?? {}, (x, y) => (x > y ? x : y))
-  const review: SyncData['review'] = {}
-  const reviewRemoved: SyncData['reviewRemoved'] = {}
+  const review: CourseProgress['review'] = {}
+  const reviewRemoved: CourseProgress['reviewRemoved'] = {}
   for (const id of new Set([...Object.keys(entries), ...Object.keys(removed)])) {
     const entry = entries[id]
     const gone = removed[id]
@@ -86,6 +87,35 @@ function mergeExams(a: ExamAttempt[], b: ExamAttempt[]): ExamAttempt[] {
   return [...byId.values()]
     .sort((x, y) => (when(x) < when(y) ? -1 : when(x) > when(y) ? 1 : x.id < y.id ? -1 : 1))
     .slice(-EXAM_HISTORY_LIMIT)
+}
+
+const EMPTY_COURSE: CourseProgress = { lessonsDone: {}, checkpoints: {}, unitLevel: {}, review: {}, reviewRemoved: {}, conceptStats: {}, examHistory: [] }
+
+/** One course's progress: the same rules for AZ-900 (top level) and AZ-104 (`courses.az104`). */
+function mergeCourse(a: CourseProgress, b: CourseProgress): CourseProgress {
+  return {
+    lessonsDone: mergeRecords(a.lessonsDone, b.lessonsDone, (x, y) => ({
+      bestAccuracy: Math.max(x.bestAccuracy, y.bestAccuracy),
+      completedAt: x.completedAt > y.completedAt ? x.completedAt : y.completedAt,
+      count: Math.max(x.count, y.count),
+    })),
+    checkpoints: mergeRecords(a.checkpoints, b.checkpoints, (x, y) => {
+      const passed = [x.passedAt, y.passedAt].filter((d): d is string => !!d).sort()[0]
+      return passed ? { bestScore: Math.max(x.bestScore, y.bestScore), passedAt: passed } : { bestScore: Math.max(x.bestScore, y.bestScore) }
+    }),
+    unitLevel: mergeRecords(a.unitLevel, b.unitLevel, (x, y) => (x >= y ? x : y)),
+    conceptStats: mergeRecords(a.conceptStats, b.conceptStats, (x, y) => ({
+      right: Math.max(x.right, y.right),
+      wrong: Math.max(x.wrong, y.wrong),
+    })),
+    examHistory: mergeExams(a.examHistory, b.examHistory),
+    ...mergeReview(a, b),
+  }
+}
+
+/** A course's progress in sync data, with empty fields where older data has none. */
+function az104(d: SyncData): CourseProgress {
+  return { ...EMPTY_COURSE, ...d.courses?.az104 }
 }
 
 /**
@@ -140,23 +170,9 @@ export function mergeProgress(a: SyncData, b: SyncData, { joining = false } = {}
     heartsDay: hearts.heartsDay,
     heartsAt: hearts.heartsAt,
     streak: { ...streak, best: Math.max(a.streak.best, b.streak.best, streak.current) },
-    lessonsDone: mergeRecords(a.lessonsDone, b.lessonsDone, (x, y) => ({
-      bestAccuracy: Math.max(x.bestAccuracy, y.bestAccuracy),
-      completedAt: x.completedAt > y.completedAt ? x.completedAt : y.completedAt,
-      count: Math.max(x.count, y.count),
-    })),
-    checkpoints: mergeRecords(a.checkpoints, b.checkpoints, (x, y) => {
-      const passed = [x.passedAt, y.passedAt].filter((d): d is string => !!d).sort()[0]
-      return passed ? { bestScore: Math.max(x.bestScore, y.bestScore), passedAt: passed } : { bestScore: Math.max(x.bestScore, y.bestScore) }
-    }),
-    unitLevel: mergeRecords(a.unitLevel, b.unitLevel, (x, y) => (x >= y ? x : y)),
-    conceptStats: mergeRecords(a.conceptStats, b.conceptStats, (x, y) => ({
-      right: Math.max(x.right, y.right),
-      wrong: Math.max(x.wrong, y.wrong),
-    })),
-    examHistory: mergeExams(a.examHistory, b.examHistory),
-    ...mergeReview(a, b),
+    ...mergeCourse(a, b),
     resetAt: t(a.resetAt) >= t(b.resetAt) ? a.resetAt : b.resetAt,
+    courses: a.courses?.az104 || b.courses?.az104 ? { az104: mergeCourse(az104(a), az104(b)) } : {},
   }
 }
 
@@ -165,5 +181,6 @@ export function readSyncData(value: unknown, defaults: SyncData): SyncData | nul
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
   const out = { ...defaults, ...(value as Partial<SyncData>) }
   if (typeof out.xp !== 'number' || typeof out.lessonsDone !== 'object' || !Array.isArray(out.examHistory)) return null
+  if (!out.courses || typeof out.courses !== 'object' || Array.isArray(out.courses)) out.courses = {}
   return out
 }

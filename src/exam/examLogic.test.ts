@@ -94,7 +94,7 @@ describe('readiness', () => {
     expect(readiness([full(600), full(820), full(800), full(790)])).toEqual({ ready: true, average: 803, fullCount: 4 })
   })
   it('finds the weakest domain', () => {
-    const a = { domainScores: { 1: { right: 9, total: 10 }, 2: { right: 3, total: 10 }, 3: { right: 6, total: 10 } } } as ExamAttempt
+    const a = { domainScores: { 1: { right: 9, total: 10 }, 2: { right: 3, total: 10 }, 3: { right: 6, total: 10 } } } as unknown as ExamAttempt
     expect(weakestDomain([a])).toBe(2)
   })
 })

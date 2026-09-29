@@ -1,9 +1,11 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import { useShallow } from 'zustand/react/shallow'
+import { courseOf } from '../content/course'
 import { dayKey } from '../lib/date'
 import { missed, scheduleReview } from '../lib/review'
 import { bumpStreak, liveStreak } from '../lib/streak'
-import type { DailyGoal, ExamAttempt, Progress } from '../lib/types'
+import type { CourseId, CourseProgress, DailyGoal, ExamAttempt, Progress } from '../lib/types'
 
 export const MAX_HEARTS = 5
 /** Finished exams kept in history (full simulations drive the readiness indicator). */
@@ -29,6 +31,35 @@ export const initialProgress: Progress = {
   settingsAt: undefined,
   heartsAt: undefined,
   resetAt: undefined,
+  courses: {},
+}
+
+export const EMPTY_COURSE: CourseProgress = {
+  lessonsDone: {},
+  checkpoints: {},
+  unitLevel: {},
+  review: {},
+  reviewRemoved: {},
+  conceptStats: {},
+  examHistory: [],
+}
+
+/**
+ * One course's progress. AZ-900 keeps its fields at the top level (where they
+ * were before AZ-104), AZ-104 lives in `courses.az104`.
+ */
+export function courseProgress(s: Progress, course: CourseId): CourseProgress {
+  if (course === 'az900') {
+    const { lessonsDone, checkpoints, unitLevel, review, reviewRemoved, conceptStats, examHistory } = s
+    return { lessonsDone, checkpoints, unitLevel, review, reviewRemoved, conceptStats, examHistory }
+  }
+  return { ...EMPTY_COURSE, ...s.courses[course] }
+}
+
+/** The store update that writes `patch` into one course's progress and leaves the other course alone. */
+function withCourse(s: Progress, course: CourseId, patch: Partial<CourseProgress>): Partial<Progress> {
+  if (course === 'az900') return patch
+  return { courses: { ...s.courses, [course]: { ...courseProgress(s, course), ...patch } } }
 }
 
 type Actions = {
@@ -53,7 +84,7 @@ type Actions = {
   setSoundEnabled: (on: boolean) => void
   startExam: (attempt: ExamAttempt) => void
   updateExam: (patch: Partial<ExamAttempt>) => void
-  /** Moves a scored attempt into the history and clears the active exam. */
+  /** Moves a scored attempt into its course's history and clears the active exam. */
   finishExam: (attempt: ExamAttempt) => void
   abandonExam: () => void
   resetProgress: () => void
@@ -67,10 +98,10 @@ function addXp(s: Progress, xp: number, today: string): Pick<Progress, 'xp' | 'x
   return { xp: s.xp + xp, xpByDay: { ...s.xpByDay, [today]: (s.xpByDay[today] ?? 0) + xp } }
 }
 
-function bumpConcept(s: Progress, concept: string, correct: boolean): Progress['conceptStats'] {
-  const prev = s.conceptStats[concept] ?? { right: 0, wrong: 0 }
+function bumpConcept(c: CourseProgress, concept: string, correct: boolean): CourseProgress['conceptStats'] {
+  const prev = c.conceptStats[concept] ?? { right: 0, wrong: 0 }
   return {
-    ...s.conceptStats,
+    ...c.conceptStats,
     [concept]: correct ? { ...prev, right: prev.right + 1 } : { ...prev, wrong: prev.wrong + 1 },
   }
 }
@@ -89,20 +120,24 @@ export const useProgress = create<ProgressStore>()(
 
       recordAnswer: (exerciseId, concept, correct) =>
         set((s) => {
-          if (correct) return { conceptStats: bumpConcept(s, concept, correct) }
-          const { [exerciseId]: _, ...reviewRemoved } = s.reviewRemoved
-          return {
-            conceptStats: bumpConcept(s, concept, correct),
-            review: { ...s.review, [exerciseId]: { ...missed(dayKey()), at: now() } },
+          const course = courseOf(exerciseId)
+          const c = courseProgress(s, course)
+          if (correct) return withCourse(s, course, { conceptStats: bumpConcept(c, concept, correct) })
+          const { [exerciseId]: _, ...reviewRemoved } = c.reviewRemoved
+          return withCourse(s, course, {
+            conceptStats: bumpConcept(c, concept, correct),
+            review: { ...c.review, [exerciseId]: { ...missed(dayKey()), at: now() } },
             reviewRemoved,
-          }
+          })
         }),
 
       recordReview: (exerciseId, concept, correct) =>
         set((s) => {
-          const next = scheduleReview(s.review[exerciseId], correct, dayKey())
-          const review = { ...s.review }
-          const reviewRemoved = { ...s.reviewRemoved }
+          const course = courseOf(exerciseId)
+          const c = courseProgress(s, course)
+          const next = scheduleReview(c.review[exerciseId], correct, dayKey())
+          const review = { ...c.review }
+          const reviewRemoved = { ...c.reviewRemoved }
           if (next) {
             review[exerciseId] = { ...next, at: now() }
             delete reviewRemoved[exerciseId]
@@ -110,7 +145,7 @@ export const useProgress = create<ProgressStore>()(
             delete review[exerciseId]
             reviewRemoved[exerciseId] = now()
           }
-          return { conceptStats: bumpConcept(s, concept, correct), review, reviewRemoved }
+          return withCourse(s, course, { conceptStats: bumpConcept(c, concept, correct), review, reviewRemoved })
         }),
 
       loseHeart: () => set((s) => (s.heartsEnabled ? { hearts: Math.max(0, s.hearts - 1), heartsAt: now() } : s)),
@@ -119,9 +154,11 @@ export const useProgress = create<ProgressStore>()(
       completeLesson: (lessonId, accuracy, xp, unitId, unitLessonIds) =>
         set((s) => {
           const today = dayKey()
-          const prev = s.lessonsDone[lessonId]
+          const course = courseOf(lessonId)
+          const c = courseProgress(s, course)
+          const prev = c.lessonsDone[lessonId]
           const lessonsDone = {
-            ...s.lessonsDone,
+            ...c.lessonsDone,
             [lessonId]: {
               bestAccuracy: Math.max(prev?.bestAccuracy ?? 0, accuracy),
               completedAt: new Date().toISOString(),
@@ -134,8 +171,7 @@ export const useProgress = create<ProgressStore>()(
           return {
             ...addXp(s, xp, today),
             streak: bumpStreak(s.streak, today),
-            lessonsDone,
-            unitLevel: { ...s.unitLevel, [unitId]: level },
+            ...withCourse(s, course, { lessonsDone, unitLevel: { ...c.unitLevel, [unitId]: level } }),
           }
         }),
 
@@ -148,17 +184,21 @@ export const useProgress = create<ProgressStore>()(
       completeCheckpoint: (checkpointId, score, passed, xp) =>
         set((s) => {
           const today = dayKey()
-          const prev = s.checkpoints[checkpointId]
+          const course = courseOf(checkpointId)
+          const c = courseProgress(s, course)
+          const prev = c.checkpoints[checkpointId]
           return {
             ...addXp(s, xp, today),
             streak: bumpStreak(s.streak, today),
-            checkpoints: {
-              ...s.checkpoints,
-              [checkpointId]: {
-                bestScore: Math.max(prev?.bestScore ?? 0, score),
-                passedAt: prev?.passedAt ?? (passed ? new Date().toISOString() : undefined),
+            ...withCourse(s, course, {
+              checkpoints: {
+                ...c.checkpoints,
+                [checkpointId]: {
+                  bestScore: Math.max(prev?.bestScore ?? 0, score),
+                  passedAt: prev?.passedAt ?? (passed ? new Date().toISOString() : undefined),
+                },
               },
-            },
+            }),
           }
         }),
 
@@ -169,14 +209,19 @@ export const useProgress = create<ProgressStore>()(
       startExam: (attempt) => set({ activeExam: attempt }),
       updateExam: (patch) => set((s) => (s.activeExam ? { activeExam: { ...s.activeExam, ...patch } } : s)),
       finishExam: (attempt) =>
-        set((s) => ({ activeExam: undefined, examHistory: [...s.examHistory, attempt].slice(-EXAM_HISTORY_LIMIT) })),
+        set((s) => {
+          const course = attempt.course ?? 'az900'
+          const examHistory = [...courseProgress(s, course).examHistory, attempt].slice(-EXAM_HISTORY_LIMIT)
+          return { activeExam: undefined, ...withCourse(s, course, { examHistory }) }
+        }),
       abandonExam: () => set({ activeExam: undefined }),
 
       resetProgress: () => set({ ...initialProgress, resetAt: now() }),
     }),
     {
       name: 'langit-progress',
-      version: 2,
+      // v3 adds `courses` (AZ-104); the AZ-900 fields stay where they were.
+      version: 3,
       storage: createJSONStorage(() => localStorage),
       // Persist only the Progress data, never the action functions.
       partialize: (s): Progress => {
@@ -197,6 +242,11 @@ export const useProgress = create<ProgressStore>()(
     },
   ),
 )
+
+/** One course's progress, re-rendering only when one of its fields changes. */
+export function useCourseProgress(course: CourseId): CourseProgress {
+  return useProgress(useShallow((s: Progress) => courseProgress(s, course)))
+}
 
 export function useXpToday(): number {
   return useProgress((s) => s.xpByDay[dayKey()] ?? 0)

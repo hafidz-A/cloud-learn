@@ -16,7 +16,7 @@ type Filter = 'all' | 'wrong' | 'flagged'
 
 /** Every question with the player's answer, the right answer, and the explanation (plan section 12.5). */
 export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
-  const attempt = useProgress((s) => s.examHistory.find((a) => a.id === attemptId))
+  const attempt = useProgress((s) => [...s.examHistory, ...(s.courses.az104?.examHistory ?? [])].find((a) => a.id === attemptId))
   const [filter, setFilter] = useState<Filter>('all')
   const [material, setMaterial] = useState<TeachingCard[] | null>(null)
   if (!attempt) return null

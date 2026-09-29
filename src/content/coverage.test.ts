@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { VISUALS } from '../visuals/registry'
-import { UNITS } from './course'
+import { AZ104_UNITS, UNITS } from './course'
 import { answerBalance, courseCoverage, type UnitCoverage } from './coverage'
 import { isVisualName } from './visuals'
 
@@ -59,6 +59,9 @@ function report(): string {
     `    benar/salah: ${b.truths} benar, ${b.falses} salah (${pct(b.truths, b.truths + b.falses)} benar)`,
     `    yes/no: ${b.yes} yes, ${b.no} no (${pct(b.yes, b.yes + b.no)} yes)`,
     `    pilihan ganda dengan jawaban benar paling panjang: ${b.longestRight} dari ${b.choices} (${pct(b.longestRight, b.choices)})`,
+    '',
+    'Course AZ-104 (LANGIT_AZ104_PLAN.md):',
+    ...courseCoverage(AZ104_UNITS).map((c) => `    ${c.unitId}: ${c.facts} fakta · ${c.learnCards} kartu learn · ${c.exercises} soal`),
   ].join('\n')
 }
 

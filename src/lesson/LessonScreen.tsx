@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Button } from '../components/Button'
 import { Mascot } from '../components/Mascot'
-import { findLesson, hasContent, type LessonRef } from '../content/course'
+import { courseOf, findLesson, hasContent, type LessonRef } from '../content/course'
 import { formatDuration } from '../lib/date'
 import { leaveFlow } from '../lib/router'
 import { summarizeLesson, XP_FLAWLESS_BONUS } from '../lib/scoring'
-import { useProgress } from '../store/progress'
+import { useFollowCourse } from '../store/course'
+import { courseProgress, useProgress } from '../store/progress'
 import { Player } from './Player'
 import { lessonPlan } from './plans'
 
@@ -24,8 +25,9 @@ export function Unavailable({ title, body }: { title: string; body: string }) {
 
 function LessonRun({ lessonRef }: { lessonRef: LessonRef }) {
   const { lesson, unit } = lessonRef
+  useFollowCourse(lesson.id)
   const completeLesson = useProgress((s) => s.completeLesson)
-  const [plan] = useState(() => lessonPlan(lessonRef, useProgress.getState()))
+  const [plan] = useState(() => lessonPlan(lessonRef, courseProgress(useProgress.getState(), courseOf(lesson.id))))
 
   return (
     <Player

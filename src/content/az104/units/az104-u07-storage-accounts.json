@@ -1,0 +1,32 @@
+{
+  "id": "az104-u07-storage-accounts",
+  "path": 3,
+  "title": "Storage account",
+  "lessons": [
+    {
+      "id": "az104-u07-l1",
+      "title": "Jenis dan performa",
+      "items": []
+    },
+    {
+      "id": "az104-u07-l2",
+      "title": "Redundancy dan failover",
+      "items": []
+    },
+    {
+      "id": "az104-u07-l3",
+      "title": "Object replication",
+      "items": []
+    },
+    {
+      "id": "az104-u07-l4",
+      "title": "Enkripsi",
+      "items": []
+    },
+    {
+      "id": "az104-u07-l5",
+      "title": "Storage Explorer dan AzCopy",
+      "items": []
+    }
+  ]
+}

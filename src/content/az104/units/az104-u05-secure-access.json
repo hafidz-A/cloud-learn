@@ -1,0 +1,32 @@
+{
+  "id": "az104-u05-secure-access",
+  "path": 2,
+  "title": "Akses aman ke virtual network",
+  "lessons": [
+    {
+      "id": "az104-u05-l1",
+      "title": "Aturan NSG",
+      "items": []
+    },
+    {
+      "id": "az104-u05-l2",
+      "title": "NSG di subnet dan NIC",
+      "items": []
+    },
+    {
+      "id": "az104-u05-l3",
+      "title": "Application security group",
+      "items": []
+    },
+    {
+      "id": "az104-u05-l4",
+      "title": "Azure Bastion",
+      "items": []
+    },
+    {
+      "id": "az104-u05-l5",
+      "title": "Service endpoint vs private endpoint",
+      "items": []
+    }
+  ]
+}

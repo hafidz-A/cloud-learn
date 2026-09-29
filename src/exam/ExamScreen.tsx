@@ -2,9 +2,11 @@ import { CircleAlert, CircleCheck, ClipboardCheck, History, Play, Timer } from '
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { LineChart } from '../charts/LineChart'
 import { Button } from '../components/Button'
-import { PATHS, UNITS } from '../content/course'
+import { Mascot } from '../components/Mascot'
+import { COURSES, PATHS, UNITS } from '../content/course'
 import { hrefFor, navigate } from '../lib/router'
-import type { ExamMode, PathId } from '../lib/types'
+import type { CourseId, ExamMode, PathId } from '../lib/types'
+import { useActiveCourse } from '../store/course'
 import { useProgress } from '../store/progress'
 import {
   EXAM_MODES,
@@ -34,7 +36,39 @@ function useJourneyDone(): Record<PathId, boolean> {
   return out
 }
 
+/** The exam page follows the active course (LANGIT_AZ104_PLAN.md section 9). */
 export function ExamScreen() {
+  return useActiveCourse() === 'az900' ? <Az900ExamScreen /> : <ExamInPreparation />
+}
+
+/** A course code such as AZ-104, kept on one line instead of breaking at its hyphen. */
+const Code = ({ course }: { course: CourseId }) => <span className="whitespace-nowrap">{COURSES[course].name}</span>
+
+/** AZ-104 has no exam questions yet; its exam page comes with stage 6 of the plan. */
+function ExamInPreparation() {
+  return (
+    <main className="space-y-5 px-4 pb-32 pt-6">
+      <div>
+        <h1 className="font-display text-28 font-bold">Ujian</h1>
+        <p className="text-15 text-tinta-lembut">Course {COURSES.az104.name}</p>
+      </div>
+      <Card className="flex items-center gap-4">
+        <Mascot mood="netral" size={80} className="shrink-0" />
+        <div>
+          <h2 className="font-display text-17 font-bold">
+            Soal ujian <Code course="az104" /> sedang disiapkan
+          </h2>
+          <p className="mt-1 text-15 text-tinta-lembut">
+            Simulasi, mini ujian per domain, dan ujian titik lemah akan memakai soal dan riwayat <Code course="az104" /> saja. Untuk
+            berlatih ujian <Code course="az900" />, pilih course <Code course="az900" /> di home.
+          </p>
+        </div>
+      </Card>
+    </main>
+  )
+}
+
+function Az900ExamScreen() {
   const history = useProgress((s) => s.examHistory)
   const active = useProgress((s) => s.activeExam)
   const conceptStats = useProgress((s) => s.conceptStats)

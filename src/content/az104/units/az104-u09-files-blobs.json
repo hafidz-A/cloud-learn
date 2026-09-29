@@ -1,0 +1,32 @@
+{
+  "id": "az104-u09-files-blobs",
+  "path": 3,
+  "title": "Azure Files dan Blob Storage",
+  "lessons": [
+    {
+      "id": "az104-u09-l1",
+      "title": "Container dan file share",
+      "items": []
+    },
+    {
+      "id": "az104-u09-l2",
+      "title": "Tier dan rehydrate",
+      "items": []
+    },
+    {
+      "id": "az104-u09-l3",
+      "title": "Lifecycle management",
+      "items": []
+    },
+    {
+      "id": "az104-u09-l4",
+      "title": "Versioning dan soft delete",
+      "items": []
+    },
+    {
+      "id": "az104-u09-l5",
+      "title": "Snapshot dan soft delete Azure Files",
+      "items": []
+    }
+  ]
+}

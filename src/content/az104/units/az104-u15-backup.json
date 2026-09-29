@@ -1,0 +1,32 @@
+{
+  "id": "az104-u15-backup",
+  "path": 5,
+  "title": "Backup dan pemulihan",
+  "lessons": [
+    {
+      "id": "az104-u15-l1",
+      "title": "Jenis vault",
+      "items": []
+    },
+    {
+      "id": "az104-u15-l2",
+      "title": "Backup policy",
+      "items": []
+    },
+    {
+      "id": "az104-u15-l3",
+      "title": "Backup dan restore",
+      "items": []
+    },
+    {
+      "id": "az104-u15-l4",
+      "title": "Site Recovery",
+      "items": []
+    },
+    {
+      "id": "az104-u15-l5",
+      "title": "Laporan dan alert backup",
+      "items": []
+    }
+  ]
+}

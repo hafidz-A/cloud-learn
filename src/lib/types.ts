@@ -1,10 +1,14 @@
 // Data model from LANGIT_AZ900_PLAN.md section 8 ("Model data"), with the
 // intro cards and lesson items from section 11.
 
-export type PathId = 1 | 2 | 3
+/** The two courses in one app (LANGIT_AZ104_PLAN.md section 3). Every AZ-104 id starts with "az104-". */
+export type CourseId = 'az900' | 'az104'
+
+/** A learning path, which is also an exam domain: 1-3 in AZ-900, 1-5 in AZ-104. */
+export type PathId = number
 
 export type Unit = {
-  id: string // "u04-core-architecture"
+  id: string // "u04-core-architecture", "az104-u04-virtual-networks"
   path: PathId
   title: string // "Komponen inti"
   lessons: Lesson[]
@@ -141,6 +145,8 @@ export type ExamMode = 'full' | 'domain' | 'weak'
 /** Section 12.4. `elapsedSec` and `current` are extra: they let a closed exam resume where it stopped. */
 export type ExamAttempt = {
   id: string
+  /** Course the exam belongs to. Missing on attempts from before AZ-104: those are AZ-900. */
+  course?: CourseId
   mode: ExamMode
   domain?: PathId
   startedAt: string
@@ -157,6 +163,9 @@ export type ExamAttempt = {
   score?: number // 0-1000
   domainScores?: Record<PathId, { right: number; total: number }>
 }
+
+/** Progress that belongs to one course (plan section 3): everything else is shared by the whole app. */
+export type CourseProgress = Pick<Progress, 'lessonsDone' | 'checkpoints' | 'unitLevel' | 'review' | 'reviewRemoved' | 'conceptStats' | 'examHistory'>
 
 export type Progress = {
   xp: number
@@ -187,4 +196,9 @@ export type Progress = {
   heartsAt?: string
   /** Last "Reset progres": everything from before it is dropped on every device. */
   resetAt?: string
+  /**
+   * Progress of courses other than AZ-900. AZ-900 keeps its fields at the top
+   * level, where they were before AZ-104 existed, so older data needs no change.
+   */
+  courses: { az104?: CourseProgress }
 }

@@ -1,0 +1,32 @@
+{
+  "id": "az104-u14-monitor",
+  "path": 5,
+  "title": "Azure Monitor",
+  "lessons": [
+    {
+      "id": "az104-u14-l1",
+      "title": "Metrik",
+      "items": []
+    },
+    {
+      "id": "az104-u14-l2",
+      "title": "Log dan diagnostic settings",
+      "items": []
+    },
+    {
+      "id": "az104-u14-l3",
+      "title": "Query log dengan KQL",
+      "items": []
+    },
+    {
+      "id": "az104-u14-l4",
+      "title": "Alert",
+      "items": []
+    },
+    {
+      "id": "az104-u14-l5",
+      "title": "Insights dan Network Watcher",
+      "items": []
+    }
+  ]
+}

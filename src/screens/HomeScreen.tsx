@@ -1,16 +1,19 @@
 import { ChevronRight, Dumbbell, Flame, Zap } from 'lucide-react'
+import { CoursePicker } from '../components/CoursePicker'
 import { GoalRing } from '../components/GoalRing'
+import { COURSES } from '../content/course'
 import { dayKey } from '../lib/date'
 import { dueIds } from '../lib/review'
 import { hrefFor } from '../lib/router'
-import { useLiveStreak, useProgress, useXpToday } from '../store/progress'
+import { useActiveCourse } from '../store/course'
+import { useCourseProgress, useLiveStreak, useProgress, useXpToday } from '../store/progress'
 import { PathMap } from './PathMap'
 
 function DailyCard() {
   const goal = useProgress((s) => s.dailyGoal)
   const xpToday = useXpToday()
   const streak = useLiveStreak()
-  const due = useProgress((s) => dueIds(s.review, dayKey()).length)
+  const due = dueIds(useCourseProgress(useActiveCourse()).review, dayKey()).length
   const left = Math.max(0, goal - xpToday)
 
   return (
@@ -46,11 +49,13 @@ function DailyCard() {
 }
 
 export function HomeScreen() {
+  const course = useActiveCourse()
   return (
     <main>
-      <h1 className="sr-only">Langit: jalur belajar AZ-900</h1>
+      <h1 className="sr-only">Langit: jalur belajar {COURSES[course].name}</h1>
+      <CoursePicker />
       <DailyCard />
-      <PathMap />
+      <PathMap key={course} course={course} />
     </main>
   )
 }
