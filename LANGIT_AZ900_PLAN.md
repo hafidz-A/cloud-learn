@@ -436,3 +436,124 @@ field lengkap sesuai tipe masing-masing di bagian 8.
   dan layar lesson selesai.
 - Tahap 5 (konten): setiap unit disusun mengikuti aturan 11.2. Setelah menulis satu
   unit, periksa ulang bahwa setiap konsep punya kartu `intro` sebelum pertama kali diuji.
+
+---
+
+## 12. Halaman Ujian
+
+Halaman terpisah dari journey belajar, memakai bank soal yang sama, untuk
+mensimulasikan kondisi ujian AZ-900 asli. Masuk lewat tab "Ujian" di navigasi bawah.
+
+### 12.1 Mode
+
+| Mode | Soal | Waktu | Sumber soal |
+|---|---|---|---|
+| Simulasi penuh | 50 | 45 menit | Semua domain, sesuai bobot di 12.3 |
+| Mini ujian per domain | 15 | 15 menit | Satu domain pilihan pemain |
+| Ujian titik lemah | 20 | 20 menit | Konsep dengan akurasi terendah dari conceptStats |
+
+Semua mode selalu terbuka sejak awal, tanpa harus menyelesaikan journey. Kalau
+journey untuk domain terkait belum selesai, tampilkan peringatan singkat, tapi
+tetap izinkan mulai.
+
+### 12.2 Aturan selama ujian
+
+- Tidak ada hearts, XP, kartu intro, maupun penjelasan setelah menjawab.
+- Timer mundur selalu terlihat di header. Saat waktu habis, ujian otomatis
+  dikumpulkan.
+- Pemain bisa pindah ke soal mana pun lewat grid nomor soal, dan menandai soal
+  untuk ditinjau (ikon bendera).
+- Grid nomor menunjukkan status: belum dijawab, sudah dijawab, dan ditandai.
+- Sebelum mengumpulkan, tampilkan ringkasan jumlah soal belum dijawab dan yang
+  ditandai.
+- Kalau app tertutup di tengah ujian, progres dan sisa waktu tersimpan dan bisa
+  dilanjutkan.
+- Tampilan lebih tenang dari journey: tanpa maskot, tanpa animasi perayaan, warna
+  netral. Biru langit hanya untuk tombol dan soal aktif.
+
+### 12.3 Pemilihan soal
+
+Domain diambil dari jalur unit:
+- Jalur 1: Describe cloud concepts, bobot 25–30%
+- Jalur 2: Describe Azure architecture and services, bobot 35–40%
+- Jalur 3: Describe Azure management and governance, bobot 30–35%
+
+(Cek ulang bobot di study guide AZ-900 terbaru di Microsoft Learn sebelum dipakai.)
+
+Untuk simulasi penuh 50 soal, pakai titik tengah bobot: 14 soal jalur 1, 19 soal
+jalur 2, 17 soal jalur 3. Dalam setiap domain, soal diacak, dengan prioritas soal
+yang belum pernah muncul di 3 simulasi terakhir. Urutan pilihan jawaban juga diacak.
+
+Hanya exercise dengan `examReady: true` yang boleh dipakai. Tipe yang cocok:
+`choice`, `multi`, `yesno`, `truefalse`, `match`, `order`. Tipe `intro`, `place`,
+`fix`, `fill`, dan `shell` tidak dipakai di halaman Ujian.
+
+Target bank soal: minimal 150 soal examReady (sekitar 40 jalur 1, 60 jalur 2,
+50 jalur 3) supaya simulasi tidak terasa berulang.
+
+### 12.4 Tipe soal baru (juga boleh dipakai di journey)
+
+- `multi`: pilih lebih dari satu jawaban. Prompt selalu menyebut jumlahnya,
+  misalnya "Choose two." Hanya dianggap benar kalau semua jawaban tepat.
+- `yesno`: tiga pernyataan tentang satu skenario, masing-masing dijawab Yes atau No.
+  Setiap pernyataan dinilai terpisah. Ini format yang sering muncul di AZ-900.
+
+Tambahan di model data (bagian 8):
+
+```ts
+// Field tambahan opsional di ExerciseBase
+examReady?: boolean;
+difficulty?: 1 | 2 | 3;
+
+// Tipe baru di union Exercise
+| (ExerciseBase & { type: "multi"; options: string[]; answers: number[] })
+| (ExerciseBase & { type: "yesno"; scenario: string; statements: { text: string; answer: boolean }[] })
+
+type ExamAttempt = {
+  id: string;
+  mode: "full" | "domain" | "weak";
+  domain?: 1 | 2 | 3;
+  startedAt: string;
+  finishedAt?: string;
+  timeLimitSec: number;
+  questionIds: string[];
+  responses: Record<string, unknown>;   // jawaban pemain per soal
+  flagged: string[];
+  score?: number;                        // 0–1000
+  domainScores?: Record<1 | 2 | 3, { right: number; total: number }>;
+};
+
+// Tambahan di Progress
+examHistory: ExamAttempt[];
+activeExam?: ExamAttempt;
+```
+
+### 12.5 Penilaian dan hasil
+
+- Skor = jumlah poin benar dibagi total poin, dikali 1.000, dibulatkan. Soal `yesno`
+  bernilai 1 poin per pernyataan; tipe lain bernilai 1 poin per soal.
+- Lulus kalau skor minimal 700.
+- Di layar hasil, tampilkan sebagai catatan kecil: "Skor ini perkiraan. Microsoft
+  memakai skala skor sendiri yang tidak dipublikasikan."
+- Layar hasil berisi: skor besar, status lulus atau tidak, skor per domain dalam
+  bentuk bar, waktu yang terpakai, lalu tombol "Lihat pembahasan".
+- Halaman pembahasan menampilkan setiap soal, jawaban pemain, jawaban benar, dan
+  explanation. Bisa difilter: semua, salah saja, atau yang ditandai.
+- Setiap soal yang salah otomatis masuk antrean review di journey belajar dan
+  memperbarui conceptStats.
+
+### 12.6 Riwayat dan kesiapan
+
+- Riwayat semua percobaan ujian dengan tanggal, mode, dan skor, plus grafik garis
+  skor simulasi penuh dari waktu ke waktu.
+- Indikator "Siap ujian" muncul kalau rata-rata 3 simulasi penuh terakhir minimal
+  800. Kalau belum, tampilkan domain dengan skor terendah sebagai saran latihan.
+
+### 12.7 Urutan pengerjaan
+
+Kerjakan setelah tahap 4 di bagian 9 (mekanik game) selesai:
+1. Tipe soal `multi` dan `yesno` di lesson player.
+2. Halaman Ujian dengan mode mini ujian per domain, termasuk timer, grid nomor,
+   tanda tinjau, dan layar hasil.
+3. Mode simulasi penuh dan mode titik lemah.
+4. Halaman pembahasan, riwayat, grafik, dan indikator siap ujian.

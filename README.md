@@ -29,6 +29,7 @@ Sebelum `test:e2e` pertama kali, jalankan `npx playwright install chromium`, ata
 - [ ] Tahap 3: `sort`, `order`, `fill`, `place`, `fix`, `shell` (sampai saat itu tipe ini
       tetap di data tapi dilewati saat main)
 - [ ] Tahap 4 sampai 8
+- [ ] Halaman Ujian (bagian 12), dikerjakan setelah tahap 4
 
 ## Struktur
 
