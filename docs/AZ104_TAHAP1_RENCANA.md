@@ -2,7 +2,13 @@
 
 Dokumen ini untuk gerbang persetujuan di `LANGIT_AZ104_PLAN.md` bagian 10 dan
 Prompt A: ringkasan skema yang ada dan rencana perubahan, **sebelum mengubah apa pun**.
-Belum ada yang diubah di database maupun di kode.
+
+**Status:** poin 1 dan 2 disetujui pada 30 September 2026. Migration di 2.2 sudah diuji di
+Postgres 16 lokal lalu diterapkan ke project "langit"
+(`supabase/migrations/20260930000000_sync_push_keep_unknown_keys.sql`). Data sebelum migration
+dibackup (versi 77, md5 `f30c25b8…`); sesudahnya semua kunci progres masih ada. Selain
+penggabungan, fungsi baru juga menolak payload yang bukan objek JSON (aplikasi selalu
+mengirim objek). Poin 3 menunggu keputusan dan baru dipakai di tahap 6.
 
 ## 1. Skema yang ada sekarang
 
