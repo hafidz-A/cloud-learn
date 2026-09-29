@@ -39,7 +39,7 @@ export function BarChart({
       <p className="font-display text-15 font-semibold" aria-live="polite">
         {shown.full}: <span className="text-20 font-bold">{shown.value}</span> {unit}
       </p>
-      <svg viewBox={`0 0 ${W} ${H}`} className="mt-2 w-full touch-manipulation" role="img" aria-label={caption} onPointerLeave={() => setActive(null)}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="mt-2 w-full touch-manipulation" role="group" aria-label={caption} onPointerLeave={() => setActive(null)}>
         {reference && (
           <g aria-hidden="true">
             <line x1={PAD.left} x2={W - PAD.right} y1={y(reference.value)} y2={y(reference.value)} stroke="var(--color-kabut-dalam)" strokeWidth={1} strokeDasharray="4 4" />

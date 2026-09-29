@@ -230,6 +230,7 @@ function UnitCard({ unit }: { unit: Unit }) {
       <div className="flex items-center justify-between gap-3">
         <p className="font-display text-13 font-semibold text-biru-dalam">Unit {unitNumber(unit)}</p>
         <p
+          role="img"
           className="flex items-center gap-1 font-display text-13 font-bold"
           aria-label={`Level unit ${level} dari 3`}
           title="Level naik setiap kali semua lesson di unit ini diulang"

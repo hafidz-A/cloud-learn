@@ -109,6 +109,7 @@ export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
               <p className="mt-3 rounded-xl bg-langit p-3 text-15">
                 <GlossaryText text={q.exercise.explanation} />
               </p>
+              <p className="mt-2 text-13 text-tinta-lembut">ID soal: {id}</p>
             </article>
           )
         })}

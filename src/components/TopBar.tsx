@@ -5,7 +5,7 @@ import { useLiveStreak, useProgress, useXpToday } from '../store/progress'
 
 function Stat({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
   return (
-    <div className="flex min-h-11 items-center gap-1.5 font-display text-17 font-bold" aria-label={label}>
+    <div role="img" className="flex min-h-11 items-center gap-1.5 font-display text-17 font-bold" aria-label={label}>
       {icon}
       <span aria-hidden="true" className="flex items-center">
         {children}

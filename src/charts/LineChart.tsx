@@ -50,7 +50,7 @@ export function LineChart({
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="mt-2 w-full touch-manipulation"
-        role="img"
+        role="group"
         aria-label={caption}
         onPointerMove={(e) => nearest(e.clientX, e.currentTarget)}
         onPointerDown={(e) => nearest(e.clientX, e.currentTarget)}

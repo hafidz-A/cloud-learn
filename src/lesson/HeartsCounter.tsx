@@ -17,7 +17,7 @@ export function HeartsCounter() {
 
   if (!enabled) {
     return (
-      <span className="flex items-center gap-1 font-display text-17 font-bold" aria-label="Hearts dimatikan">
+      <span role="img" className="flex items-center gap-1 font-display text-17 font-bold" aria-label="Hearts dimatikan">
         <Heart size={24} className="fill-koral text-koral-dalam" aria-hidden="true" />
         <InfinityIcon size={20} aria-hidden="true" />
       </span>
@@ -25,7 +25,7 @@ export function HeartsCounter() {
   }
 
   return (
-    <span className="relative flex items-center gap-1 font-display text-17 font-bold" aria-label={`${hearts} hearts`}>
+    <span role="img" className="relative flex items-center gap-1 font-display text-17 font-bold" aria-label={`${hearts} hearts`}>
       <motion.span key={breaking} animate={breaking ? { rotate: [0, -18, 16, -10, 0], scale: [1, 1.3, 0.9, 1] } : undefined} transition={{ duration: 0.5 }}>
         <Heart size={24} className="fill-koral text-koral-dalam" aria-hidden="true" />
       </motion.span>

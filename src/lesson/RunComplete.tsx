@@ -87,7 +87,13 @@ export function RunComplete({ heading, subtitle, mood, celebrate, xp, stats, not
               <p className={`py-1 font-display text-13 font-bold ${style.strip}`}>{st.label}</p>
               <p className="flex items-center justify-center gap-1.5 py-3 font-display text-20 font-bold">
                 {style.icon}
-                {st.kind === 'xp' ? <span aria-label={`${xp} XP`}>+{xpShown}</span> : st.value}
+                {st.kind === 'xp' ? (
+                  <span role="img" aria-label={`${xp} XP`}>
+                    +{xpShown}
+                  </span>
+                ) : (
+                  st.value
+                )}
               </p>
             </div>
           )
