@@ -9,10 +9,24 @@
       "items": [
         {
           "id": "u03-l1-i1",
-          "type": "intro",
-          "concept": "iaas",
+          "type": "learn",
+          "concepts": [
+            "iaas"
+          ],
           "title": "IaaS",
-          "body": "IaaS (Infrastructure as a Service) menyewakan infrastruktur seperti VM (Virtual Machine), jaringan, dan storage. Microsoft mengurus hardware fisik, sedangkan kamu mengurus OS (Operating System), aplikasi, dan konfigurasinya."
+          "body": "IaaS (Infrastructure as a Service) menyewakan infrastruktur: VM (Virtual Machine), jaringan, dan storage. Contohnya Azure Virtual Machines. Microsoft mengurus infrastruktur fisiknya. Kamu mengurus sistem operasi di VM, aplikasi, dan konfigurasinya, termasuk firewall di VM. Dari semua jenis layanan cloud, IaaS memberi kontrol paling besar.",
+          "keyPoints": [
+            "Contoh IaaS: Azure Virtual Machines",
+            "Microsoft: fisik. Kamu: sistem operasi ke atas",
+            "Kontrol paling besar, kerja juga paling banyak"
+          ],
+          "visual": "ServiceModelsStack",
+          "link": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/",
+          "teaches": [
+            "f-u03-iaas-def",
+            "f-u03-iaas-example",
+            "f-u03-iaas-split"
+          ]
         },
         {
           "id": "u03-l1-e1",
@@ -21,7 +35,10 @@
           "prompt": "In IaaS (Infrastructure as a Service), you are responsible for installing and patching the operating system.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Di IaaS (Infrastructure as a Service), semua dari OS (Operating System) ke atas adalah urusanmu. Microsoft mengurus hardware fisik.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-split"
+          ]
         },
         {
           "id": "u03-l1-e2",
@@ -31,28 +48,58 @@
           "options": [
             "Azure Virtual Machines",
             "Microsoft 365",
-            "Azure App Service",
-            "Azure Functions"
+            "Azure Policy",
+            "Azure Pricing Calculator"
           ],
           "answer": 0,
-          "explanation": "VM (Virtual Machine) adalah contoh klasik IaaS (Infrastructure as a Service): kamu dapat mesin virtual dan mengatur sistem operasinya sendiri. App Service itu PaaS (Platform as a Service), Microsoft 365 itu SaaS (Software as a Service).",
-          "examReady": true
+          "explanation": "VM (Virtual Machine) adalah contoh klasik IaaS (Infrastructure as a Service): kamu dapat mesin virtual dan mengatur sistem operasinya sendiri. Microsoft 365 itu SaaS (Software as a Service). Azure Policy memeriksa aturan dan Pricing Calculator memperkirakan biaya; keduanya tidak menjalankan workload.",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-example",
+            "f-u01-sr-saas",
+            "f-u02-policy-audit",
+            "f-u02-pricing-calculator"
+          ]
         },
         {
-          "id": "u03-l1-i2",
-          "type": "intro",
-          "concept": "lift-and-shift",
-          "title": "Lift-and-shift",
-          "body": "Lift-and-shift adalah memindahkan server on-premises ke cloud apa adanya, biasanya ke VM (Virtual Machine), tanpa menulis ulang aplikasinya. Ini cara migrasi yang paling cepat."
+          "id": "u03-l1-e8",
+          "type": "fill",
+          "concept": "iaas",
+          "prompt": "Complete the sentence.",
+          "sentence": "In IaaS (Infrastructure as a Service), Microsoft manages the physical ___, and you manage the ___ system and everything above it.",
+          "bank": [
+            "hardware",
+            "operating",
+            "billing",
+            "identity"
+          ],
+          "answers": [
+            "hardware",
+            "operating"
+          ],
+          "explanation": "Garis batas IaaS (Infrastructure as a Service): hardware fisik milik Microsoft, sistem operasi ke atas milikmu.",
+          "requires": [
+            "f-u03-iaas-split"
+          ]
         },
         {
-          "id": "u03-l1-e3",
-          "type": "truefalse",
-          "concept": "lift-and-shift",
-          "prompt": "A lift-and-shift migration usually means rewriting an application before moving it to the cloud.",
-          "answer": false,
-          "explanation": "Pernyataan ini salah. Lift-and-shift justru memindahkan apa adanya, biasanya ke VM (Virtual Machine). Menulis ulang aplikasi itu modernisasi.",
-          "examReady": true
+          "id": "u03-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "vm-updates"
+          ],
+          "title": "Siapa yang mem-patch VM?",
+          "body": "Karena sistem operasi di VM (Virtual Machine) adalah urusanmu, memasang update dan patch-nya juga tugasmu. Azure Update Manager membantu memantau dan menjadwalkan update untuk banyak VM. Tapi alat itu tetap kamu yang mengatur; Microsoft tidak mem-patch VM milikmu tanpa diminta.",
+          "keyPoints": [
+            "Patch sistem operasi di VM = tugas customer",
+            "Azure Update Manager membantu menjadwalkan update"
+          ],
+          "trap": "Patching otomatis oleh penyedia hanya berlaku di PaaS (Platform as a Service) dan SaaS (Software as a Service), bukan untuk VM di IaaS (Infrastructure as a Service).",
+          "link": "https://learn.microsoft.com/en-us/azure/update-manager/overview",
+          "teaches": [
+            "f-u03-iaas-patch",
+            "f-u03-update-manager"
+          ]
         },
         {
           "id": "u03-l1-e4",
@@ -89,40 +136,11 @@
               "bucket": 1
             }
           ],
-          "explanation": "Di IaaS (Infrastructure as a Service), Microsoft mengurus fisiknya. Mulai dari OS (Operating System) ke atas, termasuk aplikasi dan firewall di VM (Virtual Machine), adalah urusanmu."
-        },
-        {
-          "id": "u03-l1-e5",
-          "type": "choice",
-          "concept": "lift-and-shift",
-          "prompt": "A company must move 50 on-premises servers to Azure within one month, and it cannot change the applications. Which approach fits best?",
-          "options": [
-            "Lift-and-shift the servers to Azure virtual machines",
-            "Rewrite every app as serverless functions",
-            "Replace every app with SaaS (Software as a Service) products",
-            "Keep the servers on-premises and buy more hardware"
-          ],
-          "answer": 0,
-          "explanation": "Waktu singkat dan aplikasi tidak boleh diubah: lift-and-shift ke VM (Virtual Machine) adalah jalan tercepat.",
-          "examReady": true
-        },
-        {
-          "id": "u03-l1-e6",
-          "type": "multi",
-          "concept": "iaas",
-          "prompt": "Which two scenarios are a good fit for IaaS (Infrastructure as a Service)? Choose two.",
-          "options": [
-            "Test and development environments that need full control",
-            "Migrating existing servers with minimal changes",
-            "Using a finished email service",
-            "Running small event-driven code without managing servers"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "IaaS (Infrastructure as a Service) cocok untuk test/dev dan lift-and-shift. Email jadi itu SaaS (Software as a Service), sedangkan kode berbasis event tanpa server itu serverless.",
-          "examReady": true
+          "explanation": "Di IaaS (Infrastructure as a Service), Microsoft mengurus fisiknya. Mulai dari OS (Operating System) ke atas, termasuk aplikasi dan firewall di VM (Virtual Machine), adalah urusanmu.",
+          "requires": [
+            "f-u03-iaas-split",
+            "f-u01-sr-microsoft-always"
+          ]
         },
         {
           "id": "u03-l1-e7",
@@ -138,28 +156,91 @@
             "The customer, on the virtual machine",
             "Microsoft, because it patches every customer virtual machine automatically",
             "Nobody, because virtual machines never need updates",
-            "The customer, by deleting and recreating the subscription"
+            "The customer, by resizing the virtual machine to a bigger size"
           ],
           "answer": 0,
-          "explanation": "Di IaaS (Infrastructure as a Service), OS (Operating System) di dalam VM (Virtual Machine) adalah tanggung jawabmu, termasuk patch. Azure punya alat bantu seperti Azure Update Manager, tapi kamu yang mengaturnya."
+          "explanation": "Di IaaS (Infrastructure as a Service), OS (Operating System) di dalam VM (Virtual Machine) adalah tanggung jawabmu, termasuk patch. Azure punya alat bantu seperti Azure Update Manager, tapi kamu yang mengaturnya.",
+          "requires": [
+            "f-u03-iaas-patch",
+            "f-u02-vertical"
+          ]
         },
         {
-          "id": "u03-l1-e8",
-          "type": "fill",
+          "id": "u03-l1-i2",
+          "type": "learn",
+          "concepts": [
+            "lift-and-shift"
+          ],
+          "title": "Lift-and-shift",
+          "body": "Lift-and-shift (rehost) memindahkan server on-premises ke Azure apa adanya, biasanya ke VM (Virtual Machine), tanpa mengubah kodenya. Caranya cepat dan risikonya rendah. Kalau aplikasinya ditulis ulang supaya memakai layanan cloud, itu modernisasi, bukan lift-and-shift. IaaS (Infrastructure as a Service) cocok untuk lift-and-shift, dan juga untuk lingkungan test dan development yang butuh kontrol penuh.",
+          "keyPoints": [
+            "Lift-and-shift = pindah apa adanya, tanpa ubah kode",
+            "Menulis ulang aplikasi = modernisasi",
+            "Kegunaan IaaS: lift-and-shift, test, dan development"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/plan/select-cloud-migration-strategy",
+          "teaches": [
+            "f-u03-lift-shift",
+            "f-u03-modernize",
+            "f-u03-iaas-uses"
+          ]
+        },
+        {
+          "id": "u03-l1-e3",
+          "type": "truefalse",
+          "concept": "lift-and-shift",
+          "prompt": "A lift-and-shift migration usually means rewriting an application before moving it to the cloud.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Lift-and-shift justru memindahkan apa adanya, biasanya ke VM (Virtual Machine). Menulis ulang aplikasi itu modernisasi.",
+          "examReady": true,
+          "requires": [
+            "f-u03-lift-shift",
+            "f-u03-modernize"
+          ]
+        },
+        {
+          "id": "u03-l1-e5",
+          "type": "choice",
+          "concept": "lift-and-shift",
+          "prompt": "A company must move 50 on-premises servers to Azure within one month, and it cannot change the applications. Which approach fits best?",
+          "options": [
+            "Lift-and-shift the servers to Azure virtual machines",
+            "Rewrite every app before moving it to the cloud",
+            "Replace every app with SaaS (Software as a Service) products",
+            "Keep the servers on-premises and buy more hardware"
+          ],
+          "answer": 0,
+          "explanation": "Waktu singkat dan aplikasi tidak boleh diubah: lift-and-shift ke VM (Virtual Machine) adalah jalan tercepat.",
+          "examReady": true,
+          "requires": [
+            "f-u03-lift-shift",
+            "f-u03-modernize",
+            "f-u01-sr-saas",
+            "f-u01-on-premises"
+          ]
+        },
+        {
+          "id": "u03-l1-e6",
+          "type": "multi",
           "concept": "iaas",
-          "prompt": "Complete the sentence.",
-          "sentence": "In IaaS (Infrastructure as a Service), Microsoft manages the physical ___, and you manage the ___ system and everything above it.",
-          "bank": [
-            "hardware",
-            "operating",
-            "billing",
-            "identity"
+          "prompt": "Which two scenarios are a good fit for IaaS (Infrastructure as a Service)? Choose two.",
+          "options": [
+            "Test and development environments that need full control",
+            "Migrating existing servers with minimal changes",
+            "Using a finished email service",
+            "Deploying web code without managing the operating system"
           ],
           "answers": [
-            "hardware",
-            "operating"
+            0,
+            1
           ],
-          "explanation": "Garis batas IaaS (Infrastructure as a Service): hardware fisik milik Microsoft, sistem operasi ke atas milikmu."
+          "explanation": "IaaS (Infrastructure as a Service) cocok untuk test/dev dan lift-and-shift. Email jadi itu SaaS (Software as a Service), sedangkan deploy kode tanpa mengurus OS (Operating System) itu PaaS (Platform as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-uses",
+            "f-u01-sr-saas",
+            "f-u01-sr-paas"
+          ]
         }
       ]
     },
@@ -169,10 +250,23 @@
       "items": [
         {
           "id": "u03-l2-i1",
-          "type": "intro",
-          "concept": "paas",
+          "type": "learn",
+          "concepts": [
+            "paas"
+          ],
           "title": "PaaS",
-          "body": "PaaS (Platform as a Service) menyediakan platform siap pakai untuk menjalankan aplikasi. Microsoft mengurus hardware, OS (Operating System), dan middleware; kamu fokus ke kode aplikasi dan data."
+          "body": "PaaS (Platform as a Service) menyediakan platform siap pakai untuk menjalankan aplikasi. Penyedia mengurus hardware, sistem operasi, dan runtime. Kamu fokus ke kode aplikasi dan data. Contohnya Azure App Service untuk menjalankan web app dan API (Application Programming Interface).",
+          "keyPoints": [
+            "Contoh PaaS: Azure App Service",
+            "Penyedia: hardware, sistem operasi, runtime",
+            "Kamu: kode dan data"
+          ],
+          "visual": "ServiceModelsStack",
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/overview",
+          "teaches": [
+            "f-u03-paas-def",
+            "f-u03-paas-example"
+          ]
         },
         {
           "id": "u03-l2-e1",
@@ -181,7 +275,10 @@
           "prompt": "In PaaS (Platform as a Service), you manage the operating system that runs your application.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Di PaaS (Platform as a Service), OS (Operating System) dan platform diurus penyedia. Kamu fokus ke aplikasi dan data.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-def"
+          ]
         },
         {
           "id": "u03-l2-e2",
@@ -192,11 +289,79 @@
             "Azure App Service",
             "Azure Virtual Machines",
             "Microsoft Outlook",
-            "Azure Data Box"
+            "Azure Policy"
           ],
           "answer": 0,
           "explanation": "App Service menjalankan web app tanpa kamu mengurus server atau OS (Operating System). Itu PaaS (Platform as a Service).",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-example",
+            "f-u03-iaas-example",
+            "f-u01-sr-saas",
+            "f-u02-policy-audit"
+          ]
+        },
+        {
+          "id": "u03-l2-e4",
+          "type": "choice",
+          "concept": "paas",
+          "prompt": "A development team wants to deploy a web app quickly without managing servers, operating systems, or patching. Which service type fits best?",
+          "options": [
+            "PaaS (Platform as a Service)",
+            "IaaS (Infrastructure as a Service)",
+            "On-premises servers",
+            "Private cloud hardware"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa urus server dan patching, tapi tetap menulis kode sendiri: itu PaaS (Platform as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-def",
+            "f-u01-on-premises",
+            "f-u01-private-cloud"
+          ]
+        },
+        {
+          "id": "u03-l2-e8",
+          "type": "fill",
+          "concept": "paas",
+          "prompt": "Complete the sentence.",
+          "sentence": "With PaaS (Platform as a Service), the provider manages the operating ___ and runtime, so developers can focus on ___ and data.",
+          "bank": [
+            "system",
+            "code",
+            "hardware",
+            "billing"
+          ],
+          "answers": [
+            "system",
+            "code"
+          ],
+          "explanation": "PaaS (Platform as a Service) = platform diurus penyedia, kamu fokus ke kode dan data.",
+          "requires": [
+            "f-u03-paas-def"
+          ]
+        },
+        {
+          "id": "u03-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "app-service"
+          ],
+          "title": "Yang diurus Azure di App Service",
+          "body": "Di Azure App Service, Azure mem-patch sistem operasi dan runtime secara otomatis. App Service juga punya fitur bawaan seperti autoscale dan integrasi dengan alat developer untuk deployment. Yang tetap jadi tanggung jawabmu: kode aplikasi, data, dan akun pengguna.",
+          "keyPoints": [
+            "Patch sistem operasi dan runtime: otomatis oleh Azure",
+            "Bawaan: autoscale dan alat developer",
+            "Tetap tugasmu: kode, data, akun pengguna"
+          ],
+          "trap": "Kalau web app di App Service error karena kode barumu, itu tetap tugas timmu, bukan Microsoft.",
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/overview-patch-os-runtime",
+          "teaches": [
+            "f-u03-paas-patching",
+            "f-u03-paas-benefits",
+            "f-u03-paas-customer"
+          ]
         },
         {
           "id": "u03-l2-e3",
@@ -233,22 +398,12 @@
               "bucket": 1
             }
           ],
-          "explanation": "Di PaaS (Platform as a Service), penyedia mengurus fisik, OS (Operating System), dan runtime. Kode, data, dan akun tetap milikmu."
-        },
-        {
-          "id": "u03-l2-e4",
-          "type": "choice",
-          "concept": "paas",
-          "prompt": "A development team wants to deploy a web app quickly without managing servers, operating systems, or patching. Which service type fits best?",
-          "options": [
-            "PaaS (Platform as a Service)",
-            "IaaS (Infrastructure as a Service)",
-            "On-premises servers",
-            "Private cloud hardware"
-          ],
-          "answer": 0,
-          "explanation": "Tanpa urus server dan patching, tapi tetap menulis kode sendiri: itu PaaS (Platform as a Service).",
-          "examReady": true
+          "explanation": "Di PaaS (Platform as a Service), penyedia mengurus fisik, OS (Operating System), dan runtime. Kode, data, dan akun tetap milikmu.",
+          "requires": [
+            "f-u03-paas-patching",
+            "f-u03-paas-customer",
+            "f-u01-sr-microsoft-always"
+          ]
         },
         {
           "id": "u03-l2-e5",
@@ -266,7 +421,12 @@
             1
           ],
           "explanation": "PaaS (Platform as a Service) melepas beban OS (Operating System) dan menyediakan scaling serta alat developer. Kontrol penuh atas OS itu ciri IaaS (Infrastructure as a Service).",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-patching",
+            "f-u03-paas-benefits",
+            "f-u03-iaas-split"
+          ]
         },
         {
           "id": "u03-l2-e6",
@@ -289,7 +449,12 @@
             }
           ],
           "explanation": "Pindah ke PaaS (Platform as a Service) melepas urusan OS (Operating System), tapi data tetap milikmu. Server fisik tidak pernah bisa kamu akses.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-patching",
+            "f-u03-paas-customer",
+            "f-u01-sr-microsoft-always"
+          ]
         },
         {
           "id": "u03-l2-e7",
@@ -308,25 +473,10 @@
             "Nobody; wait for Azure to restart the region"
           ],
           "answer": 0,
-          "explanation": "Di PaaS (Platform as a Service), platform diurus Microsoft, tapi kode aplikasimu tetap tanggung jawabmu."
-        },
-        {
-          "id": "u03-l2-e8",
-          "type": "fill",
-          "concept": "paas",
-          "prompt": "Complete the sentence.",
-          "sentence": "With PaaS (Platform as a Service), the provider manages the operating ___ and runtime, so developers can focus on ___ and data.",
-          "bank": [
-            "system",
-            "code",
-            "hardware",
-            "billing"
-          ],
-          "answers": [
-            "system",
-            "code"
-          ],
-          "explanation": "PaaS (Platform as a Service) = platform diurus penyedia, kamu fokus ke kode dan data."
+          "explanation": "Di PaaS (Platform as a Service), platform diurus Microsoft, tapi kode aplikasimu tetap tanggung jawabmu.",
+          "requires": [
+            "f-u03-paas-customer"
+          ]
         }
       ]
     },
@@ -336,10 +486,23 @@
       "items": [
         {
           "id": "u03-l3-i1",
-          "type": "intro",
-          "concept": "saas",
+          "type": "learn",
+          "concepts": [
+            "saas"
+          ],
           "title": "SaaS",
-          "body": "SaaS (Software as a Service) adalah aplikasi jadi yang tinggal dipakai, misalnya email atau Microsoft 365. Penyedia mengurus hampir semuanya, tapi data, device, serta account dan identity tetap tanggung jawabmu."
+          "body": "SaaS (Software as a Service) adalah aplikasi jadi yang tinggal dipakai lewat internet, misalnya Microsoft 365 untuk email dan dokumen. Penyedia mengurus infrastruktur, server, dan update aplikasinya. Tapi data, device, serta account dan identity tetap tanggung jawabmu.",
+          "keyPoints": [
+            "Contoh SaaS: Microsoft 365",
+            "Penyedia: server dan update aplikasi",
+            "Tetap tugasmu: data, device, account dan identity"
+          ],
+          "visual": "ServiceModelsStack",
+          "link": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility",
+          "teaches": [
+            "f-u03-saas-def",
+            "f-u03-saas-provider"
+          ]
         },
         {
           "id": "u03-l3-e1",
@@ -348,7 +511,11 @@
           "prompt": "Microsoft 365 is an example of IaaS (Infrastructure as a Service).",
           "answer": false,
           "explanation": "Pernyataan ini salah. Microsoft 365 adalah aplikasi jadi yang tinggal dipakai, jadi termasuk SaaS (Software as a Service), bukan IaaS (Infrastructure as a Service).",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-saas-def",
+            "f-u03-iaas-def"
+          ]
         },
         {
           "id": "u03-l3-e2",
@@ -363,7 +530,100 @@
           ],
           "answer": 0,
           "explanation": "Bahkan di SaaS (Software as a Service), akun dan data tetap urusanmu. Sisanya diurus penyedia.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u01-sr-customer-always",
+            "f-u03-saas-provider"
+          ]
+        },
+        {
+          "id": "u03-l3-e6",
+          "type": "yesno",
+          "concept": "saas",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso uses a SaaS (Software as a Service) customer relationship app.",
+          "statements": [
+            {
+              "text": "Contoso must install updates to the app.",
+              "answer": false
+            },
+            {
+              "text": "Contoso is responsible for who has access to its data in the app.",
+              "answer": true
+            },
+            {
+              "text": "Contoso must buy the servers that run the app.",
+              "answer": false
+            }
+          ],
+          "explanation": "Di SaaS (Software as a Service), update dan server diurus penyedia, dan kamu biasanya cukup membayar langganan. Akses ke data tetap tanggung jawabmu.",
+          "examReady": true,
+          "requires": [
+            "f-u03-saas-provider",
+            "f-u01-sr-customer-always"
+          ]
+        },
+        {
+          "id": "u03-l3-e7",
+          "type": "multi",
+          "concept": "saas",
+          "prompt": "Which two responsibilities stay with the customer when using SaaS (Software as a Service)? Choose two.",
+          "options": [
+            "Accounts and identities",
+            "Information and data",
+            "Application updates",
+            "Physical network"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Account dan identity serta data selalu milik customer, di semua jenis layanan.",
+          "examReady": true,
+          "requires": [
+            "f-u01-sr-customer-always",
+            "f-u03-saas-provider"
+          ]
+        },
+        {
+          "id": "u03-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "iaas",
+            "paas",
+            "saas"
+          ],
+          "title": "Membandingkan jenis layanan",
+          "body": "Makin ke kanan, makin sedikit yang kamu urus. Di on-premises, semuanya urusanmu. Di IaaS (Infrastructure as a Service), kamu mengurus sistem operasi ke atas. Di PaaS (Platform as a Service), kamu mengurus kode dan data. Di SaaS (Software as a Service), kamu tinggal memakai aplikasinya.",
+          "keyPoints": [
+            "Urutan tanggung jawab: on-premises > IaaS > PaaS > SaaS",
+            "Data dan akun selalu milikmu di semua jenis"
+          ],
+          "visual": "ServiceModelsStack",
+          "link": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility",
+          "teaches": [
+            "f-u03-control-order"
+          ]
+        },
+        {
+          "id": "u03-l3-e5",
+          "type": "choice",
+          "concept": "saas",
+          "prompt": "A small business wants email and document sharing for 20 staff. It doesn't want to install or maintain any software. Which service type fits best?",
+          "options": [
+            "SaaS (Software as a Service)",
+            "PaaS (Platform as a Service)",
+            "IaaS (Infrastructure as a Service)",
+            "A private cloud"
+          ],
+          "answer": 0,
+          "explanation": "Tidak mau install dan merawat apa pun, cukup pakai: itu SaaS (Software as a Service), misalnya Microsoft 365.",
+          "examReady": true,
+          "requires": [
+            "f-u03-saas-def",
+            "f-u03-control-order",
+            "f-u01-private-cloud"
+          ]
         },
         {
           "id": "u03-l3-e3",
@@ -389,7 +649,13 @@
             ]
           ],
           "explanation": "VM (Virtual Machine) = IaaS (Infrastructure as a Service), App Service = PaaS (Platform as a Service), Microsoft 365 = SaaS (Software as a Service).",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-example",
+            "f-u03-paas-example",
+            "f-u03-saas-def",
+            "f-u01-on-premises"
+          ]
         },
         {
           "id": "u03-l3-e4",
@@ -427,63 +693,13 @@
               "bucket": 2
             }
           ],
-          "explanation": "Kontrol penuh atas mesin = IaaS (Infrastructure as a Service). Platform siap pakai untuk kodemu = PaaS (Platform as a Service). Aplikasi jadi = SaaS (Software as a Service)."
-        },
-        {
-          "id": "u03-l3-e5",
-          "type": "choice",
-          "concept": "saas",
-          "prompt": "A small business wants email and document sharing for 20 staff. It doesn't want to install or maintain any software. Which service type fits best?",
-          "options": [
-            "SaaS (Software as a Service)",
-            "PaaS (Platform as a Service)",
-            "IaaS (Infrastructure as a Service)",
-            "A private cloud"
-          ],
-          "answer": 0,
-          "explanation": "Tidak mau install dan merawat apa pun, cukup pakai: itu SaaS (Software as a Service), misalnya Microsoft 365.",
-          "examReady": true
-        },
-        {
-          "id": "u03-l3-e6",
-          "type": "yesno",
-          "concept": "saas",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso uses a SaaS (Software as a Service) customer relationship app.",
-          "statements": [
-            {
-              "text": "Contoso must install updates to the app.",
-              "answer": false
-            },
-            {
-              "text": "Contoso is responsible for who has access to its data in the app.",
-              "answer": true
-            },
-            {
-              "text": "Contoso must buy the servers that run the app.",
-              "answer": false
-            }
-          ],
-          "explanation": "Di SaaS (Software as a Service), update dan server diurus penyedia, dan kamu biasanya cukup membayar langganan. Akses ke data tetap tanggung jawabmu.",
-          "examReady": true
-        },
-        {
-          "id": "u03-l3-e7",
-          "type": "multi",
-          "concept": "saas",
-          "prompt": "Which two responsibilities stay with the customer when using SaaS (Software as a Service)? Choose two.",
-          "options": [
-            "Accounts and identities",
-            "Information and data",
-            "Application updates",
-            "Physical network"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Account dan identity serta data selalu milik customer, di semua jenis layanan.",
-          "examReady": true
+          "explanation": "Kontrol penuh atas mesin = IaaS (Infrastructure as a Service). Platform siap pakai untuk kodemu = PaaS (Platform as a Service). Aplikasi jadi = SaaS (Software as a Service).",
+          "requires": [
+            "f-u03-iaas-def",
+            "f-u03-lift-shift",
+            "f-u03-paas-def",
+            "f-u03-saas-def"
+          ]
         },
         {
           "id": "u03-l3-e8",
@@ -497,7 +713,10 @@
             "SaaS (Software as a Service)"
           ],
           "explanation": "On-premises: semua urusanmu. IaaS (Infrastructure as a Service): dari OS (Operating System) ke atas. PaaS (Platform as a Service): aplikasi dan data. SaaS (Software as a Service): paling sedikit, tinggal pakai.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-control-order"
+          ]
         }
       ]
     },
@@ -507,10 +726,23 @@
       "items": [
         {
           "id": "u03-l4-i1",
-          "type": "intro",
-          "concept": "serverless",
+          "type": "learn",
+          "concepts": [
+            "serverless"
+          ],
           "title": "Serverless",
-          "body": "Serverless berarti kamu tidak mengelola server sama sekali: cukup tulis kode, dan penyedia yang menjalankan serta menskalakannya. Kode berjalan saat ada event, dan kamu hanya bayar saat kode berjalan."
+          "body": "Serverless berarti kamu tidak mengelola server sama sekali. Kamu cukup menulis kode, dan penyedia yang menjalankan serta menskalakannya. Kode berjalan saat dipicu event, misalnya request HTTP (Hypertext Transfer Protocol), file baru, atau timer. Di Azure, contohnya Azure Functions.",
+          "keyPoints": [
+            "Tidak ada server yang kamu kelola",
+            "Kode berjalan saat ada event",
+            "Contoh serverless: Azure Functions"
+          ],
+          "visual": "ServiceModelsStack",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview",
+          "teaches": [
+            "f-u03-serverless-def",
+            "f-u03-functions"
+          ]
         },
         {
           "id": "u03-l4-e1",
@@ -519,7 +751,10 @@
           "prompt": "In serverless computing, you still have to manage and patch the servers that run your code.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Server tetap ada, tapi sepenuhnya diurus penyedia. Kamu cukup fokus ke kode.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u03-serverless-def"
+          ]
         },
         {
           "id": "u03-l4-e2",
@@ -529,38 +764,145 @@
           "options": [
             "Azure Functions",
             "Azure Virtual Machines",
-            "Azure Data Box",
-            "Azure ExpressRoute"
+            "Azure App Service",
+            "Microsoft 365"
           ],
           "answer": 0,
-          "explanation": "Azure Functions menjalankan kode saat ada event tanpa kamu mengelola server. Itu contoh serverless.",
-          "examReady": true
+          "explanation": "Azure Functions menjalankan kode saat ada event tanpa kamu mengelola server. Itu contoh serverless. VM (Virtual Machine) itu IaaS (Infrastructure as a Service), App Service itu PaaS (Platform as a Service), dan Microsoft 365 itu SaaS (Software as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-functions",
+            "f-u03-iaas-example",
+            "f-u03-paas-example",
+            "f-u03-saas-def"
+          ]
         },
         {
-          "id": "u03-l4-e3",
-          "type": "match",
+          "id": "u03-l4-e7",
+          "type": "yesno",
           "concept": "serverless",
-          "prompt": "Match each service type with its description.",
-          "pairs": [
-            [
-              "Serverless",
-              "Code runs on events, and you pay per execution"
-            ],
-            [
-              "IaaS (Infrastructure as a Service)",
-              "You manage the operating system"
-            ],
-            [
-              "PaaS (Platform as a Service)",
-              "Managed platform for your web apps"
-            ],
-            [
-              "SaaS (Software as a Service)",
-              "Finished software that you just use"
-            ]
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A developer builds an Azure Functions app that runs when a new order arrives.",
+          "statements": [
+            {
+              "text": "The function runs all the time, even when no orders arrive.",
+              "answer": false
+            },
+            {
+              "text": "The developer must create virtual machines to host the function.",
+              "answer": false
+            },
+            {
+              "text": "If no orders arrive, the function doesn't run.",
+              "answer": true
+            }
           ],
-          "explanation": "Serverless memindahkan urusan server sepenuhnya ke penyedia dan menagih per eksekusi.",
-          "examReady": true
+          "explanation": "Function dipicu event (pesanan baru), jadi kalau tidak ada event, kode tidak berjalan. Tidak perlu VM (Virtual Machine).",
+          "examReady": true,
+          "requires": [
+            "f-u03-serverless-def",
+            "f-u03-functions"
+          ]
+        },
+        {
+          "id": "u03-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "serverless-billing"
+          ],
+          "title": "Bayar saat kode berjalan",
+          "body": "Di Consumption plan Azure Functions, kamu hanya membayar saat function berjalan. Tagihannya dihitung dari jumlah eksekusi, lama eksekusi, dan memori. Azure juga menambah dan mengurangi instance otomatis mengikuti jumlah event. Kalau tidak ada event, kode tidak berjalan.",
+          "keyPoints": [
+            "Bayar per eksekusi, bukan per jam server menyala",
+            "Scaling otomatis mengikuti jumlah event"
+          ],
+          "example": "Upload foto jarang terjadi. Function pengubah ukuran gambar hanya berjalan, dan ditagih, saat ada upload.",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-functions/consumption-plan",
+          "teaches": [
+            "f-u03-serverless-billing",
+            "f-u03-serverless-scale"
+          ]
+        },
+        {
+          "id": "u03-l4-e5",
+          "type": "choice",
+          "concept": "serverless",
+          "prompt": "A company needs to resize images whenever a user uploads a photo. Uploads are rare and unpredictable. Which option keeps costs lowest?",
+          "options": [
+            "Run the code as a serverless function triggered by each upload",
+            "Run the code on a virtual machine that stays on 24 hours a day",
+            "Buy a dedicated physical server for the resize code",
+            "Run the code on two virtual machines behind a load balancer"
+          ],
+          "answer": 0,
+          "explanation": "Kalau event jarang, serverless paling hemat: kode hanya berjalan (dan ditagih) saat ada upload.",
+          "examReady": true,
+          "requires": [
+            "f-u03-serverless-billing",
+            "f-u02-load-balancer"
+          ]
+        },
+        {
+          "id": "u03-l4-e6",
+          "type": "multi",
+          "concept": "serverless",
+          "prompt": "Which two are characteristics of serverless computing? Choose two.",
+          "options": [
+            "It scales automatically with demand",
+            "You are billed only when your code runs",
+            "You choose and patch the operating system",
+            "You must reserve servers in advance"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Serverless = scale otomatis dan bayar saat kode berjalan (misalnya consumption plan di Azure Functions). Tidak ada OS (Operating System) yang kamu urus.",
+          "examReady": true,
+          "requires": [
+            "f-u03-serverless-scale",
+            "f-u03-serverless-billing"
+          ]
+        },
+        {
+          "id": "u03-l4-e8",
+          "type": "fill",
+          "concept": "serverless",
+          "prompt": "Complete the sentence.",
+          "sentence": "Serverless code runs when an ___ happens, and you pay only while the code is ___.",
+          "bank": [
+            "event",
+            "running",
+            "server",
+            "stopped"
+          ],
+          "answers": [
+            "event",
+            "running"
+          ],
+          "explanation": "Serverless = dipicu event, bayar saat berjalan.",
+          "requires": [
+            "f-u03-serverless-def",
+            "f-u03-serverless-billing"
+          ]
+        },
+        {
+          "id": "u03-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "serverless-vs-vm"
+          ],
+          "title": "Serverless atau VM?",
+          "body": "Serverless cocok untuk kode kecil yang dipicu event, misalnya memproses file yang baru di-upload atau tugas terjadwal dengan timer. Aplikasi yang butuh kontrol penuh atas sistem operasi lebih cocok di VM (Virtual Machine). Satu catatan: dalam shared responsibility model, Microsoft menggolongkan Azure Functions sebagai PaaS (Platform as a Service).",
+          "keyPoints": [
+            "Event dan tugas terjadwal: serverless",
+            "Butuh kontrol sistem operasi: VM"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-scenarios",
+          "teaches": [
+            "f-u03-functions-scenarios",
+            "f-u03-serverless-paas"
+          ]
         },
         {
           "id": "u03-l4-e4",
@@ -589,83 +931,158 @@
               "bucket": 1
             }
           ],
-          "explanation": "Kode kecil yang dipicu event cocok untuk serverless. Aplikasi yang butuh kontrol penuh atas OS (Operating System) cocok untuk VM (Virtual Machine)."
+          "explanation": "Kode kecil yang dipicu event cocok untuk serverless. Aplikasi yang butuh kontrol penuh atas OS (Operating System) cocok untuk VM (Virtual Machine).",
+          "requires": [
+            "f-u03-functions-scenarios",
+            "f-u03-iaas-def"
+          ]
         },
         {
-          "id": "u03-l4-e5",
-          "type": "choice",
+          "id": "u03-l4-e3",
+          "type": "match",
           "concept": "serverless",
-          "prompt": "A company needs to resize images whenever a user uploads a photo. Uploads are rare and unpredictable. Which option keeps costs lowest?",
-          "options": [
-            "Run the code as a serverless function triggered by each upload",
-            "Run the code on a virtual machine that stays on 24 hours a day",
-            "Buy a dedicated physical server for the resize code",
-            "Run the code on a Virtual Machine Scale Set with two instances"
+          "prompt": "Match each service type with its description.",
+          "pairs": [
+            [
+              "Serverless",
+              "Code runs on events, and you pay per execution"
+            ],
+            [
+              "IaaS (Infrastructure as a Service)",
+              "You manage the operating system"
+            ],
+            [
+              "PaaS (Platform as a Service)",
+              "Managed platform for your web apps"
+            ],
+            [
+              "SaaS (Software as a Service)",
+              "Finished software that you just use"
+            ]
           ],
-          "answer": 0,
-          "explanation": "Kalau event jarang, serverless paling hemat: kode hanya berjalan (dan ditagih) saat ada upload.",
-          "examReady": true
-        },
-        {
-          "id": "u03-l4-e6",
-          "type": "multi",
-          "concept": "serverless",
-          "prompt": "Which two are characteristics of serverless computing? Choose two.",
-          "options": [
-            "It scales automatically with demand",
-            "You are billed only when your code runs",
-            "You choose and patch the operating system",
-            "You must reserve servers in advance"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Serverless = scale otomatis dan bayar saat kode berjalan (misalnya consumption plan di Azure Functions). Tidak ada OS (Operating System) yang kamu urus.",
-          "examReady": true
-        },
-        {
-          "id": "u03-l4-e7",
-          "type": "yesno",
-          "concept": "serverless",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "A developer builds an Azure Functions app that runs when a new order arrives.",
-          "statements": [
-            {
-              "text": "The function runs all the time, even when no orders arrive.",
-              "answer": false
-            },
-            {
-              "text": "The developer must create virtual machines to host the function.",
-              "answer": false
-            },
-            {
-              "text": "If no orders arrive, the function doesn't run.",
-              "answer": true
-            }
-          ],
-          "explanation": "Function dipicu event (pesanan baru), jadi kalau tidak ada event, kode tidak berjalan. Tidak perlu VM (Virtual Machine).",
-          "examReady": true
-        },
-        {
-          "id": "u03-l4-e8",
-          "type": "fill",
-          "concept": "serverless",
-          "prompt": "Complete the sentence.",
-          "sentence": "Serverless code runs when an ___ happens, and you pay only while the code is ___.",
-          "bank": [
-            "event",
-            "running",
-            "server",
-            "stopped"
-          ],
-          "answers": [
-            "event",
-            "running"
-          ],
-          "explanation": "Serverless = dipicu event, bayar saat berjalan."
+          "explanation": "Serverless memindahkan urusan server sepenuhnya ke penyedia dan menagih per eksekusi.",
+          "examReady": true,
+          "requires": [
+            "f-u03-serverless-def",
+            "f-u03-serverless-billing",
+            "f-u03-iaas-split",
+            "f-u03-paas-def",
+            "f-u03-saas-def"
+          ]
         }
       ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "f-u03-iaas-def",
+      "statement": "IaaS (Infrastructure as a Service) menyewakan infrastruktur seperti virtual machine, jaringan, dan storage, dan memberi customer kontrol paling besar di antara jenis layanan cloud.",
+      "source": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/"
+    },
+    {
+      "id": "f-u03-iaas-example",
+      "statement": "Azure Virtual Machines adalah contoh IaaS.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    },
+    {
+      "id": "f-u03-iaas-split",
+      "statement": "Di IaaS, Microsoft mengurus infrastruktur fisik; customer mengurus sistem operasi di virtual machine, aplikasi, dan konfigurasinya, termasuk firewall di virtual machine.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    },
+    {
+      "id": "f-u03-iaas-patch",
+      "statement": "Di IaaS, memasang update dan patch sistem operasi virtual machine adalah tugas customer.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    },
+    {
+      "id": "f-u03-update-manager",
+      "statement": "Azure Update Manager membantu customer memantau dan menjadwalkan update untuk virtual machine, tapi customer yang mengaturnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/update-manager/overview"
+    },
+    {
+      "id": "f-u03-lift-shift",
+      "statement": "Lift-and-shift (rehost) memindahkan workload ke Azure tanpa mengubah kodenya, misalnya dari server on-premises ke Azure virtual machine; caranya cepat dan risikonya rendah.",
+      "source": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/plan/select-cloud-migration-strategy"
+    },
+    {
+      "id": "f-u03-modernize",
+      "statement": "Menulis ulang atau mengubah aplikasi supaya memakai layanan cloud termasuk strategi modernisasi, bukan lift-and-shift.",
+      "source": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/plan/select-cloud-migration-strategy"
+    },
+    {
+      "id": "f-u03-iaas-uses",
+      "statement": "IaaS cocok untuk lingkungan test dan development yang butuh kontrol penuh dan cepat dibuat ulang, serta untuk memindahkan server yang ada dengan perubahan minimal.",
+      "source": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/"
+    },
+    {
+      "id": "f-u03-paas-def",
+      "statement": "PaaS (Platform as a Service) menyediakan platform siap pakai untuk menjalankan aplikasi: penyedia mengurus hardware, sistem operasi, dan runtime, sedangkan customer mengurus kode aplikasi dan datanya.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview"
+    },
+    {
+      "id": "f-u03-paas-example",
+      "statement": "Azure App Service adalah contoh PaaS untuk menjalankan web app dan API.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview"
+    },
+    {
+      "id": "f-u03-paas-patching",
+      "statement": "Di Azure App Service, Azure mem-patch sistem operasi dan runtime secara otomatis.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview-patch-os-runtime"
+    },
+    {
+      "id": "f-u03-paas-benefits",
+      "statement": "Azure App Service menyediakan fitur bawaan seperti autoscale dan integrasi dengan alat developer untuk deployment.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview"
+    },
+    {
+      "id": "f-u03-paas-customer",
+      "statement": "Di PaaS, kode aplikasi, data, dan akun pengguna tetap tanggung jawab customer.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    },
+    {
+      "id": "f-u03-saas-def",
+      "statement": "SaaS (Software as a Service) adalah aplikasi jadi yang tinggal dipakai lewat internet, misalnya Microsoft 365 untuk email dan dokumen.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    },
+    {
+      "id": "f-u03-saas-provider",
+      "statement": "Di SaaS, penyedia mengurus infrastruktur, server, dan update aplikasinya.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    },
+    {
+      "id": "f-u03-control-order",
+      "statement": "Tanggung jawab customer paling besar di on-premises, lalu IaaS, lalu PaaS, dan paling kecil di SaaS.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    },
+    {
+      "id": "f-u03-serverless-def",
+      "statement": "Serverless berarti customer tidak mengelola server: penyedia menjalankan dan menskalakan kodenya, dan kode berjalan saat dipicu event.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview"
+    },
+    {
+      "id": "f-u03-functions",
+      "statement": "Azure Functions adalah layanan serverless untuk menjalankan kode yang dipicu event, misalnya request HTTP, file baru, atau timer.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview"
+    },
+    {
+      "id": "f-u03-serverless-billing",
+      "statement": "Di Consumption plan Azure Functions, customer hanya membayar saat function berjalan, berdasarkan jumlah eksekusi, lama eksekusi, dan memori.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/consumption-plan"
+    },
+    {
+      "id": "f-u03-serverless-scale",
+      "statement": "Azure Functions menambah dan mengurangi instance secara otomatis mengikuti jumlah event yang masuk.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/consumption-plan"
+    },
+    {
+      "id": "f-u03-functions-scenarios",
+      "statement": "Contoh pemakaian Azure Functions: memproses file yang baru di-upload dan menjalankan tugas terjadwal dengan timer.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-scenarios"
+    },
+    {
+      "id": "f-u03-serverless-paas",
+      "statement": "Dalam shared responsibility model, Microsoft menggolongkan Azure Functions sebagai PaaS.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
     }
   ]
 }
