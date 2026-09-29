@@ -8,7 +8,8 @@ Postgres 16 lokal lalu diterapkan ke project "langit"
 (`supabase/migrations/20260930000000_sync_push_keep_unknown_keys.sql`). Data sebelum migration
 dibackup (versi 77, md5 `f30c25b8…`); sesudahnya semua kunci progres masih ada. Selain
 penggabungan, fungsi baru juga menolak payload yang bukan objek JSON (aplikasi selalu
-mengirim objek). Poin 3 menunggu keputusan dan baru dipakai di tahap 6.
+mengirim objek). Poin 3 diputuskan 29 September 2026: ujian yang sedang berjalan **disinkron**
+(lihat bagian 5), dikerjakan di tahap 6.
 
 **Tahap 1 selesai (29 September 2026):** kode aplikasi di 2.3 langkah 4 sudah dikerjakan
 (store progres versi 3, `courses` ikut disinkron, pemilih course, validator `az104-`, kerangka
@@ -114,3 +115,26 @@ dan hak akses tidak berubah, jadi tidak ada celah baru.
 | XP dan streak | Satu untuk seluruh aplikasi, dihitung sekali (unit test `src/store/progress.test.ts`) |
 | Progres AZ-900 di Supabase | Versi 96: kunci sama dengan backup versi 77, progres yang bertambah berasal dari lesson yang kamu mainkan. Kode baru dijalankan pada data asli ini: progres, XP, streak, antrean review, statistik konsep, dan riwayat ujian AZ-900 tidak berubah setelah digabung |
 | BUGS_LOG | Semua "cara mengecek" yang relevan dijalankan: lint, typecheck, 128 unit test, validator konten, 46 tes e2e termasuk axe untuk layar AZ-104. Empat baris baru di bagian 3 |
+
+## 5. Keputusan poin 3: ujian berjalan disinkron (untuk tahap 6)
+
+Ujian yang sedang berjalan (`activeExam`: soal, jawaban, tanda, nomor soal, sisa waktu) ikut
+data sinkron, jadi ujian yang dimulai di HP bisa dilanjutkan di laptop dengan sisa waktu yang sama.
+
+- **Berlaku juga untuk AZ-900.** Aplikasi hanya punya satu tempat untuk ujian berjalan (satu ujian
+  sekaligus, apa pun course-nya), jadi menyinkronkannya otomatis berlaku untuk kedua course.
+  Ujiannya tetap membawa `course`, jadi hasilnya masuk riwayat course yang benar.
+- **Aturan gabung:** perubahan terbaru menang, dengan cap waktu `activeExamAt` yang diperbarui saat
+  ujian dimulai, dijawab, ditandai, pindah soal, dikumpulkan, atau dibatalkan (pola yang sama
+  dengan `settingsAt` dan `heartsAt`). Ujian yang id-nya sudah ada di riwayat selalu dibuang,
+  jadi ujian yang sudah dikumpulkan di satu perangkat tidak hidup lagi dari perangkat lain.
+- **Membatalkan dan mengumpulkan mengirim `activeExam: null`, bukan menghapus kuncinya.** Sejak
+  migration di 2.2, server menyimpan kunci yang tidak dikirim, jadi kunci yang hilang akan
+  membuat ujian lama tetap tersimpan di server.
+- **Timer tidak memicu sinkron setiap detik.** Sinkron dipicu oleh jawaban, tanda, pindah soal,
+  dan saat tab ditutup atau disembunyikan; sisa waktu terbaru ikut terkirim saat itu. Kalau
+  perangkat mati mendadak, sisa waktu di perangkat lain paling banyak mundur ke perubahan terakhir.
+- **Tidak ada perubahan SQL.** Cukup kunci baru di dokumen JSON yang sama.
+- **Tes:** merge (terbaru menang, ujian yang sudah dikumpulkan tidak hidup lagi, batal tidak
+  tertimpa), dan e2e dua perangkat: mulai ujian di perangkat A, lanjutkan di B dengan jawaban
+  dan sisa waktu yang sama.
