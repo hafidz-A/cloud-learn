@@ -56,8 +56,10 @@ Rencana kasar sampai siap ujian:
 
 - **Lesson**: kartu **Konsep baru** memperkenalkan konsep, lalu soal naik dari mudah ke sulit. Soal yang
   salah muncul lagi di akhir lesson, dan lesson baru selesai setelah semua soal pernah dijawab benar.
-- **Hearts**: 5 nyawa, berkurang 1 setiap jawaban salah. Kalau habis, isi lagi lewat **Latihan** (setiap
-  jawaban benar di latihan mengisi 1 heart), atau tunggu besok saat hearts terisi penuh.
+- **Hearts**: 5 nyawa, berkurang 1 setiap jawaban salah di lesson. Kalau habis, lesson berhenti dan
+  progres lesson itu tidak disimpan, tapi soal yang salah tetap tercatat untuk diulang. Cara mengisi lagi:
+  **Latihan** (setiap jawaban benar di percobaan pertama mengisi 1 heart, maksimal 5), tunggu besok saat
+  hearts terisi penuh, atau matikan hearts di **Pengaturan**. Checkpoint dan Ujian tidak memakai hearts.
 - **Streak**: bertambah setiap hari kamu menyelesaikan minimal satu lesson atau latihan.
 - **Level unit (mahkota 0/3)**: naik setiap kali semua lesson di unit itu diulang.
 - **Checkpoint**: 20 soal campuran di akhir jalur, lulus kalau skornya minimal 80%. Checkpoint bisa dicoba

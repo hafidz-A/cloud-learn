@@ -45,6 +45,20 @@ test('five wrong answers use up the hearts and stop the lesson', async ({ page }
   await expect(page.getByLabel('0 hearts')).toBeVisible()
 })
 
+test('running out of hearts on the very first lesson can still be refilled in practice', async ({ page }) => {
+  await page.goto('/#/lesson/u01-l1')
+  for (let guard = 0; guard < 30; guard++) {
+    if (await page.getByRole('heading', { name: 'Hearts habis' }).isVisible()) break
+    const item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    if (item.type !== 'intro') await answer(page, item, { wrong: true })
+    await next(page)
+  }
+  await page.getByRole('button', { name: 'Latihan untuk isi hearts' }).click()
+  await play(page, { finish: 'Latihan selesai!' })
+  await page.getByRole('button', { name: 'Lanjut' }).click()
+  await expect(page.getByLabel(/^[1-5] hearts?$/)).toBeVisible()
+})
+
 test('passing checkpoint 1 opens path 2', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('[data-node="u04-l1"]')).toHaveAttribute('data-node-state', 'locked')

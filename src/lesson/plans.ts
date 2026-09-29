@@ -35,16 +35,21 @@ export function lessonPlan(ref: LessonRef, progress: Pick<Progress, 'review' | '
   return { kind: 'lesson', title: lesson.title, items }
 }
 
-/** Due review items first; topped up with exercises from finished lessons so a session is never tiny. */
+/**
+ * Due review items first. A short session is topped up with mistakes that are
+ * not due yet (played as plain practice, so their 1/3/7 day ladder stays put),
+ * then exercises from finished lessons. The mistakes keep practice open to
+ * refill hearts even before the first lesson is finished.
+ */
 export function practicePlan(progress: Pick<Progress, 'review' | 'lessonsDone'>, random = Math.random): RunPlan {
   const due = dueIds(progress.review, dayKey()).filter((id) => EXERCISES.has(id)).slice(0, PRACTICE_SIZE)
   const items: SessionItem[] = due.map((id) => ({ item: EXERCISES.get(id)!.exercise, fromReview: true }))
   if (items.length < PRACTICE_MIN) {
     const taken = new Set(due)
-    const pool = shuffle(
-      [...EXERCISES.values()].filter((r) => progress.lessonsDone[r.lesson.id] && !taken.has(r.exercise.id)).map((r) => r.exercise),
-      random,
-    )
+    const mistakes = Object.keys(progress.review).filter((id) => EXERCISES.has(id) && !taken.has(id))
+    for (const id of mistakes) taken.add(id)
+    const finished = [...EXERCISES.values()].filter((r) => progress.lessonsDone[r.lesson.id] && !taken.has(r.exercise.id))
+    const pool = [...shuffle(mistakes, random).map((id) => EXERCISES.get(id)!.exercise), ...shuffle(finished, random).map((r) => r.exercise)]
     for (const ex of pool.slice(0, PRACTICE_MIN - items.length)) items.push({ item: ex })
   }
   return { kind: 'practice', title: 'Latihan', items }

@@ -12,12 +12,13 @@ export function PracticeScreen() {
   const hearts = useProgress((s) => s.hearts)
   const heartsOn = useProgress((s) => s.heartsEnabled)
   const anyLessonDone = useProgress((s) => Object.keys(s.lessonsDone).length > 0)
+  const anyMistake = Object.keys(review).some((id) => EXERCISES.has(id))
   const today = dayKey()
   const due = dueIds(review, today).filter((id) => EXERCISES.has(id))
   const upcoming = Object.entries(review)
     .filter(([id, e]) => e.dueDay > today && EXERCISES.has(id))
     .sort(([, a], [, b]) => a.dueDay.localeCompare(b.dueDay))
-  const canStart = due.length > 0 || anyLessonDone
+  const canStart = due.length > 0 || anyLessonDone || anyMistake
 
   return (
     <main className="space-y-5 px-4 pb-32 pt-6">
@@ -33,7 +34,9 @@ export function PracticeScreen() {
                 ? 'Soal yang pernah salah muncul lagi setelah 1, 3, lalu 7 hari.'
                 : anyLessonDone
                   ? 'Latihan bebas dari lesson yang sudah selesai.'
-                  : 'Selesaikan satu lesson dulu, lalu soalnya bisa dilatih di sini.'}
+                  : anyMistake
+                    ? 'Latihan bebas dari soal yang pernah salah.'
+                    : 'Selesaikan satu lesson dulu, lalu soalnya bisa dilatih di sini.'}
             </p>
           </div>
         </div>
