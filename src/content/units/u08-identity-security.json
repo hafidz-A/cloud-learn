@@ -9,10 +9,22 @@
       "items": [
         {
           "id": "u08-l1-i1",
-          "type": "intro",
-          "concept": "entra-id",
+          "type": "learn",
+          "concepts": [
+            "entra-id"
+          ],
           "title": "Microsoft Entra ID",
-          "body": "Microsoft Entra ID (dulu Azure Active Directory) adalah layanan identitas dan akses berbasis cloud. Fungsinya autentikasi, SSO (Single Sign-On), mengelola aplikasi dan perangkat, serta mendeteksi login yang berisiko."
+          "body": "Microsoft Entra ID adalah layanan identitas dan akses berbasis cloud dari Microsoft. Fungsinya mengautentikasi pengguna, memberi SSO (Single Sign-On) ke banyak aplikasi, dan mengelola perangkat. Entra ID juga bisa mendeteksi login yang berisiko.",
+          "keyPoints": [
+            "Identitas dan akses di cloud",
+            "Autentikasi, SSO, dan deteksi login berisiko",
+            "Dipakai Azure, Microsoft 365, dan aplikasi lain"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/whatis",
+          "teaches": [
+            "f-u08-entra-def",
+            "f-u08-entra-risk"
+          ]
         },
         {
           "id": "u08-l1-e1",
@@ -21,14 +33,118 @@
           "prompt": "Microsoft Entra ID is a cloud-based identity and access management service.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Microsoft Entra ID mengurus siapa pengguna dan apa yang boleh mereka akses.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-entra-def"
+          ]
+        },
+        {
+          "id": "u08-l1-e6",
+          "type": "multi",
+          "concept": "entra-id",
+          "prompt": "Which two can Microsoft Entra ID do? Choose two.",
+          "options": [
+            "Authenticate users signing in to apps",
+            "Detect risky sign-ins",
+            "Store virtual machine disks",
+            "Filter network traffic by port"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Microsoft Entra ID mengurus autentikasi dan perlindungan identitas, bukan storage atau filter jaringan.",
+          "examReady": true,
+          "requires": [
+            "f-u08-entra-def",
+            "f-u08-entra-risk",
+            "f-u07-disks-def",
+            "f-u06-nsg-def"
+          ]
         },
         {
           "id": "u08-l1-i2",
-          "type": "intro",
-          "concept": "entra-connect",
+          "type": "learn",
+          "concepts": [
+            "entra-connect"
+          ],
           "title": "Microsoft Entra Connect",
-          "body": "Microsoft Entra Connect menyinkronkan identitas pengguna dari Active Directory on-premises ke Microsoft Entra ID. Hasilnya, pengguna bisa memakai akun yang sama di on-premises dan di cloud."
+          "body": "Banyak perusahaan sudah punya Active Directory di on-premises. Microsoft Entra Connect menyinkronkan identitas pengguna dari sana ke Microsoft Entra ID. Hasilnya, pengguna memakai akun yang sama di on-premises dan di cloud.",
+          "keyPoints": [
+            "Sinkronisasi dari Active Directory on-premises ke Entra ID",
+            "Satu identitas untuk on-premises dan cloud"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-sync-whatis",
+          "teaches": [
+            "f-u08-entra-connect"
+          ]
+        },
+        {
+          "id": "u08-l1-e7",
+          "type": "yesno",
+          "concept": "entra-connect",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso has 5,000 users in on-premises Active Directory and is adopting Microsoft 365.",
+          "statements": [
+            {
+              "text": "Microsoft Entra Connect can sync the users to Microsoft Entra ID.",
+              "answer": true
+            },
+            {
+              "text": "Users will need a completely separate cloud password for every app.",
+              "answer": false
+            },
+            {
+              "text": "Microsoft Entra ID can provide SSO (Single Sign-On) to cloud apps.",
+              "answer": true
+            }
+          ],
+          "explanation": "Dengan Entra Connect, pengguna memakai identitas yang sama di on-premises dan cloud, lalu SSO (Single Sign-On) mengurangi jumlah login.",
+          "examReady": true,
+          "requires": [
+            "f-u08-entra-connect",
+            "f-u08-entra-def"
+          ]
+        },
+        {
+          "id": "u08-l1-e8",
+          "type": "fill",
+          "concept": "entra-id",
+          "prompt": "Complete the sentence.",
+          "sentence": "Microsoft Entra ID handles ___ and access management, and Microsoft Entra ___ syncs on-premises users to it.",
+          "bank": [
+            "identity",
+            "Connect",
+            "storage",
+            "Policy"
+          ],
+          "answers": [
+            "identity",
+            "Connect"
+          ],
+          "explanation": "Entra ID = identitas dan akses. Entra Connect = sinkronisasi dari on-premises.",
+          "requires": [
+            "f-u08-entra-def",
+            "f-u08-entra-connect"
+          ]
+        },
+        {
+          "id": "u08-l1-i3",
+          "type": "learn",
+          "concepts": [
+            "entra-domain-services"
+          ],
+          "title": "Microsoft Entra Domain Services",
+          "body": "Microsoft Entra Domain Services menyediakan fitur domain seperti domain join, group policy, LDAP (Lightweight Directory Access Protocol), dan Kerberos. Kamu tidak perlu men-deploy dan mem-patch domain controller sendiri. Cocok untuk aplikasi lama yang belum bisa memakai autentikasi modern.",
+          "keyPoints": [
+            "Fitur domain tanpa mengelola domain controller",
+            "Untuk aplikasi lama yang butuh Kerberos atau LDAP"
+          ],
+          "trap": "Sinkronisasi dari on-premises itu Entra Connect, bukan Domain Services.",
+          "link": "https://learn.microsoft.com/en-us/entra/identity/domain-services/overview",
+          "teaches": [
+            "f-u08-domain-services"
+          ]
         },
         {
           "id": "u08-l1-e2",
@@ -43,14 +159,13 @@
           ],
           "answer": 0,
           "explanation": "Sinkronisasi identitas dari on-premises ke cloud = Microsoft Entra Connect.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l1-i3",
-          "type": "intro",
-          "concept": "entra-domain-services",
-          "title": "Microsoft Entra Domain Services",
-          "body": "Microsoft Entra Domain Services menyediakan fitur domain seperti domain join, group policy, LDAP (Lightweight Directory Access Protocol), dan Kerberos tanpa kamu mengelola domain controller. Cocok untuk aplikasi lama yang belum bisa memakai autentikasi modern."
+          "examReady": true,
+          "requires": [
+            "f-u08-entra-connect",
+            "f-u08-domain-services",
+            "f-u02-policy-audit",
+            "f-u01-multi-cloud-arc"
+          ]
         },
         {
           "id": "u08-l1-e3",
@@ -59,7 +174,31 @@
           "prompt": "Microsoft Entra Domain Services requires you to deploy and patch your own domain controllers.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Justru itu keuntungannya: fitur domain tersedia tanpa kamu mengelola domain controller.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-domain-services"
+          ]
+        },
+        {
+          "id": "u08-l1-e5",
+          "type": "choice",
+          "concept": "entra-domain-services",
+          "prompt": "A company moves an old app to Azure. The app needs domain join and Kerberos authentication, but the company doesn't want to manage domain controllers. What should it use?",
+          "options": [
+            "Microsoft Entra Domain Services",
+            "Microsoft Entra Connect",
+            "Azure DNS (Domain Name System)",
+            "Azure Policy"
+          ],
+          "answer": 0,
+          "explanation": "Aplikasi lama yang butuh domain join dan Kerberos tanpa mengelola domain controller: Microsoft Entra Domain Services.",
+          "examReady": true,
+          "requires": [
+            "f-u08-domain-services",
+            "f-u08-entra-connect",
+            "f-u06-dns-def",
+            "f-u02-policy-audit"
+          ]
         },
         {
           "id": "u08-l1-e4",
@@ -85,81 +224,12 @@
             ]
           ],
           "explanation": "Entra ID untuk identitas cloud, Connect untuk sinkronisasi, Domain Services untuk fitur domain tanpa domain controller.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l1-e5",
-          "type": "choice",
-          "concept": "entra-domain-services",
-          "prompt": "A company moves an old app to Azure. The app needs domain join and Kerberos authentication, but the company doesn't want to manage domain controllers. What should it use?",
-          "options": [
-            "Microsoft Entra Domain Services",
-            "Microsoft Entra Connect",
-            "Azure DNS (Domain Name System)",
-            "A resource lock"
-          ],
-          "answer": 0,
-          "explanation": "Aplikasi lama yang butuh domain join dan Kerberos tanpa mengelola domain controller: Microsoft Entra Domain Services.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l1-e6",
-          "type": "multi",
-          "concept": "entra-id",
-          "prompt": "Which two can Microsoft Entra ID do? Choose two.",
-          "options": [
-            "Authenticate users signing in to apps",
-            "Detect risky sign-ins",
-            "Store virtual machine disks",
-            "Filter network traffic by port"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Microsoft Entra ID mengurus autentikasi dan perlindungan identitas, bukan storage atau filter jaringan.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l1-e7",
-          "type": "yesno",
-          "concept": "entra-connect",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso has 5,000 users in on-premises Active Directory and is adopting Microsoft 365.",
-          "statements": [
-            {
-              "text": "Microsoft Entra Connect can sync the users to Microsoft Entra ID.",
-              "answer": true
-            },
-            {
-              "text": "Users will need a completely separate cloud password for every app.",
-              "answer": false
-            },
-            {
-              "text": "Microsoft Entra ID can provide SSO (Single Sign-On) to cloud apps.",
-              "answer": true
-            }
-          ],
-          "explanation": "Dengan Entra Connect, pengguna memakai identitas yang sama di on-premises dan cloud, lalu SSO (Single Sign-On) mengurangi jumlah login.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l1-e8",
-          "type": "fill",
-          "concept": "entra-id",
-          "prompt": "Complete the sentence.",
-          "sentence": "Microsoft Entra ID handles ___ and access management, and Microsoft Entra ___ syncs on-premises users to it.",
-          "bank": [
-            "identity",
-            "Connect",
-            "storage",
-            "Policy"
-          ],
-          "answers": [
-            "identity",
-            "Connect"
-          ],
-          "explanation": "Entra ID = identitas dan akses. Entra Connect = sinkronisasi dari on-premises."
+          "examReady": true,
+          "requires": [
+            "f-u08-entra-def",
+            "f-u08-entra-connect",
+            "f-u08-domain-services"
+          ]
         }
       ]
     },
@@ -169,10 +239,21 @@
       "items": [
         {
           "id": "u08-l2-i1",
-          "type": "intro",
-          "concept": "sso",
+          "type": "learn",
+          "concepts": [
+            "sso"
+          ],
           "title": "SSO",
-          "body": "SSO (Single Sign-On) memungkinkan pengguna login sekali untuk mengakses banyak aplikasi. Lebih sedikit password berarti lebih mudah dikelola, dan saat karyawan keluar, cukup satu akun yang dinonaktifkan."
+          "body": "SSO (Single Sign-On) membuat pengguna cukup login sekali untuk memakai banyak aplikasi. Lebih sedikit password berarti lebih mudah dikelola. Saat karyawan keluar, cukup satu akun yang dinonaktifkan, dan aksesnya ke semua aplikasi yang terhubung ikut tercabut.",
+          "keyPoints": [
+            "Login sekali, banyak aplikasi",
+            "Satu akun dinonaktifkan, semua akses tercabut"
+          ],
+          "trap": "SSO bukan MFA (Multi-Factor Authentication). SSO mengurangi jumlah login; MFA menambah jumlah bukti.",
+          "link": "https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/what-is-single-sign-on",
+          "teaches": [
+            "f-u08-sso"
+          ]
         },
         {
           "id": "u08-l2-e1",
@@ -181,14 +262,58 @@
           "prompt": "SSO (Single Sign-On) is another name for MFA (Multi-Factor Authentication).",
           "answer": false,
           "explanation": "Pernyataan ini salah. SSO (Single Sign-On) berarti satu kali login untuk banyak aplikasi. MFA (Multi-Factor Authentication) berarti meminta lebih dari satu bukti identitas saat login.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-sso",
+            "f-u01-mfa-basic"
+          ]
+        },
+        {
+          "id": "u08-l2-e7",
+          "type": "yesno",
+          "concept": "sso",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso turns on SSO (Single Sign-On) and MFA (Multi-Factor Authentication) for all employees.",
+          "statements": [
+            {
+              "text": "Employees must sign in separately to every app.",
+              "answer": false
+            },
+            {
+              "text": "MFA removes the need for users to prove who they are.",
+              "answer": false
+            },
+            {
+              "text": "When an employee leaves, disabling one account removes their access to all SSO-connected apps.",
+              "answer": true
+            }
+          ],
+          "explanation": "SSO (Single Sign-On) memudahkan pengguna dan admin. MFA (Multi-Factor Authentication) justru menambah bukti identitas.",
+          "examReady": true,
+          "requires": [
+            "f-u08-sso",
+            "f-u01-mfa-basic"
+          ]
         },
         {
           "id": "u08-l2-i2",
-          "type": "intro",
-          "concept": "mfa",
+          "type": "learn",
+          "concepts": [
+            "mfa"
+          ],
           "title": "MFA",
-          "body": "MFA (Multi-Factor Authentication) meminta dua bukti identitas atau lebih dari kategori berbeda: sesuatu yang kamu tahu (password), sesuatu yang kamu punya (ponsel), atau sesuatu yang melekat padamu (sidik jari atau wajah)."
+          "body": "MFA (Multi-Factor Authentication) meminta dua bukti identitas atau lebih dari kategori berbeda. Kategorinya: sesuatu yang kamu tahu (password, PIN (Personal Identification Number)), sesuatu yang kamu punya (ponsel, security key), dan sesuatu yang melekat padamu (sidik jari, wajah). Dengan MFA, password curian saja tidak cukup untuk login.",
+          "keyPoints": [
+            "Tahu, punya, melekat",
+            "Dua bukti dari kategori yang sama bukan MFA",
+            "Password curian saja tidak cukup"
+          ],
+          "example": "Password ditambah security question bukan MFA, karena keduanya \"sesuatu yang kamu tahu\".",
+          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-mfa-howitworks",
+          "teaches": [
+            "f-u08-mfa",
+            "f-u08-mfa-stolen"
+          ]
         },
         {
           "id": "u08-l2-e2",
@@ -203,40 +328,10 @@
           ],
           "answer": 0,
           "explanation": "Password dan security question sama-sama sesuatu yang kamu tahu, jadi bukan MFA (Multi-Factor Authentication). Password ditambah kode di ponsel memakai dua kategori berbeda.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l2-i3",
-          "type": "intro",
-          "concept": "passwordless",
-          "title": "Passwordless",
-          "body": "Passwordless berarti login tanpa password, tapi tetap memakai lebih dari satu faktor. Pilihannya di Microsoft Entra ID: Windows Hello for Business, aplikasi Microsoft Authenticator, dan security key FIDO2 (Fast IDentity Online 2)."
-        },
-        {
-          "id": "u08-l2-e3",
-          "type": "match",
-          "concept": "passwordless",
-          "prompt": "Match each term with its meaning.",
-          "pairs": [
-            [
-              "SSO (Single Sign-On)",
-              "Sign in once for many apps"
-            ],
-            [
-              "MFA (Multi-Factor Authentication)",
-              "Two or more kinds of proof"
-            ],
-            [
-              "Passwordless",
-              "Sign in without typing a password"
-            ],
-            [
-              "Something you are",
-              "A fingerprint or face scan"
-            ]
-          ],
-          "explanation": "SSO (Single Sign-On) mengurangi login, MFA (Multi-Factor Authentication) menambah bukti, passwordless menghapus password.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-mfa"
+          ]
         },
         {
           "id": "u08-l2-e4",
@@ -274,7 +369,10 @@
               "bucket": 2
             }
           ],
-          "explanation": "MFA (Multi-Factor Authentication) yang kuat menggabungkan kategori yang berbeda, misalnya password (tahu) dan ponsel (punya)."
+          "explanation": "MFA (Multi-Factor Authentication) yang kuat menggabungkan kategori yang berbeda, misalnya password (tahu) dan ponsel (punya).",
+          "requires": [
+            "f-u08-mfa"
+          ]
         },
         {
           "id": "u08-l2-e5",
@@ -289,48 +387,12 @@
           ],
           "answer": 0,
           "explanation": "Dengan MFA (Multi-Factor Authentication), password curian saja tidak cukup untuk login.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l2-e6",
-          "type": "multi",
-          "concept": "passwordless",
-          "prompt": "Which two are passwordless sign-in options in Microsoft Entra ID? Choose two.",
-          "options": [
-            "Windows Hello for Business",
-            "FIDO2 (Fast IDentity Online 2) security keys",
-            "A password plus an SMS (Short Message Service) code",
-            "A security question"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Windows Hello for Business, FIDO2 (Fast IDentity Online 2) security key, dan Microsoft Authenticator adalah opsi passwordless.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l2-e7",
-          "type": "yesno",
-          "concept": "sso",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso turns on SSO (Single Sign-On) and MFA (Multi-Factor Authentication) for all employees.",
-          "statements": [
-            {
-              "text": "Employees must sign in separately to every app.",
-              "answer": false
-            },
-            {
-              "text": "MFA removes the need for users to prove who they are.",
-              "answer": false
-            },
-            {
-              "text": "When an employee leaves, disabling one account removes their access to all SSO-connected apps.",
-              "answer": true
-            }
-          ],
-          "explanation": "SSO (Single Sign-On) memudahkan pengguna dan admin. MFA (Multi-Factor Authentication) justru menambah bukti identitas.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-mfa-stolen",
+            "f-u08-sso",
+            "f-u04-sub-multi"
+          ]
         },
         {
           "id": "u08-l2-e8",
@@ -348,7 +410,80 @@
             "know",
             "are"
           ],
-          "explanation": "Tiga kategori faktor: tahu, punya, dan melekat padamu."
+          "explanation": "Tiga kategori faktor: tahu, punya, dan melekat padamu.",
+          "requires": [
+            "f-u08-mfa"
+          ]
+        },
+        {
+          "id": "u08-l2-i3",
+          "type": "learn",
+          "concepts": [
+            "passwordless"
+          ],
+          "title": "Passwordless",
+          "body": "Passwordless berarti login tanpa mengetik password, tapi tetap memakai lebih dari satu faktor. Pilihannya di Microsoft Entra ID: Windows Hello for Business, aplikasi Microsoft Authenticator, dan passkey atau security key FIDO2 (Fast IDentity Online 2).",
+          "keyPoints": [
+            "Tanpa password, tetap multi-faktor",
+            "Windows Hello, Authenticator, FIDO2"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-passwordless",
+          "teaches": [
+            "f-u08-passwordless"
+          ]
+        },
+        {
+          "id": "u08-l2-e6",
+          "type": "multi",
+          "concept": "passwordless",
+          "prompt": "Which two are passwordless sign-in options in Microsoft Entra ID? Choose two.",
+          "options": [
+            "Windows Hello for Business",
+            "FIDO2 (Fast IDentity Online 2) security keys",
+            "A password plus an SMS (Short Message Service) code",
+            "A security question"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Windows Hello for Business, FIDO2 (Fast IDentity Online 2) security key, dan Microsoft Authenticator adalah opsi passwordless.",
+          "examReady": true,
+          "requires": [
+            "f-u08-passwordless",
+            "f-u08-mfa"
+          ]
+        },
+        {
+          "id": "u08-l2-e3",
+          "type": "match",
+          "concept": "passwordless",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "SSO (Single Sign-On)",
+              "Sign in once for many apps"
+            ],
+            [
+              "MFA (Multi-Factor Authentication)",
+              "Two or more kinds of proof"
+            ],
+            [
+              "Passwordless",
+              "Sign in without typing a password"
+            ],
+            [
+              "Something you are",
+              "A fingerprint or face scan"
+            ]
+          ],
+          "explanation": "SSO (Single Sign-On) mengurangi login, MFA (Multi-Factor Authentication) menambah bukti, passwordless menghapus password.",
+          "examReady": true,
+          "requires": [
+            "f-u08-sso",
+            "f-u08-mfa",
+            "f-u08-passwordless"
+          ]
         }
       ]
     },
@@ -358,10 +493,23 @@
       "items": [
         {
           "id": "u08-l3-i1",
-          "type": "intro",
-          "concept": "conditional-access",
+          "type": "learn",
+          "concepts": [
+            "conditional-access"
+          ],
           "title": "Conditional Access",
-          "body": "Conditional Access memakai sinyal seperti pengguna, lokasi, perangkat, dan aplikasi untuk memutuskan: izinkan, minta MFA (Multi-Factor Authentication), atau blokir. Fitur ini butuh lisensi Microsoft Entra ID P1 atau lebih tinggi."
+          "body": "Conditional Access memakai sinyal seperti pengguna, lokasi, perangkat, dan aplikasi untuk memutuskan: izinkan, minta MFA (Multi-Factor Authentication), atau blokir. Contohnya, minta MFA hanya kalau login dari luar kantor. Fitur ini butuh lisensi Microsoft Entra ID P1 atau P2.",
+          "keyPoints": [
+            "Sinyal: pengguna, lokasi, perangkat, aplikasi",
+            "Keputusan: izinkan, minta MFA, atau blokir",
+            "Butuh Entra ID P1 atau P2"
+          ],
+          "visual": "ConditionalAccessFlow",
+          "link": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview",
+          "teaches": [
+            "f-u08-ca-def",
+            "f-u08-ca-license"
+          ]
         },
         {
           "id": "u08-l3-e1",
@@ -370,14 +518,91 @@
           "prompt": "Conditional Access requires at least a Microsoft Entra ID P1 license.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Conditional Access termasuk fitur Microsoft Entra ID P1 dan P2.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-ca-license"
+          ]
+        },
+        {
+          "id": "u08-l3-e5",
+          "type": "choice",
+          "concept": "conditional-access",
+          "prompt": "A company wants to require MFA (Multi-Factor Authentication) only when users sign in from outside the office network. What should it use?",
+          "options": [
+            "Conditional Access",
+            "Azure Policy",
+            "Microsoft Entra Connect",
+            "VNet (Virtual Network) peering"
+          ],
+          "answer": 0,
+          "explanation": "Keputusan berdasarkan lokasi login = Conditional Access.",
+          "examReady": true,
+          "requires": [
+            "f-u08-ca-def",
+            "f-u02-policy-audit",
+            "f-u08-entra-connect",
+            "f-u06-peering-def"
+          ]
+        },
+        {
+          "id": "u08-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "authentication-vs-authorization"
+          ],
+          "title": "Autentikasi vs otorisasi",
+          "body": "Autentikasi membuktikan siapa kamu, misalnya lewat password dan MFA (Multi-Factor Authentication). Otorisasi menentukan apa yang boleh kamu lakukan setelah itu. Conditional Access bekerja saat login; RBAC (Role-Based Access Control), yang dibahas berikutnya, mengatur otorisasi di resource Azure.",
+          "keyPoints": [
+            "Autentikasi = siapa kamu",
+            "Otorisasi = apa yang boleh kamu lakukan"
+          ],
+          "visual": "AuthNvsAuthZ",
+          "link": "https://learn.microsoft.com/en-us/entra/identity-platform/authentication-vs-authorization",
+          "teaches": [
+            "f-u08-authn-authz"
+          ]
+        },
+        {
+          "id": "u08-l3-e8",
+          "type": "multi",
+          "concept": "conditional-access",
+          "prompt": "Which two signals can Conditional Access use? Choose two.",
+          "options": [
+            "The user's location",
+            "The device the user signs in from",
+            "The size of the user's virtual machine",
+            "The storage redundancy option"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Conditional Access melihat sinyal identitas: pengguna, lokasi, perangkat, aplikasi, dan risiko login.",
+          "examReady": true,
+          "requires": [
+            "f-u08-ca-def"
+          ]
         },
         {
           "id": "u08-l3-i2",
-          "type": "intro",
-          "concept": "rbac",
+          "type": "learn",
+          "concepts": [
+            "rbac"
+          ],
           "title": "RBAC",
-          "body": "RBAC (Role-Based Access Control) memberi izin lewat role, misalnya Owner, Contributor, atau Reader, pada scope tertentu: management group, subscription, resource group, atau resource. Izin di scope atas diwariskan ke bawah."
+          "body": "RBAC (Role-Based Access Control) memberi izin lewat role pada scope tertentu: management group, subscription, resource group, atau resource. Izin di scope atas diwariskan ke bawah. Role bawaannya: Owner mengelola semuanya termasuk akses, Contributor mengelola resource tapi tidak bisa memberi akses, Reader hanya melihat, dan User Access Administrator mengelola akses.",
+          "keyPoints": [
+            "Role + scope = izin",
+            "Owner, Contributor, Reader, User Access Administrator",
+            "Pakai role terkecil di scope tersempit"
+          ],
+          "visual": "RbacScope",
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles",
+          "teaches": [
+            "f-u08-rbac-def",
+            "f-u08-rbac-roles",
+            "f-u08-least-privilege"
+          ]
         },
         {
           "id": "u08-l3-e2",
@@ -392,23 +617,10 @@
           ],
           "answer": 0,
           "explanation": "Contributor bisa mengelola semua resource, tapi tidak bisa memberi akses ke orang lain. Owner bisa keduanya.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l3-i3",
-          "type": "intro",
-          "concept": "external-identities",
-          "title": "External identities",
-          "body": "External identities membuat orang di luar organisasi, misalnya partner atau vendor, bisa masuk dengan akun mereka sendiri. Dengan B2B (Business-to-Business) collaboration, mereka menjadi guest user di organisasimu."
-        },
-        {
-          "id": "u08-l3-e3",
-          "type": "truefalse",
-          "concept": "external-identities",
-          "prompt": "With B2B (Business-to-Business) collaboration, partners must get a new username and password from your organization.",
-          "answer": false,
-          "explanation": "Pernyataan ini salah. Partner masuk sebagai guest dengan identitas mereka sendiri, jadi tidak perlu username dan password baru dari organisasimu.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-rbac-roles"
+          ]
         },
         {
           "id": "u08-l3-e4",
@@ -434,22 +646,10 @@
             ]
           ],
           "explanation": "Empat role bawaan yang paling sering keluar di ujian.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l3-e5",
-          "type": "choice",
-          "concept": "conditional-access",
-          "prompt": "A company wants to require MFA (Multi-Factor Authentication) only when users sign in from outside the office network. What should it use?",
-          "options": [
-            "Conditional Access",
-            "Azure Policy",
-            "A resource lock",
-            "VNet (Virtual Network) peering"
-          ],
-          "answer": 0,
-          "explanation": "Keputusan berdasarkan lokasi login = Conditional Access.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-rbac-roles"
+          ]
         },
         {
           "id": "u08-l3-e6",
@@ -464,7 +664,41 @@
           ],
           "answer": 0,
           "explanation": "Prinsip least privilege: role paling kecil (Reader) di scope paling sempit yang cukup (resource group itu).",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-rbac-roles",
+            "f-u08-least-privilege",
+            "f-u08-rbac-def"
+          ]
+        },
+        {
+          "id": "u08-l3-i3",
+          "type": "learn",
+          "concepts": [
+            "external-identities"
+          ],
+          "title": "External identities",
+          "body": "External identities membuat orang di luar organisasi, misalnya partner atau vendor, bisa masuk dengan akun mereka sendiri. Dengan B2B (Business-to-Business) collaboration, mereka menjadi guest user di organisasimu. Kamu tidak perlu membuat dan mengelola password untuk mereka.",
+          "keyPoints": [
+            "Partner masuk sebagai guest",
+            "Memakai identitas mereka sendiri"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b",
+          "teaches": [
+            "f-u08-b2b"
+          ]
+        },
+        {
+          "id": "u08-l3-e3",
+          "type": "truefalse",
+          "concept": "external-identities",
+          "prompt": "With B2B (Business-to-Business) collaboration, partners must get a new username and password from your organization.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Partner masuk sebagai guest dengan identitas mereka sendiri, jadi tidak perlu username dan password baru dari organisasimu.",
+          "examReady": true,
+          "requires": [
+            "f-u08-b2b"
+          ]
         },
         {
           "id": "u08-l3-e7",
@@ -487,25 +721,12 @@
             }
           ],
           "explanation": "Izin diwariskan ke bawah di dalam subscription itu saja. Contributor tidak bisa memberi akses ke orang lain.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l3-e8",
-          "type": "multi",
-          "concept": "conditional-access",
-          "prompt": "Which two signals can Conditional Access use? Choose two.",
-          "options": [
-            "The user's location",
-            "The device the user signs in from",
-            "The size of the user's virtual machine",
-            "The storage redundancy option"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Conditional Access melihat sinyal identitas: pengguna, lokasi, perangkat, aplikasi, dan risiko login.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-rbac-def",
+            "f-u08-rbac-roles",
+            "f-u08-authn-authz"
+          ]
         },
         {
           "id": "u08-l3-e9",
@@ -523,7 +744,10 @@
             "inherited",
             "resources"
           ],
-          "explanation": "Izin mengalir ke bawah: subscription, resource group, lalu resource."
+          "explanation": "Izin mengalir ke bawah: subscription, resource group, lalu resource.",
+          "requires": [
+            "f-u08-rbac-def"
+          ]
         }
       ]
     },
@@ -533,10 +757,22 @@
       "items": [
         {
           "id": "u08-l4-i1",
-          "type": "intro",
-          "concept": "zero-trust",
+          "type": "learn",
+          "concepts": [
+            "zero-trust"
+          ],
           "title": "Zero Trust",
-          "body": "Zero Trust berprinsip 'jangan percaya, selalu verifikasi'. Tiga prinsipnya: verify explicitly, use least privilege access, dan assume breach."
+          "body": "Zero Trust berprinsip \"jangan percaya, selalu verifikasi\". Tidak ada yang dipercaya otomatis, termasuk yang ada di dalam jaringan kantor. Tiga prinsipnya: verify explicitly (verifikasi dengan semua sinyal), use least privilege access (akses secukupnya, saat dibutuhkan), dan assume breach (anggap sudah dibobol, batasi dampaknya).",
+          "keyPoints": [
+            "Verify explicitly",
+            "Use least privilege access",
+            "Assume breach"
+          ],
+          "link": "https://learn.microsoft.com/en-us/security/zero-trust/zero-trust-overview",
+          "teaches": [
+            "f-u08-zt-principles",
+            "f-u08-zt-no-trust"
+          ]
         },
         {
           "id": "u08-l4-e1",
@@ -545,15 +781,90 @@
           "prompt": "Zero Trust assumes that everything inside the corporate network can be trusted.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Zero Trust tidak percaya pada apa pun secara otomatis, termasuk yang ada di dalam jaringan kantor.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-zt-no-trust"
+          ]
+        },
+        {
+          "id": "u08-l4-e6",
+          "type": "multi",
+          "concept": "zero-trust",
+          "prompt": "Which two are Zero Trust principles? Choose two.",
+          "options": [
+            "Verify explicitly",
+            "Assume breach",
+            "Trust the internal network",
+            "Grant permanent admin rights"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Prinsip Zero Trust: verify explicitly, use least privilege access, dan assume breach.",
+          "examReady": true,
+          "requires": [
+            "f-u08-zt-principles"
+          ]
+        },
+        {
+          "id": "u08-l4-e5",
+          "type": "choice",
+          "concept": "zero-trust",
+          "prompt": "A company gives every admin permanent Owner access to all subscriptions 'just in case'. Which Zero Trust principle does this break?",
+          "options": [
+            "Use least privilege access",
+            "Verify explicitly",
+            "Assume breach",
+            "Defense in depth"
+          ],
+          "answer": 0,
+          "explanation": "Akses permanen dan berlebihan melanggar least privilege. Beri akses secukupnya, hanya saat dibutuhkan.",
+          "examReady": true,
+          "requires": [
+            "f-u08-zt-principles",
+            "f-u08-least-privilege"
+          ]
+        },
+        {
+          "id": "u08-l4-e8",
+          "type": "fill",
+          "concept": "zero-trust",
+          "prompt": "Complete the sentence.",
+          "sentence": "Zero Trust means: never ___, always ___.",
+          "bank": [
+            "trust",
+            "verify",
+            "share",
+            "sign out"
+          ],
+          "answers": [
+            "trust",
+            "verify"
+          ],
+          "explanation": "Never trust, always verify.",
+          "requires": [
+            "f-u08-zt-no-trust"
+          ]
         },
         {
           "id": "u08-l4-i2",
-          "type": "intro",
-          "concept": "defense-in-depth",
+          "type": "learn",
+          "concepts": [
+            "defense-in-depth"
+          ],
           "title": "Defense in depth",
-          "body": "Defense in depth melapisi keamanan seperti lapisan bawang, supaya satu lapisan jebol tidak langsung membuka data. Dari luar ke dalam: physical security, identity and access, perimeter, network, compute, application, lalu data.",
-          "visual": "DefenseInDepth"
+          "body": "Defense in depth melapisi keamanan seperti lapisan bawang, supaya satu lapisan jebol tidak langsung membuka data. Dari luar ke dalam: physical security, identity and access, perimeter, network, compute, application, lalu data di tengah.",
+          "keyPoints": [
+            "Banyak lapisan, bukan satu tembok",
+            "Data ada di tengah"
+          ],
+          "visual": "DefenseInDepth",
+          "link": "https://learn.microsoft.com/en-us/azure/security/fundamentals/overview",
+          "teaches": [
+            "f-u08-did-def",
+            "f-u08-did-layers"
+          ]
         },
         {
           "id": "u08-l4-e2",
@@ -568,33 +879,10 @@
           ],
           "answer": 0,
           "explanation": "Data ada di tengah. Semua lapisan lain ada untuk melindunginya.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l4-e3",
-          "type": "match",
-          "concept": "zero-trust",
-          "prompt": "Match each idea with its meaning.",
-          "pairs": [
-            [
-              "Verify explicitly",
-              "Always authenticate and authorize using all available signals"
-            ],
-            [
-              "Use least privilege access",
-              "Give just enough access, just in time"
-            ],
-            [
-              "Assume breach",
-              "Limit the damage and segment access"
-            ],
-            [
-              "Defense in depth",
-              "Several layers of security around the data"
-            ]
-          ],
-          "explanation": "Tiga prinsip Zero Trust ditambah konsep defense in depth.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-did-layers"
+          ]
         },
         {
           "id": "u08-l4-e4",
@@ -632,40 +920,13 @@
               "bucket": 2
             }
           ],
-          "explanation": "Setiap lapisan punya kontrolnya sendiri: identitas (MFA (Multi-Factor Authentication), SSO (Single Sign-On)), jaringan (filter traffic), dan data (enkripsi, akses)."
-        },
-        {
-          "id": "u08-l4-e5",
-          "type": "choice",
-          "concept": "zero-trust",
-          "prompt": "A company gives every admin permanent Owner access to all subscriptions 'just in case'. Which Zero Trust principle does this break?",
-          "options": [
-            "Use least privilege access",
-            "Verify explicitly",
-            "Assume breach",
-            "Defense in depth"
-          ],
-          "answer": 0,
-          "explanation": "Akses permanen dan berlebihan melanggar least privilege. Beri akses secukupnya, hanya saat dibutuhkan.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l4-e6",
-          "type": "multi",
-          "concept": "zero-trust",
-          "prompt": "Which two are Zero Trust principles? Choose two.",
-          "options": [
-            "Verify explicitly",
-            "Assume breach",
-            "Trust the internal network",
-            "Grant permanent admin rights"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Prinsip Zero Trust: verify explicitly, use least privilege access, dan assume breach.",
-          "examReady": true
+          "explanation": "Setiap lapisan punya kontrolnya sendiri: identitas (MFA (Multi-Factor Authentication), SSO (Single Sign-On)), jaringan (filter traffic), dan data (enkripsi, akses).",
+          "requires": [
+            "f-u08-did-layers",
+            "f-u08-mfa",
+            "f-u08-sso",
+            "f-u06-nsg-defaults"
+          ]
         },
         {
           "id": "u08-l4-e7",
@@ -682,25 +943,40 @@
             "Data"
           ],
           "explanation": "Dari luar ke dalam: physical security, identity and access, perimeter, network, compute, application, data.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-did-layers"
+          ]
         },
         {
-          "id": "u08-l4-e8",
-          "type": "fill",
+          "id": "u08-l4-e3",
+          "type": "match",
           "concept": "zero-trust",
-          "prompt": "Complete the sentence.",
-          "sentence": "Zero Trust means: never ___, always ___.",
-          "bank": [
-            "trust",
-            "verify",
-            "share",
-            "sign out"
+          "prompt": "Match each idea with its meaning.",
+          "pairs": [
+            [
+              "Verify explicitly",
+              "Always authenticate and authorize using all available signals"
+            ],
+            [
+              "Use least privilege access",
+              "Give just enough access, just in time"
+            ],
+            [
+              "Assume breach",
+              "Limit the damage and segment access"
+            ],
+            [
+              "Defense in depth",
+              "Several layers of security around the data"
+            ]
           ],
-          "answers": [
-            "trust",
-            "verify"
-          ],
-          "explanation": "Never trust, always verify."
+          "explanation": "Tiga prinsip Zero Trust ditambah konsep defense in depth.",
+          "examReady": true,
+          "requires": [
+            "f-u08-zt-principles",
+            "f-u08-did-def"
+          ]
         }
       ]
     },
@@ -710,10 +986,21 @@
       "items": [
         {
           "id": "u08-l5-i1",
-          "type": "intro",
-          "concept": "defender-for-cloud",
+          "type": "learn",
+          "concepts": [
+            "defender-for-cloud"
+          ],
           "title": "Defender for Cloud",
-          "body": "Microsoft Defender for Cloud memantau postur keamanan dan melindungi dari ancaman. Jangkauannya Azure, on-premises, dan cloud lain seperti AWS (Amazon Web Services) atau Google Cloud."
+          "body": "Microsoft Defender for Cloud melindungi resource di Azure, di cloud lain seperti AWS (Amazon Web Services) dan Google Cloud, dan di on-premises. Kerjanya tiga langkah: menilai postur keamanan terus-menerus (assess), memberi rekomendasi untuk mengamankan resource (secure), dan mendeteksi ancaman lalu mengirim alert (defend).",
+          "keyPoints": [
+            "Azure, cloud lain, dan on-premises",
+            "Assess, secure, defend"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction",
+          "teaches": [
+            "f-u08-defender-def",
+            "f-u08-defender-functions"
+          ]
         },
         {
           "id": "u08-l5-e1",
@@ -722,14 +1009,92 @@
           "prompt": "Microsoft Defender for Cloud can protect resources in other clouds, not only in Azure.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Defender for Cloud mendukung hybrid dan multi-cloud.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-defender-def"
+          ]
+        },
+        {
+          "id": "u08-l5-e5",
+          "type": "choice",
+          "concept": "defender-for-cloud",
+          "prompt": "A company runs workloads in Azure, in its own datacenter, and in AWS (Amazon Web Services). It wants one tool that shows security recommendations for all of them. What should it use?",
+          "options": [
+            "Microsoft Defender for Cloud",
+            "Azure Policy only",
+            "Azure DNS (Domain Name System)",
+            "Azure Data Box"
+          ],
+          "answer": 0,
+          "explanation": "Defender for Cloud melindungi Azure, on-premises, dan cloud lain dari satu tempat.",
+          "examReady": true,
+          "requires": [
+            "f-u08-defender-def",
+            "f-u02-policy-audit",
+            "f-u06-dns-def",
+            "f-u07-databox-def"
+          ]
+        },
+        {
+          "id": "u08-l5-e6",
+          "type": "multi",
+          "concept": "defender-for-cloud",
+          "prompt": "Which two are functions of Microsoft Defender for Cloud? Choose two.",
+          "options": [
+            "Provide security recommendations",
+            "Detect threats and raise alerts",
+            "Buy domain names",
+            "Estimate the cost of new resources"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Rekomendasi (secure) dan deteksi ancaman (defend) adalah inti Defender for Cloud.",
+          "examReady": true,
+          "requires": [
+            "f-u08-defender-functions",
+            "f-u06-azure-dns",
+            "f-u02-pricing-calculator"
+          ]
+        },
+        {
+          "id": "u08-l5-e8",
+          "type": "fill",
+          "concept": "defender-for-cloud",
+          "prompt": "Complete the sentence.",
+          "sentence": "Defender for Cloud helps you ___ your security posture and ___ against threats.",
+          "bank": [
+            "assess",
+            "defend",
+            "delete",
+            "bill"
+          ],
+          "answers": [
+            "assess",
+            "defend"
+          ],
+          "explanation": "Assess, secure, defend.",
+          "requires": [
+            "f-u08-defender-functions"
+          ]
         },
         {
           "id": "u08-l5-i2",
-          "type": "intro",
-          "concept": "secure-score",
+          "type": "learn",
+          "concepts": [
+            "secure-score"
+          ],
           "title": "Secure score",
-          "body": "Secure score adalah angka yang menunjukkan seberapa baik postur keamananmu di Defender for Cloud. Skornya naik saat kamu menjalankan rekomendasi keamanan yang diberikan."
+          "body": "Secure score adalah angka yang menunjukkan seberapa baik postur keamananmu di Defender for Cloud. Makin tinggi skornya, makin rendah risikonya. Skornya naik saat kamu menjalankan rekomendasi keamanan yang diberikan.",
+          "keyPoints": [
+            "Skor tinggi = risiko rendah",
+            "Jalankan rekomendasi untuk menaikkan skor"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/secure-score-security-controls",
+          "teaches": [
+            "f-u08-secure-score"
+          ]
         },
         {
           "id": "u08-l5-e2",
@@ -744,7 +1109,79 @@
           ],
           "answer": 0,
           "explanation": "Secure score mengukur postur keamanan. Menjalankan rekomendasi menaikkan skornya.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u08-secure-score",
+            "f-u02-sla"
+          ]
+        },
+        {
+          "id": "u08-l5-e7",
+          "type": "yesno",
+          "concept": "secure-score",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso opens Microsoft Defender for Cloud for the first time.",
+          "statements": [
+            {
+              "text": "Contoso can see a secure score for its environment.",
+              "answer": true
+            },
+            {
+              "text": "Following recommendations can raise the secure score.",
+              "answer": true
+            },
+            {
+              "text": "Defender for Cloud only works for resources in Azure.",
+              "answer": false
+            }
+          ],
+          "explanation": "Secure score langsung terlihat, naik saat rekomendasi dijalankan, dan cakupannya juga termasuk on-premises serta cloud lain.",
+          "examReady": true,
+          "requires": [
+            "f-u08-secure-score",
+            "f-u08-defender-def"
+          ]
+        },
+        {
+          "id": "u08-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "defender-for-cloud"
+          ],
+          "title": "Menutup port manajemen",
+          "body": "Port manajemen seperti RDP (Remote Desktop Protocol) yang terbuka ke internet sering diserang. Defender for Cloud akan merekomendasikan untuk menutupnya, misalnya dengan NSG (Network Security Group). Pilihan lainnya just-in-time VM (Virtual Machine) access, yang membuka port hanya saat dibutuhkan dan hanya untuk waktu terbatas.",
+          "keyPoints": [
+            "Port manajemen jangan terbuka ke internet",
+            "Just-in-time: buka hanya saat dibutuhkan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-overview",
+          "teaches": [
+            "f-u08-jit"
+          ]
+        },
+        {
+          "id": "u08-l5-e4",
+          "type": "fix",
+          "concept": "defender-for-cloud",
+          "prompt": "What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "Defender for Cloud recommendation",
+            "message": "Management ports of virtual machines should be protected. 3 virtual machines allow RDP (Remote Desktop Protocol) port 3389 from the internet."
+          },
+          "options": [
+            "Follow the recommendation and restrict port 3389, for example with an NSG (Network Security Group) or just-in-time access",
+            "Ignore it, because Microsoft patches and secures customer virtual machines for you",
+            "Turn off Defender for Cloud so the recommendation no longer appears on the dashboard",
+            "Move remote desktop to port 3390 and keep it open to the whole internet"
+          ],
+          "answer": 0,
+          "explanation": "Port manajemen yang terbuka ke internet adalah target serangan brute force. Menutupnya menaikkan secure score.",
+          "requires": [
+            "f-u08-jit",
+            "f-u06-nsg-def",
+            "f-u03-iaas-patch"
+          ]
         },
         {
           "id": "u08-l5-e3",
@@ -770,102 +1207,131 @@
             ]
           ],
           "explanation": "Defender for Cloud bekerja dalam tiga langkah: assess, secure, defend.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l5-e4",
-          "type": "fix",
-          "concept": "defender-for-cloud",
-          "prompt": "What should you do?",
-          "scene": {
-            "kind": "portal",
-            "title": "Defender for Cloud recommendation",
-            "message": "Management ports of virtual machines should be protected. 3 virtual machines allow RDP (Remote Desktop Protocol) port 3389 from the internet."
-          },
-          "options": [
-            "Follow the recommendation and restrict port 3389, for example with an NSG (Network Security Group) or just-in-time access",
-            "Ignore it, because Microsoft patches and secures customer virtual machines for you",
-            "Turn off Defender for Cloud so the recommendation no longer appears on the dashboard",
-            "Move remote desktop to port 3390 and keep it open to the whole internet"
-          ],
-          "answer": 0,
-          "explanation": "Port manajemen yang terbuka ke internet adalah target serangan brute force. Menutupnya menaikkan secure score."
-        },
-        {
-          "id": "u08-l5-e5",
-          "type": "choice",
-          "concept": "defender-for-cloud",
-          "prompt": "A company runs workloads in Azure, in its own datacenter, and in AWS (Amazon Web Services). It wants one tool that shows security recommendations for all of them. What should it use?",
-          "options": [
-            "Microsoft Defender for Cloud",
-            "Azure Advisor only",
-            "Azure DNS (Domain Name System)",
-            "Azure Data Box"
-          ],
-          "answer": 0,
-          "explanation": "Defender for Cloud melindungi Azure, on-premises, dan cloud lain dari satu tempat.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l5-e6",
-          "type": "multi",
-          "concept": "defender-for-cloud",
-          "prompt": "Which two are functions of Microsoft Defender for Cloud? Choose two.",
-          "options": [
-            "Provide security recommendations",
-            "Detect threats and raise alerts",
-            "Buy domain names",
-            "Estimate the cost of new resources"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Rekomendasi (secure) dan deteksi ancaman (defend) adalah inti Defender for Cloud.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l5-e7",
-          "type": "yesno",
-          "concept": "secure-score",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso opens Microsoft Defender for Cloud for the first time.",
-          "statements": [
-            {
-              "text": "Contoso can see a secure score for its environment.",
-              "answer": true
-            },
-            {
-              "text": "Following recommendations can raise the secure score.",
-              "answer": true
-            },
-            {
-              "text": "Defender for Cloud only works for resources in Azure.",
-              "answer": false
-            }
-          ],
-          "explanation": "Secure score langsung terlihat, naik saat rekomendasi dijalankan, dan cakupannya juga termasuk on-premises serta cloud lain.",
-          "examReady": true
-        },
-        {
-          "id": "u08-l5-e8",
-          "type": "fill",
-          "concept": "defender-for-cloud",
-          "prompt": "Complete the sentence.",
-          "sentence": "Defender for Cloud helps you ___ your security posture and ___ against threats.",
-          "bank": [
-            "assess",
-            "defend",
-            "delete",
-            "bill"
-          ],
-          "answers": [
-            "assess",
-            "defend"
-          ],
-          "explanation": "Assess, secure, defend."
+          "examReady": true,
+          "requires": [
+            "f-u08-defender-functions",
+            "f-u08-secure-score"
+          ]
         }
       ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "f-u08-entra-def",
+      "statement": "Microsoft Entra ID adalah layanan identitas dan akses berbasis cloud dari Microsoft untuk autentikasi pengguna, SSO (Single Sign-On) ke aplikasi, dan pengelolaan perangkat.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/whatis"
+    },
+    {
+      "id": "f-u08-entra-risk",
+      "statement": "Microsoft Entra ID bisa mendeteksi login yang berisiko, misalnya login yang kemungkinan dilakukan penyerang.",
+      "source": "https://learn.microsoft.com/en-us/entra/id-protection/overview-identity-protection"
+    },
+    {
+      "id": "f-u08-entra-connect",
+      "statement": "Microsoft Entra Connect menyinkronkan identitas pengguna dari Active Directory on-premises ke Microsoft Entra ID, jadi pengguna memakai identitas yang sama di on-premises dan di cloud.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/how-to-connect-sync-whatis"
+    },
+    {
+      "id": "f-u08-domain-services",
+      "statement": "Microsoft Entra Domain Services menyediakan domain join, group policy, LDAP, dan autentikasi Kerberos tanpa perlu men-deploy dan mem-patch domain controller sendiri.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/domain-services/overview"
+    },
+    {
+      "id": "f-u08-sso",
+      "statement": "SSO (Single Sign-On) membuat pengguna cukup login sekali untuk memakai banyak aplikasi; saat karyawan keluar, menonaktifkan satu akunnya mencabut akses ke semua aplikasi yang terhubung.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/what-is-single-sign-on"
+    },
+    {
+      "id": "f-u08-mfa",
+      "statement": "MFA (Multi-Factor Authentication) meminta dua bukti identitas atau lebih dari kategori berbeda: sesuatu yang kamu tahu, sesuatu yang kamu punya, atau sesuatu yang melekat padamu.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-mfa-howitworks"
+    },
+    {
+      "id": "f-u08-mfa-stolen",
+      "statement": "Dengan MFA (Multi-Factor Authentication), password yang dicuri saja tidak cukup untuk login.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-mfa-howitworks"
+    },
+    {
+      "id": "f-u08-passwordless",
+      "statement": "Opsi login passwordless di Microsoft Entra ID: Windows Hello for Business, aplikasi Microsoft Authenticator, dan passkey atau security key FIDO2.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-passwordless"
+    },
+    {
+      "id": "f-u08-ca-def",
+      "statement": "Conditional Access memakai sinyal seperti pengguna, lokasi, perangkat, dan aplikasi untuk memutuskan: izinkan, minta MFA (Multi-Factor Authentication), atau blokir.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview"
+    },
+    {
+      "id": "f-u08-ca-license",
+      "statement": "Conditional Access butuh lisensi Microsoft Entra ID P1 atau P2.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview"
+    },
+    {
+      "id": "f-u08-authn-authz",
+      "statement": "Autentikasi membuktikan siapa kamu; otorisasi menentukan apa yang boleh kamu lakukan setelah itu.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity-platform/authentication-vs-authorization"
+    },
+    {
+      "id": "f-u08-rbac-def",
+      "statement": "RBAC (Role-Based Access Control) memberi izin lewat role pada scope management group, subscription, resource group, atau resource, dan izin di scope atas diwariskan ke bawah.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-steps"
+    },
+    {
+      "id": "f-u08-rbac-roles",
+      "statement": "Role bawaan Azure: Owner mengelola semuanya termasuk akses; Contributor mengelola resource tapi tidak bisa memberi akses; Reader hanya melihat; User Access Administrator mengelola akses pengguna.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles"
+    },
+    {
+      "id": "f-u08-least-privilege",
+      "statement": "Least privilege berarti memberi role paling kecil pada scope paling sempit yang masih cukup untuk pekerjaannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/best-practices"
+    },
+    {
+      "id": "f-u08-b2b",
+      "statement": "Dengan B2B collaboration, pengguna dari luar organisasi masuk sebagai guest memakai identitas mereka sendiri, jadi organisasimu tidak perlu membuat password untuk mereka.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b"
+    },
+    {
+      "id": "f-u08-zt-principles",
+      "statement": "Tiga prinsip Zero Trust: verify explicitly, use least privilege access, dan assume breach.",
+      "source": "https://learn.microsoft.com/en-us/security/zero-trust/zero-trust-overview"
+    },
+    {
+      "id": "f-u08-zt-no-trust",
+      "statement": "Zero Trust tidak mempercayai apa pun secara otomatis, termasuk yang berada di dalam jaringan kantor; setiap permintaan diverifikasi.",
+      "source": "https://learn.microsoft.com/en-us/security/zero-trust/zero-trust-overview"
+    },
+    {
+      "id": "f-u08-did-def",
+      "statement": "Defense in depth melapisi keamanan, jadi kalau satu lapisan jebol, lapisan lain masih melindungi.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/overview"
+    },
+    {
+      "id": "f-u08-did-layers",
+      "statement": "Lapisan defense in depth dari luar ke dalam: physical security, identity and access, perimeter, network, compute, application, lalu data di tengah.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/overview",
+      "verify": true
+    },
+    {
+      "id": "f-u08-defender-def",
+      "statement": "Microsoft Defender for Cloud melindungi resource di Azure, di cloud lain seperti AWS dan Google Cloud, dan di on-premises.",
+      "source": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction"
+    },
+    {
+      "id": "f-u08-defender-functions",
+      "statement": "Defender for Cloud terus menilai postur keamanan, memberi rekomendasi untuk mengamankan resource, dan mendeteksi ancaman lalu mengirim alert.",
+      "source": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction"
+    },
+    {
+      "id": "f-u08-secure-score",
+      "statement": "Secure score di Defender for Cloud mengukur postur keamanan; makin tinggi skornya makin rendah risikonya, dan skornya naik saat rekomendasi dijalankan.",
+      "source": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/secure-score-security-controls"
+    },
+    {
+      "id": "f-u08-jit",
+      "statement": "Just-in-time VM access di Defender for Cloud membuka port manajemen VM (Virtual Machine) hanya saat dibutuhkan dan hanya untuk waktu terbatas.",
+      "source": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-overview"
     }
   ]
 }
