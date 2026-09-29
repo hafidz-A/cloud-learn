@@ -970,7 +970,7 @@
             "azure-functions"
           ],
           "title": "Azure Functions",
-          "body": "Azure Functions menjalankan potongan kode saat ada event, misalnya request HTTP (Hypertext Transfer Protocol), timer, atau pesan baru. Ini serverless: tidak ada server yang kamu kelola, dan jumlah instance naik-turun otomatis. Di Consumption plan, kamu hanya membayar saat kode berjalan.",
+          "body": "Azure Functions menjalankan potongan kode saat ada event, misalnya request HTTP (Hypertext Transfer Protocol), timer, atau pesan baru. Ini serverless: tidak ada server yang kamu kelola, dan jumlah instance naik-turun otomatis. Di plan serverless-nya (Flex Consumption), kamu hanya membayar saat kode berjalan.",
           "keyPoints": [
             "Dipicu event, tanpa server",
             "Scale otomatis, bayar saat berjalan"

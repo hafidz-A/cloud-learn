@@ -811,7 +811,7 @@
             "serverless-billing"
           ],
           "title": "Bayar saat kode berjalan",
-          "body": "Di Consumption plan Azure Functions, kamu hanya membayar saat function berjalan. Tagihannya dihitung dari jumlah eksekusi, lama eksekusi, dan memori. Azure juga menambah dan mengurangi instance otomatis mengikuti jumlah event. Kalau tidak ada event, kode tidak berjalan.",
+          "body": "Di plan serverless Azure Functions, yaitu Flex Consumption (pengganti Consumption plan versi lama), kamu hanya membayar saat function berjalan. Tagihannya dihitung dari jumlah eksekusi dan memori yang dipakai selama kode berjalan. Azure juga menambah dan mengurangi instance otomatis mengikuti jumlah event. Kalau tidak ada event, kode tidak berjalan.",
           "keyPoints": [
             "Bayar per eksekusi, bukan per jam server menyala",
             "Scaling otomatis mengikuti jumlah event"
@@ -857,7 +857,7 @@
             0,
             1
           ],
-          "explanation": "Serverless = scale otomatis dan bayar saat kode berjalan (misalnya consumption plan di Azure Functions). Tidak ada OS (Operating System) yang kamu urus.",
+          "explanation": "Serverless = scale otomatis dan bayar saat kode berjalan (misalnya Flex Consumption plan di Azure Functions). Tidak ada OS (Operating System) yang kamu urus.",
           "examReady": true,
           "requires": [
             "f-u03-serverless-scale",
@@ -1066,13 +1066,13 @@
     },
     {
       "id": "f-u03-serverless-billing",
-      "statement": "Di Consumption plan Azure Functions, customer hanya membayar saat function berjalan, berdasarkan jumlah eksekusi, lama eksekusi, dan memori.",
-      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/consumption-plan"
+      "statement": "Di plan serverless Azure Functions, yaitu Flex Consumption (yang direkomendasikan untuk app baru) dan Consumption (versi lama), customer membayar saat function berjalan: jumlah eksekusi dan memori yang dipakai selama kode berjalan.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/flex-consumption-plan"
     },
     {
       "id": "f-u03-serverless-scale",
       "statement": "Azure Functions menambah dan mengurangi instance secara otomatis mengikuti jumlah event yang masuk.",
-      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/consumption-plan"
+      "source": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale"
     },
     {
       "id": "f-u03-functions-scenarios",

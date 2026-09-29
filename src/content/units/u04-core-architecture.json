@@ -137,9 +137,10 @@
             "region-pairs"
           ],
           "title": "Region pair",
-          "body": "Region pair adalah dua region yang dipasangkan Microsoft, biasanya di geografi yang sama dan berjarak minimal sekitar 480 km. Availability zone tidak menolong kalau satu region lumpuh total, jadi salinan untuk pemulihan disimpan di region pasangannya. Update terencana dijalankan bergantian di dalam pasangan. Saat gangguan besar, satu region dari tiap pasangan diprioritaskan pulih.",
+          "body": "Region pair adalah dua region yang dipasangkan Microsoft, biasanya di geografi yang sama dan berjarak minimal sekitar 480 km. Tidak semua region punya pasangan; banyak region baru hanya mengandalkan availability zone. Availability zone tidak menolong kalau satu region lumpuh total, jadi salinan untuk pemulihan disimpan di region pasangannya. Update terencana dijalankan bergantian di dalam pasangan. Saat gangguan besar, satu region dari tiap pasangan diprioritaskan pulih.",
           "keyPoints": [
             "Pasangannya ditentukan Microsoft, bukan dipilih sendiri",
+            "Tidak semua region punya pair, terutama region baru",
             "Zone: tahan satu datacenter mati. Pair: tahan satu region mati",
             "Update bergantian, pemulihan diprioritaskan"
           ],
@@ -147,6 +148,7 @@
           "link": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired",
           "teaches": [
             "f-u04-pair-def",
+            "f-u04-pair-not-all",
             "f-u04-pair-dr",
             "f-u04-pair-updates",
             "f-u04-pair-recovery"
@@ -169,6 +171,19 @@
           "requires": [
             "f-u04-pair-def",
             "f-u04-az-def"
+          ]
+        },
+        {
+          "id": "u04-l1-e9",
+          "type": "truefalse",
+          "concept": "region-pairs",
+          "prompt": "Every Azure region has a region pair.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Banyak region, terutama region baru, tidak punya region pair dan memakai availability zone sebagai cara utama redundansi. Jadi cek dulu apakah region-mu punya pasangan sebelum mengandalkannya untuk pemulihan bencana.",
+          "examReady": true,
+          "requires": [
+            "f-u04-pair-def",
+            "f-u04-pair-not-all"
           ]
         },
         {
@@ -207,7 +222,7 @@
           "id": "u04-l1-e5",
           "type": "choice",
           "concept": "region-pairs",
-          "prompt": "Your company runs its main app in one Azure region. You need a recovery plan in case a disaster takes the entire region offline. Where should the recovery copy run?",
+          "prompt": "Your company runs its main app in an Azure region that has a region pair. You need a recovery plan in case a disaster takes the entire region offline. Where should the recovery copy run?",
           "options": [
             "In another availability zone in the same region",
             "In the paired region",
@@ -1021,6 +1036,11 @@
     {
       "id": "f-u04-pair-def",
       "statement": "Region pair adalah dua region yang dipasangkan Microsoft, biasanya di geografi yang sama dan berjarak minimal sekitar 300 mil (sekitar 480 km).",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired"
+    },
+    {
+      "id": "f-u04-pair-not-all",
+      "statement": "Tidak semua region punya region pair: banyak region, terutama region baru, tidak dipasangkan dan memakai availability zone sebagai cara utama redundansi.",
       "source": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired"
     },
     {

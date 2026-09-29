@@ -978,7 +978,7 @@
               "answer": false
             }
           ],
-          "explanation": "Autoscaling dan alert dikerjakan cloud untukmu secara otomatis, jadi termasuk management of the cloud. Management in the cloud artinya cara kamu mengelola, misalnya lewat portal, CLI (Command-Line Interface), atau aplikasi mobile.",
+          "explanation": "Autoscaling dan alert dikerjakan cloud untukmu secara otomatis, jadi termasuk management of the cloud. Management in the cloud artinya cara kamu mengelola, misalnya lewat portal, CLI (Command-Line Interface), atau PowerShell.",
           "examReady": true,
           "requires": [
             "f-u02-mgmt-of-cloud",

@@ -240,7 +240,7 @@
             "primary-redundancy"
           ],
           "title": "LRS dan ZRS",
-          "body": "Azure Storage selalu menyimpan beberapa salinan datamu. LRS (Locally Redundant Storage) menyimpan tiga salinan di satu datacenter, dengan durability 11 nines. ZRS (Zone-Redundant Storage) menyebar salinannya ke tiga availability zone di satu region, dengan durability 12 nines. Keduanya tetap berada di satu region.",
+          "body": "Azure Storage selalu menyimpan beberapa salinan datamu. LRS (Locally Redundant Storage) menyimpan tiga salinan di satu datacenter, dengan durability 11 nines. ZRS (Zone-Redundant Storage) menyebar salinannya ke tiga (atau lebih) availability zone di satu region, dengan durability 12 nines. Keduanya tetap berada di satu region.",
           "keyPoints": [
             "LRS: tiga salinan di satu datacenter, 11 nines",
             "ZRS: tiga availability zone, 12 nines"
@@ -1303,7 +1303,7 @@
     },
     {
       "id": "f-u07-zrs",
-      "statement": "ZRS (Zone-Redundant Storage) menyalin data ke tiga availability zone di region utama, dengan durability minimal 12 nines per tahun.",
+      "statement": "ZRS (Zone-Redundant Storage) menyalin data ke tiga atau lebih availability zone di region utama, dengan durability minimal 12 nines per tahun.",
       "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
     },
     {

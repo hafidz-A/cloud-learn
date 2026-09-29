@@ -20,7 +20,7 @@
             "Autentikasi, SSO, dan deteksi login berisiko",
             "Dipakai Azure, Microsoft 365, dan aplikasi lain"
           ],
-          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/whatis",
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/what-is-entra",
           "teaches": [
             "f-u08-entra-def",
             "f-u08-entra-risk"
@@ -427,7 +427,7 @@
             "Tanpa password, tetap multi-faktor",
             "Windows Hello, Authenticator, FIDO2"
           ],
-          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-passwordless",
+          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-passkeys-fido2",
           "teaches": [
             "f-u08-passwordless"
           ]
@@ -1220,7 +1220,7 @@
     {
       "id": "f-u08-entra-def",
       "statement": "Microsoft Entra ID adalah layanan identitas dan akses berbasis cloud dari Microsoft untuk autentikasi pengguna, SSO (Single Sign-On) ke aplikasi, dan pengelolaan perangkat.",
-      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/whatis"
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/what-is-entra"
     },
     {
       "id": "f-u08-entra-risk",
@@ -1255,7 +1255,7 @@
     {
       "id": "f-u08-passwordless",
       "statement": "Opsi login passwordless di Microsoft Entra ID: Windows Hello for Business, aplikasi Microsoft Authenticator, dan passkey atau security key FIDO2.",
-      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-passwordless"
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/how-to-deploy-phishing-resistant-passwordless-authentication"
     },
     {
       "id": "f-u08-ca-def",

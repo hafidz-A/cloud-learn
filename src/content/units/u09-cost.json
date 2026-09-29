@@ -728,7 +728,8 @@
     {
       "id": "f-u09-tco",
       "statement": "TCO (Total Cost of Ownership) Calculator membandingkan biaya infrastruktur on-premises, termasuk hardware, listrik, pendingin, dan tenaga kerja pengelolanya, dengan biaya menjalankannya di Azure.",
-      "source": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/plan/estimate-total-cost-of-ownership"
+      "source": "https://learn.microsoft.com/en-us/training/modules/describe-cost-management-azure/",
+      "verify": true
     },
     {
       "id": "f-u09-calc-compare",

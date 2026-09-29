@@ -734,7 +734,7 @@
             "azure-dns"
           ],
           "title": "Azure DNS",
-          "body": "DNS (Domain Name System) menerjemahkan nama seperti contoso.com menjadi alamat IP (Internet Protocol), seperti buku telepon internet. Azure DNS menghosting domain DNS-mu di infrastruktur Azure. Tapi kamu tidak bisa membeli nama domain lewat Azure DNS; nama domain dibeli di domain registrar.",
+          "body": "DNS (Domain Name System) menerjemahkan nama seperti contoso.com menjadi alamat IP (Internet Protocol), seperti buku telepon internet. Azure DNS menghosting domain DNS-mu di infrastruktur Azure. Tapi kamu tidak bisa membeli nama domain lewat Azure DNS; nama domain dibeli lewat domain registrar atau App Service domains.",
           "keyPoints": [
             "DNS = nama ke alamat IP",
             "Azure DNS menghosting domain, tidak menjual domain"
@@ -751,7 +751,7 @@
           "concept": "azure-dns",
           "prompt": "You can use Azure DNS (Domain Name System) to buy a new domain name.",
           "answer": false,
-          "explanation": "Pernyataan ini salah. Azure DNS (Domain Name System) hanya menghosting domain. Nama domain dibeli di domain registrar.",
+          "explanation": "Pernyataan ini salah. Azure DNS (Domain Name System) hanya menghosting domain. Nama domain dibeli lewat domain registrar atau App Service domains, lalu bisa dihosting di Azure DNS.",
           "examReady": true,
           "requires": [
             "f-u06-azure-dns"
@@ -1054,13 +1054,13 @@
     },
     {
       "id": "f-u06-azure-dns",
-      "statement": "Azure DNS menghosting domain DNS di infrastruktur Azure, tapi tidak bisa dipakai untuk membeli nama domain; nama domain dibeli di domain registrar.",
-      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-overview"
+      "statement": "Azure DNS menghosting domain DNS di infrastruktur Azure, tapi tidak bisa dipakai untuk membeli nama domain; nama domain dibeli lewat domain registrar atau App Service domains.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/public-dns-overview"
     },
     {
       "id": "f-u06-azure-dns-mgmt",
       "statement": "Record di Azure DNS dikelola dengan kredensial, alat, dan tagihan yang sama seperti layanan Azure lain, dan aksesnya diatur dengan RBAC (Role-Based Access Control).",
-      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-overview"
+      "source": "https://learn.microsoft.com/en-us/azure/dns/public-dns-overview"
     },
     {
       "id": "f-u06-public-endpoint",
