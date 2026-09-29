@@ -1,4 +1,4 @@
-import { Check, Crown, Lock, Star, Trophy } from 'lucide-react'
+import { BookOpen, Check, Crown, Lock, Star, Trophy } from 'lucide-react'
 import { useEffect, useEffectEvent, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Button } from '../components/Button'
 import { CHECKPOINTS, PATHS, UNITS, unitNumber, type Checkpoint } from '../content/course'
@@ -228,7 +228,13 @@ function UnitCard({ unit }: { unit: Unit }) {
   return (
     <div className="mx-4 mb-4 mt-6 rounded-2xl border-2 border-kabut bg-white px-4 py-3 shadow-[0_4px_0_var(--color-kabut)]">
       <div className="flex items-center justify-between gap-3">
-        <p className="font-display text-13 font-semibold text-biru-dalam">Unit {unitNumber(unit)}</p>
+        <p className="font-display text-13 font-semibold text-biru-dalam">
+          Unit {unitNumber(unit)}
+          <span className="font-normal text-tinta-lembut">
+            {' '}
+            · {done}/{unit.lessons.length} lesson
+          </span>
+        </p>
         <p
           role="img"
           className="flex items-center gap-1 font-display text-13 font-bold"
@@ -239,11 +245,17 @@ function UnitCard({ unit }: { unit: Unit }) {
           <span aria-hidden="true">{level}/3</span>
         </p>
       </div>
-      <div className="flex items-baseline justify-between gap-3">
-        <h2 className="font-display text-20 font-bold">{unit.title}</h2>
-        <p className="shrink-0 text-13 text-tinta-lembut">
-          {done}/{unit.lessons.length} lesson
-        </p>
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="min-w-0 font-display text-20 font-bold">{unit.title}</h2>
+        <button
+          type="button"
+          onClick={() => navigate({ name: 'guide', unitId: unit.id })}
+          aria-label={`Panduan unit ${unitNumber(unit)}: ${unit.title}`}
+          className="flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border-2 border-kabut bg-white px-3 font-display text-13 font-semibold"
+        >
+          <BookOpen size={16} aria-hidden="true" className="text-biru-dalam" />
+          Panduan
+        </button>
       </div>
     </div>
   )

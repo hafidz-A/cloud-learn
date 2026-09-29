@@ -1,7 +1,7 @@
 import { CalendarClock, Heart } from 'lucide-react'
 import { Button } from '../components/Button'
 import { Mascot } from '../components/Mascot'
-import { EXERCISES, conceptName } from '../content/course'
+import { activeExercise, conceptName } from '../content/course'
 import { dayKey, daysBetween } from '../lib/date'
 import { dueIds, REVIEW_STREAK_TO_CLEAR } from '../lib/review'
 import { navigate } from '../lib/router'
@@ -12,11 +12,11 @@ export function PracticeScreen() {
   const hearts = useProgress((s) => s.hearts)
   const heartsOn = useProgress((s) => s.heartsEnabled)
   const anyLessonDone = useProgress((s) => Object.keys(s.lessonsDone).length > 0)
-  const anyMistake = Object.keys(review).some((id) => EXERCISES.has(id))
+  const anyMistake = Object.keys(review).some((id) => activeExercise(id))
   const today = dayKey()
-  const due = dueIds(review, today).filter((id) => EXERCISES.has(id))
+  const due = dueIds(review, today).filter((id) => activeExercise(id))
   const upcoming = Object.entries(review)
-    .filter(([id, e]) => e.dueDay > today && EXERCISES.has(id))
+    .filter(([id, e]) => e.dueDay > today && activeExercise(id))
     .sort(([, a], [, b]) => a.dueDay.localeCompare(b.dueDay))
   const canStart = due.length > 0 || anyLessonDone || anyMistake
 
@@ -56,7 +56,7 @@ export function PracticeScreen() {
           <h2 className="font-display text-17 font-bold">Siap diulang hari ini</h2>
           <ul className="mt-2 space-y-2">
             {due.map((id) => {
-              const ref = EXERCISES.get(id)!
+              const ref = activeExercise(id)!
               return (
                 <li key={id} className="rounded-2xl border-2 border-kabut bg-white p-3">
                   <p lang="en" className="line-clamp-2 text-15 font-semibold">
@@ -77,7 +77,7 @@ export function PracticeScreen() {
           <h2 className="font-display text-17 font-bold">Berikutnya</h2>
           <ul className="mt-2 space-y-2">
             {upcoming.map(([id, e]) => {
-              const ref = EXERCISES.get(id)!
+              const ref = activeExercise(id)!
               const inDays = daysBetween(today, e.dueDay)
               return (
                 <li key={id} className="flex items-start gap-3 rounded-2xl border-2 border-kabut bg-white p-3">

@@ -84,7 +84,7 @@ export function ExamRunScreen() {
   const flagged = attempt.flagged.includes(id)
   const answered = attempt.questionIds.map((qid) => {
     const x = examQuestion(qid)
-    return !!x && isAnswered(x.exercise, attempt.responses[qid])
+    return !!x && isAnswered(x.exercise, attempt.responses[qid], attempt.optionOrder[qid])
   })
   const unanswered = answered.filter((a) => !a).length
 

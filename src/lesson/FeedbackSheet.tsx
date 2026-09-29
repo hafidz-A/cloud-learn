@@ -1,8 +1,9 @@
-import { Check, X } from 'lucide-react'
+import { BookOpen, Check, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '../components/Button'
 import { Mascot } from '../components/Mascot'
+import type { TeachingCard } from '../lib/types'
 import type { Verdict } from './types'
 import { GlossaryText } from '../components/GlossaryText'
 
@@ -13,6 +14,8 @@ export function FeedbackSheet({
   verdict,
   explanation,
   retryNext,
+  material = [],
+  onOpenMaterial,
   onContinue,
   onHeight,
 }: {
@@ -20,6 +23,9 @@ export function FeedbackSheet({
   explanation: string
   /** The exercise was queued again; say it comes back at the end of the lesson. */
   retryNext: boolean
+  /** Learn cards to reread ("Pelajari lagi", LANGIT_AZ900_PERBAIKAN_MATERI.md section 7). */
+  material?: TeachingCard[]
+  onOpenMaterial?: (card: TeachingCard) => void
   onContinue: () => void
   onHeight: (px: number) => void
 }) {
@@ -73,6 +79,18 @@ export function FeedbackSheet({
           <p className="mt-2 text-15">
             <GlossaryText text={explanation} />
           </p>
+          {onOpenMaterial &&
+            material.map((card) => (
+              <button
+                key={card.id}
+                type="button"
+                onClick={() => onOpenMaterial(card)}
+                className="mt-1 flex min-h-11 cursor-pointer items-center gap-1.5 text-left font-display text-15 font-bold text-tinta underline underline-offset-4"
+              >
+                <BookOpen size={16} aria-hidden="true" className="shrink-0" />
+                <span>Pelajari lagi: {card.title}</span>
+              </button>
+            ))}
           {retryNext && (
             <p className="mt-2 text-13 font-semibold text-tinta-lembut">Soal ini akan muncul lagi di akhir lesson.</p>
           )}

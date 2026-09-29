@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { ITEMS, answer, main, next, play } from './helpers'
+import { ITEMS, answer, isCard, lesson, main, next, play, skipCards } from './helpers'
 
 test.use({ reducedMotion: 'reduce' })
 
@@ -32,7 +32,7 @@ test('five wrong answers use up the hearts and stop the lesson', async ({ page }
   let wrong = 0
   for (let guard = 0; guard < 30 && wrong < 5; guard++) {
     const item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
-    if (item.type !== 'intro') {
+    if (!isCard(item)) {
       await answer(page, item, { wrong: true })
       await expect(page.getByRole('region', { name: 'Kurang tepat' })).toBeVisible()
       wrong++
@@ -50,7 +50,7 @@ test('running out of hearts on the very first lesson can still be refilled in pr
   for (let guard = 0; guard < 30; guard++) {
     if (await page.getByRole('heading', { name: 'Hearts habis' }).isVisible()) break
     const item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
-    if (item.type !== 'intro') await answer(page, item, { wrong: true })
+    if (!isCard(item)) await answer(page, item, { wrong: true })
     await next(page)
   }
   await page.getByRole('button', { name: 'Latihan untuk isi hearts' }).click()
@@ -81,7 +81,7 @@ test('practice plays due review items and refills hearts', async ({ page }) => {
   await expect(page.getByText('1 soal siap diulang')).toBeVisible()
   await page.getByRole('button', { name: 'Mulai latihan' }).click()
   await expect(main(page)).toHaveAttribute('data-item-id', reviewId)
-  await expect(page.getByRole('button', { name: 'Lihat konsep' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Lihat materi' })).toBeVisible()
   await play(page, { finish: 'Latihan selesai!' })
   await page.getByRole('button', { name: 'Lanjut' }).click()
   await expect(page.getByText('Tidak ada soal jatuh tempo')).toBeVisible()
@@ -115,6 +115,13 @@ test('a domain mini exam can be flagged, submitted, scored, and reviewed', async
   await expect(page.locator('article')).toHaveCount(1)
   await expect(page.locator('article')).toHaveAttribute('data-result', 'correct')
 
+  // Wrong and unanswered questions link to the material that teaches them.
+  await page.getByRole('radio', { name: /^Salah saja/ }).click()
+  await page.getByRole('button', { name: /^Pelajari lagi: / }).first().click()
+  await expect(page.getByRole('dialog', { name: 'Materi' })).toBeVisible()
+  await page.getByRole('button', { name: 'Kembali ke pembahasan' }).click()
+  await expect(page.getByRole('dialog', { name: 'Materi' })).toHaveCount(0)
+
   // The 14 unanswered questions count in the score but not in the review queue.
   const review = await page.evaluate(() => JSON.parse(localStorage.getItem('langit-progress')!).state.review)
   expect(Object.keys(review)).toEqual([])
@@ -122,7 +129,7 @@ test('a domain mini exam can be flagged, submitted, scored, and reviewed', async
 
 test('long-pressing an abbreviation opens its glossary card', async ({ page }) => {
   await page.goto('/#/lesson/u01-l2')
-  await next(page) // intro card
+  await skipCards(page)
   await answer(page, ITEMS.get('u01-l2-e1')!)
   await next(page) // the next statement mentions SaaS
   const abbr = page.locator('abbr[data-term="SaaS"]').first()
@@ -172,16 +179,17 @@ test.describe('on a 320px phone', () => {
       const id = (await main(page).getAttribute('data-item-id'))!
       if (id === 'u07-l4-e4') break
       const item = ITEMS.get(id)!
-      if (item.type !== 'intro') await answer(page, item)
+      if (!isCard(item)) await answer(page, item)
       await next(page)
     }
     await expect(page.locator('abbr[data-term="SMB"]').first()).toBeVisible()
     expect(await overflow(page)).toEqual([])
   })
 
-  test('long intro titles fit next to Awan', async ({ page }) => {
+  test('long card titles fit on a narrow phone', async ({ page }) => {
     await page.goto('/#/lesson/u01-l2')
-    await expect(page.getByRole('heading', { name: 'Shared responsibility' })).toBeVisible()
+    const title = (lesson('u01-l2').items[0] as unknown as { title: string }).title
+    await expect(page.getByRole('heading', { name: title })).toBeVisible()
     expect(await overflow(page)).toEqual([])
   })
 })

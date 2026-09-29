@@ -12,6 +12,7 @@ import { LessonScreen } from './lesson/LessonScreen'
 import { PracticeRun } from './lesson/PracticeRun'
 import { useRoute, type Route, type Tab } from './lib/router'
 import { GlossaryScreen } from './screens/GlossaryScreen'
+import { GuideScreen } from './screens/GuideScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { PracticeScreen } from './screens/PracticeScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
@@ -50,6 +51,8 @@ function FullScreen({ route }: { route: Exclude<Route, { name: 'tab' }> }) {
       return <ExamResultScreen attemptId={route.attemptId} />
     case 'exam-review':
       return <ExamReviewScreen attemptId={route.attemptId} />
+    case 'guide':
+      return <GuideScreen unitId={route.unitId} />
   }
 }
 

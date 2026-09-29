@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ExamAttempt, Exercise, PathId } from '../lib/types'
-import { FULL_SPLIT, createAttempt, pickFull, pickWeak, readiness, scoreAttempt, weakestDomain, type ExamQuestion } from './examLogic'
+import { FULL_SPLIT, createAttempt, isAnswered, pickFull, pickWeak, readiness, scoreAttempt, weakestDomain, type ExamQuestion } from './examLogic'
 
 const q = (id: string, path: PathId, concept = 'c'): ExamQuestion => ({
   path,
@@ -72,6 +72,18 @@ describe('scoring', () => {
     expect(domainScores[1]).toEqual({ right: 0, total: 1 })
     expect(domainScores[2]).toEqual({ right: 2, total: 3 })
     expect(results.t.answered).toBe(true)
+  })
+
+  it('counts an order question as answered only once the player moved something', () => {
+    const order: Exercise = { id: 'o', type: 'order', concept: 'c', prompt: 'P', explanation: 'E', items: ['1', '2', '3'] }
+    const questions: ExamQuestion[] = [{ exercise: order, path: 1 }]
+    const lookup = (id: string) => questions.find((x) => x.exercise.id === id)
+    const attempt = createAttempt('domain', questions)
+    // A fresh attempt holds the shown (shuffled) order as its response.
+    expect(scoreAttempt(attempt, lookup).results.o.answered).toBe(false)
+    expect(isAnswered(order, attempt.responses.o, attempt.optionOrder.o)).toBe(false)
+    attempt.responses = { o: [0, 1, 2] }
+    expect(scoreAttempt(attempt, lookup).results.o).toMatchObject({ answered: true, correct: true })
   })
 })
 

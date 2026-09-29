@@ -1,5 +1,7 @@
 import type { LessonItem } from '../lib/types'
 
+const isCard = (item: LessonItem) => item.type === 'learn' || item.type === 'intro'
+
 // One run through a lesson, practice, or checkpoint (plan section 11.2): items
 // play in order; with `retryWrong`, a wrong answer puts the exercise back at
 // the end, and the run only finishes once every exercise was answered right.
@@ -20,7 +22,7 @@ export type Session = {
   retryWrong: boolean
   /** Exercise id -> right on the first attempt. Drives accuracy, XP, and scores. */
   firstTry: Record<string, boolean>
-  /** Items finished: intro cards read, exercises answered right (or answered at all without retries). */
+  /** Items finished: learn and intro cards read, exercises answered right (or answered at all without retries). */
   cleared: string[]
   totalItems: number
 }
@@ -70,8 +72,8 @@ export function answerCurrent(s: Session, correct: boolean): Session {
   }
 }
 
-/** Marks the current intro card as read. */
-export function readIntro(s: Session): Session {
+/** Marks the current learn or intro card as read. */
+export function readCard(s: Session): Session {
   return { ...s, cleared: clear(s, currentEntry(s).item.id) }
 }
 
@@ -86,5 +88,5 @@ export function progressOf(s: Session): number {
 
 /** First-attempt results in run order, one per exercise. */
 export function firstTryResults(s: Session): boolean[] {
-  return s.queue.filter((e) => !e.retry && e.item.type !== 'intro').map((e) => s.firstTry[e.item.id] ?? false)
+  return s.queue.filter((e) => !e.retry && !isCard(e.item)).map((e) => s.firstTry[e.item.id] ?? false)
 }

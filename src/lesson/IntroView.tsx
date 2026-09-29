@@ -2,11 +2,10 @@ import { Sparkles } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { Button } from '../components/Button'
 import { Mascot } from '../components/Mascot'
-import type { VisualName } from '../content/visuals'
 import type { IntroCard } from '../lib/types'
 import { LessonFooter } from './LessonFooter'
 import { useLessonKeys } from './useLessonKeys'
-import { IntroVisual } from './visuals'
+import { Visual } from '../visuals/Visual'
 import { GlossaryText } from '../components/GlossaryText'
 
 /** Intro card (plan section 11.1): one new concept, no answer, just "Lanjut". */
@@ -46,7 +45,7 @@ export function IntroView({ intro, onDone }: { intro: IntroCard; onDone: () => v
           </div>
           {intro.visual && (
             <div className="mt-5">
-              <IntroVisual name={intro.visual as VisualName} />
+              <Visual name={intro.visual} />
             </div>
           )}
           <p className="mt-5 text-17">

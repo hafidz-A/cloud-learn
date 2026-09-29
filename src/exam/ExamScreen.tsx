@@ -111,7 +111,7 @@ export function ExamScreen() {
             Sisa waktu {formatClock(active.timeLimitSec - active.elapsedSec)} ·{' '}
             {active.questionIds.filter((id) => {
               const q = examQuestion(id)
-              return q && isAnswered(q.exercise, active.responses[id])
+              return q && isAnswered(q.exercise, active.responses[id], active.optionOrder[id])
             }).length}{' '}
             dari {active.questionIds.length} dijawab
           </p>

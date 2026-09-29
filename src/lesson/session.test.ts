@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { LessonItem } from '../lib/types'
-import { advance, answerCurrent, currentEntry, firstTryResults, progressOf, readIntro, startSession, type Session } from './session'
+import { advance, answerCurrent, currentEntry, firstTryResults, progressOf, readCard, startSession, type Session } from './session'
 
 const intro: LessonItem = { id: 'x-i1', type: 'intro', concept: 'c', title: 'C', body: 'Kenalan.' }
 const tf = (n: number): LessonItem => ({ id: `x-e${n}`, type: 'truefalse', concept: 'c', prompt: 'P', explanation: 'E', answer: true })
@@ -13,7 +13,7 @@ function play(items: LessonItem[], answers: boolean[]) {
   while (s) {
     const entry = currentEntry(s)
     seen.push(entry.retry ? `${entry.item.id} (retry)` : entry.item.id)
-    s = entry.item.type === 'intro' ? readIntro(s) : answerCurrent(s, answers.shift()!)
+    s = entry.item.type === 'intro' ? readCard(s) : answerCurrent(s, answers.shift()!)
     last = s
     s = advance(s)
   }
@@ -36,7 +36,7 @@ describe('lesson session', () => {
   })
 
   it('does not move the progress bar on a wrong answer', () => {
-    let s = readIntro(startSession([intro, tf(1)]))
+    let s = readCard(startSession([intro, tf(1)]))
     s = advance(s)!
     const before = progressOf(s)
     s = answerCurrent(s, false)

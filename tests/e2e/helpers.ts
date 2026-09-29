@@ -16,6 +16,12 @@ export const UNITS: Unit[] = readdirSync(DIR)
 
 export const ITEMS = new Map<string, Item>(UNITS.flatMap((u) => u.lessons.flatMap((l) => l.items.map((i) => [i.id, i] as const))))
 
+/** Learn and intro cards teach; everything else is an exercise. */
+export const isCard = (item: Item) => item.type === 'learn' || item.type === 'intro'
+
+/** The exercises a lesson plays, in order (retired ones are skipped by the app). */
+export const exercisesOf = (l: Lesson) => l.items.filter((i) => !isCard(i) && !i.retired)
+
 export function lesson(id: string): Lesson {
   for (const u of UNITS) for (const l of u.lessons) if (l.id === id) return l
   throw new Error(`no lesson ${id}`)
@@ -120,14 +126,24 @@ export async function answer(page: Page, item: Item, { wrong = false, submit = t
 
 export const main = (page: Page) => page.locator('main[data-item-id]')
 
-/** Clicks "Lanjut" and waits for the next step (or the finish screen). */
+/** Clicks "Lanjut" (or "Paham, lanjut" on a learn card) and waits for the next step (or the finish screen). */
 export async function next(page: Page) {
   const step = await main(page).getAttribute('data-step')
-  await page.getByRole('button', { name: 'Lanjut' }).click()
+  await page.getByRole('button', { name: /^(Paham, l|L)anjut$/ }).click()
   await page.waitForFunction((prev) => {
     const m = document.querySelector<HTMLElement>('main[data-step]')
     return !m || m.dataset.step !== prev
   }, step)
+}
+
+/** Reads learn and intro cards until an exercise is on screen, and returns that exercise. */
+export async function skipCards(page: Page): Promise<Item> {
+  for (let guard = 0; guard < 10; guard++) {
+    const item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    if (!isCard(item)) return item
+    await next(page)
+  }
+  throw new Error('no exercise after the cards')
 }
 
 /**
@@ -146,7 +162,7 @@ export async function play(page: Page, { wrongFirst = new Set<string>(), finish 
     const retry = (await m.getAttribute('data-retry')) !== null
     seen.push(retry ? `${id} (retry)` : id)
     const item = ITEMS.get(id)!
-    if (item.type !== 'intro') {
+    if (!isCard(item)) {
       const wrong = wrongFirst.has(id) && !missed.has(id)
       if (wrong) missed.add(id)
       await answer(page, item, { wrong })

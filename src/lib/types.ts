@@ -8,15 +8,43 @@ export type Unit = {
   path: PathId
   title: string // "Komponen inti"
   lessons: Lesson[]
+  /**
+   * Every fact the unit teaches (LANGIT_AZ900_PERBAIKAN_MATERI.md section 3).
+   * Units written before that rework have none yet.
+   */
+  facts?: Fact[]
 }
 
 export type Lesson = {
   id: string // "u04-l1"
   title: string
-  items: LessonItem[] // intro cards and exercises, easiest first (section 11.2)
+  items: LessonItem[] // learn cards and exercises, easiest first (section 11.2)
 }
 
-/** Introduces one new concept before it is tested. No answer, no XP, never reviewed. */
+/** One checked fact that an exercise may need. Learn cards teach facts; exercises require them. */
+export type Fact = {
+  id: string // "f-u07-zrs"
+  statement: string // one sentence, Indonesian
+  source: string // the Microsoft Learn page the fact comes from
+  verify?: boolean // true while the fact is not checked against the source yet
+}
+
+/** Teaches facts before any exercise needs them. No answer, no XP, never reviewed. */
+export type LearnCard = {
+  id: string // "u07-l2-m1" (cards turned from intro cards keep their "-i1" id)
+  type: 'learn'
+  concepts: string[] // concept tags, the same ones exercises use
+  title: string // the concept's name, short
+  body: string // 3-6 short sentences, at most about 100 words
+  keyPoints: string[] // 2-4 things to remember
+  example?: string
+  visual?: string // component name from the visual catalog
+  trap?: string // what the exam likes to mix up, one sentence
+  link?: string // a Microsoft Learn page for further reading
+  teaches: string[] // Fact ids
+}
+
+/** The older, smaller teaching card (plan section 11.1). Still playable; new material uses learn cards. */
 export type IntroCard = {
   id: string // "u04-l1-i1"
   type: 'intro'
@@ -26,7 +54,10 @@ export type IntroCard = {
   visual?: string // diagram component name, e.g. "ZonesInRegion"
 }
 
-export type LessonItem = IntroCard | Exercise
+/** A card that teaches instead of asking. */
+export type TeachingCard = LearnCard | IntroCard
+
+export type LessonItem = LearnCard | IntroCard | Exercise
 
 export type ExerciseBase = {
   id: string
@@ -36,6 +67,12 @@ export type ExerciseBase = {
   verify?: boolean // true when the fact still needs to be double-checked
   examReady?: boolean // may be used on the exam page (section 12.3)
   difficulty?: 1 | 2 | 3
+  /** Facts needed to answer and to rule out every wrong option. Taught by an earlier learn card. */
+  requires?: string[]
+  /** No longer played anywhere, but kept so saved progress that points at it stays valid. */
+  retired?: boolean
+  /** Why the exercise was retired. */
+  retiredReason?: string
 }
 
 export type ChoiceExercise = ExerciseBase & { type: 'choice'; options: string[]; answer: number }

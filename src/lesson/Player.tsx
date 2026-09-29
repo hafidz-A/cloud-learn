@@ -1,16 +1,17 @@
 import { BookOpen, RotateCcw, Sparkles, X } from 'lucide-react'
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { ProgressBar } from '../components/ProgressBar'
-import { INTROS_BY_CONCEPT } from '../content/course'
+import { isExercise, materialFor } from '../content/course'
 import { blockBack, leaveFlow } from '../lib/router'
 import { sound } from '../lib/sound'
 import { useProgress } from '../store/progress'
-import { ConceptSheet } from './ConceptSheet'
 import { ExerciseView } from './ExerciseView'
 import { ExitSheet } from './ExitSheet'
 import { FeedbackSheet } from './FeedbackSheet'
 import { HeartsCounter } from './HeartsCounter'
 import { IntroView } from './IntroView'
+import { LearnView } from './LearnView'
+import { MaterialSheet } from './MaterialSheet'
 import { OutOfHearts } from './OutOfHearts'
 import { RunComplete, type RunCompleteProps } from './RunComplete'
 import {
@@ -20,11 +21,12 @@ import {
   firstTryResults,
   isFirstAttempt,
   progressOf,
-  readIntro,
+  readCard,
   startSession,
   type Session,
   type SessionItem,
 } from './session'
+import type { TeachingCard } from '../lib/types'
 import type { Verdict } from './types'
 
 export type RunKind = 'lesson' | 'practice' | 'checkpoint'
@@ -37,7 +39,7 @@ export type RunPlan = {
 
 /**
  * Rules per kind:
- * - lesson:     intro cards, wrong answers come back at the end, every miss costs a heart
+ * - lesson:     learn cards, wrong answers come back at the end, every miss costs a heart
  * - practice:   wrong answers come back, every first-try right answer earns a heart back
  * - checkpoint: no retries and no hearts; the first-try score decides
  */
@@ -77,7 +79,12 @@ export function Player({
   const [verdict, setVerdict] = useState<Verdict | null>(null)
   const [finished, setFinished] = useState<RunCompleteProps | null>(null)
   const [confirmExit, setConfirmExit] = useState(false)
-  const [conceptOpen, setConceptOpen] = useState(false)
+  // Learn cards reopened from a question ("Lihat materi" or "Pelajari lagi").
+  const [material, setMaterial] = useState<TeachingCard[] | null>(null)
+  const materialOpen = useRef(false)
+  useEffect(() => {
+    materialOpen.current = material !== null
+  }, [material])
   const [sheetHeight, setSheetHeight] = useState(0)
   const onSheetHeight = useCallback((px: number) => setSheetHeight(px), [])
 
@@ -88,17 +95,25 @@ export function Player({
   // Pressing back again while the question is open closes it.
   const started = Object.keys(session.firstTry).length > 0 || session.pos > 0
   const holdBack = started && !finished && !outOfHearts
-  useEffect(() => (holdBack ? blockBack(() => setConfirmExit((open) => !open)) : undefined), [holdBack])
+  // While the material sheet is open, back closes it instead.
+  useEffect(
+    () =>
+      holdBack
+        ? blockBack(() => (materialOpen.current ? setMaterial(null) : setConfirmExit((open) => !open)))
+        : undefined,
+    [holdBack],
+  )
+
+  const current = finished ? undefined : currentEntry(session)?.item
+  const cardsForItem = useMemo(() => (current && isExercise(current) ? materialFor(current) : []), [current])
 
   if (finished) return <RunComplete {...finished} />
   if (outOfHearts) return <OutOfHearts />
 
   const entry = currentEntry(session)
   const { item } = entry
-  const intro = item.type !== 'intro' && plan.kind === 'practice' ? INTROS_BY_CONCEPT.get(item.concept) : undefined
-
   const handleVerdict = (v: Verdict) => {
-    if (verdict || item.type === 'intro') return
+    if (verdict || !isExercise(item)) return
     if (isFirstAttempt(session)) {
       // Stats and the review queue count first attempts only.
       if (entry.fromReview) recordReview(item.id, item.concept, v.correct)
@@ -161,39 +176,43 @@ export function Player({
         {!entry.retry && entry.refresher && (
           <Badge icon={<Sparkles size={14} strokeWidth={2.75} aria-hidden="true" />}>Ulangan dari lesson sebelumnya</Badge>
         )}
-        {intro && (
+        {isExercise(item) && cardsForItem.length > 0 && (
           <button
             type="button"
-            onClick={() => setConceptOpen(true)}
+            onClick={() => setMaterial(cardsForItem)}
             className="mb-3 flex min-h-11 cursor-pointer items-center gap-1.5 self-start rounded-xl border-2 border-kabut bg-white px-3 font-display text-13 font-semibold"
           >
             <BookOpen size={16} aria-hidden="true" />
-            Lihat konsep
+            Lihat materi
           </button>
         )}
-        {item.type === 'intro' ? (
-          <IntroView key={entry.key} intro={item} onDone={() => goNext(readIntro(session))} />
+        {item.type === 'learn' ? (
+          <LearnView key={entry.key} card={item} onDone={() => goNext(readCard(session))} />
+        ) : item.type === 'intro' ? (
+          <IntroView key={entry.key} intro={item} onDone={() => goNext(readCard(session))} />
         ) : (
           <ExerciseView key={entry.key} exercise={item} answered={verdict !== null} onVerdict={handleVerdict} />
         )}
       </main>
 
       <p className="sr-only" aria-live="assertive">
-        {verdict && item.type !== 'intro' ? `${verdict.correct ? 'Benar' : 'Kurang tepat'}. ${item.explanation}` : ''}
+        {verdict && isExercise(item) ? `${verdict.correct ? 'Benar' : 'Kurang tepat'}. ${item.explanation}` : ''}
       </p>
 
-      {verdict && item.type !== 'intro' && (
+      {verdict && isExercise(item) && (
         <FeedbackSheet
           key={entry.key}
           verdict={verdict}
           explanation={item.explanation}
           retryNext={!verdict.correct && rules.retryWrong}
+          material={cardsForItem.slice(0, 2)}
+          onOpenMaterial={(card) => setMaterial([card])}
           onContinue={() => goNext(session)}
           onHeight={onSheetHeight}
         />
       )}
 
-      {conceptOpen && intro && <ConceptSheet intro={intro} onClose={() => setConceptOpen(false)} />}
+      {material && <MaterialSheet cards={material} onClose={() => setMaterial(null)} />}
       {confirmExit && <ExitSheet onStay={() => setConfirmExit(false)} onLeave={() => leaveFlow()} />}
     </div>
   )

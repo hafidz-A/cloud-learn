@@ -1,13 +1,23 @@
-import type { Exercise, IntroCard, Unit } from '../lib/types'
+import type { Exercise, Fact, IntroCard, LearnCard, Lesson, LessonItem, Unit } from '../lib/types'
+import { courseCoverage } from './coverage'
 import { EXAM_TYPES } from './examTypes'
-import { VISUAL_NAMES } from './visuals'
+import { isVisualName, VISUAL_NAMES, VISUALS_BY_CONCEPT } from './visuals'
 
 // Checks the content rules from LANGIT_AZ900_PLAN.md section 2 ("Aturan konten"),
-// the shape rules from section 3, and the lesson order rules from section 11.2.
-// Errors break the app or the answer key; warnings are content-quality notes to
-// fix before a unit is called done.
+// the shape rules from section 3, the lesson order rules from section 11.2, and
+// the material rules from LANGIT_AZ900_PERBAIKAN_MATERI.md sections 3 and 4.
+// Errors break the app, the answer key, or the "no exercise without material"
+// rule; warnings are content-quality notes to fix before a unit is called done.
 
-export type Issue = { level: 'error' | 'warn'; where: string; message: string }
+export type Issue = {
+  level: 'error' | 'warn'
+  where: string
+  message: string
+  /** The unit the issue belongs to. */
+  unit?: string
+  /** A material-coverage rule (section 4). Enforced once the unit has its facts list. */
+  coverage?: boolean
+}
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
@@ -37,6 +47,11 @@ const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2'])
 
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')
+
+/** Learn card body limit (section 3): about 100 words. */
+const LEARN_MAX_WORDS = 100
+/** More exercises in a row than this, with no learn card between them, gets a warning (section 4). */
+const MAX_EXERCISE_RUN = 4
 
 function initials(text: string): string {
   return text
@@ -71,7 +86,7 @@ export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string>
   return missing
 }
 
-function questionTexts(e: Exercise): string[] {
+export function questionTexts(e: Exercise): string[] {
   switch (e.type) {
     case 'choice':
       return [e.prompt, ...e.options]
@@ -98,6 +113,18 @@ function questionTexts(e: Exercise): string[] {
   }
 }
 
+/** The texts a learn card shows (the title may stay a bare abbreviation, like "IaaS"). */
+export function learnTexts(card: LearnCard): string[] {
+  return [card.body, ...(card.keyPoints ?? []), card.example ?? '', card.trap ?? ''].filter(Boolean)
+}
+
+/** Everything a lesson item shows on screen, for the glossary check. */
+function itemTexts(item: LessonItem): string[] {
+  if (item.type === 'learn') return [item.title, ...learnTexts(item)]
+  if (item.type === 'intro') return [item.body]
+  return [...questionTexts(item), item.explanation]
+}
+
 function checkOptions(options: unknown, answer: unknown, push: (m: string, level?: Issue['level']) => void) {
   if (!Array.isArray(options) || options.length < 2) return push('options needs at least 2 entries')
   if (options.length !== 4) push(`choice-style exercises should have 4 options, found ${options.length}`, 'warn')
@@ -107,13 +134,13 @@ function checkOptions(options: unknown, answer: unknown, push: (m: string, level
   }
 }
 
-function checkExercise(e: Exercise, where: string, issues: Issue[]) {
-  const push = (message: string, level: Issue['level'] = 'error') => issues.push({ level, where, message })
-
+function checkExercise(e: Exercise, push: (message: string, level?: Issue['level']) => void) {
   if (!KNOWN_TYPES.has(e.type)) return push(`unknown type "${String(e.type)}"`)
   if (!KEBAB.test(e.concept ?? '')) push('concept must be a kebab-case tag')
   if (!e.prompt?.trim()) push('prompt is empty')
   if (!e.explanation?.trim()) push('explanation is empty')
+  if (e.requires !== undefined && !Array.isArray(e.requires)) push('requires must be a list of fact ids')
+  if (e.retired && !e.retiredReason?.trim()) push('a retired exercise should say why in retiredReason', 'warn')
 
   switch (e.type) {
     case 'choice':
@@ -212,9 +239,11 @@ function checkEntraName(texts: string[], push: (m: string) => void) {
   }
 }
 
+function checkVisual(visual: string | undefined, push: (m: string) => void) {
+  if (visual !== undefined && !isVisualName(visual)) push(`unknown visual "${visual}", known: ${VISUAL_NAMES.join(', ')}`)
+}
 
-function checkIntro(card: IntroCard, where: string, issues: Issue[]) {
-  const push = (message: string, level: Issue['level'] = 'error') => issues.push({ level, where, message })
+function checkIntro(card: IntroCard, push: (message: string, level?: Issue['level']) => void) {
   if (!KEBAB.test(card.concept ?? '')) push('concept must be a kebab-case tag')
   if (!card.title?.trim()) push('title is empty')
   if (!card.body?.trim()) return push('body is empty')
@@ -222,13 +251,42 @@ function checkIntro(card: IntroCard, where: string, issues: Issue[]) {
   if (sentences > 2) push(`intro body should be at most 2 sentences, found ${sentences}`, 'warn')
   const words = card.body.split(/\s+/).length
   if (words > 40) push(`intro body should be about 35 words, found ${words}`, 'warn')
-  if (card.visual !== undefined && !(VISUAL_NAMES as readonly string[]).includes(card.visual)) {
-    push(`unknown visual "${card.visual}", known: ${VISUAL_NAMES.join(', ')}`)
-  }
+  checkVisual(card.visual, push)
   // The title may be the bare abbreviation ("IaaS"); the body must expand it.
   const missing = unexpandedAbbreviations([card.body])
   if (missing.length) push(`expand on first use in the intro: ${missing.join(', ')}`, 'warn')
   checkEntraName([card.title, card.body], push)
+}
+
+function checkLearn(card: LearnCard, facts: Set<string>, push: (message: string, level?: Issue['level']) => void) {
+  if (!Array.isArray(card.concepts) || card.concepts.length === 0) push('a learn card needs at least one concept tag')
+  else if (card.concepts.some((c) => !KEBAB.test(c))) push('concepts must be kebab-case tags')
+  if (!card.title?.trim()) push('title is empty')
+  if (!card.body?.trim()) return push('body is empty')
+  const words = card.body.split(/\s+/).filter(Boolean).length
+  if (words > LEARN_MAX_WORDS) push(`learn body should be at most about ${LEARN_MAX_WORDS} words, found ${words}`, 'warn')
+  const sentences = card.body.split(/[.!?](?:\s|$)/).filter((t) => t.trim()).length
+  if (sentences < 2 || sentences > 6) push(`learn body should have 3-6 short sentences, found ${sentences}`, 'warn')
+  if (!Array.isArray(card.keyPoints) || card.keyPoints.length < 2 || card.keyPoints.length > 4) {
+    push(`learn cards should have 2-4 key points, found ${card.keyPoints?.length ?? 0}`, 'warn')
+  }
+  if (!Array.isArray(card.teaches) || card.teaches.length === 0) push('a learn card should teach at least one fact', 'warn')
+  for (const fact of card.teaches ?? []) if (!facts.has(fact)) push(`teaches unknown fact "${fact}"`)
+  checkVisual(card.visual, push)
+  const needsVisual = (card.concepts ?? []).filter((c) => VISUALS_BY_CONCEPT.has(c))
+  if (needsVisual.length && !card.visual) {
+    push(`"${needsVisual[0]}" needs a visual (${VISUALS_BY_CONCEPT.get(needsVisual[0])!.join(' or ')})`)
+  }
+  if (card.link !== undefined && !/^https:\/\/learn\.microsoft\.com\//.test(card.link)) push('link should point to Microsoft Learn', 'warn')
+  const missing = unexpandedAbbreviations(learnTexts(card))
+  if (missing.length) push(`expand on first use in the learn card: ${missing.join(', ')}`, 'warn')
+  checkEntraName([card.title, ...learnTexts(card)], push)
+}
+
+function checkFact(fact: Fact, push: (message: string, level?: Issue['level']) => void) {
+  if (!/^f-[a-z0-9]+(-[a-z0-9]+)+$/.test(fact.id ?? '')) push(`fact id "${fact.id}" should look like "f-u07-zrs"`)
+  if (!fact.statement?.trim()) push(`fact "${fact.id}" has no statement`)
+  checkEntraName([fact.statement ?? ''], push)
 }
 
 /** Stage 5 types (plan section 11.2) that ask the player to recall without choices. */
@@ -253,85 +311,123 @@ export function glossaryGaps(units: Unit[], glossaryTerms: Set<string>): Issue[]
   const used = new Map<string, string>()
   for (const unit of units)
     for (const lesson of unit.lessons)
-      for (const item of lesson.items) {
-        const texts = item.type === 'intro' ? [item.body] : [...questionTexts(item), item.explanation]
-        for (const a of abbreviationsIn(texts)) if (!used.has(a)) used.set(a, item.id)
-      }
+      for (const item of lesson.items) for (const a of abbreviationsIn(itemTexts(item))) if (!used.has(a)) used.set(a, item.id)
   return [...used]
     .filter(([a]) => !glossaryTerms.has(a))
     .map(([a, where]) => ({ level: 'warn' as const, where, message: `"${a}" is not in the glossary` }))
 }
 
+/** Section 4: more than 4 exercises in a row without a learn card, in a lesson that teaches new facts. */
+function longRuns(lesson: Lesson): number {
+  if (!lesson.items.some((i) => i.type === 'learn' && (i.teaches ?? []).length > 0)) return 0
+  let run = 0
+  let longest = 0
+  for (const item of lesson.items) {
+    if (item.type === 'learn') run = 0
+    else if (item.type !== 'intro' && !item.retired) longest = Math.max(longest, ++run)
+  }
+  return longest > MAX_EXERCISE_RUN ? longest : 0
+}
+
 export function validateUnits(units: Unit[]): Issue[] {
   const issues: Issue[] = []
   const ids = new Set<string>()
-  const introduced = new Set<string>() // concepts that already had an intro card, in course order
-  const claim = (id: string, where: string) => {
-    if (ids.has(id)) issues.push({ level: 'error', where, message: `duplicate id "${id}"` })
-    ids.add(id)
-  }
+  const introduced = new Set<string>() // concepts that already had a card, in course order
+  const factIds = new Set(units.flatMap((u) => (u.facts ?? []).map((f) => f.id)))
 
   for (const unit of units) {
     const uw = unit.id
+    const reworked = Array.isArray(unit.facts)
+    const pusher = (where: string) => (message: string, level: Issue['level'] = 'error') =>
+      issues.push({ level, where, message, unit: unit.id })
+    const claim = (id: string, where: string) => {
+      if (ids.has(id)) pusher(where)(`duplicate id "${id}"`)
+      ids.add(id)
+    }
+
     claim(unit.id, uw)
-    if (!/^u\d{2}-[a-z0-9-]+$/.test(unit.id)) issues.push({ level: 'error', where: uw, message: 'unit id must look like "u04-core-architecture"' })
-    if (![1, 2, 3].includes(unit.path)) issues.push({ level: 'error', where: uw, message: 'path must be 1, 2, or 3' })
-    if (unit.lessons.length < 3 || unit.lessons.length > 5) {
-      issues.push({ level: 'warn', where: uw, message: `units should have 3-5 lessons, found ${unit.lessons.length}` })
+    if (!/^u\d{2}-[a-z0-9-]+$/.test(unit.id)) pusher(uw)('unit id must look like "u04-core-architecture"')
+    if (![1, 2, 3].includes(unit.path)) pusher(uw)('path must be 1, 2, or 3')
+    if (unit.lessons.length < 3 || unit.lessons.length > 5) pusher(uw)(`units should have 3-5 lessons, found ${unit.lessons.length}`, 'warn')
+    if (unit.facts !== undefined && !Array.isArray(unit.facts)) pusher(uw)('facts must be a list')
+    for (const fact of unit.facts ?? []) {
+      claim(fact.id, `${uw} > ${fact.id}`)
+      checkFact(fact, pusher(`${uw} > ${fact.id}`))
     }
 
     unit.lessons.forEach((lesson, li) => {
       const lw = `${uw} > ${lesson.id}`
-      const warn = (message: string) => issues.push({ level: 'warn', where: lw, message })
+      const warn = (message: string) => pusher(lw)(message, 'warn')
       claim(lesson.id, lw)
       const expectedLessonId = `${unit.id.slice(0, 3)}-l${li + 1}`
-      if (lesson.id !== expectedLessonId) issues.push({ level: 'error', where: lw, message: `lesson id should be "${expectedLessonId}"` })
+      if (lesson.id !== expectedLessonId) pusher(lw)(`lesson id should be "${expectedLessonId}"`)
       if (!Array.isArray(lesson.items)) {
-        issues.push({ level: 'error', where: lw, message: 'lesson needs an "items" array (plan section 11)' })
+        pusher(lw)('lesson needs an "items" array (plan section 11)')
         return
       }
-      if (lesson.items.length === 0) return // skeleton lesson, content comes in stage 5
+      if (lesson.items.length === 0) return // skeleton lesson, content comes later
 
-      const exercises = lesson.items.filter((i): i is Exercise => i.type !== 'intro')
-      const intros = lesson.items.length - exercises.length
+      const exercises = lesson.items.filter((i): i is Exercise => i.type !== 'intro' && i.type !== 'learn' && !i.retired)
+      const learnCards = lesson.items.filter((i) => i.type === 'learn').length
+      const intros = lesson.items.filter((i) => i.type === 'intro').length
       if (exercises.length < 8 || exercises.length > 12) warn(`lessons should have 8-12 exercises, found ${exercises.length}`)
-      if (intros > 3) warn(`a lesson introduces at most 3 new concepts, found ${intros} intro cards`)
+      if (reworked && (learnCards < 2 || learnCards > 4)) warn(`lessons should have 2-4 learn cards, found ${learnCards}`)
+      if (!reworked && intros > 3) warn(`a lesson introduces at most 3 new concepts, found ${intros} intro cards`)
       const types = new Set(exercises.map((e) => e.type))
       if (types.size < 4) warn(`lessons should use at least 4 exercise types, found ${types.size}`)
+      const run = longRuns(lesson)
+      if (run) warn(`${run} exercises in a row without a learn card between them`)
 
-      let introCount = 0
-      let exerciseCount = 0
       const easierByConcept = new Map<string, number>()
       for (const item of lesson.items) {
-        if (item.type === 'intro') {
-          const expectedId = `${lesson.id}-i${++introCount}`
-          const iw = `${lw} > ${item.id}`
-          claim(item.id, iw)
-          if (item.id !== expectedId) issues.push({ level: 'error', where: iw, message: `intro id should be "${expectedId}"` })
-          checkIntro(item, iw, issues)
-          introduced.add(item.concept)
+        const iw = `${lw} > ${item.id}`
+        const push = pusher(iw)
+        claim(item.id, iw)
+        if (item.type === 'intro' || item.type === 'learn') {
+          if (!new RegExp(`^${lesson.id}-[im]\\d+$`).test(item.id)) push(`card id should look like "${lesson.id}-m1"`)
+          if (item.type === 'intro') {
+            checkIntro(item, push)
+            introduced.add(item.concept)
+          } else {
+            checkLearn(item, factIds, push)
+            for (const c of item.concepts ?? []) introduced.add(c)
+          }
           continue
         }
-        const expectedId = `${lesson.id}-e${++exerciseCount}`
-        const ew = `${lw} > ${item.id}`
-        claim(item.id, ew)
-        if (item.id !== expectedId) issues.push({ level: 'error', where: ew, message: `exercise id should be "${expectedId}"` })
-        checkExercise(item, ew, issues)
-        if (!introduced.has(item.concept)) {
-          issues.push({ level: 'warn', where: ew, message: `concept "${item.concept}" is tested before any intro card introduces it` })
+        if (!new RegExp(`^${lesson.id}-e\\d+$`).test(item.id)) push(`exercise id should look like "${lesson.id}-e1"`)
+        checkExercise(item, push)
+        if (item.retired) continue
+        if (!reworked && !introduced.has(item.concept)) {
+          push(`concept "${item.concept}" is tested before any intro card introduces it`, 'warn')
           introduced.add(item.concept) // report each concept once
         }
         const easier = easierByConcept.get(item.concept) ?? 0
         if (RECALL_TYPES.has(item.type) && easier < 2) {
-          issues.push({
-            level: 'warn',
-            where: ew,
-            message: `${item.type} should only test a concept already seen in 2 easier exercises, found ${easier}`,
-          })
+          push(`${item.type} should only test a concept already seen in 2 easier exercises, found ${easier}`, 'warn')
         }
         easierByConcept.set(item.concept, easier + 1)
       }
     })
+  }
+
+  return [...issues, ...coverageIssues(units)]
+}
+
+/** Section 4 as issues. Every one is an error; the tests enforce them per reworked unit. */
+export function coverageIssues(units: Unit[]): Issue[] {
+  const issues: Issue[] = []
+  const unitOf = new Map(units.flatMap((u) => u.lessons.flatMap((l) => l.items.map((i) => [i.id, u.id] as const))))
+  for (const cov of courseCoverage(units)) {
+    const push = (where: string, message: string) => issues.push({ level: 'error', where, message, unit: cov.unitId, coverage: true })
+    for (const id of cov.withoutRequires) push(`${cov.unitId} > ${id}`, 'requires is empty: list the facts needed to answer and to rule out every wrong option')
+    for (const gap of cov.gaps) {
+      const where = `${unitOf.get(gap.exercise) ?? cov.unitId} > ${gap.exercise}`
+      if (gap.kind === 'unknown') push(where, `requires unknown fact "${gap.fact}"`)
+      else if (gap.kind === 'taught-later') push(where, `fact "${gap.fact}" is only taught after this exercise`)
+      else push(where, `fact "${gap.fact}" is not taught by any learn card`)
+    }
+    for (const fact of cov.untaughtFacts) push(`${cov.unitId} > ${fact}`, `fact "${fact}" is not taught by any learn card`)
+    for (const fact of cov.badSources) push(`${cov.unitId} > ${fact}`, `fact "${fact}" needs a Microsoft Learn source, or verify: true`)
   }
   return issues
 }

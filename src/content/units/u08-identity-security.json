@@ -553,7 +553,7 @@
           "concept": "defense-in-depth",
           "title": "Defense in depth",
           "body": "Defense in depth melapisi keamanan seperti lapisan bawang, supaya satu lapisan jebol tidak langsung membuka data. Dari luar ke dalam: physical security, identity and access, perimeter, network, compute, application, lalu data.",
-          "visual": "DefenseLayers"
+          "visual": "DefenseInDepth"
         },
         {
           "id": "u08-l4-e2",

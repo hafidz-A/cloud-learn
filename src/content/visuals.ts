@@ -1,11 +1,59 @@
-/** Diagram names an intro card may use in its "visual" field. Drawn in src/lesson/visuals.tsx. */
-export const VISUAL_NAMES = [
-  'ZonesInRegion',
-  'RegionPair',
-  'SharedResponsibility',
-  'ResourceHierarchy',
-  'StorageRedundancy',
-  'DefenseLayers',
-] as const
+// The visual catalog (LANGIT_AZ900_PERBAIKAN_MATERI.md section 5). Each entry is
+// one diagram component in src/visuals/, with the concept tags it explains. A
+// learn card about one of those concepts must show a visual (the validator
+// checks this), because the concept is about position, structure, flow, or a
+// comparison.
 
-export type VisualName = (typeof VISUAL_NAMES)[number]
+export const VISUAL_CATALOG = {
+  // Unit 1
+  SharedResponsibility: ['shared-responsibility'],
+  CloudModels: ['public-cloud', 'private-cloud', 'hybrid-cloud', 'multi-cloud'],
+  CapexVsOpex: ['capex-opex'],
+  // Unit 2
+  ScaleUpVsOut: ['scalability', 'elasticity'],
+  AvailabilityVsReliability: ['high-availability', 'reliability'],
+  // Unit 3
+  ServiceModelsStack: ['iaas', 'paas', 'saas', 'serverless'],
+  // Unit 4
+  ZonesInRegion: ['availability-zones'],
+  RegionPair: ['region-pairs'],
+  ResourceHierarchy: ['resource-hierarchy', 'management-groups'],
+  // Unit 5
+  ComputeOptions: ['compute-options'],
+  // Unit 6
+  HybridConnectivity: ['vpn-gateway', 'expressroute'],
+  VNetPeering: ['vnet-peering'],
+  // Unit 7
+  StorageRedundancy: ['primary-redundancy', 'geo-redundancy'],
+  BlobTiers: ['blob-access-tiers'],
+  StorageServices: ['storage-services'],
+  // Unit 8
+  AuthNvsAuthZ: ['authentication-vs-authorization'],
+  ConditionalAccessFlow: ['conditional-access'],
+  DefenseInDepth: ['defense-in-depth'],
+  RbacScope: ['rbac'],
+  // Unit 9
+  PricingVsTco: ['pricing-calculator', 'tco-calculator'],
+  // Unit 10
+  PolicyRbacLock: ['azure-policy', 'resource-locks'],
+  // Unit 11
+  ManagementTools: ['arm'],
+  // Unit 12
+  ServiceHealthScopes: ['service-health'],
+  MonitorPipeline: ['azure-monitor'],
+} as const satisfies Record<string, readonly string[]>
+
+export type VisualName = keyof typeof VISUAL_CATALOG
+
+export const VISUAL_NAMES = Object.keys(VISUAL_CATALOG) as VisualName[]
+
+export function isVisualName(name: string): name is VisualName {
+  return Object.hasOwn(VISUAL_CATALOG, name)
+}
+
+/** Concept tag -> the visuals that explain it. */
+export const VISUALS_BY_CONCEPT: ReadonlyMap<string, VisualName[]> = (() => {
+  const map = new Map<string, VisualName[]>()
+  for (const name of VISUAL_NAMES) for (const concept of VISUAL_CATALOG[name]) map.set(concept, [...(map.get(concept) ?? []), name])
+  return map
+})()

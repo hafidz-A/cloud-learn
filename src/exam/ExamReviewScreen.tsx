@@ -1,9 +1,12 @@
-import { ChevronLeft, CircleCheck, CircleMinus, CircleX, Flag } from 'lucide-react'
+import { BookOpen, ChevronLeft, CircleCheck, CircleMinus, CircleX, Flag } from 'lucide-react'
 import { useState, type CSSProperties } from 'react'
 import { GlossaryText } from '../components/GlossaryText'
+import { materialFor } from '../content/course'
 import { ExerciseInput } from '../exercises/ExerciseInput'
 import { INSTRUCTIONS } from '../exercises/instructions'
 import { correctAnswerText, type Response } from '../exercises/logic'
+import { MaterialSheet } from '../lesson/MaterialSheet'
+import type { TeachingCard } from '../lib/types'
 import { navigate } from '../lib/router'
 import { useProgress } from '../store/progress'
 import { scoreAttempt } from './examLogic'
@@ -15,6 +18,7 @@ type Filter = 'all' | 'wrong' | 'flagged'
 export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
   const attempt = useProgress((s) => s.examHistory.find((a) => a.id === attemptId))
   const [filter, setFilter] = useState<Filter>('all')
+  const [material, setMaterial] = useState<TeachingCard[] | null>(null)
   if (!attempt) return null
 
   const { results } = scoreAttempt(attempt, examQuestion)
@@ -109,11 +113,26 @@ export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
               <p className="mt-3 rounded-xl bg-langit p-3 text-15">
                 <GlossaryText text={q.exercise.explanation} />
               </p>
+              {!r.correct &&
+                materialFor(q.exercise)
+                  .slice(0, 2)
+                  .map((card) => (
+                    <button
+                      key={card.id}
+                      type="button"
+                      onClick={() => setMaterial([card])}
+                      className="mt-2 flex min-h-11 cursor-pointer items-center gap-1.5 text-left font-display text-15 font-bold text-biru-dalam underline underline-offset-4"
+                    >
+                      <BookOpen size={16} aria-hidden="true" className="shrink-0" />
+                      <span>Pelajari lagi: {card.title}</span>
+                    </button>
+                  ))}
               <p className="mt-2 text-13 text-tinta-lembut">ID soal: {id}</p>
             </article>
           )
         })}
       </main>
+      {material && <MaterialSheet cards={material} onClose={() => setMaterial(null)} closeLabel="Kembali ke pembahasan" />}
     </div>
   )
 }

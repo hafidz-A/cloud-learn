@@ -1,4 +1,4 @@
-import { EXERCISES, LESSONS_IN_ORDER, exercisesInPath, isExercise, type Checkpoint, type LessonRef } from '../content/course'
+import { EXERCISES, LESSONS_IN_ORDER, activeExercise, exercisesInPath, isActive, isExercise, playableItems, type Checkpoint, type LessonRef } from '../content/course'
 import { dayKey } from '../lib/date'
 import { dueIds } from '../lib/review'
 import { shuffle } from '../lib/shuffle'
@@ -16,10 +16,10 @@ const PRACTICE_MIN = 6
  */
 export function lessonPlan(ref: LessonRef, progress: Pick<Progress, 'review' | 'lessonsDone'>, random = Math.random): RunPlan {
   const { lesson } = ref
-  const items: SessionItem[] = lesson.items.map((item) => ({ item }))
+  const items: SessionItem[] = playableItems(lesson).map((item) => ({ item }))
   const own = new Set(lesson.items.map((i) => i.id))
 
-  const due = dueIds(progress.review, dayKey()).filter((id) => !own.has(id) && EXERCISES.has(id))
+  const due = dueIds(progress.review, dayKey()).filter((id) => !own.has(id) && activeExercise(id))
   if (due.length) {
     for (const id of due.slice(0, REFRESHERS_PER_LESSON)) {
       items.push({ item: EXERCISES.get(id)!.exercise, refresher: true, fromReview: true })
@@ -28,7 +28,7 @@ export function lessonPlan(ref: LessonRef, progress: Pick<Progress, 'review' | '
     const at = LESSONS_IN_ORDER.findIndex((l) => l.lesson.id === lesson.id)
     const previous = at > 0 ? LESSONS_IN_ORDER[at - 1].lesson : undefined
     if (previous && progress.lessonsDone[previous.id]) {
-      const pool = previous.items.filter(isExercise)
+      const pool = previous.items.filter(isExercise).filter(isActive)
       if (pool.length) items.push({ item: pool[Math.floor(random() * pool.length)], refresher: true })
     }
   }
@@ -42,13 +42,13 @@ export function lessonPlan(ref: LessonRef, progress: Pick<Progress, 'review' | '
  * refill hearts even before the first lesson is finished.
  */
 export function practicePlan(progress: Pick<Progress, 'review' | 'lessonsDone'>, random = Math.random): RunPlan {
-  const due = dueIds(progress.review, dayKey()).filter((id) => EXERCISES.has(id)).slice(0, PRACTICE_SIZE)
+  const due = dueIds(progress.review, dayKey()).filter((id) => activeExercise(id)).slice(0, PRACTICE_SIZE)
   const items: SessionItem[] = due.map((id) => ({ item: EXERCISES.get(id)!.exercise, fromReview: true }))
   if (items.length < PRACTICE_MIN) {
     const taken = new Set(due)
-    const mistakes = Object.keys(progress.review).filter((id) => EXERCISES.has(id) && !taken.has(id))
+    const mistakes = Object.keys(progress.review).filter((id) => activeExercise(id) && !taken.has(id))
     for (const id of mistakes) taken.add(id)
-    const finished = [...EXERCISES.values()].filter((r) => progress.lessonsDone[r.lesson.id] && !taken.has(r.exercise.id))
+    const finished = [...EXERCISES.values()].filter((r) => isActive(r.exercise) && progress.lessonsDone[r.lesson.id] && !taken.has(r.exercise.id))
     const pool = [...shuffle(mistakes, random).map((id) => EXERCISES.get(id)!.exercise), ...shuffle(finished, random).map((r) => r.exercise)]
     for (const ex of pool.slice(0, PRACTICE_MIN - items.length)) items.push({ item: ex })
   }

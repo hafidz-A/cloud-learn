@@ -22,7 +22,7 @@ export const READY_SCORE = 800
 const RECENT_ATTEMPTS = 3
 
 export function isExamQuestion(e: Exercise): boolean {
-  return !!e.examReady && EXAM_TYPES.has(e.type)
+  return !!e.examReady && !e.retired && EXAM_TYPES.has(e.type)
 }
 
 /** Recently used question ids (latest `n` attempts of the given modes). */
@@ -119,7 +119,16 @@ export function createAttempt(mode: ExamMode, questions: ExamQuestion[], domain?
   }
 }
 
-export function isAnswered(e: Exercise, response: unknown): boolean {
+/**
+ * Whether the player answered the question. An order question always holds a
+ * complete order, so it only counts as answered once it differs from the order
+ * it was shown in (`layout`); that starting order is never the solution.
+ */
+export function isAnswered(e: Exercise, response: unknown, layout?: number[]): boolean {
+  if (e.type === 'order' && layout) {
+    const order = response as number[] | undefined
+    return Array.isArray(order) && order.some((v, i) => v !== layout[i])
+  }
   return isComplete(e, response as Response)
 }
 
@@ -142,7 +151,7 @@ export function scoreAttempt(
     if (!q) continue
     const response = attempt.responses[id] as Response
     const j = judge(q.exercise, response)
-    results[id] = { ...j, answered: isAnswered(q.exercise, response) }
+    results[id] = { ...j, answered: isAnswered(q.exercise, response, attempt.optionOrder[id]) }
     points += j.points
     max += j.maxPoints
     domainScores[q.path].right += j.points
