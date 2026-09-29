@@ -1,58 +1,87 @@
 import type { FC } from 'react'
-import { label } from './styles'
+import { useSvgId } from './ids'
+import { ArrowMarker } from './parts'
+import { label, quiet } from './styles'
 
 function Copies({ x, y, n }: { x: number; y: number; n: number }) {
   return (
     <g>
       {Array.from({ length: n }, (_, i) => (
-        <circle key={i} cx={x + i * 12} cy={y} r={4.5} fill="var(--color-biru)" />
+        <circle key={i} cx={x + i * 12} cy={y} r={4.5} fill="var(--color-biru)" stroke="var(--color-biru-dalam)" strokeWidth={1} />
       ))}
     </g>
   )
 }
 
-/** LRS, ZRS, and GRS side by side: where the copies of your data live. */
-export const StorageRedundancy: FC = () => {
-  const box = { fill: '#fff', stroke: 'var(--color-biru)', strokeWidth: 1.5, rx: 6 }
-  const region = { fill: 'var(--color-biru-muda)', stroke: 'var(--color-biru-dalam)', strokeWidth: 1.5, strokeDasharray: '5 4', rx: 10 }
-  return (
-    <svg viewBox="0 0 300 186" role="img" aria-label="Diagram redundancy: LRS tiga salinan di satu datacenter, ZRS satu salinan di tiap tiga zone, GRS tiga salinan di region utama dan tiga salinan di region kedua." className="w-full font-display">
-      <text x={0} y={14} fontSize={12} {...label}>
-        LRS · 11 nines
-      </text>
-      <rect x={0} y={20} width={120} height={36} {...region} />
-      <rect x={30} y={27} width={60} height={22} {...box} />
-      <Copies x={48} y={38} n={3} />
+const box = { fill: '#fff', stroke: 'var(--color-biru)', strokeWidth: 1.5, rx: 6 }
+const region = { fill: 'var(--color-biru-muda)', stroke: 'var(--color-biru-dalam)', strokeWidth: 1.5, strokeDasharray: '5 4', rx: 10 }
 
-      <text x={0} y={76} fontSize={12} {...label}>
-        ZRS · 12 nines
-      </text>
-      <rect x={0} y={82} width={170} height={36} {...region} />
+/** One datacenter holding 3 copies. */
+function OneDatacenter({ x, y }: { x: number; y: number }) {
+  return (
+    <g>
+      <rect x={x} y={y} width={120} height={36} {...region} />
+      <rect x={x + 30} y={y + 7} width={60} height={22} {...box} />
+      <Copies x={x + 48} y={y + 18} n={3} />
+    </g>
+  )
+}
+
+/** Three zones, one copy each. */
+function ThreeZones({ x, y }: { x: number; y: number }) {
+  return (
+    <g>
+      <rect x={x} y={y} width={120} height={36} {...region} />
       {[0, 1, 2].map((i) => (
         <g key={i}>
-          <rect x={10 + i * 53} y={89} width={44} height={22} {...box} />
-          <Copies x={32 + i * 53} y={100} n={1} />
+          <rect x={x + 6 + i * 38} y={y + 7} width={32} height={22} {...box} />
+          <Copies x={x + 22 + i * 38} y={y + 18} n={1} />
         </g>
       ))}
+    </g>
+  )
+}
 
-      <text x={0} y={138} fontSize={12} {...label}>
-        GRS · 16 nines
-      </text>
-      <rect x={0} y={144} width={120} height={36} {...region} />
-      <rect x={30} y={151} width={60} height={22} {...box} />
-      <Copies x={48} y={162} n={3} />
-      <path d="M126 162 H168" stroke="var(--color-biru-dalam)" strokeWidth={2} markerEnd="url(#copy-arrow)" />
-      <rect x={176} y={144} width={120} height={36} {...region} />
-      <rect x={206} y={151} width={60} height={22} {...box} />
-      <Copies x={224} y={162} n={3} />
-      <text x={236} y={138} fontSize={11} textAnchor="middle" fill="var(--color-tinta-lembut)">
+/** LRS, ZRS, GRS, and GZRS: where the copies of your data live. The dashed boxes are regions. */
+export const StorageRedundancy: FC = () => {
+  const copyArrow = useSvgId('copy-arrow')
+  const rows = [
+    { name: 'LRS · 11 nines', primary: OneDatacenter, geo: false },
+    { name: 'ZRS · 12 nines', primary: ThreeZones, geo: false },
+    { name: 'GRS · 16 nines', primary: OneDatacenter, geo: true },
+    { name: 'GZRS · 16 nines', primary: ThreeZones, geo: true },
+  ]
+  return (
+    <svg
+      viewBox="0 0 300 262"
+      role="img"
+      aria-label="Diagram redundancy: LRS menyimpan tiga salinan di satu datacenter, ZRS satu salinan di tiap tiga zone, GRS memakai LRS lalu menyalin ke region kedua, dan GZRS memakai ZRS lalu menyalin ke region kedua."
+      className="w-full font-display"
+    >
+      <defs>
+        <ArrowMarker id={copyArrow} />
+      </defs>
+      <text x={236} y={14} fontSize={12} textAnchor="middle" {...quiet}>
         region kedua
       </text>
-      <defs>
-        <marker id="copy-arrow" viewBox="0 0 10 10" refX={8} refY={5} markerWidth={5} markerHeight={5} orient="auto">
-          <path d="M0 0 L10 5 L0 10 Z" fill="var(--color-biru-dalam)" />
-        </marker>
-      </defs>
+      {rows.map((r, i) => {
+        const y = 22 + i * 60
+        const Primary = r.primary
+        return (
+          <g key={r.name}>
+            <text x={0} y={y + 12} fontSize={12} {...label}>
+              {r.name}
+            </text>
+            <Primary x={0} y={y + 18} />
+            {r.geo && (
+              <>
+                <path d={`M126 ${y + 36} H168`} stroke="var(--color-biru-dalam)" strokeWidth={2} markerEnd={`url(#${copyArrow})`} />
+                <OneDatacenter x={176} y={y + 18} />
+              </>
+            )}
+          </g>
+        )
+      })}
     </svg>
   )
 }

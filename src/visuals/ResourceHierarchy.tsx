@@ -5,7 +5,7 @@ function Box({ x, y, w, text, strong = false }: { x: number; y: number; w: numbe
   return (
     <g>
       <rect x={x} y={y} width={w} height={26} rx={8} fill={strong ? 'var(--color-biru-muda)' : '#fff'} stroke={strong ? 'var(--color-biru-dalam)' : 'var(--color-biru)'} strokeWidth={2} />
-      <text x={x + w / 2} y={y + 17} fontSize={11} textAnchor="middle" {...label}>
+      <text x={x + w / 2} y={y + 17} fontSize={12} textAnchor="middle" {...label}>
         {text}
       </text>
     </g>
@@ -24,10 +24,10 @@ export const ResourceHierarchy: FC = () => {
       <Box x={18} y={92} w={120} text="Resource group" />
       <Box x={2} y={134} w={76} text="VM" />
       <Box x={82} y={134} w={76} text="Storage" />
-      <text x={222} y={112} fontSize={11} textAnchor="middle" fill="var(--color-tinta-lembut)">
+      <text x={222} y={112} fontSize={12} textAnchor="middle" fill="var(--color-tinta-lembut)">
         Pengaturan diwariskan
       </text>
-      <text x={222} y={128} fontSize={11} textAnchor="middle" fill="var(--color-tinta-lembut)">
+      <text x={222} y={128} fontSize={12} textAnchor="middle" fill="var(--color-tinta-lembut)">
         dari atas ke bawah
       </text>
     </svg>
