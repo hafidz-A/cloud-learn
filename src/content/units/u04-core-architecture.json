@@ -9,11 +9,26 @@
       "items": [
         {
           "id": "u04-l1-i1",
-          "type": "intro",
-          "concept": "availability-zones",
-          "title": "Availability zone",
-          "body": "Availability zone adalah datacenter terpisah di dalam satu region, masing-masing punya listrik, pendingin, dan jaringan sendiri. Kalau satu gedung mati, zone lain tetap jalan.",
-          "visual": "ZonesInRegion"
+          "type": "learn",
+          "concepts": [
+            "availability-zones"
+          ],
+          "title": "Region dan availability zone",
+          "body": "Region adalah area geografis berisi satu atau lebih datacenter. Di dalam region, availability zone adalah datacenter yang terpisah secara fisik, masing-masing dengan listrik, pendingin, dan jaringan sendiri. Region yang mendukung zone punya minimal tiga zone, tapi tidak semua region mendukungnya. Kalau aplikasimu disebar ke beberapa zone, satu zone mati tidak membuat aplikasinya ikut mati.",
+          "keyPoints": [
+            "Zone = datacenter terpisah di dalam satu region",
+            "Minimal tiga zone di region yang mendukungnya",
+            "Sebar ke beberapa zone supaya tahan satu zone mati"
+          ],
+          "visual": "ZonesInRegion",
+          "link": "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview",
+          "teaches": [
+            "f-u04-region",
+            "f-u04-az-def",
+            "f-u04-az-min3",
+            "f-u04-az-not-all",
+            "f-u04-az-spread"
+          ]
         },
         {
           "id": "u04-l1-e1",
@@ -22,56 +37,55 @@
           "prompt": "An availability zone is a separate datacenter (or group of datacenters) inside one Azure region.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Availability zone ada di dalam satu region, masing-masing punya listrik, pendingin, dan jaringan sendiri. Jadi kalau satu gedung mati, zone lain tetap jalan.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-az-def"
+          ]
         },
         {
-          "id": "u04-l1-i2",
-          "type": "intro",
-          "concept": "region-pairs",
-          "title": "Region pair",
-          "body": "Region pair adalah dua region dalam satu geografi, biasanya berjarak minimal sekitar 480 km. Kalau satu region lumpuh, pasangannya jadi tempat pemulihan.",
-          "visual": "RegionPair"
-        },
-        {
-          "id": "u04-l1-e2",
-          "type": "choice",
-          "concept": "region-pairs",
-          "prompt": "What is a region pair?",
+          "id": "u04-l1-e6",
+          "type": "multi",
+          "concept": "availability-zones",
+          "prompt": "Which two statements about availability zones are true? Choose two.",
           "options": [
-            "Two regions in the same geography that back each other up",
-            "Two availability zones inside the same region",
-            "Two datacenters in the same building",
-            "Any two regions you choose to deploy to"
+            "Each zone has its own power, cooling, and networking",
+            "A zone-enabled region has at least three zones",
+            "Every Azure region has availability zones",
+            "Availability zones are located in different geographies"
           ],
-          "answer": 0,
-          "explanation": "Region pair adalah dua region di geografi yang sama, biasanya berjarak minimal sekitar 480 km, dan pasangannya sudah ditentukan Microsoft, bukan dipilih sendiri. Dua zone di dalam satu region itu availability zone, bukan region pair.",
-          "examReady": true
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Zone punya listrik, pendingin, dan jaringan sendiri, dan region yang mendukung zone punya minimal 3 zone. Tidak semua region punya zone, dan semua zone berada di dalam satu region.",
+          "examReady": true,
+          "requires": [
+            "f-u04-az-def",
+            "f-u04-az-min3",
+            "f-u04-az-not-all"
+          ]
         },
         {
-          "id": "u04-l1-e3",
-          "type": "match",
-          "concept": "physical-infrastructure",
-          "prompt": "Match each term with its meaning.",
-          "pairs": [
-            [
-              "Datacenter",
-              "A single building full of servers"
-            ],
-            [
-              "Availability zone",
-              "One or more separate datacenters inside a region"
-            ],
-            [
-              "Region",
-              "Geographic area with one or more datacenters"
-            ],
-            [
-              "Region pair",
-              "Two regions in the same geography for disaster recovery"
-            ]
+          "id": "u04-l1-e8",
+          "type": "fill",
+          "concept": "availability-zones",
+          "prompt": "Complete the definition.",
+          "sentence": "An availability zone is one or more separate ___ inside one Azure ___, each with its own power, cooling, and networking.",
+          "bank": [
+            "datacenters",
+            "region",
+            "geographies",
+            "servers"
           ],
-          "explanation": "Urutan dari kecil ke besar: datacenter, availability zone, region, lalu region pair.",
-          "examReady": true
+          "answers": [
+            "datacenters",
+            "region"
+          ],
+          "explanation": "Availability zone adalah satu atau lebih datacenter terpisah di dalam satu region. Karena listrik, pendingin, dan jaringannya sendiri-sendiri, satu zone mati tidak menyeret zone lain.",
+          "requires": [
+            "f-u04-az-def",
+            "f-u04-region"
+          ]
         },
         {
           "id": "u04-l1-e4",
@@ -110,7 +124,84 @@
             }
           ],
           "rule": "one-per-zone",
-          "explanation": "Satu VM (Virtual Machine) di setiap zone. Kalau ketiganya ditaruh di zone yang sama, satu gedung mati berarti aplikasimu ikut mati. Region yang mendukung availability zone selalu punya minimal 3 zone, jadi pola ini selalu bisa dipakai."
+          "explanation": "Satu VM (Virtual Machine) di setiap zone. Kalau ketiganya ditaruh di zone yang sama, satu gedung mati berarti aplikasimu ikut mati. Region yang mendukung availability zone selalu punya minimal 3 zone, jadi pola ini selalu bisa dipakai.",
+          "requires": [
+            "f-u04-az-spread",
+            "f-u04-az-min3"
+          ]
+        },
+        {
+          "id": "u04-l1-i2",
+          "type": "learn",
+          "concepts": [
+            "region-pairs"
+          ],
+          "title": "Region pair",
+          "body": "Region pair adalah dua region yang dipasangkan Microsoft, biasanya di geografi yang sama dan berjarak minimal sekitar 480 km. Availability zone tidak menolong kalau satu region lumpuh total, jadi salinan untuk pemulihan disimpan di region pasangannya. Update terencana dijalankan bergantian di dalam pasangan. Saat gangguan besar, satu region dari tiap pasangan diprioritaskan pulih.",
+          "keyPoints": [
+            "Pasangannya ditentukan Microsoft, bukan dipilih sendiri",
+            "Zone: tahan satu datacenter mati. Pair: tahan satu region mati",
+            "Update bergantian, pemulihan diprioritaskan"
+          ],
+          "visual": "RegionPair",
+          "link": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired",
+          "teaches": [
+            "f-u04-pair-def",
+            "f-u04-pair-dr",
+            "f-u04-pair-updates",
+            "f-u04-pair-recovery"
+          ]
+        },
+        {
+          "id": "u04-l1-e2",
+          "type": "choice",
+          "concept": "region-pairs",
+          "prompt": "What is a region pair?",
+          "options": [
+            "Two regions in the same geography that back each other up",
+            "Two availability zones inside the same region",
+            "Two datacenters in the same building",
+            "Any two regions you choose to deploy to"
+          ],
+          "answer": 0,
+          "explanation": "Region pair adalah dua region di geografi yang sama, biasanya berjarak minimal sekitar 480 km, dan pasangannya sudah ditentukan Microsoft, bukan dipilih sendiri. Dua zone di dalam satu region itu availability zone, bukan region pair.",
+          "examReady": true,
+          "requires": [
+            "f-u04-pair-def",
+            "f-u04-az-def"
+          ]
+        },
+        {
+          "id": "u04-l1-e3",
+          "type": "match",
+          "concept": "physical-infrastructure",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Datacenter",
+              "A single building full of servers"
+            ],
+            [
+              "Availability zone",
+              "One or more separate datacenters inside a region"
+            ],
+            [
+              "Region",
+              "Geographic area with one or more datacenters"
+            ],
+            [
+              "Region pair",
+              "Two regions in the same geography for disaster recovery"
+            ]
+          ],
+          "explanation": "Urutan dari kecil ke besar: datacenter, availability zone, region, lalu region pair.",
+          "examReady": true,
+          "requires": [
+            "f-u04-region",
+            "f-u04-az-def",
+            "f-u04-pair-def",
+            "f-u04-pair-dr"
+          ]
         },
         {
           "id": "u04-l1-e5",
@@ -125,25 +216,12 @@
           ],
           "answer": 1,
           "explanation": "Availability zone melindungi dari matinya satu datacenter, tapi tidak dari bencana yang melumpuhkan satu region penuh. Untuk itu, taruh cadangannya di region pasangannya. Microsoft juga memperbarui region dalam satu pasangan secara bergantian, jadi keduanya tidak kena update bermasalah bersamaan.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l1-e6",
-          "type": "multi",
-          "concept": "availability-zones",
-          "prompt": "Which two statements about availability zones are true? Choose two.",
-          "options": [
-            "Each zone has its own power, cooling, and networking",
-            "A zone-enabled region has at least three zones",
-            "Every Azure region has availability zones",
-            "Availability zones are located in different geographies"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Zone punya listrik, pendingin, dan jaringan sendiri, dan region yang mendukung zone punya minimal 3 zone. Tidak semua region punya zone, dan semua zone berada di dalam satu region.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-pair-dr",
+            "f-u04-az-def",
+            "f-u02-vertical"
+          ]
         },
         {
           "id": "u04-l1-e7",
@@ -166,25 +244,12 @@
             }
           ],
           "explanation": "Update direncanakan dijalankan bergantian di region pair, dan saat gangguan besar satu region dari pasangan diprioritaskan pulih. Dua region itu berjauhan, bukan di satu datacenter.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l1-e8",
-          "type": "fill",
-          "concept": "availability-zones",
-          "prompt": "Complete the definition.",
-          "sentence": "An availability zone is one or more separate ___ inside one Azure ___, each with its own power, cooling, and networking.",
-          "bank": [
-            "datacenters",
-            "region",
-            "geographies",
-            "servers"
-          ],
-          "answers": [
-            "datacenters",
-            "region"
-          ],
-          "explanation": "Availability zone adalah satu atau lebih datacenter terpisah di dalam satu region. Karena listrik, pendingin, dan jaringannya sendiri-sendiri, satu zone mati tidak menyeret zone lain."
+          "examReady": true,
+          "requires": [
+            "f-u04-pair-updates",
+            "f-u04-pair-recovery",
+            "f-u04-pair-def"
+          ]
         }
       ]
     },
@@ -194,10 +259,22 @@
       "items": [
         {
           "id": "u04-l2-i1",
-          "type": "intro",
-          "concept": "sovereign-regions",
+          "type": "learn",
+          "concepts": [
+            "sovereign-regions"
+          ],
           "title": "Sovereign region",
-          "body": "Sovereign region adalah instance Azure yang terpisah dari Azure utama, untuk kebutuhan hukum atau kepatuhan. Contohnya Azure Government untuk pemerintah Amerika Serikat dan Azure di China yang dioperasikan 21Vianet."
+          "body": "Sovereign region adalah instance Azure yang terpisah secara fisik dan logis dari Azure utama, untuk kebutuhan hukum atau kepatuhan. Contohnya Azure Government untuk pemerintah Amerika Serikat, dan Azure di China yang dioperasikan 21Vianet. Azure Government hanya bisa dipakai instansi pemerintah Amerika Serikat dan mitranya yang lolos verifikasi.",
+          "keyPoints": [
+            "Terpisah dari Azure utama",
+            "Contoh: Azure Government, Azure di China (21Vianet)",
+            "Tidak semua perusahaan boleh memakainya"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-government/documentation-government-welcome",
+          "teaches": [
+            "f-u04-sovereign",
+            "f-u04-gov-eligibility"
+          ]
         },
         {
           "id": "u04-l2-e1",
@@ -206,14 +283,54 @@
           "prompt": "Sovereign regions, such as Azure Government, are isolated from the main instance of Azure.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Sovereign region adalah instance Azure yang terpisah untuk kebutuhan hukum atau pemerintahan.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-sovereign"
+          ]
+        },
+        {
+          "id": "u04-l2-e8",
+          "type": "yesno",
+          "concept": "sovereign-regions",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A United States government agency needs cloud services that meet strict government compliance requirements.",
+          "statements": [
+            {
+              "text": "Azure Government is a sovereign region designed for this kind of need.",
+              "answer": true
+            },
+            {
+              "text": "Azure Government runs on the same shared instance as the regular Azure regions.",
+              "answer": false
+            },
+            {
+              "text": "Any company can deploy resources to Azure Government without special eligibility.",
+              "answer": false
+            }
+          ],
+          "explanation": "Azure Government adalah sovereign region: instance Azure yang terpisah, khusus untuk kebutuhan pemerintah Amerika Serikat. Hanya instansi pemerintah Amerika Serikat dan mitranya yang lolos verifikasi yang bisa memakainya.",
+          "examReady": true,
+          "requires": [
+            "f-u04-sovereign",
+            "f-u04-gov-eligibility"
+          ]
         },
         {
           "id": "u04-l2-i2",
-          "type": "intro",
-          "concept": "resources",
+          "type": "learn",
+          "concepts": [
+            "resources"
+          ],
           "title": "Resource",
-          "body": "Resource adalah blok bangunan dasar di Azure, yaitu apa pun yang kamu buat dan kelola. Contohnya VM (Virtual Machine), storage account, virtual network, dan database."
+          "body": "Resource adalah item yang kamu buat dan kelola di Azure. Contohnya VM (Virtual Machine), storage account, virtual network, dan database. Region, zone, dan geografi bukan resource, melainkan lokasi tempat resource berada.",
+          "keyPoints": [
+            "Resource = yang kamu buat dan kelola",
+            "Region dan zone adalah lokasi, bukan resource"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
+          "teaches": [
+            "f-u04-resource"
+          ]
         },
         {
           "id": "u04-l2-e2",
@@ -228,14 +345,33 @@
           ],
           "answer": 0,
           "explanation": "Resource adalah sesuatu yang kamu buat dan kelola, seperti storage account atau VM (Virtual Machine). Region, zone, dan geografi adalah lokasi, bukan resource.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-resource",
+            "f-u04-region",
+            "f-u04-az-def"
+          ]
         },
         {
           "id": "u04-l2-i3",
-          "type": "intro",
-          "concept": "resource-groups",
+          "type": "learn",
+          "concepts": [
+            "resource-groups"
+          ],
           "title": "Resource group",
-          "body": "Resource group adalah wadah logis untuk mengelompokkan resource. Setiap resource ada di tepat satu resource group, resource group tidak bisa di-nest, dan menghapus resource group ikut menghapus semua isinya."
+          "body": "Resource group adalah wadah logis untuk mengelompokkan resource. Setiap resource ada di tepat satu resource group, dan resource group tidak bisa di-nest. Isinya boleh berada di region yang berbeda-beda. Menghapus resource group ikut menghapus semua isinya, dan tidak bisa dibatalkan.",
+          "keyPoints": [
+            "Satu resource = tepat satu resource group",
+            "Tidak bisa di-nest; isinya boleh beda region",
+            "Hapus resource group = semua isinya ikut terhapus"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group",
+          "teaches": [
+            "f-u04-rg-def",
+            "f-u04-rg-one",
+            "f-u04-rg-regions",
+            "f-u04-rg-delete"
+          ]
         },
         {
           "id": "u04-l2-e3",
@@ -244,33 +380,91 @@
           "prompt": "You can create a resource group inside another resource group.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Resource group tidak bisa di-nest. Setiap resource ada di tepat satu resource group.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-rg-one"
+          ]
         },
         {
-          "id": "u04-l2-e4",
-          "type": "match",
+          "id": "u04-l2-e6",
+          "type": "choice",
           "concept": "resource-groups",
-          "prompt": "Match each term with its meaning.",
-          "pairs": [
-            [
-              "Resource",
-              "Something you create, like a virtual machine"
-            ],
-            [
-              "Resource group",
-              "Logical container for resources"
-            ],
-            [
-              "Sovereign region",
-              "Isolated Azure instance for legal needs"
-            ],
-            [
-              "Region",
-              "Geographic area with one or more datacenters"
-            ]
+          "prompt": "You delete a resource group that contains a virtual machine, a disk, and a virtual network. What happens?",
+          "options": [
+            "All three resources are deleted too",
+            "Only the resource group is deleted; the resources move to a default group",
+            "The deletion fails until you delete each resource by hand",
+            "The resources move to the paired region"
           ],
-          "explanation": "Resource = yang kamu buat. Resource group = wadahnya. Sovereign region = instance Azure yang terpisah.",
-          "examReady": true
+          "answer": 0,
+          "explanation": "Menghapus resource group menghapus semua isinya, dan penghapusannya tidak bisa dibatalkan. Jadi periksa isinya dulu sebelum menghapus.",
+          "examReady": true,
+          "requires": [
+            "f-u04-rg-delete",
+            "f-u04-pair-def"
+          ]
+        },
+        {
+          "id": "u04-l2-e7",
+          "type": "multi",
+          "concept": "resource-groups",
+          "prompt": "Which two statements about resource groups are true? Choose two.",
+          "options": [
+            "A resource can belong to only one resource group",
+            "Resources in one resource group can be in different regions",
+            "Resource groups can be nested",
+            "A resource can belong to several resource groups at once"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Resource hanya ada di satu resource group, tapi region-nya boleh berbeda-beda. Resource group tidak bisa di-nest.",
+          "examReady": true,
+          "requires": [
+            "f-u04-rg-one",
+            "f-u04-rg-regions"
+          ]
+        },
+        {
+          "id": "u04-l2-e9",
+          "type": "fill",
+          "concept": "resource-groups",
+          "prompt": "Complete the sentence.",
+          "sentence": "Every resource must be in exactly ___ resource group, and deleting a resource group deletes ___ the resources in it.",
+          "bank": [
+            "one",
+            "all",
+            "two",
+            "none of"
+          ],
+          "answers": [
+            "one",
+            "all"
+          ],
+          "explanation": "Satu resource = satu resource group. Hapus resource group = semua isinya ikut terhapus.",
+          "requires": [
+            "f-u04-rg-one",
+            "f-u04-rg-delete"
+          ]
+        },
+        {
+          "id": "u04-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "resource-groups"
+          ],
+          "title": "Mengelompokkan menurut lifecycle",
+          "body": "Taruh resource yang lifecycle-nya sama di resource group yang sama. Dengan begitu, resource itu bisa di-deploy, di-update, dan dihapus bersama. Lingkungan test dan produksi biasanya dipisah ke resource group sendiri-sendiri.",
+          "keyPoints": [
+            "Lifecycle sama = resource group sama",
+            "Test selesai? Hapus resource group-nya saja"
+          ],
+          "example": "rg-shop-test berisi web app dan database test. Setelah testing selesai, satu kali hapus resource group menghapus keduanya.",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
+          "teaches": [
+            "f-u04-rg-lifecycle"
+          ]
         },
         {
           "id": "u04-l2-e5",
@@ -308,81 +502,43 @@
             }
           ],
           "rule": "valid",
-          "explanation": "Kelompokkan resource yang lifecycle-nya sama. Nanti lingkungan test bisa dihapus sekaligus dengan menghapus resource group-nya."
+          "explanation": "Kelompokkan resource yang lifecycle-nya sama. Nanti lingkungan test bisa dihapus sekaligus dengan menghapus resource group-nya.",
+          "requires": [
+            "f-u04-rg-lifecycle",
+            "f-u04-rg-delete"
+          ]
         },
         {
-          "id": "u04-l2-e6",
-          "type": "choice",
+          "id": "u04-l2-e4",
+          "type": "match",
           "concept": "resource-groups",
-          "prompt": "You delete a resource group that contains a virtual machine, a disk, and a virtual network. What happens?",
-          "options": [
-            "All three resources are deleted too",
-            "Only the resource group is deleted; the resources move to a default group",
-            "The deletion fails until you delete each resource by hand",
-            "The resources move to the paired region"
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Resource",
+              "Something you create, like a virtual machine"
+            ],
+            [
+              "Resource group",
+              "Logical container for resources"
+            ],
+            [
+              "Sovereign region",
+              "Isolated Azure instance for legal needs"
+            ],
+            [
+              "Region",
+              "Geographic area with one or more datacenters"
+            ]
           ],
-          "answer": 0,
-          "explanation": "Menghapus resource group menghapus semua isinya. Hati-hati, dan pertimbangkan resource lock untuk yang penting.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l2-e7",
-          "type": "multi",
-          "concept": "resource-groups",
-          "prompt": "Which two statements about resource groups are true? Choose two.",
-          "options": [
-            "A resource can belong to only one resource group",
-            "Resources in one resource group can be in different regions",
-            "Resource groups can be nested",
-            "A resource can belong to several resource groups at once"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Resource hanya ada di satu resource group, tapi region-nya boleh berbeda-beda. Resource group tidak bisa di-nest.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l2-e8",
-          "type": "yesno",
-          "concept": "sovereign-regions",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "A United States government agency needs cloud services that meet strict government compliance requirements.",
-          "statements": [
-            {
-              "text": "Azure Government is a sovereign region designed for this kind of need.",
-              "answer": true
-            },
-            {
-              "text": "Azure Government runs on the same shared instance as the regular Azure regions.",
-              "answer": false
-            },
-            {
-              "text": "Any company can deploy resources to Azure Government without special eligibility.",
-              "answer": false
-            }
-          ],
-          "explanation": "Azure Government adalah sovereign region: instance Azure yang terpisah, khusus untuk kebutuhan pemerintah Amerika Serikat. Hanya instansi pemerintah Amerika Serikat dan mitranya yang lolos verifikasi yang bisa memakainya.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l2-e9",
-          "type": "fill",
-          "concept": "resource-groups",
-          "prompt": "Complete the sentence.",
-          "sentence": "Every resource must be in exactly ___ resource group, and deleting a resource group deletes ___ the resources in it.",
-          "bank": [
-            "one",
-            "all",
-            "two",
-            "none of"
-          ],
-          "answers": [
-            "one",
-            "all"
-          ],
-          "explanation": "Satu resource = satu resource group. Hapus resource group = semua isinya ikut terhapus."
+          "explanation": "Resource = yang kamu buat. Resource group = wadahnya. Sovereign region = instance Azure yang terpisah.",
+          "examReady": true,
+          "requires": [
+            "f-u04-resource",
+            "f-u04-rg-def",
+            "f-u04-sovereign",
+            "f-u04-region"
+          ]
         }
       ]
     },
@@ -392,10 +548,22 @@
       "items": [
         {
           "id": "u04-l3-i1",
-          "type": "intro",
-          "concept": "subscriptions",
+          "type": "learn",
+          "concepts": [
+            "subscriptions"
+          ],
           "title": "Subscription",
-          "body": "Subscription adalah unit tagihan dan batas akses di Azure. Satu akun Azure bisa punya banyak subscription, misalnya untuk memisahkan dev, test, dan produksi, atau memisahkan tagihan tiap departemen."
+          "body": "Subscription punya dua fungsi utama. Pertama, batas tagihan: biaya ditagih per subscription. Kedua, batas kontrol akses: izin bisa diberikan per subscription. Resource group dan resource-nya ada di dalam subscription.",
+          "keyPoints": [
+            "Batas tagihan: satu subscription, satu tagihan",
+            "Batas akses: izin bisa beda per subscription"
+          ],
+          "trap": "Resource group bukan batas tagihan. Yang jadi batas tagihan adalah subscription.",
+          "link": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-subscriptions",
+          "teaches": [
+            "f-u04-sub-billing",
+            "f-u04-sub-access"
+          ]
         },
         {
           "id": "u04-l3-e1",
@@ -404,7 +572,95 @@
           "prompt": "In Azure, the resource group is the billing boundary, not the subscription.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Subscription adalah billing boundary: setiap subscription punya tagihan sendiri. Resource group hanya wadah untuk mengelompokkan resource.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-sub-billing",
+            "f-u04-rg-def"
+          ]
+        },
+        {
+          "id": "u04-l3-e4",
+          "type": "choice",
+          "concept": "subscriptions",
+          "prompt": "A company wants the marketing and engineering departments to receive separate Azure bills. What is the simplest approach?",
+          "options": [
+            "Create a separate subscription for each department",
+            "Deploy each department to a different region",
+            "Put both departments in one resource group",
+            "Use one availability zone per department"
+          ],
+          "answer": 0,
+          "explanation": "Subscription adalah batas tagihan. Subscription terpisah = tagihan terpisah.",
+          "examReady": true,
+          "requires": [
+            "f-u04-sub-billing",
+            "f-u04-rg-def",
+            "f-u04-az-def"
+          ]
+        },
+        {
+          "id": "u04-l3-e8",
+          "type": "fill",
+          "concept": "subscriptions",
+          "prompt": "Complete the sentence.",
+          "sentence": "A subscription is both a ___ boundary and an access ___ boundary.",
+          "bank": [
+            "billing",
+            "control",
+            "network",
+            "storage"
+          ],
+          "answers": [
+            "billing",
+            "control"
+          ],
+          "explanation": "Dua fungsi utama subscription: batas tagihan dan batas kontrol akses.",
+          "requires": [
+            "f-u04-sub-billing",
+            "f-u04-sub-access"
+          ]
+        },
+        {
+          "id": "u04-l3-e7",
+          "type": "fix",
+          "concept": "subscriptions",
+          "prompt": "The developer only has access to the Dev subscription and picked Prod by mistake. What should they do?",
+          "scene": {
+            "kind": "error",
+            "title": "AuthorizationFailed",
+            "message": "The client 'dev@contoso.com' does not have authorization to perform action 'Microsoft.Compute/virtualMachines/write' over scope '/subscriptions/prod'."
+          },
+          "options": [
+            "Create the virtual machine in the Dev subscription instead",
+            "Ask Microsoft support to remove the authorization error",
+            "Delete the Prod subscription so the error goes away",
+            "Move the Prod subscription into a new Azure region"
+          ],
+          "answer": 0,
+          "explanation": "Subscription juga batas akses. Developer hanya punya izin di Dev, jadi buat VM (Virtual Machine) di sana. Kalau memang butuh di Prod, minta akses ke admin subscription itu.",
+          "requires": [
+            "f-u04-sub-access"
+          ]
+        },
+        {
+          "id": "u04-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "subscriptions"
+          ],
+          "title": "Kapan pakai banyak subscription",
+          "body": "Resource selalu dibuat di dalam subscription, jadi subscription adalah hal pertama yang kamu butuhkan. Satu organisasi bisa punya banyak subscription. Alasan umumnya memisahkan lingkungan dev, test, dan produksi, atau memisahkan tagihan tiap departemen. Setiap resource hanya berada di satu subscription.",
+          "keyPoints": [
+            "Tanpa subscription, tidak ada resource yang bisa dibuat",
+            "Pisahkan lingkungan atau tagihan dengan subscription berbeda",
+            "Satu resource = satu subscription"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-subscriptions",
+          "teaches": [
+            "f-u04-sub-required",
+            "f-u04-sub-multi",
+            "f-u04-sub-one"
+          ]
         },
         {
           "id": "u04-l3-e2",
@@ -413,13 +669,70 @@
           "prompt": "What do you need before you can create resources in Azure?",
           "options": [
             "An Azure subscription",
-            "A management group",
             "A region pair",
-            "A resource lock"
+            "An availability zone",
+            "A Pricing Calculator estimate"
           ],
           "answer": 0,
           "explanation": "Resource selalu dibuat di dalam subscription (lewat resource group). Tanpa subscription, tidak ada yang bisa dibuat atau ditagih.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-sub-required",
+            "f-u04-pair-def",
+            "f-u04-az-def",
+            "f-u02-pricing-calculator"
+          ]
+        },
+        {
+          "id": "u04-l3-e5",
+          "type": "multi",
+          "concept": "subscriptions",
+          "prompt": "Which two are common reasons to create more than one subscription? Choose two.",
+          "options": [
+            "To separate development, test, and production environments",
+            "To separate billing for different departments",
+            "To get more availability zones in a region",
+            "To nest resource groups"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Subscription dipakai untuk memisahkan lingkungan dan tagihan. Jumlah zone ditentukan region, dan resource group tidak bisa di-nest.",
+          "examReady": true,
+          "requires": [
+            "f-u04-sub-multi",
+            "f-u04-az-min3",
+            "f-u04-rg-one"
+          ]
+        },
+        {
+          "id": "u04-l3-e6",
+          "type": "yesno",
+          "concept": "subscriptions",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso has one Azure account with two subscriptions: Dev and Prod.",
+          "statements": [
+            {
+              "text": "Contoso can give developers access to Dev without giving them access to Prod.",
+              "answer": true
+            },
+            {
+              "text": "Costs for Dev and Prod can be tracked separately.",
+              "answer": true
+            },
+            {
+              "text": "A resource can be in both subscriptions at the same time.",
+              "answer": false
+            }
+          ],
+          "explanation": "Subscription adalah batas akses dan batas tagihan. Setiap resource hanya berada di satu subscription.",
+          "examReady": true,
+          "requires": [
+            "f-u04-sub-access",
+            "f-u04-sub-billing",
+            "f-u04-sub-one"
+          ]
         },
         {
           "id": "u04-l3-e3",
@@ -445,100 +758,13 @@
             ]
           ],
           "explanation": "Subscription adalah batas tagihan dan batas akses. Di dalamnya ada resource group, dan satu akun bisa punya banyak subscription.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l3-e4",
-          "type": "choice",
-          "concept": "subscriptions",
-          "prompt": "A company wants the marketing and engineering departments to receive separate Azure bills. What is the simplest approach?",
-          "options": [
-            "Create a separate subscription for each department",
-            "Create one resource lock per department",
-            "Put both departments in one resource group",
-            "Use one availability zone per department"
-          ],
-          "answer": 0,
-          "explanation": "Subscription adalah batas tagihan. Subscription terpisah = tagihan terpisah.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l3-e5",
-          "type": "multi",
-          "concept": "subscriptions",
-          "prompt": "Which two are common reasons to create more than one subscription? Choose two.",
-          "options": [
-            "To separate development, test, and production environments",
-            "To separate billing for different departments",
-            "To get more availability zones in a region",
-            "To nest resource groups"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Subscription dipakai untuk memisahkan lingkungan dan tagihan. Jumlah zone ditentukan region, dan resource group tidak bisa di-nest.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l3-e6",
-          "type": "yesno",
-          "concept": "subscriptions",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso has one Azure account with two subscriptions: Dev and Prod.",
-          "statements": [
-            {
-              "text": "Contoso can give developers access to Dev without giving them access to Prod.",
-              "answer": true
-            },
-            {
-              "text": "Costs for Dev and Prod can be tracked separately.",
-              "answer": true
-            },
-            {
-              "text": "A resource can be in both subscriptions at the same time.",
-              "answer": false
-            }
-          ],
-          "explanation": "Subscription adalah batas akses dan batas tagihan. Setiap resource hanya berada di satu subscription.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l3-e7",
-          "type": "fix",
-          "concept": "subscriptions",
-          "prompt": "The developer only has access to the Dev subscription and picked Prod by mistake. What should they do?",
-          "scene": {
-            "kind": "error",
-            "title": "AuthorizationFailed",
-            "message": "The client 'dev@contoso.com' does not have authorization to perform action 'Microsoft.Compute/virtualMachines/write' over scope '/subscriptions/prod'."
-          },
-          "options": [
-            "Create the virtual machine in the Dev subscription instead",
-            "Ask Microsoft support to remove the authorization error",
-            "Delete the Prod subscription so the error goes away",
-            "Move the Prod subscription into a new Azure region"
-          ],
-          "answer": 0,
-          "explanation": "Subscription juga batas akses. Developer hanya punya izin di Dev, jadi buat VM (Virtual Machine) di sana. Kalau memang butuh di Prod, minta akses ke admin lewat RBAC (Role-Based Access Control)."
-        },
-        {
-          "id": "u04-l3-e8",
-          "type": "fill",
-          "concept": "subscriptions",
-          "prompt": "Complete the sentence.",
-          "sentence": "A subscription is both a ___ boundary and an access ___ boundary.",
-          "bank": [
-            "billing",
-            "control",
-            "network",
-            "storage"
-          ],
-          "answers": [
-            "billing",
-            "control"
-          ],
-          "explanation": "Dua fungsi utama subscription: batas tagihan dan batas kontrol akses."
+          "examReady": true,
+          "requires": [
+            "f-u04-sub-billing",
+            "f-u04-sub-access",
+            "f-u04-rg-def",
+            "f-u04-sub-multi"
+          ]
         }
       ]
     },
@@ -548,10 +774,21 @@
       "items": [
         {
           "id": "u04-l4-i1",
-          "type": "intro",
-          "concept": "management-groups",
+          "type": "learn",
+          "concepts": [
+            "management-groups"
+          ],
           "title": "Management group",
-          "body": "Management group mengelompokkan beberapa subscription supaya akses dan policy bisa diatur sekaligus. Subscription di dalamnya mewarisi pengaturan tersebut, dan pohonnya bisa sampai 6 level (tidak termasuk root dan subscription)."
+          "body": "Management group mengelompokkan beberapa subscription supaya akses dan policy bisa diatur sekaligus. Pengaturan yang dipasang di management group diwariskan ke semua subscription di dalamnya. Jadi 30 subscription cukup diatur sekali, bukan 30 kali.",
+          "keyPoints": [
+            "Management group = kumpulan subscription",
+            "Policy dan akses dipasang sekali, diwariskan ke bawah"
+          ],
+          "visual": "ResourceHierarchy",
+          "link": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview",
+          "teaches": [
+            "f-u04-mg-def"
+          ]
         },
         {
           "id": "u04-l4-e1",
@@ -560,24 +797,49 @@
           "prompt": "Management groups let you apply policies and access to many subscriptions at once.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Itu tujuan utama management group: mengatur banyak subscription sekaligus.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-mg-def"
+          ]
         },
         {
-          "id": "u04-l4-i2",
-          "type": "intro",
-          "concept": "resource-hierarchy",
-          "title": "Hierarki Azure",
-          "body": "Urutannya dari atas ke bawah: management group, subscription, resource group, lalu resource. Pengaturan seperti akses dan policy diwariskan dari level atas ke level di bawahnya.",
-          "visual": "ResourceHierarchy"
+          "id": "u04-l4-e5",
+          "type": "choice",
+          "concept": "management-groups",
+          "prompt": "A company has 30 subscriptions and wants one policy that blocks deployments outside Europe to apply to all of them. Where should it assign the policy?",
+          "options": [
+            "At a management group that contains all 30 subscriptions",
+            "At a resource group in one of the 30 subscriptions",
+            "On each virtual machine when it is deployed",
+            "At the region pair that contains the European regions"
+          ],
+          "answer": 0,
+          "explanation": "Assign sekali di management group, maka ke-30 subscription di bawahnya mewarisi policy itu.",
+          "examReady": true,
+          "requires": [
+            "f-u04-mg-def",
+            "f-u04-rg-def",
+            "f-u04-pair-def",
+            "f-u02-policy-audit"
+          ]
         },
         {
-          "id": "u04-l4-e2",
-          "type": "truefalse",
-          "concept": "resource-hierarchy",
-          "prompt": "Access assigned at a subscription does not apply to the resource groups inside it.",
-          "answer": false,
-          "explanation": "Pernyataan ini salah. Pengaturan mengalir ke bawah. Akses yang diberikan di subscription diwariskan ke resource group, lalu ke resource di dalamnya.",
-          "examReady": true
+          "id": "u04-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "management-group-limits"
+          ],
+          "title": "Aturan pohon management group",
+          "body": "Pohon management group bisa sampai enam level, tidak termasuk level root dan level subscription. Setiap management group dan subscription hanya punya satu parent. Sebaliknya, satu management group boleh punya banyak child, baik subscription maupun management group lain.",
+          "keyPoints": [
+            "Maksimal enam level (tanpa root dan subscription)",
+            "Satu parent, boleh banyak child"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview",
+          "teaches": [
+            "f-u04-mg-depth",
+            "f-u04-mg-parent"
+          ]
         },
         {
           "id": "u04-l4-e3",
@@ -592,7 +854,90 @@
           ],
           "answer": 0,
           "explanation": "Maksimal 6 level di bawah root management group, tidak termasuk root dan subscription.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-mg-depth"
+          ]
+        },
+        {
+          "id": "u04-l4-e6",
+          "type": "yesno",
+          "concept": "management-groups",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso creates a management group named Corp with three subscriptions inside it.",
+          "statements": [
+            {
+              "text": "A policy assigned to Corp applies to all three subscriptions.",
+              "answer": true
+            },
+            {
+              "text": "A subscription inside Corp can also have a second parent management group.",
+              "answer": false
+            },
+            {
+              "text": "Corp can contain at most one subscription.",
+              "answer": false
+            }
+          ],
+          "explanation": "Setiap management group dan subscription hanya punya satu parent, tapi satu management group bisa punya banyak child, termasuk management group lain.",
+          "examReady": true,
+          "requires": [
+            "f-u04-mg-def",
+            "f-u04-mg-parent"
+          ]
+        },
+        {
+          "id": "u04-l4-e8",
+          "type": "fill",
+          "concept": "management-groups",
+          "prompt": "Complete the sentence.",
+          "sentence": "A management group tree can be up to ___ levels deep, and each subscription can have only ___ parent.",
+          "bank": [
+            "6",
+            "one",
+            "3",
+            "two"
+          ],
+          "answers": [
+            "6",
+            "one"
+          ],
+          "explanation": "Maksimal 6 level (tidak termasuk root dan subscription), dan setiap subscription hanya punya satu parent.",
+          "requires": [
+            "f-u04-mg-depth",
+            "f-u04-mg-parent"
+          ]
+        },
+        {
+          "id": "u04-l4-i2",
+          "type": "learn",
+          "concepts": [
+            "resource-hierarchy"
+          ],
+          "title": "Hierarki Azure",
+          "body": "Urutannya dari atas ke bawah: management group, subscription, resource group, lalu resource. Akses dan policy yang dipasang di satu level diwariskan ke semua level di bawahnya. Jadi akses yang diberikan di subscription juga berlaku di setiap resource group di dalamnya.",
+          "keyPoints": [
+            "Management group > subscription > resource group > resource",
+            "Pengaturan mengalir ke bawah"
+          ],
+          "visual": "ResourceHierarchy",
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview",
+          "teaches": [
+            "f-u04-hierarchy",
+            "f-u04-inheritance"
+          ]
+        },
+        {
+          "id": "u04-l4-e2",
+          "type": "truefalse",
+          "concept": "resource-hierarchy",
+          "prompt": "Access assigned at a subscription does not apply to the resource groups inside it.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Pengaturan mengalir ke bawah. Akses yang diberikan di subscription diwariskan ke resource group, lalu ke resource di dalamnya.",
+          "examReady": true,
+          "requires": [
+            "f-u04-inheritance"
+          ]
         },
         {
           "id": "u04-l4-e4",
@@ -618,45 +963,14 @@
             ]
           ],
           "explanation": "Dari atas: management group, subscription, resource group, resource.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l4-e5",
-          "type": "choice",
-          "concept": "management-groups",
-          "prompt": "A company has 30 subscriptions and wants one policy that blocks deployments outside Europe to apply to all of them. Where should it assign the policy?",
-          "options": [
-            "At a management group that contains all 30 subscriptions",
-            "At a resource group in one of the 30 subscriptions",
-            "On each virtual machine when it is deployed",
-            "At the region pair that contains the European regions"
-          ],
-          "answer": 0,
-          "explanation": "Assign sekali di management group, maka ke-30 subscription di bawahnya mewarisi policy itu.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l4-e6",
-          "type": "yesno",
-          "concept": "management-groups",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso creates a management group named Corp with three subscriptions inside it.",
-          "statements": [
-            {
-              "text": "A policy assigned to Corp applies to all three subscriptions.",
-              "answer": true
-            },
-            {
-              "text": "A subscription inside Corp can also have a second parent management group.",
-              "answer": false
-            },
-            {
-              "text": "Corp can contain at most one subscription.",
-              "answer": false
-            }
-          ],
-          "explanation": "Setiap management group dan subscription hanya punya satu parent, tapi satu management group bisa punya banyak child, termasuk management group lain.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u04-hierarchy",
+            "f-u04-mg-def",
+            "f-u04-sub-billing",
+            "f-u04-rg-lifecycle",
+            "f-u04-resource"
+          ]
         },
         {
           "id": "u04-l4-e7",
@@ -670,27 +984,149 @@
             "Resource"
           ],
           "explanation": "Management group di paling atas, lalu subscription, resource group, dan resource.",
-          "examReady": true
-        },
-        {
-          "id": "u04-l4-e8",
-          "type": "fill",
-          "concept": "management-groups",
-          "prompt": "Complete the sentence.",
-          "sentence": "A management group tree can be up to ___ levels deep, and each subscription can have only ___ parent.",
-          "bank": [
-            "6",
-            "one",
-            "3",
-            "two"
-          ],
-          "answers": [
-            "6",
-            "one"
-          ],
-          "explanation": "Maksimal 6 level (tidak termasuk root dan subscription), dan setiap subscription hanya punya satu parent."
+          "examReady": true,
+          "requires": [
+            "f-u04-hierarchy"
+          ]
         }
       ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "f-u04-region",
+      "statement": "Region adalah area geografis yang berisi satu atau lebih datacenter yang terhubung jaringan berlatensi rendah.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/regions-overview"
+    },
+    {
+      "id": "f-u04-az-def",
+      "statement": "Availability zone adalah satu atau lebih datacenter yang terpisah secara fisik di dalam satu region, masing-masing dengan listrik, pendingin, dan jaringan sendiri.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"
+    },
+    {
+      "id": "f-u04-az-min3",
+      "statement": "Region yang mendukung availability zone punya minimal tiga zone.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"
+    },
+    {
+      "id": "f-u04-az-not-all",
+      "statement": "Tidak semua region Azure mendukung availability zone.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"
+    },
+    {
+      "id": "f-u04-az-spread",
+      "statement": "Kalau satu zone mati, aplikasi yang disebar ke beberapa zone tetap dilayani zone yang lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"
+    },
+    {
+      "id": "f-u04-pair-def",
+      "statement": "Region pair adalah dua region yang dipasangkan Microsoft, biasanya di geografi yang sama dan berjarak minimal sekitar 300 mil (sekitar 480 km).",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired"
+    },
+    {
+      "id": "f-u04-pair-dr",
+      "statement": "Region pair dipakai untuk pemulihan bencana: availability zone tidak melindungi dari gangguan yang melumpuhkan satu region penuh, jadi salinan disimpan di region pasangannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired"
+    },
+    {
+      "id": "f-u04-pair-updates",
+      "statement": "Update terencana Azure dijalankan bergantian, satu region dulu, di dalam satu region pair.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired"
+    },
+    {
+      "id": "f-u04-pair-recovery",
+      "statement": "Saat gangguan besar, satu region dari setiap region pair diprioritaskan untuk dipulihkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/regions-paired"
+    },
+    {
+      "id": "f-u04-sovereign",
+      "statement": "Sovereign region adalah instance Azure yang terpisah secara fisik dan logis dari Azure utama, untuk kebutuhan hukum atau kepatuhan; contohnya Azure Government dan Azure di China yang dioperasikan 21Vianet.",
+      "source": "https://learn.microsoft.com/en-us/azure/china/overview-operations"
+    },
+    {
+      "id": "f-u04-gov-eligibility",
+      "statement": "Azure Government hanya tersedia untuk instansi pemerintah Amerika Serikat dan mitranya yang lolos verifikasi.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-government/documentation-government-welcome"
+    },
+    {
+      "id": "f-u04-resource",
+      "statement": "Resource adalah item yang bisa dikelola di Azure, yaitu apa pun yang kamu buat, misalnya virtual machine, storage account, virtual network, atau database.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u04-rg-def",
+      "statement": "Resource group adalah wadah logis untuk mengelompokkan resource.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u04-rg-one",
+      "statement": "Setiap resource ada di tepat satu resource group, dan resource group tidak bisa di-nest.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group"
+    },
+    {
+      "id": "f-u04-rg-delete",
+      "statement": "Menghapus resource group ikut menghapus semua resource di dalamnya, dan penghapusan itu tidak bisa dibatalkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group"
+    },
+    {
+      "id": "f-u04-rg-regions",
+      "statement": "Resource di dalam satu resource group boleh berada di region yang berbeda-beda.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u04-rg-lifecycle",
+      "statement": "Resource yang lifecycle-nya sama sebaiknya ditaruh di resource group yang sama, supaya bisa di-deploy, di-update, dan dihapus bersama.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u04-sub-billing",
+      "statement": "Subscription adalah batas tagihan: biaya ditagih per subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-subscriptions"
+    },
+    {
+      "id": "f-u04-sub-access",
+      "statement": "Subscription juga batas kontrol akses: izin bisa diberikan per subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-subscriptions"
+    },
+    {
+      "id": "f-u04-sub-required",
+      "statement": "Resource selalu dibuat di dalam subscription, lewat resource group di dalamnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-subscriptions"
+    },
+    {
+      "id": "f-u04-sub-multi",
+      "statement": "Satu organisasi bisa punya banyak subscription, misalnya untuk memisahkan lingkungan dev, test, dan produksi, atau memisahkan tagihan departemen.",
+      "source": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-subscriptions"
+    },
+    {
+      "id": "f-u04-sub-one",
+      "statement": "Setiap resource hanya berada di satu subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u04-mg-def",
+      "statement": "Management group mengelompokkan subscription supaya akses dan policy bisa diatur sekaligus; subscription di dalamnya mewarisi pengaturan itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview"
+    },
+    {
+      "id": "f-u04-mg-depth",
+      "statement": "Pohon management group bisa sampai enam level, tidak termasuk level root dan level subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview"
+    },
+    {
+      "id": "f-u04-mg-parent",
+      "statement": "Setiap management group dan subscription hanya punya satu parent, tapi satu management group bisa punya banyak child.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview"
+    },
+    {
+      "id": "f-u04-hierarchy",
+      "statement": "Urutan hierarki Azure dari atas: management group, subscription, resource group, lalu resource.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview"
+    },
+    {
+      "id": "f-u04-inheritance",
+      "statement": "Akses yang diberikan di satu level diwariskan ke semua level di bawahnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview"
     }
   ]
 }
