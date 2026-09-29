@@ -9,10 +9,22 @@
       "items": [
         {
           "id": "u06-l1-i1",
-          "type": "intro",
-          "concept": "virtual-networks",
+          "type": "learn",
+          "concepts": [
+            "virtual-networks"
+          ],
           "title": "Virtual network",
-          "body": "VNet (Virtual Network) adalah jaringan privat di Azure. Resource di dalamnya bisa saling berkomunikasi, terhubung ke internet, dan terhubung ke jaringan on-premises."
+          "body": "VNet (Virtual Network) adalah jaringan privat di Azure. Resource di dalamnya, misalnya VM (Virtual Machine), saling berkomunikasi lewat alamat IP (Internet Protocol) privat. VNet juga bisa terhubung ke internet dan ke jaringan on-premises, dan traffic-nya bisa difilter.",
+          "keyPoints": [
+            "VNet = jaringan privat di Azure",
+            "Terhubung ke sesama resource, internet, dan on-premises",
+            "Traffic bisa difilter"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview",
+          "teaches": [
+            "f-u06-vnet-def",
+            "f-u06-vnet-capabilities"
+          ]
         },
         {
           "id": "u06-l1-e1",
@@ -21,14 +33,71 @@
           "prompt": "Resources in the same VNet (Virtual Network) need public IP (Internet Protocol) addresses to communicate with each other.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Resource di VNet (Virtual Network) yang sama berkomunikasi lewat alamat privat. Itu fungsi dasar VNet.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-vnet-def"
+          ]
+        },
+        {
+          "id": "u06-l1-e6",
+          "type": "multi",
+          "concept": "virtual-networks",
+          "prompt": "Which two can Azure virtual networks do? Choose two.",
+          "options": [
+            "Connect Azure resources to on-premises networks",
+            "Filter network traffic between subnets",
+            "Estimate your monthly Azure bill",
+            "Store files for users"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "VNet (Virtual Network) menghubungkan resource, termasuk ke on-premises, dan traffic-nya bisa difilter, misalnya dengan NSG (Network Security Group).",
+          "examReady": true,
+          "requires": [
+            "f-u06-vnet-capabilities",
+            "f-u02-pricing-calculator"
+          ]
+        },
+        {
+          "id": "u06-l1-e5",
+          "type": "choice",
+          "concept": "virtual-networks",
+          "prompt": "A company wants its Azure VMs (Virtual Machines) to reach an on-premises database privately. What does it need first?",
+          "options": [
+            "An Azure virtual network connected to the on-premises network",
+            "A public address on every virtual machine",
+            "A bigger size for every virtual machine",
+            "A second Azure subscription"
+          ],
+          "answer": 0,
+          "explanation": "VM (Virtual Machine) harus berada di VNet (Virtual Network), lalu VNet itu dihubungkan ke jaringan on-premises. Cara menghubungkannya dibahas di lesson 3: VPN (Virtual Private Network) Gateway dan ExpressRoute.",
+          "examReady": true,
+          "requires": [
+            "f-u06-vnet-capabilities",
+            "f-u02-vertical",
+            "f-u04-sub-multi"
+          ]
         },
         {
           "id": "u06-l1-i2",
-          "type": "intro",
-          "concept": "subnets",
+          "type": "learn",
+          "concepts": [
+            "subnets"
+          ],
           "title": "Subnet",
-          "body": "Subnet membagi VNet (Virtual Network) menjadi beberapa bagian dengan rentang alamat IP (Internet Protocol) sendiri. Contohnya satu subnet untuk web server dan subnet terpisah untuk database."
+          "body": "Subnet membagi VNet (Virtual Network) menjadi beberapa bagian, masing-masing dengan rentang alamat IP (Internet Protocol) sendiri. Contohnya satu subnet untuk web server dan satu lagi untuk database. Secara default, resource di subnet berbeda dalam satu VNet tetap bisa saling berkomunikasi.",
+          "keyPoints": [
+            "Setiap subnet punya rentang IP sendiri",
+            "Pisahkan web dan database ke subnet berbeda",
+            "Default: antar subnet bisa saling berkomunikasi"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview",
+          "teaches": [
+            "f-u06-subnet",
+            "f-u06-subnet-default-comm"
+          ]
         },
         {
           "id": "u06-l1-e2",
@@ -43,7 +112,55 @@
           ],
           "answer": 0,
           "explanation": "Subnet memisahkan resource ke segmen-segmen, sehingga aturan keamanan bisa berbeda untuk web dan database.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-subnet",
+            "f-u04-sub-multi"
+          ]
+        },
+        {
+          "id": "u06-l1-e7",
+          "type": "yesno",
+          "concept": "virtual-networks",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso creates a VNet (Virtual Network) with a web subnet and a database subnet.",
+          "statements": [
+            {
+              "text": "By default, virtual machines in the two subnets can communicate with each other.",
+              "answer": true
+            },
+            {
+              "text": "Each subnet has its own IP (Internet Protocol) address range.",
+              "answer": true
+            },
+            {
+              "text": "A VNet can only be used by one virtual machine.",
+              "answer": false
+            }
+          ],
+          "explanation": "Secara default, subnet dalam satu VNet (Virtual Network) bisa saling berkomunikasi. Setiap subnet punya rentang IP (Internet Protocol) sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u06-subnet",
+            "f-u06-subnet-default-comm"
+          ]
+        },
+        {
+          "id": "u06-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "ip-addresses"
+          ],
+          "title": "IP publik dan IP privat",
+          "body": "Alamat IP (Internet Protocol) publik membuat resource bisa dijangkau dari internet, misalnya web server. Alamat IP privat hanya dipakai di dalam VNet (Virtual Network), misalnya untuk database. Jadi hanya resource yang memang harus diakses dari internet yang perlu IP publik.",
+          "keyPoints": [
+            "IP publik: bisa dijangkau dari internet",
+            "IP privat: hanya di dalam VNet"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses",
+          "teaches": [
+            "f-u06-public-private-ip"
+          ]
         },
         {
           "id": "u06-l1-e3",
@@ -69,7 +186,12 @@
             ]
           ],
           "explanation": "VNet (Virtual Network) dibagi menjadi subnet. Alamat IP (Internet Protocol) privat dipakai di dalamnya, alamat publik untuk akses dari internet.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-vnet-def",
+            "f-u06-subnet",
+            "f-u06-public-private-ip"
+          ]
         },
         {
           "id": "u06-l1-e4",
@@ -107,63 +229,11 @@
             }
           ],
           "rule": "valid",
-          "explanation": "Web server di subnet yang boleh diakses dari internet; database dan layanan internal di subnet privat. Ini dasar desain jaringan yang aman."
-        },
-        {
-          "id": "u06-l1-e5",
-          "type": "choice",
-          "concept": "virtual-networks",
-          "prompt": "A company wants its Azure VMs (Virtual Machines) to reach an on-premises database privately. What does it need first?",
-          "options": [
-            "An Azure virtual network connected to the on-premises network",
-            "A public address on every virtual machine",
-            "An Azure Data Box shipped to the on-premises datacenter",
-            "A public DNS (Domain Name System) zone for the database"
-          ],
-          "answer": 0,
-          "explanation": "VM (Virtual Machine) harus berada di VNet (Virtual Network), lalu VNet itu dihubungkan ke on-premises, misalnya lewat VPN (Virtual Private Network) atau ExpressRoute.",
-          "examReady": true
-        },
-        {
-          "id": "u06-l1-e6",
-          "type": "multi",
-          "concept": "virtual-networks",
-          "prompt": "Which two can Azure virtual networks do? Choose two.",
-          "options": [
-            "Connect Azure resources to on-premises networks",
-            "Filter network traffic between subnets",
-            "Estimate your monthly Azure bill",
-            "Store files for users"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "VNet (Virtual Network) menghubungkan resource, termasuk ke on-premises, dan traffic-nya bisa difilter, misalnya dengan NSG (Network Security Group).",
-          "examReady": true
-        },
-        {
-          "id": "u06-l1-e7",
-          "type": "yesno",
-          "concept": "virtual-networks",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso creates a VNet (Virtual Network) with a web subnet and a database subnet.",
-          "statements": [
-            {
-              "text": "By default, virtual machines in the two subnets can communicate with each other.",
-              "answer": true
-            },
-            {
-              "text": "Each subnet has its own IP (Internet Protocol) address range.",
-              "answer": true
-            },
-            {
-              "text": "A VNet can only be used by one virtual machine.",
-              "answer": false
-            }
-          ],
-          "explanation": "Secara default, subnet dalam satu VNet (Virtual Network) bisa saling berkomunikasi. Setiap subnet punya rentang IP (Internet Protocol) sendiri.",
-          "examReady": true
+          "explanation": "Web server di subnet yang boleh diakses dari internet; database dan layanan internal di subnet privat. Ini dasar desain jaringan yang aman.",
+          "requires": [
+            "f-u06-subnet",
+            "f-u06-public-private-ip"
+          ]
         },
         {
           "id": "u06-l1-e8",
@@ -181,7 +251,11 @@
             "virtual network",
             "subnet"
           ],
-          "explanation": "VNet (Virtual Network) = jaringan privat. Subnet = potongan rentang alamat di dalamnya."
+          "explanation": "VNet (Virtual Network) = jaringan privat. Subnet = potongan rentang alamat di dalamnya.",
+          "requires": [
+            "f-u06-vnet-def",
+            "f-u06-subnet"
+          ]
         }
       ]
     },
@@ -191,10 +265,21 @@
       "items": [
         {
           "id": "u06-l2-i1",
-          "type": "intro",
-          "concept": "nsg",
+          "type": "learn",
+          "concepts": [
+            "nsg"
+          ],
           "title": "Network security group",
-          "body": "NSG (Network Security Group) berisi aturan allow atau deny untuk traffic masuk dan keluar, berdasarkan sumber, tujuan, port, dan protokol. NSG bisa dipasang ke subnet atau ke network interface VM (Virtual Machine)."
+          "body": "NSG (Network Security Group) berisi aturan allow atau deny untuk traffic masuk dan keluar. Aturannya berdasarkan sumber, tujuan, port, dan protokol. NSG bisa dipasang ke subnet atau ke network interface VM (Virtual Machine).",
+          "keyPoints": [
+            "NSG = daftar aturan allow dan deny",
+            "Dipasang ke subnet atau network interface"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+          "teaches": [
+            "f-u06-nsg-def",
+            "f-u06-nsg-assoc"
+          ]
         },
         {
           "id": "u06-l2-e1",
@@ -203,7 +288,53 @@
           "prompt": "An NSG (Network Security Group) can allow or deny inbound traffic to a subnet.",
           "answer": true,
           "explanation": "Pernyataan ini benar. NSG (Network Security Group) mengatur traffic masuk dan keluar, dan bisa dipasang ke subnet atau network interface.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-nsg-def",
+            "f-u06-nsg-assoc"
+          ]
+        },
+        {
+          "id": "u06-l2-e7",
+          "type": "multi",
+          "concept": "nsg",
+          "prompt": "Which two can an NSG (Network Security Group) be associated with? Choose two.",
+          "options": [
+            "A subnet",
+            "A network interface of a virtual machine",
+            "A resource group",
+            "A management group"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "NSG (Network Security Group) dipasang ke subnet atau network interface, tempat traffic jaringan lewat.",
+          "examReady": true,
+          "requires": [
+            "f-u06-nsg-assoc",
+            "f-u04-rg-def",
+            "f-u04-mg-def"
+          ]
+        },
+        {
+          "id": "u06-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "nsg"
+          ],
+          "title": "Urutan rule NSG",
+          "body": "Rule NSG (Network Security Group) diproses dari angka priority terkecil. Begitu ada rule yang cocok, pemrosesan berhenti. Setiap NSG punya default rule yang tidak bisa dihapus, termasuk DenyAllInBound dengan priority 65500 yang menolak traffic masuk dari internet. Untuk membuka port, buat rule allow dengan angka priority lebih kecil.",
+          "keyPoints": [
+            "Angka priority kecil = diproses lebih dulu",
+            "Default rule tidak bisa dihapus, tapi bisa dikalahkan"
+          ],
+          "example": "Rule allow port 80 dengan priority 100 diproses sebelum DenyAllInBound (65500), jadi web server bisa diakses.",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+          "teaches": [
+            "f-u06-nsg-priority",
+            "f-u06-nsg-defaults"
+          ]
         },
         {
           "id": "u06-l2-e2",
@@ -218,14 +349,75 @@
           ],
           "answer": 0,
           "explanation": "Angka priority lebih kecil diproses lebih dulu. Begitu ada rule yang cocok, pemrosesan berhenti.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-nsg-priority"
+          ]
+        },
+        {
+          "id": "u06-l2-e8",
+          "type": "fill",
+          "concept": "nsg",
+          "prompt": "Complete the sentence about NSGs (Network Security Groups).",
+          "sentence": "NSG rules are processed in ___ order, from the ___ number to the highest.",
+          "bank": [
+            "priority",
+            "lowest",
+            "alphabetical",
+            "newest"
+          ],
+          "answers": [
+            "priority",
+            "lowest"
+          ],
+          "explanation": "Rule diproses berdasarkan priority, dari angka terkecil.",
+          "requires": [
+            "f-u06-nsg-priority"
+          ]
+        },
+        {
+          "id": "u06-l2-e5",
+          "type": "fix",
+          "concept": "nsg",
+          "prompt": "The web server listens on port 80. What fixes the problem?",
+          "scene": {
+            "kind": "error",
+            "title": "Can't reach website",
+            "message": "Browser: connection timed out. NSG (Network Security Group) 'web-nsg' inbound rules: 65000 AllowVnetInBound, 65001 AllowAzureLoadBalancerInBound, 65500 DenyAllInBound."
+          },
+          "options": [
+            "Add an inbound rule that allows TCP (Transmission Control Protocol) port 80 with a priority number lower than 65500",
+            "Add an outbound rule that allows port 80 from the virtual machine to the internet",
+            "Delete the default DenyAllInBound rule so that every inbound connection is allowed",
+            "Move the virtual machine to a different resource group in the same region"
+          ],
+          "answer": 0,
+          "explanation": "Default rule DenyAllInBound (priority 65500) menolak traffic dari internet. Tambah rule allow port 80 dengan angka priority lebih kecil supaya diproses lebih dulu.",
+          "requires": [
+            "f-u06-nsg-defaults",
+            "f-u06-nsg-priority",
+            "f-u04-rg-def"
+          ]
         },
         {
           "id": "u06-l2-i2",
-          "type": "intro",
-          "concept": "vnet-peering",
+          "type": "learn",
+          "concepts": [
+            "vnet-peering"
+          ],
           "title": "VNet peering",
-          "body": "VNet (Virtual Network) peering menghubungkan dua virtual network secara langsung. Traffic-nya privat lewat jaringan backbone Microsoft, tidak lewat internet publik, dan bisa antar region."
+          "body": "VNet (Virtual Network) peering menghubungkan dua virtual network secara langsung. Traffic-nya memakai alamat privat dan lewat backbone Microsoft, tidak lewat internet publik. Peering bisa di region yang sama atau antar region, yang disebut global VNet peering.",
+          "keyPoints": [
+            "Peering = dua VNet terhubung secara privat",
+            "Lewat backbone Microsoft, bukan internet",
+            "Bisa antar region"
+          ],
+          "visual": "VNetPeering",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview",
+          "teaches": [
+            "f-u06-peering-def",
+            "f-u06-peering-global"
+          ]
         },
         {
           "id": "u06-l2-e3",
@@ -234,7 +426,31 @@
           "prompt": "Traffic between peered VNets (Virtual Networks) travels over the public internet.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Traffic antar VNet (Virtual Network) yang di-peering lewat backbone Microsoft, tidak pernah lewat internet publik.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-peering-def"
+          ]
+        },
+        {
+          "id": "u06-l2-e6",
+          "type": "choice",
+          "concept": "vnet-peering",
+          "prompt": "A company has one VNet (Virtual Network) in West Europe and another in Southeast Asia. Virtual machines in both must talk privately without going over the internet. What should it use?",
+          "options": [
+            "VNet peering",
+            "A public IP (Internet Protocol) address on every virtual machine",
+            "An NSG (Network Security Group) only",
+            "Moving both virtual networks into one resource group"
+          ],
+          "answer": 0,
+          "explanation": "Peering bisa antar region (global VNet (Virtual Network) peering), dan traffic-nya lewat backbone Microsoft.",
+          "examReady": true,
+          "requires": [
+            "f-u06-peering-global",
+            "f-u06-public-private-ip",
+            "f-u06-nsg-def",
+            "f-u04-rg-def"
+          ]
         },
         {
           "id": "u06-l2-e4",
@@ -260,77 +476,13 @@
             ]
           ],
           "explanation": "NSG (Network Security Group) memfilter, peering menghubungkan. Rule dengan priority lebih kecil diproses lebih dulu.",
-          "examReady": true
-        },
-        {
-          "id": "u06-l2-e5",
-          "type": "fix",
-          "concept": "nsg",
-          "prompt": "The web server listens on port 80. What fixes the problem?",
-          "scene": {
-            "kind": "error",
-            "title": "Can't reach website",
-            "message": "Browser: connection timed out. NSG (Network Security Group) 'web-nsg' inbound rules: 65000 AllowVnetInBound, 65001 AllowAzureLoadBalancerInBound, 65500 DenyAllInBound."
-          },
-          "options": [
-            "Add an inbound rule that allows TCP (Transmission Control Protocol) port 80 with a priority number lower than 65500",
-            "Add an outbound rule that allows port 80 from the virtual machine to the internet",
-            "Delete the default DenyAllInBound rule so that every inbound connection is allowed",
-            "Move the virtual machine to a different resource group in the same region"
-          ],
-          "answer": 0,
-          "explanation": "Default rule DenyAllInBound (priority 65500) menolak traffic dari internet. Tambah rule allow port 80 dengan angka priority lebih kecil supaya diproses lebih dulu."
-        },
-        {
-          "id": "u06-l2-e6",
-          "type": "choice",
-          "concept": "vnet-peering",
-          "prompt": "A company has one VNet (Virtual Network) in West Europe and another in Southeast Asia. Virtual machines in both must talk privately without going over the internet. What should it use?",
-          "options": [
-            "VNet peering",
-            "A public IP (Internet Protocol) address on every virtual machine",
-            "An NSG (Network Security Group) only",
-            "Azure DNS (Domain Name System)"
-          ],
-          "answer": 0,
-          "explanation": "Peering bisa antar region (global VNet (Virtual Network) peering), dan traffic-nya lewat backbone Microsoft.",
-          "examReady": true
-        },
-        {
-          "id": "u06-l2-e7",
-          "type": "multi",
-          "concept": "nsg",
-          "prompt": "Which two can an NSG (Network Security Group) be associated with? Choose two.",
-          "options": [
-            "A subnet",
-            "A network interface of a virtual machine",
-            "A blob container",
-            "A management group"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "NSG (Network Security Group) dipasang ke subnet atau network interface, tempat traffic jaringan lewat.",
-          "examReady": true
-        },
-        {
-          "id": "u06-l2-e8",
-          "type": "fill",
-          "concept": "nsg",
-          "prompt": "Complete the sentence about NSGs (Network Security Groups).",
-          "sentence": "NSG rules are processed in ___ order, from the ___ number to the highest.",
-          "bank": [
-            "priority",
-            "lowest",
-            "alphabetical",
-            "newest"
-          ],
-          "answers": [
-            "priority",
-            "lowest"
-          ],
-          "explanation": "Rule diproses berdasarkan priority, dari angka terkecil."
+          "examReady": true,
+          "requires": [
+            "f-u06-nsg-def",
+            "f-u06-peering-def",
+            "f-u06-subnet",
+            "f-u06-nsg-priority"
+          ]
         }
       ]
     },
@@ -340,10 +492,23 @@
       "items": [
         {
           "id": "u06-l3-i1",
-          "type": "intro",
-          "concept": "vpn-gateway",
+          "type": "learn",
+          "concepts": [
+            "vpn-gateway"
+          ],
           "title": "VPN Gateway",
-          "body": "VPN (Virtual Private Network) Gateway mengirim traffic terenkripsi antara VNet (Virtual Network) dan jaringan on-premises lewat internet publik. Bisa site-to-site (antar jaringan) atau point-to-site (satu perangkat)."
+          "body": "VPN (Virtual Private Network) Gateway mengirim traffic terenkripsi antara virtual network dan jaringan on-premises lewat internet publik. VPN site-to-site menghubungkan seluruh jaringan kantor. VPN point-to-site menghubungkan satu perangkat, misalnya laptop karyawan di rumah.",
+          "keyPoints": [
+            "Terenkripsi, tapi lewat internet publik",
+            "Site-to-site: jaringan kantor",
+            "Point-to-site: satu perangkat"
+          ],
+          "visual": "HybridConnectivity",
+          "link": "https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways",
+          "teaches": [
+            "f-u06-vpn-def",
+            "f-u06-vpn-types"
+          ]
         },
         {
           "id": "u06-l3-e1",
@@ -352,14 +517,30 @@
           "prompt": "A VPN (Virtual Private Network) gateway sends encrypted traffic over the public internet.",
           "answer": true,
           "explanation": "Pernyataan ini benar. VPN (Virtual Private Network) memakai internet publik, tapi traffic-nya dienkripsi.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-vpn-def"
+          ]
         },
         {
           "id": "u06-l3-i2",
-          "type": "intro",
-          "concept": "expressroute",
+          "type": "learn",
+          "concepts": [
+            "expressroute"
+          ],
           "title": "ExpressRoute",
-          "body": "ExpressRoute adalah koneksi privat dari on-premises ke Microsoft cloud lewat penyedia konektivitas, tanpa lewat internet publik. Hasilnya lebih andal, lebih cepat, latensi konsisten, dan lebih aman."
+          "body": "ExpressRoute adalah koneksi privat dari jaringan on-premises ke Microsoft cloud lewat penyedia konektivitas. Traffic-nya tidak melewati internet publik. Hasilnya lebih andal, lebih cepat, latensinya konsisten, dan lebih aman dibanding koneksi lewat internet.",
+          "keyPoints": [
+            "Koneksi privat lewat penyedia konektivitas",
+            "Tidak lewat internet publik",
+            "Latensi konsisten dan lebih aman"
+          ],
+          "visual": "HybridConnectivity",
+          "link": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction",
+          "teaches": [
+            "f-u06-er-def",
+            "f-u06-er-benefits"
+          ]
         },
         {
           "id": "u06-l3-e2",
@@ -368,7 +549,124 @@
           "prompt": "ExpressRoute connections go over the public internet.",
           "answer": false,
           "explanation": "Pernyataan ini salah. ExpressRoute adalah koneksi privat lewat penyedia konektivitas, bukan lewat internet publik.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-er-def"
+          ]
+        },
+        {
+          "id": "u06-l3-e4",
+          "type": "choice",
+          "concept": "expressroute",
+          "prompt": "A bank needs a connection to Azure with consistent latency and higher security, and the traffic must not travel over the public internet. What should it use?",
+          "options": [
+            "ExpressRoute",
+            "A site-to-site VPN (Virtual Private Network)",
+            "A public IP (Internet Protocol) address",
+            "VNet (Virtual Network) peering"
+          ],
+          "answer": 0,
+          "explanation": "Tidak boleh lewat internet publik dan butuh latensi konsisten: ExpressRoute.",
+          "examReady": true,
+          "requires": [
+            "f-u06-er-def",
+            "f-u06-er-benefits",
+            "f-u06-vpn-def",
+            "f-u06-public-private-ip",
+            "f-u06-peering-def"
+          ]
+        },
+        {
+          "id": "u06-l3-e5",
+          "type": "choice",
+          "concept": "vpn-gateway",
+          "prompt": "A small company wants an encrypted connection between its office and Azure at low cost, and using the public internet is acceptable. What should it use?",
+          "options": [
+            "A site-to-site VPN (Virtual Private Network) with a VPN gateway",
+            "An ExpressRoute circuit through a connectivity provider",
+            "A point-to-site VPN on each employee's laptop",
+            "Virtual network peering between the office and Azure"
+          ],
+          "answer": 0,
+          "explanation": "Murah, terenkripsi, dan boleh lewat internet: site-to-site VPN (Virtual Private Network).",
+          "examReady": true,
+          "requires": [
+            "f-u06-vpn-types",
+            "f-u06-vpn-def",
+            "f-u06-er-def",
+            "f-u06-peering-def"
+          ]
+        },
+        {
+          "id": "u06-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "vpn-gateway",
+            "expressroute"
+          ],
+          "title": "VPN atau ExpressRoute?",
+          "body": "VPN (Virtual Private Network) Gateway lebih murah dan sederhana, cocok kalau traffic boleh lewat internet asalkan terenkripsi. ExpressRoute lebih mahal dan butuh penyedia konektivitas. Pilih ExpressRoute kalau traffic tidak boleh lewat internet atau butuh latensi yang konsisten.",
+          "keyPoints": [
+            "Murah dan boleh lewat internet: VPN",
+            "Tidak boleh lewat internet: ExpressRoute"
+          ],
+          "visual": "HybridConnectivity",
+          "trap": "ExpressRoute tidak gratis dan tetap butuh penyedia konektivitas.",
+          "link": "https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hybrid-connectivity-options",
+          "teaches": [
+            "f-u06-hybrid-choice"
+          ]
+        },
+        {
+          "id": "u06-l3-e6",
+          "type": "multi",
+          "concept": "expressroute",
+          "prompt": "Which two are benefits of ExpressRoute compared to a VPN (Virtual Private Network)? Choose two.",
+          "options": [
+            "Traffic doesn't cross the public internet",
+            "More consistent latency",
+            "It needs no connectivity provider",
+            "It is always free"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "ExpressRoute privat dan latensinya konsisten, tapi butuh penyedia konektivitas dan ada biayanya.",
+          "examReady": true,
+          "requires": [
+            "f-u06-er-def",
+            "f-u06-er-benefits",
+            "f-u06-hybrid-choice"
+          ]
+        },
+        {
+          "id": "u06-l3-e7",
+          "type": "yesno",
+          "concept": "vpn-gateway",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A remote employee needs to reach Azure resources from a laptop at home.",
+          "statements": [
+            {
+              "text": "A point-to-site VPN (Virtual Private Network) can connect the laptop to the Azure virtual network.",
+              "answer": true
+            },
+            {
+              "text": "The laptop's traffic to Azure over the VPN travels unencrypted.",
+              "answer": false
+            },
+            {
+              "text": "The employee needs an ExpressRoute circuit at home.",
+              "answer": false
+            }
+          ],
+          "explanation": "Untuk satu perangkat, point-to-site VPN (Virtual Private Network) sudah cukup dan traffic-nya terenkripsi.",
+          "examReady": true,
+          "requires": [
+            "f-u06-vpn-types",
+            "f-u06-vpn-def",
+            "f-u06-er-def"
+          ]
         },
         {
           "id": "u06-l3-e3",
@@ -394,78 +692,12 @@
             ]
           ],
           "explanation": "Site-to-site untuk kantor, point-to-site untuk satu perangkat, ExpressRoute untuk koneksi privat, peering untuk antar VNet (Virtual Network).",
-          "examReady": true
-        },
-        {
-          "id": "u06-l3-e4",
-          "type": "choice",
-          "concept": "expressroute",
-          "prompt": "A bank needs a connection to Azure with consistent latency and higher security, and the traffic must not travel over the public internet. What should it use?",
-          "options": [
-            "ExpressRoute",
-            "A site-to-site VPN (Virtual Private Network)",
-            "A public IP (Internet Protocol) address",
-            "Azure DNS (Domain Name System)"
-          ],
-          "answer": 0,
-          "explanation": "Tidak boleh lewat internet publik dan butuh latensi konsisten: ExpressRoute.",
-          "examReady": true
-        },
-        {
-          "id": "u06-l3-e5",
-          "type": "choice",
-          "concept": "vpn-gateway",
-          "prompt": "A small company wants an encrypted connection between its office and Azure at low cost, and using the public internet is acceptable. What should it use?",
-          "options": [
-            "A site-to-site VPN (Virtual Private Network) with a VPN gateway",
-            "An ExpressRoute circuit through a connectivity provider",
-            "A point-to-site VPN on each employee's laptop",
-            "Virtual network peering between the office and Azure"
-          ],
-          "answer": 0,
-          "explanation": "Murah, terenkripsi, dan boleh lewat internet: site-to-site VPN (Virtual Private Network).",
-          "examReady": true
-        },
-        {
-          "id": "u06-l3-e6",
-          "type": "multi",
-          "concept": "expressroute",
-          "prompt": "Which two are benefits of ExpressRoute compared to a VPN (Virtual Private Network)? Choose two.",
-          "options": [
-            "Traffic doesn't cross the public internet",
-            "More consistent latency",
-            "It needs no connectivity provider",
-            "It is always free"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "ExpressRoute privat dan latensinya konsisten, tapi butuh penyedia konektivitas dan ada biayanya.",
-          "examReady": true
-        },
-        {
-          "id": "u06-l3-e7",
-          "type": "yesno",
-          "concept": "vpn-gateway",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "A remote employee needs to reach Azure resources from a laptop at home.",
-          "statements": [
-            {
-              "text": "A point-to-site VPN (Virtual Private Network) can connect the laptop to the Azure virtual network.",
-              "answer": true
-            },
-            {
-              "text": "The laptop's traffic to Azure over the VPN travels unencrypted.",
-              "answer": false
-            },
-            {
-              "text": "The employee needs an ExpressRoute circuit at home.",
-              "answer": false
-            }
-          ],
-          "explanation": "Untuk satu perangkat, point-to-site VPN (Virtual Private Network) sudah cukup dan traffic-nya terenkripsi.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-vpn-types",
+            "f-u06-er-def",
+            "f-u06-peering-def"
+          ]
         },
         {
           "id": "u06-l3-e8",
@@ -483,7 +715,11 @@
             "internet",
             "private"
           ],
-          "explanation": "VPN (Virtual Private Network) = terenkripsi lewat internet. ExpressRoute = koneksi privat."
+          "explanation": "VPN (Virtual Private Network) = terenkripsi lewat internet. ExpressRoute = koneksi privat.",
+          "requires": [
+            "f-u06-vpn-def",
+            "f-u06-er-def"
+          ]
         }
       ]
     },
@@ -493,10 +729,21 @@
       "items": [
         {
           "id": "u06-l4-i1",
-          "type": "intro",
-          "concept": "azure-dns",
+          "type": "learn",
+          "concepts": [
+            "azure-dns"
+          ],
           "title": "Azure DNS",
-          "body": "Azure DNS (Domain Name System) menghosting domain DNS-mu di infrastruktur Azure, jadi nama seperti contoso.com bisa diterjemahkan ke alamat IP (Internet Protocol). Kamu bisa mengelola record-nya, tapi tidak bisa membeli nama domain lewat Azure DNS."
+          "body": "DNS (Domain Name System) menerjemahkan nama seperti contoso.com menjadi alamat IP (Internet Protocol), seperti buku telepon internet. Azure DNS menghosting domain DNS-mu di infrastruktur Azure. Tapi kamu tidak bisa membeli nama domain lewat Azure DNS; nama domain dibeli di domain registrar.",
+          "keyPoints": [
+            "DNS = nama ke alamat IP",
+            "Azure DNS menghosting domain, tidak menjual domain"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/dns/dns-overview",
+          "teaches": [
+            "f-u06-dns-def",
+            "f-u06-azure-dns"
+          ]
         },
         {
           "id": "u06-l4-e1",
@@ -505,7 +752,10 @@
           "prompt": "You can use Azure DNS (Domain Name System) to buy a new domain name.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Azure DNS (Domain Name System) hanya menghosting domain. Nama domain dibeli di domain registrar.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-azure-dns"
+          ]
         },
         {
           "id": "u06-l4-e2",
@@ -520,14 +770,70 @@
           ],
           "answer": 0,
           "explanation": "DNS (Domain Name System) seperti buku telepon internet: nama diterjemahkan menjadi alamat IP (Internet Protocol).",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-dns-def",
+            "f-u06-public-private-ip",
+            "f-u06-vpn-def",
+            "f-u02-load-balancer"
+          ]
+        },
+        {
+          "id": "u06-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "azure-dns"
+          ],
+          "title": "Mengelola record di Azure DNS",
+          "body": "Record di Azure DNS (Domain Name System) dikelola dengan kredensial, alat, dan tagihan yang sama seperti layanan Azure lain. Siapa yang boleh mengubah record diatur dengan RBAC (Role-Based Access Control), yaitu izin berbasis peran yang juga dipakai resource Azure lain.",
+          "keyPoints": [
+            "Alat dan tagihan sama dengan layanan Azure lain",
+            "Akses diatur dengan RBAC"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/dns/dns-overview",
+          "teaches": [
+            "f-u06-azure-dns-mgmt"
+          ]
+        },
+        {
+          "id": "u06-l4-e6",
+          "type": "multi",
+          "concept": "azure-dns",
+          "prompt": "Which two are benefits of hosting a domain in Azure DNS (Domain Name System)? Choose two.",
+          "options": [
+            "Manage DNS records with the same Azure tools and billing",
+            "Control access with RBAC (Role-Based Access Control)",
+            "Buy domain names directly in Azure DNS",
+            "Encrypt all website traffic automatically"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Record DNS (Domain Name System) dikelola dengan alat, tagihan, dan kontrol akses yang sama seperti resource Azure lain.",
+          "examReady": true,
+          "requires": [
+            "f-u06-azure-dns-mgmt",
+            "f-u06-azure-dns"
+          ]
         },
         {
           "id": "u06-l4-i2",
-          "type": "intro",
-          "concept": "endpoints",
+          "type": "learn",
+          "concepts": [
+            "endpoints"
+          ],
           "title": "Public vs private endpoint",
-          "body": "Public endpoint punya alamat IP (Internet Protocol) publik yang bisa dijangkau dari internet. Private endpoint memberi layanan Azure alamat IP privat di dalam VNet (Virtual Network), jadi aksesnya tidak lewat internet."
+          "body": "Public endpoint adalah alamat publik sebuah layanan yang bisa dijangkau dari internet. Private endpoint memberi layanan Azure, misalnya storage atau database, alamat IP (Internet Protocol) privat dari VNet (Virtual Network)-mu. Dengan private endpoint, aksesnya lewat jaringan privat, bukan internet.",
+          "keyPoints": [
+            "Public endpoint: dari internet",
+            "Private endpoint: IP privat di dalam VNet"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview",
+          "teaches": [
+            "f-u06-public-endpoint",
+            "f-u06-private-endpoint"
+          ]
         },
         {
           "id": "u06-l4-e3",
@@ -536,7 +842,95 @@
           "prompt": "A private endpoint gives an Azure service a private IP (Internet Protocol) address from your virtual network.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Dengan private endpoint, layanan seperti storage atau database diakses lewat alamat privat di VNet (Virtual Network)-mu.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u06-private-endpoint"
+          ]
+        },
+        {
+          "id": "u06-l4-e5",
+          "type": "choice",
+          "concept": "endpoints",
+          "prompt": "A company wants its Azure SQL (Structured Query Language) Database to be reachable only from its virtual network, not from the internet. What should it use?",
+          "options": [
+            "A private endpoint",
+            "A public endpoint",
+            "Azure DNS (Domain Name System) only",
+            "A second subscription"
+          ],
+          "answer": 0,
+          "explanation": "Private endpoint memberi database alamat privat di VNet (Virtual Network), dan akses publik bisa dimatikan.",
+          "examReady": true,
+          "requires": [
+            "f-u06-private-endpoint",
+            "f-u06-public-endpoint",
+            "f-u06-azure-dns",
+            "f-u04-sub-multi"
+          ]
+        },
+        {
+          "id": "u06-l4-e8",
+          "type": "fill",
+          "concept": "endpoints",
+          "prompt": "Complete the sentence.",
+          "sentence": "A ___ endpoint can be reached from the internet, while a ___ endpoint uses an address inside your virtual network.",
+          "bank": [
+            "public",
+            "private",
+            "shared",
+            "global"
+          ],
+          "answers": [
+            "public",
+            "private"
+          ],
+          "explanation": "Public = dari internet. Private = dari dalam VNet (Virtual Network).",
+          "requires": [
+            "f-u06-public-endpoint",
+            "f-u06-private-endpoint"
+          ]
+        },
+        {
+          "id": "u06-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "endpoints"
+          ],
+          "title": "Menutup akses publik",
+          "body": "Membuat private endpoint tidak otomatis menutup public endpoint. Kalau layanan hanya boleh diakses dari VNet (Virtual Network), matikan juga akses publiknya. Dua langkah itu bersama-sama membuat data tidak bisa dijangkau dari internet.",
+          "keyPoints": [
+            "Langkah 1: buat private endpoint",
+            "Langkah 2: matikan akses publik"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview",
+          "teaches": [
+            "f-u06-pe-public-off"
+          ]
+        },
+        {
+          "id": "u06-l4-e7",
+          "type": "fix",
+          "concept": "endpoints",
+          "prompt": "The data should only be reachable from the company's virtual network. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "Security recommendation",
+            "message": "Storage account 'contosodata' allows access from all networks through its public endpoint."
+          },
+          "options": [
+            "Create a private endpoint and disable public network access",
+            "Move the storage account to a different region",
+            "Create a public DNS (Domain Name System) record for the storage account",
+            "Move the storage account to a new resource group"
+          ],
+          "answer": 0,
+          "explanation": "Private endpoint membawa storage ke dalam VNet (Virtual Network)-mu. Setelah itu, akses publik bisa dimatikan.",
+          "requires": [
+            "f-u06-private-endpoint",
+            "f-u06-pe-public-off",
+            "f-u06-dns-def",
+            "f-u04-rg-def"
+          ]
         },
         {
           "id": "u06-l4-e4",
@@ -562,79 +956,126 @@
             ]
           ],
           "explanation": "Azure DNS (Domain Name System) untuk record, registrar untuk membeli domain. Public endpoint terbuka ke internet, private endpoint hanya dari dalam VNet (Virtual Network).",
-          "examReady": true
-        },
-        {
-          "id": "u06-l4-e5",
-          "type": "choice",
-          "concept": "endpoints",
-          "prompt": "A company wants its Azure SQL (Structured Query Language) Database to be reachable only from its virtual network, not from the internet. What should it use?",
-          "options": [
-            "A private endpoint",
-            "A public endpoint",
-            "Azure DNS (Domain Name System) only",
-            "A second subscription"
-          ],
-          "answer": 0,
-          "explanation": "Private endpoint memberi database alamat privat di VNet (Virtual Network), dan akses publik bisa dimatikan.",
-          "examReady": true
-        },
-        {
-          "id": "u06-l4-e6",
-          "type": "multi",
-          "concept": "azure-dns",
-          "prompt": "Which two are benefits of hosting a domain in Azure DNS (Domain Name System)? Choose two.",
-          "options": [
-            "Manage DNS records with the same Azure tools and billing",
-            "Control access with RBAC (Role-Based Access Control)",
-            "Buy domain names directly in Azure DNS",
-            "Encrypt all website traffic automatically"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Record DNS (Domain Name System) dikelola dengan alat, tagihan, dan kontrol akses yang sama seperti resource Azure lain.",
-          "examReady": true
-        },
-        {
-          "id": "u06-l4-e7",
-          "type": "fix",
-          "concept": "endpoints",
-          "prompt": "The data should only be reachable from the company's virtual network. What should you do?",
-          "scene": {
-            "kind": "portal",
-            "title": "Security recommendation",
-            "message": "Storage account 'contosodata' allows access from all networks through its public endpoint."
-          },
-          "options": [
-            "Create a private endpoint and disable public network access",
-            "Turn on geo-redundant storage for the storage account",
-            "Add a Delete lock to the storage account",
-            "Move the data to the Cool access tier"
-          ],
-          "answer": 0,
-          "explanation": "Private endpoint membawa storage ke dalam VNet (Virtual Network)-mu. Setelah itu, akses publik bisa dimatikan."
-        },
-        {
-          "id": "u06-l4-e8",
-          "type": "fill",
-          "concept": "endpoints",
-          "prompt": "Complete the sentence.",
-          "sentence": "A ___ endpoint can be reached from the internet, while a ___ endpoint uses an address inside your virtual network.",
-          "bank": [
-            "public",
-            "private",
-            "shared",
-            "global"
-          ],
-          "answers": [
-            "public",
-            "private"
-          ],
-          "explanation": "Public = dari internet. Private = dari dalam VNet (Virtual Network)."
+          "examReady": true,
+          "requires": [
+            "f-u06-azure-dns",
+            "f-u06-public-endpoint",
+            "f-u06-private-endpoint"
+          ]
         }
       ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "f-u06-vnet-def",
+      "statement": "VNet (Virtual Network) adalah jaringan privat di Azure; resource di dalamnya berkomunikasi lewat alamat IP privat.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview"
+    },
+    {
+      "id": "f-u06-vnet-capabilities",
+      "statement": "VNet (Virtual Network) memungkinkan resource berkomunikasi satu sama lain, dengan internet, dan dengan jaringan on-premises, dan traffic-nya bisa difilter.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview"
+    },
+    {
+      "id": "f-u06-subnet",
+      "statement": "Subnet membagi VNet (Virtual Network) menjadi beberapa bagian, masing-masing dengan rentang alamat IP sendiri, misalnya subnet web dan subnet database.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview"
+    },
+    {
+      "id": "f-u06-subnet-default-comm",
+      "statement": "Secara default, resource di subnet yang berbeda dalam satu VNet (Virtual Network) bisa saling berkomunikasi, karena Azure menambahkan route default untuk setiap subnet.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview"
+    },
+    {
+      "id": "f-u06-public-private-ip",
+      "statement": "Alamat IP publik membuat resource bisa dijangkau dari internet; alamat IP privat hanya dipakai di dalam VNet (Virtual Network).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
+    },
+    {
+      "id": "f-u06-nsg-def",
+      "statement": "NSG (Network Security Group) berisi aturan allow atau deny untuk traffic masuk dan keluar, berdasarkan sumber, tujuan, port, dan protokol.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview"
+    },
+    {
+      "id": "f-u06-nsg-assoc",
+      "statement": "NSG (Network Security Group) bisa dipasang ke subnet atau ke network interface VM (Virtual Machine).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview"
+    },
+    {
+      "id": "f-u06-nsg-priority",
+      "statement": "Rule NSG (Network Security Group) diproses dari angka priority terkecil, dan pemrosesan berhenti begitu ada rule yang cocok.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview"
+    },
+    {
+      "id": "f-u06-nsg-defaults",
+      "statement": "Setiap NSG (Network Security Group) punya default rule yang tidak bisa dihapus, termasuk DenyAllInBound (priority 65500); untuk membuka traffic, buat rule allow dengan angka priority lebih kecil.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview"
+    },
+    {
+      "id": "f-u06-peering-def",
+      "statement": "VNet (Virtual Network) peering menghubungkan dua virtual network; traffic-nya lewat backbone Microsoft dengan alamat privat, tidak lewat internet publik.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview"
+    },
+    {
+      "id": "f-u06-peering-global",
+      "statement": "Peering bisa menghubungkan virtual network di region yang sama atau di region berbeda (global VNet peering).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview"
+    },
+    {
+      "id": "f-u06-vpn-def",
+      "statement": "VPN (Virtual Private Network) Gateway mengirim traffic terenkripsi antara virtual network dan jaringan on-premises lewat internet publik.",
+      "source": "https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways"
+    },
+    {
+      "id": "f-u06-vpn-types",
+      "statement": "VPN site-to-site menghubungkan seluruh jaringan kantor ke Azure; VPN point-to-site menghubungkan satu perangkat, misalnya laptop di rumah.",
+      "source": "https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways"
+    },
+    {
+      "id": "f-u06-er-def",
+      "statement": "ExpressRoute adalah koneksi privat dari jaringan on-premises ke Microsoft cloud lewat penyedia konektivitas, tanpa melewati internet publik.",
+      "source": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction"
+    },
+    {
+      "id": "f-u06-er-benefits",
+      "statement": "Dibanding koneksi lewat internet, ExpressRoute lebih andal, lebih cepat, latensinya konsisten, dan keamanannya lebih tinggi.",
+      "source": "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction"
+    },
+    {
+      "id": "f-u06-hybrid-choice",
+      "statement": "VPN Gateway lebih murah dan sederhana untuk traffic yang boleh lewat internet; ExpressRoute lebih mahal tapi cocok saat traffic tidak boleh lewat internet dan butuh latensi konsisten.",
+      "source": "https://learn.microsoft.com/en-us/azure/architecture/reference-architectures/hybrid-networking/hybrid-connectivity-options"
+    },
+    {
+      "id": "f-u06-dns-def",
+      "statement": "DNS (Domain Name System) menerjemahkan nama seperti contoso.com menjadi alamat IP.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-overview"
+    },
+    {
+      "id": "f-u06-azure-dns",
+      "statement": "Azure DNS menghosting domain DNS di infrastruktur Azure, tapi tidak bisa dipakai untuk membeli nama domain; nama domain dibeli di domain registrar.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-overview"
+    },
+    {
+      "id": "f-u06-azure-dns-mgmt",
+      "statement": "Record di Azure DNS dikelola dengan kredensial, alat, dan tagihan yang sama seperti layanan Azure lain, dan aksesnya diatur dengan RBAC (Role-Based Access Control).",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-overview"
+    },
+    {
+      "id": "f-u06-public-endpoint",
+      "statement": "Public endpoint adalah alamat publik sebuah layanan yang bisa dijangkau dari internet.",
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
+    },
+    {
+      "id": "f-u06-private-endpoint",
+      "statement": "Private endpoint memberi layanan Azure alamat IP privat dari virtual network-mu, jadi aksesnya lewat jaringan privat, bukan internet.",
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
+    },
+    {
+      "id": "f-u06-pe-public-off",
+      "statement": "Membuat private endpoint tidak otomatis menutup akses publik; akses publik layanan itu harus dimatikan terpisah.",
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
     }
   ]
 }
