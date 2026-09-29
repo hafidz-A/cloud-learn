@@ -4,7 +4,7 @@ export function Meter({ label, detail, value, valueText }: { label: string; deta
   return (
     <div>
       <div className="flex items-baseline justify-between gap-3">
-        <p className="min-w-0 truncate font-display text-15 font-bold">{label}</p>
+        <p className="min-w-0 font-display text-15 font-bold">{label}</p>
         <p className="shrink-0 font-display text-15 font-bold tabular-nums">{valueText}</p>
       </div>
       {detail && <p className="text-13 text-tinta-lembut">{detail}</p>}
