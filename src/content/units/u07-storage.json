@@ -20,7 +20,7 @@
           "concept": "storage-accounts",
           "prompt": "A storage account name must be unique across all of Azure.",
           "answer": true,
-          "explanation": "Benar. Nama storage account menjadi bagian alamat publiknya, jadi tidak boleh ada yang sama.",
+          "explanation": "Pernyataan ini benar. Nama storage account menjadi bagian alamat publiknya, jadi tidak boleh ada yang sama.",
           "examReady": true
         },
         {
@@ -49,9 +49,9 @@
           "id": "u07-l1-e3",
           "type": "truefalse",
           "concept": "azure-blob-storage",
-          "prompt": "Blob storage is designed for unstructured data such as images and videos.",
-          "answer": true,
-          "explanation": "Benar. Blob = object storage untuk data tidak terstruktur.",
+          "prompt": "Blob storage is designed for relational data stored in tables with rows and columns.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Blob storage adalah object storage untuk data tidak terstruktur, seperti gambar, video, dan backup.",
           "examReady": true
         },
         {
@@ -129,11 +129,11 @@
               "answer": true
             },
             {
-              "text": "The storage account can hold blob data.",
-              "answer": true
+              "text": "The storage account can hold only blobs, not file shares or queues.",
+              "answer": false
             }
           ],
-          "explanation": "Nama storage account unik di seluruh Azure. Data blob bisa diakses lewat HTTPS (Hypertext Transfer Protocol Secure).",
+          "explanation": "Nama storage account unik di seluruh Azure. Satu storage account bisa berisi blob, file share, queue, dan table, dan data blob bisa diakses lewat HTTPS (Hypertext Transfer Protocol Secure).",
           "examReady": true
         },
         {
@@ -174,7 +174,7 @@
           "concept": "primary-redundancy",
           "prompt": "LRS (Locally Redundant Storage) keeps three copies of your data in a single datacenter.",
           "answer": true,
-          "explanation": "Benar. LRS (Locally Redundant Storage) paling murah: 3 salinan di satu datacenter, durability 11 nines.",
+          "explanation": "Pernyataan ini benar. LRS (Locally Redundant Storage) paling murah: 3 salinan di satu datacenter, durability 11 nines.",
           "examReady": true
         },
         {
@@ -188,9 +188,9 @@
           "id": "u07-l2-e2",
           "type": "truefalse",
           "concept": "geo-redundancy",
-          "prompt": "GRS (Geo-Redundant Storage) copies your data to a secondary region.",
-          "answer": true,
-          "explanation": "Benar. GRS (Geo-Redundant Storage) menyimpan 3 salinan di region utama, lalu menyalinnya ke region kedua.",
+          "prompt": "GRS (Geo-Redundant Storage) keeps every copy of your data in a single region.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. GRS (Geo-Redundant Storage) menyimpan 3 salinan di region utama, lalu menyalinnya ke region kedua. Yang hanya di satu region adalah LRS (Locally Redundant Storage) dan ZRS (Zone-Redundant Storage).",
           "examReady": true
         },
         {
@@ -356,7 +356,7 @@
           "concept": "blob-access-tiers",
           "prompt": "The Cool tier is meant for data that is accessed often.",
           "answer": false,
-          "explanation": "Salah. Data yang sering diakses cocok di Hot. Cool untuk data yang jarang diakses dan disimpan minimal 30 hari.",
+          "explanation": "Pernyataan ini salah. Data yang sering diakses cocok di Hot. Cool untuk data yang jarang diakses dan disimpan minimal 30 hari.",
           "examReady": true
         },
         {
@@ -387,7 +387,7 @@
           "concept": "archive-rehydration",
           "prompt": "You can read a blob in the Archive tier immediately, just like a blob in the Hot tier.",
           "answer": false,
-          "explanation": "Salah. Archive itu offline. Blob harus di-rehydrate dulu ke tier online sebelum bisa dibaca.",
+          "explanation": "Pernyataan ini salah. Archive itu offline. Blob harus di-rehydrate dulu ke tier online sebelum bisa dibaca.",
           "examReady": true
         },
         {
@@ -519,7 +519,7 @@
           "concept": "azure-files",
           "prompt": "Azure Files shares can be mounted by on-premises servers as well as by Azure virtual machines.",
           "answer": true,
-          "explanation": "Benar. File share Azure Files bisa di-mount bersamaan dari cloud dan on-premises.",
+          "explanation": "Pernyataan ini benar. File share Azure Files bisa di-mount bersamaan dari cloud dan on-premises.",
           "examReady": true
         },
         {
@@ -709,7 +709,7 @@
           "concept": "azure-migrate",
           "prompt": "Azure Migrate can assess on-premises servers before you migrate them.",
           "answer": true,
-          "explanation": "Benar. Azure Migrate punya alur discover, assess, lalu migrate.",
+          "explanation": "Pernyataan ini benar. Azure Migrate punya alur discover, assess, lalu migrate.",
           "examReady": true
         },
         {
@@ -798,9 +798,9 @@
           },
           "options": [
             "Migrate them with the server migration tool in Azure Migrate",
-            "Order an Azure Data Box for each server",
-            "Rewrite them as Azure Functions",
-            "Delete them from the assessment"
+            "Order a separate Azure Data Box for each of the 12 servers",
+            "Rewrite the 12 servers as Azure Functions before moving them",
+            "Run the assessment again until all 14 servers are ready"
           ],
           "answer": 0,
           "explanation": "Azure Migrate punya alur discover, assess, lalu migrate. Server yang siap bisa langsung dimigrasikan dari dashboard yang sama."

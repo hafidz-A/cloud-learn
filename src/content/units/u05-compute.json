@@ -18,9 +18,9 @@
           "id": "u05-l1-e1",
           "type": "truefalse",
           "concept": "virtual-machines",
-          "prompt": "Azure Virtual Machines give you full control over the operating system.",
-          "answer": true,
-          "explanation": "Benar. Di VM (Virtual Machine), kamu memilih, mengatur, dan merawat sistem operasinya sendiri.",
+          "prompt": "With Azure Virtual Machines, Microsoft is responsible for patching the operating system.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. VM (Virtual Machine) termasuk IaaS (Infrastructure as a Service). Kamu memilih, mengatur, dan merawat sistem operasinya sendiri, termasuk patch-nya.",
           "examReady": true
         },
         {
@@ -30,9 +30,9 @@
           "prompt": "Which scenario is the best fit for Azure Virtual Machines?",
           "options": [
             "Running legacy software that needs a custom operating system configuration",
-            "Running code only when a file is uploaded",
-            "Using a finished email service",
-            "Storing backup files cheaply"
+            "Running a small piece of code only when a file is uploaded",
+            "Giving employees a ready-made email and calendar service",
+            "Storing large numbers of backup files as cheaply as possible"
           ],
           "answer": 0,
           "explanation": "Butuh kontrol penuh atas OS (Operating System) atau software lama yang spesifik: itu kekuatan VM (Virtual Machine).",
@@ -51,7 +51,7 @@
           "concept": "vm-states",
           "prompt": "A VM (Virtual Machine) with the status 'Stopped (deallocated)' still incurs compute charges.",
           "answer": false,
-          "explanation": "Salah. Deallocated berarti hardware-nya dilepas, jadi compute tidak ditagih. Disk-nya tetap ditagih karena datanya masih disimpan."
+          "explanation": "Pernyataan ini salah. Deallocated berarti hardware-nya dilepas, jadi compute tidak ditagih. Disk-nya tetap ditagih karena datanya masih disimpan."
         },
         {
           "id": "u05-l1-e4",
@@ -90,9 +90,9 @@
           },
           "options": [
             "Stop the VM from the Azure portal so it becomes deallocated",
-            "Shut it down again from inside Windows",
-            "Delete the resource group",
-            "Add a tag named 'stopped'"
+            "Shut down Windows again from inside the virtual machine",
+            "Delete the resource group that contains the virtual machine",
+            "Add a tag named 'stopped' to the virtual machine"
           ],
           "answer": 0,
           "explanation": "Status Stopped saja masih ditagih. Stop dari portal membuat VM (Virtual Machine) jadi deallocated, dan compute berhenti ditagih. Disk tetap ditagih."
@@ -175,7 +175,7 @@
           "concept": "vm-scale-sets",
           "prompt": "Virtual Machine Scale Sets can automatically increase or decrease the number of VM (Virtual Machine) instances.",
           "answer": true,
-          "explanation": "Benar. Itu keunggulan utama scale set: autoscale berdasarkan beban atau jadwal.",
+          "explanation": "Pernyataan ini benar. Itu keunggulan utama scale set: autoscale berdasarkan beban atau jadwal.",
           "examReady": true
         },
         {
@@ -191,7 +191,7 @@
           "concept": "availability-sets",
           "prompt": "Using an availability set adds an extra charge on top of the VMs (Virtual Machines) in it.",
           "answer": false,
-          "explanation": "Salah. Availability set gratis; yang ditagih hanya VM (Virtual Machine)-nya.",
+          "explanation": "Pernyataan ini salah. Availability set gratis; yang ditagih hanya VM (Virtual Machine)-nya.",
           "examReady": true
         },
         {
@@ -352,7 +352,7 @@
           "concept": "azure-virtual-desktop",
           "prompt": "With Azure Virtual Desktop, company data stays in the cloud instead of on the user's device.",
           "answer": true,
-          "explanation": "Benar. Desktop berjalan di Azure; perangkat pengguna hanya menampilkan layarnya.",
+          "explanation": "Pernyataan ini benar. Desktop berjalan di Azure; perangkat pengguna hanya menampilkan layarnya.",
           "examReady": true
         },
         {
@@ -376,7 +376,7 @@
           "concept": "azure-virtual-desktop",
           "prompt": "Azure Virtual Desktop supports Windows 11 Enterprise multi-session, so several users can share one VM (Virtual Machine).",
           "answer": true,
-          "explanation": "Benar. Multi-session membuat beberapa pengguna bisa memakai satu VM (Virtual Machine) sekaligus, jadi lebih hemat.",
+          "explanation": "Pernyataan ini benar. Multi-session membuat beberapa pengguna bisa memakai satu VM (Virtual Machine) sekaligus, jadi lebih hemat.",
           "examReady": true
         },
         {
@@ -446,8 +446,8 @@
           "scenario": "A school uses Azure Virtual Desktop so students can use lab software from home.",
           "statements": [
             {
-              "text": "Students can reach the desktop from their own devices.",
-              "answer": true
+              "text": "Students can only use the desktop from computers inside the school.",
+              "answer": false
             },
             {
               "text": "The lab software must be installed on every student's laptop.",
@@ -458,7 +458,7 @@
               "answer": true
             }
           ],
-          "explanation": "Software berjalan di Azure, jadi tidak perlu dipasang di tiap laptop. Login tetap bisa dilindungi MFA (Multi-Factor Authentication).",
+          "explanation": "Desktop berjalan di Azure, jadi siswa bisa memakainya dari perangkat sendiri di mana saja, dan software tidak perlu dipasang di tiap laptop. Login tetap bisa dilindungi MFA (Multi-Factor Authentication).",
           "examReady": true
         },
         {
@@ -496,9 +496,9 @@
           "id": "u05-l4-e1",
           "type": "truefalse",
           "concept": "containers",
-          "prompt": "Containers are more lightweight than virtual machines because they share the host's operating system.",
-          "answer": true,
-          "explanation": "Benar. Container tidak membawa sistem operasi lengkap sendiri, jadi ukurannya kecil dan menyala dalam hitungan detik.",
+          "prompt": "Each container includes its own full operating system, so containers are heavier than virtual machines.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Yang membawa sistem operasi lengkap justru VM (Virtual Machine). Container berbagi sistem operasi host, jadi ukurannya kecil dan menyala dalam hitungan detik.",
           "examReady": true
         },
         {
@@ -536,7 +536,7 @@
           "concept": "azure-container-apps",
           "prompt": "Compared to Azure Container Instances, Azure Container Apps adds features such as load balancing and scaling.",
           "answer": true,
-          "explanation": "Benar. Keduanya PaaS (Platform as a Service) untuk container, tapi Container Apps menambahkan load balancing dan scaling.",
+          "explanation": "Pernyataan ini benar. Keduanya PaaS (Platform as a Service) untuk container, tapi Container Apps menambahkan load balancing dan scaling.",
           "examReady": true
         },
         {
@@ -610,15 +610,15 @@
               "answer": true
             },
             {
-              "text": "The developer must manage virtual machines to use Azure Container Apps.",
-              "answer": false
+              "text": "Azure Container Apps is a PaaS (Platform as a Service) option for running containers.",
+              "answer": true
             },
             {
               "text": "Containers package the app together with its dependencies.",
               "answer": true
             }
           ],
-          "explanation": "Container Apps melakukan scaling otomatis tanpa kamu mengelola VM (Virtual Machine). Container membawa aplikasi beserta dependensinya.",
+          "explanation": "Container Apps adalah PaaS (Platform as a Service) yang melakukan scaling otomatis tanpa kamu mengelola VM (Virtual Machine). Container membawa aplikasi beserta dependensinya.",
           "examReady": true
         },
         {
@@ -658,7 +658,7 @@
           "concept": "aks",
           "prompt": "AKS (Azure Kubernetes Service) is used to orchestrate and manage many containers.",
           "answer": true,
-          "explanation": "Benar. AKS (Azure Kubernetes Service) mengurus deployment, scaling, dan pemantauan banyak container.",
+          "explanation": "Pernyataan ini benar. AKS (Azure Kubernetes Service) mengurus deployment, scaling, dan pemantauan banyak container.",
           "examReady": true
         },
         {
@@ -803,11 +803,11 @@
               "answer": false
             },
             {
-              "text": "AKS helps manage many containers.",
-              "answer": true
+              "text": "AKS can only run one container at a time.",
+              "answer": false
             }
           ],
-          "explanation": "App Service = PaaS (Platform as a Service). Functions = serverless, tanpa VM (Virtual Machine). AKS (Azure Kubernetes Service) = orkestrasi container.",
+          "explanation": "App Service = PaaS (Platform as a Service). Functions = serverless, tanpa VM (Virtual Machine). AKS (Azure Kubernetes Service) = orkestrasi banyak container sekaligus.",
           "examReady": true
         },
         {

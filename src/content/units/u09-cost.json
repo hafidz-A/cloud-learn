@@ -18,9 +18,9 @@
           "id": "u09-l1-e1",
           "type": "truefalse",
           "concept": "cost-factors",
-          "prompt": "The same Azure service can cost different amounts in different regions.",
-          "answer": true,
-          "explanation": "Benar. Harga bisa berbeda per region karena biaya listrik, pajak, dan faktor lain di tiap lokasi.",
+          "prompt": "An Azure service always costs the same in every region.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Harga bisa berbeda per region karena biaya listrik, pajak, dan faktor lain di tiap lokasi.",
           "examReady": true
         },
         {
@@ -36,7 +36,7 @@
           "concept": "data-transfer",
           "prompt": "Inbound data transfers into Azure datacenters are generally free.",
           "answer": true,
-          "explanation": "Benar. Ingress umumnya gratis. Yang ditagih adalah data keluar (egress).",
+          "explanation": "Pernyataan ini benar. Ingress umumnya gratis. Yang ditagih adalah data keluar (egress).",
           "examReady": true
         },
         {
@@ -98,9 +98,9 @@
           "prompt": "Your Azure bill shows high charges for virtual machines that the test team stopped using last month. What is the best fix?",
           "options": [
             "Deallocate or delete the unused virtual machines",
-            "Buy a reservation for them",
-            "Move them to another region",
-            "Add a resource lock"
+            "Buy a one-year reservation for the unused virtual machines",
+            "Move the unused virtual machines to a cheaper resource group",
+            "Add a Delete lock to the unused virtual machines"
           ],
           "answer": 0,
           "explanation": "Resource yang tidak dipakai tetap ditagih. Deallocate atau hapus, jangan dibiarkan menyala.",
@@ -132,8 +132,8 @@
           "scenario": "Contoso uploads 5 terabytes of logs to Azure and later downloads 1 terabyte back to its office.",
           "statements": [
             {
-              "text": "Uploading the logs to Azure is generally free of bandwidth charges.",
-              "answer": true
+              "text": "Uploading the logs to Azure is charged per gigabyte, just like downloading.",
+              "answer": false
             },
             {
               "text": "Downloading data from Azure to the office can incur bandwidth charges.",
@@ -184,7 +184,7 @@
           "concept": "pricing-calculator",
           "prompt": "The Pricing Calculator creates the resources you estimate.",
           "answer": false,
-          "explanation": "Salah. Pricing Calculator hanya memperkirakan biaya. Tidak ada resource yang dibuat.",
+          "explanation": "Pernyataan ini salah. Pricing Calculator hanya memperkirakan biaya. Tidak ada resource yang dibuat.",
           "examReady": true
         },
         {
@@ -200,7 +200,7 @@
           "concept": "tco-calculator",
           "prompt": "The TCO (Total Cost of Ownership) Calculator compares on-premises costs with Azure costs.",
           "answer": true,
-          "explanation": "Benar. TCO (Total Cost of Ownership) Calculator dipakai untuk menghitung potensi penghematan saat pindah ke Azure.",
+          "explanation": "Pernyataan ini benar. TCO (Total Cost of Ownership) Calculator dipakai untuk menghitung potensi penghematan saat pindah ke Azure.",
           "examReady": true
         },
         {
@@ -337,7 +337,7 @@
           "concept": "cost-management",
           "prompt": "Microsoft Cost Management can send an alert when spending reaches a percentage of a budget.",
           "answer": true,
-          "explanation": "Benar. Budget alert memberi tahu saat pengeluaran mencapai ambang yang kamu atur, misalnya 80%.",
+          "explanation": "Pernyataan ini benar. Budget alert memberi tahu saat pengeluaran mencapai ambang yang kamu atur, misalnya 80%.",
           "examReady": true
         },
         {
@@ -351,9 +351,9 @@
           "id": "u09-l3-e2",
           "type": "truefalse",
           "concept": "tags",
-          "prompt": "A tag is a name-value pair that you add to a resource.",
-          "answer": true,
-          "explanation": "Benar. Contohnya Environment=Production atau CostCenter=Marketing.",
+          "prompt": "Tags added to a resource group are automatically inherited by the resources inside it.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Resource tidak otomatis mewarisi tag dari resource group-nya. Kalau perlu, Azure Policy bisa menambahkan tag secara otomatis.",
           "examReady": true
         },
         {
@@ -439,19 +439,19 @@
           "scenario": "Contoso sets a monthly budget of 1,000 dollars in Microsoft Cost Management, with alerts at 80% and 100%.",
           "statements": [
             {
-              "text": "Contoso gets an alert when spending reaches 800 dollars.",
-              "answer": true
+              "text": "Contoso gets its first alert only when spending reaches 1,000 dollars.",
+              "answer": false
             },
             {
               "text": "The budget automatically shuts down resources at 100%.",
               "answer": false
             },
             {
-              "text": "Contoso can analyze costs by resource group.",
-              "answer": true
+              "text": "Cost Management can only show the total cost of the whole account.",
+              "answer": false
             }
           ],
-          "explanation": "Budget memberi peringatan, bukan mematikan resource. Biaya bisa dianalisis per subscription, resource group, atau tag.",
+          "explanation": "Alert pertama datang di 80%, yaitu 800 dolar. Budget memberi peringatan, bukan mematikan resource. Biaya bisa dianalisis per subscription, resource group, atau tag.",
           "examReady": true
         },
         {

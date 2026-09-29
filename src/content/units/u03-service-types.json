@@ -20,7 +20,7 @@
           "concept": "iaas",
           "prompt": "In IaaS (Infrastructure as a Service), you are responsible for installing and patching the operating system.",
           "answer": true,
-          "explanation": "Benar. Di IaaS (Infrastructure as a Service), semua dari OS (Operating System) ke atas adalah urusanmu. Microsoft mengurus hardware fisik.",
+          "explanation": "Pernyataan ini benar. Di IaaS (Infrastructure as a Service), semua dari OS (Operating System) ke atas adalah urusanmu. Microsoft mengurus hardware fisik.",
           "examReady": true
         },
         {
@@ -51,7 +51,7 @@
           "concept": "lift-and-shift",
           "prompt": "A lift-and-shift migration usually means rewriting an application before moving it to the cloud.",
           "answer": false,
-          "explanation": "Salah. Lift-and-shift justru memindahkan apa adanya, biasanya ke VM (Virtual Machine). Menulis ulang aplikasi itu modernisasi.",
+          "explanation": "Pernyataan ini salah. Lift-and-shift justru memindahkan apa adanya, biasanya ke VM (Virtual Machine). Menulis ulang aplikasi itu modernisasi.",
           "examReady": true
         },
         {
@@ -180,7 +180,7 @@
           "concept": "paas",
           "prompt": "In PaaS (Platform as a Service), you manage the operating system that runs your application.",
           "answer": false,
-          "explanation": "Salah. Di PaaS (Platform as a Service), OS (Operating System) dan platform diurus penyedia. Kamu fokus ke aplikasi dan data.",
+          "explanation": "Pernyataan ini salah. Di PaaS (Platform as a Service), OS (Operating System) dan platform diurus penyedia. Kamu fokus ke aplikasi dan data.",
           "examReady": true
         },
         {
@@ -345,9 +345,9 @@
           "id": "u03-l3-e1",
           "type": "truefalse",
           "concept": "saas",
-          "prompt": "Microsoft 365 is an example of SaaS (Software as a Service).",
-          "answer": true,
-          "explanation": "Benar. Microsoft 365 adalah aplikasi jadi yang tinggal dipakai. Itu SaaS (Software as a Service).",
+          "prompt": "Microsoft 365 is an example of IaaS (Infrastructure as a Service).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Microsoft 365 adalah aplikasi jadi yang tinggal dipakai, jadi termasuk SaaS (Software as a Service), bukan IaaS (Infrastructure as a Service).",
           "examReady": true
         },
         {
@@ -460,11 +460,11 @@
               "answer": true
             },
             {
-              "text": "Contoso typically pays a subscription fee to use the app.",
-              "answer": true
+              "text": "Contoso must buy the servers that run the app.",
+              "answer": false
             }
           ],
-          "explanation": "Di SaaS (Software as a Service), update diurus penyedia. Akses ke data tetap tanggung jawabmu, dan biasanya kamu bayar langganan.",
+          "explanation": "Di SaaS (Software as a Service), update dan server diurus penyedia, dan kamu biasanya cukup membayar langganan. Akses ke data tetap tanggung jawabmu.",
           "examReady": true
         },
         {
@@ -518,7 +518,7 @@
           "concept": "serverless",
           "prompt": "In serverless computing, you still have to manage and patch the servers that run your code.",
           "answer": false,
-          "explanation": "Salah. Server tetap ada, tapi sepenuhnya diurus penyedia. Kamu cukup fokus ke kode.",
+          "explanation": "Pernyataan ini salah. Server tetap ada, tapi sepenuhnya diurus penyedia. Kamu cukup fokus ke kode.",
           "examReady": true
         },
         {
@@ -598,9 +598,9 @@
           "prompt": "A company needs to resize images whenever a user uploads a photo. Uploads are rare and unpredictable. Which option keeps costs lowest?",
           "options": [
             "Run the code as a serverless function triggered by each upload",
-            "Run a virtual machine 24 hours a day",
-            "Buy a dedicated server",
-            "Rent a private cloud"
+            "Run the code on a virtual machine that stays on 24 hours a day",
+            "Buy a dedicated physical server for the resize code",
+            "Run the code on a Virtual Machine Scale Set with two instances"
           ],
           "answer": 0,
           "explanation": "Kalau event jarang, serverless paling hemat: kode hanya berjalan (dan ditagih) saat ada upload.",
@@ -632,8 +632,8 @@
           "scenario": "A developer builds an Azure Functions app that runs when a new order arrives.",
           "statements": [
             {
-              "text": "The function runs in response to an event.",
-              "answer": true
+              "text": "The function runs all the time, even when no orders arrive.",
+              "answer": false
             },
             {
               "text": "The developer must create virtual machines to host the function.",
@@ -644,7 +644,7 @@
               "answer": true
             }
           ],
-          "explanation": "Function dipicu event (pesanan baru). Tidak perlu VM (Virtual Machine), dan kalau tidak ada event, kode tidak berjalan.",
+          "explanation": "Function dipicu event (pesanan baru), jadi kalau tidak ada event, kode tidak berjalan. Tidak perlu VM (Virtual Machine).",
           "examReady": true
         },
         {

@@ -18,9 +18,9 @@
           "id": "u06-l1-e1",
           "type": "truefalse",
           "concept": "virtual-networks",
-          "prompt": "Resources in the same VNet (Virtual Network) can communicate with each other privately.",
-          "answer": true,
-          "explanation": "Benar. Itu fungsi dasar VNet (Virtual Network): komunikasi privat antar resource Azure.",
+          "prompt": "Resources in the same VNet (Virtual Network) need public IP (Internet Protocol) addresses to communicate with each other.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Resource di VNet (Virtual Network) yang sama berkomunikasi lewat alamat privat. Itu fungsi dasar VNet.",
           "examReady": true
         },
         {
@@ -116,9 +116,9 @@
           "prompt": "A company wants its Azure VMs (Virtual Machines) to reach an on-premises database privately. What does it need first?",
           "options": [
             "An Azure virtual network connected to the on-premises network",
-            "An Azure Data Box",
-            "A resource lock",
-            "A public DNS (Domain Name System) zone"
+            "A public address on every virtual machine",
+            "An Azure Data Box shipped to the on-premises datacenter",
+            "A public DNS (Domain Name System) zone for the database"
           ],
           "answer": 0,
           "explanation": "VM (Virtual Machine) harus berada di VNet (Virtual Network), lalu VNet itu dihubungkan ke on-premises, misalnya lewat VPN (Virtual Private Network) atau ExpressRoute.",
@@ -202,7 +202,7 @@
           "concept": "nsg",
           "prompt": "An NSG (Network Security Group) can allow or deny inbound traffic to a subnet.",
           "answer": true,
-          "explanation": "Benar. NSG (Network Security Group) mengatur traffic masuk dan keluar, dan bisa dipasang ke subnet atau network interface.",
+          "explanation": "Pernyataan ini benar. NSG (Network Security Group) mengatur traffic masuk dan keluar, dan bisa dipasang ke subnet atau network interface.",
           "examReady": true
         },
         {
@@ -233,7 +233,7 @@
           "concept": "vnet-peering",
           "prompt": "Traffic between peered VNets (Virtual Networks) travels over the public internet.",
           "answer": false,
-          "explanation": "Salah. Traffic antar VNet (Virtual Network) yang di-peering lewat backbone Microsoft, tidak pernah lewat internet publik.",
+          "explanation": "Pernyataan ini salah. Traffic antar VNet (Virtual Network) yang di-peering lewat backbone Microsoft, tidak pernah lewat internet publik.",
           "examReady": true
         },
         {
@@ -274,9 +274,9 @@
           },
           "options": [
             "Add an inbound rule that allows TCP (Transmission Control Protocol) port 80 with a priority number lower than 65500",
-            "Add an outbound rule that denies port 80",
-            "Delete the virtual network",
-            "Move the virtual machine to another resource group"
+            "Add an outbound rule that allows port 80 from the virtual machine to the internet",
+            "Delete the default DenyAllInBound rule so that every inbound connection is allowed",
+            "Move the virtual machine to a different resource group in the same region"
           ],
           "answer": 0,
           "explanation": "Default rule DenyAllInBound (priority 65500) menolak traffic dari internet. Tambah rule allow port 80 dengan angka priority lebih kecil supaya diproses lebih dulu."
@@ -351,7 +351,7 @@
           "concept": "vpn-gateway",
           "prompt": "A VPN (Virtual Private Network) gateway sends encrypted traffic over the public internet.",
           "answer": true,
-          "explanation": "Benar. VPN (Virtual Private Network) memakai internet publik, tapi traffic-nya dienkripsi.",
+          "explanation": "Pernyataan ini benar. VPN (Virtual Private Network) memakai internet publik, tapi traffic-nya dienkripsi.",
           "examReady": true
         },
         {
@@ -367,7 +367,7 @@
           "concept": "expressroute",
           "prompt": "ExpressRoute connections go over the public internet.",
           "answer": false,
-          "explanation": "Salah. ExpressRoute adalah koneksi privat lewat penyedia konektivitas, bukan lewat internet publik.",
+          "explanation": "Pernyataan ini salah. ExpressRoute adalah koneksi privat lewat penyedia konektivitas, bukan lewat internet publik.",
           "examReady": true
         },
         {
@@ -418,9 +418,9 @@
           "prompt": "A small company wants an encrypted connection between its office and Azure at low cost, and using the public internet is acceptable. What should it use?",
           "options": [
             "A site-to-site VPN (Virtual Private Network) with a VPN gateway",
-            "ExpressRoute",
-            "Azure Data Box",
-            "An availability set"
+            "An ExpressRoute circuit through a connectivity provider",
+            "A point-to-site VPN on each employee's laptop",
+            "Virtual network peering between the office and Azure"
           ],
           "answer": 0,
           "explanation": "Murah, terenkripsi, dan boleh lewat internet: site-to-site VPN (Virtual Private Network).",
@@ -456,8 +456,8 @@
               "answer": true
             },
             {
-              "text": "The laptop's traffic to Azure over the VPN is encrypted.",
-              "answer": true
+              "text": "The laptop's traffic to Azure over the VPN travels unencrypted.",
+              "answer": false
             },
             {
               "text": "The employee needs an ExpressRoute circuit at home.",
@@ -504,7 +504,7 @@
           "concept": "azure-dns",
           "prompt": "You can use Azure DNS (Domain Name System) to buy a new domain name.",
           "answer": false,
-          "explanation": "Salah. Azure DNS (Domain Name System) hanya menghosting domain. Nama domain dibeli di domain registrar.",
+          "explanation": "Pernyataan ini salah. Azure DNS (Domain Name System) hanya menghosting domain. Nama domain dibeli di domain registrar.",
           "examReady": true
         },
         {
@@ -514,9 +514,9 @@
           "prompt": "What does DNS (Domain Name System) do?",
           "options": [
             "Translates names like contoso.com into IP (Internet Protocol) addresses",
-            "Encrypts traffic between offices",
-            "Stores blobs",
-            "Balances processor load"
+            "Assigns private addresses to virtual machines in a subnet",
+            "Encrypts traffic between your office network and Azure",
+            "Spreads incoming web requests across several servers"
           ],
           "answer": 0,
           "explanation": "DNS (Domain Name System) seperti buku telepon internet: nama diterjemahkan menjadi alamat IP (Internet Protocol).",
@@ -535,7 +535,7 @@
           "concept": "endpoints",
           "prompt": "A private endpoint gives an Azure service a private IP (Internet Protocol) address from your virtual network.",
           "answer": true,
-          "explanation": "Benar. Dengan private endpoint, layanan seperti storage atau database diakses lewat alamat privat di VNet (Virtual Network)-mu.",
+          "explanation": "Pernyataan ini benar. Dengan private endpoint, layanan seperti storage atau database diakses lewat alamat privat di VNet (Virtual Network)-mu.",
           "examReady": true
         },
         {
@@ -609,9 +609,9 @@
           },
           "options": [
             "Create a private endpoint and disable public network access",
-            "Delete the storage account",
-            "Add a DNS (Domain Name System) record",
-            "Turn on autoscale"
+            "Turn on geo-redundant storage for the storage account",
+            "Add a Delete lock to the storage account",
+            "Move the data to the Cool access tier"
           ],
           "answer": 0,
           "explanation": "Private endpoint membawa storage ke dalam VNet (Virtual Network)-mu. Setelah itu, akses publik bisa dimatikan."

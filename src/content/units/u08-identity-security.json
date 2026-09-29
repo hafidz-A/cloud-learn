@@ -20,7 +20,7 @@
           "concept": "entra-id",
           "prompt": "Microsoft Entra ID is a cloud-based identity and access management service.",
           "answer": true,
-          "explanation": "Benar. Microsoft Entra ID mengurus siapa pengguna dan apa yang boleh mereka akses.",
+          "explanation": "Pernyataan ini benar. Microsoft Entra ID mengurus siapa pengguna dan apa yang boleh mereka akses.",
           "examReady": true
         },
         {
@@ -58,7 +58,7 @@
           "concept": "entra-domain-services",
           "prompt": "Microsoft Entra Domain Services requires you to deploy and patch your own domain controllers.",
           "answer": false,
-          "explanation": "Salah. Justru itu keuntungannya: fitur domain tersedia tanpa kamu mengelola domain controller.",
+          "explanation": "Pernyataan ini salah. Justru itu keuntungannya: fitur domain tersedia tanpa kamu mengelola domain controller.",
           "examReady": true
         },
         {
@@ -178,9 +178,9 @@
           "id": "u08-l2-e1",
           "type": "truefalse",
           "concept": "sso",
-          "prompt": "SSO (Single Sign-On) lets users sign in once to access multiple applications.",
-          "answer": true,
-          "explanation": "Benar. Satu login, banyak aplikasi.",
+          "prompt": "SSO (Single Sign-On) is another name for MFA (Multi-Factor Authentication).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. SSO (Single Sign-On) berarti satu kali login untuk banyak aplikasi. MFA (Multi-Factor Authentication) berarti meminta lebih dari satu bukti identitas saat login.",
           "examReady": true
         },
         {
@@ -197,9 +197,9 @@
           "prompt": "Which combination is an example of MFA (Multi-Factor Authentication)?",
           "options": [
             "A password plus a code from an authenticator app on your phone",
-            "A password plus a security question",
-            "Two different passwords",
-            "A username plus a password"
+            "A password plus the answer to a security question",
+            "Two different passwords entered one after the other",
+            "A username plus a password that changes every month"
           ],
           "answer": 0,
           "explanation": "Password dan security question sama-sama sesuatu yang kamu tahu, jadi bukan MFA (Multi-Factor Authentication). Password ditambah kode di ponsel memakai dua kategori berbeda.",
@@ -317,8 +317,8 @@
           "scenario": "Contoso turns on SSO (Single Sign-On) and MFA (Multi-Factor Authentication) for all employees.",
           "statements": [
             {
-              "text": "Employees can reach several apps after one sign-in.",
-              "answer": true
+              "text": "Employees must sign in separately to every app.",
+              "answer": false
             },
             {
               "text": "MFA removes the need for users to prove who they are.",
@@ -369,7 +369,7 @@
           "concept": "conditional-access",
           "prompt": "Conditional Access requires at least a Microsoft Entra ID P1 license.",
           "answer": true,
-          "explanation": "Benar. Conditional Access termasuk fitur Microsoft Entra ID P1 dan P2.",
+          "explanation": "Pernyataan ini benar. Conditional Access termasuk fitur Microsoft Entra ID P1 dan P2.",
           "examReady": true
         },
         {
@@ -405,9 +405,9 @@
           "id": "u08-l3-e3",
           "type": "truefalse",
           "concept": "external-identities",
-          "prompt": "With B2B (Business-to-Business) collaboration, a partner can sign in to your apps with their own identity.",
-          "answer": true,
-          "explanation": "Benar. Partner tidak perlu akun baru; mereka masuk sebagai guest dengan identitas mereka sendiri.",
+          "prompt": "With B2B (Business-to-Business) collaboration, partners must get a new username and password from your organization.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Partner masuk sebagai guest dengan identitas mereka sendiri, jadi tidak perlu username dan password baru dari organisasimu.",
           "examReady": true
         },
         {
@@ -544,7 +544,7 @@
           "concept": "zero-trust",
           "prompt": "Zero Trust assumes that everything inside the corporate network can be trusted.",
           "answer": false,
-          "explanation": "Salah. Zero Trust tidak percaya pada apa pun secara otomatis, termasuk yang ada di dalam jaringan kantor.",
+          "explanation": "Pernyataan ini salah. Zero Trust tidak percaya pada apa pun secara otomatis, termasuk yang ada di dalam jaringan kantor.",
           "examReady": true
         },
         {
@@ -721,7 +721,7 @@
           "concept": "defender-for-cloud",
           "prompt": "Microsoft Defender for Cloud can protect resources in other clouds, not only in Azure.",
           "answer": true,
-          "explanation": "Benar. Defender for Cloud mendukung hybrid dan multi-cloud.",
+          "explanation": "Pernyataan ini benar. Defender for Cloud mendukung hybrid dan multi-cloud.",
           "examReady": true
         },
         {
@@ -784,9 +784,9 @@
           },
           "options": [
             "Follow the recommendation and restrict port 3389, for example with an NSG (Network Security Group) or just-in-time access",
-            "Ignore it, because Microsoft secures customer virtual machines",
-            "Turn off Defender for Cloud",
-            "Move the virtual machines to the Archive tier"
+            "Ignore it, because Microsoft patches and secures customer virtual machines for you",
+            "Turn off Defender for Cloud so the recommendation no longer appears on the dashboard",
+            "Move remote desktop to port 3390 and keep it open to the whole internet"
           ],
           "answer": 0,
           "explanation": "Port manajemen yang terbuka ke internet adalah target serangan brute force. Menutupnya menaikkan secure score."

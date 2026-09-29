@@ -18,9 +18,9 @@
           "id": "u12-l1-e1",
           "type": "truefalse",
           "concept": "azure-advisor",
-          "prompt": "Azure Advisor gives recommendations that can help reduce costs.",
-          "answer": true,
-          "explanation": "Benar. Cost adalah salah satu dari lima kategori rekomendasi Advisor.",
+          "prompt": "Azure Advisor only gives recommendations about security.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Advisor memberi rekomendasi di lima kategori: reliability, security, performance, cost, dan operational excellence.",
           "examReady": true
         },
         {
@@ -127,19 +127,19 @@
           "scenario": "Contoso sets up Service Health alerts for its subscription.",
           "statements": [
             {
-              "text": "Contoso can be notified about planned maintenance that affects its resources.",
-              "answer": true
+              "text": "Service Health only reports outages, not planned maintenance.",
+              "answer": false
             },
             {
               "text": "Service Health shows recommendations for resizing virtual machines.",
               "answer": false
             },
             {
-              "text": "Service Health can report outages in the regions Contoso uses.",
-              "answer": true
+              "text": "Service Health reports outages in every Azure region, including regions Contoso doesn't use.",
+              "answer": false
             }
           ],
-          "explanation": "Service Health untuk gangguan dan maintenance. Rekomendasi ukuran VM (Virtual Machine) datang dari Azure Advisor.",
+          "explanation": "Service Health bersifat personal: melaporkan gangguan dan maintenance yang memengaruhi layanan dan region yang kamu pakai. Rekomendasi ukuran VM (Virtual Machine) datang dari Azure Advisor.",
           "examReady": true
         },
         {
@@ -179,7 +179,7 @@
           "concept": "azure-monitor",
           "prompt": "Azure Monitor can collect data from on-premises resources as well as from Azure resources.",
           "answer": true,
-          "explanation": "Benar. Azure Monitor tidak terbatas pada resource di Azure.",
+          "explanation": "Pernyataan ini benar. Azure Monitor tidak terbatas pada resource di Azure.",
           "examReady": true
         },
         {
@@ -197,8 +197,8 @@
           "options": [
             "KQL (Kusto Query Language)",
             "Bicep",
-            "PowerShell only",
-            "Plain English"
+            "Python",
+            "PowerShell"
           ],
           "answer": 0,
           "explanation": "Log Analytics memakai KQL (Kusto Query Language).",
@@ -298,9 +298,9 @@
           },
           "options": [
             "Query the virtual machine's logs and metrics in Log Analytics around that time",
-            "Delete the virtual machine and create a new one",
-            "Open the TCO (Total Cost of Ownership) Calculator",
-            "Apply a ReadOnly lock"
+            "Check the Azure status page for outages in other regions",
+            "Run the Pricing Calculator for a larger virtual machine size",
+            "Apply a ReadOnly lock to the virtual machine overnight"
           ],
           "answer": 0,
           "explanation": "Lihat metrics dan logs di sekitar jam kejadian untuk menemukan penyebabnya."
@@ -340,9 +340,9 @@
           "id": "u12-l3-e1",
           "type": "truefalse",
           "concept": "azure-monitor-alerts",
-          "prompt": "Azure Monitor alerts can notify you by email or by SMS (Short Message Service).",
-          "answer": true,
-          "explanation": "Benar. Cara notifikasinya diatur di action group.",
+          "prompt": "An Azure Monitor alert can only notify you inside the Azure portal.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Alert bisa memberi tahu lewat email, SMS (Short Message Service), notifikasi push, dan cara lain. Cara notifikasinya diatur di action group.",
           "examReady": true
         },
         {
@@ -400,9 +400,9 @@
           "prompt": "Your team wants a text message whenever the CPU (Central Processing Unit) of a production virtual machine stays above 90% for 10 minutes. What should you configure?",
           "options": [
             "An Azure Monitor metric alert with an action group",
-            "A resource lock",
-            "An Azure Policy initiative",
-            "A budget in Cost Management"
+            "A Service Health alert with an action group",
+            "An Azure Advisor recommendation digest sent by email",
+            "A budget alert in Microsoft Cost Management"
           ],
           "answer": 0,
           "explanation": "Metric alert memantau CPU (Central Processing Unit), dan action group mengirim SMS (Short Message Service) ke tim.",
@@ -461,9 +461,9 @@
           },
           "options": [
             "An action group with the team's email or phone number",
-            "A ReadOnly lock",
-            "A tag on the virtual machine",
-            "A second subscription"
+            "A diagnostic setting that sends the metrics to storage",
+            "A Service Health alert for the region of the virtual machine",
+            "An Azure Advisor recommendation for the virtual machine"
           ],
           "answer": 0,
           "explanation": "Tanpa action group, alert menyala tapi tidak ada yang diberi tahu."

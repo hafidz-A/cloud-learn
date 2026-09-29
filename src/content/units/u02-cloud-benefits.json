@@ -20,7 +20,7 @@
           "concept": "high-availability",
           "prompt": "High availability means an application stays accessible even when some components fail.",
           "answer": true,
-          "explanation": "Benar. Tujuannya uptime setinggi mungkin, walaupun ada gangguan di sebagian komponen.",
+          "explanation": "Pernyataan ini benar. Tujuannya uptime setinggi mungkin, walaupun ada gangguan di sebagian komponen.",
           "examReady": true
         },
         {
@@ -49,9 +49,9 @@
           "id": "u02-l1-e3",
           "type": "truefalse",
           "concept": "scalability",
-          "prompt": "Adding more virtual machines to handle more traffic is an example of horizontal scaling.",
-          "answer": true,
-          "explanation": "Benar. Horizontal scaling (scale out) menambah jumlah instance. Vertical scaling (scale up) memperbesar satu instance.",
+          "prompt": "Adding more virtual machines to handle more traffic is an example of vertical scaling.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Menambah jumlah instance itu horizontal scaling (scale out). Vertical scaling (scale up) memperbesar satu instance, misalnya menambah CPU (Central Processing Unit) atau memori.",
           "examReady": true
         },
         {
@@ -190,7 +190,7 @@
           "concept": "reliability",
           "prompt": "Reliability is the ability of a system to recover from failures and continue to function.",
           "answer": true,
-          "explanation": "Benar. Itu definisi reliability di materi AZ-900.",
+          "explanation": "Pernyataan ini benar. Itu definisi reliability di materi AZ-900.",
           "examReady": true
         },
         {
@@ -286,15 +286,15 @@
               "answer": true
             },
             {
-              "text": "Cost predictability means Azure costs never change.",
-              "answer": false
+              "text": "Cost Management can show spending trends that help forecast future costs.",
+              "answer": true
             },
             {
               "text": "The team can estimate costs before deploying resources.",
               "answer": true
             }
           ],
-          "explanation": "Biaya yang bisa diprediksi bukan berarti biayanya tetap. Pantau pemakaian dan estimasi dulu dengan Pricing Calculator.",
+          "explanation": "Biaya yang bisa diprediksi bukan berarti biayanya tetap. Pantau pemakaian dan trennya, lalu estimasi dulu dengan Pricing Calculator.",
           "examReady": true
         },
         {
@@ -353,7 +353,7 @@
           "concept": "cloud-governance",
           "prompt": "In Azure, you can use policies to report resources that don't meet your company's rules.",
           "answer": true,
-          "explanation": "Benar. Azure Policy bisa mengaudit dan menandai resource yang tidak patuh aturan. Detailnya ada di unit Governance.",
+          "explanation": "Pernyataan ini benar. Azure Policy bisa mengaudit dan menandai resource yang tidak patuh aturan. Detailnya ada di unit Governance.",
           "examReady": true
         },
         {
@@ -369,7 +369,7 @@
           "concept": "cloud-security",
           "prompt": "With PaaS (Platform as a Service), the cloud provider handles operating system patches for you.",
           "answer": true,
-          "explanation": "Benar. Di PaaS (Platform as a Service), OS (Operating System) dan patch-nya diurus penyedia; kamu fokus ke aplikasi dan data.",
+          "explanation": "Pernyataan ini benar. Di PaaS (Platform as a Service), OS (Operating System) dan patch-nya diurus penyedia; kamu fokus ke aplikasi dan data.",
           "examReady": true
         },
         {
@@ -379,9 +379,9 @@
           "prompt": "Which type of attack does Azure DDoS (Distributed Denial of Service) Protection defend against?",
           "options": [
             "Floods of traffic that try to make a service unavailable",
-            "Stolen passwords",
-            "Accidental deletion of resources",
-            "Unexpected monthly costs"
+            "Phishing emails that trick users into sharing passwords",
+            "Malware that encrypts files and demands a ransom",
+            "Insiders who delete resources without permission"
           ],
           "answer": 0,
           "explanation": "DDoS (Distributed Denial of Service) adalah banjir traffic dari banyak sumber untuk melumpuhkan layanan. Azure DDoS Protection membantu menyaring traffic itu.",
@@ -517,7 +517,7 @@
           "concept": "management-of-cloud",
           "prompt": "Automatically replacing a failing resource is an example of management of the cloud.",
           "answer": true,
-          "explanation": "Benar. Management of the cloud mencakup scaling otomatis, deploy dari template, memantau kesehatan, dan mengganti resource yang bermasalah.",
+          "explanation": "Pernyataan ini benar. Management of the cloud mencakup scaling otomatis, deploy dari template, memantau kesehatan, dan mengganti resource yang bermasalah.",
           "examReady": true
         },
         {
@@ -639,8 +639,8 @@
           "scenario": "A web app's traffic doubles every evening. The company sets up autoscaling and an alert that emails the team when response times get slow.",
           "statements": [
             {
-              "text": "Autoscaling is an example of management of the cloud.",
-              "answer": true
+              "text": "Autoscaling is an example of management in the cloud.",
+              "answer": false
             },
             {
               "text": "The alert is an example of management of the cloud.",
@@ -651,7 +651,7 @@
               "answer": false
             }
           ],
-          "explanation": "Autoscaling dan alert adalah hal yang dilakukan cloud untukmu secara otomatis, jadi termasuk management of the cloud.",
+          "explanation": "Autoscaling dan alert dikerjakan cloud untukmu secara otomatis, jadi termasuk management of the cloud. Management in the cloud artinya cara kamu mengelola, misalnya lewat portal, CLI (Command-Line Interface), atau aplikasi mobile.",
           "examReady": true
         },
         {

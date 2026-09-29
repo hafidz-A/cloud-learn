@@ -20,7 +20,7 @@
           "concept": "azure-policy",
           "prompt": "Azure Policy can prevent the creation of resources that don't follow your rules.",
           "answer": true,
-          "explanation": "Benar. Policy dengan efek deny menolak resource yang melanggar.",
+          "explanation": "Pernyataan ini benar. Policy dengan efek deny menolak resource yang melanggar.",
           "examReady": true
         },
         {
@@ -83,9 +83,9 @@
           },
           "options": [
             "Deploy the virtual machine in West Europe or North Europe",
-            "Remove the policy assignment yourself",
-            "Deploy to eastus again until it works",
-            "Create a new tag"
+            "Ask an admin to add a resource lock to the virtual machine",
+            "Deploy to eastus again with a different virtual machine size",
+            "Add a tag that marks the virtual machine as approved"
           ],
           "answer": 0,
           "explanation": "Policy 'Allowed locations' menolak region yang tidak diizinkan. Ikuti aturannya dan pilih region yang boleh."
@@ -183,7 +183,7 @@
           "concept": "resource-locks",
           "prompt": "A resource lock also applies to users with the Owner role.",
           "answer": true,
-          "explanation": "Benar. Lock berlaku untuk semua orang. Untuk menghapus atau mengubah resource, lock-nya harus dilepas dulu.",
+          "explanation": "Pernyataan ini benar. Lock berlaku untuk semua orang. Untuk menghapus atau mengubah resource, lock-nya harus dilepas dulu.",
           "examReady": true
         },
         {
@@ -197,9 +197,9 @@
           "id": "u10-l2-e2",
           "type": "truefalse",
           "concept": "read-only-locks",
-          "prompt": "With a Delete (CanNotDelete) lock, you can still modify the resource.",
-          "answer": true,
-          "explanation": "Benar. Delete lock hanya mencegah penghapusan.",
+          "prompt": "With a Delete (CanNotDelete) lock, you can no longer modify the resource.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Delete lock hanya mencegah penghapusan, jadi resource masih bisa diubah. Yang mencegah perubahan adalah ReadOnly lock.",
           "examReady": true
         },
         {
@@ -293,8 +293,8 @@
               "answer": false
             },
             {
-              "text": "Users can still view the resources.",
-              "answer": true
+              "text": "Users can no longer view the resources.",
+              "answer": false
             }
           ],
           "explanation": "Lock diwariskan ke semua resource di dalamnya, berlaku untuk Owner, tapi melihat resource tetap bisa.",
@@ -355,7 +355,7 @@
           "concept": "microsoft-purview",
           "prompt": "Microsoft Purview helps you discover and govern data across on-premises, multicloud, and SaaS (Software as a Service) sources.",
           "answer": true,
-          "explanation": "Benar. Purview memberi satu gambaran terpadu tentang data organisasimu.",
+          "explanation": "Pernyataan ini benar. Purview memberi satu gambaran terpadu tentang data organisasimu.",
           "examReady": true
         },
         {

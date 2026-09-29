@@ -21,7 +21,7 @@
           "concept": "availability-zones",
           "prompt": "An availability zone is a separate datacenter (or group of datacenters) inside one Azure region.",
           "answer": true,
-          "explanation": "Benar. Availability zone ada di dalam satu region, masing-masing punya listrik, pendingin, dan jaringan sendiri. Jadi kalau satu gedung mati, zone lain tetap jalan.",
+          "explanation": "Pernyataan ini benar. Availability zone ada di dalam satu region, masing-masing punya listrik, pendingin, dan jaringan sendiri. Jadi kalau satu gedung mati, zone lain tetap jalan.",
           "examReady": true
         },
         {
@@ -205,7 +205,7 @@
           "concept": "sovereign-regions",
           "prompt": "Sovereign regions, such as Azure Government, are isolated from the main instance of Azure.",
           "answer": true,
-          "explanation": "Benar. Sovereign region adalah instance Azure yang terpisah untuk kebutuhan hukum atau pemerintahan.",
+          "explanation": "Pernyataan ini benar. Sovereign region adalah instance Azure yang terpisah untuk kebutuhan hukum atau pemerintahan.",
           "examReady": true
         },
         {
@@ -243,7 +243,7 @@
           "concept": "resource-groups",
           "prompt": "You can create a resource group inside another resource group.",
           "answer": false,
-          "explanation": "Salah. Resource group tidak bisa di-nest. Setiap resource ada di tepat satu resource group.",
+          "explanation": "Pernyataan ini salah. Resource group tidak bisa di-nest. Setiap resource ada di tepat satu resource group.",
           "examReady": true
         },
         {
@@ -359,11 +359,11 @@
               "answer": false
             },
             {
-              "text": "Sovereign regions exist for compliance and legal reasons.",
-              "answer": true
+              "text": "Any company can deploy resources to Azure Government without special eligibility.",
+              "answer": false
             }
           ],
-          "explanation": "Azure Government adalah sovereign region: instance Azure yang terpisah, khusus untuk kebutuhan pemerintah Amerika Serikat.",
+          "explanation": "Azure Government adalah sovereign region: instance Azure yang terpisah, khusus untuk kebutuhan pemerintah Amerika Serikat. Hanya instansi pemerintah Amerika Serikat dan mitranya yang lolos verifikasi yang bisa memakainya.",
           "examReady": true
         },
         {
@@ -401,9 +401,9 @@
           "id": "u04-l3-e1",
           "type": "truefalse",
           "concept": "subscriptions",
-          "prompt": "An Azure subscription acts as a billing boundary.",
-          "answer": true,
-          "explanation": "Benar. Setiap subscription punya tagihan sendiri, jadi biaya bisa dipisah per subscription.",
+          "prompt": "In Azure, the resource group is the billing boundary, not the subscription.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Subscription adalah billing boundary: setiap subscription punya tagihan sendiri. Resource group hanya wadah untuk mengelompokkan resource.",
           "examReady": true
         },
         {
@@ -515,9 +515,9 @@
           },
           "options": [
             "Create the virtual machine in the Dev subscription instead",
-            "Ask Microsoft support to remove the error",
-            "Delete the Prod subscription",
-            "Create a new Azure region"
+            "Ask Microsoft support to remove the authorization error",
+            "Delete the Prod subscription so the error goes away",
+            "Move the Prod subscription into a new Azure region"
           ],
           "answer": 0,
           "explanation": "Subscription juga batas akses. Developer hanya punya izin di Dev, jadi buat VM (Virtual Machine) di sana. Kalau memang butuh di Prod, minta akses ke admin lewat RBAC (Role-Based Access Control)."
@@ -559,7 +559,7 @@
           "concept": "management-groups",
           "prompt": "Management groups let you apply policies and access to many subscriptions at once.",
           "answer": true,
-          "explanation": "Benar. Itu tujuan utama management group: mengatur banyak subscription sekaligus.",
+          "explanation": "Pernyataan ini benar. Itu tujuan utama management group: mengatur banyak subscription sekaligus.",
           "examReady": true
         },
         {
@@ -574,9 +574,9 @@
           "id": "u04-l4-e2",
           "type": "truefalse",
           "concept": "resource-hierarchy",
-          "prompt": "Access assigned at a subscription is inherited by the resource groups and resources in that subscription.",
-          "answer": true,
-          "explanation": "Benar. Pengaturan mengalir ke bawah: dari subscription ke resource group, lalu ke resource.",
+          "prompt": "Access assigned at a subscription does not apply to the resource groups inside it.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Pengaturan mengalir ke bawah. Akses yang diberikan di subscription diwariskan ke resource group, lalu ke resource di dalamnya.",
           "examReady": true
         },
         {
@@ -627,9 +627,9 @@
           "prompt": "A company has 30 subscriptions and wants one policy that blocks deployments outside Europe to apply to all of them. Where should it assign the policy?",
           "options": [
             "At a management group that contains all 30 subscriptions",
-            "In each resource group, one by one",
-            "On each individual virtual machine",
-            "At the region pair"
+            "At a resource group in one of the 30 subscriptions",
+            "On each virtual machine when it is deployed",
+            "At the region pair that contains the European regions"
           ],
           "answer": 0,
           "explanation": "Assign sekali di management group, maka ke-30 subscription di bawahnya mewarisi policy itu.",
@@ -651,8 +651,8 @@
               "answer": false
             },
             {
-              "text": "Corp can contain other management groups.",
-              "answer": true
+              "text": "Corp can contain at most one subscription.",
+              "answer": false
             }
           ],
           "explanation": "Setiap management group dan subscription hanya punya satu parent, tapi satu management group bisa punya banyak child, termasuk management group lain.",

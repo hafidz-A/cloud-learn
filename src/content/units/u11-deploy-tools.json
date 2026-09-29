@@ -20,7 +20,7 @@
           "concept": "azure-portal",
           "prompt": "The Azure portal is a web-based graphical console for managing Azure resources.",
           "answer": true,
-          "explanation": "Benar. Portal berjalan di browser dan tidak perlu dipasang.",
+          "explanation": "Pernyataan ini benar. Portal berjalan di browser dan tidak perlu dipasang.",
           "examReady": true
         },
         {
@@ -36,7 +36,7 @@
           "concept": "cloud-shell",
           "prompt": "To use Azure Cloud Shell, you must first install the Azure CLI (Command-Line Interface) on your computer.",
           "answer": false,
-          "explanation": "Salah. Cloud Shell berjalan di browser dan alatnya sudah terpasang, termasuk Azure CLI (Command-Line Interface) dan Azure PowerShell.",
+          "explanation": "Pernyataan ini salah. Cloud Shell berjalan di browser dan alatnya sudah terpasang, termasuk Azure CLI (Command-Line Interface) dan Azure PowerShell.",
           "examReady": true
         },
         {
@@ -173,9 +173,9 @@
           "id": "u11-l2-e1",
           "type": "truefalse",
           "concept": "azure-cli",
-          "prompt": "Azure CLI (Command-Line Interface) commands start with 'az'.",
-          "answer": true,
-          "explanation": "Benar. Contohnya az group create, az vm create, dan az group delete.",
+          "prompt": "Azure CLI (Command-Line Interface) commands look like New-AzResourceGroup and Get-AzVM.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. New-AzResourceGroup dan Get-AzVM adalah cmdlet Azure PowerShell. Perintah Azure CLI (Command-Line Interface) diawali az, misalnya az group create.",
           "examReady": true
         },
         {
@@ -368,7 +368,7 @@
           "concept": "azure-arc",
           "prompt": "Azure Arc lets you manage servers that run outside of Azure from the Azure portal.",
           "answer": true,
-          "explanation": "Benar. Server di luar Azure muncul sebagai resource di Azure dan bisa dikelola dari sana.",
+          "explanation": "Pernyataan ini benar. Server di luar Azure muncul sebagai resource di Azure dan bisa dikelola dari sana.",
           "examReady": true
         },
         {
@@ -460,8 +460,8 @@
           "scenario": "Contoso connects 30 on-premises Linux servers to Azure Arc.",
           "statements": [
             {
-              "text": "The servers appear as resources in Azure.",
-              "answer": true
+              "text": "The servers are shown only in a separate tool, not as resources in Azure.",
+              "answer": false
             },
             {
               "text": "The servers are physically moved into an Azure datacenter.",
@@ -472,7 +472,7 @@
               "answer": true
             }
           ],
-          "explanation": "Server tetap di tempatnya, tapi terlihat dan bisa diatur dari Azure.",
+          "explanation": "Server tetap di tempatnya, tapi muncul sebagai resource di Azure dan bisa diatur dari sana, termasuk dengan Azure Policy.",
           "examReady": true
         },
         {
@@ -531,7 +531,7 @@
           "concept": "arm",
           "prompt": "Requests from the Azure portal and from the Azure CLI (Command-Line Interface) both go through ARM (Azure Resource Manager).",
           "answer": true,
-          "explanation": "Benar. Apa pun alatnya, semua lewat ARM (Azure Resource Manager).",
+          "explanation": "Pernyataan ini benar. Apa pun alatnya, semua lewat ARM (Azure Resource Manager).",
           "examReady": true
         },
         {
@@ -548,9 +548,9 @@
           "prompt": "In which format are ARM (Azure Resource Manager) templates written?",
           "options": [
             "JSON (JavaScript Object Notation)",
-            "Plain text documents",
-            "Spreadsheets",
-            "Python scripts"
+            "Python scripts",
+            "PowerShell scripts",
+            "Markdown documents"
           ],
           "answer": 0,
           "explanation": "ARM (Azure Resource Manager) template = file JSON (JavaScript Object Notation).",

@@ -20,7 +20,7 @@
           "concept": "cloud-computing",
           "prompt": "Cloud computing is the delivery of computing services over the internet.",
           "answer": true,
-          "explanation": "Benar. Compute, storage, networking, database, dan layanan lain disewa lewat internet, bukan dibangun sendiri di gedung kantor.",
+          "explanation": "Pernyataan ini benar. Compute, storage, networking, database, dan layanan lain disewa lewat internet, bukan dibangun sendiri di gedung kantor.",
           "examReady": true
         },
         {
@@ -51,7 +51,7 @@
           "concept": "consumption-model",
           "prompt": "With a consumption-based model, you pay a large upfront fee before you can use any resources.",
           "answer": false,
-          "explanation": "Salah. Consumption-based model tidak punya biaya di depan. Kamu bayar sesuai pemakaian, dan berhenti bayar saat resource tidak dipakai lagi.",
+          "explanation": "Pernyataan ini salah. Consumption-based model tidak punya biaya di depan. Kamu bayar sesuai pemakaian, dan berhenti bayar saat resource tidak dipakai lagi.",
           "examReady": true
         },
         {
@@ -121,8 +121,8 @@
           "scenario": "Contoso moves its test environment to Azure and uses the consumption-based model.",
           "statements": [
             {
-              "text": "Contoso stops paying for a virtual machine's compute time after deleting the virtual machine.",
-              "answer": true
+              "text": "Contoso keeps paying for a virtual machine's compute time after deleting the virtual machine.",
+              "answer": false
             },
             {
               "text": "Contoso must pay for a full year of capacity up front.",
@@ -175,7 +175,7 @@
           "concept": "shared-responsibility",
           "prompt": "In the shared responsibility model, Microsoft is always responsible for the physical datacenter.",
           "answer": true,
-          "explanation": "Benar. Gedung, listrik, pendingin, dan keamanan fisik datacenter selalu urusan Microsoft, apa pun jenis layanannya.",
+          "explanation": "Pernyataan ini benar. Gedung, listrik, pendingin, dan keamanan fisik datacenter selalu urusan Microsoft, apa pun jenis layanannya.",
           "examReady": true
         },
         {
@@ -184,7 +184,7 @@
           "concept": "shared-responsibility",
           "prompt": "When you use a SaaS (Software as a Service) app such as Microsoft 365, Microsoft becomes responsible for your data.",
           "answer": false,
-          "explanation": "Salah. Di semua jenis layanan, termasuk SaaS (Software as a Service), kamu tetap bertanggung jawab atas data, device, serta account dan identity.",
+          "explanation": "Pernyataan ini salah. Di semua jenis layanan, termasuk SaaS (Software as a Service), kamu tetap bertanggung jawab atas data, device, serta account dan identity.",
           "examReady": true
         },
         {
@@ -256,15 +256,15 @@
               "answer": true
             },
             {
-              "text": "Microsoft is responsible for the physical server that hosts the virtual machine.",
-              "answer": true
+              "text": "The company is responsible for replacing failed disks in the physical server.",
+              "answer": false
             },
             {
               "text": "Microsoft is responsible for the company's user accounts.",
               "answer": false
             }
           ],
-          "explanation": "Di IaaS (Infrastructure as a Service), OS (Operating System) di dalam VM (Virtual Machine) adalah urusanmu. Server fisik urusan Microsoft. Akun pengguna selalu urusanmu.",
+          "explanation": "Di IaaS (Infrastructure as a Service), OS (Operating System) di dalam VM (Virtual Machine) adalah urusanmu. Server fisik, termasuk disk-nya, urusan Microsoft. Akun pengguna selalu urusanmu.",
           "examReady": true
         },
         {
@@ -339,7 +339,7 @@
           "concept": "public-cloud",
           "prompt": "In a public cloud, you must buy the servers before you can deploy an app.",
           "answer": false,
-          "explanation": "Salah. Di public cloud tidak ada belanja hardware di depan. Resource bisa dibuat dalam hitungan menit dan dibayar sesuai pemakaian.",
+          "explanation": "Pernyataan ini salah. Di public cloud tidak ada belanja hardware di depan. Resource bisa dibuat dalam hitungan menit dan dibayar sesuai pemakaian.",
           "examReady": true
         },
         {
@@ -353,9 +353,9 @@
           "id": "u01-l3-e2",
           "type": "truefalse",
           "concept": "private-cloud",
-          "prompt": "A private cloud is used by a single organization.",
-          "answer": true,
-          "explanation": "Benar. Private cloud khusus untuk satu organisasi, jadi kontrolnya penuh, tapi biaya dan perawatannya juga ditanggung sendiri.",
+          "prompt": "A private cloud is shared by many different organizations.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Private cloud khusus untuk satu organisasi, jadi kontrolnya penuh. Cloud yang dipakai bersama banyak organisasi adalah public cloud.",
           "examReady": true
         },
         {
@@ -493,11 +493,11 @@
               "answer": false
             },
             {
-              "text": "Fabrikam can decide which apps run on-premises and which run in Azure.",
-              "answer": true
+              "text": "Apps in Fabrikam's datacenter cannot communicate with apps in Azure.",
+              "answer": false
             }
           ],
-          "explanation": "Hybrid memberi fleksibilitas: kamu yang menentukan workload mana di on-premises dan mana di cloud. Tidak perlu memindahkan semuanya.",
+          "explanation": "Hybrid memberi fleksibilitas: kamu yang menentukan workload mana di on-premises dan mana di cloud, dan kedua lingkungan saling terhubung. Tidak perlu memindahkan semuanya.",
           "examReady": true
         }
       ]
@@ -519,7 +519,7 @@
           "concept": "multi-cloud",
           "prompt": "A multi-cloud environment uses more than one public cloud provider.",
           "answer": true,
-          "explanation": "Benar. Contohnya sebagian layanan di Azure dan sebagian di penyedia cloud lain. Azure Arc bisa membantu mengelolanya dari satu tempat.",
+          "explanation": "Pernyataan ini benar. Contohnya sebagian layanan di Azure dan sebagian di penyedia cloud lain. Azure Arc bisa membantu mengelolanya dari satu tempat.",
           "examReady": true
         },
         {
@@ -533,9 +533,9 @@
           "id": "u01-l4-e2",
           "type": "truefalse",
           "concept": "capex-opex",
-          "prompt": "Moving from your own datacenter to Azure usually shifts spending from CapEx (Capital Expenditure) to OpEx (Operational Expenditure).",
-          "answer": true,
-          "explanation": "Benar. Alih-alih membeli server di depan (CapEx (Capital Expenditure)), kamu membayar tagihan bulanan sesuai pemakaian (OpEx (Operational Expenditure)).",
+          "prompt": "Moving from your own datacenter to Azure usually shifts spending from OpEx (Operational Expenditure) to CapEx (Capital Expenditure).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Arahnya terbalik. Kamu berhenti membeli server di depan (CapEx (Capital Expenditure)) dan beralih ke tagihan bulanan sesuai pemakaian (OpEx (Operational Expenditure)).",
           "examReady": true
         },
         {
@@ -657,8 +657,8 @@
           "scenario": "Tailwind Traders plans to close its server room and run all of its servers in Azure.",
           "statements": [
             {
-              "text": "Tailwind Traders will reduce its capital expenditure on server hardware.",
-              "answer": true
+              "text": "Tailwind Traders will increase its capital expenditure on server hardware.",
+              "answer": false
             },
             {
               "text": "Tailwind Traders will pay for Azure services as an operational expense.",
