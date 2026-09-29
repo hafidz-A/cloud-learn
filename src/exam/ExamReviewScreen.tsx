@@ -68,7 +68,12 @@ export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
           const answer = correctAnswerText(q.exercise)
           const status = !r.answered ? 'Tidak dijawab' : r.correct ? 'Benar' : 'Salah'
           return (
-            <article key={id} className="rounded-2xl border-2 border-kabut bg-white p-4" aria-labelledby={`q-${id}`}>
+            <article
+              key={id}
+              className="rounded-2xl border-2 border-kabut bg-white p-4"
+              aria-labelledby={`q-${id}`}
+              data-result={r.correct ? 'correct' : r.answered ? 'wrong' : 'unanswered'}
+            >
               <p className="flex items-center justify-between gap-2 text-13 font-semibold text-tinta-lembut">
                 <span>
                   Soal {n} · Jalur {q.path}

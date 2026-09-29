@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import type { Lesson, Unit } from '../lib/types'
 import { UNITS } from './course'
-import { unexpandedAbbreviations, validateUnits } from './validate'
+import { GLOSSARY } from './glossary'
+import { glossaryGaps, unexpandedAbbreviations, validateUnits } from './validate'
 
 describe('course content', () => {
   const issues = validateUnits(UNITS)
@@ -18,6 +19,10 @@ describe('course content', () => {
 
   it('has no abbreviation warnings in lessons that already have content', () => {
     expect(issues.filter((i) => i.message.startsWith('expand on first use'))).toEqual([])
+  })
+
+  it('explains every abbreviation in the glossary', () => {
+    expect(glossaryGaps(UNITS, new Set(GLOSSARY.map((g) => g.term)))).toEqual([])
   })
 })
 
@@ -91,7 +96,7 @@ describe('lesson order rules (plan section 11.2)', () => {
       tf('u99-l1-e2', 'zones'),
     ]
     const errors = validateUnits([unitWith(items)]).filter((i) => i.level === 'error').map((i) => i.message)
-    expect(errors).toContain('unknown visual "Nope", known: ZonesInRegion, RegionPair')
+    expect(errors.some((e) => e.startsWith('unknown visual "Nope"'))).toBe(true)
     expect(errors).toContain('exercise id should be "u99-l1-e1"')
   })
 })

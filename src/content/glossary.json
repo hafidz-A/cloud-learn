@@ -25,6 +25,16 @@
     "description": "Layanan desktop dan aplikasi Windows yang dijalankan di cloud dan diakses dari mana saja."
   },
   {
+    "term": "AWS",
+    "expansion": "Amazon Web Services",
+    "description": "Penyedia public cloud dari Amazon. Defender for Cloud dan Azure Arc bisa mengelola resource di sana juga."
+  },
+  {
+    "term": "B2B",
+    "expansion": "Business-to-Business",
+    "description": "Kolaborasi antar organisasi. Dengan B2B collaboration, partner masuk ke aplikasimu sebagai guest memakai identitas mereka sendiri."
+  },
+  {
     "term": "CapEx",
     "expansion": "Capital Expenditure",
     "description": "Belanja modal di depan, misalnya membeli server dan membangun datacenter sendiri."
@@ -55,6 +65,11 @@
     "description": "Sistem yang menerjemahkan nama domain, misalnya contoh.com, menjadi alamat IP (Internet Protocol)."
   },
   {
+    "term": "FIDO2",
+    "expansion": "Fast IDentity Online 2",
+    "description": "Standar kunci keamanan fisik (security key) untuk login passwordless."
+  },
+  {
     "term": "GRS",
     "expansion": "Geo-Redundant Storage",
     "description": "Menyimpan 3 salinan data di satu datacenter region utama, lalu menyalinnya ke region pasangan. Durability 16 nines."
@@ -63,6 +78,11 @@
     "term": "GZRS",
     "expansion": "Geo-Zone-Redundant Storage",
     "description": "Menyimpan data di 3 availability zone region utama, lalu menyalinnya ke region pasangan. Durability 16 nines."
+  },
+  {
+    "term": "HTTP",
+    "expansion": "Hypertext Transfer Protocol",
+    "description": "Protokol dasar web untuk mengirim halaman dan data."
   },
   {
     "term": "HTTPS",
@@ -85,9 +105,24 @@
     "description": "Aturan pengalamatan di jaringan. Alamat IP menandai perangkat atau resource."
   },
   {
+    "term": "ISO",
+    "expansion": "International Organization for Standardization",
+    "description": "Organisasi yang menerbitkan standar internasional, misalnya ISO 27001 untuk keamanan informasi."
+  },
+  {
     "term": "JSON",
     "expansion": "JavaScript Object Notation",
     "description": "Format teks untuk data terstruktur. ARM template ditulis dalam JSON."
+  },
+  {
+    "term": "KQL",
+    "expansion": "Kusto Query Language",
+    "description": "Bahasa query untuk mencari dan menganalisis log di Log Analytics."
+  },
+  {
+    "term": "LDAP",
+    "expansion": "Lightweight Directory Access Protocol",
+    "description": "Protokol untuk membaca dan mengubah data direktori, misalnya daftar pengguna. Didukung Microsoft Entra Domain Services."
   },
   {
     "term": "LRS",
@@ -98,6 +133,11 @@
     "term": "MFA",
     "expansion": "Multi-Factor Authentication",
     "description": "Login dengan dua faktor atau lebih, misalnya password ditambah kode di aplikasi HP."
+  },
+  {
+    "term": "NFS",
+    "expansion": "Network File System",
+    "description": "Protokol berbagi file yang umum di Linux. Azure Files mendukung NFS dan SMB (Server Message Block)."
   },
   {
     "term": "NSG",
@@ -120,6 +160,11 @@
     "description": "Model layanan di mana cloud mengelola infrastruktur dan sistem operasi; kamu fokus pada aplikasi dan data."
   },
   {
+    "term": "PIN",
+    "expansion": "Personal Identification Number",
+    "description": "Kode angka rahasia, termasuk faktor 'sesuatu yang kamu tahu'."
+  },
+  {
     "term": "RBAC",
     "expansion": "Role-Based Access Control",
     "description": "Mengatur siapa boleh melakukan apa pada resource lewat role, misalnya Reader, Contributor, atau Owner."
@@ -128,6 +173,11 @@
     "term": "RDP",
     "expansion": "Remote Desktop Protocol",
     "description": "Protokol untuk masuk ke desktop Windows dari jarak jauh. Default memakai port 3389."
+  },
+  {
+    "term": "REST",
+    "expansion": "Representational State Transfer",
+    "description": "Gaya membangun API (Application Programming Interface) di web lewat HTTP (Hypertext Transfer Protocol)."
   },
   {
     "term": "SaaS",
@@ -143,6 +193,16 @@
     "term": "SMB",
     "expansion": "Server Message Block",
     "description": "Protokol berbagi file yang dipakai Azure Files."
+  },
+  {
+    "term": "SMS",
+    "expansion": "Short Message Service",
+    "description": "Pesan teks di ponsel. Bisa dipakai untuk kode verifikasi atau notifikasi alert."
+  },
+  {
+    "term": "SOC",
+    "expansion": "System and Organization Controls",
+    "description": "Laporan audit independen tentang kontrol keamanan penyedia layanan, tersedia di Service Trust Portal."
   },
   {
     "term": "SQL",
@@ -163,6 +223,16 @@
     "term": "TCO",
     "expansion": "Total Cost of Ownership",
     "description": "Total biaya memiliki sesuatu, termasuk server, listrik, pendingin, dan tenaga kerja."
+  },
+  {
+    "term": "TCP",
+    "expansion": "Transmission Control Protocol",
+    "description": "Protokol jaringan yang menjamin data sampai berurutan. Web biasa memakai TCP port 80 atau 443."
+  },
+  {
+    "term": "URL",
+    "expansion": "Uniform Resource Locator",
+    "description": "Alamat lengkap sebuah halaman atau resource di web, misalnya https://contoso.com."
   },
   {
     "term": "VM",

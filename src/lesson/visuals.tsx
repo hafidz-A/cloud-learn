@@ -89,7 +89,180 @@ const RegionPair: FC = () => (
   </svg>
 )
 
-const VISUALS: Record<VisualName, FC> = { ZonesInRegion, RegionPair }
+const CUSTOMER = 'var(--color-biru-muda)'
+const MICROSOFT = 'var(--color-kabut)'
+
+/** Who looks after each layer in each service type. Customer cells are blue, Microsoft cells gray. */
+const SharedResponsibility: FC = () => {
+  const cols = ['On-prem', 'IaaS', 'PaaS', 'SaaS']
+  const rows: { label: string; customer: boolean[] }[] = [
+    { label: 'Data, device, akun', customer: [true, true, true, true] },
+    { label: 'Aplikasi', customer: [true, true, true, false] },
+    { label: 'Sistem operasi', customer: [true, true, false, false] },
+    { label: 'Hardware fisik', customer: [true, false, false, false] },
+  ]
+  const x0 = 104
+  const cw = 47
+  const rh = 26
+  return (
+    <svg viewBox="0 0 300 176" role="img" aria-label="Diagram shared responsibility: data, device, dan akun selalu milik customer; host, jaringan, dan gedung fisik milik Microsoft kecuali on-premises; aplikasi dan sistem operasi tergantung jenis layanan." className="w-full font-display">
+      {cols.map((c, i) => (
+        <text key={c} x={x0 + i * cw + cw / 2} y={16} fontSize={12} textAnchor="middle" {...label}>
+          {c}
+        </text>
+      ))}
+      {rows.map((r, ri) => (
+        <g key={r.label}>
+          <text x={0} y={30 + ri * rh + rh / 2 + 4} fontSize={11} {...label}>
+            {r.label}
+          </text>
+          {r.customer.map((isCustomer, ci) => (
+            <rect key={ci} x={x0 + ci * cw + 2} y={26 + ri * rh + 2} width={cw - 4} height={rh - 4} rx={5} fill={isCustomer ? CUSTOMER : MICROSOFT} stroke={isCustomer ? 'var(--color-biru)' : 'var(--color-kabut-dalam)'} strokeWidth={1.5} />
+          ))}
+        </g>
+      ))}
+      <g transform="translate(0 150)">
+        <rect x={0} y={4} width={14} height={14} rx={3} fill={CUSTOMER} stroke="var(--color-biru)" strokeWidth={1.5} />
+        <text x={20} y={16} fontSize={12} {...label}>
+          Customer
+        </text>
+        <rect x={110} y={4} width={14} height={14} rx={3} fill={MICROSOFT} stroke="var(--color-kabut-dalam)" strokeWidth={1.5} />
+        <text x={130} y={16} fontSize={12} {...label}>
+          Microsoft
+        </text>
+      </g>
+    </svg>
+  )
+}
+
+function Box({ x, y, w, text, strong = false }: { x: number; y: number; w: number; text: string; strong?: boolean }) {
+  return (
+    <g>
+      <rect x={x} y={y} width={w} height={26} rx={8} fill={strong ? 'var(--color-biru-muda)' : '#fff'} stroke={strong ? 'var(--color-biru-dalam)' : 'var(--color-biru)'} strokeWidth={2} />
+      <text x={x + w / 2} y={y + 17} fontSize={11} textAnchor="middle" {...label}>
+        {text}
+      </text>
+    </g>
+  )
+}
+
+/** Management group > subscriptions > resource groups > resources, as a small tree. */
+const ResourceHierarchy: FC = () => {
+  const line = { stroke: 'var(--color-kabut-dalam)', strokeWidth: 2 }
+  return (
+    <svg viewBox="0 0 300 172" role="img" aria-label="Diagram hierarki: management group berisi subscription, subscription berisi resource group, resource group berisi resource." className="w-full font-display">
+      <path d="M150 30 V42 M78 42 H222 M78 42 V52 M222 42 V52 M78 78 V92 M78 118 V124 M40 124 H116 M40 124 V134 M116 124 V134" fill="none" {...line} />
+      <Box x={85} y={4} w={130} text="Management group" strong />
+      <Box x={18} y={52} w={120} text="Subscription A" />
+      <Box x={162} y={52} w={120} text="Subscription B" />
+      <Box x={18} y={92} w={120} text="Resource group" />
+      <Box x={2} y={134} w={76} text="VM" />
+      <Box x={82} y={134} w={76} text="Storage" />
+      <text x={222} y={112} fontSize={11} textAnchor="middle" fill="var(--color-tinta-lembut)">
+        Pengaturan diwariskan
+      </text>
+      <text x={222} y={128} fontSize={11} textAnchor="middle" fill="var(--color-tinta-lembut)">
+        dari atas ke bawah
+      </text>
+    </svg>
+  )
+}
+
+function Copies({ x, y, n }: { x: number; y: number; n: number }) {
+  return (
+    <g>
+      {Array.from({ length: n }, (_, i) => (
+        <circle key={i} cx={x + i * 12} cy={y} r={4.5} fill="var(--color-biru)" />
+      ))}
+    </g>
+  )
+}
+
+/** LRS, ZRS, and GRS side by side: where the copies of your data live. */
+const StorageRedundancy: FC = () => {
+  const box = { fill: '#fff', stroke: 'var(--color-biru)', strokeWidth: 1.5, rx: 6 }
+  const region = { fill: 'var(--color-biru-muda)', stroke: 'var(--color-biru-dalam)', strokeWidth: 1.5, strokeDasharray: '5 4', rx: 10 }
+  return (
+    <svg viewBox="0 0 300 186" role="img" aria-label="Diagram redundancy: LRS tiga salinan di satu datacenter, ZRS satu salinan di tiap tiga zone, GRS tiga salinan di region utama dan tiga salinan di region kedua." className="w-full font-display">
+      <text x={0} y={14} fontSize={12} {...label}>
+        LRS · 11 nines
+      </text>
+      <rect x={0} y={20} width={120} height={36} {...region} />
+      <rect x={30} y={27} width={60} height={22} {...box} />
+      <Copies x={48} y={38} n={3} />
+
+      <text x={0} y={76} fontSize={12} {...label}>
+        ZRS · 12 nines
+      </text>
+      <rect x={0} y={82} width={170} height={36} {...region} />
+      {[0, 1, 2].map((i) => (
+        <g key={i}>
+          <rect x={10 + i * 53} y={89} width={44} height={22} {...box} />
+          <Copies x={32 + i * 53} y={100} n={1} />
+        </g>
+      ))}
+
+      <text x={0} y={138} fontSize={12} {...label}>
+        GRS · 16 nines
+      </text>
+      <rect x={0} y={144} width={120} height={36} {...region} />
+      <rect x={30} y={151} width={60} height={22} {...box} />
+      <Copies x={48} y={162} n={3} />
+      <path d="M126 162 H168" stroke="var(--color-biru-dalam)" strokeWidth={2} markerEnd="url(#copy-arrow)" />
+      <rect x={176} y={144} width={120} height={36} {...region} />
+      <rect x={206} y={151} width={60} height={22} {...box} />
+      <Copies x={224} y={162} n={3} />
+      <text x={236} y={138} fontSize={11} textAnchor="middle" fill="var(--color-tinta-lembut)">
+        region kedua
+      </text>
+      <defs>
+        <marker id="copy-arrow" viewBox="0 0 10 10" refX={8} refY={5} markerWidth={5} markerHeight={5} orient="auto">
+          <path d="M0 0 L10 5 L0 10 Z" fill="var(--color-biru-dalam)" />
+        </marker>
+      </defs>
+    </svg>
+  )
+}
+
+/** Seven defense-in-depth layers as nested boxes, from physical security outside to data at the core. */
+const DefenseLayers: FC = () => {
+  const layers = ['Physical security', 'Identity and access', 'Perimeter', 'Network', 'Compute', 'Application', 'Data']
+  const step = 13
+  return (
+    <svg viewBox="0 0 300 206" role="img" aria-label="Diagram defense in depth, dari luar ke dalam: physical security, identity and access, perimeter, network, compute, application, data." className="w-full font-display">
+      {layers.map((name, i) => {
+        const inset = i * step
+        const isData = i === layers.length - 1
+        return (
+          <g key={name}>
+            <rect
+              x={inset + 1}
+              y={inset + 1}
+              width={298 - inset * 2}
+              height={204 - inset * 2}
+              rx={14}
+              fill={isData ? 'var(--color-matahari-muda)' : i % 2 === 0 ? 'var(--color-biru-muda)' : '#fff'}
+              stroke={isData ? 'var(--color-matahari-dalam)' : 'var(--color-biru)'}
+              strokeWidth={1.5}
+            />
+            <text x={isData ? 150 : inset + 10} y={isData ? 107 : inset + 11} fontSize={isData ? 14 : 10} textAnchor={isData ? 'middle' : 'start'} {...label}>
+              {name}
+            </text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
+const VISUALS: Record<VisualName, FC> = {
+  ZonesInRegion,
+  RegionPair,
+  SharedResponsibility,
+  ResourceHierarchy,
+  StorageRedundancy,
+  DefenseLayers,
+}
 
 /** Renders the diagram an intro card names in its "visual" field. */
 export function IntroVisual({ name }: { name: VisualName }) {

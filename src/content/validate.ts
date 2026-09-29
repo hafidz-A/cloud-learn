@@ -30,12 +30,13 @@ const PLACE_RULES = new Set(['valid', 'one-per-zone', 'spread'])
 const COUNT_WORDS = ['', 'one', 'two', 'three', 'four', 'five']
 
 /** Mixed-case abbreviations the all-caps pattern would miss. */
-const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet', 'vCPU']
+const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet', 'vCPU', 'IaC', 'DDoS']
 
 /** Tokens that look like abbreviations but are names or labels. */
 const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2'])
 
-const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+)s?\\b`, 'g')
+// Hyphenated abbreviations such as RA-GRS count as one token.
+const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')
 
 function initials(text: string): string {
   return text
@@ -205,7 +206,8 @@ function checkExercise(e: Exercise, where: string, issues: Issue[]) {
 }
 
 function checkEntraName(texts: string[], push: (m: string) => void) {
-  if (/Azure (AD|Active Directory)/.test(texts.join(' '))) {
+  // Mentioning the old name as history ("dulu Azure AD", "formerly Azure AD") is fine.
+  if (/(?<!(dulu|formerly|sebelumnya) )Azure (AD|Active Directory)/.test(texts.join(' '))) {
     push('use "Microsoft Entra ID", not Azure AD / Azure Active Directory')
   }
 }
@@ -223,13 +225,42 @@ function checkIntro(card: IntroCard, where: string, issues: Issue[]) {
   if (card.visual !== undefined && !(VISUAL_NAMES as readonly string[]).includes(card.visual)) {
     push(`unknown visual "${card.visual}", known: ${VISUAL_NAMES.join(', ')}`)
   }
-  const missing = unexpandedAbbreviations([card.title, card.body])
+  // The title may be the bare abbreviation ("IaaS"); the body must expand it.
+  const missing = unexpandedAbbreviations([card.body])
   if (missing.length) push(`expand on first use in the intro: ${missing.join(', ')}`, 'warn')
   checkEntraName([card.title, card.body], push)
 }
 
 /** Stage 5 types (plan section 11.2) that ask the player to recall without choices. */
 const RECALL_TYPES = new Set(['fill', 'order', 'shell'])
+
+/** Every abbreviation used in the texts, for the glossary coverage check. */
+export function abbreviationsIn(texts: string[]): Set<string> {
+  const found = new Set<string>()
+  for (const text of texts) {
+    for (const m of text.matchAll(ABBREVIATION)) {
+      const start = m.index
+      if (NOT_ABBREVIATIONS.has(m[1])) continue
+      if (m[1] === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
+      found.add(m[1])
+    }
+  }
+  return found
+}
+
+/** Warns about abbreviations the glossary does not explain yet (they can't be long-pressed). */
+export function glossaryGaps(units: Unit[], glossaryTerms: Set<string>): Issue[] {
+  const used = new Map<string, string>()
+  for (const unit of units)
+    for (const lesson of unit.lessons)
+      for (const item of lesson.items) {
+        const texts = item.type === 'intro' ? [item.body] : [...questionTexts(item), item.explanation]
+        for (const a of abbreviationsIn(texts)) if (!used.has(a)) used.set(a, item.id)
+      }
+  return [...used]
+    .filter(([a]) => !glossaryTerms.has(a))
+    .map(([a, where]) => ({ level: 'warn' as const, where, message: `"${a}" is not in the glossary` }))
+}
 
 export function validateUnits(units: Unit[]): Issue[] {
   const issues: Issue[] = []

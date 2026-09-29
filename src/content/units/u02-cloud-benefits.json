@@ -6,22 +6,673 @@
     {
       "id": "u02-l1",
       "title": "Availability dan scalability",
-      "items": []
+      "items": [
+        {
+          "id": "u02-l1-i1",
+          "type": "intro",
+          "concept": "high-availability",
+          "title": "High availability",
+          "body": "High availability artinya aplikasi tetap bisa diakses walaupun ada gangguan, misalnya satu server mati. Azure menjanjikannya lewat SLA (Service Level Agreement), contohnya uptime 99,9%."
+        },
+        {
+          "id": "u02-l1-e1",
+          "type": "truefalse",
+          "concept": "high-availability",
+          "prompt": "High availability means an application stays accessible even when some components fail.",
+          "answer": true,
+          "explanation": "Benar. Tujuannya uptime setinggi mungkin, walaupun ada gangguan di sebagian komponen.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l1-e2",
+          "type": "choice",
+          "concept": "high-availability",
+          "prompt": "What does the SLA (Service Level Agreement) of an Azure service describe?",
+          "options": [
+            "The uptime Microsoft commits to for that service",
+            "The price of the service in each region",
+            "The list of users allowed to use the service",
+            "The steps to migrate data into the service"
+          ],
+          "answer": 0,
+          "explanation": "SLA (Service Level Agreement) adalah janji tertulis tentang ketersediaan, misalnya 99,9% uptime per bulan, lengkap dengan kompensasi berupa service credit kalau janjinya tidak terpenuhi.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l1-i2",
+          "type": "intro",
+          "concept": "scalability",
+          "title": "Scalability",
+          "body": "Scalability adalah kemampuan menambah atau mengurangi resource sesuai beban. Vertical scaling memperbesar satu server, misalnya menambah CPU (Central Processing Unit) dan memori; horizontal scaling menambah jumlah server."
+        },
+        {
+          "id": "u02-l1-e3",
+          "type": "truefalse",
+          "concept": "scalability",
+          "prompt": "Adding more virtual machines to handle more traffic is an example of horizontal scaling.",
+          "answer": true,
+          "explanation": "Benar. Horizontal scaling (scale out) menambah jumlah instance. Vertical scaling (scale up) memperbesar satu instance.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l1-i3",
+          "type": "intro",
+          "concept": "elasticity",
+          "title": "Elasticity",
+          "body": "Elasticity adalah scaling yang berjalan otomatis: resource ditambah saat beban naik dan dikurangi lagi saat beban turun. Kamu tidak perlu mengaturnya secara manual."
+        },
+        {
+          "id": "u02-l1-e4",
+          "type": "sort",
+          "concept": "scalability",
+          "prompt": "Sort each change.",
+          "buckets": [
+            "Vertical scaling",
+            "Horizontal scaling"
+          ],
+          "items": [
+            {
+              "text": "Add more memory to a virtual machine",
+              "bucket": 0
+            },
+            {
+              "text": "Move a virtual machine to a size with more processors",
+              "bucket": 0
+            },
+            {
+              "text": "Upgrade a database to a bigger tier",
+              "bucket": 0
+            },
+            {
+              "text": "Add three more web server instances",
+              "bucket": 1
+            },
+            {
+              "text": "Remove instances at night when traffic drops",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Vertical = memperbesar atau memperkecil satu mesin (scale up/down). Horizontal = menambah atau mengurangi jumlah mesin (scale out/in)."
+        },
+        {
+          "id": "u02-l1-e5",
+          "type": "match",
+          "concept": "elasticity",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "High availability",
+              "Stays accessible during a failure"
+            ],
+            [
+              "Scale up",
+              "Give one server more processors or memory"
+            ],
+            [
+              "Scale out",
+              "Add more servers"
+            ],
+            [
+              "Elasticity",
+              "Resources grow and shrink automatically with demand"
+            ]
+          ],
+          "explanation": "Scale up/down = vertical, scale out/in = horizontal. Elasticity = scaling yang otomatis mengikuti beban.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l1-e6",
+          "type": "choice",
+          "concept": "elasticity",
+          "prompt": "An online store gets 10 times more visitors during a flash sale, then traffic drops back to normal. Which cloud benefit lets it add resources automatically during the sale and remove them afterward?",
+          "options": [
+            "Elasticity",
+            "High availability",
+            "Predictability",
+            "Governance"
+          ],
+          "answer": 0,
+          "explanation": "Menambah lalu mengurangi resource secara otomatis mengikuti beban = elasticity. Bayarnya pun hanya untuk resource ekstra selama dipakai.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l1-e7",
+          "type": "multi",
+          "concept": "high-availability",
+          "prompt": "A company wants its web app to keep running if one server fails. Which two actions help? Choose two.",
+          "options": [
+            "Run the app on more than one instance",
+            "Send traffic only to healthy instances with a load balancer",
+            "Give a single server more memory",
+            "Run everything on one bigger server"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "High availability datang dari redundansi: beberapa instance, dan traffic hanya dikirim ke yang sehat. Memperbesar satu server tidak menolong kalau server itu yang mati.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l1-e8",
+          "type": "fill",
+          "concept": "scalability",
+          "prompt": "Complete the sentence.",
+          "sentence": "Adding more servers is called scaling ___, while adding processors and memory to one server is called scaling ___.",
+          "bank": [
+            "out",
+            "up",
+            "down",
+            "in"
+          ],
+          "answers": [
+            "out",
+            "up"
+          ],
+          "explanation": "Scale out/in = horizontal (jumlah server). Scale up/down = vertical (kekuatan satu server)."
+        }
+      ]
     },
     {
       "id": "u02-l2",
       "title": "Reliability dan predictability",
-      "items": []
+      "items": [
+        {
+          "id": "u02-l2-i1",
+          "type": "intro",
+          "concept": "reliability",
+          "title": "Reliability",
+          "body": "Reliability adalah kemampuan sistem pulih dari kegagalan dan terus berjalan. Karena Azure tersebar di banyak region, aplikasi bisa dirancang supaya tetap jalan walau satu lokasi bermasalah."
+        },
+        {
+          "id": "u02-l2-e1",
+          "type": "truefalse",
+          "concept": "reliability",
+          "prompt": "Reliability is the ability of a system to recover from failures and continue to function.",
+          "answer": true,
+          "explanation": "Benar. Itu definisi reliability di materi AZ-900.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l2-i2",
+          "type": "intro",
+          "concept": "predictability",
+          "title": "Predictability",
+          "body": "Predictability ada dua: performa yang bisa diprediksi dan biaya yang bisa diprediksi. Autoscaling dan load balancing menjaga performa, sedangkan estimasi dan pemantauan biaya membantu menebak tagihan."
+        },
+        {
+          "id": "u02-l2-e2",
+          "type": "choice",
+          "concept": "predictability",
+          "prompt": "Which tool helps with cost predictability by estimating your Azure bill before you deploy?",
+          "options": [
+            "Pricing Calculator",
+            "Azure DNS (Domain Name System)",
+            "Resource locks",
+            "Availability sets"
+          ],
+          "answer": 0,
+          "explanation": "Pricing Calculator membantu memperkirakan biaya sebelum deploy, jadi tagihannya bisa diprediksi.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l2-e3",
+          "type": "match",
+          "concept": "predictability",
+          "prompt": "Match each benefit with an example.",
+          "pairs": [
+            [
+              "Reliability",
+              "The app keeps working after a datacenter failure"
+            ],
+            [
+              "Performance predictability",
+              "Autoscaling keeps response times steady during peaks"
+            ],
+            [
+              "Cost predictability",
+              "You can forecast next month's bill"
+            ],
+            [
+              "Elasticity",
+              "Resources are added and removed automatically"
+            ]
+          ],
+          "explanation": "Reliability = pulih dari gangguan. Predictability = performa dan biaya yang bisa ditebak.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l2-e4",
+          "type": "choice",
+          "concept": "reliability",
+          "prompt": "A company deploys its app in two Azure regions so users can still reach it if one region has an outage. Which cloud benefit is this?",
+          "options": [
+            "Reliability",
+            "Cost predictability",
+            "Governance",
+            "Manageability"
+          ],
+          "answer": 0,
+          "explanation": "Desain yang tetap jalan saat satu lokasi gagal = reliability. Azure yang tersebar di banyak region memudahkan desain seperti ini.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l2-e5",
+          "type": "multi",
+          "concept": "predictability",
+          "prompt": "Which two help with performance predictability? Choose two.",
+          "options": [
+            "Autoscaling",
+            "Load balancing",
+            "Resource tags",
+            "Resource locks"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Autoscaling menambah resource saat beban naik; load balancing membagi traffic. Tag dan lock tidak memengaruhi performa.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l2-e6",
+          "type": "yesno",
+          "concept": "predictability",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A finance team wants to know roughly what it will pay for Azure each month.",
+          "statements": [
+            {
+              "text": "Tracking resource usage in real time helps with cost predictability.",
+              "answer": true
+            },
+            {
+              "text": "Cost predictability means Azure costs never change.",
+              "answer": false
+            },
+            {
+              "text": "The team can estimate costs before deploying resources.",
+              "answer": true
+            }
+          ],
+          "explanation": "Biaya yang bisa diprediksi bukan berarti biayanya tetap. Pantau pemakaian dan estimasi dulu dengan Pricing Calculator.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l2-e7",
+          "type": "fix",
+          "concept": "reliability",
+          "prompt": "What change would improve reliability for the next outage?",
+          "scene": {
+            "kind": "portal",
+            "title": "Region outage",
+            "message": "Your app runs only in one region. Users could not reach it during a regional outage last week."
+          },
+          "options": [
+            "Deploy a second copy of the app in another region",
+            "Give the existing server more memory",
+            "Add a tag to the app's resources",
+            "Lower the app's price tier"
+          ],
+          "answer": 0,
+          "explanation": "Satu region = satu titik kegagalan. Salinan di region lain membuat aplikasi tetap bisa diakses saat satu region lumpuh."
+        },
+        {
+          "id": "u02-l2-e8",
+          "type": "fill",
+          "concept": "predictability",
+          "prompt": "Complete the sentence.",
+          "sentence": "Autoscaling helps with ___ predictability, and budgets and usage tracking help with ___ predictability.",
+          "bank": [
+            "performance",
+            "cost",
+            "region",
+            "identity"
+          ],
+          "answers": [
+            "performance",
+            "cost"
+          ],
+          "explanation": "Dua jenis predictability: performa (autoscaling, load balancing) dan biaya (estimasi, pantau pemakaian)."
+        }
+      ]
     },
     {
       "id": "u02-l3",
       "title": "Security dan governance",
-      "items": []
+      "items": [
+        {
+          "id": "u02-l3-i1",
+          "type": "intro",
+          "concept": "cloud-governance",
+          "title": "Governance di cloud",
+          "body": "Governance adalah aturan supaya resource tetap sesuai standar perusahaan. Di Azure, template dan Azure Policy bisa memastikan deployment mengikuti aturan, dan resource yang melanggar bisa ditandai."
+        },
+        {
+          "id": "u02-l3-e1",
+          "type": "truefalse",
+          "concept": "cloud-governance",
+          "prompt": "In Azure, you can use policies to report resources that don't meet your company's rules.",
+          "answer": true,
+          "explanation": "Benar. Azure Policy bisa mengaudit dan menandai resource yang tidak patuh aturan. Detailnya ada di unit Governance.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l3-i2",
+          "type": "intro",
+          "concept": "cloud-security",
+          "title": "Security di cloud",
+          "body": "IaaS (Infrastructure as a Service) memberi kontrol keamanan paling banyak, sedangkan di PaaS (Platform as a Service) dan SaaS (Software as a Service) patching diurus penyedia. Azure juga punya perlindungan bawaan, misalnya DDoS (Distributed Denial of Service) protection."
+        },
+        {
+          "id": "u02-l3-e2",
+          "type": "truefalse",
+          "concept": "cloud-security",
+          "prompt": "With PaaS (Platform as a Service), the cloud provider handles operating system patches for you.",
+          "answer": true,
+          "explanation": "Benar. Di PaaS (Platform as a Service), OS (Operating System) dan patch-nya diurus penyedia; kamu fokus ke aplikasi dan data.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l3-e3",
+          "type": "choice",
+          "concept": "cloud-security",
+          "prompt": "Which type of attack does Azure DDoS (Distributed Denial of Service) Protection defend against?",
+          "options": [
+            "Floods of traffic that try to make a service unavailable",
+            "Stolen passwords",
+            "Accidental deletion of resources",
+            "Unexpected monthly costs"
+          ],
+          "answer": 0,
+          "explanation": "DDoS (Distributed Denial of Service) adalah banjir traffic dari banyak sumber untuk melumpuhkan layanan. Azure DDoS Protection membantu menyaring traffic itu.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l3-e4",
+          "type": "sort",
+          "concept": "cloud-governance",
+          "prompt": "Sort each example.",
+          "buckets": [
+            "Security",
+            "Governance"
+          ],
+          "items": [
+            {
+              "text": "Blocking floods of malicious traffic",
+              "bucket": 0
+            },
+            {
+              "text": "Encrypting data",
+              "bucket": 0
+            },
+            {
+              "text": "Patching operating systems",
+              "bucket": 0
+            },
+            {
+              "text": "Allowing deployments only in approved regions",
+              "bucket": 1
+            },
+            {
+              "text": "Reporting resources that break company rules",
+              "bucket": 1
+            },
+            {
+              "text": "Requiring every resource to have a cost center tag",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Security = melindungi dari ancaman. Governance = memastikan resource mengikuti aturan dan standar perusahaan."
+        },
+        {
+          "id": "u02-l3-e5",
+          "type": "choice",
+          "concept": "cloud-security",
+          "prompt": "A company wants the most control over the security of its servers, including operating system settings. Which cloud service type should it choose?",
+          "options": [
+            "IaaS (Infrastructure as a Service)",
+            "PaaS (Platform as a Service)",
+            "SaaS (Software as a Service)",
+            "Serverless"
+          ],
+          "answer": 0,
+          "explanation": "IaaS (Infrastructure as a Service) memberi kontrol paling besar, termasuk OS (Operating System). Konsekuensinya, patching dan hardening juga jadi tugasmu.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l3-e6",
+          "type": "yesno",
+          "concept": "cloud-governance",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso wants every new Azure resource to be created only in approved regions and checked against company rules.",
+          "statements": [
+            {
+              "text": "This is an example of cloud governance.",
+              "answer": true
+            },
+            {
+              "text": "Azure can check existing resources against the rules and report the ones that don't comply.",
+              "answer": true
+            },
+            {
+              "text": "Governance rules can only be checked manually, one resource at a time.",
+              "answer": false
+            }
+          ],
+          "explanation": "Ini governance. Azure bisa mengecek otomatis dan melaporkan resource yang tidak patuh, jadi tidak perlu dicek satu per satu.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l3-e7",
+          "type": "multi",
+          "concept": "cloud-security",
+          "prompt": "Which two are security benefits of using PaaS (Platform as a Service) instead of IaaS (Infrastructure as a Service)? Choose two.",
+          "options": [
+            "The provider patches the operating system",
+            "The provider maintains the platform the app runs on",
+            "You no longer need to protect your data",
+            "You no longer need to manage user accounts"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Di PaaS (Platform as a Service), OS (Operating System) dan platform diurus penyedia. Data dan akun tetap tanggung jawabmu.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l3-e8",
+          "type": "fill",
+          "concept": "cloud-governance",
+          "prompt": "Complete the sentence.",
+          "sentence": "Governance makes sure resources follow company ___, and resources that break them can be ___ automatically.",
+          "bank": [
+            "rules",
+            "reported",
+            "passwords",
+            "ignored"
+          ],
+          "answers": [
+            "rules",
+            "reported"
+          ],
+          "explanation": "Governance = resource patuh aturan perusahaan, dan pelanggaran bisa dilaporkan otomatis, misalnya oleh Azure Policy."
+        }
+      ]
     },
     {
       "id": "u02-l4",
       "title": "Manageability",
-      "items": []
+      "items": [
+        {
+          "id": "u02-l4-i1",
+          "type": "intro",
+          "concept": "management-of-cloud",
+          "title": "Management of the cloud",
+          "body": "Management of the cloud artinya cara cloud mengelola resource-mu: scale otomatis sesuai kebutuhan, deploy dari template, memantau kesehatan dan mengganti resource yang gagal, serta mengirim alert."
+        },
+        {
+          "id": "u02-l4-e1",
+          "type": "truefalse",
+          "concept": "management-of-cloud",
+          "prompt": "Automatically replacing a failing resource is an example of management of the cloud.",
+          "answer": true,
+          "explanation": "Benar. Management of the cloud mencakup scaling otomatis, deploy dari template, memantau kesehatan, dan mengganti resource yang bermasalah.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l4-i2",
+          "type": "intro",
+          "concept": "management-in-cloud",
+          "title": "Management in the cloud",
+          "body": "Management in the cloud artinya cara kamu mengelola resource: lewat portal web, CLI (Command-Line Interface), API (Application Programming Interface), atau PowerShell."
+        },
+        {
+          "id": "u02-l4-e2",
+          "type": "choice",
+          "concept": "management-in-cloud",
+          "prompt": "Which is a way to manage Azure resources in the cloud?",
+          "options": [
+            "Using the Azure portal in a web browser",
+            "Replacing hard drives in an Azure datacenter",
+            "Calling Microsoft to reboot your server",
+            "Mailing a request form to Microsoft"
+          ],
+          "answer": 0,
+          "explanation": "Mengelola resource lewat portal, CLI (Command-Line Interface), API (Application Programming Interface), atau PowerShell = management in the cloud.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l4-e3",
+          "type": "sort",
+          "concept": "management-of-cloud",
+          "prompt": "Sort each example.",
+          "buckets": [
+            "Management of the cloud",
+            "Management in the cloud"
+          ],
+          "items": [
+            {
+              "text": "Resources scale automatically with demand",
+              "bucket": 0
+            },
+            {
+              "text": "Deploy from a preconfigured template",
+              "bucket": 0
+            },
+            {
+              "text": "Get an alert when a metric crosses a threshold",
+              "bucket": 0
+            },
+            {
+              "text": "Create a resource in the Azure portal",
+              "bucket": 1
+            },
+            {
+              "text": "Run a PowerShell script",
+              "bucket": 1
+            },
+            {
+              "text": "Call a REST (Representational State Transfer) API (Application Programming Interface)",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Of = yang dilakukan cloud untukmu secara otomatis. In = alat yang kamu pakai untuk mengelola, seperti portal, CLI (Command-Line Interface), API (Application Programming Interface), dan PowerShell."
+        },
+        {
+          "id": "u02-l4-e4",
+          "type": "choice",
+          "concept": "management-of-cloud",
+          "prompt": "An admin wants to create the same set of resources in five environments without clicking through each one manually. Which manageability feature helps most?",
+          "options": [
+            "Deploying from a template",
+            "Checking the Azure status page",
+            "Buying a bigger server",
+            "Adding more users to the subscription"
+          ],
+          "answer": 0,
+          "explanation": "Template membuat deployment bisa diulang dengan hasil sama, tanpa konfigurasi manual satu per satu.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l4-e5",
+          "type": "multi",
+          "concept": "management-in-cloud",
+          "prompt": "Which two tools can you use to manage Azure resources? Choose two.",
+          "options": [
+            "Azure CLI (Command-Line Interface)",
+            "Azure PowerShell",
+            "Azure Pricing Calculator",
+            "Microsoft Service Trust Portal"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Azure CLI (Command-Line Interface) dan Azure PowerShell sama-sama alat untuk mengelola resource. Pricing Calculator hanya estimasi biaya, dan Service Trust Portal berisi dokumen kepatuhan.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l4-e6",
+          "type": "fix",
+          "concept": "management-of-cloud",
+          "prompt": "What should you do so the app handles evening traffic without manual work?",
+          "scene": {
+            "kind": "portal",
+            "title": "High CPU (Central Processing Unit) usage",
+            "message": "Your web app slows down every evening. It runs on 2 instances, and autoscale is turned off."
+          },
+          "options": [
+            "Turn on autoscale for the app",
+            "Delete one of the instances",
+            "Move the app to a sovereign region",
+            "Add a resource lock"
+          ],
+          "answer": 0,
+          "explanation": "Autoscale menambah instance saat beban naik dan menguranginya lagi, tanpa kerja manual. Itu management of the cloud."
+        },
+        {
+          "id": "u02-l4-e7",
+          "type": "yesno",
+          "concept": "management-of-cloud",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A web app's traffic doubles every evening. The company sets up autoscaling and an alert that emails the team when response times get slow.",
+          "statements": [
+            {
+              "text": "Autoscaling is an example of management of the cloud.",
+              "answer": true
+            },
+            {
+              "text": "The alert is an example of management of the cloud.",
+              "answer": true
+            },
+            {
+              "text": "Autoscaling requires an admin to add servers manually each evening.",
+              "answer": false
+            }
+          ],
+          "explanation": "Autoscaling dan alert adalah hal yang dilakukan cloud untukmu secara otomatis, jadi termasuk management of the cloud.",
+          "examReady": true
+        },
+        {
+          "id": "u02-l4-e8",
+          "type": "fill",
+          "concept": "management-of-cloud",
+          "prompt": "Complete the sentence.",
+          "sentence": "The cloud can ___ resources automatically and send ___ when something needs attention.",
+          "bank": [
+            "scale",
+            "alerts",
+            "invoices",
+            "delete"
+          ],
+          "answers": [
+            "scale",
+            "alerts"
+          ],
+          "explanation": "Contoh management of the cloud: scaling otomatis dan alert."
+        }
+      ]
     }
   ]
 }

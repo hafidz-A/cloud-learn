@@ -6,22 +6,691 @@
     {
       "id": "u01-l1",
       "title": "Apa itu cloud computing",
-      "items": []
+      "items": [
+        {
+          "id": "u01-l1-i1",
+          "type": "intro",
+          "concept": "cloud-computing",
+          "title": "Cloud computing",
+          "body": "Cloud computing adalah penyewaan layanan komputasi, seperti server, storage, database, dan jaringan, lewat internet. Kamu tidak perlu membeli dan merawat hardware sendiri."
+        },
+        {
+          "id": "u01-l1-e1",
+          "type": "truefalse",
+          "concept": "cloud-computing",
+          "prompt": "Cloud computing is the delivery of computing services over the internet.",
+          "answer": true,
+          "explanation": "Benar. Compute, storage, networking, database, dan layanan lain disewa lewat internet, bukan dibangun sendiri di gedung kantor.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l1-e2",
+          "type": "choice",
+          "concept": "cloud-computing",
+          "prompt": "Which of these is an example of cloud computing?",
+          "options": [
+            "Renting virtual machines from Azure and paying monthly",
+            "Buying a new server for the office server room",
+            "Installing an app from a removable drive",
+            "Printing reports on an office printer"
+          ],
+          "answer": 0,
+          "explanation": "Menyewa VM (Virtual Machine) di Azure dan bayar bulanan itu cloud. Membeli server untuk ruang server kantor itu on-premises: hardware milik dan urusanmu sendiri.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l1-i2",
+          "type": "intro",
+          "concept": "consumption-model",
+          "title": "Consumption-based model",
+          "body": "Di consumption-based model, kamu hanya membayar resource yang benar-benar dipakai. Tidak ada biaya di depan, dan saat resource dihapus, tagihannya ikut berhenti."
+        },
+        {
+          "id": "u01-l1-e3",
+          "type": "truefalse",
+          "concept": "consumption-model",
+          "prompt": "With a consumption-based model, you pay a large upfront fee before you can use any resources.",
+          "answer": false,
+          "explanation": "Salah. Consumption-based model tidak punya biaya di depan. Kamu bayar sesuai pemakaian, dan berhenti bayar saat resource tidak dipakai lagi.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l1-e4",
+          "type": "match",
+          "concept": "consumption-model",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Cloud computing",
+              "Renting computing services over the internet"
+            ],
+            [
+              "Consumption-based model",
+              "Paying only for what you use"
+            ],
+            [
+              "On-premises",
+              "Running your own hardware in your own building"
+            ],
+            [
+              "Upfront cost",
+              "Money spent before anything can be used"
+            ]
+          ],
+          "explanation": "Cloud mengganti biaya di depan (upfront cost) untuk hardware on-premises dengan tagihan sesuai pemakaian.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l1-e5",
+          "type": "choice",
+          "concept": "consumption-model",
+          "prompt": "A startup runs a two-week marketing campaign and needs 20 extra servers only during that time. Which benefit of the consumption-based model helps most?",
+          "options": [
+            "It pays for the extra servers only while it uses them",
+            "It gets the servers for free because the campaign is short",
+            "It must sign a three-year hardware contract",
+            "It must buy the servers first and resell them later"
+          ],
+          "answer": 0,
+          "explanation": "Server tambahan cukup dibuat selama kampanye, lalu dihapus. Bayarnya hanya selama dipakai, tanpa membeli hardware yang nanti menganggur.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l1-e6",
+          "type": "multi",
+          "concept": "cloud-computing",
+          "prompt": "Which two are benefits of moving to cloud computing? Choose two.",
+          "options": [
+            "No need to buy and maintain your own datacenter hardware",
+            "Resources can be added in minutes",
+            "All costs disappear",
+            "You no longer need to secure your user accounts"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Cloud menghapus kerepotan hardware dan mempercepat penambahan resource. Tapi biaya tetap ada (bayar sesuai pakai), dan akun serta identitas tetap tanggung jawabmu.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l1-e7",
+          "type": "yesno",
+          "concept": "consumption-model",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso moves its test environment to Azure and uses the consumption-based model.",
+          "statements": [
+            {
+              "text": "Contoso stops paying for a virtual machine's compute time after deleting the virtual machine.",
+              "answer": true
+            },
+            {
+              "text": "Contoso must pay for a full year of capacity up front.",
+              "answer": false
+            },
+            {
+              "text": "Contoso can add more resources when the test workload grows.",
+              "answer": true
+            }
+          ],
+          "explanation": "Consumption-based artinya bayar sesuai pemakaian: tidak ada kontrak kapasitas di depan, resource bisa ditambah kapan saja, dan tagihan berhenti saat resource dihapus.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l1-e8",
+          "type": "fill",
+          "concept": "cloud-computing",
+          "prompt": "Complete the sentence.",
+          "sentence": "Cloud computing is the delivery of computing services over the ___, and with a consumption-based model you pay only for what you ___.",
+          "bank": [
+            "internet",
+            "use",
+            "own",
+            "buy",
+            "print"
+          ],
+          "answers": [
+            "internet",
+            "use"
+          ],
+          "explanation": "Cloud = layanan komputasi lewat internet. Consumption-based = bayar sesuai pemakaian."
+        }
+      ]
     },
     {
       "id": "u01-l2",
       "title": "Shared responsibility",
-      "items": []
+      "items": [
+        {
+          "id": "u01-l2-i1",
+          "type": "intro",
+          "concept": "shared-responsibility",
+          "title": "Shared responsibility",
+          "body": "Di cloud, keamanan dibagi antara kamu dan Microsoft. Microsoft selalu menjaga datacenter fisik, jaringan fisik, dan host; kamu selalu bertanggung jawab atas data, device, serta account dan identity.",
+          "visual": "SharedResponsibility"
+        },
+        {
+          "id": "u01-l2-e1",
+          "type": "truefalse",
+          "concept": "shared-responsibility",
+          "prompt": "In the shared responsibility model, Microsoft is always responsible for the physical datacenter.",
+          "answer": true,
+          "explanation": "Benar. Gedung, listrik, pendingin, dan keamanan fisik datacenter selalu urusan Microsoft, apa pun jenis layanannya.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l2-e2",
+          "type": "truefalse",
+          "concept": "shared-responsibility",
+          "prompt": "When you use a SaaS (Software as a Service) app such as Microsoft 365, Microsoft becomes responsible for your data.",
+          "answer": false,
+          "explanation": "Salah. Di semua jenis layanan, termasuk SaaS (Software as a Service), kamu tetap bertanggung jawab atas data, device, serta account dan identity.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l2-e3",
+          "type": "sort",
+          "concept": "shared-responsibility",
+          "prompt": "Sort each item by who is responsible for it.",
+          "buckets": [
+            "Always the customer",
+            "Always Microsoft",
+            "Depends on the service type"
+          ],
+          "items": [
+            {
+              "text": "Information and data",
+              "bucket": 0
+            },
+            {
+              "text": "Accounts and identities",
+              "bucket": 0
+            },
+            {
+              "text": "Devices (phones and computers)",
+              "bucket": 0
+            },
+            {
+              "text": "Physical datacenter",
+              "bucket": 1
+            },
+            {
+              "text": "Physical network",
+              "bucket": 1
+            },
+            {
+              "text": "Operating system",
+              "bucket": 2
+            },
+            {
+              "text": "Applications",
+              "bucket": 2
+            }
+          ],
+          "explanation": "Hafalkan polanya: data, device, serta account dan identity selalu milik customer. Datacenter, jaringan, dan host fisik selalu milik Microsoft. Sisanya, seperti OS (Operating System) dan aplikasi, tergantung jenis layanan."
+        },
+        {
+          "id": "u01-l2-e4",
+          "type": "choice",
+          "concept": "shared-responsibility",
+          "prompt": "An employee's password is stolen and used to sign in to your company's Azure subscription. Under the shared responsibility model, who is responsible for protecting that account?",
+          "options": [
+            "Your company",
+            "Microsoft",
+            "The internet service provider",
+            "Nobody, because it is a cloud account"
+          ],
+          "answer": 0,
+          "explanation": "Account dan identity selalu tanggung jawab customer. Makanya MFA (Multi-Factor Authentication) dan password yang kuat itu tugasmu; Microsoft menyediakan alatnya.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l2-e5",
+          "type": "yesno",
+          "concept": "shared-responsibility",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company runs its website on an Azure virtual machine, which is IaaS (Infrastructure as a Service).",
+          "statements": [
+            {
+              "text": "The company is responsible for installing operating system updates on the virtual machine.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft is responsible for the physical server that hosts the virtual machine.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft is responsible for the company's user accounts.",
+              "answer": false
+            }
+          ],
+          "explanation": "Di IaaS (Infrastructure as a Service), OS (Operating System) di dalam VM (Virtual Machine) adalah urusanmu. Server fisik urusan Microsoft. Akun pengguna selalu urusanmu.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l2-e6",
+          "type": "choice",
+          "concept": "shared-responsibility",
+          "prompt": "Which responsibility stays with the customer for every cloud service type: IaaS (Infrastructure as a Service), PaaS (Platform as a Service), and SaaS (Software as a Service)?",
+          "options": [
+            "Information and data",
+            "Physical hosts",
+            "Operating system patching",
+            "Physical network"
+          ],
+          "answer": 0,
+          "explanation": "Data selalu milikmu di semua model layanan. Patching OS (Operating System) cuma jadi tugasmu di IaaS (Infrastructure as a Service).",
+          "examReady": true
+        },
+        {
+          "id": "u01-l2-e7",
+          "type": "fix",
+          "concept": "shared-responsibility",
+          "prompt": "What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "Risky sign-in detected",
+            "message": "A user account signed in from an unfamiliar country. Review the sign-in and secure the account."
+          },
+          "options": [
+            "Reset the user's password and require MFA (Multi-Factor Authentication)",
+            "Open a support ticket so Microsoft secures the account for you",
+            "Ignore it, because Microsoft is responsible for identities",
+            "Delete the subscription"
+          ],
+          "answer": 0,
+          "explanation": "Account dan identity itu tanggung jawab customer. Kamu yang harus reset password dan mewajibkan MFA (Multi-Factor Authentication); Microsoft menyediakan alatnya."
+        },
+        {
+          "id": "u01-l2-e8",
+          "type": "fill",
+          "concept": "shared-responsibility",
+          "prompt": "Complete the rule.",
+          "sentence": "The customer is always responsible for data, ___, and accounts and ___.",
+          "bank": [
+            "devices",
+            "identities",
+            "datacenters",
+            "hosts",
+            "networks"
+          ],
+          "answers": [
+            "devices",
+            "identities"
+          ],
+          "explanation": "Tiga hal yang selalu milik customer: data, device, serta account dan identity."
+        }
+      ]
     },
     {
       "id": "u01-l3",
       "title": "Model cloud",
-      "items": []
+      "items": [
+        {
+          "id": "u01-l3-i1",
+          "type": "intro",
+          "concept": "public-cloud",
+          "title": "Public cloud",
+          "body": "Public cloud dibangun dan dikelola penyedia seperti Microsoft, lalu dipakai bersama banyak pelanggan lewat internet. Kamu tidak membeli hardware dan cukup bayar sesuai pemakaian."
+        },
+        {
+          "id": "u01-l3-e1",
+          "type": "truefalse",
+          "concept": "public-cloud",
+          "prompt": "In a public cloud, you must buy the servers before you can deploy an app.",
+          "answer": false,
+          "explanation": "Salah. Di public cloud tidak ada belanja hardware di depan. Resource bisa dibuat dalam hitungan menit dan dibayar sesuai pemakaian.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l3-i2",
+          "type": "intro",
+          "concept": "private-cloud",
+          "title": "Private cloud",
+          "body": "Private cloud adalah cloud yang dipakai satu organisasi saja, bisa di datacenter sendiri atau di penyedia. Kontrolnya penuh, tapi hardware, perawatan, dan biayanya juga ditanggung sendiri."
+        },
+        {
+          "id": "u01-l3-e2",
+          "type": "truefalse",
+          "concept": "private-cloud",
+          "prompt": "A private cloud is used by a single organization.",
+          "answer": true,
+          "explanation": "Benar. Private cloud khusus untuk satu organisasi, jadi kontrolnya penuh, tapi biaya dan perawatannya juga ditanggung sendiri.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l3-i3",
+          "type": "intro",
+          "concept": "hybrid-cloud",
+          "title": "Hybrid cloud",
+          "body": "Hybrid cloud menggabungkan public cloud dengan private cloud atau on-premises yang saling terhubung. Organisasi bebas memilih workload mana yang jalan di mana."
+        },
+        {
+          "id": "u01-l3-e3",
+          "type": "choice",
+          "concept": "hybrid-cloud",
+          "prompt": "Which cloud model connects a private cloud or on-premises datacenter with a public cloud?",
+          "options": [
+            "Hybrid cloud",
+            "Public cloud",
+            "Private cloud",
+            "Community cloud"
+          ],
+          "answer": 0,
+          "explanation": "Hybrid = gabungan public cloud dengan private cloud atau on-premises yang saling terhubung.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l3-e4",
+          "type": "match",
+          "concept": "hybrid-cloud",
+          "prompt": "Match each cloud model with its description.",
+          "pairs": [
+            [
+              "Public cloud",
+              "Provider-owned infrastructure shared by many customers"
+            ],
+            [
+              "Private cloud",
+              "Used by one organization, which maintains the hardware"
+            ],
+            [
+              "Hybrid cloud",
+              "Public and private environments connected together"
+            ],
+            [
+              "On-premises",
+              "Your own hardware in your own building, no cloud model"
+            ]
+          ],
+          "explanation": "Public: milik penyedia, dipakai bersama. Private: satu organisasi. Hybrid: keduanya terhubung. On-premises: hardware sendiri tanpa model cloud.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l3-e5",
+          "type": "place",
+          "concept": "hybrid-cloud",
+          "prompt": "A bank must keep regulated data in its own datacenter, but its promotion website has big traffic spikes. Place each workload.",
+          "zones": [
+            "On-premises datacenter",
+            "Public cloud"
+          ],
+          "pieces": [
+            {
+              "text": "Customer records (must stay on-premises)",
+              "validZones": [
+                0
+              ]
+            },
+            {
+              "text": "Regulated payment ledger",
+              "validZones": [
+                0
+              ]
+            },
+            {
+              "text": "Promotion website with traffic spikes",
+              "validZones": [
+                1
+              ]
+            },
+            {
+              "text": "Temporary test servers",
+              "validZones": [
+                1
+              ]
+            }
+          ],
+          "rule": "valid",
+          "explanation": "Inilah hybrid cloud: data yang diatur regulasi tetap on-premises, sedangkan beban yang naik-turun dan sementara pindah ke public cloud."
+        },
+        {
+          "id": "u01-l3-e6",
+          "type": "multi",
+          "concept": "private-cloud",
+          "prompt": "Which two are characteristics of a private cloud? Choose two.",
+          "options": [
+            "The organization has complete control over the resources",
+            "The organization is responsible for buying and maintaining hardware",
+            "Resources are shared with many other customers",
+            "There is never any upfront cost"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Private cloud = kontrol penuh, tapi beli dan rawat hardware sendiri. Berbagi dengan banyak pelanggan dan tanpa biaya di depan itu ciri public cloud.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l3-e7",
+          "type": "choice",
+          "concept": "public-cloud",
+          "prompt": "A company wants no upfront hardware cost and wants to add servers within minutes during busy seasons. No regulation requires on-premises hosting. Which cloud model fits best?",
+          "options": [
+            "Public cloud",
+            "Private cloud",
+            "On-premises only",
+            "A new private datacenter"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa biaya hardware di depan dan bisa scale cepat: itu kekuatan public cloud. Private cloud butuh beli hardware sendiri.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l3-e8",
+          "type": "yesno",
+          "concept": "hybrid-cloud",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Fabrikam keeps some apps in its own datacenter and runs other apps in Azure, and the two environments are connected.",
+          "statements": [
+            {
+              "text": "Fabrikam is using a hybrid cloud.",
+              "answer": true
+            },
+            {
+              "text": "Fabrikam must move every app to Azure to use a hybrid cloud.",
+              "answer": false
+            },
+            {
+              "text": "Fabrikam can decide which apps run on-premises and which run in Azure.",
+              "answer": true
+            }
+          ],
+          "explanation": "Hybrid memberi fleksibilitas: kamu yang menentukan workload mana di on-premises dan mana di cloud. Tidak perlu memindahkan semuanya.",
+          "examReady": true
+        }
+      ]
     },
     {
       "id": "u01-l4",
-      "title": "CapEx vs OpEx",
-      "items": []
+      "title": "Multi-cloud, CapEx, dan OpEx",
+      "items": [
+        {
+          "id": "u01-l4-i1",
+          "type": "intro",
+          "concept": "multi-cloud",
+          "title": "Multi-cloud",
+          "body": "Multi-cloud berarti memakai lebih dari satu penyedia public cloud sekaligus, misalnya Azure dan penyedia lain. Tantangannya adalah mengelola banyak lingkungan yang berbeda."
+        },
+        {
+          "id": "u01-l4-e1",
+          "type": "truefalse",
+          "concept": "multi-cloud",
+          "prompt": "A multi-cloud environment uses more than one public cloud provider.",
+          "answer": true,
+          "explanation": "Benar. Contohnya sebagian layanan di Azure dan sebagian di penyedia cloud lain. Azure Arc bisa membantu mengelolanya dari satu tempat.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l4-i2",
+          "type": "intro",
+          "concept": "capex-opex",
+          "title": "CapEx vs OpEx",
+          "body": "CapEx (Capital Expenditure) adalah belanja besar di depan, misalnya membeli server. OpEx (Operational Expenditure) adalah biaya berjalan yang dibayar sesuai pemakaian, dan tagihan cloud termasuk OpEx."
+        },
+        {
+          "id": "u01-l4-e2",
+          "type": "truefalse",
+          "concept": "capex-opex",
+          "prompt": "Moving from your own datacenter to Azure usually shifts spending from CapEx (Capital Expenditure) to OpEx (Operational Expenditure).",
+          "answer": true,
+          "explanation": "Benar. Alih-alih membeli server di depan (CapEx (Capital Expenditure)), kamu membayar tagihan bulanan sesuai pemakaian (OpEx (Operational Expenditure)).",
+          "examReady": true
+        },
+        {
+          "id": "u01-l4-e3",
+          "type": "choice",
+          "concept": "capex-opex",
+          "prompt": "Which is an example of CapEx (Capital Expenditure)?",
+          "options": [
+            "Buying storage arrays for an on-premises datacenter",
+            "Paying a monthly Azure bill",
+            "Paying per hour for an Azure virtual machine",
+            "Paying for the storage you used last month"
+          ],
+          "answer": 0,
+          "explanation": "Membeli aset fisik di depan = CapEx (Capital Expenditure). Semua tagihan cloud yang dibayar sesuai pemakaian = OpEx (Operational Expenditure).",
+          "examReady": true
+        },
+        {
+          "id": "u01-l4-e4",
+          "type": "match",
+          "concept": "multi-cloud",
+          "prompt": "Match each cloud model with its description.",
+          "pairs": [
+            [
+              "Multi-cloud",
+              "Two or more public cloud providers"
+            ],
+            [
+              "Hybrid cloud",
+              "Public cloud connected to your own datacenter"
+            ],
+            [
+              "Private cloud",
+              "Cloud for one organization only"
+            ],
+            [
+              "Public cloud",
+              "Shared provider infrastructure, pay per use"
+            ]
+          ],
+          "explanation": "Multi-cloud = beberapa penyedia public cloud. Hybrid = public cloud plus lingkungan privat yang terhubung.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l4-e5",
+          "type": "sort",
+          "concept": "capex-opex",
+          "prompt": "Sort each cost as CapEx (Capital Expenditure) or OpEx (Operational Expenditure).",
+          "buckets": [
+            "CapEx (Capital Expenditure)",
+            "OpEx (Operational Expenditure)"
+          ],
+          "items": [
+            {
+              "text": "Buying servers for a new datacenter",
+              "bucket": 0
+            },
+            {
+              "text": "Building a server room",
+              "bucket": 0
+            },
+            {
+              "text": "Buying network switches and racks",
+              "bucket": 0
+            },
+            {
+              "text": "Monthly Azure virtual machine bill",
+              "bucket": 1
+            },
+            {
+              "text": "Paying for extra storage only in the months you need it",
+              "bucket": 1
+            },
+            {
+              "text": "Pay-as-you-go database charges",
+              "bucket": 1
+            }
+          ],
+          "explanation": "CapEx (Capital Expenditure) = membeli aset fisik di depan, nilainya menyusut dari waktu ke waktu. OpEx (Operational Expenditure) = membayar layanan saat dipakai, termasuk tagihan cloud."
+        },
+        {
+          "id": "u01-l4-e6",
+          "type": "choice",
+          "concept": "multi-cloud",
+          "prompt": "After a merger, a company runs workloads in Azure and in another public cloud provider. Which term describes this?",
+          "options": [
+            "Multi-cloud",
+            "Private cloud",
+            "On-premises",
+            "Single-tenant cloud"
+          ],
+          "answer": 0,
+          "explanation": "Dua penyedia public cloud sekaligus = multi-cloud.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l4-e7",
+          "type": "multi",
+          "concept": "capex-opex",
+          "prompt": "Which two statements describe OpEx (Operational Expenditure)? Choose two.",
+          "options": [
+            "You pay for services as you use them",
+            "Costs can go up or down from month to month",
+            "You pay a large amount up front for physical assets",
+            "The value of the assets goes down over time through depreciation"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "OpEx (Operational Expenditure) dibayar saat dipakai dan bisa naik-turun. Belanja besar di depan dan penyusutan nilai aset itu ciri CapEx (Capital Expenditure).",
+          "examReady": true
+        },
+        {
+          "id": "u01-l4-e8",
+          "type": "yesno",
+          "concept": "capex-opex",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Tailwind Traders plans to close its server room and run all of its servers in Azure.",
+          "statements": [
+            {
+              "text": "Tailwind Traders will reduce its capital expenditure on server hardware.",
+              "answer": true
+            },
+            {
+              "text": "Tailwind Traders will pay for Azure services as an operational expense.",
+              "answer": true
+            },
+            {
+              "text": "Tailwind Traders must buy the Azure servers it uses.",
+              "answer": false
+            }
+          ],
+          "explanation": "Pindah ke Azure = belanja hardware (CapEx (Capital Expenditure)) turun, diganti tagihan pemakaian (OpEx (Operational Expenditure)). Server fisik Azure tetap milik Microsoft.",
+          "examReady": true
+        },
+        {
+          "id": "u01-l4-e9",
+          "type": "fill",
+          "concept": "capex-opex",
+          "prompt": "Complete the sentence about CapEx (Capital Expenditure) and OpEx (Operational Expenditure).",
+          "sentence": "Buying servers up front is ___, while paying a monthly cloud bill based on usage is ___.",
+          "bank": [
+            "CapEx",
+            "OpEx",
+            "hardware",
+            "free"
+          ],
+          "answers": [
+            "CapEx",
+            "OpEx"
+          ],
+          "explanation": "Beli di depan = CapEx (Capital Expenditure). Bayar sesuai pemakaian = OpEx (Operational Expenditure)."
+        }
+      ]
     }
   ]
 }

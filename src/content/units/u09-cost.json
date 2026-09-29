@@ -6,17 +6,473 @@
     {
       "id": "u09-l1",
       "title": "Faktor biaya",
-      "items": []
+      "items": [
+        {
+          "id": "u09-l1-i1",
+          "type": "intro",
+          "concept": "cost-factors",
+          "title": "Faktor biaya",
+          "body": "Biaya Azure dipengaruhi jenis resource, seberapa banyak dipakai, region, tipe subscription, dan produk Marketplace. Resource yang lupa dimatikan atau dihapus juga terus menambah tagihan."
+        },
+        {
+          "id": "u09-l1-e1",
+          "type": "truefalse",
+          "concept": "cost-factors",
+          "prompt": "The same Azure service can cost different amounts in different regions.",
+          "answer": true,
+          "explanation": "Benar. Harga bisa berbeda per region karena biaya listrik, pajak, dan faktor lain di tiap lokasi.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l1-i2",
+          "type": "intro",
+          "concept": "data-transfer",
+          "title": "Data transfer",
+          "body": "Untuk bandwidth, data yang masuk (ingress) ke datacenter Azure umumnya gratis, sedangkan data yang keluar (egress) dari Azure dikenai biaya. Transfer antar region juga bisa ditagih."
+        },
+        {
+          "id": "u09-l1-e2",
+          "type": "truefalse",
+          "concept": "data-transfer",
+          "prompt": "Inbound data transfers into Azure datacenters are generally free.",
+          "answer": true,
+          "explanation": "Benar. Ingress umumnya gratis. Yang ditagih adalah data keluar (egress).",
+          "examReady": true
+        },
+        {
+          "id": "u09-l1-i3",
+          "type": "intro",
+          "concept": "reservations",
+          "title": "Reservations",
+          "body": "Reservations adalah komitmen memakai resource tertentu selama 1 atau 3 tahun dengan harga lebih murah daripada pay-as-you-go. Cocok untuk workload yang stabil dan menyala terus-menerus."
+        },
+        {
+          "id": "u09-l1-e3",
+          "type": "match",
+          "concept": "cost-factors",
+          "prompt": "Match each cost factor with an example.",
+          "pairs": [
+            [
+              "Resource type",
+              "A bigger virtual machine size costs more"
+            ],
+            [
+              "Consumption",
+              "You pay more when you use more"
+            ],
+            [
+              "Geography",
+              "Prices vary between regions"
+            ],
+            [
+              "Egress",
+              "Outbound data transfer from Azure is charged"
+            ],
+            [
+              "Reservations",
+              "Commit for 1 or 3 years for a lower price"
+            ]
+          ],
+          "explanation": "Jenis resource, pemakaian, lokasi, dan data keluar menentukan tagihan. Reservations bisa menurunkannya.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l1-e4",
+          "type": "choice",
+          "concept": "reservations",
+          "prompt": "A company runs a database server 24 hours a day, every day, for the next three years. How can it lower the compute cost?",
+          "options": [
+            "Buy a 3-year reservation",
+            "Switch to the Archive tier",
+            "Move the server to a sovereign region",
+            "Add more tags"
+          ],
+          "answer": 0,
+          "explanation": "Workload yang stabil dan menyala terus cocok untuk reservation 1 atau 3 tahun, yang lebih murah daripada pay-as-you-go.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l1-e5",
+          "type": "choice",
+          "concept": "cost-factors",
+          "prompt": "Your Azure bill shows high charges for virtual machines that the test team stopped using last month. What is the best fix?",
+          "options": [
+            "Deallocate or delete the unused virtual machines",
+            "Buy a reservation for them",
+            "Move them to another region",
+            "Add a resource lock"
+          ],
+          "answer": 0,
+          "explanation": "Resource yang tidak dipakai tetap ditagih. Deallocate atau hapus, jangan dibiarkan menyala.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l1-e6",
+          "type": "multi",
+          "concept": "cost-factors",
+          "prompt": "Which two factors affect the cost of Azure resources? Choose two.",
+          "options": [
+            "The Azure region you deploy to",
+            "The amount of outbound data transfer",
+            "The number of tags on the resource",
+            "The name of the resource group"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Region dan egress memengaruhi harga. Tag dan nama resource group tidak.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l1-e7",
+          "type": "yesno",
+          "concept": "data-transfer",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso uploads 5 terabytes of logs to Azure and later downloads 1 terabyte back to its office.",
+          "statements": [
+            {
+              "text": "Uploading the logs to Azure is generally free of bandwidth charges.",
+              "answer": true
+            },
+            {
+              "text": "Downloading data from Azure to the office can incur bandwidth charges.",
+              "answer": true
+            },
+            {
+              "text": "Bandwidth prices are the same in every situation.",
+              "answer": false
+            }
+          ],
+          "explanation": "Ingress umumnya gratis, egress ditagih, dan harga bandwidth bisa berbeda tergantung zona dan tujuannya.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l1-e8",
+          "type": "fill",
+          "concept": "data-transfer",
+          "prompt": "Complete the sentence.",
+          "sentence": "Data coming ___ Azure is generally free, while data going ___ of Azure is charged.",
+          "bank": [
+            "into",
+            "out",
+            "around",
+            "over"
+          ],
+          "answers": [
+            "into",
+            "out"
+          ],
+          "explanation": "Ingress gratis, egress berbayar."
+        }
+      ]
     },
     {
       "id": "u09-l2",
       "title": "Pricing vs TCO Calculator",
-      "items": []
+      "items": [
+        {
+          "id": "u09-l2-i1",
+          "type": "intro",
+          "concept": "pricing-calculator",
+          "title": "Pricing Calculator",
+          "body": "Azure Pricing Calculator memperkirakan biaya resource Azure yang baru akan kamu buat, misalnya VM (Virtual Machine) dan storage. Hasilnya hanya estimasi; kalkulator ini tidak membuat resource apa pun."
+        },
+        {
+          "id": "u09-l2-e1",
+          "type": "truefalse",
+          "concept": "pricing-calculator",
+          "prompt": "The Pricing Calculator creates the resources you estimate.",
+          "answer": false,
+          "explanation": "Salah. Pricing Calculator hanya memperkirakan biaya. Tidak ada resource yang dibuat.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l2-i2",
+          "type": "intro",
+          "concept": "tco-calculator",
+          "title": "TCO Calculator",
+          "body": "TCO (Total Cost of Ownership) Calculator membandingkan biaya menjalankan infrastruktur on-premises dengan biaya menjalankannya di Azure. Hitungannya memasukkan hal seperti server, listrik, pendingin, dan tenaga kerja."
+        },
+        {
+          "id": "u09-l2-e2",
+          "type": "truefalse",
+          "concept": "tco-calculator",
+          "prompt": "The TCO (Total Cost of Ownership) Calculator compares on-premises costs with Azure costs.",
+          "answer": true,
+          "explanation": "Benar. TCO (Total Cost of Ownership) Calculator dipakai untuk menghitung potensi penghematan saat pindah ke Azure.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l2-e3",
+          "type": "match",
+          "concept": "tco-calculator",
+          "prompt": "Match each tool with its purpose.",
+          "pairs": [
+            [
+              "Pricing Calculator",
+              "Estimate the cost of new Azure resources"
+            ],
+            [
+              "TCO (Total Cost of Ownership) Calculator",
+              "Compare on-premises costs with Azure"
+            ],
+            [
+              "Microsoft Cost Management",
+              "Track what you actually spend"
+            ],
+            [
+              "Reservation",
+              "Commit for 1 or 3 years for a discount"
+            ]
+          ],
+          "explanation": "Pricing untuk estimasi resource baru, TCO (Total Cost of Ownership) untuk perbandingan on-premises dengan Azure, Cost Management untuk memantau pengeluaran nyata.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l2-e4",
+          "type": "choice",
+          "concept": "tco-calculator",
+          "prompt": "Your manager asks how much the company could save by moving its current datacenter to Azure. Which tool should you use?",
+          "options": [
+            "TCO (Total Cost of Ownership) Calculator",
+            "Pricing Calculator",
+            "Azure Advisor",
+            "Service Health"
+          ],
+          "answer": 0,
+          "explanation": "Membandingkan on-premises dengan Azure = TCO (Total Cost of Ownership) Calculator.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l2-e5",
+          "type": "choice",
+          "concept": "pricing-calculator",
+          "prompt": "You plan a new app that needs two VMs (Virtual Machines) and a SQL (Structured Query Language) database, and you want the expected monthly cost before deploying. Which tool should you use?",
+          "options": [
+            "Pricing Calculator",
+            "TCO (Total Cost of Ownership) Calculator",
+            "Microsoft Purview",
+            "Azure Monitor"
+          ],
+          "answer": 0,
+          "explanation": "Estimasi resource Azure baru = Pricing Calculator.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l2-e6",
+          "type": "yesno",
+          "concept": "tco-calculator",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso is deciding whether to migrate 40 on-premises servers to Azure.",
+          "statements": [
+            {
+              "text": "The TCO (Total Cost of Ownership) Calculator can include power and cooling costs of the on-premises servers.",
+              "answer": true
+            },
+            {
+              "text": "The Pricing Calculator is the best tool to compare on-premises costs with Azure costs.",
+              "answer": false
+            },
+            {
+              "text": "Both calculators are free to use.",
+              "answer": true
+            }
+          ],
+          "explanation": "Untuk perbandingan on-premises dengan Azure, pakai TCO (Total Cost of Ownership) Calculator. Kedua kalkulator gratis.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l2-e7",
+          "type": "multi",
+          "concept": "pricing-calculator",
+          "prompt": "Which two statements about the Pricing Calculator are true? Choose two.",
+          "options": [
+            "It estimates the cost of Azure resources before you deploy them",
+            "You can choose the region and size of each resource in the estimate",
+            "It shows your actual bill for last month",
+            "It compares your on-premises datacenter with Azure"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Pricing Calculator = estimasi di depan, bisa diatur per region dan ukuran. Tagihan nyata ada di Cost Management.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l2-e8",
+          "type": "fill",
+          "concept": "pricing-calculator",
+          "prompt": "Complete the sentence.",
+          "sentence": "The Pricing Calculator estimates the cost of ___ Azure resources, while the TCO (Total Cost of Ownership) Calculator compares Azure with ___ costs.",
+          "bank": [
+            "new",
+            "on-premises",
+            "deleted",
+            "free"
+          ],
+          "answers": [
+            "new",
+            "on-premises"
+          ],
+          "explanation": "Pricing untuk resource baru, TCO (Total Cost of Ownership) untuk perbandingan dengan on-premises."
+        }
+      ]
     },
     {
       "id": "u09-l3",
       "title": "Cost Management dan tag",
-      "items": []
+      "items": [
+        {
+          "id": "u09-l3-i1",
+          "type": "intro",
+          "concept": "cost-management",
+          "title": "Cost Management",
+          "body": "Microsoft Cost Management menunjukkan berapa yang sudah kamu belanjakan dan ke mana perginya. Kamu bisa menganalisis biaya, membuat budget, dan menerima alert saat pengeluaran mendekati batas."
+        },
+        {
+          "id": "u09-l3-e1",
+          "type": "truefalse",
+          "concept": "cost-management",
+          "prompt": "Microsoft Cost Management can send an alert when spending reaches a percentage of a budget.",
+          "answer": true,
+          "explanation": "Benar. Budget alert memberi tahu saat pengeluaran mencapai ambang yang kamu atur, misalnya 80%.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l3-i2",
+          "type": "intro",
+          "concept": "tags",
+          "title": "Tag",
+          "body": "Tag adalah pasangan nama dan nilai, misalnya CostCenter=Marketing, yang ditempel ke resource. Tag membantu mengelompokkan biaya, mengatur operasi, dan menandai resource untuk governance."
+        },
+        {
+          "id": "u09-l3-e2",
+          "type": "truefalse",
+          "concept": "tags",
+          "prompt": "A tag is a name-value pair that you add to a resource.",
+          "answer": true,
+          "explanation": "Benar. Contohnya Environment=Production atau CostCenter=Marketing.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l3-e3",
+          "type": "choice",
+          "concept": "tags",
+          "prompt": "Which is a valid example of a tag?",
+          "options": [
+            "Environment = Production",
+            "A resource lock",
+            "An availability zone",
+            "A management group"
+          ],
+          "answer": 0,
+          "explanation": "Tag selalu berbentuk nama dan nilai.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l3-e4",
+          "type": "match",
+          "concept": "cost-management",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Cost analysis",
+              "See where your money goes"
+            ],
+            [
+              "Budget",
+              "A spending amount you track against"
+            ],
+            [
+              "Budget alert",
+              "Notification when spending hits a threshold"
+            ],
+            [
+              "Tag",
+              "Name-value label on a resource"
+            ]
+          ],
+          "explanation": "Cost analysis untuk melihat, budget untuk batas, alert untuk peringatan, tag untuk mengelompokkan biaya.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l3-e5",
+          "type": "choice",
+          "concept": "tags",
+          "prompt": "Finance wants a report of Azure costs per department, but the resources of all departments are in the same subscription. What should you do?",
+          "options": [
+            "Tag resources with a department tag and group costs by that tag",
+            "Create a resource lock for each department",
+            "Move all resources to one resource group",
+            "Use the TCO (Total Cost of Ownership) Calculator"
+          ],
+          "answer": 0,
+          "explanation": "Tag membuat biaya bisa dikelompokkan per departemen, walaupun semua ada di satu subscription.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l3-e6",
+          "type": "fix",
+          "concept": "cost-management",
+          "prompt": "What is a good first step?",
+          "scene": {
+            "kind": "portal",
+            "title": "Budget alert",
+            "message": "Budget 'Team-Dev' has reached 90% of its monthly amount, and it's only the 12th of the month."
+          },
+          "options": [
+            "Use cost analysis to find which resources are driving the spending",
+            "Delete the budget so the alert stops",
+            "Raise the budget without checking",
+            "Open the TCO (Total Cost of Ownership) Calculator"
+          ],
+          "answer": 0,
+          "explanation": "Budget alert hanya memberi tahu; budget tidak mematikan resource otomatis. Cari penyebabnya di cost analysis, lalu matikan atau perkecil resource yang boros."
+        },
+        {
+          "id": "u09-l3-e7",
+          "type": "yesno",
+          "concept": "cost-management",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso sets a monthly budget of 1,000 dollars in Microsoft Cost Management, with alerts at 80% and 100%.",
+          "statements": [
+            {
+              "text": "Contoso gets an alert when spending reaches 800 dollars.",
+              "answer": true
+            },
+            {
+              "text": "The budget automatically shuts down resources at 100%.",
+              "answer": false
+            },
+            {
+              "text": "Contoso can analyze costs by resource group.",
+              "answer": true
+            }
+          ],
+          "explanation": "Budget memberi peringatan, bukan mematikan resource. Biaya bisa dianalisis per subscription, resource group, atau tag.",
+          "examReady": true
+        },
+        {
+          "id": "u09-l3-e8",
+          "type": "fill",
+          "concept": "tags",
+          "prompt": "Complete the sentence.",
+          "sentence": "A tag is a ___ and value pair, and tags help you group ___ by department or project.",
+          "bank": [
+            "name",
+            "costs",
+            "password",
+            "regions"
+          ],
+          "answers": [
+            "name",
+            "costs"
+          ],
+          "explanation": "Tag = nama dan nilai, berguna untuk mengelompokkan biaya."
+        }
+      ]
     }
   ]
 }

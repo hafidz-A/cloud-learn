@@ -1,0 +1,128 @@
+import { expect, test, type Page } from '@playwright/test'
+import { ITEMS, answer, main, next, play } from './helpers'
+
+test.use({ reducedMotion: 'reduce' })
+
+/** Seeds saved progress before the app starts. */
+async function seed(page: Page, state: Record<string, unknown>) {
+  await page.addInitScript((s) => {
+    if (!sessionStorage.getItem('seeded')) {
+      localStorage.setItem('langit-progress', JSON.stringify({ state: s, version: 2 }))
+      sessionStorage.setItem('seeded', '1')
+    }
+  }, state)
+}
+
+const today = () => {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+test('every exercise type can be played to the end of its lesson', async ({ page }) => {
+  // Together these lessons use all 11 exercise types.
+  for (const id of ['u01-l1', 'u03-l3', 'u04-l1', 'u11-l2']) {
+    await page.goto(`/#/lesson/${id}`)
+    await play(page)
+    await expect(page.getByRole('heading', { name: 'Lesson selesai!' })).toBeVisible()
+  }
+})
+
+test('five wrong answers use up the hearts and stop the lesson', async ({ page }) => {
+  await page.goto('/#/lesson/u01-l1')
+  let wrong = 0
+  for (let guard = 0; guard < 30 && wrong < 5; guard++) {
+    const item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    if (item.type !== 'intro') {
+      await answer(page, item, { wrong: true })
+      await expect(page.getByRole('region', { name: 'Kurang tepat' })).toBeVisible()
+      wrong++
+    }
+    if (wrong < 5) await next(page)
+  }
+  await page.getByRole('button', { name: 'Lanjut' }).click()
+  await expect(page.getByRole('heading', { name: 'Hearts habis' })).toBeVisible()
+  await page.getByRole('button', { name: 'Kembali ke home' }).click()
+  await expect(page.getByLabel('0 hearts')).toBeVisible()
+})
+
+test('passing checkpoint 1 opens path 2', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.locator('[data-node="u04-l1"]')).toHaveAttribute('data-node-state', 'locked')
+  await page.goto('/#/checkpoint/cp1')
+  await play(page, { finish: 'Checkpoint lulus!' })
+  await expect(page.getByLabel('20 XP')).toBeVisible()
+  await page.getByRole('button', { name: 'Lanjut' }).click()
+  await expect(page.locator('[data-node="u04-l1"]')).toHaveAttribute('data-node-state', 'open')
+})
+
+test('practice plays due review items and refills hearts', async ({ page }) => {
+  const reviewId = 'u01-l1-e2'
+  await seed(page, {
+    hearts: 3,
+    heartsDay: today(),
+    lessonsDone: { 'u01-l1': { bestAccuracy: 0.8, completedAt: new Date().toISOString(), count: 1 } },
+    review: { [reviewId]: { dueDay: today(), correctStreak: 0 } },
+  })
+  await page.goto('/#/latihan')
+  await expect(page.getByText('1 soal siap diulang')).toBeVisible()
+  await page.getByRole('button', { name: 'Mulai latihan' }).click()
+  await expect(main(page)).toHaveAttribute('data-item-id', reviewId)
+  await expect(page.getByRole('button', { name: 'Lihat konsep' })).toBeVisible()
+  await play(page, { finish: 'Latihan selesai!' })
+  await page.getByRole('button', { name: 'Lanjut' }).click()
+  await expect(page.getByText('Tidak ada soal jatuh tempo')).toBeVisible()
+  await expect(page.getByLabel('5 hearts')).toBeVisible()
+})
+
+test('a domain mini exam can be flagged, submitted, scored, and reviewed', async ({ page }) => {
+  await page.goto('/#/ujian')
+  await page.getByRole('radio', { name: /Jalur 1/ }).click()
+  await page.getByRole('button', { name: 'Mulai' }).nth(1).click()
+  await expect(page.getByRole('timer')).toBeVisible()
+
+  const id = (await page.locator('main[data-exam-question]').getAttribute('data-exam-question'))!
+  await answer(page, ITEMS.get(id)!, { submit: false })
+  await page.getByRole('button', { name: 'Tandai' }).click()
+
+  // Progress and time survive closing the app.
+  await page.reload()
+  await expect(page.getByRole('button', { name: 'Ditandai' })).toBeVisible()
+
+  await page.getByRole('button', { name: 'Daftar nomor soal' }).click()
+  await expect(page.getByRole('button', { name: 'Soal 1, sudah dijawab, ditandai' })).toBeVisible()
+  await page.getByRole('dialog').getByRole('button', { name: 'Kumpulkan' }).click()
+  await expect(page.getByText('14', { exact: true })).toBeVisible() // unanswered
+  await page.getByRole('button', { name: 'Kumpulkan sekarang' }).click()
+
+  await expect(page.getByRole('heading', { name: 'Skor kamu' })).toBeVisible()
+  await expect(page.getByText('Skor ini perkiraan.', { exact: false })).toBeVisible()
+  await page.getByRole('button', { name: 'Lihat pembahasan' }).click()
+  await page.getByRole('radio', { name: 'Ditandai (1)' }).click()
+  await expect(page.locator('article')).toHaveCount(1)
+  await expect(page.locator('article')).toHaveAttribute('data-result', 'correct')
+})
+
+test('long-pressing an abbreviation opens its glossary card', async ({ page }) => {
+  await page.goto('/#/lesson/u01-l2')
+  await next(page) // intro card
+  await answer(page, ITEMS.get('u01-l2-e1')!)
+  await next(page) // the next statement mentions SaaS
+  const abbr = page.locator('abbr[data-term="SaaS"]').first()
+  await expect(abbr).toBeVisible()
+  const box = (await abbr.boundingBox())!
+  await page.mouse.move(box.x + 4, box.y + 4)
+  await page.mouse.down()
+  await page.waitForTimeout(600)
+  await page.mouse.up()
+  await expect(page.getByRole('dialog', { name: 'SaaS' })).toBeVisible()
+  await expect(page.getByText('Software as a Service').first()).toBeVisible()
+})
+
+test('hearts can be turned off in settings', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('link', { name: 'Pengaturan' }).click()
+  await page.getByRole('switch', { name: 'Hearts' }).click()
+  await expect(page.getByLabel('Hearts dimatikan')).toBeVisible()
+  await page.getByRole('radio', { name: /100 XP/ }).click()
+  await expect(page.getByLabel('XP hari ini 0 dari target 100')).toBeVisible()
+})

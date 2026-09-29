@@ -43,7 +43,7 @@ export function BarChart({
         {reference && (
           <g aria-hidden="true">
             <line x1={PAD.left} x2={W - PAD.right} y1={y(reference.value)} y2={y(reference.value)} stroke="var(--color-kabut-dalam)" strokeWidth={1} strokeDasharray="4 4" />
-            <text x={W - PAD.right} y={y(reference.value) - 4} textAnchor="end" fontSize={11} fill="var(--color-tinta-lembut)" className="font-display">
+            <text x={PAD.left} y={y(reference.value) - 4} textAnchor="start" fontSize={11} fill="var(--color-tinta-lembut)" className="font-display">
               {reference.label}
             </text>
           </g>

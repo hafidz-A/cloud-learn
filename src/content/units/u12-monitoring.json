@@ -6,17 +6,487 @@
     {
       "id": "u12-l1",
       "title": "Advisor dan Service Health",
-      "items": []
+      "items": [
+        {
+          "id": "u12-l1-i1",
+          "type": "intro",
+          "concept": "azure-advisor",
+          "title": "Azure Advisor",
+          "body": "Azure Advisor memeriksa resource-mu dan memberi rekomendasi yang dipersonalisasi dalam lima kategori: reliability, security, performance, operational excellence, dan cost. Layanannya gratis."
+        },
+        {
+          "id": "u12-l1-e1",
+          "type": "truefalse",
+          "concept": "azure-advisor",
+          "prompt": "Azure Advisor gives recommendations that can help reduce costs.",
+          "answer": true,
+          "explanation": "Benar. Cost adalah salah satu dari lima kategori rekomendasi Advisor.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l1-i2",
+          "type": "intro",
+          "concept": "service-health",
+          "title": "Service Health",
+          "body": "Azure Service Health memberi tahu kondisi layanan Azure: Azure status untuk gambaran global, Service Health untuk layanan dan region yang kamu pakai, serta Resource Health untuk resource-mu sendiri."
+        },
+        {
+          "id": "u12-l1-e2",
+          "type": "choice",
+          "concept": "azure-advisor",
+          "prompt": "Which Azure Advisor category contains recommendations that lower your spending?",
+          "options": [
+            "Cost",
+            "Performance",
+            "Reliability",
+            "Security"
+          ],
+          "answer": 0,
+          "explanation": "Kategori Cost, misalnya saran mematikan VM (Virtual Machine) yang jarang dipakai.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l1-e3",
+          "type": "match",
+          "concept": "service-health",
+          "prompt": "Match each tool with what it shows.",
+          "pairs": [
+            [
+              "Azure status",
+              "Global view of Azure service health in all regions"
+            ],
+            [
+              "Service Health",
+              "Outages and maintenance for the services and regions you use"
+            ],
+            [
+              "Resource Health",
+              "Health of your individual resources"
+            ],
+            [
+              "Azure Advisor",
+              "Personalized best-practice recommendations"
+            ]
+          ],
+          "explanation": "Dari yang paling luas ke yang paling spesifik: Azure status, Service Health, Resource Health.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l1-e4",
+          "type": "choice",
+          "concept": "service-health",
+          "prompt": "Users report that your app is down. You want to check whether an Azure outage affects the services and regions you use. What should you check first?",
+          "options": [
+            "Service Health",
+            "Azure Advisor",
+            "Pricing Calculator",
+            "Microsoft Purview"
+          ],
+          "answer": 0,
+          "explanation": "Gangguan Azure yang memengaruhi layanan dan region-mu terlihat di Service Health.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l1-e5",
+          "type": "choice",
+          "concept": "service-health",
+          "prompt": "You want to know whether one specific VM (Virtual Machine) is healthy or was affected by a platform problem. Which part of Azure Service Health should you use?",
+          "options": [
+            "Resource Health",
+            "Azure status",
+            "Azure Advisor",
+            "Microsoft Cost Management"
+          ],
+          "answer": 0,
+          "explanation": "Kesehatan satu resource tertentu = Resource Health.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l1-e6",
+          "type": "multi",
+          "concept": "azure-advisor",
+          "prompt": "Which two are Azure Advisor recommendation categories? Choose two.",
+          "options": [
+            "Reliability",
+            "Operational excellence",
+            "Compliance reports",
+            "Domain registration"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Lima kategori Advisor: reliability, security, performance, operational excellence, dan cost.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l1-e7",
+          "type": "yesno",
+          "concept": "service-health",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso sets up Service Health alerts for its subscription.",
+          "statements": [
+            {
+              "text": "Contoso can be notified about planned maintenance that affects its resources.",
+              "answer": true
+            },
+            {
+              "text": "Service Health shows recommendations for resizing virtual machines.",
+              "answer": false
+            },
+            {
+              "text": "Service Health can report outages in the regions Contoso uses.",
+              "answer": true
+            }
+          ],
+          "explanation": "Service Health untuk gangguan dan maintenance. Rekomendasi ukuran VM (Virtual Machine) datang dari Azure Advisor.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l1-e8",
+          "type": "fill",
+          "concept": "azure-advisor",
+          "prompt": "Complete the sentence.",
+          "sentence": "Azure Advisor gives ___ recommendations, and it is ___ to use.",
+          "bank": [
+            "personalized",
+            "free",
+            "random",
+            "expensive"
+          ],
+          "answers": [
+            "personalized",
+            "free"
+          ],
+          "explanation": "Advisor = rekomendasi yang dipersonalisasi dan gratis."
+        }
+      ]
     },
     {
       "id": "u12-l2",
       "title": "Azure Monitor dan Log Analytics",
-      "items": []
+      "items": [
+        {
+          "id": "u12-l2-i1",
+          "type": "intro",
+          "concept": "azure-monitor",
+          "title": "Azure Monitor",
+          "body": "Azure Monitor mengumpulkan, menganalisis, dan menindaklanjuti data telemetri, yaitu metrics dan logs, dari Azure, on-premises, dan cloud lain. Datanya bisa divisualisasikan, dipakai untuk alert, atau memicu autoscale."
+        },
+        {
+          "id": "u12-l2-e1",
+          "type": "truefalse",
+          "concept": "azure-monitor",
+          "prompt": "Azure Monitor can collect data from on-premises resources as well as from Azure resources.",
+          "answer": true,
+          "explanation": "Benar. Azure Monitor tidak terbatas pada resource di Azure.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l2-i2",
+          "type": "intro",
+          "concept": "log-analytics",
+          "title": "Log Analytics",
+          "body": "Log Analytics adalah alat di Azure portal untuk menulis dan menjalankan query terhadap log yang dikumpulkan Azure Monitor. Bahasa query-nya KQL (Kusto Query Language)."
+        },
+        {
+          "id": "u12-l2-e2",
+          "type": "choice",
+          "concept": "log-analytics",
+          "prompt": "Which query language does Log Analytics use?",
+          "options": [
+            "KQL (Kusto Query Language)",
+            "Bicep",
+            "PowerShell only",
+            "Plain English"
+          ],
+          "answer": 0,
+          "explanation": "Log Analytics memakai KQL (Kusto Query Language).",
+          "examReady": true
+        },
+        {
+          "id": "u12-l2-e3",
+          "type": "match",
+          "concept": "log-analytics",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Metrics",
+              "Numeric values collected at regular intervals"
+            ],
+            [
+              "Logs",
+              "Records of events with detailed data"
+            ],
+            [
+              "Log Analytics",
+              "Write and run queries on log data"
+            ],
+            [
+              "Azure Monitor",
+              "Collect and analyze telemetry from many sources"
+            ]
+          ],
+          "explanation": "Metrics adalah angka dari waktu ke waktu, logs adalah catatan kejadian. Keduanya dikumpulkan Azure Monitor.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l2-e4",
+          "type": "choice",
+          "concept": "log-analytics",
+          "prompt": "An admin wants to search the last 7 days of virtual machine logs for a specific error message. Which tool should they use?",
+          "options": [
+            "Log Analytics",
+            "Pricing Calculator",
+            "Service Trust Portal",
+            "Azure Arc"
+          ],
+          "answer": 0,
+          "explanation": "Mencari di log = query di Log Analytics.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l2-e5",
+          "type": "multi",
+          "concept": "azure-monitor",
+          "prompt": "Which two can Azure Monitor do with the data it collects? Choose two.",
+          "options": [
+            "Show it in dashboards and workbooks",
+            "Trigger alerts",
+            "Buy reservations automatically",
+            "Assign RBAC (Role-Based Access Control) roles"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Data Azure Monitor dipakai untuk visualisasi, alert, dan autoscale.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l2-e6",
+          "type": "yesno",
+          "concept": "log-analytics",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso sends logs from Azure virtual machines and on-premises servers to a Log Analytics workspace.",
+          "statements": [
+            {
+              "text": "Contoso can query logs from both sources in one place.",
+              "answer": true
+            },
+            {
+              "text": "Log Analytics queries are written in KQL (Kusto Query Language).",
+              "answer": true
+            },
+            {
+              "text": "Azure Monitor only works for resources inside Azure.",
+              "answer": false
+            }
+          ],
+          "explanation": "Satu workspace bisa menampung log dari Azure dan on-premises, lalu di-query dengan KQL (Kusto Query Language).",
+          "examReady": true
+        },
+        {
+          "id": "u12-l2-e7",
+          "type": "fix",
+          "concept": "azure-monitor",
+          "prompt": "What is a good way to investigate?",
+          "scene": {
+            "kind": "portal",
+            "title": "Nightly slowdown",
+            "message": "Your virtual machine slows down every night around 02:00, and nobody knows why."
+          },
+          "options": [
+            "Query the virtual machine's logs and metrics in Log Analytics around that time",
+            "Delete the virtual machine and create a new one",
+            "Open the TCO (Total Cost of Ownership) Calculator",
+            "Apply a ReadOnly lock"
+          ],
+          "answer": 0,
+          "explanation": "Lihat metrics dan logs di sekitar jam kejadian untuk menemukan penyebabnya."
+        },
+        {
+          "id": "u12-l2-e8",
+          "type": "fill",
+          "concept": "azure-monitor",
+          "prompt": "Complete the sentence.",
+          "sentence": "Numeric values collected over time are called ___, and records of events are called ___.",
+          "bank": [
+            "metrics",
+            "logs",
+            "invoices",
+            "tags"
+          ],
+          "answers": [
+            "metrics",
+            "logs"
+          ],
+          "explanation": "Dua jenis data utama Azure Monitor: metrics dan logs."
+        }
+      ]
     },
     {
       "id": "u12-l3",
       "title": "Alerts dan Application Insights",
-      "items": []
+      "items": [
+        {
+          "id": "u12-l3-i1",
+          "type": "intro",
+          "concept": "azure-monitor-alerts",
+          "title": "Azure Monitor alerts",
+          "body": "Alert memberi tahu kamu saat kondisi tertentu terjadi, misalnya CPU (Central Processing Unit) di atas 90% atau ada error di log. Lewat action group, alert bisa mengirim email, SMS (Short Message Service), atau menjalankan otomatisasi."
+        },
+        {
+          "id": "u12-l3-e1",
+          "type": "truefalse",
+          "concept": "azure-monitor-alerts",
+          "prompt": "Azure Monitor alerts can notify you by email or by SMS (Short Message Service).",
+          "answer": true,
+          "explanation": "Benar. Cara notifikasinya diatur di action group.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l3-i2",
+          "type": "intro",
+          "concept": "application-insights",
+          "title": "Application Insights",
+          "body": "Application Insights adalah fitur Azure Monitor untuk memantau performa aplikasi web: request, waktu respons, error, dan dependency. Fitur ini juga bisa menjalankan availability test yang mengecek aplikasimu secara berkala."
+        },
+        {
+          "id": "u12-l3-e2",
+          "type": "choice",
+          "concept": "application-insights",
+          "prompt": "Which service monitors the performance and failures of a web application?",
+          "options": [
+            "Application Insights",
+            "Azure Advisor",
+            "Service Trust Portal",
+            "Azure DNS (Domain Name System)"
+          ],
+          "answer": 0,
+          "explanation": "Performa dan error aplikasi web = Application Insights.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l3-e3",
+          "type": "match",
+          "concept": "azure-monitor-alerts",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Alert rule",
+              "Condition that triggers a notification"
+            ],
+            [
+              "Action group",
+              "Who to notify and how"
+            ],
+            [
+              "Application Insights",
+              "Monitor web app requests and failures"
+            ],
+            [
+              "Availability test",
+              "Regularly checks that your app responds"
+            ]
+          ],
+          "explanation": "Alert rule menentukan kapan, action group menentukan siapa dan bagaimana.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l3-e4",
+          "type": "choice",
+          "concept": "azure-monitor-alerts",
+          "prompt": "Your team wants a text message whenever the CPU (Central Processing Unit) of a production virtual machine stays above 90% for 10 minutes. What should you configure?",
+          "options": [
+            "An Azure Monitor metric alert with an action group",
+            "A resource lock",
+            "An Azure Policy initiative",
+            "A budget in Cost Management"
+          ],
+          "answer": 0,
+          "explanation": "Metric alert memantau CPU (Central Processing Unit), dan action group mengirim SMS (Short Message Service) ke tim.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l3-e5",
+          "type": "multi",
+          "concept": "application-insights",
+          "prompt": "Which two can Application Insights show about a web app? Choose two.",
+          "options": [
+            "Request rates and response times",
+            "Failure rates and exceptions",
+            "The app's monthly Azure bill",
+            "Which RBAC (Role-Based Access Control) roles users have"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Application Insights fokus ke performa dan kesalahan aplikasi.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l3-e6",
+          "type": "yesno",
+          "concept": "application-insights",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso adds Application Insights to its online store and sets up an availability test.",
+          "statements": [
+            {
+              "text": "Application Insights can show which pages load slowly.",
+              "answer": true
+            },
+            {
+              "text": "The availability test can check that the store responds, even when no customers are visiting.",
+              "answer": true
+            },
+            {
+              "text": "Application Insights only works for apps hosted in Azure.",
+              "answer": false
+            }
+          ],
+          "explanation": "Application Insights juga bisa memantau aplikasi di on-premises atau cloud lain.",
+          "examReady": true
+        },
+        {
+          "id": "u12-l3-e7",
+          "type": "fix",
+          "concept": "azure-monitor-alerts",
+          "prompt": "What is most likely missing?",
+          "scene": {
+            "kind": "portal",
+            "title": "Alert fired",
+            "message": "Alert 'High CPU (Central Processing Unit)' fired, but nobody on the team was notified."
+          },
+          "options": [
+            "An action group with the team's email or phone number",
+            "A ReadOnly lock",
+            "A tag on the virtual machine",
+            "A second subscription"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa action group, alert menyala tapi tidak ada yang diberi tahu."
+        },
+        {
+          "id": "u12-l3-e8",
+          "type": "fill",
+          "concept": "application-insights",
+          "prompt": "Complete the sentence.",
+          "sentence": "Application Insights is a feature of Azure ___ that tracks ___ performance.",
+          "bank": [
+            "Monitor",
+            "application",
+            "Policy",
+            "storage"
+          ],
+          "answers": [
+            "Monitor",
+            "application"
+          ],
+          "explanation": "Application Insights = bagian dari Azure Monitor untuk performa aplikasi."
+        }
+      ]
     }
   ]
 }

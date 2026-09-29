@@ -6,17 +6,496 @@
     {
       "id": "u10-l1",
       "title": "Azure Policy",
-      "items": []
+      "items": [
+        {
+          "id": "u10-l1-i1",
+          "type": "intro",
+          "concept": "azure-policy",
+          "title": "Azure Policy",
+          "body": "Azure Policy membuat aturan untuk resource, misalnya hanya boleh di region tertentu atau wajib punya tag. Policy bisa menolak resource yang melanggar dan melaporkan resource lama yang tidak patuh."
+        },
+        {
+          "id": "u10-l1-e1",
+          "type": "truefalse",
+          "concept": "azure-policy",
+          "prompt": "Azure Policy can prevent the creation of resources that don't follow your rules.",
+          "answer": true,
+          "explanation": "Benar. Policy dengan efek deny menolak resource yang melanggar.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l1-i2",
+          "type": "intro",
+          "concept": "policy-initiatives",
+          "title": "Policy initiative",
+          "body": "Initiative adalah kumpulan beberapa policy definition yang dikelompokkan untuk satu tujuan, misalnya satu standar keamanan. Kamu cukup assign satu initiative, tidak perlu puluhan policy satu per satu."
+        },
+        {
+          "id": "u10-l1-e2",
+          "type": "choice",
+          "concept": "policy-initiatives",
+          "prompt": "What is an Azure Policy initiative?",
+          "options": [
+            "A group of related policy definitions",
+            "A single tag",
+            "A role in RBAC (Role-Based Access Control)",
+            "A type of resource lock"
+          ],
+          "answer": 0,
+          "explanation": "Initiative = kumpulan policy definition yang di-assign bersama.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l1-e3",
+          "type": "match",
+          "concept": "policy-initiatives",
+          "prompt": "Match each Azure Policy term with its meaning.",
+          "pairs": [
+            [
+              "Policy definition",
+              "A single rule, such as allowed locations"
+            ],
+            [
+              "Initiative",
+              "A group of policy definitions"
+            ],
+            [
+              "Assignment",
+              "Applying a policy to a scope"
+            ],
+            [
+              "Compliance",
+              "How many resources follow the policies"
+            ]
+          ],
+          "explanation": "Definisi adalah aturannya, initiative kumpulannya, assignment tempat penerapannya, compliance hasilnya.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l1-e4",
+          "type": "fix",
+          "concept": "azure-policy",
+          "prompt": "Your company only allows deployments in West Europe and North Europe. What should you do?",
+          "scene": {
+            "kind": "error",
+            "title": "RequestDisallowedByPolicy",
+            "message": "Resource 'vm-01' was disallowed by policy. Policy: 'Allowed locations'. Requested location: 'eastus'."
+          },
+          "options": [
+            "Deploy the virtual machine in West Europe or North Europe",
+            "Remove the policy assignment yourself",
+            "Deploy to eastus again until it works",
+            "Create a new tag"
+          ],
+          "answer": 0,
+          "explanation": "Policy 'Allowed locations' menolak region yang tidak diizinkan. Ikuti aturannya dan pilih region yang boleh."
+        },
+        {
+          "id": "u10-l1-e5",
+          "type": "choice",
+          "concept": "azure-policy",
+          "prompt": "Security wants every storage account in all subscriptions to require secure transfer, and wants a report of any that don't. What should it use?",
+          "options": [
+            "Azure Policy",
+            "A resource lock",
+            "Microsoft Cost Management",
+            "Azure DNS (Domain Name System)"
+          ],
+          "answer": 0,
+          "explanation": "Aturan konfigurasi plus laporan kepatuhan = Azure Policy.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l1-e6",
+          "type": "multi",
+          "concept": "azure-policy",
+          "prompt": "Which two can Azure Policy do? Choose two.",
+          "options": [
+            "Deny the creation of non-compliant resources",
+            "Report existing resources that don't comply",
+            "Give users permission to create resources",
+            "Estimate the cost of new resources"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Policy mengatur apa yang boleh dibuat. Siapa yang boleh membuat diatur oleh RBAC (Role-Based Access Control).",
+          "examReady": true
+        },
+        {
+          "id": "u10-l1-e7",
+          "type": "yesno",
+          "concept": "azure-policy",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An admin assigns the built-in 'Allowed locations' policy to a management group.",
+          "statements": [
+            {
+              "text": "The policy applies to the subscriptions inside the management group.",
+              "answer": true
+            },
+            {
+              "text": "Azure Policy decides which users can sign in.",
+              "answer": false
+            },
+            {
+              "text": "New resources in a location that isn't allowed are denied.",
+              "answer": true
+            }
+          ],
+          "explanation": "Policy diwariskan ke bawah dan menolak lokasi yang tidak diizinkan. Login pengguna bukan urusan Azure Policy.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l1-e8",
+          "type": "fill",
+          "concept": "azure-policy",
+          "prompt": "Complete the sentence.",
+          "sentence": "Azure Policy can ___ non-compliant resources and ___ on the ones that already exist.",
+          "bank": [
+            "deny",
+            "report",
+            "bill",
+            "rename"
+          ],
+          "answers": [
+            "deny",
+            "report"
+          ],
+          "explanation": "Policy bisa mencegah dan melaporkan."
+        }
+      ]
     },
     {
       "id": "u10-l2",
       "title": "Resource lock",
-      "items": []
+      "items": [
+        {
+          "id": "u10-l2-i1",
+          "type": "intro",
+          "concept": "resource-locks",
+          "title": "Resource lock",
+          "body": "Resource lock mencegah resource terhapus atau berubah secara tidak sengaja, dan berlaku untuk semua orang, termasuk Owner. Lock bisa dipasang di subscription, resource group, atau resource, lalu diwariskan ke bawah."
+        },
+        {
+          "id": "u10-l2-e1",
+          "type": "truefalse",
+          "concept": "resource-locks",
+          "prompt": "A resource lock also applies to users with the Owner role.",
+          "answer": true,
+          "explanation": "Benar. Lock berlaku untuk semua orang. Untuk menghapus atau mengubah resource, lock-nya harus dilepas dulu.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l2-i2",
+          "type": "intro",
+          "concept": "read-only-locks",
+          "title": "Delete vs ReadOnly",
+          "body": "Lock Delete (CanNotDelete) membuat resource masih bisa diubah tapi tidak bisa dihapus. Lock ReadOnly membuat resource tidak bisa diubah dan tidak bisa dihapus."
+        },
+        {
+          "id": "u10-l2-e2",
+          "type": "truefalse",
+          "concept": "read-only-locks",
+          "prompt": "With a Delete (CanNotDelete) lock, you can still modify the resource.",
+          "answer": true,
+          "explanation": "Benar. Delete lock hanya mencegah penghapusan.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l2-e3",
+          "type": "choice",
+          "concept": "read-only-locks",
+          "prompt": "Which lock type prevents both changes and deletion?",
+          "options": [
+            "ReadOnly",
+            "Delete (CanNotDelete)",
+            "Contributor",
+            "Initiative"
+          ],
+          "answer": 0,
+          "explanation": "ReadOnly = tidak bisa diubah dan tidak bisa dihapus.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l2-e4",
+          "type": "match",
+          "concept": "read-only-locks",
+          "prompt": "Match each control with what it does.",
+          "pairs": [
+            [
+              "Delete (CanNotDelete) lock",
+              "Can modify, can't delete"
+            ],
+            [
+              "ReadOnly lock",
+              "Can't modify or delete"
+            ],
+            [
+              "RBAC (Role-Based Access Control)",
+              "Controls who can do what"
+            ],
+            [
+              "Azure Policy",
+              "Controls which resource settings are allowed"
+            ]
+          ],
+          "explanation": "Lock melindungi dari kecelakaan, RBAC (Role-Based Access Control) mengatur siapa, Policy mengatur apa.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l2-e5",
+          "type": "fix",
+          "concept": "resource-locks",
+          "prompt": "You are an Owner and you really need to delete this resource group. What must you do first?",
+          "scene": {
+            "kind": "error",
+            "title": "ScopeLocked",
+            "message": "The scope 'rg-prod' cannot perform delete operation because the following scope(s) are locked: 'rg-prod'."
+          },
+          "options": [
+            "Remove the lock, then delete the resource group",
+            "Ask Microsoft support to delete it",
+            "Assign yourself the Contributor role",
+            "Wait 24 hours and try again"
+          ],
+          "answer": 0,
+          "explanation": "Lock berlaku juga untuk Owner. Lepas lock-nya dulu (butuh izin mengelola lock), baru hapus."
+        },
+        {
+          "id": "u10-l2-e6",
+          "type": "choice",
+          "concept": "read-only-locks",
+          "prompt": "Admins must still be able to change settings on a production database, but nobody should be able to delete it by accident. Which lock should you apply?",
+          "options": [
+            "Delete (CanNotDelete)",
+            "ReadOnly",
+            "No lock, use tags",
+            "A policy initiative"
+          ],
+          "answer": 0,
+          "explanation": "Masih boleh diubah tapi tidak boleh dihapus = Delete (CanNotDelete) lock.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l2-e7",
+          "type": "yesno",
+          "concept": "resource-locks",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A ReadOnly lock is applied to a resource group.",
+          "statements": [
+            {
+              "text": "Resources in the resource group inherit the lock.",
+              "answer": true
+            },
+            {
+              "text": "An Owner can delete a resource in that resource group without removing the lock.",
+              "answer": false
+            },
+            {
+              "text": "Users can still view the resources.",
+              "answer": true
+            }
+          ],
+          "explanation": "Lock diwariskan ke semua resource di dalamnya, berlaku untuk Owner, tapi melihat resource tetap bisa.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l2-e8",
+          "type": "multi",
+          "concept": "resource-locks",
+          "prompt": "Which two scopes can a resource lock be applied to? Choose two.",
+          "options": [
+            "A resource group",
+            "A single resource",
+            "A Microsoft Entra user",
+            "A tag"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Lock bisa dipasang di subscription, resource group, atau resource.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l2-e9",
+          "type": "fill",
+          "concept": "read-only-locks",
+          "prompt": "Complete the sentence.",
+          "sentence": "A Delete lock still allows you to ___ a resource, while a ReadOnly lock blocks changes and ___.",
+          "bank": [
+            "modify",
+            "deletion",
+            "reading",
+            "billing"
+          ],
+          "answers": [
+            "modify",
+            "deletion"
+          ],
+          "explanation": "Delete lock: boleh ubah, tidak boleh hapus. ReadOnly: tidak boleh keduanya."
+        }
+      ]
     },
     {
       "id": "u10-l3",
       "title": "Purview dan Service Trust Portal",
-      "items": []
+      "items": [
+        {
+          "id": "u10-l3-i1",
+          "type": "intro",
+          "concept": "microsoft-purview",
+          "title": "Microsoft Purview",
+          "body": "Microsoft Purview adalah kumpulan solusi tata kelola data, risiko, dan kepatuhan. Purview memetakan data di on-premises, multi-cloud, dan SaaS (Software as a Service), supaya kamu tahu data apa ada di mana dan bisa melindungi data sensitif."
+        },
+        {
+          "id": "u10-l3-e1",
+          "type": "truefalse",
+          "concept": "microsoft-purview",
+          "prompt": "Microsoft Purview helps you discover and govern data across on-premises, multicloud, and SaaS (Software as a Service) sources.",
+          "answer": true,
+          "explanation": "Benar. Purview memberi satu gambaran terpadu tentang data organisasimu.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l3-i2",
+          "type": "intro",
+          "concept": "service-trust-portal",
+          "title": "Service Trust Portal",
+          "body": "Service Trust Portal adalah situs Microsoft yang berisi laporan audit, sertifikasi, dan dokumen kepatuhan layanan cloud Microsoft, misalnya laporan ISO (International Organization for Standardization) dan SOC (System and Organization Controls)."
+        },
+        {
+          "id": "u10-l3-e2",
+          "type": "choice",
+          "concept": "service-trust-portal",
+          "prompt": "Where can you download Microsoft's independent audit reports, such as ISO (International Organization for Standardization) certifications?",
+          "options": [
+            "Service Trust Portal",
+            "Azure Advisor",
+            "Microsoft Cost Management",
+            "Azure Monitor"
+          ],
+          "answer": 0,
+          "explanation": "Laporan audit dan sertifikasi Microsoft ada di Service Trust Portal.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l3-e3",
+          "type": "match",
+          "concept": "service-trust-portal",
+          "prompt": "Match each tool with its purpose.",
+          "pairs": [
+            [
+              "Microsoft Purview",
+              "Govern and protect your organization's data"
+            ],
+            [
+              "Service Trust Portal",
+              "Microsoft's audit reports and compliance documents"
+            ],
+            [
+              "Azure Policy",
+              "Enforce rules on Azure resources"
+            ],
+            [
+              "Resource lock",
+              "Prevent accidental deletion"
+            ]
+          ],
+          "explanation": "Purview untuk datamu, Service Trust Portal untuk dokumen kepatuhan Microsoft.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l3-e4",
+          "type": "choice",
+          "concept": "service-trust-portal",
+          "prompt": "A compliance officer must show regulators how Microsoft's cloud datacenters meet security standards. Where should they look?",
+          "options": [
+            "Service Trust Portal",
+            "Microsoft Purview",
+            "Azure Policy",
+            "Azure Arc"
+          ],
+          "answer": 0,
+          "explanation": "Bukti kepatuhan Microsoft sendiri ada di Service Trust Portal.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l3-e5",
+          "type": "choice",
+          "concept": "microsoft-purview",
+          "prompt": "A company wants to find where sensitive customer data is stored across Azure, its own servers, and Microsoft 365, and classify it. What should it use?",
+          "options": [
+            "Microsoft Purview",
+            "Service Trust Portal",
+            "Azure DNS (Domain Name System)",
+            "Pricing Calculator"
+          ],
+          "answer": 0,
+          "explanation": "Menemukan dan mengklasifikasikan data di banyak sumber = Microsoft Purview.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l3-e6",
+          "type": "multi",
+          "concept": "microsoft-purview",
+          "prompt": "Which two are part of Microsoft Purview's capabilities? Choose two.",
+          "options": [
+            "Data governance across different sources",
+            "Risk and compliance solutions for Microsoft 365 data",
+            "Hosting virtual machines",
+            "Estimating datacenter costs"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Purview punya dua sisi: tata kelola data dan solusi risiko serta kepatuhan.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l3-e7",
+          "type": "yesno",
+          "concept": "service-trust-portal",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso's auditors ask for documentation about Microsoft cloud compliance.",
+          "statements": [
+            {
+              "text": "The Service Trust Portal provides audit reports about Microsoft cloud services.",
+              "answer": true
+            },
+            {
+              "text": "The Service Trust Portal scans Contoso's own servers for sensitive data.",
+              "answer": false
+            },
+            {
+              "text": "Microsoft Purview can help Contoso classify its own sensitive data.",
+              "answer": true
+            }
+          ],
+          "explanation": "Service Trust Portal berisi dokumen tentang Microsoft. Untuk data milik Contoso sendiri, pakai Purview.",
+          "examReady": true
+        },
+        {
+          "id": "u10-l3-e8",
+          "type": "fill",
+          "concept": "microsoft-purview",
+          "prompt": "Complete the sentence.",
+          "sentence": "Microsoft Purview helps govern your organization's ___, while the Service Trust Portal shares Microsoft's audit ___.",
+          "bank": [
+            "data",
+            "reports",
+            "servers",
+            "passwords"
+          ],
+          "answers": [
+            "data",
+            "reports"
+          ],
+          "explanation": "Purview untuk datamu, Service Trust Portal untuk laporan audit Microsoft."
+        }
+      ]
     }
   ]
 }

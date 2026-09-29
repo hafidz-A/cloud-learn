@@ -6,22 +6,677 @@
     {
       "id": "u11-l1",
       "title": "Portal dan Cloud Shell",
-      "items": []
+      "items": [
+        {
+          "id": "u11-l1-i1",
+          "type": "intro",
+          "concept": "azure-portal",
+          "title": "Azure portal",
+          "body": "Azure portal adalah konsol web untuk membuat, mengelola, dan memantau resource lewat tampilan grafis. Kamu bisa membuat dashboard sendiri, dan portal diperbarui terus tanpa downtime."
+        },
+        {
+          "id": "u11-l1-e1",
+          "type": "truefalse",
+          "concept": "azure-portal",
+          "prompt": "The Azure portal is a web-based graphical console for managing Azure resources.",
+          "answer": true,
+          "explanation": "Benar. Portal berjalan di browser dan tidak perlu dipasang.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l1-i2",
+          "type": "intro",
+          "concept": "cloud-shell",
+          "title": "Cloud Shell",
+          "body": "Azure Cloud Shell adalah shell di browser, bisa Bash atau PowerShell, yang sudah login dengan akun Azure-mu. Kamu tidak perlu memasang apa pun di komputer."
+        },
+        {
+          "id": "u11-l1-e2",
+          "type": "truefalse",
+          "concept": "cloud-shell",
+          "prompt": "To use Azure Cloud Shell, you must first install the Azure CLI (Command-Line Interface) on your computer.",
+          "answer": false,
+          "explanation": "Salah. Cloud Shell berjalan di browser dan alatnya sudah terpasang, termasuk Azure CLI (Command-Line Interface) dan Azure PowerShell.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l1-e3",
+          "type": "choice",
+          "concept": "cloud-shell",
+          "prompt": "Which shells can you choose in Azure Cloud Shell?",
+          "options": [
+            "Bash or PowerShell",
+            "Only Command Prompt",
+            "Only Bash",
+            "Only Python"
+          ],
+          "answer": 0,
+          "explanation": "Cloud Shell menyediakan dua pilihan: Bash dan PowerShell.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l1-e4",
+          "type": "match",
+          "concept": "cloud-shell",
+          "prompt": "Match each tool with its description.",
+          "pairs": [
+            [
+              "Azure portal",
+              "Web-based graphical console"
+            ],
+            [
+              "Cloud Shell",
+              "Browser-based Bash or PowerShell"
+            ],
+            [
+              "Azure CLI (Command-Line Interface)",
+              "Commands that start with az"
+            ],
+            [
+              "Azure PowerShell",
+              "Cmdlets such as New-AzResourceGroup"
+            ]
+          ],
+          "explanation": "Portal untuk klik, Cloud Shell untuk shell di browser, CLI (Command-Line Interface) dan PowerShell untuk skrip.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l1-e5",
+          "type": "choice",
+          "concept": "cloud-shell",
+          "prompt": "You're on a borrowed laptop where you can't install software, and you need to run a quick Azure CLI (Command-Line Interface) command. What should you use?",
+          "options": [
+            "Azure Cloud Shell",
+            "Azure Data Box",
+            "The TCO (Total Cost of Ownership) Calculator",
+            "Azure Virtual Desktop"
+          ],
+          "answer": 0,
+          "explanation": "Cloud Shell hanya butuh browser dan sudah login dengan akun Azure-mu.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l1-e6",
+          "type": "multi",
+          "concept": "azure-portal",
+          "prompt": "Which two are true about the Azure portal? Choose two.",
+          "options": [
+            "You can build custom dashboards",
+            "It runs in a web browser",
+            "It is the only way to manage Azure",
+            "It must be installed on a server"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Portal berbasis web dan bisa diatur dashboard-nya. Azure juga bisa dikelola lewat CLI (Command-Line Interface), PowerShell, dan API (Application Programming Interface).",
+          "examReady": true
+        },
+        {
+          "id": "u11-l1-e7",
+          "type": "yesno",
+          "concept": "cloud-shell",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An admin opens Cloud Shell from the Azure portal.",
+          "statements": [
+            {
+              "text": "The admin is already signed in with their Azure account.",
+              "answer": true
+            },
+            {
+              "text": "The admin can choose Bash or PowerShell.",
+              "answer": true
+            },
+            {
+              "text": "Cloud Shell only works on Windows computers.",
+              "answer": false
+            }
+          ],
+          "explanation": "Cloud Shell berjalan di browser apa pun dan langsung terautentikasi.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l1-e8",
+          "type": "shell",
+          "concept": "cloud-shell",
+          "prompt": "In Cloud Shell (Bash), list all resource groups in your subscription.",
+          "tokens": [
+            "az",
+            "group",
+            "list",
+            "vm",
+            "create",
+            "show"
+          ],
+          "answer": [
+            "az",
+            "group",
+            "list"
+          ],
+          "explanation": "Perintah Azure CLI (Command-Line Interface) diawali az, lalu grup perintah (group) dan aksinya (list)."
+        }
+      ]
     },
     {
       "id": "u11-l2",
       "title": "Azure CLI dan PowerShell",
-      "items": []
+      "items": [
+        {
+          "id": "u11-l2-i1",
+          "type": "intro",
+          "concept": "azure-cli",
+          "title": "Azure CLI",
+          "body": "Azure CLI (Command-Line Interface) adalah alat baris perintah lintas platform untuk mengelola Azure. Semua perintahnya diawali az, misalnya az group create untuk membuat resource group."
+        },
+        {
+          "id": "u11-l2-e1",
+          "type": "truefalse",
+          "concept": "azure-cli",
+          "prompt": "Azure CLI (Command-Line Interface) commands start with 'az'.",
+          "answer": true,
+          "explanation": "Benar. Contohnya az group create, az vm create, dan az group delete.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l2-i2",
+          "type": "intro",
+          "concept": "azure-powershell",
+          "title": "Azure PowerShell",
+          "body": "Azure PowerShell adalah kumpulan cmdlet untuk mengelola Azure dari PowerShell, misalnya New-AzResourceGroup. Fungsinya setara dengan Azure CLI (Command-Line Interface); pilih yang sintaksnya paling nyaman."
+        },
+        {
+          "id": "u11-l2-e2",
+          "type": "choice",
+          "concept": "azure-powershell",
+          "prompt": "Which command creates a resource group with Azure PowerShell?",
+          "options": [
+            "New-AzResourceGroup",
+            "az group create",
+            "Create-ResourceGroup",
+            "az rg new"
+          ],
+          "answer": 0,
+          "explanation": "Cmdlet Azure PowerShell memakai pola Kata kerja-AzKata benda, misalnya New-AzResourceGroup. Perintah az group create adalah versi Azure CLI (Command-Line Interface).",
+          "examReady": true
+        },
+        {
+          "id": "u11-l2-e3",
+          "type": "match",
+          "concept": "azure-cli",
+          "prompt": "Match each command with what it does.",
+          "pairs": [
+            [
+              "az group create",
+              "Create a resource group"
+            ],
+            [
+              "az vm create",
+              "Create a virtual machine"
+            ],
+            [
+              "az group delete",
+              "Delete a resource group and everything in it"
+            ],
+            [
+              "az group list",
+              "List resource groups"
+            ]
+          ],
+          "explanation": "Pola Azure CLI (Command-Line Interface): az, lalu grup perintah, lalu aksi.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l2-e4",
+          "type": "fix",
+          "concept": "azure-cli",
+          "prompt": "What went wrong?",
+          "scene": {
+            "kind": "error",
+            "title": "az: command not found",
+            "message": "az: 'grup' is not in the 'az' command group. See 'az --help'."
+          },
+          "options": [
+            "The command group is misspelled; it should be 'az group'",
+            "Azure CLI (Command-Line Interface) doesn't work in Cloud Shell",
+            "You need the Owner role to type commands",
+            "The subscription is locked"
+          ],
+          "answer": 0,
+          "explanation": "Salah ketik nama grup perintah. Yang benar az group."
+        },
+        {
+          "id": "u11-l2-e5",
+          "type": "yesno",
+          "concept": "azure-powershell",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A team with Windows, macOS, and Linux laptops wants to script Azure deployments.",
+          "statements": [
+            {
+              "text": "Azure CLI (Command-Line Interface) runs on Windows, macOS, and Linux.",
+              "answer": true
+            },
+            {
+              "text": "Azure PowerShell can only be used inside the Azure portal.",
+              "answer": false
+            },
+            {
+              "text": "Both tools can be used in Azure Cloud Shell.",
+              "answer": true
+            }
+          ],
+          "explanation": "Keduanya lintas platform dan tersedia di Cloud Shell.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l2-e6",
+          "type": "shell",
+          "concept": "azure-cli",
+          "prompt": "Create a resource group named MyRG in the eastus region.",
+          "tokens": [
+            "az",
+            "group",
+            "create",
+            "--name",
+            "MyRG",
+            "--location",
+            "eastus",
+            "vm",
+            "delete"
+          ],
+          "answer": [
+            "az",
+            "group",
+            "create",
+            "--name",
+            "MyRG",
+            "--location",
+            "eastus"
+          ],
+          "explanation": "az group create dengan --name dan --location. Di Azure CLI (Command-Line Interface) sungguhan, urutan parameter boleh ditukar."
+        },
+        {
+          "id": "u11-l2-e7",
+          "type": "shell",
+          "concept": "azure-cli",
+          "prompt": "Create a VM (Virtual Machine) named MyVM in the resource group MyRG, using the Ubuntu2204 image.",
+          "tokens": [
+            "az",
+            "vm",
+            "create",
+            "--resource-group",
+            "MyRG",
+            "--name",
+            "MyVM",
+            "--image",
+            "Ubuntu2204",
+            "group",
+            "delete"
+          ],
+          "answer": [
+            "az",
+            "vm",
+            "create",
+            "--resource-group",
+            "MyRG",
+            "--name",
+            "MyVM",
+            "--image",
+            "Ubuntu2204"
+          ],
+          "explanation": "az vm create butuh resource group, nama, dan image. Dalam praktik biasanya ditambah --generate-ssh-keys untuk login SSH (Secure Shell)."
+        },
+        {
+          "id": "u11-l2-e8",
+          "type": "shell",
+          "concept": "azure-cli",
+          "prompt": "Delete the resource group MyRG and everything in it.",
+          "tokens": [
+            "az",
+            "group",
+            "delete",
+            "--name",
+            "MyRG",
+            "vm",
+            "list"
+          ],
+          "answer": [
+            "az",
+            "group",
+            "delete",
+            "--name",
+            "MyRG"
+          ],
+          "explanation": "Hati-hati: menghapus resource group menghapus semua isinya. Azure CLI (Command-Line Interface) akan minta konfirmasi, kecuali kamu menambahkan --yes."
+        }
+      ]
     },
     {
       "id": "u11-l3",
       "title": "Azure Arc",
-      "items": []
+      "items": [
+        {
+          "id": "u11-l3-i1",
+          "type": "intro",
+          "concept": "azure-arc",
+          "title": "Azure Arc",
+          "body": "Azure Arc memperluas manajemen Azure ke resource di luar Azure: server on-premises, cluster Kubernetes, dan resource di cloud lain. Resource itu muncul di Azure, jadi bisa diatur dengan Azure Policy, RBAC (Role-Based Access Control), dan monitoring yang sama."
+        },
+        {
+          "id": "u11-l3-e1",
+          "type": "truefalse",
+          "concept": "azure-arc",
+          "prompt": "Azure Arc lets you manage servers that run outside of Azure from the Azure portal.",
+          "answer": true,
+          "explanation": "Benar. Server di luar Azure muncul sebagai resource di Azure dan bisa dikelola dari sana.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l3-i2",
+          "type": "intro",
+          "concept": "azure-vmware-solution",
+          "title": "Azure VMware Solution",
+          "body": "Azure VMware Solution menjalankan workload VMware di Azure dengan alat VMware yang sudah dikenal tim. Cocok untuk memindahkan lingkungan VMware on-premises tanpa mengubah cara kerjanya."
+        },
+        {
+          "id": "u11-l3-e2",
+          "type": "choice",
+          "concept": "azure-vmware-solution",
+          "prompt": "A company runs VMware vSphere on-premises and wants to move those workloads to Azure while keeping its VMware tools. What should it use?",
+          "options": [
+            "Azure VMware Solution",
+            "Azure Arc only",
+            "Azure Functions",
+            "Azure DNS (Domain Name System)"
+          ],
+          "answer": 0,
+          "explanation": "Tetap memakai alat VMware, tapi berjalan di Azure: Azure VMware Solution.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l3-e3",
+          "type": "match",
+          "concept": "azure-arc",
+          "prompt": "Match each service with its purpose.",
+          "pairs": [
+            [
+              "Azure Arc",
+              "Manage non-Azure resources from Azure"
+            ],
+            [
+              "Azure VMware Solution",
+              "Run VMware workloads in Azure"
+            ],
+            [
+              "Azure Migrate",
+              "Assess and migrate servers to Azure"
+            ],
+            [
+              "Microsoft Entra Connect",
+              "Sync on-premises identities to the cloud"
+            ]
+          ],
+          "explanation": "Arc membawa manajemen Azure keluar. VMware Solution membawa VMware masuk ke Azure.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l3-e4",
+          "type": "choice",
+          "concept": "azure-arc",
+          "prompt": "A company has servers in its own datacenter, in Azure, and in another cloud. It wants to apply the same Azure Policy rules to all of them. What should it use?",
+          "options": [
+            "Azure Arc",
+            "Azure VMware Solution",
+            "Azure Data Box",
+            "A resource lock"
+          ],
+          "answer": 0,
+          "explanation": "Azure Arc membuat server di luar Azure bisa diatur dengan Azure Policy.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l3-e5",
+          "type": "multi",
+          "concept": "azure-arc",
+          "prompt": "Which two can you manage with Azure Arc? Choose two.",
+          "options": [
+            "Servers running on-premises",
+            "Kubernetes clusters running in another cloud",
+            "Physical datacenter cooling",
+            "Domain name purchases"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Azure Arc mendukung server, cluster Kubernetes, dan layanan data di luar Azure.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l3-e6",
+          "type": "yesno",
+          "concept": "azure-arc",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso connects 30 on-premises Linux servers to Azure Arc.",
+          "statements": [
+            {
+              "text": "The servers appear as resources in Azure.",
+              "answer": true
+            },
+            {
+              "text": "The servers are physically moved into an Azure datacenter.",
+              "answer": false
+            },
+            {
+              "text": "Contoso can apply Azure Policy to the servers.",
+              "answer": true
+            }
+          ],
+          "explanation": "Server tetap di tempatnya, tapi terlihat dan bisa diatur dari Azure.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l3-e7",
+          "type": "fix",
+          "concept": "azure-arc",
+          "prompt": "How can the on-premises servers be included?",
+          "scene": {
+            "kind": "portal",
+            "title": "Compliance report",
+            "message": "Azure Policy shows only Azure virtual machines. Your 20 on-premises servers are missing from the report."
+          },
+          "options": [
+            "Connect them to Azure with Azure Arc",
+            "Order an Azure Data Box",
+            "Add a tag to the report",
+            "Create a second subscription"
+          ],
+          "answer": 0,
+          "explanation": "Setelah terhubung lewat Azure Arc, server on-premises bisa dievaluasi oleh Azure Policy."
+        },
+        {
+          "id": "u11-l3-e8",
+          "type": "fill",
+          "concept": "azure-arc",
+          "prompt": "Complete the sentence.",
+          "sentence": "Azure Arc brings servers and Kubernetes clusters that run ___ Azure into Azure ___.",
+          "bank": [
+            "outside",
+            "management",
+            "inside",
+            "billing"
+          ],
+          "answers": [
+            "outside",
+            "management"
+          ],
+          "explanation": "Arc = manajemen Azure untuk resource di luar Azure."
+        }
+      ]
     },
     {
       "id": "u11-l4",
       "title": "ARM dan Bicep",
-      "items": []
+      "items": [
+        {
+          "id": "u11-l4-i1",
+          "type": "intro",
+          "concept": "arm",
+          "title": "Azure Resource Manager",
+          "body": "ARM (Azure Resource Manager) adalah layanan deployment dan manajemen Azure. Semua permintaan, dari portal, CLI (Command-Line Interface), PowerShell, sampai API (Application Programming Interface), lewat ARM, jadi hasil dan kontrol aksesnya konsisten."
+        },
+        {
+          "id": "u11-l4-e1",
+          "type": "truefalse",
+          "concept": "arm",
+          "prompt": "Requests from the Azure portal and from the Azure CLI (Command-Line Interface) both go through ARM (Azure Resource Manager).",
+          "answer": true,
+          "explanation": "Benar. Apa pun alatnya, semua lewat ARM (Azure Resource Manager).",
+          "examReady": true
+        },
+        {
+          "id": "u11-l4-i2",
+          "type": "intro",
+          "concept": "arm-templates",
+          "title": "ARM template",
+          "body": "ARM (Azure Resource Manager) template adalah file JSON (JavaScript Object Notation) yang mendeskripsikan resource yang ingin dibuat, secara deklaratif. Deploy template yang sama berkali-kali memberi hasil yang sama."
+        },
+        {
+          "id": "u11-l4-e2",
+          "type": "choice",
+          "concept": "arm-templates",
+          "prompt": "In which format are ARM (Azure Resource Manager) templates written?",
+          "options": [
+            "JSON (JavaScript Object Notation)",
+            "Plain text documents",
+            "Spreadsheets",
+            "Python scripts"
+          ],
+          "answer": 0,
+          "explanation": "ARM (Azure Resource Manager) template = file JSON (JavaScript Object Notation).",
+          "examReady": true
+        },
+        {
+          "id": "u11-l4-i3",
+          "type": "intro",
+          "concept": "bicep",
+          "title": "Bicep",
+          "body": "Bicep adalah bahasa deklaratif untuk mendeploy resource Azure dengan sintaks yang lebih ringkas daripada JSON (JavaScript Object Notation). File Bicep diubah menjadi ARM (Azure Resource Manager) template saat deploy."
+        },
+        {
+          "id": "u11-l4-e3",
+          "type": "match",
+          "concept": "bicep",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "ARM (Azure Resource Manager)",
+              "Deployment and management layer of Azure"
+            ],
+            [
+              "ARM template",
+              "JSON (JavaScript Object Notation) file that declares resources"
+            ],
+            [
+              "Bicep",
+              "Concise language that compiles to ARM templates"
+            ],
+            [
+              "IaC (Infrastructure as Code)",
+              "Managing infrastructure through code files"
+            ]
+          ],
+          "explanation": "ARM (Azure Resource Manager) adalah mesinnya, template dan Bicep adalah cara menulis IaC (Infrastructure as Code) untuknya.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l4-e4",
+          "type": "choice",
+          "concept": "arm-templates",
+          "prompt": "A team wants to create identical dev, test, and production environments every time and track changes in source control. Which approach fits best?",
+          "options": [
+            "Deploy with ARM (Azure Resource Manager) templates or Bicep files",
+            "Click through the Azure portal each time",
+            "Use the TCO (Total Cost of Ownership) Calculator",
+            "Create resource locks"
+          ],
+          "answer": 0,
+          "explanation": "IaC (Infrastructure as Code) seperti ARM (Azure Resource Manager) template dan Bicep membuat deployment konsisten dan bisa disimpan di source control.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l4-e5",
+          "type": "multi",
+          "concept": "bicep",
+          "prompt": "Which two are benefits of Bicep compared to writing ARM (Azure Resource Manager) templates in JSON (JavaScript Object Notation)? Choose two.",
+          "options": [
+            "Simpler, more concise syntax",
+            "Modules for reusing code",
+            "It doesn't need Azure Resource Manager",
+            "It only works in the Azure portal"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Bicep lebih ringkas dan mendukung modul, tapi tetap berjalan lewat ARM (Azure Resource Manager).",
+          "examReady": true
+        },
+        {
+          "id": "u11-l4-e6",
+          "type": "yesno",
+          "concept": "arm-templates",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An admin deploys the same ARM (Azure Resource Manager) template to a resource group twice.",
+          "statements": [
+            {
+              "text": "The template describes the resources declaratively.",
+              "answer": true
+            },
+            {
+              "text": "Deploying the same template again gives the same result.",
+              "answer": true
+            },
+            {
+              "text": "ARM templates can only create one resource at a time.",
+              "answer": false
+            }
+          ],
+          "explanation": "Template deklaratif menghasilkan lingkungan yang sama setiap kali, dan bisa membuat banyak resource sekaligus.",
+          "examReady": true
+        },
+        {
+          "id": "u11-l4-e7",
+          "type": "order",
+          "concept": "bicep",
+          "prompt": "Order the steps of a Bicep deployment.",
+          "items": [
+            "Write the Bicep file",
+            "Bicep is converted to an ARM (Azure Resource Manager) template",
+            "Azure Resource Manager receives the request",
+            "Resources are created or updated"
+          ],
+          "explanation": "Bicep ditulis, diubah menjadi ARM (Azure Resource Manager) template, dikirim ke ARM, lalu resource dibuat."
+        },
+        {
+          "id": "u11-l4-e8",
+          "type": "fill",
+          "concept": "arm-templates",
+          "prompt": "Complete the sentence.",
+          "sentence": "ARM (Azure Resource Manager) templates use ___ syntax, so deploying the same template again gives the ___ result.",
+          "bank": [
+            "declarative",
+            "same",
+            "random",
+            "different"
+          ],
+          "answers": [
+            "declarative",
+            "same"
+          ],
+          "explanation": "Deklaratif = kamu menulis hasil akhirnya, dan hasilnya konsisten."
+        }
+      ]
     }
   ]
 }

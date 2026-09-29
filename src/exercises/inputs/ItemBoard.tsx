@@ -179,21 +179,23 @@ export function ItemBoard({
       onDragEnd={onDragEnd}
     >
       <div lang="en">
-        <Zone
-          id={TRAY}
-          label={trayLabel}
-          actionLabel="Kembalikan ke sini"
-          selecting={selecting && placement[selected!] !== null}
-          disabled={locked}
-          onTap={() => selected !== null && place(selected, null)}
-          className="flex min-h-16 flex-wrap content-start gap-2 rounded-2xl border-2 border-dashed border-kabut p-3"
-        >
-          {inTray.length === 0 ? (
-            <p className="self-center text-13 text-tinta-lembut">{locked ? '' : 'Semua kartu sudah ditaruh.'}</p>
-          ) : (
-            inTray.map(chip)
-          )}
-        </Zone>
+        {!(locked && inTray.length === 0) && (
+          <Zone
+            id={TRAY}
+            label={trayLabel}
+            actionLabel="Kembalikan ke sini"
+            selecting={selecting && placement[selected!] !== null}
+            disabled={locked}
+            onTap={() => selected !== null && place(selected, null)}
+            className="flex min-h-16 flex-wrap content-start gap-2 rounded-2xl border-2 border-dashed border-kabut p-3"
+          >
+            {inTray.length === 0 ? (
+              <p className="self-center text-13 text-tinta-lembut">Semua kartu sudah ditaruh.</p>
+            ) : (
+              inTray.map(chip)
+            )}
+          </Zone>
+        )}
 
         <div className={`mt-4 ${variant === 'zones' ? 'grid gap-3' : 'space-y-3'}`} style={variant === 'zones' ? { gridTemplateColumns: `repeat(${Math.min(containers.length, 3)}, minmax(0, 1fr))` } : undefined}>
           {containers.map((c) => (

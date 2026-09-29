@@ -6,27 +6,829 @@
     {
       "id": "u05-l1",
       "title": "Virtual machine",
-      "items": []
+      "items": [
+        {
+          "id": "u05-l1-i1",
+          "type": "intro",
+          "concept": "virtual-machines",
+          "title": "Virtual machine",
+          "body": "VM (Virtual Machine) adalah komputer virtual di Azure yang bisa kamu atur penuh, termasuk sistem operasinya. Ini contoh IaaS (Infrastructure as a Service), cocok kalau butuh kontrol penuh atau memindahkan server apa adanya."
+        },
+        {
+          "id": "u05-l1-e1",
+          "type": "truefalse",
+          "concept": "virtual-machines",
+          "prompt": "Azure Virtual Machines give you full control over the operating system.",
+          "answer": true,
+          "explanation": "Benar. Di VM (Virtual Machine), kamu memilih, mengatur, dan merawat sistem operasinya sendiri.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l1-e2",
+          "type": "choice",
+          "concept": "virtual-machines",
+          "prompt": "Which scenario is the best fit for Azure Virtual Machines?",
+          "options": [
+            "Running legacy software that needs a custom operating system configuration",
+            "Running code only when a file is uploaded",
+            "Using a finished email service",
+            "Storing backup files cheaply"
+          ],
+          "answer": 0,
+          "explanation": "Butuh kontrol penuh atas OS (Operating System) atau software lama yang spesifik: itu kekuatan VM (Virtual Machine).",
+          "examReady": true
+        },
+        {
+          "id": "u05-l1-i2",
+          "type": "intro",
+          "concept": "vm-states",
+          "title": "Stopped vs deallocated",
+          "body": "Mematikan VM (Virtual Machine) dari dalam sistem operasi membuat statusnya Stopped, dan compute-nya tetap ditagih. Tombol Stop di portal membuat statusnya Stopped (deallocated), dan tagihan compute berhenti."
+        },
+        {
+          "id": "u05-l1-e3",
+          "type": "truefalse",
+          "concept": "vm-states",
+          "prompt": "A VM (Virtual Machine) with the status 'Stopped (deallocated)' still incurs compute charges.",
+          "answer": false,
+          "explanation": "Salah. Deallocated berarti hardware-nya dilepas, jadi compute tidak ditagih. Disk-nya tetap ditagih karena datanya masih disimpan."
+        },
+        {
+          "id": "u05-l1-e4",
+          "type": "match",
+          "concept": "vm-states",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Virtual machine",
+              "Full control of the operating system"
+            ],
+            [
+              "Stopped",
+              "Shut down inside the operating system, compute still billed"
+            ],
+            [
+              "Stopped (deallocated)",
+              "Released from the hardware, no compute charges"
+            ],
+            [
+              "VM (Virtual Machine) image",
+              "Template with an operating system for new VMs"
+            ]
+          ],
+          "explanation": "Stopped saja masih ditagih compute. Stopped (deallocated) tidak. Image adalah template untuk membuat VM (Virtual Machine) baru."
+        },
+        {
+          "id": "u05-l1-e5",
+          "type": "fix",
+          "concept": "vm-states",
+          "prompt": "How do you stop the compute charges but keep the VM (Virtual Machine)?",
+          "scene": {
+            "kind": "portal",
+            "title": "Cost alert",
+            "message": "Your test VM shows the status 'Stopped', but its compute charges are still growing."
+          },
+          "options": [
+            "Stop the VM from the Azure portal so it becomes deallocated",
+            "Shut it down again from inside Windows",
+            "Delete the resource group",
+            "Add a tag named 'stopped'"
+          ],
+          "answer": 0,
+          "explanation": "Status Stopped saja masih ditagih. Stop dari portal membuat VM (Virtual Machine) jadi deallocated, dan compute berhenti ditagih. Disk tetap ditagih."
+        },
+        {
+          "id": "u05-l1-e6",
+          "type": "multi",
+          "concept": "virtual-machines",
+          "prompt": "Which two are common uses of Azure Virtual Machines? Choose two.",
+          "options": [
+            "Lift-and-shift migration of on-premises servers",
+            "Test and development environments",
+            "Giving employees a finished email service",
+            "Running tiny event-driven code without servers"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "VM (Virtual Machine) cocok untuk lift-and-shift dan test/dev. Email jadi itu SaaS (Software as a Service), sedangkan kode kecil berbasis event cocok untuk serverless.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l1-e7",
+          "type": "yesno",
+          "concept": "virtual-machines",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company creates an Azure VM (Virtual Machine) running Windows Server.",
+          "statements": [
+            {
+              "text": "The company is responsible for updating Windows Server on the VM.",
+              "answer": true
+            },
+            {
+              "text": "The company can install any software it needs on the VM.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft manages the applications installed on the VM.",
+              "answer": false
+            }
+          ],
+          "explanation": "Di VM (Virtual Machine), OS (Operating System) dan aplikasinya urusanmu. Microsoft mengurus hardware fisik di bawahnya.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l1-e8",
+          "type": "fill",
+          "concept": "virtual-machines",
+          "prompt": "Complete the sentence about IaaS (Infrastructure as a Service).",
+          "sentence": "A virtual machine is an example of ___ because you manage the ___ system.",
+          "bank": [
+            "IaaS",
+            "operating",
+            "serverless",
+            "billing"
+          ],
+          "answers": [
+            "IaaS",
+            "operating"
+          ],
+          "explanation": "VM (Virtual Machine) = IaaS (Infrastructure as a Service): sistem operasinya kamu yang mengelola."
+        }
+      ]
     },
     {
       "id": "u05-l2",
       "title": "Scale sets dan availability sets",
-      "items": []
+      "items": [
+        {
+          "id": "u05-l2-i1",
+          "type": "intro",
+          "concept": "vm-scale-sets",
+          "title": "VM Scale Sets",
+          "body": "VM (Virtual Machine) Scale Sets membuat dan mengelola sekelompok VM yang identik dan di-load balance. Jumlah VM bisa naik-turun otomatis sesuai beban atau jadwal."
+        },
+        {
+          "id": "u05-l2-e1",
+          "type": "truefalse",
+          "concept": "vm-scale-sets",
+          "prompt": "Virtual Machine Scale Sets can automatically increase or decrease the number of VM (Virtual Machine) instances.",
+          "answer": true,
+          "explanation": "Benar. Itu keunggulan utama scale set: autoscale berdasarkan beban atau jadwal.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l2-i2",
+          "type": "intro",
+          "concept": "availability-sets",
+          "title": "Availability set",
+          "body": "Availability set menyebar VM (Virtual Machine) ke fault domain (sumber listrik dan network switch berbeda) dan update domain (grup yang di-reboot bergantian saat maintenance). Fiturnya gratis; kamu hanya membayar VM-nya."
+        },
+        {
+          "id": "u05-l2-e2",
+          "type": "truefalse",
+          "concept": "availability-sets",
+          "prompt": "Using an availability set adds an extra charge on top of the VMs (Virtual Machines) in it.",
+          "answer": false,
+          "explanation": "Salah. Availability set gratis; yang ditagih hanya VM (Virtual Machine)-nya.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l2-e3",
+          "type": "match",
+          "concept": "availability-sets",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Fault domain",
+              "VMs (Virtual Machines) that share power and a network switch"
+            ],
+            [
+              "Update domain",
+              "VMs that are rebooted together during maintenance"
+            ],
+            [
+              "Scale set",
+              "Group of identical VMs that can autoscale"
+            ],
+            [
+              "Availability set",
+              "Spreads VMs across fault and update domains"
+            ]
+          ],
+          "explanation": "Fault domain melindungi dari gangguan listrik atau jaringan, update domain dari maintenance. Scale set untuk autoscale.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l2-e4",
+          "type": "place",
+          "concept": "availability-sets",
+          "prompt": "Place 3 web VMs (Virtual Machines) so a single power or network switch failure can't take all of them down.",
+          "zones": [
+            "Fault domain 0",
+            "Fault domain 1",
+            "Fault domain 2"
+          ],
+          "pieces": [
+            {
+              "text": "VM 1",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            },
+            {
+              "text": "VM 2",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            },
+            {
+              "text": "VM 3",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            }
+          ],
+          "rule": "one-per-zone",
+          "explanation": "Satu VM (Virtual Machine) per fault domain. Kalau listrik atau switch di satu fault domain mati, dua VM lainnya tetap hidup. Secara default availability set memakai sampai 3 fault domain."
+        },
+        {
+          "id": "u05-l2-e5",
+          "type": "choice",
+          "concept": "vm-scale-sets",
+          "prompt": "An online store needs between 2 and 20 identical web servers depending on traffic, and wants Azure to add and remove them automatically. Which service fits best?",
+          "options": [
+            "Virtual Machine Scale Sets",
+            "Availability sets",
+            "A single large VM (Virtual Machine)",
+            "Azure Data Box"
+          ],
+          "answer": 0,
+          "explanation": "VM (Virtual Machine) yang identik plus jumlahnya naik-turun otomatis = Virtual Machine Scale Sets.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l2-e6",
+          "type": "multi",
+          "concept": "availability-sets",
+          "prompt": "Which two statements about availability sets are true? Choose two.",
+          "options": [
+            "They group VMs (Virtual Machines) into fault domains and update domains",
+            "They help keep an app running during planned maintenance",
+            "They automatically add VMs when traffic grows",
+            "They spread VMs across different regions"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Availability set = fault domain plus update domain. Menambah VM (Virtual Machine) otomatis itu tugas scale set, dan availability set tidak menyebar VM ke region lain.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l2-e7",
+          "type": "yesno",
+          "concept": "vm-scale-sets",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso runs its app on a Virtual Machine Scale Set.",
+          "statements": [
+            {
+              "text": "All VMs (Virtual Machines) in the scale set are created from the same configuration.",
+              "answer": true
+            },
+            {
+              "text": "The scale set can add VMs when CPU (Central Processing Unit) usage is high.",
+              "answer": true
+            },
+            {
+              "text": "Contoso must configure each VM in the scale set by hand.",
+              "answer": false
+            }
+          ],
+          "explanation": "Scale set membuat VM (Virtual Machine) yang identik dari satu konfigurasi dan bisa autoscale, misalnya berdasarkan pemakaian CPU (Central Processing Unit).",
+          "examReady": true
+        },
+        {
+          "id": "u05-l2-e8",
+          "type": "fill",
+          "concept": "vm-scale-sets",
+          "prompt": "Complete the sentence about VMs (Virtual Machines).",
+          "sentence": "Scale sets manage a group of ___ VMs that can scale ___.",
+          "bank": [
+            "identical",
+            "automatically",
+            "different",
+            "manually"
+          ],
+          "answers": [
+            "identical",
+            "automatically"
+          ],
+          "explanation": "Scale set = VM (Virtual Machine) identik yang bisa scale otomatis."
+        }
+      ]
     },
     {
       "id": "u05-l3",
       "title": "Azure Virtual Desktop",
-      "items": []
+      "items": [
+        {
+          "id": "u05-l3-i1",
+          "type": "intro",
+          "concept": "azure-virtual-desktop",
+          "title": "Azure Virtual Desktop",
+          "body": "Azure Virtual Desktop menjalankan desktop dan aplikasi Windows di cloud, lalu pengguna mengaksesnya dari perangkat apa pun. Data tetap di cloud, bukan di perangkat, dan login bisa diamankan dengan MFA (Multi-Factor Authentication)."
+        },
+        {
+          "id": "u05-l3-e1",
+          "type": "truefalse",
+          "concept": "azure-virtual-desktop",
+          "prompt": "With Azure Virtual Desktop, company data stays in the cloud instead of on the user's device.",
+          "answer": true,
+          "explanation": "Benar. Desktop berjalan di Azure; perangkat pengguna hanya menampilkan layarnya.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l3-e2",
+          "type": "choice",
+          "concept": "azure-virtual-desktop",
+          "prompt": "What does Azure Virtual Desktop provide?",
+          "options": [
+            "Windows desktops and apps that run in Azure and are used remotely",
+            "A way to ship hard drives to Azure",
+            "Private connections from on-premises networks to Azure",
+            "Cost estimates for Azure resources"
+          ],
+          "answer": 0,
+          "explanation": "Azure Virtual Desktop = desktop dan aplikasi Windows yang berjalan di Azure dan diakses dari jauh.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l3-e3",
+          "type": "truefalse",
+          "concept": "azure-virtual-desktop",
+          "prompt": "Azure Virtual Desktop supports Windows 11 Enterprise multi-session, so several users can share one VM (Virtual Machine).",
+          "answer": true,
+          "explanation": "Benar. Multi-session membuat beberapa pengguna bisa memakai satu VM (Virtual Machine) sekaligus, jadi lebih hemat.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l3-e4",
+          "type": "match",
+          "concept": "azure-virtual-desktop",
+          "prompt": "Match each service with its purpose.",
+          "pairs": [
+            [
+              "Azure Virtual Desktop",
+              "Remote Windows desktops from the cloud"
+            ],
+            [
+              "Virtual Machine Scale Sets",
+              "Identical VMs (Virtual Machines) that autoscale"
+            ],
+            [
+              "Availability set",
+              "VMs spread over fault and update domains"
+            ],
+            [
+              "Azure Virtual Machines",
+              "One VM with full operating system control"
+            ]
+          ],
+          "explanation": "Azure Virtual Desktop fokus ke desktop untuk pengguna, bukan ke server aplikasi.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l3-e5",
+          "type": "choice",
+          "concept": "azure-virtual-desktop",
+          "prompt": "A company hires 200 contractors for three months. They must use company apps from their own laptops, and no company data may be stored on those laptops. Which service fits best?",
+          "options": [
+            "Azure Virtual Desktop",
+            "Azure Data Box",
+            "Azure DNS (Domain Name System)",
+            "Availability sets"
+          ],
+          "answer": 0,
+          "explanation": "Aplikasi berjalan di cloud dan data tidak pernah disimpan di laptop kontraktor: itu Azure Virtual Desktop.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l3-e6",
+          "type": "multi",
+          "concept": "azure-virtual-desktop",
+          "prompt": "Which two are security benefits of Azure Virtual Desktop? Choose two.",
+          "options": [
+            "Central management of user access with Microsoft Entra ID",
+            "Data is kept separate from the user's device",
+            "Users can copy data to any removable drive by default",
+            "User accounts no longer need to be secured"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Akses dikelola terpusat lewat Microsoft Entra ID, dan data tetap di cloud, terpisah dari perangkat pengguna.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l3-e7",
+          "type": "yesno",
+          "concept": "azure-virtual-desktop",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A school uses Azure Virtual Desktop so students can use lab software from home.",
+          "statements": [
+            {
+              "text": "Students can reach the desktop from their own devices.",
+              "answer": true
+            },
+            {
+              "text": "The lab software must be installed on every student's laptop.",
+              "answer": false
+            },
+            {
+              "text": "Access can be protected with MFA (Multi-Factor Authentication).",
+              "answer": true
+            }
+          ],
+          "explanation": "Software berjalan di Azure, jadi tidak perlu dipasang di tiap laptop. Login tetap bisa dilindungi MFA (Multi-Factor Authentication).",
+          "examReady": true
+        },
+        {
+          "id": "u05-l3-e8",
+          "type": "fill",
+          "concept": "azure-virtual-desktop",
+          "prompt": "Complete the sentence.",
+          "sentence": "Azure Virtual Desktop runs Windows desktops in the ___, and users connect to them ___.",
+          "bank": [
+            "cloud",
+            "remotely",
+            "office",
+            "offline"
+          ],
+          "answers": [
+            "cloud",
+            "remotely"
+          ],
+          "explanation": "Desktop di cloud, diakses dari jauh."
+        }
+      ]
     },
     {
       "id": "u05-l4",
       "title": "Container",
-      "items": []
+      "items": [
+        {
+          "id": "u05-l4-i1",
+          "type": "intro",
+          "concept": "containers",
+          "title": "Container",
+          "body": "Container membungkus aplikasi beserta semua kebutuhannya supaya berjalan sama persis di mana pun. VM (Virtual Machine) memvirtualisasi hardware, sedangkan container memvirtualisasi sistem operasi, jadi lebih ringan dan cepat menyala."
+        },
+        {
+          "id": "u05-l4-e1",
+          "type": "truefalse",
+          "concept": "containers",
+          "prompt": "Containers are more lightweight than virtual machines because they share the host's operating system.",
+          "answer": true,
+          "explanation": "Benar. Container tidak membawa sistem operasi lengkap sendiri, jadi ukurannya kecil dan menyala dalam hitungan detik.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l4-i2",
+          "type": "intro",
+          "concept": "azure-container-instances",
+          "title": "Azure Container Instances",
+          "body": "ACI (Azure Container Instances) adalah cara paling cepat dan sederhana menjalankan container di Azure. Tidak perlu mengelola VM (Virtual Machine) atau layanan tambahan, jadi ini termasuk PaaS (Platform as a Service)."
+        },
+        {
+          "id": "u05-l4-e2",
+          "type": "choice",
+          "concept": "azure-container-instances",
+          "prompt": "What is the simplest way to run a single container in Azure without managing virtual machines?",
+          "options": [
+            "ACI (Azure Container Instances)",
+            "Azure Virtual Desktop",
+            "Availability sets",
+            "Azure Data Box"
+          ],
+          "answer": 0,
+          "explanation": "ACI (Azure Container Instances) = unggah container, jalankan. Tidak ada VM (Virtual Machine) yang perlu diurus.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l4-i3",
+          "type": "intro",
+          "concept": "azure-container-apps",
+          "title": "Azure Container Apps",
+          "body": "Azure Container Apps mirip ACI (Azure Container Instances): cepat dipakai dan tanpa mengelola container host. Bedanya, Container Apps punya fitur tambahan seperti load balancing dan scaling otomatis."
+        },
+        {
+          "id": "u05-l4-e3",
+          "type": "truefalse",
+          "concept": "azure-container-apps",
+          "prompt": "Compared to Azure Container Instances, Azure Container Apps adds features such as load balancing and scaling.",
+          "answer": true,
+          "explanation": "Benar. Keduanya PaaS (Platform as a Service) untuk container, tapi Container Apps menambahkan load balancing dan scaling.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l4-e4",
+          "type": "match",
+          "concept": "containers",
+          "prompt": "Match each term with its meaning.",
+          "pairs": [
+            [
+              "Container",
+              "App packaged with everything it needs"
+            ],
+            [
+              "Virtual machine",
+              "Virtualizes hardware and runs a full operating system"
+            ],
+            [
+              "ACI (Azure Container Instances)",
+              "Run a container quickly with no host to manage"
+            ],
+            [
+              "Azure Container Apps",
+              "Containers with built-in scaling and load balancing"
+            ]
+          ],
+          "explanation": "Container lebih ringan dari VM (Virtual Machine). Untuk container sederhana pakai ACI (Azure Container Instances), untuk yang butuh scaling pakai Container Apps.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l4-e5",
+          "type": "choice",
+          "concept": "azure-container-instances",
+          "prompt": "A team needs to run a small container-based batch job once a day for 10 minutes and wants the fewest things to manage. Which service fits best?",
+          "options": [
+            "ACI (Azure Container Instances)",
+            "A VM (Virtual Machine) running all day",
+            "An availability set",
+            "Azure Virtual Desktop"
+          ],
+          "answer": 0,
+          "explanation": "Job kecil dan singkat: ACI (Azure Container Instances) paling sederhana, dan kamu tidak membayar VM (Virtual Machine) yang menyala seharian.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l4-e6",
+          "type": "multi",
+          "concept": "containers",
+          "prompt": "Which two are benefits of containers compared to virtual machines? Choose two.",
+          "options": [
+            "They start in seconds",
+            "Many containers can run on one host",
+            "Each container runs its own full operating system",
+            "They remove the need to secure your data"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Container cepat menyala dan hemat resource karena berbagi sistem operasi host. Data tetap harus kamu amankan.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l4-e7",
+          "type": "yesno",
+          "concept": "azure-container-apps",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A developer wants to run a web API (Application Programming Interface) in containers that scale out when requests increase.",
+          "statements": [
+            {
+              "text": "Azure Container Apps can scale the containers automatically.",
+              "answer": true
+            },
+            {
+              "text": "The developer must manage virtual machines to use Azure Container Apps.",
+              "answer": false
+            },
+            {
+              "text": "Containers package the app together with its dependencies.",
+              "answer": true
+            }
+          ],
+          "explanation": "Container Apps melakukan scaling otomatis tanpa kamu mengelola VM (Virtual Machine). Container membawa aplikasi beserta dependensinya.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l4-e8",
+          "type": "fill",
+          "concept": "containers",
+          "prompt": "Complete the sentence.",
+          "sentence": "A virtual machine virtualizes the ___, while a container virtualizes the ___ system.",
+          "bank": [
+            "hardware",
+            "operating",
+            "network",
+            "billing"
+          ],
+          "answers": [
+            "hardware",
+            "operating"
+          ],
+          "explanation": "VM (Virtual Machine) = virtualisasi hardware. Container = virtualisasi sistem operasi."
+        }
+      ]
     },
     {
       "id": "u05-l5",
-      "title": "Functions dan App Service",
-      "items": []
+      "title": "AKS, Functions, dan App Service",
+      "items": [
+        {
+          "id": "u05-l5-i1",
+          "type": "intro",
+          "concept": "aks",
+          "title": "AKS",
+          "body": "AKS (Azure Kubernetes Service) adalah layanan untuk mengatur (orchestrate) banyak container sekaligus dengan Kubernetes. Cocok untuk aplikasi besar yang terdiri dari banyak container yang harus di-deploy, di-scale, dan dipantau."
+        },
+        {
+          "id": "u05-l5-e1",
+          "type": "truefalse",
+          "concept": "aks",
+          "prompt": "AKS (Azure Kubernetes Service) is used to orchestrate and manage many containers.",
+          "answer": true,
+          "explanation": "Benar. AKS (Azure Kubernetes Service) mengurus deployment, scaling, dan pemantauan banyak container.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l5-i2",
+          "type": "intro",
+          "concept": "azure-functions",
+          "title": "Azure Functions",
+          "body": "Azure Functions menjalankan potongan kode saat ada event, misalnya HTTP (Hypertext Transfer Protocol) request, timer, atau pesan baru. Serverless: tanpa mengelola server, scale otomatis, dan di consumption plan kamu bayar saat kode berjalan."
+        },
+        {
+          "id": "u05-l5-e2",
+          "type": "choice",
+          "concept": "azure-functions",
+          "prompt": "Which service runs code in response to an event without you managing any servers?",
+          "options": [
+            "Azure Functions",
+            "Azure Virtual Machines",
+            "AKS (Azure Kubernetes Service)",
+            "Availability sets"
+          ],
+          "answer": 0,
+          "explanation": "Kode yang dipicu event tanpa server = Azure Functions.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l5-i3",
+          "type": "intro",
+          "concept": "app-service",
+          "title": "App Service",
+          "body": "Azure App Service adalah PaaS (Platform as a Service) untuk menghosting web app, REST (Representational State Transfer) API (Application Programming Interface), dan mobile back end. Mendukung banyak bahasa di Windows dan Linux, lengkap dengan scaling dan deployment otomatis."
+        },
+        {
+          "id": "u05-l5-e3",
+          "type": "match",
+          "concept": "app-service",
+          "prompt": "Match each service with its best use.",
+          "pairs": [
+            [
+              "App Service",
+              "Host web apps and APIs (Application Programming Interfaces) without managing servers"
+            ],
+            [
+              "Azure Functions",
+              "Event-driven code billed per execution"
+            ],
+            [
+              "AKS (Azure Kubernetes Service)",
+              "Orchestrate large numbers of containers"
+            ],
+            [
+              "Azure Virtual Machines",
+              "Full control of the operating system"
+            ]
+          ],
+          "explanation": "Web app biasa: App Service. Kode kecil berbasis event: Functions. Banyak container: AKS (Azure Kubernetes Service). Butuh kontrol OS (Operating System): VM (Virtual Machine).",
+          "examReady": true
+        },
+        {
+          "id": "u05-l5-e4",
+          "type": "sort",
+          "concept": "aks",
+          "prompt": "Sort each workload.",
+          "buckets": [
+            "Azure Functions",
+            "App Service",
+            "AKS (Azure Kubernetes Service)"
+          ],
+          "items": [
+            {
+              "text": "Run code when a message arrives",
+              "bucket": 0
+            },
+            {
+              "text": "Send a report every night on a schedule",
+              "bucket": 0
+            },
+            {
+              "text": "Host a company website",
+              "bucket": 1
+            },
+            {
+              "text": "Host a REST (Representational State Transfer) API (Application Programming Interface) for a mobile app",
+              "bucket": 1
+            },
+            {
+              "text": "Run a microservices app made of dozens of containers",
+              "bucket": 2
+            },
+            {
+              "text": "Manage container deployments and scaling with Kubernetes",
+              "bucket": 2
+            }
+          ],
+          "explanation": "Event dan jadwal: Functions. Website dan API (Application Programming Interface): App Service. Banyak container: AKS (Azure Kubernetes Service)."
+        },
+        {
+          "id": "u05-l5-e5",
+          "type": "choice",
+          "concept": "app-service",
+          "prompt": "A company wants to host its web app with continuous deployment from GitHub and automatic scaling, without managing virtual machines. Which service fits best?",
+          "options": [
+            "Azure App Service",
+            "AKS (Azure Kubernetes Service)",
+            "Azure Virtual Desktop",
+            "Azure Data Box"
+          ],
+          "answer": 0,
+          "explanation": "App Service adalah PaaS (Platform as a Service) untuk web app, lengkap dengan deployment dari GitHub dan autoscale.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l5-e6",
+          "type": "multi",
+          "concept": "azure-functions",
+          "prompt": "Which two statements about Azure Functions are true? Choose two.",
+          "options": [
+            "Functions can be triggered by events such as HTTP (Hypertext Transfer Protocol) requests or timers",
+            "Functions scale automatically",
+            "You must choose and patch the host operating system",
+            "Functions must run 24 hours a day"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Functions dipicu event dan scale otomatis. Tidak ada OS (Operating System) yang kamu urus, dan kode hanya berjalan saat dibutuhkan.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l5-e7",
+          "type": "yesno",
+          "concept": "aks",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Tailwind Traders runs a website on App Service, image processing in Azure Functions, and a large container app on AKS (Azure Kubernetes Service).",
+          "statements": [
+            {
+              "text": "App Service is a PaaS (Platform as a Service) offering.",
+              "answer": true
+            },
+            {
+              "text": "Azure Functions requires Tailwind Traders to manage virtual machines.",
+              "answer": false
+            },
+            {
+              "text": "AKS helps manage many containers.",
+              "answer": true
+            }
+          ],
+          "explanation": "App Service = PaaS (Platform as a Service). Functions = serverless, tanpa VM (Virtual Machine). AKS (Azure Kubernetes Service) = orkestrasi container.",
+          "examReady": true
+        },
+        {
+          "id": "u05-l5-e8",
+          "type": "fill",
+          "concept": "azure-functions",
+          "prompt": "Complete the sentence.",
+          "sentence": "Azure Functions runs code in response to ___ and is a ___ compute option.",
+          "bank": [
+            "events",
+            "serverless",
+            "hardware",
+            "private"
+          ],
+          "answers": [
+            "events",
+            "serverless"
+          ],
+          "explanation": "Functions = dipicu event, serverless."
+        }
+      ]
     }
   ]
 }
