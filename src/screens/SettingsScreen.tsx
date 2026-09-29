@@ -3,6 +3,8 @@ import { Button } from '../components/Button'
 import { Toggle } from '../components/Toggle'
 import type { DailyGoal } from '../lib/types'
 import { useProgress } from '../store/progress'
+import { useSync } from '../sync/sync'
+import { SyncSection } from './SyncCard'
 
 const GOALS: { value: DailyGoal; label: string }[] = [
   { value: 20, label: 'Santai' },
@@ -33,6 +35,7 @@ function SwitchRow({ label, hint, checked, onChange }: { label: string; hint: st
 
 export function SettingsScreen() {
   const s = useProgress()
+  const synced = useSync((x) => x.code !== null)
   const [confirming, setConfirming] = useState(false)
 
   return (
@@ -74,9 +77,14 @@ export function SettingsScreen() {
         </div>
       </Card>
 
+      <Card title="Sinkron HP dan PC">
+        <SyncSection />
+      </Card>
+
       <Card title="Reset progres">
         <p className="mt-1 text-15 text-tinta-lembut">
-          Hapus XP, streak, lesson yang sudah selesai, antrean latihan, dan riwayat ujian di perangkat ini. Tidak bisa dibatalkan.
+          Hapus XP, streak, lesson yang sudah selesai, antrean latihan, dan riwayat ujian{' '}
+          {synced ? 'di semua perangkat yang tersinkron' : 'di perangkat ini'}. Tidak bisa dibatalkan.
         </p>
         {confirming ? (
           <div className="mt-4 grid grid-cols-2 gap-3">

@@ -136,8 +136,18 @@ export type Progress = {
   /** Checkpoint id ("cp1") -> best score (0..1) and when it was first passed. */
   checkpoints: Record<string, { bestScore: number; passedAt?: string }>
   unitLevel: Record<string, 0 | 1 | 2 | 3>
-  review: Record<string, { dueDay: string; correctStreak: number }> // key: exercise id
+  /** Key: exercise id. `at` (ISO time of the last change) lets sync pick the newest entry. */
+  review: Record<string, { dueDay: string; correctStreak: number; at?: string }>
   conceptStats: Record<string, { right: number; wrong: number }>
   examHistory: ExamAttempt[]
   activeExam?: ExamAttempt
+  // Sync bookkeeping (stage 8). ISO times that let two devices merge their progress.
+  /** Exercise id -> when it left the review queue, so the removal reaches other devices. */
+  reviewRemoved: Record<string, string>
+  /** Last change to the daily goal, hearts switch, or sound switch. */
+  settingsAt?: string
+  /** Last time a heart was lost or won. A new day's refill leaves it empty. */
+  heartsAt?: string
+  /** Last "Reset progres": everything from before it is dropped on every device. */
+  resetAt?: string
 }

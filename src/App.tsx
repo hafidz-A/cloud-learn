@@ -17,6 +17,7 @@ import { PracticeScreen } from './screens/PracticeScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
 import { StatsScreen } from './screens/StatsScreen'
 import { useProgress } from './store/progress'
+import { startSync } from './sync/sync'
 
 function TabScreen({ tab }: { tab: Tab }) {
   switch (tab) {
@@ -63,6 +64,9 @@ export function App() {
     document.addEventListener('visibilitychange', onVisible)
     return () => document.removeEventListener('visibilitychange', onVisible)
   }, [refreshDay])
+
+  // Progress sync between devices; does nothing until a sync code is set in Settings.
+  useEffect(() => startSync(), [])
 
   return (
     // reducedMotion="user" turns off transform animations when the OS asks for less motion.

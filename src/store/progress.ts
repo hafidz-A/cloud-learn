@@ -25,6 +25,10 @@ export const initialProgress: Progress = {
   conceptStats: {},
   examHistory: [],
   activeExam: undefined,
+  reviewRemoved: {},
+  settingsAt: undefined,
+  heartsAt: undefined,
+  resetAt: undefined,
 }
 
 type Actions = {
@@ -57,6 +61,8 @@ type Actions = {
 
 export type ProgressStore = Progress & Actions
 
+const now = () => new Date().toISOString()
+
 function addXp(s: Progress, xp: number, today: string): Pick<Progress, 'xp' | 'xpByDay'> {
   return { xp: s.xp + xp, xpByDay: { ...s.xpByDay, [today]: (s.xpByDay[today] ?? 0) + xp } }
 }
@@ -77,26 +83,38 @@ export const useProgress = create<ProgressStore>()(
       refreshDay: () =>
         set((s) => {
           const today = dayKey()
-          return s.heartsDay === today ? s : { hearts: MAX_HEARTS, heartsDay: today }
+          // The refill carries no time, so a heart lost today on another device still wins in sync.
+          return s.heartsDay === today ? s : { hearts: MAX_HEARTS, heartsDay: today, heartsAt: undefined }
         }),
 
       recordAnswer: (exerciseId, concept, correct) =>
-        set((s) => ({
-          conceptStats: bumpConcept(s, concept, correct),
-          review: correct ? s.review : { ...s.review, [exerciseId]: missed(dayKey()) },
-        })),
+        set((s) => {
+          if (correct) return { conceptStats: bumpConcept(s, concept, correct) }
+          const { [exerciseId]: _, ...reviewRemoved } = s.reviewRemoved
+          return {
+            conceptStats: bumpConcept(s, concept, correct),
+            review: { ...s.review, [exerciseId]: { ...missed(dayKey()), at: now() } },
+            reviewRemoved,
+          }
+        }),
 
       recordReview: (exerciseId, concept, correct) =>
         set((s) => {
           const next = scheduleReview(s.review[exerciseId], correct, dayKey())
           const review = { ...s.review }
-          if (next) review[exerciseId] = next
-          else delete review[exerciseId]
-          return { conceptStats: bumpConcept(s, concept, correct), review }
+          const reviewRemoved = { ...s.reviewRemoved }
+          if (next) {
+            review[exerciseId] = { ...next, at: now() }
+            delete reviewRemoved[exerciseId]
+          } else {
+            delete review[exerciseId]
+            reviewRemoved[exerciseId] = now()
+          }
+          return { conceptStats: bumpConcept(s, concept, correct), review, reviewRemoved }
         }),
 
-      loseHeart: () => set((s) => (s.heartsEnabled ? { hearts: Math.max(0, s.hearts - 1) } : s)),
-      gainHeart: () => set((s) => ({ hearts: Math.min(MAX_HEARTS, s.hearts + 1) })),
+      loseHeart: () => set((s) => (s.heartsEnabled ? { hearts: Math.max(0, s.hearts - 1), heartsAt: now() } : s)),
+      gainHeart: () => set((s) => (s.hearts < MAX_HEARTS ? { hearts: s.hearts + 1, heartsAt: now() } : s)),
 
       completeLesson: (lessonId, accuracy, xp, unitId, unitLessonIds) =>
         set((s) => {
@@ -144,9 +162,9 @@ export const useProgress = create<ProgressStore>()(
           }
         }),
 
-      setDailyGoal: (dailyGoal) => set({ dailyGoal }),
-      setHeartsEnabled: (heartsEnabled) => set({ heartsEnabled }),
-      setSoundEnabled: (soundEnabled) => set({ soundEnabled }),
+      setDailyGoal: (dailyGoal) => set({ dailyGoal, settingsAt: now() }),
+      setHeartsEnabled: (heartsEnabled) => set({ heartsEnabled, settingsAt: now() }),
+      setSoundEnabled: (soundEnabled) => set({ soundEnabled, settingsAt: now() }),
 
       startExam: (attempt) => set({ activeExam: attempt }),
       updateExam: (patch) => set((s) => (s.activeExam ? { activeExam: { ...s.activeExam, ...patch } } : s)),
@@ -154,7 +172,7 @@ export const useProgress = create<ProgressStore>()(
         set((s) => ({ activeExam: undefined, examHistory: [...s.examHistory, attempt].slice(-EXAM_HISTORY_LIMIT) })),
       abandonExam: () => set({ activeExam: undefined }),
 
-      resetProgress: () => set({ ...initialProgress }),
+      resetProgress: () => set({ ...initialProgress, resetAt: now() }),
     }),
     {
       name: 'langit-progress',

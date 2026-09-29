@@ -35,7 +35,8 @@ Cara memasang dan memakai Langit di HP ada di [`PANDUAN.md`](PANDUAN.md).
 - [x] Tahap 7: maskot 4 ekspresi, suara, PWA offline, tes aksesibilitas (axe, WCAG 2.1 AA),
       `prefers-reduced-motion`
 - [x] Halaman Ujian (bagian 12): simulasi penuh, mini ujian per domain, titik lemah, riwayat, siap ujian
-- [ ] Tahap 8 (opsional): sinkron progres lewat Supabase
+- [x] Tahap 8: sinkron progres antar-perangkat lewat Supabase dengan kode sinkron, tanpa akun
+      (`src/sync/`, SQL di `supabase/migrations/`)
 
 ## Struktur
 

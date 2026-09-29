@@ -48,7 +48,42 @@ Nama menu bisa sedikit berbeda tergantung versi dan bahasa browser. Buka Langit 
 setelah itu Langit tetap jalan walaupun internet mati. Versi baru terpasang otomatis saat Langit dibuka
 dalam keadaan online.
 
-## 3. Pengaturan awal
+## 3. Sinkron HP dan PC
+
+Tanpa sinkron, progres hanya ada di perangkat tempat kamu belajar. Dengan sinkron, progres disimpan juga di
+server, jadi sama di HP dan PC, dan tidak hilang walaupun ikon Langit terhapus atau HP hilang.
+
+**Di perangkat pertama** (misalnya iPhone):
+
+1. Buka Pengaturan (ikon gerigi), cari kartu **Sinkron HP dan PC**, lalu ketuk **Buat kode sinkron**.
+2. Muncul kode 16 huruf dan angka, misalnya `ABCD-EFGH-JKLM-NPQR`. Ketuk **Salin**, lalu simpan di tempat
+   aman, misalnya di aplikasi Catatan atau screenshot. Kode ini adalah kunci progresmu.
+
+**Di perangkat kedua** (misalnya PC):
+
+1. Buka Pengaturan, lalu klik **Saya sudah punya kode**.
+2. Ketik kodenya (huruf kecil dan tanpa tanda strip juga boleh), lalu klik **Sambungkan**.
+3. Progres kedua perangkat digabung. Tidak ada yang hilang: lesson yang selesai di mana pun tetap dihitung
+   selesai, dan nilai terbaiknya yang dipakai.
+
+Setelah tersambung, sinkron berjalan sendiri: saat Langit dibuka, beberapa detik setelah kamu belajar, dan
+saat internet kembali. Tanpa internet, Langit tetap jalan seperti biasa dan menyinkron nanti. Tombol
+**Sinkronkan sekarang** memaksa sinkron saat itu juga.
+
+Kalau ikon Langit terhapus atau ganti HP: pasang lagi, buka Pengaturan → **Saya sudah punya kode**, masukkan
+kode yang kamu simpan, dan progresmu kembali.
+
+Yang perlu diingat:
+
+- Siapa pun yang tahu kodenya bisa melihat dan mengubah progresmu, jadi jangan dibagikan.
+- **Reset progres** di satu perangkat ikut mereset semua perangkat yang tersambung.
+- Ujian yang sedang berjalan tidak ikut disinkron; selesaikan ujian di perangkat tempat kamu memulainya.
+- Server sinkron memakai paket gratis Supabase. Kalau Langit tidak dibuka sama sekali selama sekitar
+  seminggu, Supabase bisa menidurkan server-nya; status sinkron akan menampilkan pesan gagal. Progres di
+  perangkat tetap aman. Buka project **langit** di <https://supabase.com/dashboard> lalu klik **Restore**
+  untuk membangunkannya.
+
+## 4. Pengaturan awal
 
 Ketuk ikon **gerigi** di kanan atas:
 
@@ -56,7 +91,7 @@ Ketuk ikon **gerigi** di kanan atas:
 - **Hearts**: biarkan menyala supaya lebih fokus. Matikan kalau terasa menghambat.
 - **Suara**: nyalakan atau matikan sesuai tempat belajar.
 
-## 4. Rutinitas 1,5 jam per hari
+## 5. Rutinitas 1,5 jam per hari
 
 | Waktu | Kegiatan | Di mana |
 |---|---|---|
@@ -70,7 +105,7 @@ Rencana kasar sampai siap ujian:
 2. **Minggu 2**: satu **Simulasi penuh** (50 soal, 45 menit) per hari, diselingi **Ujian titik lemah**.
 3. Daftar ujian AZ-900 setelah indikator **Siap ujian** menyala, yaitu rata-rata 3 simulasi penuh terakhir minimal 800.
 
-## 5. Cara kerja fiturnya
+## 6. Cara kerja fiturnya
 
 - **Lesson**: kartu **Konsep baru** memperkenalkan konsep, lalu soal naik dari mudah ke sulit. Soal yang
   salah muncul lagi di akhir lesson, dan lesson baru selesai setelah semua soal pernah dijawab benar.
@@ -93,16 +128,16 @@ Rencana kasar sampai siap ujian:
   **→** dan **←** pindah ke soal berikutnya dan sebelumnya. Kartu bisa diseret dengan mouse, dan
   kepanjangan singkatan muncul saat kursor diarahkan ke singkatan itu.
 
-## 6. Hal yang perlu diingat
+## 7. Hal yang perlu diingat
 
-- **Progres tersimpan di perangkat dan browser itu saja.** Progres di iPhone dan di PC tidak tersambung,
-  jadi sebaiknya pilih satu perangkat utama. Menghapus data browser, menghapus ikon Langit (uninstall),
-  atau pindah HP akan memulai dari nol. Sinkron antar-perangkat (tahap 8, Supabase) belum dibuat.
+- **Tanpa sinkron, progres tersimpan di perangkat dan browser itu saja.** Menghapus data browser, menghapus
+  ikon Langit (uninstall), atau pindah HP akan memulai dari nol. Nyalakan sinkron (bagian 3) supaya progres
+  aman dan sama di semua perangkat.
 - Skor di halaman Ujian adalah perkiraan. Microsoft memakai skala skor sendiri.
 - Soal ditulis mengikuti materi AZ-900 terbaru. Kalau menemukan soal yang janggal, catat ID-nya (terlihat
   di pembahasan) supaya bisa diperbaiki.
 
-## 7. Untuk developer (opsional)
+## 8. Untuk developer (opsional)
 
 ```bash
 npm install
