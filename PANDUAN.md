@@ -15,20 +15,38 @@ utama HP, Langit terbuka seperti aplikasi biasa dan tetap bisa dipakai tanpa int
 
 Setelah ini, setiap perubahan yang di-push ke branch `az900` otomatis ter-deploy ulang.
 
-## 2. Pasang di HP
+## 2. Pasang di HP dan PC
+
+**iPhone (Safari)**
+
+1. Buka <https://hafidz-a.github.io/cloud-learn/> di **Safari**.
+2. Ketuk tombol **Bagikan** (kotak dengan panah ke atas). Di iOS 26, tombol ini ada di dalam menu **•••**
+   di bilah bawah; di iOS 18 ke bawah, tombolnya ada langsung di bilah bawah.
+3. Gulir daftar pilihannya, lalu ketuk **Tambahkan ke Layar Utama**. Kalau ada pilihan
+   **Buka sebagai App Web**, biarkan menyala. Ketuk **Tambah**.
+4. Mulai sekarang, selalu buka Langit dari **ikon di layar utama**. Di iPhone, data di ikon layar utama
+   terpisah dari data di tab Safari, jadi progres di tab Safari tidak ikut pindah ke ikon.
 
 **Android (Chrome)**
 
 1. Buka <https://hafidz-a.github.io/cloud-learn/> di Chrome.
 2. Ketuk menu **⋮** di kanan atas, lalu **Instal aplikasi** atau **Tambahkan ke layar utama**.
-3. Ikon awan biru "Langit" muncul di layar utama.
 
-**iPhone (Safari)**
+**PC Windows (Chrome atau Edge)**
 
-1. Buka alamat yang sama di Safari (harus Safari, bukan Chrome).
-2. Ketuk tombol **Bagikan** (kotak dengan panah ke atas), lalu **Tambahkan ke Layar Utama**, lalu **Tambah**.
+1. Buka <https://hafidz-a.github.io/cloud-learn/> di Chrome atau Microsoft Edge.
+2. Klik ikon **Instal** di ujung kanan kolom alamat (gambar monitor dengan panah ke bawah), lalu **Instal**.
+   Kalau ikonnya tidak ada:
+   - Chrome: menu **⋮** → **Cast, save, and share** → **Install page as app**.
+   - Edge: menu **…** → **Apps** → **Install this site as an app**.
+3. Langit terbuka di jendela sendiri dan muncul di menu Start. Klik kanan ikonnya di taskbar, lalu
+   **Pin to taskbar** supaya gampang dibuka.
+4. Langit dirancang selebar layar HP, jadi di PC tampil sebagai kolom di tengah. Jendelanya boleh
+   dipersempit.
 
-Buka Langit sekali saat online. Setelah itu Langit tetap jalan walaupun sinyal hilang.
+Nama menu bisa sedikit berbeda tergantung versi dan bahasa browser. Buka Langit sekali saat online;
+setelah itu Langit tetap jalan walaupun internet mati. Versi baru terpasang otomatis saat Langit dibuka
+dalam keadaan online.
 
 ## 3. Pengaturan awal
 
@@ -70,11 +88,16 @@ Rencana kasar sampai siap ujian:
 - **Ujian**: tiga mode, timer, grid nomor soal, dan tanda bendera untuk soal yang mau ditinjau. Kalau app
   tertutup di tengah ujian, jawaban dan sisa waktu tersimpan. Soal yang salah otomatis masuk antrean Latihan.
 - **Statistik**: XP 7 hari terakhir, penguasaan per unit, dan per konsep (yang paling lemah di atas).
+- **Keyboard di PC**: **Enter** untuk Lanjut dan Periksa, angka **1–4** untuk memilih jawaban,
+  panah **→** (Benar) dan **←** (Salah) di kartu benar/salah, **Esc** untuk menutup panel di lesson. Di Ujian, panah
+  **→** dan **←** pindah ke soal berikutnya dan sebelumnya. Kartu bisa diseret dengan mouse, dan
+  kepanjangan singkatan muncul saat kursor diarahkan ke singkatan itu.
 
 ## 6. Hal yang perlu diingat
 
-- **Progres tersimpan di perangkat itu saja.** Menghapus data browser, uninstall, atau pindah HP akan
-  memulai dari nol. Sinkron antar-perangkat (tahap 8, Supabase) belum dibuat.
+- **Progres tersimpan di perangkat dan browser itu saja.** Progres di iPhone dan di PC tidak tersambung,
+  jadi sebaiknya pilih satu perangkat utama. Menghapus data browser, menghapus ikon Langit (uninstall),
+  atau pindah HP akan memulai dari nol. Sinkron antar-perangkat (tahap 8, Supabase) belum dibuat.
 - Skor di halaman Ujian adalah perkiraan. Microsoft memakai skala skor sendiri.
 - Soal ditulis mengikuti materi AZ-900 terbaru. Kalau menemukan soal yang janggal, catat ID-nya (terlihat
   di pembahasan) supaya bisa diperbaiki.
