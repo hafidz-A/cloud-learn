@@ -68,6 +68,48 @@ di app (cloud concepts 25–30%, architecture and services 35–40%, management 
   masuk daftar materi AZ-900, jadi tidak dimasukkan ke soal.
 - **Availability set:** Microsoft kini merekomendasikan VM Scale Sets mode Flexible untuk ketersediaan tinggi.
 
-## AZ-104
+## AZ-104: fakta di rencana (29 September 2026)
 
-Lihat bagian AZ-104 di bawah (diisi saat rencana dan materi AZ-104 dicek).
+Semua "Fakta wajib akurat" di `LANGIT_AZ104_PLAN.md` bagian 5 dan info ujian di bagian 1 dicek dengan
+cara yang sama. Materi AZ-104 di app akan ditulis dari fakta yang sudah dicek ini; setiap fakta baru saat
+menulis materi dicek dengan cara yang sama dan dicatat di bawah per unit.
+
+### Info ujian
+
+| Klaim | Hasil | Bukti |
+|---|---|---|
+| Lima domain dan bobotnya (20–25, 15–20, 20–25, 15–20, 10–15) | Benar | Hasil pencarian halaman study guide dan halaman training di learn.microsoft.com |
+| 100 menit tanpa lab (seat time 120), 120 menit dengan lab (seat time 140) | Benar | Halaman "Exam duration and exam experience" |
+| Versi study guide | Belum pasti | Teks study guide tidak bisa dibaca dari sini; beberapa situs menyebut pembaruan 17 September 2026. Cek change log resminya sebelum ujian |
+
+### Per unit
+
+| Unit | Fakta | Hasil | Sumber (file di MicrosoftDocs) |
+|---|---|---|---|
+| 1 | Dynamic group butuh P1 atau Intune for Education per user unik; tidak bisa diubah manual | Benar. Tambahan: device tidak butuh lisensi; user saja atau device saja | entra `groups-dynamic-membership.md`, `concept-learn-about-groups.md` |
+| 1 | Security group: user atau device; Microsoft 365 group: user saja | Benar, dipertajam: security group juga service principal dan nested group | entra `concept-learn-about-groups.md` |
+| 1 | Group-based licensing butuh P1+ atau paket seperti Office 365 E3 | Benar (juga Microsoft 365 Business Premium, A3, G3) | Pencarian: dokumentasi Microsoft 365 admin "manage group licenses" |
+| 1 | Usage location wajib; di group licensing user tanpa usage location memakai lokasi direktori | Benar | Pencarian: "licensing-group-advanced" |
+| 1 | Lisensi SSPR (change di Free; reset di Business Standard+ atau P1/P2; writeback di Business Premium atau P1/P2) | Benar, sama persis dengan tabel sumber. Admin sudah aktif SSPR secara default dengan kebijakan dua bukti | entra `concept-sspr-licensing.md`, `concept-sspr-policy.md` |
+| 2 | Azure role dan Entra role terpisah; pewarisan management group > subscription > resource group > resource | Benar | `rbac-and-directory-admin-roles.md`, `scope-overview.md` |
+| 3 | Tag tidak diwariskan; lock Delete vs ReadOnly, berlaku juga untuk Owner | Benar | `tag-resources.md`, `lock-resources.md` |
+| 3 | Efek policy dan remediation | Benar, dilengkapi daftar efek, urutan evaluasi, dan managed identity | `effect-basics.md`, `remediate-resources.md` |
+| 4 | 5 IP dicadangkan per subnet, /27 = 27 terpakai | Benar; subnet terkecil /29 | `virtual-networks-faq.md` |
+| 4 | Public IP Basic pensiun 30 September 2025; Standard statis dan tertutup | Benar | `public-ip-addresses.md` |
+| 4 | Peering tidak transitif | Benar | `virtual-networks-faq.md` |
+| 4 | (baru) Subnet privat default di VNet baru | Ditambahkan | `default-outbound-access.md` |
+| 5 | Prioritas dan aturan default NSG; subnet dulu lalu NIC untuk masuk, dibalik untuk keluar | Benar | `network-security-groups-overview.md`, `network-security-group-how-it-works.md` |
+| 5 | Syarat AzureBastionSubnet dan SKU Developer | Benar, dilengkapi pengecualian public IP (Developer, Private-only) | `configuration-settings.md`, `bastion-faq.md`, `bastion-sku-comparison.md` |
+| 6 | Auto-registration private DNS zone | Benar, sama persis | `private-dns-autoregistration.md` |
+| 6 | Probe dari 168.63.129.16, tag AzureLoadBalancer; Load Balancer Basic pensiun | Benar | `load-balancer-custom-probe-overview.md`, `load-balancer-overview.md` |
+| 6 | Inbound NAT rule vs load-balancing rule | Dipertajam (port forwarding, tanpa probe, versi 2) | `inbound-nat-rules.md` |
+| 7 | Prasyarat object replication | Benar, sama persis | `object-replication-overview.md` |
+| 8 | Jenis SAS, stored access policy (maks 5 per container), dua access key, sumber identitas Azure Files | Benar | `storage-sas-overview.md`, `storage-account-keys-manage.md`, `storage-files-active-directory-overview.md` |
+| 9 | Soft delete 1–365 hari, container default 7 hari, container soft delete hanya utuh | Benar | `soft-delete-container-overview.md`, `soft-delete-blob-overview.md` |
+| 10 | Mode incremental dan complete, what-if, batasan complete | Benar; tambahan: complete tidak direkomendasikan dan akan dihentikan bertahap | `deployment-modes.md` |
+| 11 | Resize, deallocate, availability set | Benar | `sizes/resize-vm.md`, `availability-set-overview.md` |
+| 11 | Encryption at host | Benar; tambahan: ADE pensiun 15 September 2028 | `disk-encryption-overview.md` |
+| 12 | Tier ACR, restart policy ACI, scaling Container Apps | Benar; nuansa Never; zone redundancy ACR | `container-registry-skus.md`, `container-instances-restart-policy.md`, `scale-app.md` |
+| 13 | Custom domain, managed certificate, backup, VNet integration, slot, autoscale | Benar, dipertajam (tier Shared, TXT asuid, Automatic scaling Premium v2–v4) | `app-service-web-tutorial-custom-domain.md`, `manage-backup.md`, `overview-vnet-integration.md`, `deploy-staging-slots.md`, `manage-automatic-scaling.md` |
+| 15 | Recovery Services vault vs Backup vault | Benar, sama persis dengan tabel FAQ | `backup-azure-backup-faq.yml` |
+| 15 | Urutan Site Recovery: failover, commit, re-protect | Benar; commit menghapus recovery point lain | `azure-to-azure-tutorial-failover-failback.md` |

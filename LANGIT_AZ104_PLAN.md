@@ -15,7 +15,7 @@ Semua fakta di file ini sudah dicek ke dokumentasi Microsoft pada September 2026
 
 | Hal | Isi |
 |---|---|
-| Daftar materi | Study guide AZ-104 di Microsoft Learn, versi materi yang berlaku sejak 17 April 2026 |
+| Daftar materi | Study guide AZ-104 di Microsoft Learn, versi materi yang berlaku sejak 17 April 2026. Beberapa situs pihak ketiga menyebut pembaruan lagi pada 17 September 2026; study guide resmi tidak bisa dibaca dari lingkungan pengembangan, jadi cek bagian change log-nya sebelum ujian |
 | Nilai lulus | 700 dari skala 1.000 |
 | Waktu menjawab | 100 menit, dengan total waktu di kursi sekitar 120 menit. Ini standar Microsoft untuk ujian role-based tanpa lab. Kalau ujiannya memuat lab, waktu menjawab jadi 120 menit |
 | Jumlah soal | Tidak tetap. Microsoft menyebut kebanyakan ujian berisi sekitar 40–60 soal |
@@ -125,8 +125,8 @@ Semua butir di daftar materi resmi AZ-104 sudah tercakup (lihat bagian 15).
 | 5. Reset password mandiri | `sspr`, `sspr-licensing`, `sspr-scope` | Choice: aktifkan SSPR (Self-Service Password Reset) untuk satu group | `SsprLicensing` |
 
 Fakta wajib akurat:
-- Dynamic group butuh lisensi Microsoft Entra ID P1 (atau Intune for Education) untuk setiap user unik di dalamnya. Anggota dynamic group tidak bisa ditambah atau dihapus manual.
-- Security group bisa berisi user atau device. Microsoft 365 group hanya bisa berisi user.
+- Dynamic group (sekarang disebut *dynamic membership group*) butuh lisensi Microsoft Entra ID P1 (atau Intune for Education) untuk setiap user unik di dalamnya; device tidak butuh lisensi. Satu dynamic group berisi user saja atau device saja, tidak keduanya. Anggotanya tidak bisa ditambah atau dihapus manual.
+- Security group bisa berisi user, device, service principal, dan group lain (nested). Microsoft 365 group hanya bisa berisi user.
 - Group-based licensing butuh Entra ID P1 atau lebih tinggi, atau paket Office 365 tertentu seperti E3.
 - User harus punya usage location sebelum diberi lisensi. Lewat group-based licensing, user tanpa usage location memakai lokasi direktori.
 - Lisensi SSPR: di Entra ID Free, user cloud-only hanya bisa **mengganti** password yang masih diingat, dan SSPR berlaku untuk administrator. **Reset** password untuk user cloud-only butuh Microsoft 365 Business Standard ke atas, atau Entra ID P1/P2. Reset dengan writeback ke on-premises butuh Microsoft 365 Business Premium, atau Entra ID P1/P2.
@@ -160,6 +160,7 @@ Tips praktik: beri role Reader ke user di satu resource group, lalu login sebaga
 
 Fakta wajib akurat:
 - Tag tidak diwariskan dari resource group secara default. Azure Policy bisa menambahkan atau mewariskan tag.
+- Efek policy: append, audit, auditIfNotExists, deny, denyAction, deployIfNotExists, disabled, manual, modify (plus addToNetworkGroup dan mutate untuk kasus khusus). Remediation untuk deployIfNotExists dan modify berjalan dengan managed identity milik policy assignment, yang harus diberi role RBAC secukupnya.
 - Lock tipe Delete (tampil sebagai CanNotDelete) masih mengizinkan perubahan tapi memblokir penghapusan. Lock ReadOnly memblokir keduanya. Lock berlaku untuk semua orang, termasuk Owner.
 
 Tips praktik: pasang policy "Allowed locations" lalu coba melanggarnya; buat budget $5 dengan alert.
@@ -177,7 +178,8 @@ Tips praktik: pasang policy "Allowed locations" lalu coba melanggarnya; buat bud
 | 5. Troubleshooting koneksi | `ip-flow-verify`, `next-hop`, `connection-troubleshoot` | Fix: pakai hasil IP flow verify untuk menemukan aturan yang memblokir VM | |
 
 Fakta wajib akurat:
-- Azure mencadangkan 5 alamat IP di setiap subnet, jadi subnet /27 punya 27 alamat terpakai.
+- Azure mencadangkan 5 alamat IP di setiap subnet (4 pertama dan 1 terakhir), jadi subnet /27 punya 27 alamat terpakai. Subnet IPv4 terkecil adalah /29.
+- VNet baru memakai subnet privat secara default (portal sudah lebih dulu; lewat API untuk versi setelah 31 Maret 2026). VM di subnet privat butuh metode outbound eksplisit, misalnya NAT gateway, untuk menjangkau internet; tanpa itu, misalnya Windows Update dan aktivasi Windows tidak berjalan.
 - Public IP SKU Basic sudah pensiun pada 30 September 2025. Public IP baru memakai SKU Standard, yang hanya statis dan tertutup untuk trafik masuk kecuali diizinkan network security group.
 - VNet peering tidak transitif.
 
@@ -196,7 +198,7 @@ Tips praktik: buat dua VNet dengan peering dan ping antar-VM, lalu tambahkan VNe
 Fakta wajib akurat:
 - Aturan NSG (Network Security Group) diproses berdasarkan nomor prioritas, angka terkecil lebih dulu. Aturan buatan sendiri memakai prioritas 100–4096. Aturan default tidak bisa dihapus: AllowVNetInBound (65000), AllowAzureLoadBalancerInBound (65001), dan DenyAllInBound (65500), dengan pasangan aturan default untuk arah keluar.
 - Untuk trafik masuk, NSG subnet diproses lebih dulu, lalu NSG NIC (Network Interface Card). Keduanya harus mengizinkan. Untuk trafik keluar, urutannya dibalik.
-- Untuk Bastion selain SKU Developer: subnet wajib bernama AzureBastionSubnet, berukuran minimal /26, dan tidak boleh berisi resource lain. User-defined route tidak didukung di subnet itu. Public IP-nya harus SKU Standard dan statis.
+- Untuk Bastion selain SKU Developer: subnet wajib bernama AzureBastionSubnet, berukuran minimal /26, di VNet dan resource group yang sama dengan Bastion, dan tidak boleh berisi resource lain. User-defined route tidak didukung di subnet itu. Public IP-nya harus SKU Standard dan statis (kecuali deployment Private-only di SKU Premium). Ada empat SKU: Developer, Basic, Standard, Premium; host scaling dan custom port butuh Standard ke atas.
 - Bastion SKU Developer gratis, tidak butuh AzureBastionSubnet (memakai resource bersama milik Microsoft), hanya bisa menyambung ke satu VM dalam satu waktu, tidak mendukung VNet peering, hanya tersedia di region tertentu, dan tidak cocok untuk production.
 
 Tips praktik: blokir port 80 di NIC tapi izinkan di subnet, lalu lihat hasilnya di Effective security rules. Untuk mencoba Bastion tanpa biaya, pakai SKU Developer di region yang mendukungnya (cek daftar region di dokumentasi Bastion). Bastion SKU lain berlabel "hati-hati".
@@ -213,7 +215,7 @@ Tips praktik: blokir port 80 di NIC tapi izinkan di subnet, lalu lihat hasilnya 
 Fakta wajib akurat:
 - Auto-registration di private DNS zone hanya untuk VM, dan hanya untuk NIC utama VM. Satu VNet hanya bisa di-link ke satu private DNS zone dengan auto-registration aktif, tapi banyak VNet boleh di-link ke satu zone. Auto-registration tidak membuat record PTR (pointer untuk reverse DNS). Record dihapus otomatis saat VM dihapus atau dihentikan.
 - Health probe load balancer berasal dari alamat 168.63.129.16. Aturan default NSG AllowAzureLoadBalancerInBound mengizinkannya lewat service tag AzureLoadBalancer. Aturan deny dengan prioritas lebih tinggi bisa memblokir probe dan membuat semua backend dianggap mati.
-- Inbound NAT (Network Address Translation) rule meneruskan trafik ke satu backend tertentu. Load-balancing rule membagi trafik ke seluruh backend pool.
+- Inbound NAT (Network Address Translation) rule adalah port forwarding: satu port frontend diteruskan ke VM tertentu, tanpa health probe (versi 2 memetakan satu rentang port ke seluruh backend pool, satu port per VM). Load-balancing rule membagi trafik ke seluruh backend pool dan memakai health probe.
 - Load Balancer SKU Basic sudah pensiun pada 30 September 2025. Pakai SKU Standard.
 
 Catatan: Application Gateway tidak ada di daftar materi resmi AZ-104, jadi tidak dijadikan lesson. Boleh disebut di penjelasan sebagai pembanding layer 4 (Load Balancer) dengan layer 7.
@@ -286,6 +288,7 @@ Fakta wajib akurat:
 - Di mode incremental, semua properti resource yang di-deploy ulang diterapkan ulang. Properti yang tidak ditulis di template kembali ke nilai default, bukan dipertahankan.
 - Portal Azure tidak mendukung mode complete. Deployment di level subscription juga tidak mendukung mode complete. Mode complete tidak menghapus resource di resource group yang dikunci.
 - Jalankan what-if sebelum deploy mode complete untuk melihat apa yang akan terhapus.
+- Microsoft kini menyebut mode complete "tidak direkomendasikan" dan akan dihentikan bertahap; untuk menghapus resource lewat template, pakai deployment stacks. Materi tetap mengajarkan mode complete (masih bisa keluar di ujian), dengan catatan ini.
 
 Tips praktik: export template dari resource group lab sebelumnya, ubah jadi Bicep, lalu deploy ke resource group baru.
 
@@ -304,6 +307,7 @@ Fakta wajib akurat:
 - Kalau ukuran baru tersedia di cluster hardware saat ini, resize hanya butuh restart. Kalau tidak, VM harus di-deallocate dulu. Di availability set, semua VM dalam set harus di-deallocate sebelum resize ke ukuran yang butuh hardware berbeda.
 - Availability set punya maksimal 3 fault domain dan maksimal 20 update domain (default 5). Pengaturan ini tidak bisa diubah setelah availability set dibuat.
 - Fault domain berbagi sumber listrik dan switch jaringan. Update domain di-restart bergantian saat maintenance terencana.
+- Encryption at host mengenkripsi temp disk dan cache disk; server-side encryption biasa tidak. Azure Disk Encryption (ADE) pensiun 15 September 2028; untuk VM baru pakai encryption at host.
 
 Tips praktik: buat VM kecil, tambahkan data disk, resize, lalu deallocate dan hapus.
 
@@ -317,8 +321,8 @@ Tips praktik: buat VM kecil, tambahkan data disk, resize, lalu deallocate dan ha
 | 4. Sizing dan scaling container | `container-scaling` | Sort: pengaturan scaling milik Container Instances vs Container Apps | `ContainerOptions` |
 
 Fakta wajib akurat:
-- ACR (Azure Container Registry) punya tiga tier: Basic, Standard, Premium. Geo-replication dan private endpoint hanya di Premium.
-- Restart policy ACI (Azure Container Instances) ada tiga: Always (default kalau tidak ditentukan), Never, dan OnFailure. OnFailure me-restart container hanya kalau prosesnya gagal (exit code bukan nol), dan container berjalan minimal sekali. Alamat IP container group bisa berubah saat di-restart.
+- ACR (Azure Container Registry) punya tiga tier: Basic, Standard, Premium. Geo-replication dan private endpoint hanya di Premium. Zone redundancy aktif default di semua tier (di region yang mendukung), dan ganti tier tidak menimbulkan downtime.
+- Restart policy ACI (Azure Container Instances) ada tiga: Always (default kalau tidak ditentukan), Never, dan OnFailure. OnFailure me-restart container hanya kalau prosesnya gagal (exit code bukan nol), dan container berjalan minimal sekali. Never hanya menjamin container tidak di-restart kalau selesai dengan sukses (exit code 0). Alamat IP container group bisa berubah saat di-restart.
 - Di Container Apps, jumlah replica minimal default adalah 0 dan maksimal default 10. Scale rule bisa berbasis HTTP, TCP (Transmission Control Protocol), atau custom (CPU, memori, atau event). Tidak ada biaya pemakaian saat app berada di 0 replica, tapi replica yang tetap di memori tanpa memproses bisa ditagih dengan tarif idle yang lebih rendah. Untuk memastikan selalu ada instance yang berjalan, set replica minimal ke 1 atau lebih. Container Apps jobs tidak mendukung scale rule HTTP.
 
 Tips praktik: jalankan image contoh di Container Instances, lalu deploy image yang sama ke Container Apps dan amati scale-to-zero.
@@ -334,11 +338,11 @@ Tips praktik: jalankan image contoh di Container Instances, lalu deploy image ya
 | 5. Deployment slot | `deployment-slots`, `slot-swap`, `slot-settings` | Fix: setelah swap, production memakai database staging karena setting tidak ditandai slot setting | `SlotSwap` |
 
 Fakta wajib akurat:
-- Custom domain butuh tier berbayar (bukan Free F1). Setiap custom domain butuh dua record DNS di penyedia domain: satu untuk pemetaan dan satu untuk verifikasi domain. App Service Managed Certificate butuh tier Basic atau lebih tinggi. TLS di sini singkatan dari Transport Layer Security.
+- Custom domain butuh tier berbayar (bukan Free F1; tier Shared boleh). Portal meminta dua record DNS di penyedia domain: satu untuk pemetaan (A untuk root domain, CNAME untuk subdomain) dan satu TXT `asuid` untuk verifikasi domain; untuk subdomain dengan CNAME, TXT ini "sangat direkomendasikan" untuk mencegah subdomain takeover. App Service Managed Certificate butuh tier Basic atau lebih tinggi. TLS di sini singkatan dari Transport Layer Security.
 - Backup dan restore didukung di Basic, Standard, Premium, dan Isolated. Di Basic, hanya slot production yang bisa di-backup.
 - VNet integration butuh tier dedicated (Basic atau lebih tinggi) dan hanya menangani trafik **keluar**. Akses privat untuk trafik masuk memakai private endpoint.
 - Deployment slot butuh Standard, Premium, atau Isolated. Standard mendukung sampai 5 slot.
-- Autoscale berbasis aturan butuh S1 (Standard) atau tier Premium. F1 dan D1 terbatas satu instance, dan B1 hanya bisa scale manual. Jangan tertukar dengan opsi "Automatic scaling" yang lebih baru; itu fitur terpisah. Jangan buat soal tentang opsi itu tanpa sumber resmi.
+- Tiga cara scale out App Service: manual (Basic ke atas), autoscale berbasis aturan dan jadwal (Standard ke atas), dan Automatic scaling berbasis trafik HTTP (Premium v2 sampai v4, dengan instance prewarmed). Basic, Standard, dan Premium bisa sampai 3, 10, dan 30 instance.
 
 Tips praktik: deploy web app di tier gratis F1 dan lihat fitur apa saja yang terkunci. Deployment slot berlabel "hati-hati" (tier berbayar).
 
@@ -354,7 +358,7 @@ Tips praktik: deploy web app di tier gratis F1 dan lihat fitur apa saja yang ter
 | 4. Alert | `alert-rules`, `action-groups`, `alert-processing-rules` | Config: bungkam notifikasi alert selama jadwal maintenance | `AlertFlow` |
 | 5. Insights dan Network Watcher | `vm-insights`, `storage-insights`, `network-insights`, `connection-monitor` | Choice: memantau latensi terus-menerus antara VM dan server on-premises | |
 
-Fakta untuk unit ini ditulis saat menyusun konten, dengan aturan yang sama: setiap fakta wajib punya source URL Microsoft Learn.
+Fakta untuk unit ini ditulis saat menyusun konten, dengan aturan yang sama: setiap fakta wajib punya source URL Microsoft Learn. Sudah pasti: NSG flow logs pensiun 30 September 2027 dan sudah tidak bisa dibuat baru; penggantinya virtual network flow logs.
 
 Tips praktik: kirim activity log ke Log Analytics workspace dan jalankan query KQL (Kusto Query Language) sederhana.
 
@@ -682,5 +686,27 @@ Dicek pada September 2026 ke dokumentasi Microsoft Learn, modul training Microso
 | RBAC vs Entra role, pewarisan role, tag, dan lock | Fakta dasar yang terdokumentasi di Azure RBAC overview dan dokumentasi governance; juga diajarkan di AZ-900 |
 
 Unit 14 belum punya daftar "Fakta wajib akurat". Faktanya ditulis saat menyusun konten, dengan aturan source URL wajib dan tanda verify.
+
+### Verifikasi ulang 29 September 2026
+
+Setiap fakta di bagian 5 dicocokkan lagi ke teks sumber halaman Microsoft Learn (file Markdown di repo resmi MicrosoftDocs, lengkap dengan tanggal pembaruannya), bukan ringkasan. Semua fakta lama terbukti benar. Yang dipertajam atau ditambahkan:
+
+| Topik | Temuan |
+|---|---|
+| Group | Istilah baru *dynamic membership group*; device member tidak butuh lisensi; satu dynamic group untuk user saja atau device saja; security group juga bisa berisi service principal dan group lain |
+| VNet | Subnet terkecil /29. **VNet baru memakai subnet privat secara default**, jadi VM butuh NAT gateway atau metode outbound lain untuk ke internet |
+| Bastion | Empat SKU; public IP tidak dibutuhkan untuk Developer dan Private-only; subnet harus di resource group yang sama |
+| Load balancer | Inbound NAT rule = port forwarding ke VM tertentu, tanpa health probe; versi 2 memetakan rentang port ke seluruh backend pool |
+| Policy | Daftar lengkap efek dan urutan evaluasinya; remediation memakai managed identity assignment |
+| ARM | Mode complete sekarang "tidak direkomendasikan" dan akan dihentikan bertahap; penggantinya deployment stacks |
+| VM | Azure Disk Encryption pensiun 15 September 2028; encryption at host untuk VM baru |
+| ACI | Never hanya menjamin tidak di-restart setelah exit code 0 |
+| ACR | Zone redundancy default di semua tier |
+| App Service | Custom domain boleh di tier Shared; TXT `asuid`; tiga cara scale out (manual Basic+, autoscale Standard+, Automatic scaling Premium v2–v4) |
+| Monitoring | NSG flow logs pensiun 30 September 2027, tidak bisa dibuat baru; pakai virtual network flow logs |
+| Entra ID | Passkey jadi metode default sejak 1 September 2026; SMS dan telepon bawaan Microsoft untuk MFA pensiun 1 Februari 2027 |
+| Study guide | Bobot lima domain terkonfirmasi. Teks lengkap study guide tidak bisa dibaca dari lingkungan pengembangan; ada kabar pembaruan 17 September 2026 dari situs pihak ketiga yang belum bisa dipastikan |
+
+Rincian bukti per fakta ada di `docs/VERIFIKASI_MATERI.md`.
 
 Detail ujian bisa berubah. Cek ulang halaman ujian resmi dan study guide tepat sebelum mendaftar ujian.
