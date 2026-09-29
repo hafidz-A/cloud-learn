@@ -321,3 +321,118 @@ lalu berhenti dan ringkas apa yang sudah dibuat sebelum lanjut ke tahap 3.
 ```
 
 Untuk tahap 5 (konten), minta Claude Code mengerjakan satu unit per sesi dan selalu mengecek ulang aturan konten, terutama aturan singkatan dan daftar fakta yang wajib akurat.
+
+---
+
+## 11. Kartu kenalan dan urutan lesson
+
+Bagian ini melengkapi prinsip "konsep diajarkan lewat soal". Tanpa kartu kenalan,
+soal pertama untuk konsep yang benar-benar baru hanya bisa ditebak. Bagian ini
+berlaku untuk semua lesson dan mengubah bagian 3, 8, dan 9.
+
+### 11.1 Tipe `intro` (kartu kenalan)
+
+Kartu singkat yang memperkenalkan satu konsep baru sebelum konsep itu diuji.
+
+Aturan:
+- Judul berisi nama konsep. Isi maksimal 2 kalimat (sekitar 35 kata), dalam bahasa
+  Indonesia dengan istilah teknis tetap bahasa Inggris. Singkatan wajib ditulis
+  kepanjangannya.
+- Boleh ada visual kecil (diagram SVG/Scalable Vector Graphics sederhana) kalau
+  konsepnya soal posisi atau struktur, misalnya zone di dalam region atau hierarki
+  management group.
+- Tidak ada jawaban. Pemain cukup menekan "Lanjut".
+- Tidak memberi XP (experience points) dan tidak memengaruhi hearts.
+- Tidak ikut masuk antrean review. Di mode latihan ulang, kartu bisa dibuka lagi
+  lewat tombol kecil "Lihat konsep" di layar soal.
+- Tampil sebagai kartu besar di tengah layar, dengan maskot Awan berekspresi netral.
+
+Tambahan di model data (bagian 8):
+
+```ts
+type IntroCard = {
+  id: string;            // "u04-l1-i1"
+  type: "intro";
+  concept: string;       // sama dengan concept tag di exercise yang mengujinya
+  title: string;         // "Availability zone"
+  body: string;          // maksimal 2 kalimat
+  visual?: string;       // nama komponen diagram, misalnya "ZonesInRegion"
+};
+
+type LessonItem = IntroCard | Exercise;
+
+type Lesson = {
+  id: string;
+  title: string;
+  items: LessonItem[];   // menggantikan field "exercises"
+};
+```
+
+### 11.2 Urutan naik tingkat di dalam lesson
+
+Setiap lesson disusun dari yang paling mudah ke yang paling sulit:
+
+| Tahap | Tujuan | Tipe yang dipakai |
+|---|---|---|
+| 1. Kenal | Konsep diperkenalkan | `intro` |
+| 2. Mengenali | Cukup mengenali jawaban yang benar | `truefalse`, `choice` sederhana |
+| 3. Mencocokkan | Membedakan konsep yang mirip | `match`, `sort` |
+| 4. Menerapkan | Memakai konsep di situasi nyata | `place`, `fix`, `choice` berbentuk skenario |
+| 5. Mengingat sendiri | Mengeluarkan jawaban tanpa pilihan ganda | `fill`, `order`, `shell` |
+| 6. Ulangan | Menyegarkan konsep lama | 1–3 soal dari lesson sebelumnya atau dari antrean review |
+
+Aturan penyusunan:
+- Satu lesson memperkenalkan maksimal 3 konsep baru.
+- Setiap konsep baru wajib punya kartu `intro` sebelum soal pertama yang mengujinya.
+- Kalau ada 2–3 konsep baru, polanya: intro A, soal mudah A, intro B, soal mudah B,
+  lalu soal tahap 3 ke atas yang mencampur A dan B.
+- Setiap konsep baru muncul di minimal 3 tahap berbeda dalam lesson yang sama.
+- Tipe tahap 5 (`fill`, `order`, `shell`) hanya boleh menguji konsep yang sudah
+  muncul di minimal 2 soal yang lebih mudah sebelumnya.
+- Soal yang dijawab salah dimasukkan lagi ke akhir lesson. Lesson baru selesai setelah
+  semua soal pernah dijawab benar.
+- Panjang lesson: 1–3 kartu `intro` ditambah 8–12 soal, sekitar 5 menit.
+
+### 11.3 Contoh susunan lesson "Region dan zone"
+
+```json
+{
+  "id": "u04-l1",
+  "title": "Region dan zone",
+  "items": [
+    {
+      "id": "u04-l1-i1",
+      "type": "intro",
+      "concept": "availability-zones",
+      "title": "Availability zone",
+      "body": "Availability zone adalah datacenter terpisah di dalam satu region, masing-masing punya listrik, pendingin, dan jaringan sendiri. Kalau satu gedung mati, zone lain tetap jalan.",
+      "visual": "ZonesInRegion"
+    },
+    { "id": "u04-l1-e1", "type": "truefalse", "concept": "availability-zones", "...": "tahap 2" },
+    {
+      "id": "u04-l1-i2",
+      "type": "intro",
+      "concept": "region-pairs",
+      "title": "Region pair",
+      "body": "Region pair adalah dua region dalam satu geografi, biasanya berjarak minimal sekitar 480 km. Kalau satu region lumpuh, pasangannya jadi tempat pemulihan.",
+      "visual": "RegionPair"
+    },
+    { "id": "u04-l1-e2", "type": "choice", "concept": "region-pairs", "...": "tahap 2" },
+    { "id": "u04-l1-e3", "type": "match", "concept": "physical-infrastructure", "...": "tahap 3" },
+    { "id": "u04-l1-e4", "type": "place", "concept": "availability-zones", "...": "tahap 4" },
+    { "id": "u04-l1-e5", "type": "choice", "concept": "region-pairs", "...": "tahap 4, skenario disaster recovery" },
+    { "id": "u04-l1-e6", "type": "fill", "concept": "availability-zones", "...": "tahap 5" }
+  ]
+}
+```
+
+Field `"..."` di contoh ini hanya penanda tahap. Di konten sebenarnya, isi dengan
+field lengkap sesuai tipe masing-masing di bagian 8.
+
+### 11.4 Perubahan pada tahapan pengerjaan (bagian 9)
+
+- Tahap 2 menjadi: lesson player dengan tipe `intro`, `choice`, `truefalse`, dan
+  `match`, lengkap dengan feedback sheet, soal salah yang diulang di akhir lesson,
+  dan layar lesson selesai.
+- Tahap 5 (konten): setiap unit disusun mengikuti aturan 11.2. Setelah menulis satu
+  unit, periksa ulang bahwa setiap konsep punya kartu `intro` sebelum pertama kali diuji.

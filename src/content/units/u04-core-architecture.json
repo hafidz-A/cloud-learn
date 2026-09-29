@@ -6,7 +6,15 @@
     {
       "id": "u04-l1",
       "title": "Region dan zone",
-      "exercises": [
+      "items": [
+        {
+          "id": "u04-l1-i1",
+          "type": "intro",
+          "concept": "availability-zones",
+          "title": "Availability zone",
+          "body": "Availability zone adalah datacenter terpisah di dalam satu region, masing-masing punya listrik, pendingin, dan jaringan sendiri. Kalau satu gedung mati, zone lain tetap jalan.",
+          "visual": "ZonesInRegion"
+        },
         {
           "id": "u04-l1-e1",
           "type": "truefalse",
@@ -16,137 +24,139 @@
           "explanation": "Benar. Availability zone ada di dalam satu region, masing-masing punya listrik, pendingin, dan jaringan sendiri. Jadi kalau satu gedung mati, zone lain tetap jalan."
         },
         {
+          "id": "u04-l1-i2",
+          "type": "intro",
+          "concept": "region-pairs",
+          "title": "Region pair",
+          "body": "Region pair adalah dua region dalam satu geografi, biasanya berjarak minimal sekitar 480 km. Kalau satu region lumpuh, pasangannya jadi tempat pemulihan.",
+          "visual": "RegionPair"
+        },
+        {
           "id": "u04-l1-e2",
-          "type": "place",
-          "concept": "availability-zones",
-          "prompt": "Place 3 VMs (Virtual Machines) so your app survives the loss of any single datacenter in the region.",
-          "zones": ["Zone 1", "Zone 2", "Zone 3"],
-          "pieces": [
-            { "text": "VM A", "validZones": [0, 1, 2] },
-            { "text": "VM B", "validZones": [0, 1, 2] },
-            { "text": "VM C", "validZones": [0, 1, 2] }
+          "type": "choice",
+          "concept": "region-pairs",
+          "prompt": "What is a region pair?",
+          "options": [
+            "Two regions in the same geography that back each other up",
+            "Two availability zones inside the same region",
+            "Two datacenters in the same building",
+            "Any two regions you choose to deploy to"
           ],
-          "rule": "one-per-zone",
-          "explanation": "Satu VM (Virtual Machine) di setiap zone. Kalau ketiganya ditaruh di zone yang sama, satu gedung mati berarti aplikasimu ikut mati."
+          "answer": 0,
+          "explanation": "Region pair adalah dua region di geografi yang sama, biasanya berjarak minimal sekitar 480 km, dan pasangannya sudah ditentukan Microsoft, bukan dipilih sendiri. Dua zone di dalam satu region itu availability zone, bukan region pair."
         },
         {
           "id": "u04-l1-e3",
-          "type": "choice",
-          "concept": "region-pairs",
-          "prompt": "Which statement about region pairs is correct?",
-          "options": [
-            "Both regions share one datacenter",
-            "Planned Azure updates roll out to one region of the pair at a time",
-            "Data transfer between paired regions is always free",
-            "Region pairs remove the need for backups"
-          ],
-          "answer": 1,
-          "explanation": "Microsoft memperbarui satu region dalam pasangan secara bergantian, supaya kalau update bermasalah, region pasangannya tetap aman. Region pair biasanya berjarak minimal sekitar 480 km, bukan satu gedung."
-        },
-        {
-          "id": "u04-l1-e4",
           "type": "match",
           "concept": "physical-infrastructure",
           "prompt": "Match each term with its meaning.",
           "pairs": [
-            ["Region", "Geographic area with one or more datacenters"],
-            ["Availability zone", "Separate datacenter inside a region"],
-            ["Region pair", "Two regions in the same geography for disaster recovery"],
-            ["Sovereign region", "Isolated Azure instance for government or legal needs"]
+            [
+              "Datacenter",
+              "A single building full of servers"
+            ],
+            [
+              "Availability zone",
+              "One or more separate datacenters inside a region"
+            ],
+            [
+              "Region",
+              "Geographic area with one or more datacenters"
+            ],
+            [
+              "Region pair",
+              "Two regions in the same geography for disaster recovery"
+            ]
           ],
           "explanation": "Urutan dari kecil ke besar: datacenter, availability zone, region, lalu region pair."
         },
         {
-          "id": "u04-l1-e5",
-          "type": "truefalse",
+          "id": "u04-l1-e4",
+          "type": "place",
           "concept": "availability-zones",
-          "prompt": "Every Azure region supports availability zones.",
-          "answer": false,
-          "explanation": "Salah. Tidak semua region punya availability zone. Region yang punya disebut zone-enabled region, dan isinya minimal 3 zone."
+          "prompt": "Place 3 VMs (Virtual Machines) so your app survives the loss of any single datacenter in the region.",
+          "zones": [
+            "Zone 1",
+            "Zone 2",
+            "Zone 3"
+          ],
+          "pieces": [
+            {
+              "text": "VM A",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            },
+            {
+              "text": "VM B",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            },
+            {
+              "text": "VM C",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            }
+          ],
+          "rule": "one-per-zone",
+          "explanation": "Satu VM (Virtual Machine) di setiap zone. Kalau ketiganya ditaruh di zone yang sama, satu gedung mati berarti aplikasimu ikut mati. Region yang mendukung availability zone selalu punya minimal 3 zone, jadi pola ini selalu bisa dipakai."
+        },
+        {
+          "id": "u04-l1-e5",
+          "type": "choice",
+          "concept": "region-pairs",
+          "prompt": "Your company runs its main app in one Azure region. You need a recovery plan in case a disaster takes the entire region offline. Where should the recovery copy run?",
+          "options": [
+            "In another availability zone in the same region",
+            "In the paired region",
+            "On a second server in the same datacenter",
+            "In the same region, on a bigger VM (Virtual Machine)"
+          ],
+          "answer": 1,
+          "explanation": "Availability zone melindungi dari matinya satu datacenter, tapi tidak dari bencana yang melumpuhkan satu region penuh. Untuk itu, taruh cadangannya di region pasangannya. Microsoft juga memperbarui region dalam satu pasangan secara bergantian, jadi keduanya tidak kena update bermasalah bersamaan."
         },
         {
           "id": "u04-l1-e6",
-          "type": "choice",
+          "type": "fill",
           "concept": "availability-zones",
-          "prompt": "What is the minimum number of availability zones in a zone-enabled Azure region?",
-          "options": ["1", "2", "3", "6"],
-          "answer": 2,
-          "explanation": "Minimal 3. Dengan 3 zone yang terpisah secara fisik, aplikasi tetap bisa jalan walaupun satu zone mati total."
-        },
-        {
-          "id": "u04-l1-e7",
-          "type": "choice",
-          "concept": "availability-zones",
-          "prompt": "Your app runs on two VMs (Virtual Machines) in the same datacenter. You want it to keep running if that datacenter loses power, without leaving the region. What should you use?",
-          "options": [
-            "Availability zones",
-            "A region pair",
-            "A sovereign region",
-            "A second resource group"
+          "prompt": "Complete the definition.",
+          "sentence": "An availability zone is one or more separate ___ inside one Azure ___, each with its own power, cooling, and networking.",
+          "bank": [
+            "datacenters",
+            "region",
+            "geographies",
+            "servers"
           ],
-          "answer": 0,
-          "explanation": "Availability zone melindungi dari kegagalan satu datacenter di dalam region yang sama. Region pair baru dipakai kalau yang kamu takutkan adalah satu region mati total. Resource group cuma wadah logis untuk mengelompokkan resource, bukan pelindung dari kegagalan fisik."
-        },
-        {
-          "id": "u04-l1-e8",
-          "type": "truefalse",
-          "concept": "region-pairs",
-          "prompt": "Every Azure region has a paired region.",
-          "answer": false,
-          "explanation": "Salah. Kebanyakan region punya pasangan di geografi yang sama, tapi beberapa region, terutama yang lebih baru, tidak punya pasangan. Region seperti itu mengandalkan availability zone untuk ketahanan."
-        },
-        {
-          "id": "u04-l1-e9",
-          "type": "choice",
-          "concept": "region-pairs",
-          "prompt": "A broad outage hits both regions in a region pair. What does Microsoft do?",
-          "options": [
-            "Restores both regions at exactly the same time",
-            "Prioritizes restoring one region in the pair",
-            "Moves all resources to a sovereign region",
-            "Waits until both regions can be restored together"
+          "answers": [
+            "datacenters",
+            "region"
           ],
-          "answer": 1,
-          "explanation": "Kalau terjadi gangguan besar, Microsoft memprioritaskan pemulihan satu region dari setiap pasangan, supaya minimal satu region cepat hidup lagi."
-        },
-        {
-          "id": "u04-l1-e10",
-          "type": "choice",
-          "concept": "availability-zones",
-          "prompt": "Azure automatically replicates a service across availability zones for you. What is this type of service called?",
-          "options": [
-            "Zonal service",
-            "Zone-redundant service",
-            "Region-paired service",
-            "Sovereign service"
-          ],
-          "answer": 1,
-          "explanation": "Zone-redundant artinya Azure sendiri yang menyebar datanya ke beberapa zone, contohnya ZRS (Zone-Redundant Storage). Kalau kamu yang menaruh resource di satu zone tertentu, misalnya VM (Virtual Machine) di Zone 1, itu disebut zonal service."
-        },
-        {
-          "id": "u04-l1-e11",
-          "type": "truefalse",
-          "concept": "sovereign-regions",
-          "prompt": "Sovereign regions, such as Azure Government, are isolated from the main instance of Azure.",
-          "answer": true,
-          "explanation": "Benar. Sovereign region adalah instance Azure yang terpisah untuk kebutuhan hukum atau pemerintahan. Contohnya Azure Government untuk instansi pemerintah Amerika Serikat, dan Azure di China yang dioperasikan oleh 21Vianet."
+          "explanation": "Availability zone adalah satu atau lebih datacenter terpisah di dalam satu region. Karena listrik, pendingin, dan jaringannya sendiri-sendiri, satu zone mati tidak menyeret zone lain."
         }
       ]
     },
     {
       "id": "u04-l2",
       "title": "Resource dan resource group",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u04-l3",
       "title": "Subscription",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u04-l4",
       "title": "Management group",
-      "exercises": []
+      "items": []
     }
   ]
 }

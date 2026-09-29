@@ -6,22 +6,22 @@
     {
       "id": "u06-l1",
       "title": "VNet dan subnet",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u06-l2",
       "title": "NSG dan peering",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u06-l3",
       "title": "VPN Gateway dan ExpressRoute",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u06-l4",
       "title": "DNS dan endpoint",
-      "exercises": []
+      "items": []
     }
   ]
 }

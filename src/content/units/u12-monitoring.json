@@ -6,17 +6,17 @@
     {
       "id": "u12-l1",
       "title": "Advisor dan Service Health",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u12-l2",
       "title": "Azure Monitor dan Log Analytics",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u12-l3",
       "title": "Alerts dan Application Insights",
-      "exercises": []
+      "items": []
     }
   ]
 }

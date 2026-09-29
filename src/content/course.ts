@@ -1,4 +1,4 @@
-import type { ExerciseType, Lesson, PathId, Unit } from '../lib/types'
+import type { Exercise, Lesson, LessonItem, PathId, Unit } from '../lib/types'
 
 // Every unit lives in its own JSON file under ./units. New files are picked up
 // automatically and sorted by id (u01, u02, ...).
@@ -22,19 +22,24 @@ export const CHECKPOINTS: Checkpoint[] = PATHS.map((p) => ({
   questionCount: 20,
 }))
 
-/**
- * Exercise types the lesson player can render right now. Stage 3 of the plan
- * adds sort, order, fill, place, fix, and shell; until then those exercises
- * stay in the data but are skipped during play.
- */
-export const PLAYABLE_TYPES: ReadonlySet<ExerciseType> = new Set(['choice', 'truefalse', 'match'])
-
-export function playableExercises(lesson: Lesson) {
-  return lesson.exercises.filter((e) => PLAYABLE_TYPES.has(e.type))
+export function isExercise(item: LessonItem): item is Exercise {
+  return item.type !== 'intro'
 }
 
+/**
+ * Item types the lesson player can show right now: intro cards plus the stage 2
+ * exercise types (plan section 11.4). Stage 3 adds sort, order, fill, place,
+ * fix, and shell; until then those exercises stay in the data but are skipped.
+ */
+export const PLAYABLE_TYPES: ReadonlySet<LessonItem['type']> = new Set(['intro', 'choice', 'truefalse', 'match'])
+
+export function playableItems(lesson: Lesson): LessonItem[] {
+  return lesson.items.filter((item) => PLAYABLE_TYPES.has(item.type))
+}
+
+/** A lesson is playable once it has at least one exercise the player supports. */
 export function hasContent(lesson: Lesson): boolean {
-  return playableExercises(lesson).length > 0
+  return playableItems(lesson).some(isExercise)
 }
 
 export type LessonRef = { unit: Unit; lesson: Lesson; unitIndex: number; lessonIndex: number }

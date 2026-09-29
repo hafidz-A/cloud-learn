@@ -6,17 +6,17 @@
     {
       "id": "u10-l1",
       "title": "Azure Policy",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u10-l2",
       "title": "Resource lock",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u10-l3",
       "title": "Purview dan Service Trust Portal",
-      "exercises": []
+      "items": []
     }
   ]
 }

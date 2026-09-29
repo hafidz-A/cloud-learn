@@ -11,11 +11,14 @@ const PRAISE = ['Benar!', 'Mantap!', 'Tepat sekali!', 'Keren!']
 export function FeedbackSheet({
   verdict,
   explanation,
+  retryNext,
   onContinue,
   onHeight,
 }: {
   verdict: Verdict
   explanation: string
+  /** The exercise was queued again; say it comes back at the end of the lesson. */
+  retryNext: boolean
   onContinue: () => void
   onHeight: (px: number) => void
 }) {
@@ -65,6 +68,9 @@ export function FeedbackSheet({
           )}
           {verdict.note && <p className="mt-2 text-15">{verdict.note}</p>}
           <p className="mt-2 text-15">{explanation}</p>
+          {retryNext && (
+            <p className="mt-2 text-13 font-semibold text-tinta-lembut">Soal ini akan muncul lagi di akhir lesson.</p>
+          )}
         </div>
         <Mascot mood={ok ? 'senang' : 'sedih'} size={64} className="shrink-0" />
       </div>

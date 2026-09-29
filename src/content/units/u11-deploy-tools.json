@@ -6,22 +6,22 @@
     {
       "id": "u11-l1",
       "title": "Portal dan Cloud Shell",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u11-l2",
       "title": "Azure CLI dan PowerShell",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u11-l3",
       "title": "Azure Arc",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u11-l4",
       "title": "ARM dan Bicep",
-      "exercises": []
+      "items": []
     }
   ]
 }

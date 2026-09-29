@@ -6,27 +6,27 @@
     {
       "id": "u07-l1",
       "title": "Storage account",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u07-l2",
       "title": "Redundancy",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u07-l3",
       "title": "Blob tiers",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u07-l4",
       "title": "Layanan storage",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u07-l5",
       "title": "Migrasi data",
-      "exercises": []
+      "items": []
     }
   ]
 }

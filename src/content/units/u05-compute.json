@@ -6,27 +6,27 @@
     {
       "id": "u05-l1",
       "title": "Virtual machine",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u05-l2",
       "title": "Scale sets dan availability sets",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u05-l3",
       "title": "Azure Virtual Desktop",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u05-l4",
       "title": "Container",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u05-l5",
       "title": "Functions dan App Service",
-      "exercises": []
+      "items": []
     }
   ]
 }

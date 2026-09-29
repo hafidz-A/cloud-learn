@@ -6,22 +6,22 @@
     {
       "id": "u02-l1",
       "title": "Availability dan scalability",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u02-l2",
       "title": "Reliability dan predictability",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u02-l3",
       "title": "Security dan governance",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u02-l4",
       "title": "Manageability",
-      "exercises": []
+      "items": []
     }
   ]
 }

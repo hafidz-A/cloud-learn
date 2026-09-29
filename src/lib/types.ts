@@ -1,4 +1,5 @@
-// Data model from LANGIT_AZ900_PLAN.md section 8 ("Model data").
+// Data model from LANGIT_AZ900_PLAN.md section 8 ("Model data"), with the
+// intro cards and lesson items from section 11.
 
 export type PathId = 1 | 2 | 3
 
@@ -12,8 +13,20 @@ export type Unit = {
 export type Lesson = {
   id: string // "u04-l1"
   title: string
-  exercises: Exercise[]
+  items: LessonItem[] // intro cards and exercises, easiest first (section 11.2)
 }
+
+/** Introduces one new concept before it is tested. No answer, no XP, never reviewed. */
+export type IntroCard = {
+  id: string // "u04-l1-i1"
+  type: 'intro'
+  concept: string // same concept tag as the exercises that test it
+  title: string // "Availability zone"
+  body: string // at most 2 sentences, Indonesian
+  visual?: string // diagram component name, e.g. "ZonesInRegion"
+}
+
+export type LessonItem = IntroCard | Exercise
 
 export type ExerciseBase = {
   id: string

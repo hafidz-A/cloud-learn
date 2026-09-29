@@ -1,10 +1,14 @@
-import type { Exercise, Unit } from '../lib/types'
+import type { Exercise, IntroCard, Unit } from '../lib/types'
+import { VISUAL_NAMES } from './visuals'
 
-// Checks the content rules from LANGIT_AZ900_PLAN.md section 2 ("Aturan konten")
-// and the shape rules from section 3. Errors break the app or the answer key;
-// warnings are content-quality notes to fix before a unit is called done.
+// Checks the content rules from LANGIT_AZ900_PLAN.md section 2 ("Aturan konten"),
+// the shape rules from section 3, and the lesson order rules from section 11.2.
+// Errors break the app or the answer key; warnings are content-quality notes to
+// fix before a unit is called done.
 
 export type Issue = { level: 'error' | 'warn'; where: string; message: string }
+
+const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
 const KNOWN_TYPES = new Set([
   'choice',
@@ -95,7 +99,7 @@ function checkExercise(e: Exercise, where: string, issues: Issue[]) {
   const push = (message: string, level: Issue['level'] = 'error') => issues.push({ level, where, message })
 
   if (!KNOWN_TYPES.has(e.type)) return push(`unknown type "${String(e.type)}"`)
-  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(e.concept ?? '')) push('concept must be a kebab-case tag')
+  if (!KEBAB.test(e.concept ?? '')) push('concept must be a kebab-case tag')
   if (!e.prompt?.trim()) push('prompt is empty')
   if (!e.explanation?.trim()) push('explanation is empty')
 
@@ -167,15 +171,41 @@ function checkExercise(e: Exercise, where: string, issues: Issue[]) {
   const inExplanation = unexpandedAbbreviations([e.explanation])
   if (inExplanation.length) push(`expand on first use in the explanation: ${inExplanation.join(', ')}`, 'warn')
 
-  if (/Azure (AD|Active Directory)/.test([...questionTexts(e), e.explanation].join(' '))) {
-    push('use "Microsoft Entra ID", not Azure AD / Azure Active Directory')
-  }
+  checkEntraName([...questionTexts(e), e.explanation], push)
   if (e.verify) push('marked verify: true, double-check this fact', 'warn')
 }
+
+function checkEntraName(texts: string[], push: (m: string) => void) {
+  if (/Azure (AD|Active Directory)/.test(texts.join(' '))) {
+    push('use "Microsoft Entra ID", not Azure AD / Azure Active Directory')
+  }
+}
+
+
+function checkIntro(card: IntroCard, where: string, issues: Issue[]) {
+  const push = (message: string, level: Issue['level'] = 'error') => issues.push({ level, where, message })
+  if (!KEBAB.test(card.concept ?? '')) push('concept must be a kebab-case tag')
+  if (!card.title?.trim()) push('title is empty')
+  if (!card.body?.trim()) return push('body is empty')
+  const sentences = card.body.split(/[.!?](?:\s|$)/).filter((t) => t.trim()).length
+  if (sentences > 2) push(`intro body should be at most 2 sentences, found ${sentences}`, 'warn')
+  const words = card.body.split(/\s+/).length
+  if (words > 40) push(`intro body should be about 35 words, found ${words}`, 'warn')
+  if (card.visual !== undefined && !(VISUAL_NAMES as readonly string[]).includes(card.visual)) {
+    push(`unknown visual "${card.visual}", known: ${VISUAL_NAMES.join(', ')}`)
+  }
+  const missing = unexpandedAbbreviations([card.title, card.body])
+  if (missing.length) push(`expand on first use in the intro: ${missing.join(', ')}`, 'warn')
+  checkEntraName([card.title, card.body], push)
+}
+
+/** Stage 5 types (plan section 11.2) that ask the player to recall without choices. */
+const RECALL_TYPES = new Set(['fill', 'order', 'shell'])
 
 export function validateUnits(units: Unit[]): Issue[] {
   const issues: Issue[] = []
   const ids = new Set<string>()
+  const introduced = new Set<string>() // concepts that already had an intro card, in course order
   const claim = (id: string, where: string) => {
     if (ids.has(id)) issues.push({ level: 'error', where, message: `duplicate id "${id}"` })
     ids.add(id)
@@ -192,24 +222,55 @@ export function validateUnits(units: Unit[]): Issue[] {
 
     unit.lessons.forEach((lesson, li) => {
       const lw = `${uw} > ${lesson.id}`
+      const warn = (message: string) => issues.push({ level: 'warn', where: lw, message })
       claim(lesson.id, lw)
       const expectedLessonId = `${unit.id.slice(0, 3)}-l${li + 1}`
       if (lesson.id !== expectedLessonId) issues.push({ level: 'error', where: lw, message: `lesson id should be "${expectedLessonId}"` })
-      if (lesson.exercises.length === 0) return // skeleton lesson, content comes in stage 5
-
-      if (lesson.exercises.length < 8 || lesson.exercises.length > 12) {
-        issues.push({ level: 'warn', where: lw, message: `lessons should have 8-12 exercises, found ${lesson.exercises.length}` })
+      if (!Array.isArray(lesson.items)) {
+        issues.push({ level: 'error', where: lw, message: 'lesson needs an "items" array (plan section 11)' })
+        return
       }
-      const types = new Set(lesson.exercises.map((e) => e.type))
-      if (types.size < 4) issues.push({ level: 'warn', where: lw, message: `lessons should use at least 4 exercise types, found ${types.size}` })
+      if (lesson.items.length === 0) return // skeleton lesson, content comes in stage 5
 
-      lesson.exercises.forEach((e, ei) => {
-        const ew = `${lw} > ${e.id}`
-        claim(e.id, ew)
-        const expectedId = `${lesson.id}-e${ei + 1}`
-        if (e.id !== expectedId) issues.push({ level: 'error', where: ew, message: `exercise id should be "${expectedId}"` })
-        checkExercise(e, ew, issues)
-      })
+      const exercises = lesson.items.filter((i): i is Exercise => i.type !== 'intro')
+      const intros = lesson.items.length - exercises.length
+      if (exercises.length < 8 || exercises.length > 12) warn(`lessons should have 8-12 exercises, found ${exercises.length}`)
+      if (intros > 3) warn(`a lesson introduces at most 3 new concepts, found ${intros} intro cards`)
+      const types = new Set(exercises.map((e) => e.type))
+      if (types.size < 4) warn(`lessons should use at least 4 exercise types, found ${types.size}`)
+
+      let introCount = 0
+      let exerciseCount = 0
+      const easierByConcept = new Map<string, number>()
+      for (const item of lesson.items) {
+        if (item.type === 'intro') {
+          const expectedId = `${lesson.id}-i${++introCount}`
+          const iw = `${lw} > ${item.id}`
+          claim(item.id, iw)
+          if (item.id !== expectedId) issues.push({ level: 'error', where: iw, message: `intro id should be "${expectedId}"` })
+          checkIntro(item, iw, issues)
+          introduced.add(item.concept)
+          continue
+        }
+        const expectedId = `${lesson.id}-e${++exerciseCount}`
+        const ew = `${lw} > ${item.id}`
+        claim(item.id, ew)
+        if (item.id !== expectedId) issues.push({ level: 'error', where: ew, message: `exercise id should be "${expectedId}"` })
+        checkExercise(item, ew, issues)
+        if (!introduced.has(item.concept)) {
+          issues.push({ level: 'warn', where: ew, message: `concept "${item.concept}" is tested before any intro card introduces it` })
+          introduced.add(item.concept) // report each concept once
+        }
+        const easier = easierByConcept.get(item.concept) ?? 0
+        if (RECALL_TYPES.has(item.type) && easier < 2) {
+          issues.push({
+            level: 'warn',
+            where: ew,
+            message: `${item.type} should only test a concept already seen in 2 easier exercises, found ${easier}`,
+          })
+        }
+        easierByConcept.set(item.concept, easier + 1)
+      }
     })
   }
   return issues

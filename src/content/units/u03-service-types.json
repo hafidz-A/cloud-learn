@@ -6,22 +6,22 @@
     {
       "id": "u03-l1",
       "title": "IaaS",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u03-l2",
       "title": "PaaS",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u03-l3",
       "title": "SaaS",
-      "exercises": []
+      "items": []
     },
     {
       "id": "u03-l4",
       "title": "Serverless",
-      "exercises": []
+      "items": []
     }
   ]
 }
