@@ -1,6 +1,9 @@
 // XP rules from LANGIT_AZ900_PLAN.md section 4 ("Mekanik game").
 export const XP_PER_LESSON = 10
 export const XP_FLAWLESS_BONUS = 5
+export const XP_CHECKPOINT = 20
+/** Minimum checkpoint score to open the next path. */
+export const CHECKPOINT_PASS = 0.8
 
 export type LessonSummary = {
   lessonId: string

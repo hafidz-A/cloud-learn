@@ -1,9 +1,10 @@
-import { Check, Lock, Star, Trophy } from 'lucide-react'
+import { Check, Crown, Lock, Star, Trophy } from 'lucide-react'
 import { useEffect, useEffectEvent, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Button } from '../components/Button'
 import { CHECKPOINTS, PATHS, UNITS, unitNumber, type Checkpoint } from '../content/course'
-import { lessonStates, type NodeState } from '../lib/path'
+import { pathStates, type NodeState } from '../lib/path'
 import { navigate } from '../lib/router'
+import { CHECKPOINT_PASS, XP_CHECKPOINT, XP_PER_LESSON } from '../lib/scoring'
 import type { Lesson, Unit } from '../lib/types'
 import { useProgress } from '../store/progress'
 
@@ -11,6 +12,7 @@ const NODE_LOOK: Record<NodeState, { className: string; edge: string }> = {
   done: { className: 'bg-matahari text-tinta', edge: 'var(--color-matahari-dalam)' },
   active: { className: 'bg-biru text-white', edge: 'var(--color-biru-dalam)' },
   open: { className: 'bg-biru text-white', edge: 'var(--color-biru-dalam)' },
+  locked: { className: 'bg-kabut text-tinta-lembut', edge: 'var(--color-kabut-dalam)' },
   soon: { className: 'bg-kabut text-tinta-lembut', edge: 'var(--color-kabut-dalam)' },
 }
 
@@ -18,6 +20,7 @@ const STATE_LABEL: Record<NodeState, string> = {
   done: 'selesai',
   active: 'lesson berikutnya',
   open: 'bisa dimainkan',
+  locked: 'terkunci',
   soon: 'segera hadir',
 }
 
@@ -27,7 +30,7 @@ function offsetFor(lessonIndex: number, unitIndex: number): number {
   return Math.round(Math.sin((lessonIndex * Math.PI) / 2.5) * 70) * direction
 }
 
-type Selected = { kind: 'lesson'; id: string } | { kind: 'checkpoint'; id: string } | null
+type Selected = { kind: 'lesson' | 'checkpoint'; id: string } | null
 
 function Popover({ offset, onClose, children }: { offset: number; onClose: () => void; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -64,12 +67,25 @@ function Popover({ offset, onClose, children }: { offset: number; onClose: () =>
   )
 }
 
+function StartBubble({ label }: { label: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-xl border-2 border-kabut bg-white px-3 py-1 font-display text-15 font-bold text-biru-dalam"
+    >
+      {label}
+      <span className="absolute -bottom-[7px] left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-b-2 border-r-2 border-kabut bg-white" />
+    </div>
+  )
+}
+
 function LessonNode({
   unit,
   unitIndex,
   lesson,
   lessonIndex,
   state,
+  pathOpen,
   selected,
   onSelect,
 }: {
@@ -78,28 +94,21 @@ function LessonNode({
   lesson: Lesson
   lessonIndex: number
   state: NodeState
+  pathOpen: boolean
   selected: boolean
   onSelect: (open: boolean) => void
 }) {
-  const bestAccuracy = useProgress((s) => s.lessonsDone[lesson.id]?.bestAccuracy)
+  const done = useProgress((s) => s.lessonsDone[lesson.id])
   const look = NODE_LOOK[state]
   const offset = offsetFor(lessonIndex, unitIndex)
-  const Icon = state === 'done' ? Check : state === 'soon' ? Lock : Star
+  const Icon = state === 'done' ? Check : state === 'locked' || state === 'soon' ? Lock : Star
   const start = () => navigate({ name: 'lesson', lessonId: lesson.id })
 
   return (
     <li className={`relative flex justify-center pb-2 ${state === 'active' ? 'pt-12' : 'pt-2'}`}>
       <div style={{ transform: `translateX(${offset}px)` }}>
         <div className={`relative ${state === 'active' ? 'motion-safe:animate-bob' : ''}`}>
-          {state === 'active' && (
-            <div
-              aria-hidden="true"
-              className="absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-xl border-2 border-kabut bg-white px-3 py-1 font-display text-15 font-bold text-biru-dalam"
-            >
-              Mulai
-              <span className="absolute -bottom-[7px] left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-b-2 border-r-2 border-kabut bg-white" />
-            </div>
-          )}
+          {state === 'active' && <StartBubble label="Mulai" />}
           <button
             type="button"
             data-node={lesson.id}
@@ -121,15 +130,26 @@ function LessonNode({
           <p className="mt-0.5 text-13 text-tinta-lembut">
             Unit {unitNumber(unit)} · Lesson {lessonIndex + 1} dari {unit.lessons.length}
           </p>
-          {state === 'soon' ? (
-            <p className="mt-3 text-15 text-tinta-lembut">Soal untuk lesson ini sedang disiapkan.</p>
-          ) : (
+          {state === 'soon' && <p className="mt-3 text-15 text-tinta-lembut">Soal untuk lesson ini sedang disiapkan.</p>}
+          {state === 'locked' && (
+            <p className="mt-3 text-15 text-tinta-lembut">
+              {pathOpen
+                ? 'Selesaikan lesson sebelumnya dulu untuk membuka lesson ini.'
+                : 'Lulus checkpoint jalur sebelumnya dulu untuk membuka jalur ini.'}
+            </p>
+          )}
+          {(state === 'active' || state === 'open') && (
+            <Button block className="mt-4" onClick={start}>
+              Mulai · +{XP_PER_LESSON} XP
+            </Button>
+          )}
+          {state === 'done' && done && (
             <>
-              {bestAccuracy !== undefined && (
-                <p className="mt-2 text-15">Akurasi terbaik {Math.round(bestAccuracy * 100)}%</p>
-              )}
+              <p className="mt-2 text-15">
+                Akurasi terbaik {Math.round(done.bestAccuracy * 100)}% · selesai {done.count}×
+              </p>
               <Button block className="mt-4" onClick={start}>
-                {state === 'done' ? 'Ulangi' : 'Mulai'}
+                Ulangi
               </Button>
             </>
           )}
@@ -141,36 +161,60 @@ function LessonNode({
 
 function CheckpointNode({
   checkpoint,
+  state,
+  lessonsLeft,
   selected,
   onSelect,
 }: {
   checkpoint: Checkpoint
+  state: NodeState
+  lessonsLeft: number
   selected: boolean
   onSelect: (open: boolean) => void
 }) {
+  const result = useProgress((s) => s.checkpoints[checkpoint.id])
+  const look = NODE_LOOK[state]
+  const start = () => navigate({ name: 'checkpoint', checkpointId: checkpoint.id })
   return (
-    <li className="relative flex justify-center pb-2 pt-4">
-      <button
-        type="button"
-        data-node={checkpoint.id}
-        data-node-state="soon"
-        aria-expanded={selected}
-        aria-label={`${checkpoint.title}, segera hadir`}
-        onClick={() => onSelect(!selected)}
-        className="btn-3d flex min-h-[72px] cursor-pointer items-center justify-center gap-3 whitespace-nowrap rounded-3xl bg-kabut px-7 font-display text-20 font-bold text-tinta-lembut"
-        style={{ '--edge': 'var(--color-kabut-dalam)', '--depth': '6px' } as CSSProperties}
-      >
-        <Trophy size={30} strokeWidth={2.5} />
-        {checkpoint.title}
-      </button>
+    <li className={`relative flex justify-center pb-2 ${state === 'active' ? 'pt-14' : 'pt-4'}`}>
+      <div className={`relative ${state === 'active' ? 'motion-safe:animate-bob' : ''}`}>
+        {state === 'active' && <StartBubble label="Saatnya checkpoint" />}
+        <button
+          type="button"
+          data-node={checkpoint.id}
+          data-node-state={state}
+          aria-expanded={selected}
+          aria-label={`${checkpoint.title}, ${STATE_LABEL[state]}`}
+          onClick={() => onSelect(!selected)}
+          className={`btn-3d flex min-h-[76px] cursor-pointer items-center justify-center gap-3 whitespace-nowrap rounded-3xl px-7 font-display text-20 font-bold ${look.className}`}
+          style={{ '--edge': look.edge, '--depth': '6px' } as CSSProperties}
+        >
+          {state === 'locked' ? <Lock size={28} strokeWidth={2.5} /> : <Trophy size={30} strokeWidth={2.5} />}
+          {checkpoint.title}
+        </button>
+      </div>
       {selected && (
         <Popover offset={0} onClose={() => onSelect(false)}>
           <p className="font-display text-20 font-bold">{checkpoint.title}</p>
           <p className="mt-2 text-15">
-            {checkpoint.questionCount} soal campuran dari seluruh jalur {checkpoint.path}. Skor minimal 80% untuk
-            membuka jalur berikutnya.
+            {checkpoint.questionCount} soal campuran dari seluruh jalur {checkpoint.path}. Skor minimal{' '}
+            {Math.round(CHECKPOINT_PASS * 100)}% untuk membuka jalur berikutnya.
           </p>
-          <p className="mt-2 text-15 text-tinta-lembut">Segera hadir.</p>
+          {state === 'locked' ? (
+            <p className="mt-2 text-15 text-tinta-lembut">Buka jalur ini dulu lewat checkpoint sebelumnya.</p>
+          ) : (
+            <>
+              {result && <p className="mt-2 text-15">Skor terbaik {Math.round(result.bestScore * 100)}%</p>}
+              {state !== 'done' && lessonsLeft > 0 && (
+                <p className="mt-2 text-13 text-tinta-lembut">
+                  Masih ada {lessonsLeft} lesson di jalur ini. Kalau lulus sekarang, kamu langsung lompat ke jalur berikutnya.
+                </p>
+              )}
+              <Button block className="mt-4" onClick={start}>
+                {state === 'done' ? 'Ulangi checkpoint' : `Mulai checkpoint · +${XP_CHECKPOINT} XP`}
+              </Button>
+            </>
+          )}
         </Popover>
       )}
     </li>
@@ -179,10 +223,21 @@ function CheckpointNode({
 
 function UnitCard({ unit }: { unit: Unit }) {
   const lessonsDone = useProgress((s) => s.lessonsDone)
+  const level = useProgress((s) => s.unitLevel[unit.id] ?? 0)
   const done = unit.lessons.filter((l) => lessonsDone[l.id]).length
   return (
     <div className="mx-4 mb-4 mt-6 rounded-2xl border-2 border-kabut bg-white px-4 py-3 shadow-[0_4px_0_var(--color-kabut)]">
-      <p className="font-display text-13 font-semibold text-biru-dalam">Unit {unitNumber(unit)}</p>
+      <div className="flex items-center justify-between gap-3">
+        <p className="font-display text-13 font-semibold text-biru-dalam">Unit {unitNumber(unit)}</p>
+        <p
+          className="flex items-center gap-1 font-display text-13 font-bold"
+          aria-label={`Level unit ${level} dari 3`}
+          title="Level naik setiap kali semua lesson di unit ini diulang"
+        >
+          <Crown size={16} className={level > 0 ? 'fill-matahari text-matahari-dalam' : 'text-tinta-lembut'} aria-hidden="true" />
+          <span aria-hidden="true">{level}/3</span>
+        </p>
+      </div>
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="font-display text-20 font-bold">{unit.title}</h2>
         <p className="shrink-0 text-13 text-tinta-lembut">
@@ -196,7 +251,11 @@ function UnitCard({ unit }: { unit: Unit }) {
 /** The vertical, winding path of lessons and checkpoints on the home screen. */
 export function PathMap() {
   const lessonsDone = useProgress((s) => s.lessonsDone)
-  const states = useMemo(() => lessonStates(UNITS, lessonsDone), [lessonsDone])
+  const checkpointResults = useProgress((s) => s.checkpoints)
+  const states = useMemo(
+    () => pathStates({ lessonsDone, checkpoints: checkpointResults }),
+    [lessonsDone, checkpointResults],
+  )
   const [selected, setSelected] = useState<Selected>(null)
 
   useEffect(() => {
@@ -207,24 +266,28 @@ export function PathMap() {
     target?.scrollIntoView({ block: 'center' })
   }, [])
 
-  const select = (next: Selected) => (open: boolean) => setSelected(open ? next : null)
+  const select = (kind: 'lesson' | 'checkpoint', id: string) => (open: boolean) => setSelected(open ? { kind, id } : null)
 
   return (
     <div className="pb-32">
       {PATHS.map((path) => {
         const checkpoint = CHECKPOINTS.find((c) => c.path === path.id)!
+        const pathUnits = UNITS.filter((u) => u.path === path.id)
+        const lessonsLeft = pathUnits.flatMap((u) => u.lessons).filter((l) => !lessonsDone[l.id]).length
         return (
           <section key={path.id} aria-labelledby={`path-${path.id}`}>
             <div className="mx-4 mt-8 flex items-center gap-3">
               <span className="h-0.5 flex-1 rounded-full bg-kabut" />
-              <h2 id={`path-${path.id}`} className="font-display text-15 font-semibold text-tinta-lembut">
+              <h2 id={`path-${path.id}`} className="flex items-center gap-1.5 font-display text-15 font-semibold text-tinta-lembut">
+                {!states.pathOpen[path.id] && <Lock size={14} aria-label="terkunci" />}
                 Jalur {path.id} · {path.title}
               </h2>
               <span className="h-0.5 flex-1 rounded-full bg-kabut" />
             </div>
 
-            {UNITS.map((unit, unitIndex) =>
-              unit.path !== path.id ? null : (
+            {pathUnits.map((unit) => {
+              const unitIndex = UNITS.indexOf(unit)
+              return (
                 <div key={unit.id}>
                   <UnitCard unit={unit} />
                   <ol className="space-y-3">
@@ -235,21 +298,24 @@ export function PathMap() {
                         unitIndex={unitIndex}
                         lesson={lesson}
                         lessonIndex={lessonIndex}
-                        state={states[lesson.id]}
+                        state={states.lessons[lesson.id]}
+                        pathOpen={states.pathOpen[path.id]}
                         selected={selected?.kind === 'lesson' && selected.id === lesson.id}
-                        onSelect={select({ kind: 'lesson', id: lesson.id })}
+                        onSelect={select('lesson', lesson.id)}
                       />
                     ))}
                   </ol>
                 </div>
-              ),
-            )}
+              )
+            })}
 
             <ol className="mt-6">
               <CheckpointNode
                 checkpoint={checkpoint}
+                state={states.checkpoints[checkpoint.id]}
+                lessonsLeft={lessonsLeft}
                 selected={selected?.kind === 'checkpoint' && selected.id === checkpoint.id}
-                onSelect={select({ kind: 'checkpoint', id: checkpoint.id })}
+                onSelect={select('checkpoint', checkpoint.id)}
               />
             </ol>
           </section>

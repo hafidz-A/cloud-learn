@@ -8,6 +8,7 @@ import { LessonFooter } from '../LessonFooter'
 import { useLessonKeys } from '../useLessonKeys'
 import { SHAKE } from '../motion'
 import type { ExerciseProps } from '../types'
+import { GlossaryText } from '../../components/GlossaryText'
 
 const SWIPE_DISTANCE = 90
 const SWIPE_VELOCITY = 500
@@ -74,7 +75,7 @@ export function TrueFalseView({ exercise, answered, onVerdict }: ExerciseProps<T
           Salah
         </motion.span>
         <h2 lang="en" className="text-20 font-bold">
-          {exercise.prompt}
+          <GlossaryText text={exercise.prompt} />
         </h2>
         {choice !== null && (
           <p className="mt-4 font-display text-15 font-semibold text-tinta-lembut">

@@ -1,13 +1,13 @@
-import { BookA, ChartColumn, Dumbbell, House, Settings } from 'lucide-react'
+import { BookA, ChartColumn, ClipboardCheck, Dumbbell, House } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { hrefFor, type Tab } from '../lib/router'
 
 const ITEMS: { tab: Tab; label: string; Icon: LucideIcon }[] = [
   { tab: 'home', label: 'Home', Icon: House },
   { tab: 'latihan', label: 'Latihan', Icon: Dumbbell },
+  { tab: 'ujian', label: 'Ujian', Icon: ClipboardCheck },
   { tab: 'statistik', label: 'Statistik', Icon: ChartColumn },
   { tab: 'glosarium', label: 'Glosarium', Icon: BookA },
-  { tab: 'pengaturan', label: 'Pengaturan', Icon: Settings },
 ]
 
 export function BottomNav({ active }: { active: Tab }) {

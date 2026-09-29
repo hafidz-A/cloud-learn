@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button } from '../components/Button'
 import { Mascot } from '../components/Mascot'
 import type { Verdict } from './types'
+import { GlossaryText } from '../components/GlossaryText'
 
 const PRAISE = ['Benar!', 'Mantap!', 'Tepat sekali!', 'Keren!']
 
@@ -63,11 +64,15 @@ export function FeedbackSheet({
           {!ok && verdict.correctAnswer && (
             <p className="mt-2 text-15">
               <span className="font-bold">Jawaban benar: </span>
-              <span lang="en">{verdict.correctAnswer}</span>
+              <span lang="en">
+                <GlossaryText text={verdict.correctAnswer} />
+              </span>
             </p>
           )}
           {verdict.note && <p className="mt-2 text-15">{verdict.note}</p>}
-          <p className="mt-2 text-15">{explanation}</p>
+          <p className="mt-2 text-15">
+            <GlossaryText text={explanation} />
+          </p>
           {retryNext && (
             <p className="mt-2 text-13 font-semibold text-tinta-lembut">Soal ini akan muncul lagi di akhir lesson.</p>
           )}

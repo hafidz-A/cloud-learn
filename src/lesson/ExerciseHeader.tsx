@@ -1,3 +1,4 @@
+import { GlossaryText } from '../components/GlossaryText'
 import { useEffect, useRef } from 'react'
 
 /**
@@ -20,7 +21,7 @@ export function ExerciseHeader({ instruction, prompt, verify }: { instruction: s
       </p>
       {prompt && (
         <h2 lang="en" className={`mt-2 font-bold ${prompt.length < 90 ? 'text-20' : 'text-17'}`}>
-          {prompt}
+          <GlossaryText text={prompt} />
         </h2>
       )}
     </div>

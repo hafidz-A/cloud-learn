@@ -6,6 +6,7 @@ import { CheckFooter } from '../LessonFooter'
 import { clearFlash, createMatchState, isMatchDone, tapCard, type MatchCard } from '../match'
 import { SHAKE } from '../motion'
 import type { ExerciseProps } from '../types'
+import { GlossaryText } from '../../components/GlossaryText'
 
 const FLASH_MS = 500
 
@@ -75,7 +76,7 @@ export function MatchView({ exercise, answered, onVerdict }: ExerciseProps<Match
                 }`}
                 style={{ '--edge': look.edge } as CSSProperties}
               >
-                {card.text}
+                <GlossaryText text={card.text} />
               </button>
             </motion.div>
           )

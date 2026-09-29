@@ -1,0 +1,187 @@
+[
+  {
+    "term": "ACI",
+    "expansion": "Azure Container Instances",
+    "description": "Cara paling sederhana menjalankan container di Azure tanpa mengelola VM (Virtual Machine) atau cluster."
+  },
+  {
+    "term": "AKS",
+    "expansion": "Azure Kubernetes Service",
+    "description": "Layanan Kubernetes terkelola untuk menjalankan dan mengatur banyak container."
+  },
+  {
+    "term": "API",
+    "expansion": "Application Programming Interface",
+    "description": "Pintu yang dipakai program untuk berbicara dengan program lain."
+  },
+  {
+    "term": "ARM",
+    "expansion": "Azure Resource Manager",
+    "description": "Lapisan deployment dan manajemen Azure. Semua permintaan dari portal, CLI, PowerShell, dan template lewat ARM."
+  },
+  {
+    "term": "AVD",
+    "expansion": "Azure Virtual Desktop",
+    "description": "Layanan desktop dan aplikasi Windows yang dijalankan di cloud dan diakses dari mana saja."
+  },
+  {
+    "term": "CapEx",
+    "expansion": "Capital Expenditure",
+    "description": "Belanja modal di depan, misalnya membeli server dan membangun datacenter sendiri."
+  },
+  {
+    "term": "CDN",
+    "expansion": "Content Delivery Network",
+    "description": "Jaringan server yang menyimpan salinan konten di dekat pengguna supaya lebih cepat diakses."
+  },
+  {
+    "term": "CLI",
+    "expansion": "Command-Line Interface",
+    "description": "Antarmuka berbasis teks untuk menjalankan perintah, misalnya Azure CLI."
+  },
+  {
+    "term": "CPU",
+    "expansion": "Central Processing Unit",
+    "description": "Prosesor yang menjalankan perhitungan di komputer atau VM (Virtual Machine)."
+  },
+  {
+    "term": "DDoS",
+    "expansion": "Distributed Denial of Service",
+    "description": "Serangan yang membanjiri layanan dengan lalu lintas dari banyak sumber sampai layanan itu lumpuh."
+  },
+  {
+    "term": "DNS",
+    "expansion": "Domain Name System",
+    "description": "Sistem yang menerjemahkan nama domain, misalnya contoh.com, menjadi alamat IP (Internet Protocol)."
+  },
+  {
+    "term": "GRS",
+    "expansion": "Geo-Redundant Storage",
+    "description": "Menyimpan 3 salinan data di satu datacenter region utama, lalu menyalinnya ke region pasangan. Durability 16 nines."
+  },
+  {
+    "term": "GZRS",
+    "expansion": "Geo-Zone-Redundant Storage",
+    "description": "Menyimpan data di 3 availability zone region utama, lalu menyalinnya ke region pasangan. Durability 16 nines."
+  },
+  {
+    "term": "HTTPS",
+    "expansion": "Hypertext Transfer Protocol Secure",
+    "description": "Protokol web yang terenkripsi."
+  },
+  {
+    "term": "IaaS",
+    "expansion": "Infrastructure as a Service",
+    "description": "Model layanan di mana cloud menyediakan VM, jaringan, dan storage; kamu mengelola sistem operasi ke atas."
+  },
+  {
+    "term": "IaC",
+    "expansion": "Infrastructure as Code",
+    "description": "Menulis infrastruktur sebagai kode, misalnya ARM template atau Bicep, supaya deployment bisa diulang dengan hasil sama."
+  },
+  {
+    "term": "IP",
+    "expansion": "Internet Protocol",
+    "description": "Aturan pengalamatan di jaringan. Alamat IP menandai perangkat atau resource."
+  },
+  {
+    "term": "JSON",
+    "expansion": "JavaScript Object Notation",
+    "description": "Format teks untuk data terstruktur. ARM template ditulis dalam JSON."
+  },
+  {
+    "term": "LRS",
+    "expansion": "Locally Redundant Storage",
+    "description": "Menyimpan 3 salinan data di satu datacenter. Paling murah, durability 11 nines."
+  },
+  {
+    "term": "MFA",
+    "expansion": "Multi-Factor Authentication",
+    "description": "Login dengan dua faktor atau lebih, misalnya password ditambah kode di aplikasi HP."
+  },
+  {
+    "term": "NSG",
+    "expansion": "Network Security Group",
+    "description": "Aturan firewall sederhana yang mengizinkan atau menolak lalu lintas ke subnet atau network interface."
+  },
+  {
+    "term": "OpEx",
+    "expansion": "Operational Expenditure",
+    "description": "Biaya operasional yang dibayar sesuai pemakaian, misalnya tagihan cloud bulanan."
+  },
+  {
+    "term": "OS",
+    "expansion": "Operating System",
+    "description": "Sistem operasi, misalnya Windows atau Linux."
+  },
+  {
+    "term": "PaaS",
+    "expansion": "Platform as a Service",
+    "description": "Model layanan di mana cloud mengelola infrastruktur dan sistem operasi; kamu fokus pada aplikasi dan data."
+  },
+  {
+    "term": "RBAC",
+    "expansion": "Role-Based Access Control",
+    "description": "Mengatur siapa boleh melakukan apa pada resource lewat role, misalnya Reader, Contributor, atau Owner."
+  },
+  {
+    "term": "RDP",
+    "expansion": "Remote Desktop Protocol",
+    "description": "Protokol untuk masuk ke desktop Windows dari jarak jauh. Default memakai port 3389."
+  },
+  {
+    "term": "SaaS",
+    "expansion": "Software as a Service",
+    "description": "Model layanan di mana aplikasi sudah jadi dan dikelola penyedia, misalnya Microsoft 365."
+  },
+  {
+    "term": "SLA",
+    "expansion": "Service Level Agreement",
+    "description": "Janji tertulis penyedia tentang ketersediaan layanan, misalnya 99,9% uptime."
+  },
+  {
+    "term": "SMB",
+    "expansion": "Server Message Block",
+    "description": "Protokol berbagi file yang dipakai Azure Files."
+  },
+  {
+    "term": "SQL",
+    "expansion": "Structured Query Language",
+    "description": "Bahasa untuk mengelola dan membaca data di database relasional."
+  },
+  {
+    "term": "SSH",
+    "expansion": "Secure Shell",
+    "description": "Protokol aman untuk masuk ke server Linux dari jarak jauh. Default memakai port 22."
+  },
+  {
+    "term": "SSO",
+    "expansion": "Single Sign-On",
+    "description": "Sekali login untuk mengakses banyak aplikasi."
+  },
+  {
+    "term": "TCO",
+    "expansion": "Total Cost of Ownership",
+    "description": "Total biaya memiliki sesuatu, termasuk server, listrik, pendingin, dan tenaga kerja."
+  },
+  {
+    "term": "VM",
+    "expansion": "Virtual Machine",
+    "description": "Komputer virtual yang berjalan di atas server fisik. Contoh klasik IaaS (Infrastructure as a Service)."
+  },
+  {
+    "term": "VNet",
+    "expansion": "Virtual Network",
+    "description": "Jaringan privat di Azure yang menghubungkan resource satu sama lain, ke internet, dan ke jaringan on-premises."
+  },
+  {
+    "term": "VPN",
+    "expansion": "Virtual Private Network",
+    "description": "Koneksi terenkripsi lewat internet publik antara dua jaringan."
+  },
+  {
+    "term": "ZRS",
+    "expansion": "Zone-Redundant Storage",
+    "description": "Menyimpan 3 salinan data di 3 availability zone dalam satu region. Durability 12 nines."
+  }
+]

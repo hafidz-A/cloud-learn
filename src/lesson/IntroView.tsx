@@ -7,6 +7,7 @@ import type { IntroCard } from '../lib/types'
 import { LessonFooter } from './LessonFooter'
 import { useLessonKeys } from './useLessonKeys'
 import { IntroVisual } from './visuals'
+import { GlossaryText } from '../components/GlossaryText'
 
 /** Intro card (plan section 11.1): one new concept, no answer, just "Lanjut". */
 export function IntroView({ intro, onDone }: { intro: IntroCard; onDone: () => void }) {
@@ -47,7 +48,9 @@ export function IntroView({ intro, onDone }: { intro: IntroCard; onDone: () => v
               <IntroVisual name={intro.visual as VisualName} />
             </div>
           )}
-          <p className="mt-5 text-17">{intro.body}</p>
+          <p className="mt-5 text-17">
+            <GlossaryText text={intro.body} />
+          </p>
         </div>
       </div>
       <LessonFooter>

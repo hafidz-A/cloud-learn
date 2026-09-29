@@ -1,4 +1,5 @@
 import type { Exercise, IntroCard, Unit } from '../lib/types'
+import { EXAM_TYPES } from './examTypes'
 import { VISUAL_NAMES } from './visuals'
 
 // Checks the content rules from LANGIT_AZ900_PLAN.md section 2 ("Aturan konten"),
@@ -20,7 +21,13 @@ const KNOWN_TYPES = new Set([
   'place',
   'fix',
   'shell',
+  'multi',
+  'yesno',
 ])
+
+const PLACE_RULES = new Set(['valid', 'one-per-zone', 'spread'])
+
+const COUNT_WORDS = ['', 'one', 'two', 'three', 'four', 'five']
 
 /** Mixed-case abbreviations the all-caps pattern would miss. */
 const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet', 'vCPU']
@@ -83,6 +90,10 @@ function questionTexts(e: Exercise): string[] {
       return [e.prompt, e.scene.title, e.scene.message, ...e.options]
     case 'shell':
       return [e.prompt]
+    case 'multi':
+      return [e.prompt, ...e.options]
+    case 'yesno':
+      return [e.prompt, e.scenario, ...e.statements.map((st) => st.text)]
   }
 }
 
@@ -142,7 +153,7 @@ function checkExercise(e: Exercise, where: string, issues: Issue[]) {
     }
     case 'place':
       if (e.zones.length < 2) push('place needs at least 2 zones')
-      if (!e.rule?.trim()) push('place needs a rule')
+      if (!PLACE_RULES.has(e.rule)) push(`unknown place rule "${String(e.rule)}"`)
       if (e.pieces.some((p) => p.validZones.length === 0 || p.validZones.some((z) => z < 0 || z >= e.zones.length))) {
         push('a piece has invalid validZones')
       }
@@ -157,7 +168,25 @@ function checkExercise(e: Exercise, where: string, issues: Issue[]) {
       if (e.answer.length === 0) push('shell answer is empty')
       break
     }
+    case 'multi': {
+      if (!Array.isArray(e.options) || e.options.length < 3) push('multi needs at least 3 options')
+      if (new Set(e.options).size !== e.options.length) push('options contain duplicates')
+      const picks = new Set(e.answers)
+      if (e.answers.length < 2 || picks.size !== e.answers.length) push('multi needs 2 or more different answers')
+      if (e.answers.some((a) => !Number.isInteger(a) || a < 0 || a >= e.options.length)) push('an answer is not a valid option index')
+      const word = COUNT_WORDS[e.answers.length]
+      if (word && !new RegExp(`choose ${word}`, 'i').test(e.prompt)) push(`prompt should say "Choose ${word}."`)
+      break
+    }
+    case 'yesno':
+      if (!e.scenario?.trim()) push('yesno needs a scenario')
+      if (!Array.isArray(e.statements) || e.statements.some((st) => !st.text?.trim() || typeof st.answer !== 'boolean')) {
+        push('every statement needs text and a true/false answer')
+      } else if (e.statements.length !== 3) push(`yesno should have 3 statements, found ${e.statements.length}`, 'warn')
+      break
   }
+  if (e.examReady && !EXAM_TYPES.has(e.type)) push(`type "${e.type}" cannot be examReady`)
+  if (e.difficulty !== undefined && ![1, 2, 3].includes(e.difficulty)) push('difficulty must be 1, 2, or 3')
 
   const pairExpansions = new Set<string>()
   if (e.type === 'match') {

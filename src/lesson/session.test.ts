@@ -44,3 +44,15 @@ describe('lesson session', () => {
     expect(advance(s)).not.toBeNull() // the retry is still ahead
   })
 })
+
+describe('checkpoint session (no retries)', () => {
+  it('moves on after a wrong answer and still finishes', () => {
+    let s: Session | null = startSession([tf(1), tf(2)], { retryWrong: false })
+    s = answerCurrent(s, false)
+    expect(progressOf(s)).toBe(0.5)
+    s = advance(s)!
+    s = answerCurrent(s, true)
+    expect(advance(s)).toBeNull()
+    expect(firstTryResults(s)).toEqual([false, true])
+  })
+})

@@ -34,6 +34,8 @@ export type ExerciseBase = {
   prompt: string // English, like the real exam
   explanation: string // Indonesian, shown after answering
   verify?: boolean // true when the fact still needs to be double-checked
+  examReady?: boolean // may be used on the exam page (section 12.3)
+  difficulty?: 1 | 2 | 3
 }
 
 export type ChoiceExercise = ExerciseBase & { type: 'choice'; options: string[]; answer: number }
@@ -51,11 +53,18 @@ export type FillExercise = ExerciseBase & {
   bank: string[]
   answers: string[]
 }
+/**
+ * valid:        every piece sits in one of its validZones
+ * one-per-zone: valid, and no two pieces share a zone
+ * spread:       valid, and the pieces use at least 2 different zones
+ */
+export type PlaceRule = 'valid' | 'one-per-zone' | 'spread'
+
 export type PlaceExercise = ExerciseBase & {
   type: 'place'
   zones: string[]
   pieces: { text: string; validZones: number[] }[]
-  rule: string
+  rule: PlaceRule
 }
 export type FixExercise = ExerciseBase & {
   type: 'fix'
@@ -64,6 +73,14 @@ export type FixExercise = ExerciseBase & {
   answer: number
 }
 export type ShellExercise = ExerciseBase & { type: 'shell'; tokens: string[]; answer: string[] }
+/** Pick more than one. The prompt always says how many ("Choose two."). Right only when all picks are right. */
+export type MultiExercise = ExerciseBase & { type: 'multi'; options: string[]; answers: number[] }
+/** One scenario, usually three statements, each answered Yes or No and scored on its own. */
+export type YesNoExercise = ExerciseBase & {
+  type: 'yesno'
+  scenario: string
+  statements: { text: string; answer: boolean }[]
+}
 
 export type Exercise =
   | ChoiceExercise
@@ -75,10 +92,34 @@ export type Exercise =
   | PlaceExercise
   | FixExercise
   | ShellExercise
+  | MultiExercise
+  | YesNoExercise
 
 export type ExerciseType = Exercise['type']
 
 export type DailyGoal = 20 | 50 | 100
+
+export type ExamMode = 'full' | 'domain' | 'weak'
+
+/** Section 12.4. `elapsedSec` and `current` are extra: they let a closed exam resume where it stopped. */
+export type ExamAttempt = {
+  id: string
+  mode: ExamMode
+  domain?: PathId
+  startedAt: string
+  finishedAt?: string
+  timeLimitSec: number
+  elapsedSec: number
+  current: number
+  questionIds: string[]
+  /** Player's answer per question id; the shape depends on the exercise type. */
+  responses: Record<string, unknown>
+  flagged: string[]
+  /** Option order shown to the player, per question id (choice, multi). */
+  optionOrder: Record<string, number[]>
+  score?: number // 0-1000
+  domainScores?: Record<PathId, { right: number; total: number }>
+}
 
 export type Progress = {
   xp: number
@@ -87,8 +128,16 @@ export type Progress = {
   dailyGoal: DailyGoal
   streak: { current: number; best: number; lastDay: string }
   hearts: number
-  lessonsDone: Record<string, { bestAccuracy: number; completedAt: string }>
+  /** Day the hearts were last refilled; hearts go back to full on a new day. */
+  heartsDay: string
+  heartsEnabled: boolean
+  soundEnabled: boolean
+  lessonsDone: Record<string, { bestAccuracy: number; completedAt: string; count: number }>
+  /** Checkpoint id ("cp1") -> best score (0..1) and when it was first passed. */
+  checkpoints: Record<string, { bestScore: number; passedAt?: string }>
   unitLevel: Record<string, 0 | 1 | 2 | 3>
   review: Record<string, { dueDay: string; correctStreak: number }> // key: exercise id
   conceptStats: Record<string, { right: number; wrong: number }>
+  examHistory: ExamAttempt[]
+  activeExam?: ExamAttempt
 }
