@@ -9,10 +9,22 @@
       "items": [
         {
           "id": "u07-l1-i1",
-          "type": "intro",
-          "concept": "storage-accounts",
+          "type": "learn",
+          "concepts": [
+            "storage-accounts"
+          ],
           "title": "Storage account",
-          "body": "Storage account adalah wadah untuk layanan data Azure seperti Blob, Files, Queue, dan Table. Namanya harus unik di seluruh Azure karena menjadi bagian dari alamat endpoint-nya."
+          "body": "Storage account adalah wadah untuk data Azure Storage: blob, file share, queue, dan table. Datanya bisa diakses dari mana saja lewat HTTP (Hypertext Transfer Protocol) atau HTTPS (Hypertext Transfer Protocol Secure). Namanya harus unik di seluruh Azure, karena menjadi bagian alamat endpoint-nya.",
+          "keyPoints": [
+            "Satu akun untuk blob, file share, queue, dan table",
+            "Nama unik di seluruh Azure"
+          ],
+          "example": "Storage account bernama contosomedia punya endpoint https://contosomedia.blob.core.windows.net.",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview",
+          "teaches": [
+            "f-u07-sa-def",
+            "f-u07-sa-unique"
+          ]
         },
         {
           "id": "u07-l1-e1",
@@ -21,7 +33,10 @@
           "prompt": "A storage account name must be unique across all of Azure.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Nama storage account menjadi bagian alamat publiknya, jadi tidak boleh ada yang sama.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-unique"
+          ]
         },
         {
           "id": "u07-l1-e2",
@@ -36,14 +51,29 @@
           ],
           "answer": 0,
           "explanation": "Contoh endpoint: https://namaakun.blob.core.windows.net. Karena nama menjadi bagian URL (Uniform Resource Locator), tidak boleh ada yang sama.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-unique",
+            "f-u04-sub-billing",
+            "f-u04-region"
+          ]
         },
         {
           "id": "u07-l1-i2",
-          "type": "intro",
-          "concept": "azure-blob-storage",
+          "type": "learn",
+          "concepts": [
+            "azure-blob-storage"
+          ],
           "title": "Blob storage",
-          "body": "Blob storage adalah object storage untuk data tidak terstruktur dalam jumlah sangat besar, seperti gambar, video, backup, dan log. Aksesnya lewat HTTP (Hypertext Transfer Protocol) atau HTTPS (Hypertext Transfer Protocol Secure) dari mana saja."
+          "body": "Blob storage adalah object storage untuk data tidak terstruktur dalam jumlah sangat besar. Contohnya gambar, video, backup, dan log. Blob bukan tempat data relasional berbentuk tabel dengan baris dan kolom.",
+          "keyPoints": [
+            "Blob = object storage",
+            "Untuk data tidak terstruktur"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction",
+          "teaches": [
+            "f-u07-blob-def"
+          ]
         },
         {
           "id": "u07-l1-e3",
@@ -52,7 +82,37 @@
           "prompt": "Blob storage is designed for relational data stored in tables with rows and columns.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Blob storage adalah object storage untuk data tidak terstruktur, seperti gambar, video, dan backup.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-blob-def"
+          ]
+        },
+        {
+          "id": "u07-l1-e7",
+          "type": "yesno",
+          "concept": "storage-accounts",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso creates a storage account named contosomedia.",
+          "statements": [
+            {
+              "text": "Another company can create a storage account with the same name.",
+              "answer": false
+            },
+            {
+              "text": "Blobs in the account can be reached over HTTPS (Hypertext Transfer Protocol Secure).",
+              "answer": true
+            },
+            {
+              "text": "The storage account can hold only blobs, not file shares or queues.",
+              "answer": false
+            }
+          ],
+          "explanation": "Nama storage account unik di seluruh Azure. Satu storage account bisa berisi blob, file share, queue, dan table, dan data blob bisa diakses lewat HTTPS (Hypertext Transfer Protocol Secure).",
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-unique",
+            "f-u07-sa-def"
+          ]
         },
         {
           "id": "u07-l1-e4",
@@ -78,7 +138,29 @@
             ]
           ],
           "explanation": "Storage account adalah wadahnya, blob adalah salah satu layanannya, dan endpoint adalah alamat untuk mengaksesnya.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-def",
+            "f-u07-blob-def",
+            "f-u07-sa-unique"
+          ]
+        },
+        {
+          "id": "u07-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "azure-blob-storage"
+          ],
+          "title": "Kegunaan Blob storage",
+          "body": "Blob storage sering dipakai untuk menyajikan gambar atau dokumen langsung ke browser. Blob juga dipakai untuk streaming video dan audio, serta menyimpan backup dan arsip. Menjalankan VM (Virtual Machine) atau memfilter traffic bukan tugas Blob storage.",
+          "keyPoints": [
+            "File untuk browser, video, dan audio",
+            "Backup dan arsip"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction",
+          "teaches": [
+            "f-u07-blob-uses"
+          ]
         },
         {
           "id": "u07-l1-e5",
@@ -87,13 +169,19 @@
           "prompt": "A media company needs to store millions of video files and stream them to viewers. Which service fits best?",
           "options": [
             "Blob storage",
-            "Azure Queue Storage",
             "Azure DNS (Domain Name System)",
-            "An availability set"
+            "An availability set",
+            "ACI (Azure Container Instances)"
           ],
           "answer": 0,
           "explanation": "File video besar dan tidak terstruktur yang diakses lewat web: Blob storage.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-blob-uses",
+            "f-u06-dns-def",
+            "f-u05-avset-fd",
+            "f-u05-aci-def"
+          ]
         },
         {
           "id": "u07-l1-e6",
@@ -111,30 +199,12 @@
             1
           ],
           "explanation": "Blob storage cocok untuk menyajikan file ke browser serta menyimpan backup dan arsip.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l1-e7",
-          "type": "yesno",
-          "concept": "storage-accounts",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso creates a storage account named contosomedia.",
-          "statements": [
-            {
-              "text": "Another company can create a storage account with the same name.",
-              "answer": false
-            },
-            {
-              "text": "Blobs in the account can be reached over HTTPS (Hypertext Transfer Protocol Secure).",
-              "answer": true
-            },
-            {
-              "text": "The storage account can hold only blobs, not file shares or queues.",
-              "answer": false
-            }
-          ],
-          "explanation": "Nama storage account unik di seluruh Azure. Satu storage account bisa berisi blob, file share, queue, dan table, dan data blob bisa diakses lewat HTTPS (Hypertext Transfer Protocol Secure).",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-blob-uses",
+            "f-u05-vm-def",
+            "f-u06-nsg-def"
+          ]
         },
         {
           "id": "u07-l1-e8",
@@ -152,7 +222,10 @@
             "object",
             "unstructured"
           ],
-          "explanation": "Blob = object storage untuk data tidak terstruktur."
+          "explanation": "Blob = object storage untuk data tidak terstruktur.",
+          "requires": [
+            "f-u07-blob-def"
+          ]
         }
       ]
     },
@@ -162,11 +235,22 @@
       "items": [
         {
           "id": "u07-l2-i1",
-          "type": "intro",
-          "concept": "primary-redundancy",
+          "type": "learn",
+          "concepts": [
+            "primary-redundancy"
+          ],
           "title": "LRS dan ZRS",
-          "body": "LRS (Locally Redundant Storage) menyimpan 3 salinan di satu datacenter, durability 11 nines. ZRS (Zone-Redundant Storage) menyebar 3 salinan ke 3 availability zone di satu region, durability 12 nines.",
-          "visual": "StorageRedundancy"
+          "body": "Azure Storage selalu menyimpan beberapa salinan datamu. LRS (Locally Redundant Storage) menyimpan tiga salinan di satu datacenter, dengan durability 11 nines. ZRS (Zone-Redundant Storage) menyebar salinannya ke tiga availability zone di satu region, dengan durability 12 nines. Keduanya tetap berada di satu region.",
+          "keyPoints": [
+            "LRS: tiga salinan di satu datacenter, 11 nines",
+            "ZRS: tiga availability zone, 12 nines"
+          ],
+          "visual": "StorageRedundancy",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+          "teaches": [
+            "f-u07-lrs",
+            "f-u07-zrs"
+          ]
         },
         {
           "id": "u07-l2-e1",
@@ -175,49 +259,10 @@
           "prompt": "LRS (Locally Redundant Storage) keeps three copies of your data in a single datacenter.",
           "answer": true,
           "explanation": "Pernyataan ini benar. LRS (Locally Redundant Storage) paling murah: 3 salinan di satu datacenter, durability 11 nines.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l2-i2",
-          "type": "intro",
-          "concept": "geo-redundancy",
-          "title": "GRS dan GZRS",
-          "body": "GRS (Geo-Redundant Storage) dan GZRS (Geo-Zone-Redundant Storage) juga menyalin data ke region kedua yang jauh, jadi tetap aman kalau satu region lumpuh. Durability keduanya 16 nines."
-        },
-        {
-          "id": "u07-l2-e2",
-          "type": "truefalse",
-          "concept": "geo-redundancy",
-          "prompt": "GRS (Geo-Redundant Storage) keeps every copy of your data in a single region.",
-          "answer": false,
-          "explanation": "Pernyataan ini salah. GRS (Geo-Redundant Storage) menyimpan 3 salinan di region utama, lalu menyalinnya ke region kedua. Yang hanya di satu region adalah LRS (Locally Redundant Storage) dan ZRS (Zone-Redundant Storage).",
-          "examReady": true
-        },
-        {
-          "id": "u07-l2-e3",
-          "type": "match",
-          "concept": "geo-redundancy",
-          "prompt": "Match each redundancy option with its description.",
-          "pairs": [
-            [
-              "LRS (Locally Redundant Storage)",
-              "3 copies in one datacenter, 11 nines"
-            ],
-            [
-              "ZRS (Zone-Redundant Storage)",
-              "3 copies across availability zones, 12 nines"
-            ],
-            [
-              "GRS (Geo-Redundant Storage)",
-              "Copies in a second region, 16 nines"
-            ],
-            [
-              "GZRS (Geo-Zone-Redundant Storage)",
-              "Zones in the primary region plus a second region, 16 nines"
-            ]
-          ],
-          "explanation": "Semakin jauh salinannya disebar, semakin tinggi durability-nya: 11, 12, lalu 16 nines.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-lrs"
+          ]
         },
         {
           "id": "u07-l2-e4",
@@ -256,37 +301,44 @@
             }
           ],
           "rule": "one-per-zone",
-          "explanation": "ZRS (Zone-Redundant Storage) menaruh satu salinan di tiap availability zone, jadi satu datacenter mati tidak menghilangkan data."
+          "explanation": "ZRS (Zone-Redundant Storage) menaruh satu salinan di tiap availability zone, jadi satu datacenter mati tidak menghilangkan data.",
+          "requires": [
+            "f-u07-zrs",
+            "f-u04-az-def"
+          ]
         },
         {
-          "id": "u07-l2-e5",
-          "type": "choice",
+          "id": "u07-l2-i2",
+          "type": "learn",
+          "concepts": [
+            "geo-redundancy"
+          ],
+          "title": "GRS dan GZRS",
+          "body": "GRS (Geo-Redundant Storage) memakai LRS (Locally Redundant Storage) di region utama, lalu menyalin datanya ke region kedua yang jauh. GZRS (Geo-Zone-Redundant Storage) melakukan hal yang sama, tapi di region utama memakai ZRS (Zone-Redundant Storage). Durability keduanya 16 nines, dan hanya keduanya yang tahan kalau satu region lumpuh.",
+          "keyPoints": [
+            "Huruf G = ada salinan di region kedua",
+            "GRS: LRS + region kedua. GZRS: ZRS + region kedua",
+            "Keduanya 16 nines"
+          ],
+          "visual": "StorageRedundancy",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+          "teaches": [
+            "f-u07-grs",
+            "f-u07-gzrs",
+            "f-u07-geo-region"
+          ]
+        },
+        {
+          "id": "u07-l2-e2",
+          "type": "truefalse",
           "concept": "geo-redundancy",
-          "prompt": "A company needs its storage to survive a full outage of the primary region. Which of these is the cheapest option that meets this?",
-          "options": [
-            "GRS (Geo-Redundant Storage)",
-            "LRS (Locally Redundant Storage)",
-            "ZRS (Zone-Redundant Storage)",
-            "Premium LRS"
-          ],
-          "answer": 0,
-          "explanation": "Hanya opsi geo (GRS (Geo-Redundant Storage) atau GZRS (Geo-Zone-Redundant Storage)) yang menyalin ke region lain. Di antara pilihan ini, GRS jawabannya.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l2-e6",
-          "type": "choice",
-          "concept": "primary-redundancy",
-          "prompt": "Which option offers the highest durability while keeping data in a single region?",
-          "options": [
-            "ZRS (Zone-Redundant Storage)",
-            "LRS (Locally Redundant Storage)",
-            "GRS (Geo-Redundant Storage)",
-            "GZRS (Geo-Zone-Redundant Storage)"
-          ],
-          "answer": 0,
-          "explanation": "Di dalam satu region, ZRS (Zone-Redundant Storage) dengan 12 nines lebih tinggi dari LRS (Locally Redundant Storage) dengan 11 nines. GRS (Geo-Redundant Storage) dan GZRS (Geo-Zone-Redundant Storage) memakai region kedua.",
-          "examReady": true
+          "prompt": "GRS (Geo-Redundant Storage) keeps every copy of your data in a single region.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. GRS (Geo-Redundant Storage) menyimpan 3 salinan di region utama, lalu menyalinnya ke region kedua. Yang hanya di satu region adalah LRS (Locally Redundant Storage) dan ZRS (Zone-Redundant Storage).",
+          "examReady": true,
+          "requires": [
+            "f-u07-grs"
+          ]
         },
         {
           "id": "u07-l2-e7",
@@ -304,7 +356,105 @@
             1
           ],
           "explanation": "Huruf G berarti geo: salinan ada di region kedua.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-geo-region",
+            "f-u07-lrs",
+            "f-u07-zrs"
+          ]
+        },
+        {
+          "id": "u07-l2-e5",
+          "type": "choice",
+          "concept": "geo-redundancy",
+          "prompt": "A company needs its storage to survive a full outage of the primary region. Which of these is the cheapest option that meets this?",
+          "options": [
+            "GRS (Geo-Redundant Storage)",
+            "LRS (Locally Redundant Storage)",
+            "ZRS (Zone-Redundant Storage)",
+            "Two LRS accounts in the same region"
+          ],
+          "answer": 0,
+          "explanation": "Hanya opsi geo (GRS (Geo-Redundant Storage) atau GZRS (Geo-Zone-Redundant Storage)) yang menyalin ke region lain. Di antara pilihan ini, GRS jawabannya.",
+          "examReady": true,
+          "requires": [
+            "f-u07-geo-region",
+            "f-u07-lrs",
+            "f-u07-zrs"
+          ]
+        },
+        {
+          "id": "u07-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "primary-redundancy",
+            "geo-redundancy"
+          ],
+          "title": "Membandingkan redundancy",
+          "body": "Makin jauh salinannya disebar, makin tinggi durability-nya. LRS (Locally Redundant Storage) 11 nines, ZRS (Zone-Redundant Storage) 12 nines, lalu GRS (Geo-Redundant Storage) dan GZRS (Geo-Zone-Redundant Storage) 16 nines. Kalau data harus tetap di satu region, ZRS yang paling tinggi.",
+          "keyPoints": [
+            "Satu datacenter < tiga zone < dua region",
+            "Angka hafalan: 11, 12, 16 nines"
+          ],
+          "visual": "StorageRedundancy",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+          "teaches": [
+            "f-u07-lrs",
+            "f-u07-zrs",
+            "f-u07-grs"
+          ]
+        },
+        {
+          "id": "u07-l2-e6",
+          "type": "choice",
+          "concept": "primary-redundancy",
+          "prompt": "Which option offers the highest durability while keeping data in a single region?",
+          "options": [
+            "ZRS (Zone-Redundant Storage)",
+            "LRS (Locally Redundant Storage)",
+            "GRS (Geo-Redundant Storage)",
+            "GZRS (Geo-Zone-Redundant Storage)"
+          ],
+          "answer": 0,
+          "explanation": "Di dalam satu region, ZRS (Zone-Redundant Storage) dengan 12 nines lebih tinggi dari LRS (Locally Redundant Storage) dengan 11 nines. GRS (Geo-Redundant Storage) dan GZRS (Geo-Zone-Redundant Storage) memakai region kedua.",
+          "examReady": true,
+          "requires": [
+            "f-u07-zrs",
+            "f-u07-lrs",
+            "f-u07-geo-region"
+          ]
+        },
+        {
+          "id": "u07-l2-e3",
+          "type": "match",
+          "concept": "geo-redundancy",
+          "prompt": "Match each redundancy option with its description.",
+          "pairs": [
+            [
+              "LRS (Locally Redundant Storage)",
+              "3 copies in one datacenter, 11 nines"
+            ],
+            [
+              "ZRS (Zone-Redundant Storage)",
+              "3 copies across availability zones, 12 nines"
+            ],
+            [
+              "GRS (Geo-Redundant Storage)",
+              "Copies in a second region, 16 nines"
+            ],
+            [
+              "GZRS (Geo-Zone-Redundant Storage)",
+              "Zones in the primary region plus a second region, 16 nines"
+            ]
+          ],
+          "explanation": "Semakin jauh salinannya disebar, semakin tinggi durability-nya: 11, 12, lalu 16 nines.",
+          "examReady": true,
+          "requires": [
+            "f-u07-lrs",
+            "f-u07-zrs",
+            "f-u07-grs",
+            "f-u07-gzrs"
+          ]
         },
         {
           "id": "u07-l2-e8",
@@ -317,7 +467,12 @@
             "GRS (Geo-Redundant Storage)"
           ],
           "explanation": "LRS (Locally Redundant Storage) 11 nines, ZRS (Zone-Redundant Storage) 12 nines, GRS (Geo-Redundant Storage) 16 nines.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-lrs",
+            "f-u07-zrs",
+            "f-u07-grs"
+          ]
         },
         {
           "id": "u07-l2-e9",
@@ -335,7 +490,11 @@
             "11",
             "16"
           ],
-          "explanation": "Angka yang wajib hafal: LRS (Locally Redundant Storage) 11, ZRS (Zone-Redundant Storage) 12, serta GRS (Geo-Redundant Storage) dan GZRS (Geo-Zone-Redundant Storage) 16 nines."
+          "explanation": "Angka yang wajib hafal: LRS (Locally Redundant Storage) 11, ZRS (Zone-Redundant Storage) 12, serta GRS (Geo-Redundant Storage) dan GZRS (Geo-Zone-Redundant Storage) 16 nines.",
+          "requires": [
+            "f-u07-lrs",
+            "f-u07-grs"
+          ]
         }
       ]
     },
@@ -345,10 +504,22 @@
       "items": [
         {
           "id": "u07-l3-i1",
-          "type": "intro",
-          "concept": "blob-access-tiers",
+          "type": "learn",
+          "concepts": [
+            "blob-access-tiers"
+          ],
           "title": "Access tier",
-          "body": "Blob punya access tier: Hot untuk data yang sering diakses, Cool (minimal 30 hari), Cold (minimal 90 hari), dan Archive (minimal 180 hari). Semakin jarang diakses, biaya simpan makin murah tapi biaya akses makin mahal."
+          "body": "Blob punya access tier. Hot untuk data yang sering diakses. Cool untuk data jarang diakses dan disimpan minimal 30 hari, Cold minimal 90 hari, dan Archive minimal 180 hari. Semakin jarang tier-nya dipakai, biaya simpannya makin murah tapi biaya aksesnya makin mahal.",
+          "keyPoints": [
+            "Hot, Cool (30 hari), Cold (90 hari), Archive (180 hari)",
+            "Simpan makin murah, akses makin mahal"
+          ],
+          "visual": "BlobTiers",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview",
+          "teaches": [
+            "f-u07-tiers",
+            "f-u07-tier-cost"
+          ]
         },
         {
           "id": "u07-l3-e1",
@@ -357,7 +528,10 @@
           "prompt": "The Cool tier is meant for data that is accessed often.",
           "answer": false,
           "explanation": "Pernyataan ini salah. Data yang sering diakses cocok di Hot. Cool untuk data yang jarang diakses dan disimpan minimal 30 hari.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-tiers"
+          ]
         },
         {
           "id": "u07-l3-e2",
@@ -372,23 +546,10 @@
           ],
           "answer": 0,
           "explanation": "Cool 30 hari, Cold 90 hari, Archive 180 hari. Menghapus atau memindahkan lebih cepat dari itu kena biaya early deletion.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l3-i2",
-          "type": "intro",
-          "concept": "archive-rehydration",
-          "title": "Archive dan rehydrate",
-          "body": "Archive adalah tier offline: blob di sana tidak bisa langsung dibaca. Untuk membacanya, blob harus di-rehydrate dulu ke tier online (Hot, Cool, atau Cold), dan prosesnya bisa memakan waktu berjam-jam."
-        },
-        {
-          "id": "u07-l3-e3",
-          "type": "truefalse",
-          "concept": "archive-rehydration",
-          "prompt": "You can read a blob in the Archive tier immediately, just like a blob in the Hot tier.",
-          "answer": false,
-          "explanation": "Pernyataan ini salah. Archive itu offline. Blob harus di-rehydrate dulu ke tier online sebelum bisa dibaca.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-tiers"
+          ]
         },
         {
           "id": "u07-l3-e4",
@@ -414,7 +575,59 @@
             ]
           ],
           "explanation": "Hot sering dipakai. Cool 30 hari, Cold 90 hari, Archive 180 hari dan offline.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-tiers"
+          ]
+        },
+        {
+          "id": "u07-l3-e8",
+          "type": "order",
+          "concept": "blob-access-tiers",
+          "prompt": "Order the tiers from the lowest storage cost to the highest.",
+          "items": [
+            "Archive",
+            "Cold",
+            "Cool",
+            "Hot"
+          ],
+          "explanation": "Biaya simpan dari termurah: Archive, Cold, Cool, Hot. Biaya akses urutannya kebalikannya.",
+          "examReady": true,
+          "requires": [
+            "f-u07-tier-cost",
+            "f-u07-tiers"
+          ]
+        },
+        {
+          "id": "u07-l3-i2",
+          "type": "learn",
+          "concepts": [
+            "archive-rehydration"
+          ],
+          "title": "Archive dan rehydrate",
+          "body": "Archive adalah tier offline: blob di sana tidak bisa langsung dibaca atau diubah. Untuk membacanya, blob harus di-rehydrate dulu ke tier online, yaitu Hot, Cool, atau Cold. Prosesnya bisa memakan waktu berjam-jam.",
+          "keyPoints": [
+            "Archive = offline",
+            "Rehydrate dulu ke Hot, Cool, atau Cold",
+            "Rehydrate bisa berjam-jam"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/archive-rehydrate-overview",
+          "teaches": [
+            "f-u07-archive-offline",
+            "f-u07-rehydrate-time"
+          ]
+        },
+        {
+          "id": "u07-l3-e3",
+          "type": "truefalse",
+          "concept": "archive-rehydration",
+          "prompt": "You can read a blob in the Archive tier immediately, just like a blob in the Hot tier.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Archive itu offline. Blob harus di-rehydrate dulu ke tier online sebelum bisa dibaca.",
+          "examReady": true,
+          "requires": [
+            "f-u07-archive-offline"
+          ]
         },
         {
           "id": "u07-l3-e5",
@@ -433,7 +646,30 @@
             "Open a support ticket to unlock the blob instantly"
           ],
           "answer": 0,
-          "explanation": "Blob di Archive harus di-rehydrate dulu ke tier online. Rencanakan waktunya, karena prosesnya bisa berjam-jam."
+          "explanation": "Blob di Archive harus di-rehydrate dulu ke tier online. Rencanakan waktunya, karena prosesnya bisa berjam-jam.",
+          "requires": [
+            "f-u07-archive-offline",
+            "f-u07-rehydrate-time",
+            "f-u07-grs"
+          ]
+        },
+        {
+          "id": "u07-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "blob-access-tiers"
+          ],
+          "title": "Memilih tier",
+          "body": "Pilih tier dari seberapa sering data dibaca dan berapa lama disimpan. Data yang hampir tidak pernah dibaca dan boleh ditunggu berjam-jam cocok di Archive. Hati-hati: menghapus atau memindahkan blob sebelum masa minimal tier-nya habis dikenai biaya early deletion.",
+          "keyPoints": [
+            "Jarang dibaca dan disimpan lama: Archive",
+            "Keluar sebelum masa minimal: kena biaya early deletion"
+          ],
+          "visual": "BlobTiers",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview",
+          "teaches": [
+            "f-u07-early-deletion"
+          ]
         },
         {
           "id": "u07-l3-e6",
@@ -448,7 +684,12 @@
           ],
           "answer": 0,
           "explanation": "Jarang dibaca, disimpan lama, dan boleh menunggu berjam-jam: Archive, biaya simpan termurah.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-tier-cost",
+            "f-u07-tiers",
+            "f-u07-rehydrate-time"
+          ]
         },
         {
           "id": "u07-l3-e7",
@@ -466,21 +707,11 @@
             1
           ],
           "explanation": "Archive: simpan paling murah, baca paling mahal dan paling lambat karena perlu rehydrate.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l3-e8",
-          "type": "order",
-          "concept": "blob-access-tiers",
-          "prompt": "Order the tiers from the lowest storage cost to the highest.",
-          "items": [
-            "Archive",
-            "Cold",
-            "Cool",
-            "Hot"
-          ],
-          "explanation": "Biaya simpan dari termurah: Archive, Cold, Cool, Hot. Biaya akses urutannya kebalikannya.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-tier-cost",
+            "f-u07-archive-offline"
+          ]
         },
         {
           "id": "u07-l3-e9",
@@ -498,7 +729,10 @@
             "offline",
             "rehydrated"
           ],
-          "explanation": "Archive = offline, harus di-rehydrate."
+          "explanation": "Archive = offline, harus di-rehydrate.",
+          "requires": [
+            "f-u07-archive-offline"
+          ]
         }
       ]
     },
@@ -508,10 +742,20 @@
       "items": [
         {
           "id": "u07-l4-i1",
-          "type": "intro",
-          "concept": "azure-files",
+          "type": "learn",
+          "concepts": [
+            "azure-files"
+          ],
           "title": "Azure Files",
-          "body": "Azure Files menyediakan file share yang dikelola penuh di cloud, diakses lewat protokol SMB (Server Message Block) atau NFS (Network File System). Share yang sama bisa di-mount oleh banyak server, di cloud maupun on-premises."
+          "body": "Azure Files menyediakan file share yang dikelola penuh di cloud. Aksesnya lewat protokol SMB (Server Message Block) atau NFS (Network File System). Share yang sama bisa di-mount bersamaan oleh banyak server, baik di cloud maupun on-premises.",
+          "keyPoints": [
+            "File share terkelola lewat SMB atau NFS",
+            "Bisa di-mount dari cloud dan on-premises"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction",
+          "teaches": [
+            "f-u07-files-def"
+          ]
         },
         {
           "id": "u07-l4-e1",
@@ -520,14 +764,27 @@
           "prompt": "Azure Files shares can be mounted by on-premises servers as well as by Azure virtual machines.",
           "answer": true,
           "explanation": "Pernyataan ini benar. File share Azure Files bisa di-mount bersamaan dari cloud dan on-premises.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-files-def"
+          ]
         },
         {
           "id": "u07-l4-i2",
-          "type": "intro",
-          "concept": "azure-disks",
+          "type": "learn",
+          "concepts": [
+            "azure-disks"
+          ],
           "title": "Azure Disks",
-          "body": "Azure Disks adalah volume storage tingkat blok yang dikelola Azure dan dipakai sebagai disk VM (Virtual Machine). Anggap saja seperti hard disk fisik, tapi virtual."
+          "body": "Azure managed disks adalah volume storage tingkat blok yang dikelola Azure dan dipakai sebagai disk VM (Virtual Machine). Anggap saja seperti hard disk fisik, tapi virtual.",
+          "keyPoints": [
+            "Disk untuk VM",
+            "Volume tingkat blok, dikelola Azure"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview",
+          "teaches": [
+            "f-u07-disks-def"
+          ]
         },
         {
           "id": "u07-l4-e2",
@@ -536,20 +793,125 @@
           "prompt": "Which storage service provides block-level volumes that are attached to Azure VMs (Virtual Machines)?",
           "options": [
             "Azure Disks",
-            "Azure Queue Storage",
-            "Azure Table Storage",
-            "Azure Files"
+            "Azure Files",
+            "Blob storage",
+            "An availability set"
           ],
           "answer": 0,
-          "explanation": "Disk untuk VM (Virtual Machine) = Azure Disks (managed disks).",
-          "examReady": true
+          "explanation": "Disk untuk VM (Virtual Machine) = Azure Disks (managed disks). Azure Files adalah file share yang di-mount lewat jaringan, bukan volume tingkat blok.",
+          "examReady": true,
+          "requires": [
+            "f-u07-disks-def",
+            "f-u07-files-def",
+            "f-u07-blob-def",
+            "f-u05-avset-fd"
+          ]
         },
         {
           "id": "u07-l4-i3",
-          "type": "intro",
-          "concept": "queues-and-tables",
+          "type": "learn",
+          "concepts": [
+            "queues-and-tables"
+          ],
           "title": "Queue dan Table storage",
-          "body": "Queue storage menyimpan banyak pesan untuk diproses belakangan (asynchronous), misalnya antrean pesanan. Table storage menyimpan data NoSQL terstruktur tanpa skema tetap, dalam bentuk key dan attribute."
+          "body": "Queue Storage menyimpan banyak pesan untuk diproses belakangan secara asinkron, misalnya antrean pesanan. Pesanan tidak hilang walau pemrosesnya sedang sibuk. Table Storage menyimpan data terstruktur NoSQL dalam bentuk key dan attribute, tanpa skema tetap.",
+          "keyPoints": [
+            "Queue: pesan untuk diproses belakangan",
+            "Table: data key-attribute tanpa skema"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction",
+          "teaches": [
+            "f-u07-queue-def",
+            "f-u07-table-def"
+          ]
+        },
+        {
+          "id": "u07-l4-e5",
+          "type": "choice",
+          "concept": "azure-files",
+          "prompt": "A company wants to move its on-premises file server to the cloud. Users map a network drive over SMB (Server Message Block). Which service fits best?",
+          "options": [
+            "Azure Files",
+            "Azure Blob Storage",
+            "Azure Queue Storage",
+            "Azure Disks"
+          ],
+          "answer": 0,
+          "explanation": "Network drive lewat SMB (Server Message Block) = Azure Files.",
+          "examReady": true,
+          "requires": [
+            "f-u07-files-def",
+            "f-u07-blob-def",
+            "f-u07-queue-def",
+            "f-u07-disks-def"
+          ]
+        },
+        {
+          "id": "u07-l4-e6",
+          "type": "choice",
+          "concept": "queues-and-tables",
+          "prompt": "An online shop wants its website to hand orders to a background process that may be busy, without losing any orders. Which service fits best?",
+          "options": [
+            "Azure Queue Storage",
+            "Azure Table Storage",
+            "Azure Files",
+            "Azure Disks"
+          ],
+          "answer": 0,
+          "explanation": "Queue menampung pesan sampai pemrosesnya siap, jadi pesanan tidak hilang walau pemrosesnya sibuk.",
+          "examReady": true,
+          "requires": [
+            "f-u07-queue-def",
+            "f-u07-table-def",
+            "f-u07-files-def",
+            "f-u07-disks-def"
+          ]
+        },
+        {
+          "id": "u07-l4-e7",
+          "type": "yesno",
+          "concept": "azure-disks",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso stores virtual machine disks, a shared team folder, and order messages in Azure.",
+          "statements": [
+            {
+              "text": "Azure Disks is the right service for the virtual machine disks.",
+              "answer": true
+            },
+            {
+              "text": "Azure Queue Storage is the right service for the shared team folder.",
+              "answer": false
+            },
+            {
+              "text": "Azure Files can provide the shared team folder.",
+              "answer": true
+            }
+          ],
+          "explanation": "Disk VM (Virtual Machine) = Azure Disks. Folder bersama = Azure Files. Queue untuk pesan, bukan folder.",
+          "examReady": true,
+          "requires": [
+            "f-u07-disks-def",
+            "f-u07-queue-def",
+            "f-u07-files-def"
+          ]
+        },
+        {
+          "id": "u07-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "storage-services"
+          ],
+          "title": "Memilih layanan storage",
+          "body": "Pilih layanan storage dari jenis datanya. Object tidak terstruktur, seperti video, masuk Blob. File share untuk network drive masuk Files. Disk VM (Virtual Machine) memakai Disks. Pesan untuk diproses belakangan masuk Queue, dan data key-attribute masuk Table.",
+          "keyPoints": [
+            "Blob: object. Files: file share. Disks: disk VM",
+            "Queue: pesan. Table: key-attribute"
+          ],
+          "visual": "StorageServices",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-introduction",
+          "teaches": [
+            "f-u07-storage-choice"
+          ]
         },
         {
           "id": "u07-l4-e3",
@@ -587,7 +949,13 @@
               "bucket": 2
             }
           ],
-          "explanation": "File share: Azure Files. Pesan untuk diproses belakangan: Queue. Data terstruktur tanpa skema: Table."
+          "explanation": "File share: Azure Files. Pesan untuk diproses belakangan: Queue. Data terstruktur tanpa skema: Table.",
+          "requires": [
+            "f-u07-storage-choice",
+            "f-u07-files-def",
+            "f-u07-queue-def",
+            "f-u07-table-def"
+          ]
         },
         {
           "id": "u07-l4-e4",
@@ -617,60 +985,10 @@
             ]
           ],
           "explanation": "Lima layanan storage yang sering keluar di ujian: Blob, Files, Disks, Queue, dan Table.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l4-e5",
-          "type": "choice",
-          "concept": "azure-files",
-          "prompt": "A company wants to move its on-premises file server to the cloud. Users map a network drive over SMB (Server Message Block). Which service fits best?",
-          "options": [
-            "Azure Files",
-            "Azure Blob Storage",
-            "Azure Queue Storage",
-            "Azure Disks"
-          ],
-          "answer": 0,
-          "explanation": "Network drive lewat SMB (Server Message Block) = Azure Files.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l4-e6",
-          "type": "choice",
-          "concept": "queues-and-tables",
-          "prompt": "An online shop wants its website to hand orders to a background process that may be busy, without losing any orders. Which service fits best?",
-          "options": [
-            "Azure Queue Storage",
-            "Azure Table Storage",
-            "Azure Files",
-            "Azure Disks"
-          ],
-          "answer": 0,
-          "explanation": "Queue menampung pesan sampai pemrosesnya siap, jadi pesanan tidak hilang walau pemrosesnya sibuk.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l4-e7",
-          "type": "yesno",
-          "concept": "azure-disks",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso stores virtual machine disks, a shared team folder, and order messages in Azure.",
-          "statements": [
-            {
-              "text": "Azure Disks is the right service for the virtual machine disks.",
-              "answer": true
-            },
-            {
-              "text": "Azure Queue Storage is the right service for the shared team folder.",
-              "answer": false
-            },
-            {
-              "text": "Azure Files can provide the shared team folder.",
-              "answer": true
-            }
-          ],
-          "explanation": "Disk VM (Virtual Machine) = Azure Disks. Folder bersama = Azure Files. Queue untuk pesan, bukan folder.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-storage-choice"
+          ]
         },
         {
           "id": "u07-l4-e8",
@@ -688,7 +1006,10 @@
             "shares",
             "servers"
           ],
-          "explanation": "Azure Files = file share yang bisa di-mount banyak server sekaligus."
+          "explanation": "Azure Files = file share yang bisa di-mount banyak server sekaligus.",
+          "requires": [
+            "f-u07-files-def"
+          ]
         }
       ]
     },
@@ -698,10 +1019,20 @@
       "items": [
         {
           "id": "u07-l5-i1",
-          "type": "intro",
-          "concept": "azure-migrate",
+          "type": "learn",
+          "concepts": [
+            "azure-migrate"
+          ],
           "title": "Azure Migrate",
-          "body": "Azure Migrate adalah layanan pusat untuk menilai dan memigrasikan server, database, web app, dan data dari on-premises ke Azure. Semua alatnya ada di satu dashboard, jadi progres migrasi mudah dipantau."
+          "body": "Azure Migrate adalah platform terpadu untuk memindahkan workload ke Azure. Alurnya: temukan (discover), nilai kesiapannya (assess), lalu migrasikan (migrate). Server, database, dan web app bisa diurus dari satu portal, jadi progres migrasi mudah dipantau.",
+          "keyPoints": [
+            "Discover, assess, migrate",
+            "Server, database, dan web app dari satu portal"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/migrate/migrate-services-overview",
+          "teaches": [
+            "f-u07-migrate-def"
+          ]
         },
         {
           "id": "u07-l5-e1",
@@ -710,14 +1041,92 @@
           "prompt": "Azure Migrate can assess on-premises servers before you migrate them.",
           "answer": true,
           "explanation": "Pernyataan ini benar. Azure Migrate punya alur discover, assess, lalu migrate.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-migrate-def"
+          ]
         },
         {
           "id": "u07-l5-i2",
-          "type": "intro",
-          "concept": "azure-data-box",
+          "type": "learn",
+          "concepts": [
+            "azure-data-box"
+          ],
           "title": "Azure Data Box",
-          "body": "Azure Data Box adalah perangkat storage fisik yang dikirim Microsoft kepadamu, dengan kapasitas pakai sampai 80 terabyte. Kamu isi datanya, kirim balik, lalu datanya diunggah ke Azure; cocok kalau jaringan lambat atau terbatas."
+          "body": "Azure Data Box adalah perangkat storage fisik yang dikirim Microsoft kepadamu. Kamu isi datanya, kirim balik, lalu datanya diunggah ke Azure; bisa juga sebaliknya, dari Azure keluar. Data Box cocok kalau transfer lewat jaringan terlalu lama, mahal, atau bandwidth-nya terbatas, misalnya lebih dari 40 terabyte.",
+          "keyPoints": [
+            "Data dikirim lewat perangkat fisik",
+            "Untuk data besar dan jaringan terbatas"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/databox/data-box-overview",
+          "teaches": [
+            "f-u07-databox-def",
+            "f-u07-databox-when"
+          ]
+        },
+        {
+          "id": "u07-l5-e5",
+          "type": "fix",
+          "concept": "azure-migrate",
+          "prompt": "What is the next step for the 12 ready servers?",
+          "scene": {
+            "kind": "portal",
+            "title": "Azure Migrate: assessment complete",
+            "message": "12 servers are ready for Azure. 2 servers need changes before they can be migrated."
+          },
+          "options": [
+            "Migrate them with the server migration tool in Azure Migrate",
+            "Order a separate Azure Data Box for each of the 12 servers",
+            "Rewrite the 12 servers as Azure Functions before moving them",
+            "Run the assessment again until all 14 servers are ready"
+          ],
+          "answer": 0,
+          "explanation": "Azure Migrate punya alur discover, assess, lalu migrate. Server yang siap bisa langsung dimigrasikan dari dashboard yang sama.",
+          "requires": [
+            "f-u07-migrate-def",
+            "f-u07-databox-def",
+            "f-u03-functions"
+          ]
+        },
+        {
+          "id": "u07-l5-e6",
+          "type": "multi",
+          "concept": "azure-data-box",
+          "prompt": "Which two scenarios suit Azure Data Box? Choose two.",
+          "options": [
+            "A one-time migration of a very large amount of data",
+            "Moving data where network bandwidth is limited",
+            "Syncing a file server continuously every minute",
+            "Sending messages between app components"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Data Box untuk transfer besar dan jaringan terbatas. Sinkronisasi terus-menerus pakai File Sync, pesan antar komponen pakai Queue.",
+          "examReady": true,
+          "requires": [
+            "f-u07-databox-when",
+            "f-u07-queue-def"
+          ]
+        },
+        {
+          "id": "u07-l5-i3",
+          "type": "learn",
+          "concepts": [
+            "file-movement-tools"
+          ],
+          "title": "AzCopy dan File Sync",
+          "body": "AzCopy adalah alat baris perintah untuk menyalin blob atau file ke dan dari storage account, termasuk antar storage account. Sinkronisasi AzCopy hanya satu arah. Azure File Sync menyinkronkan Windows file server dengan Azure Files dua arah. File yang sering dipakai tetap disimpan lokal.",
+          "keyPoints": [
+            "AzCopy: baris perintah, satu arah",
+            "File Sync: file server lokal + Azure Files, dua arah"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/file-sync/file-sync-introduction",
+          "teaches": [
+            "f-u07-azcopy",
+            "f-u07-filesync"
+          ]
         },
         {
           "id": "u07-l5-e2",
@@ -732,14 +1141,99 @@
           ],
           "answer": 0,
           "explanation": "Data besar dan jaringan lambat: kirim lewat perangkat fisik, yaitu Azure Data Box.",
-          "examReady": true
+          "examReady": true,
+          "requires": [
+            "f-u07-databox-when",
+            "f-u07-azcopy",
+            "f-u07-queue-def",
+            "f-u06-dns-def"
+          ]
         },
         {
-          "id": "u07-l5-i3",
-          "type": "intro",
+          "id": "u07-l5-e4",
+          "type": "choice",
           "concept": "file-movement-tools",
-          "title": "AzCopy dan File Sync",
-          "body": "AzCopy adalah alat baris perintah untuk menyalin blob atau file ke dan dari storage account; sinkronisasinya satu arah. Azure File Sync menyinkronkan file server Windows dengan Azure Files dua arah, dan file yang sering dipakai tetap tersimpan lokal."
+          "prompt": "Branch offices want to keep a local Windows file server for fast access, while all files are also kept in Azure Files. Which service fits?",
+          "options": [
+            "Azure File Sync",
+            "Azure Data Box",
+            "AzCopy",
+            "Azure Migrate"
+          ],
+          "answer": 0,
+          "explanation": "File Sync menjadikan file server lokal sebagai cache Azure Files, dengan sinkronisasi dua arah.",
+          "examReady": true,
+          "requires": [
+            "f-u07-filesync",
+            "f-u07-databox-def",
+            "f-u07-azcopy",
+            "f-u07-migrate-def"
+          ]
+        },
+        {
+          "id": "u07-l5-e7",
+          "type": "yesno",
+          "concept": "file-movement-tools",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An admin uses AzCopy to copy files from a laptop to Blob storage.",
+          "statements": [
+            {
+              "text": "AzCopy is a command-line tool.",
+              "answer": true
+            },
+            {
+              "text": "AzCopy's sync keeps both sides updated in both directions.",
+              "answer": false
+            },
+            {
+              "text": "AzCopy can also copy data between two storage accounts.",
+              "answer": true
+            }
+          ],
+          "explanation": "AzCopy adalah alat baris perintah dan bisa menyalin antar storage account, tapi sinkronisasinya hanya satu arah.",
+          "examReady": true,
+          "requires": [
+            "f-u07-azcopy"
+          ]
+        },
+        {
+          "id": "u07-l5-e8",
+          "type": "fill",
+          "concept": "file-movement-tools",
+          "prompt": "Complete the sentence.",
+          "sentence": "AzCopy syncs in ___ direction, while Azure File Sync syncs in ___ directions.",
+          "bank": [
+            "one",
+            "both",
+            "no",
+            "three"
+          ],
+          "answers": [
+            "one",
+            "both"
+          ],
+          "explanation": "AzCopy satu arah, File Sync dua arah.",
+          "requires": [
+            "f-u07-azcopy",
+            "f-u07-filesync"
+          ]
+        },
+        {
+          "id": "u07-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "file-movement-tools"
+          ],
+          "title": "Storage Explorer",
+          "body": "Azure Storage Explorer adalah aplikasi grafis untuk mengelola data storage dari Windows, macOS, atau Linux. Kalau lebih suka klik daripada mengetik perintah, pakai Storage Explorer. Untuk skrip dan otomatisasi, pakai AzCopy.",
+          "keyPoints": [
+            "Storage Explorer: aplikasi grafis",
+            "AzCopy: baris perintah"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer",
+          "teaches": [
+            "f-u07-explorer"
+          ]
         },
         {
           "id": "u07-l5-e3",
@@ -769,102 +1263,143 @@
             ]
           ],
           "explanation": "Migrate untuk migrasi terencana, Data Box untuk data besar secara fisik, AzCopy dan Storage Explorer untuk menyalin, File Sync untuk sinkronisasi file server.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l5-e4",
-          "type": "choice",
-          "concept": "file-movement-tools",
-          "prompt": "Branch offices want to keep a local Windows file server for fast access, while all files are also kept in Azure Files. Which service fits?",
-          "options": [
-            "Azure File Sync",
-            "Azure Data Box",
-            "AzCopy",
-            "Azure Migrate"
-          ],
-          "answer": 0,
-          "explanation": "File Sync menjadikan file server lokal sebagai cache Azure Files, dengan sinkronisasi dua arah.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l5-e5",
-          "type": "fix",
-          "concept": "azure-migrate",
-          "prompt": "What is the next step for the 12 ready servers?",
-          "scene": {
-            "kind": "portal",
-            "title": "Azure Migrate: assessment complete",
-            "message": "12 servers are ready for Azure. 2 servers need changes before they can be migrated."
-          },
-          "options": [
-            "Migrate them with the server migration tool in Azure Migrate",
-            "Order a separate Azure Data Box for each of the 12 servers",
-            "Rewrite the 12 servers as Azure Functions before moving them",
-            "Run the assessment again until all 14 servers are ready"
-          ],
-          "answer": 0,
-          "explanation": "Azure Migrate punya alur discover, assess, lalu migrate. Server yang siap bisa langsung dimigrasikan dari dashboard yang sama."
-        },
-        {
-          "id": "u07-l5-e6",
-          "type": "multi",
-          "concept": "azure-data-box",
-          "prompt": "Which two scenarios suit Azure Data Box? Choose two.",
-          "options": [
-            "A one-time migration of a very large amount of data",
-            "Moving data where network bandwidth is limited",
-            "Syncing a file server continuously every minute",
-            "Sending messages between app components"
-          ],
-          "answers": [
-            0,
-            1
-          ],
-          "explanation": "Data Box untuk transfer besar dan jaringan terbatas. Sinkronisasi terus-menerus pakai File Sync, pesan antar komponen pakai Queue.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l5-e7",
-          "type": "yesno",
-          "concept": "file-movement-tools",
-          "prompt": "For each statement, select Yes or No.",
-          "scenario": "An admin uses AzCopy to copy files from a laptop to Blob storage.",
-          "statements": [
-            {
-              "text": "AzCopy is a command-line tool.",
-              "answer": true
-            },
-            {
-              "text": "AzCopy's sync keeps both sides updated in both directions.",
-              "answer": false
-            },
-            {
-              "text": "AzCopy can also copy data between two storage accounts.",
-              "answer": true
-            }
-          ],
-          "explanation": "AzCopy adalah alat baris perintah dan bisa menyalin antar storage account, tapi sinkronisasinya hanya satu arah.",
-          "examReady": true
-        },
-        {
-          "id": "u07-l5-e8",
-          "type": "fill",
-          "concept": "file-movement-tools",
-          "prompt": "Complete the sentence.",
-          "sentence": "AzCopy syncs in ___ direction, while Azure File Sync syncs in ___ directions.",
-          "bank": [
-            "one",
-            "both",
-            "no",
-            "three"
-          ],
-          "answers": [
-            "one",
-            "both"
-          ],
-          "explanation": "AzCopy satu arah, File Sync dua arah."
+          "examReady": true,
+          "requires": [
+            "f-u07-migrate-def",
+            "f-u07-databox-def",
+            "f-u07-azcopy",
+            "f-u07-explorer",
+            "f-u07-filesync"
+          ]
         }
       ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "f-u07-sa-def",
+      "statement": "Storage account berisi data Azure Storage: blob, file share, queue, dan table, dan datanya bisa diakses dari mana saja lewat HTTP atau HTTPS.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview"
+    },
+    {
+      "id": "f-u07-sa-unique",
+      "statement": "Nama storage account harus unik di seluruh Azure karena menjadi bagian alamat endpoint-nya, misalnya https://namaakun.blob.core.windows.net.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview"
+    },
+    {
+      "id": "f-u07-blob-def",
+      "statement": "Blob storage adalah object storage untuk data tidak terstruktur dalam jumlah sangat besar, seperti gambar, video, backup, dan log.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction"
+    },
+    {
+      "id": "f-u07-blob-uses",
+      "statement": "Kegunaan umum Blob storage: menyajikan gambar atau dokumen langsung ke browser, streaming video dan audio, serta menyimpan backup dan arsip.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction"
+    },
+    {
+      "id": "f-u07-lrs",
+      "statement": "LRS (Locally Redundant Storage) menyimpan tiga salinan data di satu datacenter di region utama, dengan durability minimal 11 nines per tahun.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
+    },
+    {
+      "id": "f-u07-zrs",
+      "statement": "ZRS (Zone-Redundant Storage) menyalin data ke tiga availability zone di region utama, dengan durability minimal 12 nines per tahun.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
+    },
+    {
+      "id": "f-u07-grs",
+      "statement": "GRS (Geo-Redundant Storage) menyimpan tiga salinan dengan LRS di region utama, lalu menyalinnya ke region kedua; durability-nya minimal 16 nines.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
+    },
+    {
+      "id": "f-u07-gzrs",
+      "statement": "GZRS (Geo-Zone-Redundant Storage) menyalin data dengan ZRS di region utama, lalu menyalinnya ke region kedua; durability-nya juga minimal 16 nines.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
+    },
+    {
+      "id": "f-u07-geo-region",
+      "statement": "Hanya GRS dan GZRS yang menyimpan salinan di region kedua, jadi hanya keduanya yang tahan gangguan satu region penuh.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
+    },
+    {
+      "id": "f-u07-tiers",
+      "statement": "Access tier blob: Hot untuk data yang sering diakses, Cool untuk data jarang diakses (minimal 30 hari), Cold untuk data yang lebih jarang lagi (minimal 90 hari), dan Archive yang offline (minimal 180 hari).",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview"
+    },
+    {
+      "id": "f-u07-tier-cost",
+      "statement": "Semakin jarang tier-nya dipakai, biaya simpannya makin murah tapi biaya aksesnya makin mahal.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview"
+    },
+    {
+      "id": "f-u07-early-deletion",
+      "statement": "Menghapus atau memindahkan blob sebelum masa minimal tier-nya habis dikenai biaya early deletion.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview"
+    },
+    {
+      "id": "f-u07-archive-offline",
+      "statement": "Blob di tier Archive offline: tidak bisa dibaca atau diubah sebelum di-rehydrate ke tier online, yaitu Hot, Cool, atau Cold.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/archive-rehydrate-overview"
+    },
+    {
+      "id": "f-u07-rehydrate-time",
+      "statement": "Rehydrate blob dari Archive bisa memakan waktu berjam-jam.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/archive-rehydrate-overview"
+    },
+    {
+      "id": "f-u07-files-def",
+      "statement": "Azure Files menyediakan file share terkelola yang diakses lewat protokol SMB atau NFS, dan bisa di-mount bersamaan dari cloud maupun on-premises.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction"
+    },
+    {
+      "id": "f-u07-disks-def",
+      "statement": "Azure managed disks adalah volume storage tingkat blok yang dikelola Azure dan dipakai oleh VM (Virtual Machine), seperti disk fisik tapi virtual.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview"
+    },
+    {
+      "id": "f-u07-queue-def",
+      "statement": "Queue Storage menyimpan banyak pesan untuk diproses belakangan secara asinkron, misalnya antrean pesanan untuk proses di belakang layar.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction"
+    },
+    {
+      "id": "f-u07-table-def",
+      "statement": "Table Storage menyimpan data terstruktur NoSQL dalam bentuk key dan attribute, tanpa skema tetap.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/tables/table-storage-overview"
+    },
+    {
+      "id": "f-u07-storage-choice",
+      "statement": "Pilih layanan storage sesuai data: object tidak terstruktur di Blob, file share di Files, disk VM di Disks, pesan di Queue, dan data key-attribute di Table.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-introduction"
+    },
+    {
+      "id": "f-u07-migrate-def",
+      "statement": "Azure Migrate adalah platform terpadu untuk menemukan, menilai, dan memigrasikan server, database, dan web app ke Azure dari satu portal.",
+      "source": "https://learn.microsoft.com/en-us/azure/migrate/migrate-services-overview"
+    },
+    {
+      "id": "f-u07-databox-def",
+      "statement": "Azure Data Box adalah perangkat storage fisik yang dikirim Microsoft untuk memindahkan data berukuran terabyte ke dan dari Azure.",
+      "source": "https://learn.microsoft.com/en-us/azure/databox/data-box-overview"
+    },
+    {
+      "id": "f-u07-databox-when",
+      "statement": "Data Box cocok saat transfer lewat jaringan dibatasi waktu, bandwidth, atau biaya, misalnya lebih dari 40 terabyte dengan koneksi terbatas.",
+      "source": "https://learn.microsoft.com/en-us/azure/databox/data-box-overview"
+    },
+    {
+      "id": "f-u07-azcopy",
+      "statement": "AzCopy adalah alat baris perintah untuk menyalin blob atau file ke dan dari storage account, termasuk antar storage account; sinkronisasinya satu arah.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10"
+    },
+    {
+      "id": "f-u07-explorer",
+      "statement": "Azure Storage Explorer adalah aplikasi grafis untuk mengelola data storage dari Windows, macOS, atau Linux.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer"
+    },
+    {
+      "id": "f-u07-filesync",
+      "statement": "Azure File Sync menyinkronkan Windows file server dengan Azure Files dua arah, dan dengan cloud tiering hanya file yang sering dipakai yang disimpan lokal.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/file-sync/file-sync-introduction"
     }
   ]
 }
