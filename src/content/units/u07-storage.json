@@ -1,0 +1,32 @@
+{
+  "id": "u07-storage",
+  "path": 2,
+  "title": "Storage",
+  "lessons": [
+    {
+      "id": "u07-l1",
+      "title": "Storage account",
+      "exercises": []
+    },
+    {
+      "id": "u07-l2",
+      "title": "Redundancy",
+      "exercises": []
+    },
+    {
+      "id": "u07-l3",
+      "title": "Blob tiers",
+      "exercises": []
+    },
+    {
+      "id": "u07-l4",
+      "title": "Layanan storage",
+      "exercises": []
+    },
+    {
+      "id": "u07-l5",
+      "title": "Migrasi data",
+      "exercises": []
+    }
+  ]
+}

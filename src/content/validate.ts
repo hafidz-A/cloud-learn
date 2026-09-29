@@ -1,0 +1,216 @@
+import type { Exercise, Unit } from '../lib/types'
+
+// Checks the content rules from LANGIT_AZ900_PLAN.md section 2 ("Aturan konten")
+// and the shape rules from section 3. Errors break the app or the answer key;
+// warnings are content-quality notes to fix before a unit is called done.
+
+export type Issue = { level: 'error' | 'warn'; where: string; message: string }
+
+const KNOWN_TYPES = new Set([
+  'choice',
+  'truefalse',
+  'match',
+  'sort',
+  'order',
+  'fill',
+  'place',
+  'fix',
+  'shell',
+])
+
+/** Mixed-case abbreviations the all-caps pattern would miss. */
+const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet', 'vCPU']
+
+/** Tokens that look like abbreviations but are names or labels. */
+const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2'])
+
+const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+)s?\\b`, 'g')
+
+function initials(text: string): string {
+  return text
+    .split(/[\s-]+/)
+    .map((w) => w[0] ?? '')
+    .join('')
+    .toUpperCase()
+}
+
+/**
+ * Returns abbreviations whose first appearance in `texts` is not expanded.
+ * Accepted forms: "NSG (Network Security Group)" or "Network Security Group (NSG)".
+ * `expandedBy` lets a match pair like ["NSG", "Network Security Group"] count as expanded.
+ */
+export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string> = new Set()): string[] {
+  const seen = new Set<string>()
+  const missing: string[] = []
+  for (const text of texts) {
+    for (const m of text.matchAll(ABBREVIATION)) {
+      const abbr = m[1]
+      const start = m.index
+      const end = start + m[0].length
+      if (seen.has(abbr) || NOT_ABBREVIATIONS.has(abbr) || expandedBy.has(abbr)) continue
+      // "Entra ID" is the product name, not an abbreviation to expand.
+      if (abbr === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
+      seen.add(abbr)
+      const after = /^\s*\(/.test(text.slice(end))
+      const inside = text[start - 1] === '(' && text[end] === ')'
+      if (!after && !inside) missing.push(abbr)
+    }
+  }
+  return missing
+}
+
+function questionTexts(e: Exercise): string[] {
+  switch (e.type) {
+    case 'choice':
+      return [e.prompt, ...e.options]
+    case 'truefalse':
+      return [e.prompt]
+    case 'match':
+      return [e.prompt, ...e.pairs.flat()]
+    case 'sort':
+      return [e.prompt, ...e.buckets, ...e.items.map((i) => i.text)]
+    case 'order':
+      return [e.prompt, ...e.items]
+    case 'fill':
+      return [e.prompt, e.sentence, ...e.bank]
+    case 'place':
+      return [e.prompt, ...e.zones, ...e.pieces.map((p) => p.text)]
+    case 'fix':
+      return [e.prompt, e.scene.title, e.scene.message, ...e.options]
+    case 'shell':
+      return [e.prompt]
+  }
+}
+
+function checkOptions(options: unknown, answer: unknown, push: (m: string, level?: Issue['level']) => void) {
+  if (!Array.isArray(options) || options.length < 2) return push('options needs at least 2 entries')
+  if (options.length !== 4) push(`choice-style exercises should have 4 options, found ${options.length}`, 'warn')
+  if (new Set(options).size !== options.length) push('options contain duplicates')
+  if (!Number.isInteger(answer) || (answer as number) < 0 || (answer as number) >= options.length) {
+    push(`answer ${String(answer)} is not a valid option index`)
+  }
+}
+
+function checkExercise(e: Exercise, where: string, issues: Issue[]) {
+  const push = (message: string, level: Issue['level'] = 'error') => issues.push({ level, where, message })
+
+  if (!KNOWN_TYPES.has(e.type)) return push(`unknown type "${String(e.type)}"`)
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(e.concept ?? '')) push('concept must be a kebab-case tag')
+  if (!e.prompt?.trim()) push('prompt is empty')
+  if (!e.explanation?.trim()) push('explanation is empty')
+
+  switch (e.type) {
+    case 'choice':
+    case 'fix':
+      checkOptions(e.options, e.answer, push)
+      if (e.type === 'fix' && !['portal', 'error'].includes(e.scene?.kind)) push('scene.kind must be "portal" or "error"')
+      break
+    case 'truefalse':
+      if (typeof e.answer !== 'boolean') push('answer must be true or false')
+      break
+    case 'match': {
+      if (!Array.isArray(e.pairs) || e.pairs.some((p) => p.length !== 2 || !p[0] || !p[1])) {
+        push('every pair needs two non-empty strings')
+        break
+      }
+      if (e.pairs.length < 4 || e.pairs.length > 5) push(`match should have 4-5 pairs, found ${e.pairs.length}`, 'warn')
+      const left = e.pairs.map((p) => p[0])
+      const right = e.pairs.map((p) => p[1])
+      if (new Set(left).size !== left.length || new Set(right).size !== right.length) push('pairs contain duplicate cards')
+      break
+    }
+    case 'sort':
+      if (e.buckets.length < 2 || e.buckets.length > 3) push(`sort should have 2-3 buckets, found ${e.buckets.length}`, 'warn')
+      if (e.items.some((i) => !Number.isInteger(i.bucket) || i.bucket < 0 || i.bucket >= e.buckets.length)) {
+        push('an item points to a bucket that does not exist')
+      }
+      if (e.buckets.some((_, b) => !e.items.some((i) => i.bucket === b))) push('a bucket has no items', 'warn')
+      break
+    case 'order':
+      if (e.items.length < 3) push('order needs at least 3 items')
+      if (new Set(e.items).size !== e.items.length) push('order items contain duplicates')
+      break
+    case 'fill': {
+      const blanks = e.sentence.split('___').length - 1
+      if (blanks !== e.answers.length) push(`sentence has ${blanks} blanks but ${e.answers.length} answers`)
+      for (const a of e.answers) if (!e.bank.includes(a)) push(`answer "${a}" is missing from the word bank`)
+      break
+    }
+    case 'place':
+      if (e.zones.length < 2) push('place needs at least 2 zones')
+      if (!e.rule?.trim()) push('place needs a rule')
+      if (e.pieces.some((p) => p.validZones.length === 0 || p.validZones.some((z) => z < 0 || z >= e.zones.length))) {
+        push('a piece has invalid validZones')
+      }
+      break
+    case 'shell': {
+      const pool = [...e.tokens]
+      for (const t of e.answer) {
+        const i = pool.indexOf(t)
+        if (i < 0) push(`answer token "${t}" is not available in tokens`)
+        else pool.splice(i, 1)
+      }
+      if (e.answer.length === 0) push('shell answer is empty')
+      break
+    }
+  }
+
+  const pairExpansions = new Set<string>()
+  if (e.type === 'match') {
+    for (const [a, b] of e.pairs) {
+      if (initials(b).startsWith(a.replace(/s$/, '').toUpperCase())) pairExpansions.add(a)
+      if (initials(a).startsWith(b.replace(/s$/, '').toUpperCase())) pairExpansions.add(b)
+    }
+  }
+  const inQuestion = unexpandedAbbreviations(questionTexts(e), pairExpansions)
+  if (inQuestion.length) push(`expand on first use in the question: ${inQuestion.join(', ')}`, 'warn')
+  const inExplanation = unexpandedAbbreviations([e.explanation])
+  if (inExplanation.length) push(`expand on first use in the explanation: ${inExplanation.join(', ')}`, 'warn')
+
+  if (/Azure (AD|Active Directory)/.test([...questionTexts(e), e.explanation].join(' '))) {
+    push('use "Microsoft Entra ID", not Azure AD / Azure Active Directory')
+  }
+  if (e.verify) push('marked verify: true, double-check this fact', 'warn')
+}
+
+export function validateUnits(units: Unit[]): Issue[] {
+  const issues: Issue[] = []
+  const ids = new Set<string>()
+  const claim = (id: string, where: string) => {
+    if (ids.has(id)) issues.push({ level: 'error', where, message: `duplicate id "${id}"` })
+    ids.add(id)
+  }
+
+  for (const unit of units) {
+    const uw = unit.id
+    claim(unit.id, uw)
+    if (!/^u\d{2}-[a-z0-9-]+$/.test(unit.id)) issues.push({ level: 'error', where: uw, message: 'unit id must look like "u04-core-architecture"' })
+    if (![1, 2, 3].includes(unit.path)) issues.push({ level: 'error', where: uw, message: 'path must be 1, 2, or 3' })
+    if (unit.lessons.length < 3 || unit.lessons.length > 5) {
+      issues.push({ level: 'warn', where: uw, message: `units should have 3-5 lessons, found ${unit.lessons.length}` })
+    }
+
+    unit.lessons.forEach((lesson, li) => {
+      const lw = `${uw} > ${lesson.id}`
+      claim(lesson.id, lw)
+      const expectedLessonId = `${unit.id.slice(0, 3)}-l${li + 1}`
+      if (lesson.id !== expectedLessonId) issues.push({ level: 'error', where: lw, message: `lesson id should be "${expectedLessonId}"` })
+      if (lesson.exercises.length === 0) return // skeleton lesson, content comes in stage 5
+
+      if (lesson.exercises.length < 8 || lesson.exercises.length > 12) {
+        issues.push({ level: 'warn', where: lw, message: `lessons should have 8-12 exercises, found ${lesson.exercises.length}` })
+      }
+      const types = new Set(lesson.exercises.map((e) => e.type))
+      if (types.size < 4) issues.push({ level: 'warn', where: lw, message: `lessons should use at least 4 exercise types, found ${types.size}` })
+
+      lesson.exercises.forEach((e, ei) => {
+        const ew = `${lw} > ${e.id}`
+        claim(e.id, ew)
+        const expectedId = `${lesson.id}-e${ei + 1}`
+        if (e.id !== expectedId) issues.push({ level: 'error', where: ew, message: `exercise id should be "${expectedId}"` })
+        checkExercise(e, ew, issues)
+      })
+    })
+  }
+  return issues
+}

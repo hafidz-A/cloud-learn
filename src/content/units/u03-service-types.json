@@ -1,0 +1,27 @@
+{
+  "id": "u03-service-types",
+  "path": 1,
+  "title": "Jenis layanan",
+  "lessons": [
+    {
+      "id": "u03-l1",
+      "title": "IaaS",
+      "exercises": []
+    },
+    {
+      "id": "u03-l2",
+      "title": "PaaS",
+      "exercises": []
+    },
+    {
+      "id": "u03-l3",
+      "title": "SaaS",
+      "exercises": []
+    },
+    {
+      "id": "u03-l4",
+      "title": "Serverless",
+      "exercises": []
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "u05-compute",
+  "path": 2,
+  "title": "Compute",
+  "lessons": [
+    {
+      "id": "u05-l1",
+      "title": "Virtual machine",
+      "exercises": []
+    },
+    {
+      "id": "u05-l2",
+      "title": "Scale sets dan availability sets",
+      "exercises": []
+    },
+    {
+      "id": "u05-l3",
+      "title": "Azure Virtual Desktop",
+      "exercises": []
+    },
+    {
+      "id": "u05-l4",
+      "title": "Container",
+      "exercises": []
+    },
+    {
+      "id": "u05-l5",
+      "title": "Functions dan App Service",
+      "exercises": []
+    }
+  ]
+}

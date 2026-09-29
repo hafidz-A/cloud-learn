@@ -1,0 +1,27 @@
+{
+  "id": "u11-deploy-tools",
+  "path": 3,
+  "title": "Mengelola dan deploy",
+  "lessons": [
+    {
+      "id": "u11-l1",
+      "title": "Portal dan Cloud Shell",
+      "exercises": []
+    },
+    {
+      "id": "u11-l2",
+      "title": "Azure CLI dan PowerShell",
+      "exercises": []
+    },
+    {
+      "id": "u11-l3",
+      "title": "Azure Arc",
+      "exercises": []
+    },
+    {
+      "id": "u11-l4",
+      "title": "ARM dan Bicep",
+      "exercises": []
+    }
+  ]
+}

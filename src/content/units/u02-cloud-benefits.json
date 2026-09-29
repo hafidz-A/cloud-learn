@@ -1,0 +1,27 @@
+{
+  "id": "u02-cloud-benefits",
+  "path": 1,
+  "title": "Manfaat cloud",
+  "lessons": [
+    {
+      "id": "u02-l1",
+      "title": "Availability dan scalability",
+      "exercises": []
+    },
+    {
+      "id": "u02-l2",
+      "title": "Reliability dan predictability",
+      "exercises": []
+    },
+    {
+      "id": "u02-l3",
+      "title": "Security dan governance",
+      "exercises": []
+    },
+    {
+      "id": "u02-l4",
+      "title": "Manageability",
+      "exercises": []
+    }
+  ]
+}

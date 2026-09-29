@@ -1,0 +1,22 @@
+{
+  "id": "u12-monitoring",
+  "path": 3,
+  "title": "Monitoring",
+  "lessons": [
+    {
+      "id": "u12-l1",
+      "title": "Advisor dan Service Health",
+      "exercises": []
+    },
+    {
+      "id": "u12-l2",
+      "title": "Azure Monitor dan Log Analytics",
+      "exercises": []
+    },
+    {
+      "id": "u12-l3",
+      "title": "Alerts dan Application Insights",
+      "exercises": []
+    }
+  ]
+}

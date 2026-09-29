@@ -1,0 +1,22 @@
+{
+  "id": "u10-governance",
+  "path": 3,
+  "title": "Governance",
+  "lessons": [
+    {
+      "id": "u10-l1",
+      "title": "Azure Policy",
+      "exercises": []
+    },
+    {
+      "id": "u10-l2",
+      "title": "Resource lock",
+      "exercises": []
+    },
+    {
+      "id": "u10-l3",
+      "title": "Purview dan Service Trust Portal",
+      "exercises": []
+    }
+  ]
+}

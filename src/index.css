@@ -1,0 +1,115 @@
+@import '@fontsource/fredoka/latin-500.css';
+@import '@fontsource/fredoka/latin-600.css';
+@import '@fontsource/fredoka/latin-700.css';
+@import '@fontsource/nunito/latin-400.css';
+@import '@fontsource/nunito/latin-600.css';
+@import '@fontsource/nunito/latin-700.css';
+@import '@fontsource/nunito/latin-800.css';
+@import 'tailwindcss';
+
+/*
+ * Design tokens from LANGIT_AZ900_PLAN.md section 6 ("Arah desain").
+ * The default Tailwind palette and type scale are cleared on purpose so only
+ * these tokens can be used.
+ */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+
+  /* Palette from the plan */
+  --color-langit: #eef5ff; /* Langit pagi: main background */
+  --color-tinta: #1b2a41; /* Tinta: main text */
+  --color-biru: #2f8cff; /* Biru langit: primary button, active lesson, progress */
+  --color-biru-dalam: #1c6fd8; /* Biru dalam: 3D button edge, link text */
+  --color-matahari: #ffc53d; /* Matahari: XP, streak, stars */
+  --color-mint: #2bc48a; /* Mint: correct */
+  --color-koral: #ff6b6b; /* Koral: wrong, hearts */
+  --color-kabut: #d6e2f0; /* Kabut: borders, locked, inactive */
+
+  /* Derived tints and edges (backgrounds and 3D edges only) */
+  --color-tinta-lembut: #4f5e75; /* secondary text, >= 5:1 on every light surface */
+  --color-biru-muda: #e3f0ff;
+  --color-mint-muda: #e6f8f0;
+  --color-mint-dalam: #1fa273;
+  --color-koral-muda: #ffecec;
+  --color-koral-dalam: #e04e4e;
+  --color-matahari-muda: #fff6de;
+  --color-matahari-dalam: #e5a823;
+  --color-kabut-dalam: #b9c8db;
+
+  --font-*: initial;
+  --font-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+
+  /* Type scale: 28 / 20 / 17 / 15 / 13 px */
+  --text-*: initial;
+  --text-28: 28px;
+  --text-28--line-height: 1.2;
+  --text-20: 20px;
+  --text-20--line-height: 1.3;
+  --text-17: 17px;
+  --text-17--line-height: 1.45;
+  --text-15: 15px;
+  --text-15--line-height: 1.5;
+  --text-13: 13px;
+  --text-13--line-height: 1.4;
+
+  --animate-bob: bob 1.8s ease-in-out infinite;
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-langit font-body text-17 text-tinta antialiased;
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-biru-dalam);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /*
+   * Thick 3D button: 4px darker edge under the button. When pressed the
+   * button drops 4px and the edge disappears. The edge is drawn with
+   * box-shadow so pressing never shifts the layout.
+   */
+  .btn-3d {
+    --edge: var(--color-biru-dalam);
+    --depth: 4px;
+    box-shadow: 0 var(--depth) 0 var(--edge);
+    margin-bottom: var(--depth);
+    transition:
+      transform 80ms ease-out,
+      box-shadow 80ms ease-out;
+    touch-action: manipulation;
+    user-select: none;
+  }
+
+  .btn-3d:active:not(:disabled, [aria-disabled='true']) {
+    transform: translateY(var(--depth));
+    box-shadow: 0 0 0 var(--edge);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-3d {
+    transition: none;
+  }
+}

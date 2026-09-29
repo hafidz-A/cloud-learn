@@ -1,0 +1,27 @@
+{
+  "id": "u01-cloud-computing",
+  "path": 1,
+  "title": "Cloud computing",
+  "lessons": [
+    {
+      "id": "u01-l1",
+      "title": "Apa itu cloud computing",
+      "exercises": []
+    },
+    {
+      "id": "u01-l2",
+      "title": "Shared responsibility",
+      "exercises": []
+    },
+    {
+      "id": "u01-l3",
+      "title": "Model cloud",
+      "exercises": []
+    },
+    {
+      "id": "u01-l4",
+      "title": "CapEx vs OpEx",
+      "exercises": []
+    }
+  ]
+}

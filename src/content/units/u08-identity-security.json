@@ -1,0 +1,32 @@
+{
+  "id": "u08-identity-security",
+  "path": 2,
+  "title": "Identitas dan keamanan",
+  "lessons": [
+    {
+      "id": "u08-l1",
+      "title": "Microsoft Entra ID",
+      "exercises": []
+    },
+    {
+      "id": "u08-l2",
+      "title": "SSO, MFA, dan passwordless",
+      "exercises": []
+    },
+    {
+      "id": "u08-l3",
+      "title": "Conditional Access dan RBAC",
+      "exercises": []
+    },
+    {
+      "id": "u08-l4",
+      "title": "Zero Trust dan defense in depth",
+      "exercises": []
+    },
+    {
+      "id": "u08-l5",
+      "title": "Defender for Cloud",
+      "exercises": []
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "u06-networking",
+  "path": 2,
+  "title": "Networking",
+  "lessons": [
+    {
+      "id": "u06-l1",
+      "title": "VNet dan subnet",
+      "exercises": []
+    },
+    {
+      "id": "u06-l2",
+      "title": "NSG dan peering",
+      "exercises": []
+    },
+    {
+      "id": "u06-l3",
+      "title": "VPN Gateway dan ExpressRoute",
+      "exercises": []
+    },
+    {
+      "id": "u06-l4",
+      "title": "DNS dan endpoint",
+      "exercises": []
+    }
+  ]
+}
