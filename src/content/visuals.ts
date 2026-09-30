@@ -25,7 +25,7 @@ export const VISUAL_CATALOG = {
   VNetPeering: ['vnet-peering'],
   // Unit 7
   StorageRedundancy: ['primary-redundancy', 'geo-redundancy', 'storage-redundancy'],
-  BlobTiers: ['blob-access-tiers'],
+  BlobTiers: ['blob-access-tiers', 'blob-tiers'],
   StorageServices: ['storage-services'],
   // Unit 8
   AuthNvsAuthZ: ['authentication-vs-authorization'],
@@ -75,6 +75,9 @@ export const VISUAL_CATALOG = {
   SasTypes: ['sas-types'],
   StoredAccessPolicy: ['stored-access-policy'],
   FilesPermissionLayers: ['share-vs-file-permissions'],
+  // Unit 9 (the tier card reuses BlobTiers)
+  BlobLifecycleTimeline: ['lifecycle-rules'],
+  SoftDeleteVsVersioning: ['blob-versioning'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

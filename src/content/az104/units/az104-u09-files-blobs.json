@@ -6,27 +6,1373 @@
     {
       "id": "az104-u09-l1",
       "title": "Container dan file share",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u09-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "container-access-level"
+          ],
+          "title": "Level akses container",
+          "body": "Secara default, semua request ke blob harus diotorisasi. Kalau akses anonim diizinkan di storage account, setiap container punya level akses sendiri. Private adalah default: tidak ada akses anonim. Blob: siapa saja bisa membaca blob kalau tahu URL (Uniform Resource Locator)-nya, tapi tidak bisa melihat daftar isi container. Container: siapa saja bisa membaca dan melihat daftar blob.",
+          "keyPoints": [
+            "Private: default",
+            "Blob: baca tanpa list",
+            "Container: baca dan list"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure#set-the-anonymous-access-level-for-a-container",
+          "teaches": [
+            "az104-f-u09-anon-default",
+            "az104-f-u09-anon-levels"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e1",
+          "type": "choice",
+          "concept": "container-access-level",
+          "prompt": "Product images in the container images must be readable by anyone who has the URL (Uniform Resource Locator) of an image. Visitors must not be able to list the images in the container. Which access level should you set?",
+          "options": [
+            "Container",
+            "Private",
+            "Blob",
+            "Account"
+          ],
+          "answer": 2,
+          "explanation": "Level Blob mengizinkan membaca blob secara anonim, tapi tidak mengizinkan list. Level Container juga mengizinkan list.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-anon-levels"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e2",
+          "type": "truefalse",
+          "concept": "container-access-level",
+          "prompt": "A new container allows anonymous read access by default.",
+          "answer": false,
+          "explanation": "Salah. Level default container adalah Private, jadi setiap request harus diotorisasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-anon-default",
+            "az104-f-u09-anon-levels"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e3",
+          "type": "match",
+          "concept": "container-access-level",
+          "prompt": "Match each container access level to what an anonymous user can do.",
+          "pairs": [
+            [
+              "Private",
+              "Nothing"
+            ],
+            [
+              "Blob",
+              "Read a blob by its URL (Uniform Resource Locator), but not list blobs"
+            ],
+            [
+              "Container",
+              "Read and list the blobs in the container"
+            ]
+          ],
+          "explanation": "Private menolak semua akses anonim, Blob hanya membaca, dan Container membaca serta melihat daftar blob.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-anon-levels"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "blob-container"
+          ],
+          "title": "Pengaturan akun mengalahkan container",
+          "body": "Ada dua pengaturan untuk akses anonim. Allow Blob anonymous access di storage account menentukan apakah akses anonim boleh sama sekali. Kalau diatur Disabled, tidak ada container yang bisa diakses anonim, apa pun level container-nya. Microsoft menyarankan akses anonim dimatikan, kecuali memang dibutuhkan.",
+          "keyPoints": [
+            "Pengaturan akun menang",
+            "Disabled: tanpa akses anonim sama sekali",
+            "Disarankan: matikan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure#allow-or-disallow-anonymous-read-access-for-a-storage-account",
+          "teaches": [
+            "az104-f-u09-anon-override",
+            "az104-f-u09-anon-default"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e4",
+          "type": "yesno",
+          "concept": "blob-container",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Allow Blob anonymous access is Disabled on contosodata. The container images has the access level Container.",
+          "statements": [
+            {
+              "text": "Anonymous users can list the blobs in images.",
+              "answer": false
+            },
+            {
+              "text": "Anonymous users can read a blob in images by its URL (Uniform Resource Locator).",
+              "answer": false
+            },
+            {
+              "text": "A user with Storage Blob Data Reader can still read the blobs.",
+              "answer": true
+            }
+          ],
+          "explanation": "Pengaturan akun mengalahkan level container, jadi tidak ada akses anonim sama sekali. Request yang diotorisasi, misalnya dengan role, tetap bisa.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-anon-override",
+            "az104-f-u09-anon-levels"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e5",
+          "type": "choice",
+          "concept": "blob-container",
+          "prompt": "A security review found that no storage account may ever allow anonymous access to blobs. What should you set on each account?",
+          "options": [
+            "The access level Private on each container",
+            "Allow Blob anonymous access: Disabled",
+            "Public network access: Disabled",
+            "A stored access policy on each container"
+          ],
+          "answer": 1,
+          "explanation": "Pengaturan akun mencegah akses anonim di semua container, termasuk container yang dibuat nanti. Level Private per container masih bisa diubah orang lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-anon-override"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "file-share-tiers"
+          ],
+          "title": "Media tier Azure Files",
+          "body": "Azure Files punya dua media tier. SSD (solid-state drive), atau premium, untuk latensi rendah seperti database, dan satu-satunya yang mendukung NFS (Network File System). HDD (hard disk drive), atau standard, lebih hemat. Share HDD dengan model pay-as-you-go punya access tier transaction optimized, hot, dan cool. Share tidak bisa dipindah langsung ke media tier lain; buat share baru lalu salin datanya.",
+          "keyPoints": [
+            "SSD: latensi rendah, satu-satunya untuk NFS",
+            "HDD: hemat; transaction optimized, hot, cool",
+            "Pindah media tier: share baru"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-planning#storage-tiers",
+          "teaches": [
+            "az104-f-u09-files-media",
+            "az104-f-u09-files-move",
+            "az104-f-u09-files-paygo",
+            "az104-f-u09-files-migrate",
+            "az104-f-u09-files-protocol"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e6",
+          "type": "choice",
+          "concept": "file-share-tiers",
+          "prompt": "A database workload needs an Azure file share with single-digit millisecond latency. Which media tier should you choose?",
+          "options": [
+            "HDD (hard disk drive) in the cool access tier",
+            "SSD (solid-state drive)",
+            "HDD in the hot access tier",
+            "HDD in the transaction optimized access tier"
+          ],
+          "answer": 1,
+          "explanation": "SSD (solid-state drive) memberi latensi rendah yang konsisten. Access tier HDD (hard disk drive) hanya membedakan harga, karena memakai hardware yang sama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-files-media",
+            "az104-f-u09-files-paygo"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e7",
+          "type": "truefalse",
+          "concept": "file-share-tiers",
+          "prompt": "You can change an existing HDD (hard disk drive) file share to the SSD (solid-state drive) media tier in its settings.",
+          "answer": false,
+          "explanation": "Salah. Share tidak bisa dipindah langsung ke media tier lain. Buat share SSD (solid-state drive) baru lalu salin datanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-files-move"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e8",
+          "type": "choice",
+          "concept": "file-share-tiers",
+          "prompt": "You are migrating a large file server to a new pay-as-you-go HDD (hard disk drive) file share. Which access tier should the share use during the migration?",
+          "options": [
+            "Transaction optimized",
+            "Cool",
+            "Hot",
+            "Archive"
+          ],
+          "answer": 0,
+          "explanation": "Migrasi membuat banyak transaksi, dan transaction optimized punya harga transaksi paling rendah. Setelah pemakaian normal terlihat, pilih tier yang tepat. Archive tidak ada di Azure Files.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-files-migrate",
+            "az104-f-u09-files-paygo"
+          ]
+        },
+        {
+          "id": "az104-u09-l1-e9",
+          "type": "truefalse",
+          "concept": "file-share-tiers",
+          "prompt": "You can create an NFS (Network File System) file share on the HDD (hard disk drive) media tier.",
+          "answer": false,
+          "explanation": "Salah. NFS (Network File System) hanya tersedia di SSD (solid-state drive).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-files-media"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u09-l2",
       "title": "Tier dan rehydrate",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u09-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "blob-tiers"
+          ],
+          "title": "Access tier blob",
+          "body": "Hot untuk data yang sering dipakai. Cool untuk data yang jarang dipakai, disimpan minimal 30 hari. Cold minimal 90 hari. Archive paling murah untuk disimpan, minimal 180 hari, tapi offline: harus di-rehydrate dulu sebelum bisa dibaca. Blob yang dihapus atau dipindah sebelum masa minimalnya kena biaya early deletion untuk sisa harinya. Tier hanya berlaku untuk block blob.",
+          "keyPoints": [
+            "Cool 30, Cold 90, Archive 180 hari",
+            "Archive offline",
+            "Pindah terlalu cepat: early deletion"
+          ],
+          "visual": "BlobTiers",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview",
+          "teaches": [
+            "az104-f-u09-tiers",
+            "az104-f-u09-early-delete",
+            "az104-f-u09-block-only",
+            "az104-f-u09-archive-offline"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e1",
+          "type": "match",
+          "concept": "blob-tiers",
+          "prompt": "Match each access tier to its minimum storage period.",
+          "pairs": [
+            [
+              "Cool",
+              "30 days"
+            ],
+            [
+              "Cold",
+              "90 days"
+            ],
+            [
+              "Archive",
+              "180 days"
+            ]
+          ],
+          "explanation": "Makin dingin tier-nya, makin lama masa simpan minimalnya. Hot tidak punya masa minimal.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-tiers"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e2",
+          "type": "choice",
+          "concept": "blob-tiers",
+          "prompt": "Audit reports are read a few times a year, must be readable immediately when needed, and are kept for at least six months. Which tier costs the least while meeting these needs?",
+          "options": [
+            "Archive",
+            "Hot",
+            "Cool",
+            "Cold"
+          ],
+          "answer": 3,
+          "explanation": "Cold murah untuk disimpan dan tetap online. Archive lebih murah tapi offline dan butuh rehydrate berjam-jam.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-tiers",
+            "az104-f-u09-archive-offline"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e3",
+          "type": "choice",
+          "concept": "blob-tiers",
+          "prompt": "A blob was moved to the Cool tier and then deleted after 21 days. What happens?",
+          "options": [
+            "Nothing, because Cool has no minimum period",
+            "You pay an early deletion fee for the remaining 9 days",
+            "The delete fails until 30 days have passed",
+            "You pay for 180 days of Archive storage"
+          ],
+          "answer": 1,
+          "explanation": "Cool punya masa minimal 30 hari. Biayanya dihitung proporsional untuk sisa harinya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-early-delete"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e4",
+          "type": "truefalse",
+          "concept": "blob-tiers",
+          "prompt": "You can set the access tier of an append blob to Cool.",
+          "answer": false,
+          "explanation": "Salah. Access tier hanya untuk block blob.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-block-only"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "rehydrate-priority"
+          ],
+          "title": "Rehydrate dari Archive",
+          "body": "Blob Archive tidak bisa dibaca atau diubah; metadata-nya saja yang terbaca. Untuk membacanya, rehydrate ke Hot, Cool, atau Cold: ubah tier-nya, atau salin ke blob baru dengan nama lain. Priority Standard bisa butuh sampai 15 jam untuk objek di bawah 10 GB (gigabyte), sedangkan High bisa kurang dari satu jam tapi lebih mahal. Standard yang sedang berjalan bisa dinaikkan ke High.",
+          "keyPoints": [
+            "Rehydrate dulu, baru bisa dibaca",
+            "Standard: sampai 15 jam",
+            "High: bisa kurang dari 1 jam, lebih mahal"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/archive-rehydrate-overview",
+          "teaches": [
+            "az104-f-u09-archive-offline",
+            "az104-f-u09-rehydrate",
+            "az104-f-u09-priority"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e5",
+          "type": "fix",
+          "concept": "rehydrate-priority",
+          "prompt": "Legal needs the file contract-2021.pdf within the hour. Downloading it fails. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "arsip > contract-2021.pdf · Properties",
+            "message": "Access tier: Archive. Download: This operation is not permitted on an archived blob."
+          },
+          "options": [
+            "Change the tier to Hot with Standard rehydrate priority",
+            "Create a new SAS (shared access signature) with read permission",
+            "Change the tier to Hot with High rehydrate priority",
+            "Enable blob soft delete"
+          ],
+          "answer": 2,
+          "explanation": "Blob Archive harus di-rehydrate dulu. High bisa selesai kurang dari satu jam untuk objek kecil; Standard bisa sampai 15 jam. SAS (shared access signature) tidak membuat blob Archive bisa dibaca.",
+          "requires": [
+            "az104-f-u09-archive-offline",
+            "az104-f-u09-priority",
+            "az104-f-u09-rehydrate"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e6",
+          "type": "truefalse",
+          "concept": "rehydrate-priority",
+          "prompt": "You can list an archived blob and read its metadata without rehydrating it.",
+          "answer": true,
+          "explanation": "Benar. Hanya isinya yang offline; metadata dan properti tetap bisa dibaca.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-archive-offline"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e7",
+          "type": "choice",
+          "concept": "rehydrate-priority",
+          "prompt": "A Standard-priority rehydration is running, but one blob is now urgent. What can you do?",
+          "options": [
+            "Cancel it and wait for Microsoft support",
+            "Lower the priority of the other blobs",
+            "Nothing, because priority can't be changed",
+            "Raise the rehydrate priority of that blob to High"
+          ],
+          "answer": 3,
+          "explanation": "Priority Standard yang sedang berjalan bisa dinaikkan ke High. Sebaliknya, High tidak bisa diturunkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-priority"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e8",
+          "type": "order",
+          "concept": "rehydrate-priority",
+          "prompt": "You want to read an archived blob without paying an early deletion fee. Put the steps in order.",
+          "items": [
+            "Copy the archived blob to a new blob name in the Hot tier",
+            "Wait until the rehydration of the copy completes",
+            "Read the new blob"
+          ],
+          "explanation": "Menyalin ke blob baru meninggalkan blob asli di Archive, jadi tidak kena early deletion. Salinannya baru bisa dibaca setelah rehydrate selesai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-rehydrate",
+            "az104-f-u09-early-delete"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "default-tier"
+          ],
+          "title": "Default tier dan smart tier",
+          "body": "Setiap storage account punya default access tier: Hot, Cool, atau Cold, tapi tidak bisa Archive. Akun general-purpose v2 baru memakai Hot. Blob tanpa tier eksplisit mengikuti default itu, dan portal menandainya inferred. Di akun zone-redundant, smart tier bisa dipilih sebagai default: Azure memindahkan blob antara Hot, Cool, dan Cold sesuai pola aksesnya.",
+          "keyPoints": [
+            "Default: Hot, Cool, atau Cold",
+            "Tidak bisa Archive",
+            "Smart tier: otomatis Hot, Cool, Cold"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview#default-account-access-tier-setting",
+          "teaches": [
+            "az104-f-u09-default-tier",
+            "az104-f-u09-smart-tier"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e9",
+          "type": "truefalse",
+          "concept": "default-tier",
+          "prompt": "You can set Archive as the default access tier of a storage account.",
+          "answer": false,
+          "explanation": "Salah. Default access tier hanya bisa Hot, Cool, atau Cold.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-default-tier"
+          ]
+        },
+        {
+          "id": "az104-u09-l2-e10",
+          "type": "choice",
+          "concept": "default-tier",
+          "prompt": "A zone-redundant account holds blobs with unpredictable access patterns. You want Azure to move them between Hot, Cool, and Cold automatically. What should you use?",
+          "options": [
+            "Archive as the default access tier",
+            "Blob versioning",
+            "Object replication",
+            "Smart tier as the default access tier"
+          ],
+          "answer": 3,
+          "explanation": "Smart tier memindahkan blob antara Hot, Cool, dan Cold sesuai pola akses, dan diaktifkan sebagai default access tier.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-smart-tier",
+            "az104-f-u09-default-tier"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u09-l3",
       "title": "Lifecycle management",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u09-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "lifecycle-rules"
+          ],
+          "title": "Lifecycle management",
+          "body": "Lifecycle management memindahkan blob ke tier yang lebih dingin atau menghapusnya secara otomatis. Setiap rule punya kondisi, misalnya hari sejak blob terakhir diubah, lalu action seperti tierToCool, tierToArchive, atau delete. Rule bisa dibatasi dengan prefix yang diawali nama container. Policy dijalankan sekali sehari, dan rule baru bisa butuh sampai 24 jam untuk berlaku.",
+          "keyPoints": [
+            "Kondisi: hari sejak diubah, dibuat, atau diakses",
+            "Action: pindah tier atau hapus",
+            "Berlaku dalam 24 jam"
+          ],
+          "visual": "BlobLifecycleTimeline",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview",
+          "teaches": [
+            "az104-f-u09-lc-what",
+            "az104-f-u09-lc-run",
+            "az104-f-u09-lc-cost"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-e1",
+          "type": "config",
+          "concept": "lifecycle-rules",
+          "prompt": "Blobs must move to Cool 30 days after they were last modified, to Archive after 90 days, and be deleted after 365 days. Complete the rule.",
+          "blade": "contosodata > Lifecycle management > Add a rule > Base blobs",
+          "fields": [
+            {
+              "label": "Base blobs were",
+              "kind": "select",
+              "choices": [
+                "Last modified",
+                "Created",
+                "Last accessed"
+              ],
+              "value": "Created"
+            },
+            {
+              "label": "Move to cool storage after (days)",
+              "kind": "number",
+              "value": 7,
+              "min": 1,
+              "max": 400,
+              "step": 1
+            },
+            {
+              "label": "Move to archive storage after (days)",
+              "kind": "number",
+              "value": 30,
+              "min": 1,
+              "max": 400,
+              "step": 1
+            },
+            {
+              "label": "Delete the blob after (days)",
+              "kind": "number",
+              "value": 180,
+              "min": 1,
+              "max": 400,
+              "step": 1
+            }
+          ],
+          "answer": {
+            "Base blobs were": "Last modified",
+            "Move to cool storage after (days)": 30,
+            "Move to archive storage after (days)": 90,
+            "Delete the blob after (days)": 365
+          },
+          "explanation": "Kondisinya waktu modifikasi terakhir, dengan tiga batas hari: 30 ke Cool, 90 ke Archive, dan 365 dihapus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-lc-what"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-e2",
+          "type": "choice",
+          "concept": "lifecycle-rules",
+          "prompt": "You saved a new lifecycle rule two hours ago, and no blob has moved yet. What is the most likely reason?",
+          "options": [
+            "The rule must be enabled by Microsoft support",
+            "Lifecycle rules run only once a month",
+            "A new rule can take up to 24 hours to start",
+            "The account needs blob versioning"
+          ],
+          "answer": 2,
+          "explanation": "Policy dijalankan sekali sehari, dan rule baru bisa butuh sampai 24 jam untuk berlaku.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-lc-run"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-e3",
+          "type": "truefalse",
+          "concept": "lifecycle-rules",
+          "prompt": "A lifecycle policy itself is free; you pay for the tier changes that it makes.",
+          "answer": true,
+          "explanation": "Benar. Policy-nya gratis, operasi Set Blob Tier ditagih, dan operasi delete gratis.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-lc-cost"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "lifecycle-actions"
+          ],
+          "title": "Beberapa action sekaligus",
+          "body": "Kalau beberapa action berlaku untuk blob yang sama, lifecycle menjalankan yang paling murah: delete, lalu tierToArchive, lalu tierToCool. Jadi blob yang sudah 100 hari tidak diubah langsung ke Archive, bukan ke Cool dulu. Rule juga bisa diarahkan ke versi sebelumnya dan snapshot, misalnya untuk menghapus versi lama supaya biaya versioning tidak membengkak.",
+          "keyPoints": [
+            "Yang paling murah yang dijalankan",
+            "Delete, lalu Archive, lalu Cool",
+            "Bisa untuk versi lama dan snapshot"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-structure#actions",
+          "teaches": [
+            "az104-f-u09-lc-cheapest",
+            "az104-f-u09-lc-versions"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-e4",
+          "type": "template",
+          "concept": "lifecycle-actions",
+          "prompt": "This lifecycle policy is saved on contosodata. The blob logs/app1.txt was last modified 100 days ago and is in the Hot tier. What does the next policy run do to it?",
+          "language": "json",
+          "fileName": "policy.json (lifecycle policy)",
+          "code": "{\n  \"rules\": [{\n    \"name\": \"logs-rule\",\n    \"enabled\": true,\n    \"type\": \"Lifecycle\",\n    \"definition\": {\n      \"filters\": {\n        \"blobTypes\": [\"blockBlob\"],\n        \"prefixMatch\": [\"logs/\"]\n      },\n      \"actions\": {\n        \"baseBlob\": {\n          \"tierToCool\": {\n            \"daysAfterModificationGreaterThan\": 30\n          },\n          \"tierToArchive\": {\n            \"daysAfterModificationGreaterThan\": 90\n          },\n          \"delete\": {\n            \"daysAfterModificationGreaterThan\": 365\n          }\n        }\n      }\n    }\n  }]\n}",
+          "options": [
+            "Moves it to the Cool tier",
+            "Deletes it",
+            "Moves it to the Archive tier",
+            "Nothing, because it must be in Cool first"
+          ],
+          "answer": 2,
+          "explanation": "Kondisi Cool dan Archive sama-sama terpenuhi, dan lifecycle menjalankan action yang paling murah, yaitu tierToArchive. Delete baru setelah 365 hari. Prefix logs/ berarti container logs.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-lc-cheapest",
+            "az104-f-u09-lc-what"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-e5",
+          "type": "choice",
+          "concept": "lifecycle-actions",
+          "prompt": "Blob versioning is on, and old versions are piling up costs. How can you delete versions older than 90 days automatically?",
+          "options": [
+            "Turn off blob soft delete",
+            "A stored access policy that expires after 90 days",
+            "Change the default access tier to Cool",
+            "A lifecycle rule with a delete action for previous versions"
+          ],
+          "answer": 3,
+          "explanation": "Rule lifecycle bisa menghapus versi sebelumnya dan snapshot berdasarkan umurnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-lc-versions"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "lifecycle-limits"
+          ],
+          "title": "Batasan lifecycle",
+          "body": "Lifecycle management tidak bisa me-rehydrate blob dari Archive. tierToArchive tidak didukung di akun ZRS (zone-redundant storage), GZRS (geo-zone-redundant storage), atau RA-GZRS (read-access geo-zone-redundant storage). Hati-hati juga: rehydrate tidak mengubah waktu modifikasi terakhir, jadi rule tierToArchive bisa mengarsipkan lagi blob yang baru dipulihkan. Tambahkan kondisi daysAfterLastTierChangeGreaterThan. Kondisi hari sejak terakhir diakses butuh access time tracking.",
+          "keyPoints": [
+            "Tidak bisa rehydrate",
+            "tierToArchive tidak untuk akun zone-redundant",
+            "Cegah arsip ulang: daysAfterLastTierChangeGreaterThan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview#known-issues-and-limitations",
+          "teaches": [
+            "az104-f-u09-lc-limits",
+            "az104-f-u09-lc-rearchive",
+            "az104-f-u09-lc-last-access",
+            "az104-f-u07-archive-redundancy"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-e6",
+          "type": "fix",
+          "concept": "lifecycle-limits",
+          "prompt": "Every morning, blobs that you rehydrated to Hot the day before are back in Archive. What should you change?",
+          "scene": {
+            "kind": "portal",
+            "title": "contosodata > Lifecycle management > archive-rule",
+            "message": "tierToArchive: daysAfterModificationGreaterThan 90"
+          },
+          "options": [
+            "Change the rehydrate priority to High",
+            "Add the condition daysAfterLastTierChangeGreaterThan to tierToArchive",
+            "Enable blob versioning",
+            "Set the default access tier to Archive"
+          ],
+          "answer": 1,
+          "explanation": "Rehydrate tidak mengubah waktu modifikasi terakhir, jadi blob lama itu langsung memenuhi kondisi lagi. daysAfterLastTierChangeGreaterThan memberi jeda setelah tier diubah.",
+          "requires": [
+            "az104-f-u09-lc-rearchive"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-e7",
+          "type": "yesno",
+          "concept": "lifecycle-limits",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "contosodata uses ZRS (zone-redundant storage). You plan a lifecycle policy.",
+          "statements": [
+            {
+              "text": "A rule can move blobs to the Cool tier.",
+              "answer": true
+            },
+            {
+              "text": "A rule can move blobs to the Archive tier.",
+              "answer": false
+            },
+            {
+              "text": "A rule can bring archived blobs back to Hot.",
+              "answer": false
+            }
+          ],
+          "explanation": "Cool didukung di semua redundancy. tierToArchive tidak didukung di ZRS (zone-redundant storage), dan lifecycle tidak bisa me-rehydrate.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-lc-limits",
+            "az104-f-u07-archive-redundancy"
+          ]
+        },
+        {
+          "id": "az104-u09-l3-e8",
+          "type": "choice",
+          "concept": "lifecycle-limits",
+          "prompt": "A rule must move blobs to Cool when nobody has read them for 60 days. What must you enable first?",
+          "options": [
+            "Blob versioning",
+            "Change feed",
+            "Container soft delete",
+            "Access time tracking"
+          ],
+          "answer": 3,
+          "explanation": "Kondisi daysAfterLastAccessTimeGreaterThan memakai waktu akses terakhir, yang hanya dicatat kalau access time tracking aktif.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-lc-last-access"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u09-l4",
       "title": "Versioning dan soft delete",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u09-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "blob-soft-delete"
+          ],
+          "title": "Blob soft delete",
+          "body": "Blob soft delete menyimpan blob yang dihapus atau ditimpa selama retention period yang kamu pilih, 1 sampai 365 hari. Selama masa itu, blob dipulihkan dengan undelete. Kalau blob ditimpa dan versioning tidak aktif, soft delete menyimpan isi sebelumnya sebagai snapshot terhapus. Setelah retention period lewat, datanya terhapus permanen.",
+          "keyPoints": [
+            "Retention 1 sampai 365 hari",
+            "Pulihkan dengan undelete",
+            "Timpa: snapshot terhapus"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview",
+          "teaches": [
+            "az104-f-u09-blob-sd",
+            "az104-f-u09-blob-sd-overwrite"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-e1",
+          "type": "choice",
+          "concept": "blob-soft-delete",
+          "prompt": "Blob soft delete is on with a 14-day retention. Someone deleted invoice.pdf three days ago. How do you get it back?",
+          "options": [
+            "Restore the container from container soft delete",
+            "Rehydrate the blob from Archive",
+            "Undelete the blob",
+            "Nothing, deletes are permanent"
+          ],
+          "answer": 2,
+          "explanation": "Blob yang dihapus masih disimpan selama retention period dan bisa di-undelete. Container-nya tidak terhapus, jadi container soft delete tidak berperan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-blob-sd"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-e2",
+          "type": "truefalse",
+          "concept": "blob-soft-delete",
+          "prompt": "You can set a blob soft delete retention period of two years.",
+          "answer": false,
+          "explanation": "Salah. Retention period blob soft delete 1 sampai 365 hari.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-blob-sd"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "blob-versioning"
+          ],
+          "title": "Blob versioning",
+          "body": "Blob versioning membuat versi baru setiap kali blob ditulis. Kalau blob ditimpa, isi lamanya menjadi versi sebelumnya; kalau dihapus, semua versi lama tetap ada. Untuk memulihkan, salin versi lama menjadi versi saat ini. Versi disimpan sampai dihapus, jadi pakai lifecycle management untuk menghapus versi lama. Versioning tidak tersedia di akun dengan hierarchical namespace. Microsoft menyarankan versioning dan soft delete sekaligus untuk data penting.",
+          "keyPoints": [
+            "Setiap tulis: versi baru",
+            "Pulihkan: salin versi lama",
+            "Data penting: versioning + soft delete"
+          ],
+          "visual": "SoftDeleteVsVersioning",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview",
+          "teaches": [
+            "az104-f-u09-versioning",
+            "az104-f-u09-ver-restore",
+            "az104-f-u09-ver-cost",
+            "az104-f-u09-ver-hns",
+            "az104-f-u09-both"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-e3",
+          "type": "choice",
+          "concept": "blob-versioning",
+          "prompt": "An app overwrote report.xlsx with bad data an hour ago. Blob versioning is on. How do you restore the good data?",
+          "options": [
+            "Copy the previous version of report.xlsx over the current version",
+            "Undelete the container",
+            "Restore the file share from a snapshot",
+            "Rehydrate report.xlsx to Hot"
+          ],
+          "answer": 0,
+          "explanation": "Isi sebelum ditimpa tersimpan sebagai versi sebelumnya. Menyalinnya menjadi versi saat ini memulihkan data.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-ver-restore",
+            "az104-f-u09-versioning"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-e4",
+          "type": "truefalse",
+          "concept": "blob-versioning",
+          "prompt": "You can enable blob versioning on an account with a hierarchical namespace.",
+          "answer": false,
+          "explanation": "Salah. Blob versioning tidak tersedia di akun dengan hierarchical namespace.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-ver-hns"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-e5",
+          "type": "yesno",
+          "concept": "blob-versioning",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Blob versioning is on for contosodata. An app writes to data.json every minute.",
+          "statements": [
+            {
+              "text": "Each write creates a new version that is billed.",
+              "answer": true
+            },
+            {
+              "text": "Old versions are removed automatically after 365 days.",
+              "answer": false
+            },
+            {
+              "text": "A lifecycle rule can delete old versions.",
+              "answer": true
+            }
+          ],
+          "explanation": "Setiap penulisan membuat versi baru yang ditagih, dan versi disimpan sampai dihapus. Lifecycle management bisa menghapus versi lama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-ver-cost",
+            "az104-f-u09-versioning",
+            "az104-f-u09-lc-versions"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "container-soft-delete"
+          ],
+          "title": "Container soft delete",
+          "body": "Container soft delete menyimpan container yang dihapus selama 1 sampai 365 hari, default 7 hari. Memulihkannya juga memulihkan semua blob, versi, dan snapshot di dalamnya. Container soft delete hanya untuk container utuh; untuk satu blob di container yang masih ada, pakai blob soft delete atau versioning. Container harus dipulihkan dengan nama aslinya, jadi jangan buat container baru dengan nama itu.",
+          "keyPoints": [
+            "Default 7 hari",
+            "Hanya container utuh",
+            "Pulihkan dengan nama asli"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-container-overview",
+          "teaches": [
+            "az104-f-u09-container-sd",
+            "az104-f-u09-container-sd-limits"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-e6",
+          "type": "choice",
+          "concept": "container-soft-delete",
+          "prompt": "The container invoices was deleted yesterday. Container soft delete is on with the default retention. What should you do?",
+          "options": [
+            "Undelete each blob in invoices",
+            "Restore the soft-deleted container invoices",
+            "Create a new container named invoices first",
+            "Wait for the container to reappear after 7 days"
+          ],
+          "answer": 1,
+          "explanation": "Memulihkan container juga memulihkan isinya. Membuat container baru dengan nama yang sama justru membuat pemulihan gagal.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-container-sd",
+            "az104-f-u09-container-sd-limits"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-e7",
+          "type": "multi",
+          "concept": "container-soft-delete",
+          "prompt": "A blob was deleted from a container that still exists. Which two features can bring it back? Choose two.",
+          "options": [
+            "Blob versioning",
+            "Blob soft delete",
+            "Container soft delete",
+            "File share soft delete"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Container soft delete hanya memulihkan container utuh, dan file share soft delete untuk Azure Files. Blob tunggal dipulihkan dengan blob soft delete atau versioning.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-container-sd-limits",
+            "az104-f-u09-blob-sd",
+            "az104-f-u09-versioning"
+          ]
+        },
+        {
+          "id": "az104-u09-l4-e8",
+          "type": "truefalse",
+          "concept": "container-soft-delete",
+          "prompt": "The default retention period of container soft delete is 7 days.",
+          "answer": true,
+          "explanation": "Benar. Rentangnya 1 sampai 365 hari, dengan default 7 hari.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-container-sd"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u09-l5",
       "title": "Snapshot dan soft delete Azure Files",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u09-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "share-snapshots"
+          ],
+          "title": "Share snapshot",
+          "body": "Share snapshot adalah salinan read-only sebuah file share pada satu waktu. Snapshot diambil untuk seluruh share, tapi file bisa dipulihkan satu per satu. Snapshot bersifat incremental, jadi hanya perubahan yang disimpan. Satu share bisa punya sampai 200 snapshot, disimpan sampai 10 tahun. Azure Backup bisa mengambilnya secara terjadwal. Di Windows, snapshot terlihat di tab Previous Versions.",
+          "keyPoints": [
+            "Read-only, per share",
+            "Pulihkan per file",
+            "Maksimal 200 per share"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/files/storage-snapshots-files",
+          "teaches": [
+            "az104-f-u09-snap",
+            "az104-f-u09-snap-incremental",
+            "az104-f-u09-snap-limits",
+            "az104-f-u09-snap-backup",
+            "az104-f-u09-snap-restore"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e1",
+          "type": "truefalse",
+          "concept": "share-snapshots",
+          "prompt": "Each share snapshot stores a full copy of the file share.",
+          "answer": false,
+          "explanation": "Salah. Snapshot bersifat incremental, jadi hanya menyimpan data yang berubah sejak snapshot sebelumnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-snap-incremental"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e2",
+          "type": "choice",
+          "concept": "share-snapshots",
+          "prompt": "A script takes a snapshot of the share finance every day. What happens on the day it tries to create the 201st snapshot?",
+          "options": [
+            "It fails until older snapshots are deleted",
+            "The oldest snapshot is deleted automatically",
+            "The new snapshot replaces the newest one",
+            "Nothing, there is no limit"
+          ],
+          "answer": 0,
+          "explanation": "Satu share bisa punya sampai 200 snapshot. Setelah itu, snapshot lama harus dihapus dulu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-snap-limits"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e3",
+          "type": "yesno",
+          "concept": "share-snapshots",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "The share finance has daily snapshots. A user deleted budget.xlsx this morning.",
+          "statements": [
+            {
+              "text": "You can restore only budget.xlsx from yesterday's snapshot.",
+              "answer": true
+            },
+            {
+              "text": "The snapshot can be changed before you restore from it.",
+              "answer": false
+            },
+            {
+              "text": "On Windows, the user can find older copies in the Previous Versions tab.",
+              "answer": true
+            }
+          ],
+          "explanation": "Snapshot diambil per share tapi bisa dipulihkan per file. Snapshot read-only. Di Windows, snapshot terlihat di Previous Versions.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-snap",
+            "az104-f-u09-snap-restore"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e4",
+          "type": "order",
+          "concept": "share-snapshots",
+          "prompt": "In the Azure portal, restore budget.xlsx from yesterday's snapshot of the share finance. Put the steps in order.",
+          "items": [
+            "Open the file share finance",
+            "Select Snapshots and open yesterday's snapshot",
+            "Select budget.xlsx and select Restore",
+            "Select Overwrite original file"
+          ],
+          "explanation": "Buka share, pilih snapshot, pilih file dan Restore, lalu timpa file asli dengan isi dari snapshot.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-snap-restore"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "share-soft-delete"
+          ],
+          "title": "Soft delete file share",
+          "body": "File share soft delete menyimpan share yang dihapus, beserta isi dan snapshot-nya, selama 1 sampai 365 hari, default 7 hari. Fitur ini aktif secara default di storage account baru. Ingat, soft delete bekerja di level share. File yang terhapus dari share yang masih ada dipulihkan dari share snapshot atau Azure Backup.",
+          "keyPoints": [
+            "Menyimpan share yang dihapus",
+            "Default 7 hari, aktif di akun baru",
+            "File tunggal: pakai snapshot"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-prevent-file-share-deletion",
+          "teaches": [
+            "az104-f-u09-share-sd",
+            "az104-f-u09-share-sd-default"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e5",
+          "type": "choice",
+          "concept": "share-soft-delete",
+          "prompt": "Soft delete is on for file shares. A user deleted one folder inside the share projects. Which feature restores it?",
+          "options": [
+            "A share snapshot of projects",
+            "File share soft delete",
+            "Container soft delete",
+            "Blob versioning"
+          ],
+          "answer": 0,
+          "explanation": "File share soft delete hanya memulihkan share yang dihapus. Folder atau file di share yang masih ada dipulihkan dari snapshot.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-share-sd",
+            "az104-f-u09-snap"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e6",
+          "type": "choice",
+          "concept": "share-soft-delete",
+          "prompt": "An admin deleted the whole share projects yesterday. Soft delete is on with the default retention. What should you do?",
+          "options": [
+            "Undelete the share projects",
+            "Restore projects from its latest share snapshot",
+            "Create a new share named projects",
+            "Wait for Azure Backup to recreate it"
+          ],
+          "answer": 0,
+          "explanation": "Share yang dihapus masih disimpan selama 7 hari dan bisa di-undelete, beserta isi dan snapshot-nya. Membuat share baru dengan nama yang sama tidak mengembalikan datanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-share-sd"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e7",
+          "type": "truefalse",
+          "concept": "share-soft-delete",
+          "prompt": "A new storage account has soft delete for file shares turned on by default.",
+          "answer": true,
+          "explanation": "Benar. Soft delete aktif secara default di akun baru, dengan retention default 7 hari.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-share-sd-default"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "share-protection"
+          ],
+          "title": "Snapshot ikut terhapus bersama share",
+          "body": "Snapshot tidak bisa disimpan terpisah dari share-nya. Kalau file share dihapus, semua snapshot-nya ikut terhapus. Karena itu snapshot saja tidak melindungi dari penghapusan share. Gabungkan snapshot untuk memulihkan file, dan soft delete untuk memulihkan share yang terhapus beserta snapshot-nya.",
+          "keyPoints": [
+            "Hapus share: snapshot ikut hilang",
+            "Snapshot: untuk file",
+            "Soft delete: untuk share"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/files/storage-snapshots-files#share-snapshot-capabilities",
+          "teaches": [
+            "az104-f-u09-snap-with-share",
+            "az104-f-u09-share-sd"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e8",
+          "type": "truefalse",
+          "concept": "share-protection",
+          "prompt": "You can delete a file share and keep its share snapshots.",
+          "answer": false,
+          "explanation": "Salah. Menghapus share ikut menghapus semua snapshot-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-snap-with-share"
+          ]
+        },
+        {
+          "id": "az104-u09-l5-e9",
+          "type": "multi",
+          "concept": "share-protection",
+          "prompt": "You must be able to recover single deleted files and a deleted share. Which two should you use? Choose two.",
+          "options": [
+            "Container soft delete",
+            "Blob versioning",
+            "File share soft delete",
+            "Share snapshots"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Snapshot memulihkan file, dan soft delete memulihkan share beserta snapshot-nya. Dua pilihan lain untuk Blob Storage.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-snap",
+            "az104-f-u09-share-sd",
+            "az104-f-u09-snap-with-share"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u09-anon-default",
+      "statement": "Akses anonim ke blob tidak pernah diizinkan secara default. Ada dua pengaturan: Allow Blob anonymous access di storage account, dan anonymous access level di setiap container. Microsoft menyarankan akses anonim dimatikan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure"
+    },
+    {
+      "id": "az104-f-u09-anon-levels",
+      "statement": "Anonymous access level container: Private (default, semua request harus diotorisasi), Blob (blob bisa dibaca anonim, tapi isi container tidak bisa di-list), dan Container (blob bisa dibaca dan di-list anonim).",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure#set-the-anonymous-access-level-for-a-container"
+    },
+    {
+      "id": "az104-f-u09-anon-override",
+      "statement": "Kalau akses anonim dimatikan di storage account, pengaturan itu mengalahkan semua container: tidak ada akses anonim, apa pun level container-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure"
+    },
+    {
+      "id": "az104-f-u09-files-media",
+      "statement": "Azure Files punya dua media tier: SSD (solid-state drive), atau premium, untuk latensi rendah, dan HDD (hard disk drive), atau standard, yang lebih hemat. File share NFS (Network File System) hanya tersedia di SSD.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-planning"
+    },
+    {
+      "id": "az104-f-u09-files-move",
+      "statement": "File share tidak bisa dipindah langsung ke media tier lain. Untuk pindah dari HDD ke SSD, buat file share SSD baru lalu salin datanya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-planning#storage-tiers"
+    },
+    {
+      "id": "az104-f-u09-files-paygo",
+      "statement": "File share HDD dengan model pay-as-you-go punya tiga access tier: transaction optimized, hot, dan cool. Ketiganya memakai hardware yang sama; bedanya harga simpan dan harga transaksi.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/understanding-billing#differences-in-access-tiers"
+    },
+    {
+      "id": "az104-f-u09-files-migrate",
+      "statement": "Saat migrasi data ke file share pay-as-you-go, mulai di tier transaction optimized, lalu pilih tier yang tepat setelah pemakaian normal terlihat.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/understanding-billing#choosing-an-access-tier"
+    },
+    {
+      "id": "az104-f-u09-files-protocol",
+      "statement": "Satu file share tidak bisa memakai SMB (Server Message Block) dan NFS sekaligus, tapi satu storage account boleh berisi share SMB dan share NFS.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-planning#available-protocols"
+    },
+    {
+      "id": "az104-f-u09-tiers",
+      "statement": "Blob punya tier Hot, Cool (simpan minimal 30 hari), Cold (minimal 90 hari), dan Archive (minimal 180 hari). Makin dingin, biaya simpan makin murah dan biaya akses makin mahal.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview"
+    },
+    {
+      "id": "az104-f-u09-early-delete",
+      "statement": "Blob yang dihapus, ditimpa, atau dipindah tier sebelum masa minimalnya kena biaya early deletion yang dihitung proporsional, misalnya sisa 9 hari untuk blob Cool yang dihapus di hari ke-21.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview#online-access-tiers"
+    },
+    {
+      "id": "az104-f-u09-block-only",
+      "statement": "Access tier hanya bisa diatur untuk block blob, tidak untuk append blob dan page blob.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview"
+    },
+    {
+      "id": "az104-f-u09-default-tier",
+      "statement": "Default access tier storage account bisa Hot, Cool, atau Cold, tidak bisa Archive. Akun general-purpose v2 baru memakai Hot. Blob tanpa tier eksplisit mengikuti default itu (inferred).",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview#default-account-access-tier-setting"
+    },
+    {
+      "id": "az104-f-u09-smart-tier",
+      "statement": "Smart tier memindahkan blob antara Hot, Cool, dan Cold secara otomatis sesuai pola akses. Fitur ini untuk akun zone-redundant (ZRS, GZRS, atau RA-GZRS), dan diaktifkan dengan menjadikannya default access tier.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-smart"
+    },
+    {
+      "id": "az104-f-u09-archive-offline",
+      "statement": "Blob di tier Archive offline: tidak bisa dibaca atau diubah. Metadata-nya tetap bisa dibaca, jadi blob tetap muncul saat di-list.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview#archive-access-tier"
+    },
+    {
+      "id": "az104-f-u09-rehydrate",
+      "statement": "Untuk membaca blob Archive, rehydrate dulu ke Hot, Cool, atau Cold: ubah tier-nya dengan Set Blob Tier, atau salin ke blob baru dengan nama lain di tier online. Menyalin menghindari biaya early deletion.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/archive-rehydrate-overview"
+    },
+    {
+      "id": "az104-f-u09-priority",
+      "statement": "Rehydrate priority Standard (default) bisa butuh sampai 15 jam untuk objek di bawah 10 GB (gigabyte). High bisa selesai kurang dari satu jam, tapi lebih mahal. Priority Standard yang sedang berjalan bisa dinaikkan ke High, tapi High tidak bisa diturunkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/archive-rehydrate-overview#rehydration-priority"
+    },
+    {
+      "id": "az104-f-u09-lc-what",
+      "statement": "Lifecycle management memakai rule untuk memindahkan blob ke tier yang lebih dingin atau menghapusnya, berdasarkan hari sejak blob dibuat, terakhir diubah, atau terakhir diakses. Rule bisa difilter dengan prefix yang diawali nama container, atau dengan blob index tag.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview"
+    },
+    {
+      "id": "az104-f-u09-lc-run",
+      "statement": "Policy lifecycle dijalankan sekali sehari, dan rule baru atau yang diubah bisa butuh sampai 24 jam untuk mulai berlaku.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview#policy-execution"
+    },
+    {
+      "id": "az104-f-u09-lc-cheapest",
+      "statement": "Kalau beberapa action berlaku untuk blob yang sama, lifecycle management menjalankan yang paling murah: delete lebih murah dari tierToArchive, dan tierToArchive lebih murah dari tierToCool.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-structure#actions"
+    },
+    {
+      "id": "az104-f-u09-lc-limits",
+      "statement": "Lifecycle management tidak bisa me-rehydrate blob ke tier online. tierToArchive tidak didukung di akun ZRS, GZRS, atau RA-GZRS, dan tiering tidak didukung di akun premium block blob.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview#known-issues-and-limitations"
+    },
+    {
+      "id": "az104-f-u09-lc-rearchive",
+      "statement": "Rehydrate tidak mengubah waktu modifikasi terakhir, jadi rule tierToArchive bisa mengarsipkan lagi blob yang baru di-rehydrate. Tambahkan kondisi daysAfterLastTierChangeGreaterThan untuk mencegahnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-structure#actions"
+    },
+    {
+      "id": "az104-f-u09-lc-last-access",
+      "statement": "Kondisi daysAfterLastAccessTimeGreaterThan butuh access time tracking. Action enableAutoTierToHotFromCool mengembalikan blob Cool ke Hot saat diakses.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-structure#action-run-conditions"
+    },
+    {
+      "id": "az104-f-u09-lc-versions",
+      "statement": "Rule lifecycle juga bisa memindahkan atau menghapus versi sebelumnya dan snapshot, misalnya menghapus versi lama untuk menekan biaya versioning.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview"
+    },
+    {
+      "id": "az104-f-u09-lc-cost",
+      "statement": "Policy lifecycle gratis. Yang dibayar adalah operasi Set Blob Tier yang dijalankannya; operasi delete gratis.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview#billing"
+    },
+    {
+      "id": "az104-f-u09-blob-sd",
+      "statement": "Blob soft delete menyimpan blob, snapshot, atau versi yang dihapus atau ditimpa selama retention period 1 sampai 365 hari. Selama masa itu, data dipulihkan dengan Undelete Blob.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview"
+    },
+    {
+      "id": "az104-f-u09-blob-sd-overwrite",
+      "statement": "Dengan soft delete tanpa versioning, blob yang ditimpa otomatis menyimpan snapshot terhapus berisi isi sebelumnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview"
+    },
+    {
+      "id": "az104-f-u09-versioning",
+      "statement": "Blob versioning membuat versi baru setiap kali blob ditulis, dengan version ID berupa timestamp. Blob yang dihapus menjadi versi sebelumnya, dan semua versi lama tetap ada.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview"
+    },
+    {
+      "id": "az104-f-u09-ver-restore",
+      "statement": "Blob yang ditimpa dipulihkan dengan menyalin versi sebelumnya menjadi versi saat ini.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview"
+    },
+    {
+      "id": "az104-f-u09-ver-cost",
+      "statement": "Setiap penulisan membuat versi baru yang ikut ditagih. Microsoft menyarankan kurang dari 1000 versi per blob, dan lifecycle management untuk menghapus versi lama.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview"
+    },
+    {
+      "id": "az104-f-u09-ver-hns",
+      "statement": "Blob versioning tidak tersedia di akun dengan hierarchical namespace. Di akun itu, soft delete hanya melindungi dari penghapusan, bukan dari penimpaan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-vs-versioning-options#overview-of-features"
+    },
+    {
+      "id": "az104-f-u09-both",
+      "statement": "Microsoft menyarankan data penting memakai soft delete dan versioning sekaligus. Keduanya diatur di level storage account.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-vs-versioning-options#our-recommendation"
+    },
+    {
+      "id": "az104-f-u09-container-sd",
+      "statement": "Container soft delete menyimpan container yang dihapus selama 1 sampai 365 hari, default 7 hari. Memulihkan container juga memulihkan blob, versi, dan snapshot di dalamnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-container-overview"
+    },
+    {
+      "id": "az104-f-u09-container-sd-limits",
+      "statement": "Container soft delete hanya memulihkan container utuh. Untuk memulihkan satu blob di container yang masih ada, pakai blob soft delete atau versioning. Container harus dipulihkan dengan nama aslinya; kalau nama itu sudah dipakai container baru, pemulihan tidak bisa.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-container-overview"
+    },
+    {
+      "id": "az104-f-u09-snap",
+      "statement": "Share snapshot adalah salinan read-only sebuah file share pada satu waktu. Snapshot diambil di level share, tapi bisa dipulihkan per file.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-snapshots-files#share-snapshot-capabilities"
+    },
+    {
+      "id": "az104-f-u09-snap-incremental",
+      "statement": "Share snapshot bersifat incremental: hanya data yang berubah sejak snapshot sebelumnya yang disimpan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-snapshots-files#share-snapshot-space-usage"
+    },
+    {
+      "id": "az104-f-u09-snap-limits",
+      "statement": "Satu file share bisa punya sampai 200 snapshot, dan snapshot bisa disimpan sampai 10 tahun.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-snapshots-files#share-snapshot-limits"
+    },
+    {
+      "id": "az104-f-u09-snap-with-share",
+      "statement": "Snapshot tidak bisa disimpan terpisah dari share-nya: menghapus file share ikut menghapus semua snapshot-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-snapshots-files#share-snapshot-capabilities"
+    },
+    {
+      "id": "az104-f-u09-snap-restore",
+      "statement": "Di portal, file dipulihkan lewat file share, Snapshots, pilih snapshot, pilih file, Restore, lalu Overwrite original file. Di Windows, snapshot juga terlihat di tab Previous Versions.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-snapshots-files#restore-from-an-smb-file-share-snapshot"
+    },
+    {
+      "id": "az104-f-u09-snap-backup",
+      "statement": "Azure Backup bisa mengambil dan mengelola share snapshot secara terjadwal.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-snapshots-files"
+    },
+    {
+      "id": "az104-f-u09-share-sd",
+      "statement": "File share soft delete hanya bekerja di level share: menyimpan share yang dihapus, beserta isi dan snapshot-nya, selama 1 sampai 365 hari, default 7 hari. Untuk memulihkan file yang terhapus, pakai share snapshot atau Azure Backup.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-prevent-file-share-deletion#how-soft-delete-works"
+    },
+    {
+      "id": "az104-f-u09-share-sd-default",
+      "statement": "File share soft delete aktif secara default di storage account baru, dan berlaku untuk semua file share di akun itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-prevent-file-share-deletion#how-soft-delete-works"
     }
   ]
 }

@@ -243,10 +243,14 @@ function checkExercise(e: Exercise, push: (message: string, level?: Issue['level
     case 'template':
       checkOptions(e.options, e.answer, push)
       if (e.language !== 'json' && e.language !== 'bicep') push('language must be "json" or "bicep"')
+      if (e.fileName !== undefined && !e.fileName.trim()) push('template fileName is empty')
       if (!e.code?.trim()) push('template code is empty')
       else if (e.language === 'json') {
         try {
-          JSON.parse(e.code)
+          // The default header says "ARM template", which would mislead for other JSON such as a lifecycle policy.
+          const parsed: unknown = JSON.parse(e.code)
+          const isArm = typeof parsed === 'object' && parsed !== null && 'resources' in parsed
+          if (!isArm && !e.fileName) push('JSON that is not an ARM template needs a fileName for its header')
         } catch {
           push('template code is not valid JSON')
         }

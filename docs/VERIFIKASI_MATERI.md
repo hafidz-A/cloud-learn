@@ -295,3 +295,24 @@ Tidak ada fakta bertanda `verify`.
 | Izin share memakai RBAC (SMB Share Reader, Contributor, Elevated Contributor), izin folder dan file memakai Windows ACL, dan yang paling ketat yang berlaku; perubahan izin share biasanya berlaku dalam 30 menit | Diajarkan, visual `FilesPermissionLayers` | `storage-files-identity-assign-share-level-permissions.md`, `storage-files-identity-configure-file-level-permissions.md` |
 
 Tidak ada fakta bertanda `verify`.
+
+### Unit 9: Azure Files dan Blob Storage (30 September 2026)
+
+41 fakta, 15 kartu learn, 44 soal (42 examReady), 2 visual baru (`BlobLifecycleTimeline`, `SoftDeleteVsVersioning`)
+dan `BlobTiers` dari AZ-900. Sumber: `azure-docs/articles/storage/blobs`, `storage/files`, dan `includes`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Akses anonim tidak pernah diizinkan secara default; level container Private (default), Blob (baca tanpa list), Container (baca dan list); pengaturan akun Allow Blob anonymous access mengalahkan level container | Soal rencana (baca publik tanpa list = Blob) terkonfirmasi | `anonymous-read-access-configure.md` (20 Agustus 2026) |
+| **Azure Files kini memakai istilah media tier SSD (premium) dan HDD (standard)**; NFS hanya di SSD; share tidak bisa dipindah media tier langsung; HDD pay-as-you-go punya tier transaction optimized, hot, cool dengan hardware sama; migrasi dimulai di transaction optimized; provisioned v2 disarankan untuk share baru | Kartu tier file share memakai istilah baru | `storage-files-planning.md` (17 Agustus 2026), `understanding-billing.md`, include `storage-files-tiers-overview.md` |
+| Tier blob Hot, Cool (30 hari), Cold (90), Archive (180, offline); early deletion proporsional; tier hanya untuk block blob; default tier Hot/Cool/Cold, tidak bisa Archive | Diajarkan dan diuji | `access-tiers-overview.md` (2 April 2026) |
+| **Smart tier** (baru): memindahkan blob antara Hot, Cool, Cold otomatis; GA untuk akun zone-redundant (ZRS, GZRS, RA-GZRS), diaktifkan sebagai default access tier | Satu kartu dan satu soal | `access-tiers-smart.md` (13 April 2026) |
+| Rehydrate lewat Set Blob Tier atau Copy Blob ke nama baru (copy menghindari early deletion); Standard sampai 15 jam, High bisa kurang dari 1 jam untuk objek di bawah 10 GB; Standard bisa dinaikkan ke High, tidak sebaliknya | Soal fix rencana terkonfirmasi | `archive-rehydrate-overview.md` (31 Agustus 2026) |
+| Lifecycle: jalan sekali sehari, perubahan sampai 24 jam; beberapa action berlaku = yang paling murah dijalankan (delete, lalu archive, lalu cool); tidak bisa rehydrate; tierToArchive tidak didukung di ZRS, GZRS, RA-GZRS; `daysAfterLastTierChangeGreaterThan` mencegah arsip ulang; kondisi akses terakhir butuh access time tracking | Soal config rencana, soal template JSON, soal fix arsip ulang | `lifecycle-management-overview.md`, `lifecycle-management-policy-structure.md`, `lifecycle-management-policy-configure.md` |
+| Blob soft delete 1–365 hari; versioning membuat versi di setiap tulis dan tidak tersedia dengan hierarchical namespace; Microsoft menyarankan keduanya untuk data penting | Diajarkan | `soft-delete-blob-overview.md`, `versioning-overview.md`, `soft-delete-vs-versioning-options.md` |
+| Halaman perbandingan menulis soft delete dan versioning "disabled by default", padahal wizard portal biasanya mencentang soft delete | Materi tidak mengklaim default untuk blob soft delete | `soft-delete-vs-versioning-options.md` |
+| Container soft delete 1–365 hari, default 7; hanya container utuh; harus dipulihkan dengan nama asli | Fakta rencana terkonfirmasi | `soft-delete-container-overview.md` |
+| Share snapshot read-only, incremental, per share tapi dipulihkan per file, maksimal 200 per share, disimpan sampai 10 tahun; menghapus share ikut menghapus snapshot; langkah Restore di portal | Soal order rencana | `storage-snapshots-files.md` (16 Juli 2026) |
+| File share soft delete hanya level share, 1–365 hari default 7, aktif default di akun baru | Diajarkan | `storage-files-prevent-file-share-deletion.md` (20 Juli 2026) |
+
+Tidak ada fakta bertanda `verify`.

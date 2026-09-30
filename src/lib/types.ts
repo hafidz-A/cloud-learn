@@ -165,6 +165,8 @@ export type TemplateExercise = ExerciseBase & {
   type: 'template'
   language: 'json' | 'bicep'
   code: string
+  /** The file name in the code header. Defaults to azuredeploy.json (ARM template) or main.bicep. */
+  fileName?: string
   options: string[]
   answer: number
 }

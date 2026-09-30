@@ -6,6 +6,7 @@ import { AuthNvsAuthZ } from './AuthNvsAuthZ'
 import { AvailabilityVsReliability } from './AvailabilityVsReliability'
 import { AzureVsEntraRoles } from './AzureVsEntraRoles'
 import { BastionArchitecture } from './BastionArchitecture'
+import { BlobLifecycleTimeline } from './BlobLifecycleTimeline'
 import { BlobTiers } from './BlobTiers'
 import { CapexVsOpex } from './CapexVsOpex'
 import { CloudModels } from './CloudModels'
@@ -40,6 +41,7 @@ import { ServiceHealthScopes } from './ServiceHealthScopes'
 import { ServiceModelsStack } from './ServiceModelsStack'
 import { ServiceVsPrivateEndpoint } from './ServiceVsPrivateEndpoint'
 import { SharedResponsibility } from './SharedResponsibility'
+import { SoftDeleteVsVersioning } from './SoftDeleteVsVersioning'
 import { SsprLicensing } from './SsprLicensing'
 import { StorageRedundancy } from './StorageRedundancy'
 import { StorageServices } from './StorageServices'
@@ -57,6 +59,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   AvailabilityVsReliability,
   AzureVsEntraRoles,
   BastionArchitecture,
+  BlobLifecycleTimeline,
   BlobTiers,
   CapexVsOpex,
   CloudModels,
@@ -91,6 +94,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   ServiceModelsStack,
   ServiceVsPrivateEndpoint,
   SharedResponsibility,
+  SoftDeleteVsVersioning,
   SsprLicensing,
   StorageRedundancy,
   StorageServices,

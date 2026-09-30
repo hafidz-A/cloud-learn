@@ -201,6 +201,18 @@ test.describe('on a 320px phone', () => {
     expect(await overflow(page)).toEqual([])
   })
 
+  test('long lines of template code wrap inside the code box', async ({ page }) => {
+    await page.goto('/#/lesson/az104-u09-l3')
+    let item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    for (let guard = 0; guard < 20 && item.type !== 'template'; guard++) {
+      if (!isCard(item)) await answer(page, item)
+      await next(page)
+      item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    }
+    await expect(page.getByText('"daysAfterModificationGreaterThan": 365')).toBeVisible()
+    expect(await overflow(page)).toEqual([])
+  })
+
   test('long card titles fit on a narrow phone', async ({ page }) => {
     await page.goto('/#/lesson/u01-l2')
     const title = (lesson('u01-l2').items[0] as unknown as { title: string }).title

@@ -16,7 +16,7 @@ function Scene({ exercise }: { exercise: OneAnswer }) {
     case 'rules':
       return <RuleTables tables={exercise.tables} />
     case 'template':
-      return <TemplateCode language={exercise.language} code={exercise.code} />
+      return <TemplateCode language={exercise.language} code={exercise.code} fileName={exercise.fileName} />
     case 'topology':
       return <TopologyDiagram nodes={exercise.nodes} links={exercise.links} />
     default:

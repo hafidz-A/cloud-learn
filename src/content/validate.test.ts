@@ -267,6 +267,9 @@ describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
     expect(shapeErrors(rules)).toContain('table "NSG" has a row with the wrong number of cells')
     const template = { ...base, id: 'u99-l1-e2', type: 'template', language: 'json', code: '{ resources: [] }', options, answer: 0 } as LessonItem
     expect(shapeErrors(template)).toContain('template code is not valid JSON')
+    const policy = { ...base, id: 'u99-l1-e2', type: 'template', language: 'json', code: '{ "rules": [] }', options, answer: 0 } as LessonItem
+    expect(shapeErrors(policy)).toContain('JSON that is not an ARM template needs a fileName for its header')
+    expect(shapeErrors({ ...policy, fileName: 'policy.json (lifecycle policy)' } as LessonItem)).toEqual([])
     const topology = { ...base, id: 'u99-l1-e3', type: 'topology', nodes: [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }], links: [{ from: 'a', to: 'c', kind: 'peering' }], options, answer: 0 } as LessonItem
     expect(shapeErrors(topology)).toContain('link a -> c points to a node that does not exist')
     const config = {

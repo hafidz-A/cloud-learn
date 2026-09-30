@@ -105,6 +105,11 @@
     "description": "Standar kunci keamanan fisik (security key) untuk login passwordless."
   },
   {
+    "term": "GB",
+    "expansion": "Gigabyte",
+    "description": "Satuan ukuran data, sekitar satu miliar byte."
+  },
+  {
     "term": "GRS",
     "expansion": "Geo-Redundant Storage",
     "description": "Menyimpan 3 salinan data di satu datacenter region utama, lalu menyalinnya ke region pasangan. Durability 16 nines."
@@ -113,6 +118,11 @@
     "term": "GZRS",
     "expansion": "Geo-Zone-Redundant Storage",
     "description": "Menyimpan data di 3 availability zone region utama, lalu menyalinnya ke region pasangan. Durability 16 nines."
+  },
+  {
+    "term": "HDD",
+    "expansion": "Hard Disk Drive",
+    "description": "Media penyimpanan berupa piringan magnetik. Di Azure Files, HDD adalah media tier standard yang lebih hemat."
   },
   {
     "term": "HSM",
