@@ -10,6 +10,11 @@
     "description": "Daftar izin di folder atau file. Azure Files memakai Windows ACL untuk izin folder dan file."
   },
   {
+    "term": "ADE",
+    "expansion": "Azure Disk Encryption",
+    "description": "Enkripsi disk VM dari dalam OS memakai BitLocker atau DM-Crypt. Pensiun 15 September 2028; untuk VM baru pakai encryption at host."
+  },
+  {
     "term": "AES",
     "expansion": "Advanced Encryption Standard",
     "description": "Algoritma enkripsi standar. Azure Storage memakai AES 256-bit untuk mengenkripsi data yang disimpan."
@@ -110,6 +115,11 @@
     "description": "Satuan ukuran data, sekitar satu miliar byte."
   },
   {
+    "term": "GPU",
+    "expansion": "Graphics Processing Unit",
+    "description": "Prosesor grafis. Ukuran VM keluarga N memakai GPU untuk grafis, AI, dan komputasi berat."
+  },
+  {
     "term": "GRS",
     "expansion": "Geo-Redundant Storage",
     "description": "Menyimpan 3 salinan data di satu datacenter region utama, lalu menyalinnya ke region pasangan. Durability 16 nines."
@@ -158,6 +168,11 @@
     "term": "ID",
     "expansion": "Identifier",
     "description": "Penanda unik sebuah objek. Resource ID adalah path lengkap resource di Azure, dan berubah kalau resource dipindah ke resource group atau subscription lain."
+  },
+  {
+    "term": "IOPS",
+    "expansion": "Input/Output Operations Per Second",
+    "description": "Jumlah operasi baca atau tulis per detik yang bisa dilayani sebuah disk."
   },
   {
     "term": "IP",

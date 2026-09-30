@@ -16,6 +16,7 @@ import { ConditionalAccessFlow } from './ConditionalAccessFlow'
 import { DefenseInDepth } from './DefenseInDepth'
 import { DnsDelegation } from './DnsDelegation'
 import { EntraObjects } from './EntraObjects'
+import { FaultUpdateDomains } from './FaultUpdateDomains'
 import { FilesPermissionLayers } from './FilesPermissionLayers'
 import { GroupTypes } from './GroupTypes'
 import { HealthProbeBlocked } from './HealthProbeBlocked'
@@ -49,6 +50,7 @@ import { StorageRedundancy } from './StorageRedundancy'
 import { StorageServices } from './StorageServices'
 import { StoredAccessPolicy } from './StoredAccessPolicy'
 import { UdrNextHop } from './UdrNextHop'
+import { VmResizeFlow } from './VmResizeFlow'
 import { VNetAddressPlan } from './VNetAddressPlan'
 import { VNetPeering } from './VNetPeering'
 import { ZonesInRegion } from './ZonesInRegion'
@@ -71,6 +73,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   DefenseInDepth,
   DnsDelegation,
   EntraObjects,
+  FaultUpdateDomains,
   FilesPermissionLayers,
   GroupTypes,
   HealthProbeBlocked,
@@ -104,6 +107,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   StorageServices,
   StoredAccessPolicy,
   UdrNextHop,
+  VmResizeFlow,
   VNetAddressPlan,
   VNetPeering,
   ZonesInRegion,

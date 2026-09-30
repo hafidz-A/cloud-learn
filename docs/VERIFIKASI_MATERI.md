@@ -334,3 +334,24 @@ Sumber: `azure-docs/articles/azure-resource-manager/templates`, `azure-resource-
 | `az bicep decompile --file main.json` membuat main.bicep (`--force` untuk menimpa), hasilnya tidak dijamin sempurna; `az bicep build` ke arah sebaliknya | Soal shell rencana | `decompile.md` (14 Juli 2026), `bicep-cli.md` |
 
 Tidak ada fakta bertanda `verify`.
+
+### Unit 11: Virtual machine (30 September 2026)
+
+40 fakta, 16 kartu learn, 49 soal (44 examReady), 2 visual baru (`VmResizeFlow`, `FaultUpdateDomains`).
+Sumber: `azure-compute-docs/articles/virtual-machines`, `virtual-machine-scale-sets`, dan
+`azure-docs/articles/azure-resource-manager/management`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Keluarga ukuran: general purpose (A, B burstable, D), compute optimized (F), memory optimized (E), storage optimized (L), GPU (N); ukuran dengan huruf s untuk Premium Storage | Soal match rencana | `sizes/overview.md` (24 September 2026), `sizes/resize-vm.md` |
+| Resize VM yang berjalan selalu restart; ukuran yang tidak ada di cluster saat ini butuh deallocate; di availability set semua VM di-deallocate; resize gagal tetap menampilkan ukuran yang diminta | Fakta rencana terkonfirmasi, soal fix | `sizes/resize-vm.md` (10 November 2025) |
+| Halaman resize menulis deallocate "melepas dynamic IP address". Di Unit 4, private IP dinamis terbukti tidak dilepas saat deallocate; kalimat ini merujuk public IP dinamis (SKU Basic yang sudah pensiun) | Tidak diajarkan di Unit 11 supaya tidak bertentangan | `sizes/resize-vm.md`, `virtual-network` (Unit 4) |
+| Temporary disk bukan managed disk, data bisa hilang saat maintenance, redeploy, atau stop; drive D di Windows; tidak terenkripsi kecuali ukuran v5 ke atas, encryption at host, atau ADE semua volume | Diajarkan, soal data hilang di drive D | `managed-disks-overview.md` (20 Agustus 2026) |
+| Lima jenis managed disk; Ultra Disk dan Premium SSD v2 tidak bisa jadi OS disk; Standard HDD sebagai OS disk pensiun 8 September 2028 | Diajarkan | `disks-types.md` (15 September 2026) |
+| Server-side encryption tidak mengenkripsi temp disk dan cache; encryption at host mengenkripsinya tanpa memakai CPU VM; ADE pensiun 15 September 2028 | Fakta rencana terkonfirmasi | `disk-encryption-overview.md` (11 September 2026) |
+| Encryption at host: daftarkan fitur EncryptionAtHost; tidak bisa di VM yang pernah memakai ADE; VM lama harus di-deallocate untuk mengaktifkan dan mematikannya | Soal fix dan order | `disk-encryption.md`, `disks-enable-host-based-encryption-portal.md`, include restrictions |
+| Availability set: maksimal 3 fault domain dan 20 update domain, tidak bisa diubah; VM keenam masuk update domain yang sama dengan VM pertama (dengan 5 update domain); SLA 99,95%; tidak melindungi dari kegagalan aplikasi. Microsoft menyarankan scale set Flexible | Diajarkan. **Default 5 update domain dan aturan "VM hanya bisa masuk availability set saat dibuat" tidak tertulis di halaman lokal**, jadi tidak diklaim | `availability-set-overview.md` |
+| Pindah resource group atau subscription: region tetap, resource ID berubah, kedua resource group dikunci sampai 4 jam tanpa downtime, read-only lock memblokir, provider harus terdaftar, tenant harus sama; VM di availability set tidak bisa dipindah sendirian; VM dengan ADE harus dimatikan enkripsinya untuk pindah subscription; pindah region lewat Azure Resource Mover | Soal sort rencana | `move-resource-group-and-subscription.md`, `move-limitations/virtual-machines-move-limitations.md`, `move-resources-overview.md` |
+| Scale set: Flexible disarankan, mode tidak bisa diubah; upgrade policy Automatic, Manual, Rolling (Flexible butuh Application Health Extension); aturan autoscale dan batas instance; scale-in default: seimbangkan zone, fault domain, lalu instance ID tertinggi | Soal config rencana (CPU di atas 70%) | `virtual-machine-scale-sets-*.md` (19 Mei 2026) |
+
+Tidak ada fakta bertanda `verify`.

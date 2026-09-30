@@ -6,32 +6,1543 @@
     {
       "id": "az104-u11-l1",
       "title": "Membuat VM",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u11-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "vm-sizes"
+          ],
+          "title": "Keluarga ukuran VM",
+          "body": "Ukuran VM (virtual machine) dikelompokkan menurut beban kerja. General purpose, misalnya B yang burstable dan D, punya CPU (central processing unit) dan memori seimbang. Compute optimized (F) punya CPU tinggi, memory optimized (E) punya memori tinggi, storage optimized (L) punya throughput disk tinggi, dan keluarga N memakai GPU (graphics processing unit).",
+          "keyPoints": [
+            "D: seimbang, B: burstable",
+            "F: CPU, E: memori",
+            "L: disk, N: GPU"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview",
+          "teaches": [
+            "az104-f-u11-families"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e1",
+          "type": "match",
+          "concept": "vm-sizes",
+          "prompt": "Match each VM (virtual machine) family to its best use.",
+          "pairs": [
+            [
+              "D-family",
+              "Balanced CPU (central processing unit) and memory for most apps"
+            ],
+            [
+              "F-family",
+              "CPU-heavy batch jobs and app servers"
+            ],
+            [
+              "E-family",
+              "Large in-memory databases and caches"
+            ],
+            [
+              "L-family",
+              "Big data with high disk throughput"
+            ],
+            [
+              "N-family",
+              "Graphics, visualization, and video rendering"
+            ]
+          ],
+          "explanation": "D seimbang, F untuk CPU (central processing unit), E untuk memori, L untuk disk, dan N memakai GPU (graphics processing unit).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-families"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e2",
+          "type": "choice",
+          "concept": "vm-sizes",
+          "prompt": "A relational database needs a high ratio of memory to CPU (central processing unit). Which VM (virtual machine) family fits best?",
+          "options": [
+            "F-family (compute optimized)",
+            "E-family (memory optimized)",
+            "B-family (burstable)",
+            "L-family (storage optimized)"
+          ],
+          "answer": 1,
+          "explanation": "Memory optimized (E) punya rasio memori ke CPU (central processing unit) yang tinggi, cocok untuk database relasional dan cache besar.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-families"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e3",
+          "type": "truefalse",
+          "concept": "vm-sizes",
+          "prompt": "The N-family VM (virtual machine) sizes include GPUs (graphics processing units).",
+          "answer": true,
+          "explanation": "Benar. Keluarga N memakai GPU (graphics processing unit), untuk beban kerja grafis dan komputasi berat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-families"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "vm-size-choice"
+          ],
+          "title": "Memilih ukuran",
+          "body": "Pilih ukuran dari sinyal beban kerjanya: CPU (central processing unit) selalu penuh, pilih compute optimized; memori habis, pilih memory optimized; disk lambat, pilih storage optimized. Satu jebakan: untuk memakai Premium Storage, pilih ukuran dengan huruf s, misalnya Standard_E4s_v3, bukan Standard_E4_v3.",
+          "keyPoints": [
+            "Pilih dari sinyal beban kerja",
+            "Premium Storage: ukuran dengan huruf s"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/resize-vm#choose-the-right-sku",
+          "teaches": [
+            "az104-f-u11-choose-size",
+            "az104-f-u11-size-s"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e4",
+          "type": "choice",
+          "concept": "vm-size-choice",
+          "prompt": "A VM (virtual machine) must use Premium SSD (solid-state drive) disks. Which size can you choose?",
+          "options": [
+            "Standard_E4_v3",
+            "Standard_E4s_v3",
+            "Standard_A2_v2",
+            "Any size, because the disk type decides"
+          ],
+          "answer": 1,
+          "explanation": "Ukuran dengan huruf s mendukung Premium Storage. Standard_E4_v3 tanpa s tidak.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-size-s"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e5",
+          "type": "choice",
+          "concept": "vm-size-choice",
+          "prompt": "A web server VM (virtual machine) runs at 95% CPU (central processing unit) during peaks, while memory use stays low. Which kind of size should it move to?",
+          "options": [
+            "Memory optimized",
+            "Storage optimized",
+            "GPU (graphics processing unit) accelerated",
+            "Compute optimized"
+          ],
+          "answer": 3,
+          "explanation": "CPU (central processing unit) yang penuh menandakan perlu compute optimized. Memori yang rendah berarti memory optimized tidak membantu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-choose-size"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "vm-disk-roles"
+          ],
+          "title": "OS disk, data disk, temporary disk",
+          "body": "Setiap VM (virtual machine) punya satu OS (operating system) disk dari image yang dipilih. Data disk adalah managed disk tambahan untuk data aplikasi; jumlahnya dibatasi ukuran VM. Kebanyakan VM juga punya temporary disk, di Windows default-nya drive D. Temporary disk bukan managed disk: datanya bisa hilang saat maintenance, redeploy, atau VM dihentikan.",
+          "keyPoints": [
+            "Satu OS disk",
+            "Data disk untuk data aplikasi",
+            "Temporary disk: jangan simpan data penting"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview#disk-roles",
+          "teaches": [
+            "az104-f-u11-os-disk",
+            "az104-f-u11-data-disk",
+            "az104-f-u11-temp-disk"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e6",
+          "type": "choice",
+          "concept": "vm-disk-roles",
+          "prompt": "An app on a Windows VM (virtual machine) saves customer invoices to drive D. After the VM was stopped and started, the invoices are gone. Why?",
+          "options": [
+            "Drive D is the OS (operating system) disk, which resets on start",
+            "Drive D is the temporary disk, and its data can be lost when the VM stops",
+            "Managed disks are deleted when a VM stops",
+            "The data disk was detached automatically"
+          ],
+          "answer": 1,
+          "explanation": "Di Windows, drive D default-nya temporary disk, yang bukan managed disk. Simpan data penting di data disk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-temp-disk",
+            "az104-f-u11-data-disk"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e7",
+          "type": "yesno",
+          "concept": "vm-disk-roles",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "vm1 has one OS (operating system) disk, two data disks, and a temporary disk.",
+          "statements": [
+            {
+              "text": "Data on the temporary disk survives a normal restart.",
+              "answer": true
+            },
+            {
+              "text": "The temporary disk is a managed disk.",
+              "answer": false
+            },
+            {
+              "text": "The VM (virtual machine) size limits how many data disks you can attach.",
+              "answer": true
+            }
+          ],
+          "explanation": "Data temporary disk bertahan saat restart biasa, tapi temporary disk bukan managed disk. Jumlah data disk ditentukan ukuran VM (virtual machine).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-temp-disk",
+            "az104-f-u11-data-disk"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e8",
+          "type": "truefalse",
+          "concept": "vm-disk-roles",
+          "prompt": "A VM (virtual machine) can have more than one OS (operating system) disk.",
+          "answer": false,
+          "explanation": "Salah. Setiap VM (virtual machine) punya tepat satu OS (operating system) disk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-os-disk"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u11-l2",
       "title": "Ukuran dan disk",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u11-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "vm-resize"
+          ],
+          "title": "Resize VM",
+          "body": "Ukuran VM (virtual machine) diubah di Availability + scale > Size. VM yang berjalan selalu di-restart saat resize. Kalau ukuran baru tidak tersedia di cluster hardware yang sekarang, VM harus di-deallocate dulu; menghentikan VM bisa memunculkan ukuran lain di daftar. Untuk VM di availability set, semua VM di set itu harus di-deallocate. Kalau resize gagal, portal tetap menampilkan ukuran yang diminta, padahal VM masih memakai ukuran lama.",
+          "keyPoints": [
+            "Resize selalu restart",
+            "Tidak ada di cluster: deallocate dulu",
+            "Availability set: deallocate semua"
+          ],
+          "visual": "VmResizeFlow",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/resize-vm",
+          "teaches": [
+            "az104-f-u11-resize",
+            "az104-f-u11-resize-avset",
+            "az104-f-u11-resize-list",
+            "az104-f-u11-resize-failed"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-e1",
+          "type": "fix",
+          "concept": "vm-resize",
+          "prompt": "You want to resize the running VM (virtual machine) vm1 to Standard_E8s_v5, but that size isn't in the list. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "vm1 > Availability + scale > Size",
+            "message": "Standard_E8s_v5 isn't available on the hardware cluster that currently hosts vm1."
+          },
+          "options": [
+            "Restart vm1 and try again",
+            "Stop (deallocate) vm1, then choose the size",
+            "Create a new availability set",
+            "Detach all data disks"
+          ],
+          "answer": 1,
+          "explanation": "Ukuran yang tidak tersedia di cluster saat ini butuh VM (virtual machine) di-deallocate dulu. Menghentikan VM bisa memunculkan ukuran lain.",
+          "requires": [
+            "az104-f-u11-resize",
+            "az104-f-u11-resize-list"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-e2",
+          "type": "truefalse",
+          "concept": "vm-resize",
+          "prompt": "Resizing a running VM (virtual machine) never restarts it, as long as the new size is on the current hardware cluster.",
+          "answer": false,
+          "explanation": "Salah. Resize VM (virtual machine) yang berjalan selalu membuatnya restart, jadi jadwalkan di luar jam sibuk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-resize"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-e3",
+          "type": "choice",
+          "concept": "vm-resize",
+          "prompt": "vm1 and vm2 are in an availability set. The new size for vm1 isn't available on their current hardware cluster. What must you do?",
+          "options": [
+            "Deallocate only vm1",
+            "Deallocate both vm1 and vm2, then resize",
+            "Move vm1 out of the availability set first",
+            "Change the fault domain count"
+          ],
+          "answer": 1,
+          "explanation": "Di availability set, semua VM (virtual machine) di set itu harus di-deallocate untuk resize ke ukuran yang butuh cluster lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-resize-avset"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-e4",
+          "type": "truefalse",
+          "concept": "vm-resize",
+          "prompt": "If a resize fails, the portal can still show the requested size while the VM (virtual machine) runs on its old size.",
+          "answer": true,
+          "explanation": "Benar. Model VM (virtual machine) menampilkan ukuran yang diminta, tapi VM tetap berjalan dengan ukuran lama sampai resize berhasil.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-resize-failed"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "disk-types"
+          ],
+          "title": "Jenis managed disk",
+          "body": "Ada lima jenis managed disk. Ultra Disk dan Premium SSD (solid-state drive) v2 untuk beban kerja yang butuh IOPS (input/output operations per second) dan latensi sangat rendah, tapi tidak bisa jadi OS (operating system) disk. Premium SSD untuk production. Standard SSD untuk web server dan dev/test. Standard HDD (hard disk drive) untuk backup dan data yang jarang dipakai; sebagai OS disk, Standard HDD pensiun 8 September 2028.",
+          "keyPoints": [
+            "Ultra dan Premium SSD v2: data disk saja",
+            "Premium SSD: production",
+            "Standard HDD: backup, jarang diakses"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types",
+          "teaches": [
+            "az104-f-u11-disk-types",
+            "az104-f-u11-disk-os"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-e5",
+          "type": "choice",
+          "concept": "disk-types",
+          "prompt": "A top-tier database needs the highest IOPS (input/output operations per second) as a data disk. Which disk type fits?",
+          "options": [
+            "Ultra Disk",
+            "Standard SSD (solid-state drive)",
+            "Standard HDD (hard disk drive)",
+            "The temporary disk"
+          ],
+          "answer": 0,
+          "explanation": "Ultra Disk memberi performa tertinggi, dan memang hanya bisa dipakai sebagai data disk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-disk-types",
+            "az104-f-u11-disk-os"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-e6",
+          "type": "truefalse",
+          "concept": "disk-types",
+          "prompt": "You can use a Premium SSD (solid-state drive) v2 disk as the OS (operating system) disk of a VM (virtual machine).",
+          "answer": false,
+          "explanation": "Salah. Ultra Disk dan Premium SSD (solid-state drive) v2 hanya bisa dipakai sebagai data disk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-disk-os"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-e7",
+          "type": "choice",
+          "concept": "disk-types",
+          "prompt": "Monthly backup copies are rarely read and must cost as little as possible. Which disk type fits?",
+          "options": [
+            "Standard HDD (hard disk drive)",
+            "Premium SSD (solid-state drive)",
+            "Ultra Disk",
+            "Premium SSD v2"
+          ],
+          "answer": 0,
+          "explanation": "Standard HDD (hard disk drive) cocok untuk backup dan data yang jarang diakses.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-disk-types"
+          ]
+        },
+        {
+          "id": "az104-u11-l2-e8",
+          "type": "match",
+          "concept": "disk-types",
+          "prompt": "Match each disk type to a typical use.",
+          "pairs": [
+            [
+              "Premium SSD (solid-state drive)",
+              "Production workloads that need low latency"
+            ],
+            [
+              "Standard SSD",
+              "Web servers and dev/test"
+            ],
+            [
+              "Standard HDD (hard disk drive)",
+              "Backups and rarely accessed data"
+            ]
+          ],
+          "explanation": "Premium SSD (solid-state drive) untuk production, Standard SSD untuk beban ringan dan dev/test, Standard HDD (hard disk drive) untuk data yang jarang dipakai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-disk-types"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u11-l3",
       "title": "Enkripsi di host",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u11-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "disk-encryption-options"
+          ],
+          "title": "Pilihan enkripsi disk",
+          "body": "Server-side encryption selalu aktif dan mengenkripsi OS (operating system) disk dan data disk, tapi tidak mengenkripsi temporary disk dan cache disk. Encryption at host menutup celah itu: temporary disk dan cache ikut terenkripsi, dan data mengalir terenkripsi ke storage, tanpa memakai CPU (central processing unit) VM (virtual machine). ADE (Azure Disk Encryption) pensiun 15 September 2028; untuk VM baru, pakai encryption at host.",
+          "keyPoints": [
+            "Server-side: OS dan data disk saja",
+            "Encryption at host: juga temp dan cache",
+            "ADE pensiun 2028"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview",
+          "teaches": [
+            "az104-f-u11-sse-disks",
+            "az104-f-u11-enc-host",
+            "az104-f-u11-ade-retire"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-e1",
+          "type": "choice",
+          "concept": "disk-encryption-options",
+          "prompt": "Security policy requires the temporary disk and the disk caches of new VMs (virtual machines) to be encrypted. What should you enable?",
+          "options": [
+            "Server-side encryption, which is already on",
+            "Azure Disk Encryption",
+            "Encryption at host",
+            "A customer-managed key on the storage account"
+          ],
+          "answer": 2,
+          "explanation": "Server-side encryption tidak mengenkripsi temporary disk dan cache. Encryption at host mengenkripsinya, dan ADE (Azure Disk Encryption) sedang menuju pensiun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-enc-host",
+            "az104-f-u11-sse-disks",
+            "az104-f-u11-ade-retire"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-e2",
+          "type": "truefalse",
+          "concept": "disk-encryption-options",
+          "prompt": "Server-side encryption of managed disks encrypts the temporary disk.",
+          "answer": false,
+          "explanation": "Salah. Server-side encryption hanya mengenkripsi OS (operating system) disk dan data disk, bukan temporary disk dan cache.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-sse-disks"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-e3",
+          "type": "multi",
+          "concept": "disk-encryption-options",
+          "prompt": "Which two are true about encryption at host? Choose two.",
+          "options": [
+            "It runs BitLocker inside the VM (virtual machine)",
+            "It doesn't use the VM's CPU (central processing unit)",
+            "It encrypts the VM's temporary disk and disk caches",
+            "It is being retired on September 15, 2028"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Encryption at host bekerja di host, bukan di dalam OS (operating system), jadi tidak memakai CPU (central processing unit) VM (virtual machine). BitLocker dan tanggal pensiun itu milik ADE (Azure Disk Encryption).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-enc-host",
+            "az104-f-u11-ade-retire"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "encryption-at-host"
+          ],
+          "title": "Mengaktifkan encryption at host",
+          "body": "Encryption at host harus didaftarkan dulu di subscription: fitur EncryptionAtHost di Microsoft.Compute. Fitur ini tidak bisa diaktifkan di VM (virtual machine) yang sedang atau pernah memakai ADE (Azure Disk Encryption). VM yang sudah ada harus di-deallocate dulu supaya terenkripsi, dan mematikannya juga butuh VM di-deallocate.",
+          "keyPoints": [
+            "Daftarkan fitur EncryptionAtHost",
+            "Tidak untuk VM yang pernah memakai ADE",
+            "VM lama: deallocate dulu"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host---end-to-end-encryption-for-your-vm-data",
+          "teaches": [
+            "az104-f-u11-enc-host-register",
+            "az104-f-u11-enc-host-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-e4",
+          "type": "fix",
+          "concept": "encryption-at-host",
+          "prompt": "You try to enable encryption at host on a new VM (virtual machine), and the portal shows an error. What should you do first?",
+          "scene": {
+            "kind": "error",
+            "title": "Encryption at host",
+            "message": "The subscription is not registered for the feature Microsoft.Compute/EncryptionAtHost."
+          },
+          "options": [
+            "Enable Azure Disk Encryption first",
+            "Register the EncryptionAtHost feature for the subscription",
+            "Use a Standard HDD (hard disk drive) OS (operating system) disk",
+            "Move the VM to another region"
+          ],
+          "answer": 1,
+          "explanation": "Encryption at host harus didaftarkan di subscription sebelum dipakai. ADE (Azure Disk Encryption) justru membuat encryption at host tidak bisa diaktifkan.",
+          "requires": [
+            "az104-f-u11-enc-host-register",
+            "az104-f-u11-enc-host-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-e5",
+          "type": "yesno",
+          "concept": "encryption-at-host",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "The feature EncryptionAtHost is registered. vm1 is running and used Azure Disk Encryption last year. vm2 is running and never used it.",
+          "statements": [
+            {
+              "text": "You can enable encryption at host on vm1.",
+              "answer": false
+            },
+            {
+              "text": "vm2 must be deallocated before its encryption at host takes effect.",
+              "answer": true
+            },
+            {
+              "text": "You can turn encryption at host off again while vm2 keeps running.",
+              "answer": false
+            }
+          ],
+          "explanation": "VM (virtual machine) yang pernah memakai ADE (Azure Disk Encryption) tidak bisa memakai encryption at host. Mengaktifkan dan mematikannya di VM lama butuh VM di-deallocate.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-enc-host-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-e6",
+          "type": "order",
+          "concept": "encryption-at-host",
+          "prompt": "Enable encryption at host on the existing running VM (virtual machine) vm2. Put the steps in order.",
+          "items": [
+            "Register the EncryptionAtHost feature for the subscription",
+            "Deallocate vm2",
+            "Turn on encryption at host for vm2",
+            "Start vm2"
+          ],
+          "explanation": "Fiturnya didaftarkan dulu, lalu VM (virtual machine) di-deallocate supaya pengaturannya bisa diubah dan berlaku saat dijalankan lagi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-enc-host-register",
+            "az104-f-u11-enc-host-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "temp-disk-encryption"
+          ],
+          "title": "Enkripsi temporary disk",
+          "body": "Temporary disk tidak ikut server-side encryption. Temporary disk baru terenkripsi dalam tiga keadaan: ukuran VM (virtual machine) versi 5 ke atas, seperti Dsv5 dan Dsv6, yang mengenkripsinya otomatis; encryption at host diaktifkan; atau ADE (Azure Disk Encryption) diatur untuk semua volume. Untuk VM baru, pilihan yang disarankan adalah encryption at host.",
+          "keyPoints": [
+            "Versi 5 ke atas: otomatis",
+            "Encryption at host",
+            "Tidak lewat server-side encryption"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview#temporary-disk",
+          "teaches": [
+            "az104-f-u11-temp-enc",
+            "az104-f-u11-temp-v5",
+            "az104-f-u11-sse-disks"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-e7",
+          "type": "choice",
+          "concept": "temp-disk-encryption",
+          "prompt": "A new VM (virtual machine) uses the size Standard_D4s_v5 and no other encryption settings. Is its temporary disk encrypted?",
+          "options": [
+            "Yes, version 5 and later sizes encrypt it automatically",
+            "No, only encryption at host can encrypt it",
+            "No, temporary disks can never be encrypted",
+            "Yes, because server-side encryption covers it"
+          ],
+          "answer": 0,
+          "explanation": "Ukuran versi 5 ke atas mengenkripsi temporary disk secara otomatis. Server-side encryption sendiri tidak mencakup temporary disk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-temp-v5",
+            "az104-f-u11-sse-disks"
+          ]
+        },
+        {
+          "id": "az104-u11-l3-e8",
+          "type": "truefalse",
+          "concept": "temp-disk-encryption",
+          "prompt": "On an older VM (virtual machine) size, server-side encryption alone leaves the temporary disk unencrypted.",
+          "answer": true,
+          "explanation": "Benar. Tanpa ukuran versi 5 ke atas, encryption at host, atau ADE (Azure Disk Encryption), temporary disk tidak terenkripsi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-temp-enc"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u11-l4",
       "title": "Ketersediaan",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u11-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "availability-set"
+          ],
+          "title": "Availability set",
+          "body": "Availability set menyebar VM (virtual machine) ke fault domain dan update domain. Fault domain adalah rak yang berbagi listrik dan switch jaringan. Update domain di-restart satu per satu saat maintenance terencana. Maksimal 3 fault domain dan 20 update domain, dan tidak bisa diubah setelah dibuat. Dua VM atau lebih di availability set memenuhi SLA (service-level agreement) 99,95%, tapi tidak melindungi dari kegagalan aplikasi.",
+          "keyPoints": [
+            "Fault domain: listrik dan switch",
+            "Update domain: restart bergantian",
+            "Maks. 3 dan 20, tetap setelah dibuat"
+          ],
+          "visual": "FaultUpdateDomains",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview",
+          "teaches": [
+            "az104-f-u11-avset",
+            "az104-f-u11-avset-limits",
+            "az104-f-u11-fault-domain",
+            "az104-f-u11-update-domain",
+            "az104-f-u11-avset-limits-app"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-e1",
+          "type": "truefalse",
+          "concept": "availability-set",
+          "prompt": "You can raise the number of fault domains of an existing availability set from 2 to 3.",
+          "answer": false,
+          "explanation": "Salah. Jumlah fault domain dan update domain tidak bisa diubah setelah availability set dibuat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-avset-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-e2",
+          "type": "choice",
+          "concept": "availability-set",
+          "prompt": "An availability set has 5 update domains and holds vm1 to vm6. Which VM (virtual machine) shares an update domain with vm6?",
+          "options": [
+            "vm5",
+            "vm1",
+            "vm2",
+            "None, because there are 6 update domains"
+          ],
+          "answer": 1,
+          "explanation": "Dengan lima update domain, VM (virtual machine) keenam masuk update domain yang sama dengan VM pertama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-update-domain"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-e3",
+          "type": "yesno",
+          "concept": "availability-set",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Two web VMs (virtual machines) are in the same availability set.",
+          "statements": [
+            {
+              "text": "A power failure in one rack can't take down both VMs.",
+              "answer": true
+            },
+            {
+              "text": "The set protects the app if its code crashes on both VMs.",
+              "answer": false
+            },
+            {
+              "text": "You pay an extra fee for the availability set.",
+              "answer": false
+            }
+          ],
+          "explanation": "Fault domain berbeda melindungi dari kerusakan rak. Availability set tidak melindungi dari kegagalan aplikasi, dan availability set sendiri gratis.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-fault-domain",
+            "az104-f-u11-avset-limits-app",
+            "az104-f-u11-avset"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-e4",
+          "type": "truefalse",
+          "concept": "availability-set",
+          "prompt": "Two or more VMs (virtual machines) in an availability set meet the 99.95% VM SLA (service-level agreement).",
+          "answer": true,
+          "explanation": "Benar. Dua VM (virtual machine) atau lebih di availability set memenuhi SLA (service-level agreement) 99,95%.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-avset"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "availability-zones-vm"
+          ],
+          "title": "Availability zone untuk VM",
+          "body": "Setiap region yang mendukung punya tiga availability zone, masing-masing dengan listrik, jaringan, dan pendingin sendiri. VM (virtual machine) yang disebar di beberapa zone tahan terhadap hilangnya satu datacenter, jadi lebih andal daripada availability set. Microsoft juga menyarankan Virtual Machine Scale Sets dengan Flexible orchestration untuk ketersediaan tinggi.",
+          "keyPoints": [
+            "Tiga zone per region",
+            "Tahan hilangnya satu datacenter",
+            "Lebih andal dari availability set"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability#availability-zones",
+          "teaches": [
+            "az104-f-u11-zones",
+            "az104-f-u11-avset-reco"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-e5",
+          "type": "place",
+          "concept": "availability-zones-vm",
+          "prompt": "Place web1, web2, and web3 so that the app keeps running if any one datacenter fails.",
+          "zones": [
+            "Zone 1",
+            "Zone 2",
+            "Zone 3"
+          ],
+          "pieces": [
+            {
+              "text": "web1",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            },
+            {
+              "text": "web2",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            },
+            {
+              "text": "web3",
+              "validZones": [
+                0,
+                1,
+                2
+              ]
+            }
+          ],
+          "rule": "one-per-zone",
+          "explanation": "Satu VM (virtual machine) per zone, jadi hilangnya satu datacenter hanya menjatuhkan satu VM.",
+          "requires": [
+            "az104-f-u11-zones"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-e6",
+          "type": "choice",
+          "concept": "availability-zones-vm",
+          "prompt": "Which option protects VMs (virtual machines) from the loss of an entire datacenter?",
+          "options": [
+            "Spreading the VMs across availability zones",
+            "Putting the VMs in one availability set",
+            "Using Premium SSD (solid-state drive) disks",
+            "Resizing the VMs"
+          ],
+          "answer": 0,
+          "explanation": "Availability set hanya memisahkan rak di satu datacenter. Availability zone punya listrik, jaringan, dan pendingin sendiri.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-zones",
+            "az104-f-u11-avset"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-e7",
+          "type": "match",
+          "concept": "availability-zones-vm",
+          "prompt": "Match each term to what it protects against.",
+          "pairs": [
+            [
+              "Fault domain",
+              "A rack losing power or its network switch"
+            ],
+            [
+              "Update domain",
+              "Planned maintenance restarting all VMs (virtual machines) at once"
+            ],
+            [
+              "Availability zone",
+              "A whole datacenter going down"
+            ]
+          ],
+          "explanation": "Fault domain memisahkan rak, update domain memisahkan jadwal restart, dan availability zone memisahkan datacenter.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-fault-domain",
+            "az104-f-u11-update-domain",
+            "az104-f-u11-zones"
+          ]
+        },
+        {
+          "id": "az104-u11-l4-e8",
+          "type": "truefalse",
+          "concept": "availability-zones-vm",
+          "prompt": "For high availability with the widest range of features, Microsoft recommends Virtual Machine Scale Sets with Flexible orchestration.",
+          "answer": true,
+          "explanation": "Benar. Microsoft menyarankan scale set dengan Flexible orchestration untuk ketersediaan tinggi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-avset-reco"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u11-l5",
       "title": "Memindahkan VM",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u11-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "move-vm-rg-sub"
+          ],
+          "title": "Pindah resource group atau subscription",
+          "body": "VM (virtual machine) bisa dipindah ke resource group atau subscription lain. Region-nya tetap, tapi resource ID (identifier)-nya berubah. Selama pemindahan, resource group sumber dan tujuan dikunci sampai empat jam, tapi VM tetap berjalan. Syaratnya: tidak ada read-only lock, subscription tujuan sudah mendaftarkan resource provider-nya, dan kedua subscription di tenant yang sama.",
+          "keyPoints": [
+            "Region tetap, resource ID berubah",
+            "VM tetap berjalan",
+            "Read-only lock memblokir"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription",
+          "teaches": [
+            "az104-f-u11-move-basics",
+            "az104-f-u11-move-lock",
+            "az104-f-u11-move-readonly",
+            "az104-f-u11-move-provider"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-e1",
+          "type": "truefalse",
+          "concept": "move-vm-rg-sub",
+          "prompt": "Moving a VM (virtual machine) to another resource group also moves it to the region of that resource group.",
+          "answer": false,
+          "explanation": "Salah. Memindahkan resource hanya mengubah resource group-nya, bukan region-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-move-basics"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-e2",
+          "type": "yesno",
+          "concept": "move-vm-rg-sub",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You move vm1 from rg-dev to rg-prod.",
+          "statements": [
+            {
+              "text": "vm1 keeps running during the move.",
+              "answer": true
+            },
+            {
+              "text": "You can create a new resource in rg-prod while the move runs.",
+              "answer": false
+            },
+            {
+              "text": "Scripts that use the resource ID (identifier) of vm1 must be updated.",
+              "answer": true
+            }
+          ],
+          "explanation": "Resource tetap berjalan, tapi kedua resource group dikunci selama pemindahan. Resource ID (identifier) berubah, jadi skrip harus diperbarui.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-move-lock",
+            "az104-f-u11-move-basics"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-e3",
+          "type": "fix",
+          "concept": "move-vm-rg-sub",
+          "prompt": "Moving vm1 to the subscription Production fails. What should you do?",
+          "scene": {
+            "kind": "error",
+            "title": "Move resources",
+            "message": "The subscription Production is not registered for the resource type Microsoft.Compute/virtualMachines."
+          },
+          "options": [
+            "Add a read-only lock to the source resource group",
+            "Deallocate vm1 and try again",
+            "Register the Microsoft.Compute resource provider in Production",
+            "Move vm1 to another region first"
+          ],
+          "answer": 2,
+          "explanation": "Subscription tujuan harus mendaftarkan resource provider untuk jenis resource yang dipindah. Read-only lock justru memblokir pemindahan.",
+          "requires": [
+            "az104-f-u11-move-provider",
+            "az104-f-u11-move-readonly"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "move-vm-limits"
+          ],
+          "title": "Batasan memindahkan VM",
+          "body": "Beberapa VM (virtual machine) butuh langkah tambahan. VM di availability set tidak bisa dipindah sendirian. VM di virtual network hanya bisa pindah subscription bersama virtual network dan resource yang bergantung padanya. VM dengan ADE (Azure Disk Encryption) bisa pindah resource group saat deallocated, tapi untuk pindah subscription, enkripsinya harus dimatikan dulu.",
+          "keyPoints": [
+            "Availability set: tidak bisa sendirian",
+            "Pindah subscription: bawa virtual network-nya",
+            "ADE: matikan untuk pindah subscription"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-limitations/virtual-machines-move-limitations",
+          "teaches": [
+            "az104-f-u11-move-vm-limits",
+            "az104-f-u11-move-vm-ade"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-e4",
+          "type": "choice",
+          "concept": "move-vm-limits",
+          "prompt": "vm1 is in an availability set with vm2. You try to move only vm1 to another resource group. What happens?",
+          "options": [
+            "It isn't supported; VMs (virtual machines) in an availability set can't be moved individually",
+            "vm1 moves and leaves the availability set",
+            "vm1 moves and vm2 follows automatically",
+            "vm1 moves after it is deallocated"
+          ],
+          "answer": 0,
+          "explanation": "VM (virtual machine) di availability set tidak bisa dipindah satu per satu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-move-vm-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-e5",
+          "type": "choice",
+          "concept": "move-vm-limits",
+          "prompt": "vm1 uses Azure Disk Encryption and must move to another subscription. What must you do first?",
+          "options": [
+            "Deallocate vm1, which is enough",
+            "Move the key vault to another region",
+            "Disable the encryption on vm1",
+            "Register the EncryptionAtHost feature"
+          ],
+          "answer": 2,
+          "explanation": "VM (virtual machine) dengan ADE (Azure Disk Encryption) bisa pindah resource group saat deallocated, tapi untuk pindah subscription enkripsinya harus dimatikan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-move-vm-ade"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-e6",
+          "type": "truefalse",
+          "concept": "move-vm-limits",
+          "prompt": "A VM (virtual machine) in an existing virtual network can move to a new subscription without its virtual network.",
+          "answer": false,
+          "explanation": "Salah. VM (virtual machine) seperti itu hanya bisa pindah subscription bersama virtual network dan resource yang bergantung padanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-move-vm-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "move-vm-region"
+          ],
+          "title": "Pindah region",
+          "body": "Memindahkan resource tidak mengubah region-nya. Untuk pindah ke region lain, pakai Azure Resource Mover. Resource Mover mengecek dependensi supaya resource yang saling terkait ikut dipindah, bisa menguji perpindahan lalu membatalkannya, dan bisa menghapus resource di region asal setelah selesai.",
+          "keyPoints": [
+            "Region lain: Azure Resource Mover",
+            "Cek dependensi dan uji dulu",
+            "Bisa bersihkan region asal"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resources-overview#move-resources-with-resource-mover",
+          "teaches": [
+            "az104-f-u11-move-region",
+            "az104-f-u11-move-basics"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-e7",
+          "type": "sort",
+          "concept": "move-vm-region",
+          "prompt": "Sort each task to the tool that handles it.",
+          "buckets": [
+            "Move to another resource group or subscription",
+            "Azure Resource Mover"
+          ],
+          "items": [
+            {
+              "text": "Move vm1 to rg-prod in the same subscription",
+              "bucket": 0
+            },
+            {
+              "text": "Move vm1 to another subscription in the same tenant",
+              "bucket": 0
+            },
+            {
+              "text": "Move vm1 from West Europe to North Europe",
+              "bucket": 1
+            },
+            {
+              "text": "Test a move to another region, then discard it",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Pemindahan resource group dan subscription tidak mengubah region. Pindah region memakai Azure Resource Mover, yang juga bisa menguji perpindahan.",
+          "requires": [
+            "az104-f-u11-move-basics",
+            "az104-f-u11-move-region"
+          ]
+        },
+        {
+          "id": "az104-u11-l5-e8",
+          "type": "choice",
+          "concept": "move-vm-region",
+          "prompt": "vm1 in West Europe must move to Southeast Asia, together with its network interface and virtual network. Which service helps?",
+          "options": [
+            "Azure Resource Mover",
+            "Move to another resource group",
+            "Azure Site Recovery test failover only",
+            "az bicep decompile"
+          ],
+          "answer": 0,
+          "explanation": "Azure Resource Mover memindahkan resource ke region lain dan mengecek dependensinya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-move-region"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u11-l6",
       "title": "Virtual Machine Scale Sets",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u11-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "vmss"
+          ],
+          "title": "Virtual Machine Scale Sets",
+          "body": "Virtual Machine Scale Sets mengelola sekelompok VM (virtual machine) yang di-load balance, dan jumlahnya bisa naik atau turun otomatis. Flexible orchestration adalah mode yang disarankan: VM bisa berbeda tipe, dan Spot bisa dicampur dengan on-demand. Uniform memakai satu profil VM yang identik. Mode orchestration ditentukan saat scale set dibuat dan tidak bisa diubah.",
+          "keyPoints": [
+            "Kelompok VM yang bisa scale otomatis",
+            "Flexible disarankan",
+            "Mode tidak bisa diubah"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-orchestration-modes",
+          "teaches": [
+            "az104-f-u11-vmss",
+            "az104-f-u11-orchestration"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e1",
+          "type": "choice",
+          "concept": "vmss",
+          "prompt": "A scale set must mix Spot and on-demand VMs (virtual machines) of different sizes. Which orchestration mode should you choose?",
+          "options": [
+            "Uniform",
+            "Flexible",
+            "Either; you can change it later",
+            "Neither; use an availability set"
+          ],
+          "answer": 1,
+          "explanation": "Flexible mendukung tipe VM (virtual machine) berbeda serta campuran Spot dan on-demand. Mode tidak bisa diubah setelah dibuat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-orchestration"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e2",
+          "type": "truefalse",
+          "concept": "vmss",
+          "prompt": "You can change a scale set from Uniform to Flexible orchestration after it is created.",
+          "answer": false,
+          "explanation": "Salah. Mode orchestration ditentukan saat scale set dibuat dan tidak bisa diubah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-orchestration"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "vmss-autoscale"
+          ],
+          "title": "Autoscale",
+          "body": "Aturan autoscale berisi metric seperti Percentage CPU (central processing unit), operator, threshold, duration, lalu operation seperti Increase count by dan jumlah instance, plus cool down sebelum aturan dicek lagi. Biasanya dibuat berpasangan: tambah saat CPU (central processing unit) tinggi, kurangi saat rendah. Profil autoscale wajib punya instance minimum, maksimum, dan default. Autoscale juga bisa berbasis jadwal.",
+          "keyPoints": [
+            "Metric, threshold, duration",
+            "Aturan tambah dan kurang",
+            "Minimum, maksimum, default"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-autoscale-portal",
+          "teaches": [
+            "az104-f-u11-autoscale-rule",
+            "az104-f-u11-autoscale-limits",
+            "az104-f-u11-vmss"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e3",
+          "type": "config",
+          "concept": "vmss-autoscale",
+          "prompt": "Add one instance when the average CPU (central processing unit) of the scale set is above 70% for 10 minutes.",
+          "blade": "vmss-web > Scaling > Custom autoscale > Add a rule",
+          "fields": [
+            {
+              "label": "Metric name",
+              "kind": "select",
+              "choices": [
+                "Percentage CPU",
+                "Available Memory Bytes",
+                "Network In Total"
+              ],
+              "value": "Network In Total"
+            },
+            {
+              "label": "Operator",
+              "kind": "select",
+              "choices": [
+                "Greater than",
+                "Less than"
+              ],
+              "value": "Less than"
+            },
+            {
+              "label": "Threshold",
+              "kind": "number",
+              "value": 30,
+              "min": 0,
+              "max": 100,
+              "step": 5
+            },
+            {
+              "label": "Duration (minutes)",
+              "kind": "number",
+              "value": 5,
+              "min": 1,
+              "max": 60,
+              "step": 1
+            },
+            {
+              "label": "Operation",
+              "kind": "select",
+              "choices": [
+                "Increase count by",
+                "Decrease count by",
+                "Increase percent by"
+              ],
+              "value": "Decrease count by"
+            },
+            {
+              "label": "Instance count",
+              "kind": "number",
+              "value": 2,
+              "min": 1,
+              "max": 10,
+              "step": 1
+            }
+          ],
+          "answer": {
+            "Metric name": "Percentage CPU",
+            "Operator": "Greater than",
+            "Threshold": 70,
+            "Duration (minutes)": 10,
+            "Operation": "Increase count by",
+            "Instance count": 1
+          },
+          "explanation": "Metric Percentage CPU (central processing unit) di atas 70 selama 10 menit, lalu Increase count by 1.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-autoscale-rule"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e4",
+          "type": "choice",
+          "concept": "vmss-autoscale",
+          "prompt": "Traffic is predictable: busy on weekdays from 08:00 to 18:00. How can the scale set add instances before the rush?",
+          "options": [
+            "A higher cool down",
+            "A schedule-based autoscale condition",
+            "A larger VM (virtual machine) size",
+            "The Manual upgrade policy"
+          ],
+          "answer": 1,
+          "explanation": "Autoscale berbasis jadwal menambah instance sebelum beban yang sudah bisa diperkirakan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-autoscale-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e5",
+          "type": "truefalse",
+          "concept": "vmss-autoscale",
+          "prompt": "An autoscale profile needs a minimum, a maximum, and a default instance count.",
+          "answer": true,
+          "explanation": "Benar. Batas ini mencegah scale set tumbuh atau menyusut melewati jumlah yang kamu tentukan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-autoscale-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-m3",
+          "type": "learn",
+          "concepts": [
+            "upgrade-policy"
+          ],
+          "title": "Upgrade policy dan scale-in",
+          "body": "Upgrade policy menentukan cara VM (virtual machine) mengikuti perubahan model scale set. Automatic bisa mematikan semua VM sekaligus, cocok untuk dev/test. Manual membiarkan VM lama sampai kamu meng-update-nya. Rolling meng-update per batch, cocok untuk production, dan butuh pemantauan kesehatan aplikasi. Saat scale in, policy default menyeimbangkan zone dan fault domain, lalu menghapus VM dengan instance ID (identifier) tertinggi.",
+          "keyPoints": [
+            "Automatic: dev/test",
+            "Rolling: production, per batch",
+            "Manual: kamu yang memicu"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-upgrade-policy",
+          "teaches": [
+            "az104-f-u11-upgrade-modes",
+            "az104-f-u11-rolling-health",
+            "az104-f-u11-scale-in"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e6",
+          "type": "choice",
+          "concept": "upgrade-policy",
+          "prompt": "A production scale set must stay available while a new image is rolled out. Which upgrade policy fits?",
+          "options": [
+            "Automatic",
+            "Manual, applied to all VMs (virtual machines) at once",
+            "Rolling",
+            "None; recreate the scale set"
+          ],
+          "answer": 2,
+          "explanation": "Rolling meng-update per batch sehingga sebagian VM (virtual machine) tetap melayani. Automatic bisa mematikan semua VM sekaligus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-upgrade-modes"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e7",
+          "type": "match",
+          "concept": "upgrade-policy",
+          "prompt": "Match each upgrade policy mode to how it behaves.",
+          "pairs": [
+            [
+              "Automatic",
+              "Might take down all VMs (virtual machines) at the same time"
+            ],
+            [
+              "Manual",
+              "Existing VMs change only when you update them"
+            ],
+            [
+              "Rolling",
+              "Updates VMs in batches"
+            ]
+          ],
+          "explanation": "Automatic tanpa jaminan urutan, Manual menunggu kamu, dan Rolling bertahap per batch.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-upgrade-modes"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e8",
+          "type": "choice",
+          "concept": "upgrade-policy",
+          "prompt": "A Flexible scale set uses the Rolling upgrade policy. What must it also use?",
+          "options": [
+            "An availability set",
+            "The Application Health Extension",
+            "The Uniform orchestration mode",
+            "Standard HDD (hard disk drive) disks"
+          ],
+          "answer": 1,
+          "explanation": "Rolling upgrade di scale set Flexible butuh Application Health Extension untuk memantau kesehatan aplikasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-rolling-health"
+          ]
+        },
+        {
+          "id": "az104-u11-l6-e9",
+          "type": "truefalse",
+          "concept": "upgrade-policy",
+          "prompt": "With the default scale-in policy, the scale set first balances VMs (virtual machines) across availability zones.",
+          "answer": true,
+          "explanation": "Benar. Urutannya: seimbangkan zone, lalu fault domain, lalu hapus VM (virtual machine) dengan instance ID (identifier) tertinggi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-scale-in"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u11-families",
+      "statement": "Keluarga ukuran VM (virtual machine): general purpose (misalnya A, B yang burstable, dan D) untuk rasio CPU dan memori seimbang; compute optimized (F) dengan CPU tinggi; memory optimized (E) dengan memori tinggi; storage optimized (L) dengan throughput disk tinggi; dan GPU (graphics processing unit) accelerated (N).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview"
+    },
+    {
+      "id": "az104-f-u11-choose-size",
+      "statement": "Pilih ukuran berdasarkan kebutuhan beban kerja: butuh CPU (central processing unit) lebih, pilih compute optimized; butuh memori lebih, pilih memory optimized; butuh throughput disk lebih, pilih storage optimized.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/resize-vm#choose-the-right-sku"
+    },
+    {
+      "id": "az104-f-u11-size-s",
+      "statement": "Untuk memakai Premium Storage, pilih versi ukuran dengan huruf s, misalnya Standard_E4s_v3, bukan Standard_E4_v3.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/resize-vm#choose-the-right-sku"
+    },
+    {
+      "id": "az104-f-u11-os-disk",
+      "statement": "Setiap VM (virtual machine) punya satu OS (operating system) disk berisi sistem operasi dari image yang dipilih saat VM dibuat.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview#os-disk"
+    },
+    {
+      "id": "az104-f-u11-data-disk",
+      "statement": "Data disk adalah managed disk tambahan untuk data aplikasi. Jumlah data disk dan jenis disk yang bisa dipasang ditentukan oleh ukuran dan jenis VM (virtual machine).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview#data-disk"
+    },
+    {
+      "id": "az104-f-u11-temp-disk",
+      "statement": "Temporary disk bukan managed disk dan hanya untuk data sementara seperti page file. Datanya bisa hilang saat maintenance, redeploy, atau VM (virtual machine) dihentikan, tapi bertahan saat restart biasa. Di Windows, temporary disk default-nya drive D.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview#temporary-disk"
+    },
+    {
+      "id": "az104-f-u11-resize",
+      "statement": "Mengubah ukuran VM (virtual machine) yang berjalan selalu membuat VM restart. Kalau ukuran baru tidak tersedia di cluster hardware yang sekarang menjalankan VM, VM harus di-deallocate dulu.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/resize-vm"
+    },
+    {
+      "id": "az104-f-u11-resize-avset",
+      "statement": "Kalau ukuran baru untuk VM (virtual machine) di availability set tidak tersedia di cluster hardware saat ini, semua VM di availability set itu harus di-deallocate untuk resize.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/resize-vm"
+    },
+    {
+      "id": "az104-f-u11-resize-list",
+      "statement": "Di portal, ukuran diubah di Availability + scale > Size. Kalau ukuran yang dicari tidak muncul saat VM (virtual machine) berjalan, menghentikan VM bisa memunculkan ukuran lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/resize-vm#change-the-vm-size"
+    },
+    {
+      "id": "az104-f-u11-resize-failed",
+      "statement": "Kalau resize gagal, portal tetap menampilkan ukuran yang diminta, tapi VM (virtual machine) masih berjalan dengan ukuran lamanya.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/resize-vm"
+    },
+    {
+      "id": "az104-f-u11-disk-types",
+      "statement": "Ada lima jenis managed disk: Ultra Disk, Premium SSD v2, Premium SSD, Standard SSD, dan Standard HDD. Standard SSD cocok untuk web server dan dev/test, Standard HDD untuk backup dan beban kerja yang jarang diakses.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types"
+    },
+    {
+      "id": "az104-f-u11-disk-os",
+      "statement": "Ultra Disk dan Premium SSD (solid-state drive) v2 tidak bisa dipakai sebagai OS (operating system) disk, hanya sebagai data disk. Standard HDD sebagai OS disk pensiun 8 September 2028.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types#compare-azure-managed-disk-types"
+    },
+    {
+      "id": "az104-f-u11-sse-disks",
+      "statement": "Server-side encryption untuk managed disk selalu aktif dan mengenkripsi OS (operating system) disk dan data disk, tapi tidak mengenkripsi temporary disk dan cache disk.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview"
+    },
+    {
+      "id": "az104-f-u11-enc-host",
+      "statement": "Encryption at host mengenkripsi temporary disk dan cache disk di host VM (virtual machine), dan data mengalir terenkripsi ke storage. Fitur ini tidak memakai CPU (central processing unit) VM.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview#comparison"
+    },
+    {
+      "id": "az104-f-u11-ade-retire",
+      "statement": "ADE (Azure Disk Encryption) pensiun 15 September 2028. Untuk VM (virtual machine) baru, pakai encryption at host.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview#comparison"
+    },
+    {
+      "id": "az104-f-u11-enc-host-register",
+      "statement": "Sebelum dipakai, encryption at host harus didaftarkan di subscription sebagai fitur EncryptionAtHost di Microsoft.Compute.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disks-enable-host-based-encryption-portal"
+    },
+    {
+      "id": "az104-f-u11-enc-host-limits",
+      "statement": "Encryption at host tidak bisa diaktifkan di VM (virtual machine) yang sedang atau pernah memakai ADE (Azure Disk Encryption). VM yang sudah ada harus di-deallocate dulu supaya terenkripsi, dan encryption at host juga hanya bisa dimatikan saat VM di-deallocate.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption#encryption-at-host-restrictions"
+    },
+    {
+      "id": "az104-f-u11-temp-enc",
+      "statement": "Temporary disk tidak terenkripsi kecuali ukuran VM (virtual machine) versi 5 ke atas, encryption at host diaktifkan, atau ADE (Azure Disk Encryption) diatur untuk semua volume.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview#temporary-disk"
+    },
+    {
+      "id": "az104-f-u11-temp-v5",
+      "statement": "VM (virtual machine) versi 5 ke atas, misalnya Dsv5 dan Dsv6, otomatis mengenkripsi temporary disk-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview#temporary-disk"
+    },
+    {
+      "id": "az104-f-u11-avset",
+      "statement": "Availability set menyebar VM (virtual machine) ke beberapa fault domain dan update domain. Dua VM atau lebih di availability set memenuhi SLA (service-level agreement) 99,95%, dan availability set sendiri gratis.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview"
+    },
+    {
+      "id": "az104-f-u11-avset-limits",
+      "statement": "Availability set punya maksimal 3 fault domain dan 20 update domain, dan pengaturan ini tidak bisa diubah setelah availability set dibuat.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview#how-do-availability-sets-work"
+    },
+    {
+      "id": "az104-f-u11-fault-domain",
+      "statement": "Fault domain adalah kelompok VM (virtual machine) yang berbagi sumber listrik dan switch jaringan.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview#fault-domains"
+    },
+    {
+      "id": "az104-f-u11-update-domain",
+      "statement": "Update domain adalah kelompok yang di-restart bersamaan saat maintenance terencana; hanya satu update domain yang di-restart dalam satu waktu. Dengan lima update domain, VM (virtual machine) keenam masuk update domain yang sama dengan VM pertama.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview#update-domains"
+    },
+    {
+      "id": "az104-f-u11-avset-limits-app",
+      "statement": "Availability set tidak melindungi dari kegagalan OS (operating system) atau aplikasi, hanya dari kerusakan hardware, jaringan, atau listrik.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview#fault-domains"
+    },
+    {
+      "id": "az104-f-u11-zones",
+      "statement": "Setiap region yang mendukung punya tiga availability zone dengan listrik, jaringan, dan pendingin sendiri. VM (virtual machine) yang direplikasi di beberapa zone tahan terhadap hilangnya satu datacenter, lebih andal daripada availability set.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability#availability-zones"
+    },
+    {
+      "id": "az104-f-u11-avset-reco",
+      "statement": "Microsoft menyarankan Virtual Machine Scale Sets dengan Flexible orchestration untuk ketersediaan tinggi dengan fitur terlengkap.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview"
+    },
+    {
+      "id": "az104-f-u11-move-basics",
+      "statement": "Resource bisa dipindah ke resource group lain atau subscription lain lewat portal, PowerShell, Azure CLI (command-line interface), atau REST API. Memindahkan resource tidak mengubah region-nya, tapi resource ID (identifier)-nya berubah.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription"
+    },
+    {
+      "id": "az104-f-u11-move-lock",
+      "statement": "Selama pemindahan, resource group sumber dan tujuan dikunci sampai empat jam: tidak bisa membuat, menghapus, atau mengubah resource, tapi resource tetap berjalan tanpa downtime.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription"
+    },
+    {
+      "id": "az104-f-u11-move-readonly",
+      "statement": "Resource tidak bisa dipindah kalau ada read-only lock di resource group sumber, resource group tujuan, atau subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription"
+    },
+    {
+      "id": "az104-f-u11-move-provider",
+      "statement": "Subscription tujuan harus sudah mendaftarkan resource provider untuk jenis resource yang dipindah, dan kedua subscription harus di tenant Microsoft Entra yang sama.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription"
+    },
+    {
+      "id": "az104-f-u11-move-vm-limits",
+      "statement": "VM (virtual machine) di availability set tidak bisa dipindah sendirian. VM di virtual network yang ada hanya bisa dipindah ke subscription baru bersama virtual network dan resource yang bergantung padanya.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-limitations/virtual-machines-move-limitations#scenarios-not-supported"
+    },
+    {
+      "id": "az104-f-u11-move-vm-ade",
+      "statement": "VM (virtual machine) dengan ADE (Azure Disk Encryption) bisa dipindah ke resource group lain dalam keadaan deallocated, tapi untuk pindah subscription enkripsinya harus dimatikan dulu.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-limitations/virtual-machines-move-limitations#azure-disk-encryption"
+    },
+    {
+      "id": "az104-f-u11-move-region",
+      "statement": "Untuk memindahkan resource ke region lain, pakai Azure Resource Mover. Resource Mover mengecek dependensi, bisa menguji perpindahan lalu membatalkannya, dan bisa menghapus resource di region asal.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resources-overview#move-resources-with-resource-mover"
+    },
+    {
+      "id": "az104-f-u11-vmss",
+      "statement": "Virtual Machine Scale Sets membuat dan mengelola sekelompok VM (virtual machine) yang di-load balance, dan jumlahnya bisa naik atau turun otomatis sesuai beban atau jadwal.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview"
+    },
+    {
+      "id": "az104-f-u11-orchestration",
+      "statement": "Flexible orchestration adalah mode yang disarankan: mendukung VM (virtual machine) dengan tipe berbeda serta campuran Spot dan on-demand. Uniform memakai satu profil VM yang identik. Mode orchestration ditentukan saat scale set dibuat dan tidak bisa diubah.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-orchestration-modes"
+    },
+    {
+      "id": "az104-f-u11-upgrade-modes",
+      "statement": "Upgrade policy scale set: Automatic bisa mematikan semua VM (virtual machine) sekaligus, cocok untuk dev/test; Manual membiarkan VM lama sampai kamu meng-update-nya; Rolling meng-update bertahap per batch, cocok untuk production.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-upgrade-policy"
+    },
+    {
+      "id": "az104-f-u11-rolling-health",
+      "statement": "Rolling upgrade di scale set Flexible butuh Application Health Extension. Di Uniform, bisa memakai health probe load balancer atau Application Health Extension.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-upgrade-policy#rolling-upgrade-policy-mode"
+    },
+    {
+      "id": "az104-f-u11-autoscale-rule",
+      "statement": "Aturan autoscale berisi metric (misalnya Percentage CPU), operator, threshold, duration, operation (misalnya Increase count by), jumlah instance, dan cool down.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-autoscale-portal#create-a-rule-to-automatically-scale-out"
+    },
+    {
+      "id": "az104-f-u11-autoscale-limits",
+      "statement": "Profil autoscale wajib punya jumlah instance minimum, maksimum, dan default. Autoscale juga bisa berbasis jadwal, misalnya menambah instance setiap jam kerja.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-autoscale-portal#define-autoscale-instance-limits"
+    },
+    {
+      "id": "az104-f-u11-scale-in",
+      "statement": "Scale-in policy default menyeimbangkan VM (virtual machine) di availability zone, lalu di fault domain, lalu menghapus VM dengan instance ID tertinggi. Pilihan lain: NewestVM dan OldestVM.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-scale-in-policy"
     }
   ]
 }

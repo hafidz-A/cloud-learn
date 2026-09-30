@@ -81,6 +81,9 @@ export const VISUAL_CATALOG = {
   // Unit 10
   ArmStructure: ['arm-structure'],
   IncrementalVsComplete: ['incremental-vs-complete'],
+  // Unit 11
+  VmResizeFlow: ['vm-resize'],
+  FaultUpdateDomains: ['availability-set'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG
