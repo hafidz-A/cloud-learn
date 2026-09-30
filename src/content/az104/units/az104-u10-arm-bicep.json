@@ -6,22 +6,1114 @@
     {
       "id": "az104-u10-l1",
       "title": "Membaca ARM template",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u10-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "arm-structure"
+          ],
+          "title": "Bagian ARM template",
+          "body": "ARM (Azure Resource Manager) template adalah file JSON (JavaScript Object Notation) yang mendeskripsikan resource yang ingin dibuat. Bagian yang wajib: $schema, contentVersion, dan resources. Bagian parameters, variables, dan outputs opsional. Microsoft juga menyarankan melihat Bicep, yang kemampuannya sama dengan sintaks yang lebih mudah dibaca.",
+          "keyPoints": [
+            "Wajib: $schema, contentVersion, resources",
+            "Opsional: parameters, variables, outputs",
+            "Bicep: kemampuan sama, sintaks lebih mudah"
+          ],
+          "visual": "ArmStructure",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax#template-format",
+          "teaches": [
+            "az104-f-u10-arm-what",
+            "az104-f-u10-arm-sections"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-e1",
+          "type": "choice",
+          "concept": "arm-structure",
+          "prompt": "Which section must every ARM (Azure Resource Manager) template have?",
+          "options": [
+            "resources",
+            "parameters",
+            "variables",
+            "outputs"
+          ],
+          "answer": 0,
+          "explanation": "resources wajib, bersama $schema dan contentVersion. parameters, variables, dan outputs opsional.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-sections"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-e2",
+          "type": "match",
+          "concept": "arm-structure",
+          "prompt": "Match each ARM (Azure Resource Manager) template section to what it holds.",
+          "pairs": [
+            [
+              "parameters",
+              "Values that you provide when you deploy"
+            ],
+            [
+              "variables",
+              "Values that simplify expressions in the template"
+            ],
+            [
+              "resources",
+              "The resources to create or update"
+            ],
+            [
+              "outputs",
+              "Values returned after the deployment"
+            ]
+          ],
+          "explanation": "parameters diisi saat deploy, variables membantu di dalam template, resources berisi yang dibuat, dan outputs dikembalikan setelah deploy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-sections"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-e3",
+          "type": "truefalse",
+          "concept": "arm-structure",
+          "prompt": "An ARM (Azure Resource Manager) template without a parameters section is valid.",
+          "answer": true,
+          "explanation": "Benar. parameters opsional; yang wajib hanya $schema, contentVersion, dan resources.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-sections"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "parameters-variables-outputs"
+          ],
+          "title": "Parameters, variables, dan outputs",
+          "body": "Parameters menerima nilai saat deploy. Setiap parameter punya type, boleh punya defaultValue, dan allowedValues untuk membatasi pilihan. Untuk password, pakai type secureString. Variables menyimpan nilai atau ekspresi yang dipakai berulang di dalam template. Outputs mengembalikan nilai setelah deploy. Nilainya dirujuk dengan [parameters('nama')] dan [variables('nama')].",
+          "keyPoints": [
+            "Parameter: diisi saat deploy",
+            "secureString untuk password",
+            "allowedValues membatasi pilihan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/parameters",
+          "teaches": [
+            "az104-f-u10-arm-params",
+            "az104-f-u10-arm-secure",
+            "az104-f-u10-arm-vars",
+            "az104-f-u10-arm-outputs"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-e4",
+          "type": "choice",
+          "concept": "parameters-variables-outputs",
+          "prompt": "The same template must create storage accounts with different names in dev and prod. Where should the name come from?",
+          "options": [
+            "A variable",
+            "A parameter",
+            "An output",
+            "The contentVersion"
+          ],
+          "answer": 1,
+          "explanation": "Nilai yang berbeda setiap deploy diisi lewat parameter. Variable dihitung di dalam template, dan output hanya dikembalikan setelah deploy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-params",
+            "az104-f-u10-arm-vars",
+            "az104-f-u10-arm-outputs"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-e5",
+          "type": "choice",
+          "concept": "parameters-variables-outputs",
+          "prompt": "Which type should the parameter adminPassword use?",
+          "options": [
+            "string",
+            "secureString",
+            "object",
+            "array"
+          ],
+          "answer": 1,
+          "explanation": "Rahasia seperti password memakai secureString.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-secure"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-e6",
+          "type": "template",
+          "concept": "parameters-variables-outputs",
+          "prompt": "You deploy this template and pass skuName=Premium_LRS. What happens?",
+          "language": "json",
+          "code": "{\n  \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\",\n  \"contentVersion\": \"1.0.0.0\",\n  \"parameters\": {\n    \"storageName\": {\n      \"type\": \"string\"\n    },\n    \"skuName\": {\n      \"type\": \"string\",\n      \"defaultValue\": \"Standard_LRS\",\n      \"allowedValues\": [\"Standard_LRS\", \"Standard_GRS\"]\n    }\n  },\n  \"resources\": [\n    {\n      \"type\": \"Microsoft.Storage/storageAccounts\",\n      \"apiVersion\": \"2025-06-01\",\n      \"name\": \"[parameters('storageName')]\",\n      \"location\": \"[resourceGroup().location]\",\n      \"sku\": {\n        \"name\": \"[parameters('skuName')]\"\n      },\n      \"kind\": \"StorageV2\"\n    }\n  ]\n}",
+          "options": [
+            "A Premium_LRS storage account is created",
+            "Standard_LRS is used instead, because it is the default value",
+            "The deployment fails validation, because Premium_LRS isn't an allowed value",
+            "Standard_GRS is used, because it is the last allowed value"
+          ],
+          "answer": 2,
+          "explanation": "allowedValues hanya mengizinkan Standard_LRS dan Standard_GRS, jadi nilai lain ditolak. Nilai default hanya dipakai kalau parameter tidak diisi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-params"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "arm-resources"
+          ],
+          "title": "Membaca resource",
+          "body": "Setiap resource di bagian resources punya type, misalnya Microsoft.Storage/storageAccounts untuk storage account atau Microsoft.Network/virtualNetworks untuk virtual network. Lalu apiVersion, name, dan properti lain seperti location, sku, dan properties. Nilai [resourceGroup().location] sering dipakai supaya resource dibuat di region resource group-nya.",
+          "keyPoints": [
+            "type menentukan jenis resource",
+            "sku dan properties: pengaturannya",
+            "resourceGroup().location: region resource group"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax#resources",
+          "teaches": [
+            "az104-f-u10-arm-resource",
+            "az104-f-u10-arm-location"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-e7",
+          "type": "template",
+          "concept": "arm-resources",
+          "prompt": "You deploy this template to rg-data in West Europe without passing skuName. What gets created?",
+          "language": "json",
+          "code": "{\n  \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\",\n  \"contentVersion\": \"1.0.0.0\",\n  \"parameters\": {\n    \"storageName\": {\n      \"type\": \"string\"\n    },\n    \"skuName\": {\n      \"type\": \"string\",\n      \"defaultValue\": \"Standard_LRS\",\n      \"allowedValues\": [\"Standard_LRS\", \"Standard_GRS\"]\n    }\n  },\n  \"resources\": [\n    {\n      \"type\": \"Microsoft.Storage/storageAccounts\",\n      \"apiVersion\": \"2025-06-01\",\n      \"name\": \"[parameters('storageName')]\",\n      \"location\": \"[resourceGroup().location]\",\n      \"sku\": {\n        \"name\": \"[parameters('skuName')]\"\n      },\n      \"kind\": \"StorageV2\"\n    }\n  ]\n}",
+          "options": [
+            "A general-purpose v2 storage account with GRS (geo-redundant storage), in West Europe",
+            "A storage account in the region of the person who deploys it",
+            "A resource group named storageName",
+            "A general-purpose v2 storage account with LRS (locally redundant storage), in West Europe"
+          ],
+          "answer": 3,
+          "explanation": "type-nya storage account dengan kind StorageV2. Tanpa skuName, defaultValue Standard_LRS dipakai, dan location mengikuti resource group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-resource",
+            "az104-f-u10-arm-location",
+            "az104-f-u10-arm-params"
+          ]
+        },
+        {
+          "id": "az104-u10-l1-e8",
+          "type": "template",
+          "concept": "arm-resources",
+          "prompt": "What does this template create, and what does it return?",
+          "language": "json",
+          "code": "{\n  \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\",\n  \"contentVersion\": \"1.0.0.0\",\n  \"variables\": {\n    \"vnetName\": \"vnet-app\"\n  },\n  \"resources\": [\n    {\n      \"type\": \"Microsoft.Network/virtualNetworks\",\n      \"apiVersion\": \"2024-05-01\",\n      \"name\": \"[variables('vnetName')]\",\n      \"location\": \"[resourceGroup().location]\",\n      \"properties\": {\n        \"addressSpace\": {\n          \"addressPrefixes\": [\"10.1.0.0/16\"]\n        }\n      }\n    }\n  ],\n  \"outputs\": {\n    \"vnetId\": {\n      \"type\": \"string\",\n      \"value\": \"[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]\"\n    }\n  }\n}",
+          "options": [
+            "A subnet named vnet-app, and it returns its address range",
+            "A virtual network named vnetName, and it returns nothing",
+            "A virtual network named vnet-app, and it returns its resource ID (identifier)",
+            "Two virtual networks, one per output"
+          ],
+          "answer": 2,
+          "explanation": "type Microsoft.Network/virtualNetworks membuat virtual network. Namanya dari variabel vnetName, yaitu vnet-app, dan outputs mengembalikan ID (identifier) resource-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-resource",
+            "az104-f-u10-arm-vars",
+            "az104-f-u10-arm-outputs"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u10-l2",
       "title": "Membaca dan mengubah Bicep",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u10-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "bicep-syntax"
+          ],
+          "title": "Sintaks Bicep",
+          "body": "Bicep punya kemampuan yang sama dengan ARM (Azure Resource Manager) template, tapi sintaksnya lebih ringkas. File Bicep berisi param untuk nilai saat deploy, var untuk variabel, resource dengan nama simbolis dan 'tipe@versi-API (Application Programming Interface)', module untuk memanggil file Bicep lain, dan output. Urutan elemen tidak berpengaruh. Saat deploy, Bicep otomatis diubah menjadi ARM template JSON (JavaScript Object Notation).",
+          "keyPoints": [
+            "param, var, resource, module, output",
+            "Nama simbolis untuk merujuk resource",
+            "Otomatis jadi ARM template saat deploy"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/file#bicep-format",
+          "teaches": [
+            "az104-f-u10-bicep-what",
+            "az104-f-u10-bicep-elements"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e1",
+          "type": "template",
+          "concept": "bicep-syntax",
+          "prompt": "In this Bicep file, what is stg?",
+          "language": "bicep",
+          "code": "param location string = resourceGroup().location\nparam storageName string\nparam storageSKU string = 'Standard_LRS'\n\nresource stg 'Microsoft.Storage/storageAccounts@2025-06-01' = {\n  name: storageName\n  location: location\n  sku: {\n    name: 'Standard_LRS'\n  }\n  kind: 'StorageV2'\n}\n\noutput blobEndpoint string = stg.properties.primaryEndpoints.blob",
+          "options": [
+            "The symbolic name used to refer to the storage account in the file",
+            "The name of the storage account in Azure",
+            "A parameter that you pass at deployment",
+            "The resource group of the storage account"
+          ],
+          "answer": 0,
+          "explanation": "stg adalah nama simbolis, dipakai di output sebagai stg.properties. Nama di Azure diisi dari parameter storageName.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-elements"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e2",
+          "type": "choice",
+          "concept": "bicep-syntax",
+          "prompt": "Which Bicep keyword declares a value that you provide at deployment time?",
+          "options": [
+            "var",
+            "output",
+            "module",
+            "param"
+          ],
+          "answer": 3,
+          "explanation": "param menerima nilai saat deploy. var dihitung di dalam file, output dikembalikan, dan module memanggil file lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-elements"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e3",
+          "type": "truefalse",
+          "concept": "bicep-syntax",
+          "prompt": "In a Bicep file, a resource must be declared after every parameter that it uses.",
+          "answer": false,
+          "explanation": "Salah. Bicep deklaratif, jadi urutan elemen tidak memengaruhi deployment.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-what"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "bicep-params"
+          ],
+          "title": "Parameter Bicep",
+          "body": "Parameter Bicep ditulis param nama tipe = nilaiDefault, lalu dipakai langsung dengan namanya, misalnya name: storageSKU. Decorator memberi aturan: @allowed membatasi pilihan, @minLength dan @maxLength membatasi panjang, dan @secure() menyembunyikan nilai dari log dan riwayat deployment. Nilai per lingkungan bisa disimpan di file .bicepparam yang diawali using 'main.bicep'.",
+          "keyPoints": [
+            "param nama tipe = default",
+            "@secure() untuk rahasia",
+            "File .bicepparam per lingkungan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/file#parameters",
+          "teaches": [
+            "az104-f-u10-bicep-param",
+            "az104-f-u10-bicep-secure",
+            "az104-f-u10-bicep-paramfile"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e4",
+          "type": "template",
+          "concept": "bicep-params",
+          "prompt": "You deploy this file with storageSKU=Standard_GRS, but the account is still created with LRS (locally redundant storage). Which line must you change?",
+          "language": "bicep",
+          "code": "param location string = resourceGroup().location\nparam storageName string\nparam storageSKU string = 'Standard_LRS'\n\nresource stg 'Microsoft.Storage/storageAccounts@2025-06-01' = {\n  name: storageName\n  location: location\n  sku: {\n    name: 'Standard_LRS'\n  }\n  kind: 'StorageV2'\n}\n\noutput blobEndpoint string = stg.properties.primaryEndpoints.blob",
+          "options": [
+            "Line 3: remove the default value 'Standard_LRS'",
+            "Line 9: change 'Standard_LRS' to storageSKU",
+            "Line 11: change the kind to BlobStorage",
+            "Line 1: change the location parameter"
+          ],
+          "answer": 1,
+          "explanation": "Baris 9 menulis SKU (stock-keeping unit) secara tetap, jadi parameter storageSKU tidak pernah dipakai. Default di baris 3 hanya berlaku kalau parameter tidak diisi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-param"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e5",
+          "type": "template",
+          "concept": "bicep-params",
+          "prompt": "What must you add above adminPassword so that its value isn't logged or shown in the deployment history?",
+          "language": "bicep",
+          "code": "@allowed([\n  'dev'\n  'prod'\n])\nparam environment string\n\n@minLength(12)\nparam adminPassword string\n\nvar vmName = 'vm-${environment}'\n\nmodule web './web.bicep' = {\n  name: 'webDeploy'\n  params: {\n    vmName: vmName\n    adminPassword: adminPassword\n  }\n}",
+          "options": [
+            "@allowed(['dev', 'prod'])",
+            "@description()",
+            "@secure()",
+            "@minLength(12) again"
+          ],
+          "answer": 2,
+          "explanation": "@secure() membuat nilai parameter tidak dicatat dan tidak ditampilkan. @minLength hanya membatasi panjang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-secure",
+            "az104-f-u10-bicep-param"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e6",
+          "type": "fill",
+          "concept": "bicep-params",
+          "prompt": "Complete the parameters file for production.",
+          "sentence": "The file main.prod.___ starts with ___ 'main.bicep'.",
+          "bank": [
+            "bicepparam",
+            "using",
+            "json",
+            "import"
+          ],
+          "answers": [
+            "bicepparam",
+            "using"
+          ],
+          "explanation": "File parameter Bicep berekstensi .bicepparam dan diawali using yang menunjuk file Bicep-nya.",
+          "requires": [
+            "az104-f-u10-bicep-paramfile"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "bicep-modules"
+          ],
+          "title": "Module",
+          "body": "Module memanggil file Bicep lain dan mengisi parameternya lewat params. Dengan module, file utama tidak perlu berisi semua resource: jaringan, storage, dan VM (virtual machine) bisa dipecah ke file sendiri lalu dipakai ulang. Module juga bisa punya scope berbeda dari file utamanya.",
+          "keyPoints": [
+            "module memanggil file Bicep lain",
+            "Parameter lewat params",
+            "Bisa dipakai ulang"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules",
+          "teaches": [
+            "az104-f-u10-bicep-module"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e7",
+          "type": "choice",
+          "concept": "bicep-modules",
+          "prompt": "Three teams need the same virtual network definition in their own Bicep files. How can they reuse it?",
+          "options": [
+            "Put it in vnet.bicep and call it as a module",
+            "Copy it into each file as a variable",
+            "Put it in an output",
+            "Create one parameters file for all three teams"
+          ],
+          "answer": 0,
+          "explanation": "Module memanggil file Bicep lain dengan parameter sendiri, jadi definisi yang sama bisa dipakai ulang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-module"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e8",
+          "type": "truefalse",
+          "concept": "bicep-modules",
+          "prompt": "A module passes values to the called Bicep file through params.",
+          "answer": true,
+          "explanation": "Benar. Nilai untuk parameter file yang dipanggil diisi di bagian params.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-module"
+          ]
+        },
+        {
+          "id": "az104-u10-l2-e9",
+          "type": "yesno",
+          "concept": "bicep-modules",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "This Bicep file is deployed.",
+          "statements": [
+            {
+              "text": "A deployment with environment='test' fails validation.",
+              "answer": true
+            },
+            {
+              "text": "The module web deploys the resources defined in web.bicep.",
+              "answer": true
+            },
+            {
+              "text": "A password of eight characters is accepted.",
+              "answer": false
+            }
+          ],
+          "explanation": "@allowed hanya menerima dev dan prod, module memanggil web.bicep, dan @minLength(12) menolak password yang lebih pendek.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-param",
+            "az104-f-u10-bicep-module"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u10-l3",
       "title": "Deploy",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u10-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "deployment-scope"
+          ],
+          "title": "Scope deployment",
+          "body": "Template bisa di-deploy ke resource group, subscription, management group, atau tenant. Di Azure CLI (command-line interface) perintahnya az deployment group create, sub create, mg create, atau tenant create. Resource group sendiri dibuat lewat deployment di level subscription. Di Bicep, targetScope default-nya resourceGroup.",
+          "keyPoints": [
+            "Empat scope",
+            "Resource group dibuat dari level subscription",
+            "targetScope default: resourceGroup"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-cli",
+          "teaches": [
+            "az104-f-u10-scopes",
+            "az104-f-u10-rg-in-template",
+            "az104-f-u10-bicep-scope",
+            "az104-f-u10-deploy-cmd"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e1",
+          "type": "choice",
+          "concept": "deployment-scope",
+          "prompt": "A template must create three resource groups. Which command deploys it?",
+          "options": [
+            "az deployment sub create",
+            "az deployment group create",
+            "az group create --template-file",
+            "az bicep build"
+          ],
+          "answer": 0,
+          "explanation": "Resource group dibuat lewat deployment di level subscription. az deployment group create men-deploy ke dalam resource group yang sudah ada.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-rg-in-template",
+            "az104-f-u10-scopes"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e2",
+          "type": "truefalse",
+          "concept": "deployment-scope",
+          "prompt": "A Bicep file without targetScope deploys at the resource group scope.",
+          "answer": true,
+          "explanation": "Benar. targetScope default-nya resourceGroup.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-scope"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e3",
+          "type": "shell",
+          "concept": "deployment-scope",
+          "prompt": "Deploy main.bicep to the resource group rg-app, and set the parameter storageSKU to Standard_GRS.",
+          "tokens": [
+            "az deployment group create",
+            "--resource-group rg-app",
+            "--template-file main.bicep",
+            "--parameters storageSKU=Standard_GRS",
+            "az deployment sub create",
+            "--mode Complete"
+          ],
+          "answer": [
+            "az deployment group create",
+            "--resource-group rg-app",
+            "--template-file main.bicep",
+            "--parameters storageSKU=Standard_GRS"
+          ],
+          "explanation": "az deployment group create men-deploy ke resource group; file Bicep bisa langsung dipakai di --template-file, dan nilai parameter diisi di --parameters.",
+          "requires": [
+            "az104-f-u10-deploy-cmd",
+            "az104-f-u10-scopes"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "incremental-vs-complete"
+          ],
+          "title": "Incremental vs complete",
+          "body": "Mode default adalah incremental: resource di resource group yang tidak ada di template dibiarkan. Mode complete menghapus resource yang tidak ada di template. Portal dan deployment level subscription tidak mendukung complete, dan resource group yang dikunci tidak ikut dihapus. Jebakan incremental: properti yang tidak ditulis di template kembali ke default. Microsoft kini tidak merekomendasikan complete; untuk menghapus lewat template, pakai deployment stacks.",
+          "keyPoints": [
+            "Incremental: default, yang lain dibiarkan",
+            "Complete: yang tidak ada di template dihapus",
+            "Properti yang tidak ditulis kembali ke default"
+          ],
+          "visual": "IncrementalVsComplete",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes",
+          "teaches": [
+            "az104-f-u10-mode-default",
+            "az104-f-u10-mode-props",
+            "az104-f-u10-complete-limits",
+            "az104-f-u10-complete-deprecated"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e4",
+          "type": "choice",
+          "concept": "incremental-vs-complete",
+          "prompt": "Which deployment mode deletes resources in the resource group that aren't in the template?",
+          "options": [
+            "Incremental",
+            "Validate",
+            "Complete",
+            "What-if"
+          ],
+          "answer": 2,
+          "explanation": "Mode complete menghapus resource yang tidak ada di template. Incremental, yang default, membiarkannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-mode-default"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e5",
+          "type": "yesno",
+          "concept": "incremental-vs-complete",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "rg-app holds A, B, and C. The template defines A, B, and D.",
+          "statements": [
+            {
+              "text": "After an incremental deployment, rg-app holds A, B, C, and D.",
+              "answer": true
+            },
+            {
+              "text": "After a complete deployment, rg-app holds A, B, and D.",
+              "answer": true
+            },
+            {
+              "text": "If rg-app has a Delete lock, a complete deployment still deletes C.",
+              "answer": false
+            }
+          ],
+          "explanation": "Incremental membiarkan C, complete menghapusnya. Resource di resource group yang dikunci tidak dihapus oleh mode complete.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-mode-default",
+            "az104-f-u10-complete-limits"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e6",
+          "type": "truefalse",
+          "concept": "incremental-vs-complete",
+          "prompt": "In incremental mode, properties of an existing resource that aren't in the template keep their current values.",
+          "answer": false,
+          "explanation": "Salah. Semua properti diterapkan ulang, dan properti yang tidak ditulis kembali ke nilai default. Tulis semua nilai yang bukan default.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-mode-props"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e7",
+          "type": "choice",
+          "concept": "incremental-vs-complete",
+          "prompt": "You want a template deployment to remove resources that you deleted from the template. What does Microsoft now recommend?",
+          "options": [
+            "Complete mode in the Azure portal",
+            "Incremental mode with a lock",
+            "A deployment stack",
+            "Exporting the template again"
+          ],
+          "answer": 2,
+          "explanation": "Mode complete tidak lagi direkomendasikan dan portal pun tidak mendukungnya. Deployment stacks adalah cara yang disarankan untuk menghapus lewat template.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-complete-deprecated",
+            "az104-f-u10-complete-limits"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "what-if"
+          ],
+          "title": "What-if",
+          "body": "What-if menampilkan perubahan yang akan terjadi tanpa mengubah apa pun. Di Azure CLI (command-line interface) pakai az deployment group what-if, dan di PowerShell tambahkan -WhatIf. Hasilnya berupa jenis perubahan: Create, Modify, NoChange, Ignore, dan Delete, yang hanya muncul di mode complete. Selalu jalankan what-if sebelum deploy mode complete. Ingat juga: mengubah location atau type resource yang sudah ada lewat template membuat deployment gagal.",
+          "keyPoints": [
+            "Pratinjau tanpa mengubah",
+            "Delete hanya di mode complete",
+            "Wajib sebelum mode complete"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-what-if",
+          "teaches": [
+            "az104-f-u10-whatif",
+            "az104-f-u10-whatif-types",
+            "az104-f-u10-location-change"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e8",
+          "type": "choice",
+          "concept": "what-if",
+          "prompt": "Before a complete-mode deployment, you want to see which resources would be deleted, without changing anything. What should you run?",
+          "options": [
+            "az deployment group create",
+            "az deployment group what-if",
+            "az bicep decompile",
+            "az group export"
+          ],
+          "answer": 1,
+          "explanation": "What-if memprediksi perubahan tanpa menjalankannya, termasuk resource yang akan dihapus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-whatif"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e9",
+          "type": "match",
+          "concept": "what-if",
+          "prompt": "Match each what-if change type to its meaning.",
+          "pairs": [
+            [
+              "Create",
+              "The resource doesn't exist yet and will be created"
+            ],
+            [
+              "Modify",
+              "The resource exists and its properties will change"
+            ],
+            [
+              "Delete",
+              "The resource will be removed in complete mode"
+            ],
+            [
+              "NoChange",
+              "The resource exists and its properties won't change"
+            ]
+          ],
+          "explanation": "Create untuk resource baru, Modify untuk properti yang berubah, Delete hanya di mode complete, dan NoChange kalau tidak ada yang berubah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-whatif-types"
+          ]
+        },
+        {
+          "id": "az104-u10-l3-e10",
+          "type": "truefalse",
+          "concept": "what-if",
+          "prompt": "You can move a storage account to another region by changing its location in the template and redeploying.",
+          "answer": false,
+          "explanation": "Salah. Mengubah location resource yang sudah ada membuat deployment gagal. Deploy resource baru di region yang dibutuhkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-location-change"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u10-l4",
       "title": "Export dan konversi",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u10-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "export-template"
+          ],
+          "title": "Export template",
+          "body": "Ada dua sumber export. Dari resource group atau resource: template dibuat otomatis dari kondisi saat ini, termasuk perubahan manual, tapi banyak nilainya hard-coded. Dari riwayat deployment: salinan persis template yang dulu dipakai, lengkap dengan parameter, tapi tanpa perubahan setelahnya. Portal juga bisa meng-export langsung sebagai Bicep.",
+          "keyPoints": [
+            "Dari resource group: kondisi saat ini",
+            "Dari riwayat: template asli",
+            "Bisa langsung ke Bicep"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/export-template-portal",
+          "teaches": [
+            "az104-f-u10-export-rg",
+            "az104-f-u10-export-history",
+            "az104-f-u10-export-bicep"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e1",
+          "type": "choice",
+          "concept": "export-template",
+          "prompt": "Someone changed rg-web by hand after it was deployed. You need a template that includes those changes. What should you do?",
+          "options": [
+            "Export the template from the deployment history",
+            "Run what-if on the original template",
+            "Decompile the original template",
+            "Export the template from the resource group"
+          ],
+          "answer": 3,
+          "explanation": "Export dari resource group memotret kondisi saat ini, termasuk perubahan manual. Riwayat deployment hanya berisi template saat deploy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-export-rg",
+            "az104-f-u10-export-history"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e2",
+          "type": "choice",
+          "concept": "export-template",
+          "prompt": "You want the exact template, with its parameters, that was used to deploy rg-web last month. Where should you export it from?",
+          "options": [
+            "The resource group rg-web",
+            "Each resource in rg-web",
+            "The deployment history of rg-web",
+            "The subscription activity log"
+          ],
+          "answer": 2,
+          "explanation": "Riwayat deployment menyimpan template persis yang dipakai, lengkap dengan parameter.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-export-history"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e3",
+          "type": "yesno",
+          "concept": "export-template",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You export a template from the resource group rg-web.",
+          "statements": [
+            {
+              "text": "Most property values are hard-coded in the exported template.",
+              "answer": true
+            },
+            {
+              "text": "It includes changes made in the portal after the deployment.",
+              "answer": true
+            },
+            {
+              "text": "It is exactly the template that was used for the original deployment.",
+              "answer": false
+            }
+          ],
+          "explanation": "Export dari resource group dibuat otomatis dari kondisi saat ini, jadi nilainya hard-coded dan perubahan manual ikut. Template asli ada di riwayat deployment.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-export-rg",
+            "az104-f-u10-export-history"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "export-limits"
+          ],
+          "title": "Batasan export",
+          "body": "Export template tidak bisa untuk resource group dengan lebih dari 200 resource. Beberapa jenis resource tidak bisa di-export, misalnya resource Azure Data Factory. Parameter password juga bisa hilang dari hasil export, jadi periksa dan tambahkan sendiri sebelum dipakai ulang.",
+          "keyPoints": [
+            "Maksimal 200 resource",
+            "Tidak semua jenis resource",
+            "Password bisa hilang"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/export-template-portal",
+          "teaches": [
+            "az104-f-u10-export-limits"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e4",
+          "type": "truefalse",
+          "concept": "export-limits",
+          "prompt": "You can export a template from a resource group that holds 350 resources.",
+          "answer": false,
+          "explanation": "Salah. Export template dibatasi untuk resource group dengan paling banyak 200 resource.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-export-limits"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e5",
+          "type": "choice",
+          "concept": "export-limits",
+          "prompt": "You exported a template that includes a VM (virtual machine). The deployment fails because a password value is missing. Why?",
+          "options": [
+            "Exported templates never include VMs",
+            "Password parameters can be missing from exported templates, so you must add them",
+            "The template must be decompiled first",
+            "Passwords are exported only in Bicep"
+          ],
+          "answer": 1,
+          "explanation": "Beberapa parameter password tidak ikut di-export, jadi harus ditambahkan sendiri sebelum template dipakai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-export-limits"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "arm-to-bicep"
+          ],
+          "title": "Mengubah ARM template ke Bicep",
+          "body": "az bicep decompile --file main.json mengubah ARM (Azure Resource Manager) template menjadi main.bicep di folder yang sama. Kalau main.bicep sudah ada, tambahkan --force. Konversi ini tidak dijamin sempurna, jadi mungkin perlu diperbaiki. Arah sebaliknya, az bicep build --file main.bicep, menghasilkan ARM template JSON (JavaScript Object Notation); biasanya tidak perlu karena berjalan otomatis saat deploy.",
+          "keyPoints": [
+            "decompile: JSON ke Bicep",
+            "build: Bicep ke JSON",
+            "Periksa hasil decompile"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/decompile",
+          "teaches": [
+            "az104-f-u10-decompile",
+            "az104-f-u10-build"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e6",
+          "type": "choice",
+          "concept": "arm-to-bicep",
+          "prompt": "You run az bicep decompile --file main.json, but main.bicep already exists in the folder. What must you add to overwrite it?",
+          "options": [
+            "--force",
+            "--overwrite-all",
+            "--mode Complete",
+            "--outfile main.json"
+          ],
+          "answer": 0,
+          "explanation": "Opsi --force menimpa main.bicep yang sudah ada.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-decompile"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e7",
+          "type": "match",
+          "concept": "arm-to-bicep",
+          "prompt": "Match each command to what it does.",
+          "pairs": [
+            [
+              "az bicep decompile",
+              "Converts an ARM (Azure Resource Manager) template to a Bicep file"
+            ],
+            [
+              "az bicep build",
+              "Converts a Bicep file to an ARM template"
+            ],
+            [
+              "az deployment group what-if",
+              "Previews the changes of a deployment"
+            ]
+          ],
+          "explanation": "decompile dari JSON (JavaScript Object Notation) ke Bicep, build dari Bicep ke JSON, dan what-if menampilkan pratinjau perubahan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-decompile",
+            "az104-f-u10-build",
+            "az104-f-u10-whatif"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e8",
+          "type": "truefalse",
+          "concept": "arm-to-bicep",
+          "prompt": "az bicep decompile always produces a Bicep file that needs no changes.",
+          "answer": false,
+          "explanation": "Salah. Konversi tidak dijamin sempurna; hasilnya mungkin perlu diperbaiki.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-decompile"
+          ]
+        },
+        {
+          "id": "az104-u10-l4-e9",
+          "type": "shell",
+          "concept": "arm-to-bicep",
+          "prompt": "Convert the exported ARM (Azure Resource Manager) template main.json to a Bicep file.",
+          "tokens": [
+            "az bicep decompile",
+            "--file main.json",
+            "az bicep build",
+            "--file main.bicep",
+            "--mode Complete"
+          ],
+          "answer": [
+            "az bicep decompile",
+            "--file main.json"
+          ],
+          "explanation": "az bicep decompile dengan --file main.json menghasilkan main.bicep. build bekerja ke arah sebaliknya.",
+          "requires": [
+            "az104-f-u10-decompile",
+            "az104-f-u10-build"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u10-arm-what",
+      "statement": "ARM (Azure Resource Manager) template adalah file JSON (JavaScript Object Notation) yang mendeskripsikan resource yang ingin dibuat. Microsoft menyarankan melihat Bicep, yang punya kemampuan sama dengan sintaks yang lebih mudah.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax"
+    },
+    {
+      "id": "az104-f-u10-arm-sections",
+      "statement": "Bagian ARM template: $schema, contentVersion, dan resources wajib ada; parameters, variables, functions, dan outputs opsional.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax#template-format"
+    },
+    {
+      "id": "az104-f-u10-arm-resource",
+      "statement": "Setiap resource di bagian resources punya type (misalnya Microsoft.Storage/storageAccounts), apiVersion, name, dan properti lain seperti location, sku, dan properties.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/syntax#resources"
+    },
+    {
+      "id": "az104-f-u10-arm-params",
+      "statement": "Parameters berisi nilai yang diisi saat deploy, dengan type, defaultValue opsional, dan allowedValues opsional. Nilainya dipakai dengan [parameters('nama')]. Satu template maksimal 256 parameter.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/parameters"
+    },
+    {
+      "id": "az104-f-u10-arm-secure",
+      "statement": "Parameter untuk rahasia seperti password memakai type secureString.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/parameters"
+    },
+    {
+      "id": "az104-f-u10-arm-vars",
+      "statement": "Variables menyederhanakan ekspresi di dalam template, dan dipakai dengan [variables('nama')].",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/variables"
+    },
+    {
+      "id": "az104-f-u10-arm-outputs",
+      "statement": "Outputs mengembalikan nilai setelah deploy, misalnya FQDN (fully qualified domain name) sebuah public IP. Satu template maksimal 64 output.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/outputs"
+    },
+    {
+      "id": "az104-f-u10-arm-location",
+      "statement": "Nilai [resourceGroup().location] sering dipakai sebagai default location, supaya resource dibuat di region resource group-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/parameters"
+    },
+    {
+      "id": "az104-f-u10-bicep-what",
+      "statement": "Bicep adalah bahasa deklaratif dengan kemampuan yang sama seperti ARM template. Saat deploy, file Bicep otomatis diubah menjadi ARM template JSON (JavaScript Object Notation), dan urutan elemen di file tidak memengaruhi deployment.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/file#bicep-format"
+    },
+    {
+      "id": "az104-f-u10-bicep-elements",
+      "statement": "Elemen utama file Bicep: param untuk nilai saat deploy, var untuk variabel, resource dengan nama simbolis dan 'tipe@versi-API', module untuk memanggil file Bicep lain, dan output.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/file#bicep-format"
+    },
+    {
+      "id": "az104-f-u10-bicep-scope",
+      "statement": "targetScope di Bicep default-nya resourceGroup. Nilai lainnya subscription, managementGroup, dan tenant.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/file#target-scope"
+    },
+    {
+      "id": "az104-f-u10-bicep-param",
+      "statement": "Parameter Bicep ditulis param nama tipe = nilaiDefault, lalu dipakai langsung dengan namanya, misalnya name: storageSKU. Decorator seperti @allowed, @minLength, @maxLength, dan @description membatasi atau menjelaskan parameter.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/file#parameters"
+    },
+    {
+      "id": "az104-f-u10-bicep-secure",
+      "statement": "Parameter dengan decorator @secure() tidak dicatat dan tidak ditampilkan di riwayat deployment, portal, maupun output command-line.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/parameters"
+    },
+    {
+      "id": "az104-f-u10-bicep-paramfile",
+      "statement": "File parameter Bicep berekstensi .bicepparam dan diawali using 'main.bicep'. Untuk beberapa lingkungan, buat satu file per lingkungan, misalnya main.dev.bicepparam dan main.prod.bicepparam.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/parameter-files"
+    },
+    {
+      "id": "az104-f-u10-bicep-module",
+      "statement": "Module memanggil file Bicep lain dan mengisi parameternya lewat params, supaya satu file tidak menangani semua resource.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules"
+    },
+    {
+      "id": "az104-f-u10-scopes",
+      "statement": "Deployment bisa ke resource group, subscription, management group, atau tenant. Di Azure CLI (command-line interface): az deployment group create, az deployment sub create, az deployment mg create, dan az deployment tenant create.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-cli"
+    },
+    {
+      "id": "az104-f-u10-rg-in-template",
+      "statement": "Resource group sendiri dibuat lewat deployment di level subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-to-subscription"
+    },
+    {
+      "id": "az104-f-u10-deploy-cmd",
+      "statement": "az deployment group create --resource-group menerima file .json maupun .bicep lewat --template-file, dan nilai parameter lewat --parameters.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deploy-cli#deploy-local-bicep-file"
+    },
+    {
+      "id": "az104-f-u10-mode-default",
+      "statement": "Mode deploy default adalah incremental: resource di resource group yang tidak ada di template dibiarkan. Mode complete menghapus resource di resource group yang tidak ada di template.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes"
+    },
+    {
+      "id": "az104-f-u10-mode-props",
+      "statement": "Di mode incremental, semua properti resource yang di-deploy ulang diterapkan ulang. Properti yang tidak ditulis di template kembali ke nilai default, bukan dipertahankan.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes#incremental-mode"
+    },
+    {
+      "id": "az104-f-u10-complete-limits",
+      "statement": "Portal tidak mendukung mode complete, deployment di level subscription juga tidak, dan mode complete tidak menghapus resource di resource group yang dikunci.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes#complete-mode"
+    },
+    {
+      "id": "az104-f-u10-complete-deprecated",
+      "statement": "Microsoft tidak merekomendasikan mode complete dan akan menghentikannya bertahap. Untuk menghapus resource lewat template, pakai deployment stacks.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes"
+    },
+    {
+      "id": "az104-f-u10-location-change",
+      "statement": "Mengubah location atau type resource yang sudah ada lewat template membuat deployment gagal; deploy resource baru dengan location atau type yang dibutuhkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes"
+    },
+    {
+      "id": "az104-f-u10-whatif",
+      "statement": "What-if menampilkan perubahan yang akan terjadi tanpa mengubah apa pun: az deployment group what-if di Azure CLI, atau -WhatIf di PowerShell. Jalankan what-if sebelum deploy mode complete.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-what-if"
+    },
+    {
+      "id": "az104-f-u10-whatif-types",
+      "statement": "Jenis perubahan what-if antara lain Create, Delete (hanya di mode complete), Modify, NoChange, dan Ignore.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-what-if#change-types"
+    },
+    {
+      "id": "az104-f-u10-export-rg",
+      "statement": "Export dari resource group atau resource membuat template dari kondisi resource saat ini, termasuk perubahan manual setelah deploy. Template-nya dibuat otomatis, dan sebagian besar nilainya hard-coded.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/export-template-portal"
+    },
+    {
+      "id": "az104-f-u10-export-history",
+      "statement": "Export dari riwayat deployment memberi salinan persis template yang dipakai saat deploy, lengkap dengan parameternya, tapi tanpa perubahan manual setelahnya. Opsi ini hanya untuk ARM template JSON (JavaScript Object Notation).",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/export-template-portal#export-template-after-deployment"
+    },
+    {
+      "id": "az104-f-u10-export-limits",
+      "statement": "Export template tidak bisa untuk resource group dengan lebih dari 200 resource. Beberapa jenis resource tidak bisa di-export, dan parameter password bisa hilang dari hasil export.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/export-template-portal"
+    },
+    {
+      "id": "az104-f-u10-export-bicep",
+      "statement": "Portal juga bisa meng-export resource group atau resource langsung sebagai file Bicep.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/export-bicep-portal"
+    },
+    {
+      "id": "az104-f-u10-decompile",
+      "statement": "az bicep decompile --file main.json mengubah ARM template menjadi main.bicep di folder yang sama; pakai --force kalau main.bicep sudah ada. Hasilnya tidak dijamin sempurna, jadi mungkin perlu diperbaiki.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/decompile"
+    },
+    {
+      "id": "az104-f-u10-build",
+      "statement": "az bicep build --file main.bicep mengubah file Bicep menjadi ARM template JSON (JavaScript Object Notation). Biasanya tidak perlu dijalankan, karena konversi terjadi otomatis saat deploy.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-cli#build"
     }
   ]
 }

@@ -78,6 +78,9 @@ export const VISUAL_CATALOG = {
   // Unit 9 (the tier card reuses BlobTiers)
   BlobLifecycleTimeline: ['lifecycle-rules'],
   SoftDeleteVsVersioning: ['blob-versioning'],
+  // Unit 10
+  ArmStructure: ['arm-structure'],
+  IncrementalVsComplete: ['incremental-vs-complete'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

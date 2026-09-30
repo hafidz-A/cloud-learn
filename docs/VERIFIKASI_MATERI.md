@@ -316,3 +316,21 @@ dan `BlobTiers` dari AZ-900. Sumber: `azure-docs/articles/storage/blobs`, `stora
 | File share soft delete hanya level share, 1–365 hari default 7, aktif default di akun baru | Diajarkan | `storage-files-prevent-file-share-deletion.md` (20 Juli 2026) |
 
 Tidak ada fakta bertanda `verify`.
+
+### Unit 10: ARM template dan Bicep (30 September 2026)
+
+31 fakta, 12 kartu learn, 36 soal (33 examReady), 2 visual baru (`ArmStructure`, `IncrementalVsComplete`).
+Sumber: `azure-docs/articles/azure-resource-manager/templates`, `azure-resource-manager/bicep`, dan `includes`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Bagian wajib ARM template: $schema, contentVersion, resources; parameters, variables, functions, outputs opsional; batas 256 parameter dan 64 output; secureString untuk password | Diajarkan, soal template membaca storage account dan virtual network | `syntax.md` (13 Januari 2026), `parameters.md`, `outputs.md` |
+| Bicep: kemampuan sama dengan ARM template, deklaratif (urutan elemen tidak berpengaruh), otomatis diubah ke JSON saat deploy; targetScope default resourceGroup; decorator @allowed, @minLength, @secure(); file parameter `.bicepparam` dengan `using` | Diajarkan, soal template memilih baris yang salah | `file.md` (3 Juli 2026), `parameters.md`, `parameter-files.md` |
+| Empat scope deployment dan perintahnya (`az deployment group/sub/mg/tenant create`); resource group dibuat dari level subscription | Soal choice dan shell | `deploy-cli.md` (27 Mei 2026), `deploy-to-subscription.md` |
+| Mode default incremental; complete menghapus yang tidak ada di template; di incremental properti yang tidak ditulis kembali ke default; portal dan deployment subscription tidak mendukung complete; resource group yang dikunci tidak dihapus; mengubah location atau type resource lama gagal | Semua fakta rencana terkonfirmasi kata per kata | `deployment-modes.md` (26 Juni 2026) |
+| Mode complete "not recommended" dan "will be gradually deprecated"; hapus lewat template dengan deployment stacks | Diajarkan sebagai catatan, dengan soal pilihan cara yang disarankan | `deployment-modes.md`, `deployment-stacks.md` |
+| What-if: pratinjau tanpa perubahan (`az deployment group what-if`, `-WhatIf`), jenis perubahan Create, Delete (hanya complete), Modify, NoChange, Ignore | Soal match | `deploy-what-if.md` (26 Juni 2026) |
+| Export dari resource group (kondisi saat ini, nilai hard-coded) vs dari riwayat deployment (template asli, hanya JSON); batas 200 resource; password bisa hilang; portal bisa export langsung ke Bicep | Diajarkan dan diuji | `export-template-portal.md`, include `resource-manager-export-template-*.md`, `export-bicep-portal.md` |
+| `az bicep decompile --file main.json` membuat main.bicep (`--force` untuk menimpa), hasilnya tidak dijamin sempurna; `az bicep build` ke arah sebaliknya | Soal shell rencana | `decompile.md` (14 Juli 2026), `bicep-cli.md` |
+
+Tidak ada fakta bertanda `verify`.

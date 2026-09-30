@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import type { VisualName } from '../content/visuals'
 import { AccountFailover } from './AccountFailover'
+import { ArmStructure } from './ArmStructure'
 import { AsgTiers } from './AsgTiers'
 import { AuthNvsAuthZ } from './AuthNvsAuthZ'
 import { AvailabilityVsReliability } from './AvailabilityVsReliability'
@@ -19,6 +20,7 @@ import { FilesPermissionLayers } from './FilesPermissionLayers'
 import { GroupTypes } from './GroupTypes'
 import { HealthProbeBlocked } from './HealthProbeBlocked'
 import { HybridConnectivity } from './HybridConnectivity'
+import { IncrementalVsComplete } from './IncrementalVsComplete'
 import { LicenseFlow } from './LicenseFlow'
 import { LoadBalancerAnatomy } from './LoadBalancerAnatomy'
 import { ManagementTools } from './ManagementTools'
@@ -54,6 +56,7 @@ import { ZonesInRegion } from './ZonesInRegion'
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
   AccountFailover,
+  ArmStructure,
   AsgTiers,
   AuthNvsAuthZ,
   AvailabilityVsReliability,
@@ -72,6 +75,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   GroupTypes,
   HealthProbeBlocked,
   HybridConnectivity,
+  IncrementalVsComplete,
   LicenseFlow,
   LoadBalancerAnatomy,
   ManagementTools,
