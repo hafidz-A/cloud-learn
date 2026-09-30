@@ -1,6 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { readFileSync, readdirSync } from 'node:fs'
-import { play, startFromMap } from './helpers'
+import { AZ104_UNITS, play, startFromMap } from './helpers'
 
 // Two courses in one app (LANGIT_AZ104_PLAN.md section 3 and Prompt A): the
 // picker switches the path map, practice, stats, and exam page; AZ-104 needs no
@@ -8,10 +7,28 @@ import { play, startFromMap } from './helpers'
 
 test.use({ reducedMotion: 'reduce' })
 
-const AZ104_DIR = 'src/content/az104/units'
-const AZ104_LESSONS = readdirSync(AZ104_DIR)
-  .filter((f) => f.endsWith('.json'))
-  .flatMap((f) => (JSON.parse(readFileSync(`${AZ104_DIR}/${f}`, 'utf8')) as { lessons: { id: string }[] }).lessons)
+// AZ-104 content is written unit by unit, so the expected map follows the JSON:
+// a lesson with exercises is playable (or locked behind the one before it), a
+// lesson without exercises waits as "segera hadir".
+const AZ104_LESSONS = AZ104_UNITS.flatMap((u) => u.lessons.map((l) => ({ ...l, path: u.path })))
+const hasExercises = (l: { items: { type: string }[] }) => l.items.some((i) => i.type !== 'learn' && i.type !== 'intro')
+const expectedStates = (() => {
+  let activeFound = false
+  let previousDone = true
+  let path = 1
+  return AZ104_LESSONS.map((l) => {
+    if (l.path !== path) [path, previousDone] = [l.path, true]
+    let state: string
+    if (!hasExercises(l)) state = 'soon'
+    else if (l.path === 1 && previousDone && !activeFound) [state, activeFound] = ['active', true]
+    else state = 'locked'
+    if (state !== 'soon') previousDone = false
+    return state
+  })
+})()
+/** A checkpoint whose whole path has no exercises yet, while one is left. */
+const EMPTY_PATH = [1, 2, 3, 4, 5].find((p) => !AZ104_LESSONS.some((l) => l.path === p && hasExercises(l)))
+const EMPTY_LESSON = AZ104_LESSONS.find((l) => !hasExercises(l))
 
 const picker = (page: Page) => page.getByRole('group', { name: 'Pilih course' })
 
@@ -40,18 +57,23 @@ test('the course picker switches the path map, and AZ-900 progress stays as it w
   await expect(picker(page).getByRole('button', { name: /AZ-104/ })).toHaveAttribute('aria-pressed', 'true')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Langit: jalur belajar AZ-104')
 
-  // All 15 units open without AZ-900; lessons without exercises wait as "segera hadir".
+  // All 15 units open without AZ-900: the first lesson with exercises is next, and
+  // lessons without exercises wait as "segera hadir".
   await expect(page.getByRole('button', { name: /^Panduan unit \d+:/ })).toHaveCount(15)
   await expect(page.locator('[data-node^="az104-u"]')).toHaveCount(AZ104_LESSONS.length)
   await expect(page.locator('[data-node^="u0"], [data-node^="u1"]')).toHaveCount(0)
-  for (const state of await page.locator('[data-node^="az104-u"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-node-state'))))
-    expect(state).toBe('soon')
+  expect(await page.locator('[data-node^="az104-u"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-node-state')))).toEqual(
+    expectedStates,
+  )
 
   // A checkpoint with no exercises in its path cannot be started.
-  await expect(page.locator('[data-node="az104-cp1"]')).toHaveAttribute('data-node-state', 'soon')
-  await page.locator('[data-node="az104-cp1"]').click()
-  await expect(page.getByRole('dialog')).toContainText('Soal untuk jalur ini sedang disiapkan.')
-  await expect(page.getByRole('dialog').getByRole('button', { name: /Mulai/ })).toHaveCount(0)
+  if (EMPTY_PATH) {
+    const cp = page.locator(`[data-node="az104-cp${EMPTY_PATH}"]`)
+    await expect(cp).toHaveAttribute('data-node-state', 'soon')
+    await cp.click()
+    await expect(page.getByRole('dialog')).toContainText('Soal untuk jalur ini sedang disiapkan.')
+    await expect(page.getByRole('dialog').getByRole('button', { name: /Mulai/ })).toHaveCount(0)
+  }
 
   // The choice is kept on this device.
   await page.reload()
@@ -79,10 +101,14 @@ test('practice, stats, exam, and the unit guide follow the chosen course', async
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Microsoft Entra/)
 
   // Links into AZ-104 runs that have nothing to ask yet explain that instead of starting.
-  await page.goto('/#/checkpoint/az104-cp1')
-  await expect(page.getByRole('heading', { name: 'Checkpoint belum siap' })).toBeVisible()
-  await page.goto('/#/lesson/az104-u01-l1')
-  await expect(page.getByRole('button', { name: 'Kembali ke home' })).toBeVisible()
+  if (EMPTY_PATH) {
+    await page.goto(`/#/checkpoint/az104-cp${EMPTY_PATH}`)
+    await expect(page.getByRole('heading', { name: 'Checkpoint belum siap' })).toBeVisible()
+  }
+  if (EMPTY_LESSON) {
+    await page.goto(`/#/lesson/${EMPTY_LESSON.id}`)
+    await expect(page.getByRole('button', { name: 'Kembali ke home' })).toBeVisible()
+  }
 })
 
 test('a lesson opened from a link makes its course the active one', async ({ page }) => {

@@ -1,11 +1,11 @@
 import { Minus, Plus } from 'lucide-react'
 import { useId } from 'react'
-import type { ConfigExercise, ConfigValue } from '../../lib/types'
+import { PORTAL_NAMES, type ConfigExercise, type ConfigValue } from '../../lib/types'
 import { configValueText, judgeConfig } from '../logic'
 import type { InputProps } from '../looks'
 
 /**
- * A pretend Azure portal form. Selects, switches, numbers, and text boxes keep
+ * A pretend admin portal form (the Azure portal unless the exercise names another). Selects, switches, numbers, and text boxes keep
  * their native controls, so they work with a keyboard and a screen reader. After
  * "Periksa", each judged field shows right or wrong, with the expected value.
  */
@@ -24,7 +24,7 @@ export function ConfigInput({ exercise, response, onChange, reveal, locked }: In
           <span className="h-2 w-2 rounded-full bg-white/60" />
           <span className="h-2 w-2 rounded-full bg-white/60" />
         </span>
-        Microsoft Azure portal
+        {exercise.portal ?? PORTAL_NAMES[0]}
       </div>
       <figcaption className="border-b-2 border-kabut px-4 py-2 font-display text-17 font-bold">{exercise.blade}</figcaption>
       <div className="divide-y divide-kabut">

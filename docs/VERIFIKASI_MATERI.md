@@ -88,9 +88,9 @@ menulis materi dicek dengan cara yang sama dan dicatat di bawah per unit.
 |---|---|---|---|
 | 1 | Dynamic group butuh P1 atau Intune for Education per user unik; tidak bisa diubah manual | Benar. Tambahan: device tidak butuh lisensi; user saja atau device saja | entra `groups-dynamic-membership.md`, `concept-learn-about-groups.md` |
 | 1 | Security group: user atau device; Microsoft 365 group: user saja | Benar, dipertajam: security group juga service principal dan nested group | entra `concept-learn-about-groups.md` |
-| 1 | Group-based licensing butuh P1+ atau paket seperti Office 365 E3 | Benar (juga Microsoft 365 Business Premium, A3, G3) | Pencarian: dokumentasi Microsoft 365 admin "manage group licenses" |
-| 1 | Usage location wajib; di group licensing user tanpa usage location memakai lokasi direktori | Benar | Pencarian: "licensing-group-advanced" |
-| 1 | Lisensi SSPR (change di Free; reset di Business Standard+ atau P1/P2; writeback di Business Premium atau P1/P2) | Benar, sama persis dengan tabel sumber. Admin sudah aktif SSPR secara default dengan kebijakan dua bukti | entra `concept-sspr-licensing.md`, `concept-sspr-policy.md` |
+| 1 | Group-based licensing butuh P1+ atau paket seperti Office 365 E3 | Benar (juga Microsoft 365 Business Premium, A3, G3). Halaman aslinya dihapus 1 Juli 2026 dan dialihkan ke dokumentasi Microsoft 365; isinya dicek dari versi terakhir di riwayat git entra-docs | entra `concept-group-based-licensing.md` (commit sebelum `ee4e287`) |
+| 1 | Usage location wajib; di group licensing user tanpa usage location memakai lokasi direktori | Benar | microsoft-365-docs `admin/manage/manage-group-licenses.md` |
+| 1 | Lisensi SSPR (change di Free; reset di Business Standard+ atau P1/P2; writeback di Business Premium atau P1/P2) | Benar, sama persis dengan tabel sumber. Kebijakan two-gate untuk admin benar; apakah SSPR admin aktif secara default, dua halaman Microsoft saling bertentangan, jadi materi tidak mengklaimnya | entra `concept-sspr-licensing.md`, `concept-sspr-policy.md` |
 | 2 | Azure role dan Entra role terpisah; pewarisan management group > subscription > resource group > resource | Benar | `rbac-and-directory-admin-roles.md`, `scope-overview.md` |
 | 3 | Tag tidak diwariskan; lock Delete vs ReadOnly, berlaku juga untuk Owner | Benar | `tag-resources.md`, `lock-resources.md` |
 | 3 | Efek policy dan remediation | Benar, dilengkapi daftar efek, urutan evaluasi, dan managed identity | `effect-basics.md`, `remediate-resources.md` |
@@ -113,3 +113,32 @@ menulis materi dicek dengan cara yang sama dan dicatat di bawah per unit.
 | 13 | Custom domain, managed certificate, backup, VNet integration, slot, autoscale | Benar, dipertajam (tier Shared, TXT asuid, Automatic scaling Premium v2–v4) | `app-service-web-tutorial-custom-domain.md`, `manage-backup.md`, `overview-vnet-integration.md`, `deploy-staging-slots.md`, `manage-automatic-scaling.md` |
 | 15 | Recovery Services vault vs Backup vault | Benar, sama persis dengan tabel FAQ | `backup-azure-backup-faq.yml` |
 | 15 | Urutan Site Recovery: failover, commit, re-protect | Benar; commit menghapus recovery point lain | `azure-to-azure-tutorial-failover-failback.md` |
+
+## AZ-104: materi per unit
+
+Setiap fakta di file unit punya `source`. Kalimatnya dicocokkan dengan file Markdown halaman itu di repo MicrosoftDocs
+(`entra-docs`, `azure-docs`, `microsoft-365-docs`), lalu semua URL dicek dengan `learn.mjs --check` (ada, tidak
+dialihkan). Soal dan jawabannya dibaca ulang satu per satu: jawaban benar harus didukung fakta, dan setiap pengecoh harus
+bisa disingkirkan dengan fakta yang sudah diajarkan sebelumnya.
+
+### Unit 1: User dan group di Microsoft Entra ID (30 September 2026)
+
+48 fakta, 22 kartu learn, 53 soal (44 examReady), 4 visual (`EntraObjects`, `GroupTypes`, `LicenseFlow`, `SsprLicensing`).
+Tipe soal baru yang dipakai: config (3 soal) dan rules (2 soal). Semua lesson dimainkan sampai selesai di e2e.
+
+Temuan yang mengubah materi:
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Sejak 1 September 2024, portal Azure dan Microsoft Entra admin center tidak lagi menyediakan UI untuk assign lisensi; pakai Microsoft 365 admin center (API dan PowerShell tetap bisa) | Lesson Lisensi mengajarkan Microsoft 365 admin center, dengan catatan "Jebakan ujian" bahwa materi lama masih menyebut portal Entra | entra `includes/licensing-change.md`, microsoft-365-docs `manage-group-licenses.md` |
+| Nested group tidak ikut mendapat aplikasi group induk (dokumentasi Entra), **tapi** role assignment Azure RBAC transitif untuk nested group (dokumentasi Azure RBAC) | Kartu nested group menjelaskan keduanya, plus satu soal khusus supaya tidak tertukar di Unit 2 | entra `how-to-manage-groups.md`, azure `role-based-access-control/overview.md` |
+| Security questions untuk SSPR dipensiunkan Maret 2027; admin tidak bisa memakainya | Diajarkan sebagai metode yang akan pensiun, tidak pernah jadi jawaban yang disarankan | entra `concept-authentication-security-questions.md` |
+| Halaman error group-based licensing Entra dihapus; yang tersisa daftar error di Microsoft 365 admin center (Errors & issues, lalu Reprocess) | Materi memakai istilah dan langkah yang masih berlaku; klaim lama "satu lisensi gagal, semua lisensi group tidak di-assign" tidak dipakai, dan visual `LicenseFlow` disesuaikan | microsoft-365-docs `assign-licenses-to-users.md` |
+| Dynamic group: satu group user saja atau device saja; anggota tidak bisa diubah manual; group yang bisa diberi role Entra selalu Assigned | Diajarkan dan diuji | entra `concept-learn-about-groups.md`, `groups-dynamic-membership.md`, `how-to-manage-groups.md` |
+| License Administrator hanya mengelola lisensi dan usage location, tidak bisa membuat user atau group | Dipakai untuk soal least privilege | entra `permissions-reference.md` |
+
+Masih bertanda `verify`:
+- `az104-f-u01-gbl-license-req` (syarat P1 atau paket seperti Office 365 E3 untuk group-based licensing). Kalimatnya benar di
+  versi terakhir halaman Entra sebelum dihapus (Juli 2026), tapi halaman Microsoft 365 yang menggantikannya tidak menyebut
+  syarat lisensi. Cek ulang di halaman lisensi Microsoft Entra kalau muncul versi baru.
+

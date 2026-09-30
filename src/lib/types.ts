@@ -109,7 +109,7 @@ export type PlaceExercise = ExerciseBase & {
 }
 export type FixExercise = ExerciseBase & {
   type: 'fix'
-  scene: { kind: 'portal' | 'error'; title: string; message: string }
+  scene: { kind: 'portal' | 'error'; title: string; message: string; portal?: PortalName }
   options: string[]
   answer: number
 }
@@ -148,8 +148,13 @@ export type ConfigValue = string | number | boolean
  * against `answer` (field label -> expected value). Fields not in `answer` are
  * not judged. A `readOnly` field shows a fixed value, like a greyed-out setting.
  */
+/** The admin portal a pretend portal screen belongs to (default: the Azure portal). */
+export type PortalName = 'Microsoft Azure portal' | 'Microsoft Entra admin center' | 'Microsoft 365 admin center'
+export const PORTAL_NAMES: readonly PortalName[] = ['Microsoft Azure portal', 'Microsoft Entra admin center', 'Microsoft 365 admin center']
+
 export type ConfigExercise = ExerciseBase & {
   type: 'config'
+  portal?: PortalName
   blade: string // portal page title, e.g. "Create budget"
   fields: (ConfigField & { readOnly?: boolean })[]
   answer: Record<string, ConfigValue>

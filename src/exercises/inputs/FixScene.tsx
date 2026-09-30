@@ -1,6 +1,6 @@
 import { GlossaryText } from '../../components/GlossaryText'
 import { CircleAlert, TriangleAlert } from 'lucide-react'
-import type { FixExercise } from '../../lib/types'
+import { PORTAL_NAMES, type FixExercise } from '../../lib/types'
 
 /** A pretend Azure portal notification or error message for "fix" exercises. */
 export function FixScene({ scene }: { scene: FixExercise['scene'] }) {
@@ -25,7 +25,7 @@ export function FixScene({ scene }: { scene: FixExercise['scene'] }) {
           <span className="h-2 w-2 rounded-full bg-white/60" />
           <span className="h-2 w-2 rounded-full bg-white/60" />
         </span>
-        Microsoft Azure portal
+        {scene.portal ?? PORTAL_NAMES[0]}
       </div>
       <div className="flex gap-3 px-4 py-3">
         <TriangleAlert size={22} className="mt-0.5 shrink-0 text-matahari-dalam" aria-hidden="true" />

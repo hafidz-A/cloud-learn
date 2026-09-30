@@ -41,6 +41,13 @@ export const VISUAL_CATALOG = {
   // Unit 12
   ServiceHealthScopes: ['service-health'],
   MonitorPipeline: ['azure-monitor'],
+
+  // AZ-104 (LANGIT_AZ104_PLAN.md section 5, column "Visual")
+  // Unit 1
+  EntraObjects: ['member-vs-guest'],
+  GroupTypes: ['security-vs-m365-group', 'assigned-vs-dynamic-membership'],
+  LicenseFlow: ['group-based-licensing'],
+  SsprLicensing: ['sspr-licensing'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

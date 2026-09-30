@@ -23,6 +23,8 @@ describe('AZ-104 content (LANGIT_AZ104_PLAN.md)', () => {
   })
 
   it('has no content errors, and every id starts with "az104-"', () => {
+    const warnings = issues.filter((i) => i.level === 'warn')
+    if (warnings.length) console.warn(warnings.map((w) => `warn  ${w.where}: ${w.message}`).join('\n'))
     expect(blockingErrors(issues, AZ104_UNITS)).toEqual([])
     const ids = AZ104_UNITS.flatMap((u) => [u.id, ...(u.facts ?? []).map((f) => f.id), ...u.lessons.flatMap((l) => [l.id, ...l.items.map((i) => i.id)])])
     expect(ids.filter((id) => courseOf(id) !== 'az104')).toEqual([])
@@ -31,6 +33,20 @@ describe('AZ-104 content (LANGIT_AZ104_PLAN.md)', () => {
   it('shares no id with AZ-900', () => {
     const az900 = new Set(UNITS.flatMap((u) => [u.id, ...u.lessons.flatMap((l) => [l.id, ...l.items.map((i) => i.id)])]))
     expect(AZ104_UNITS.flatMap((u) => [u.id, ...u.lessons.map((l) => l.id)]).filter((id) => az900.has(id))).toEqual([])
+  })
+
+  it('expands every abbreviation on first use, and explains it in the glossary', () => {
+    expect(issues.filter((i) => i.message.startsWith('expand on first use'))).toEqual([])
+    expect(glossaryGaps(AZ104_UNITS, new Set(GLOSSARY.map((g) => g.term)))).toEqual([])
+  })
+
+  it('marks at least 30% of the exercises of every written unit examReady (Prompt B, step 6)', () => {
+    for (const unit of AZ104_UNITS) {
+      const exercises = unit.lessons.flatMap((l) => l.items).filter((i) => i.type !== 'learn' && i.type !== 'intro' && !i.retired)
+      if (exercises.length === 0) continue
+      const ready = exercises.filter((e) => 'examReady' in e && e.examReady).length
+      expect(ready / exercises.length, unit.id).toBeGreaterThanOrEqual(0.3)
+    }
   })
 
   it('rejects an AZ-104 id without the prefix', () => {
@@ -233,6 +249,7 @@ describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
         ...base,
         id: 'u99-l1-e4',
         type: 'config',
+        portal: 'Microsoft Entra admin center',
         blade: 'Create',
         fields: [
           { label: 'Region', kind: 'select', choices: ['East US', 'West Europe'] },
@@ -256,6 +273,7 @@ describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
       ...base,
       id: 'u99-l1-e4',
       type: 'config',
+      portal: 'Entra portal',
       blade: 'Create',
       fields: [
         { label: 'Region', kind: 'select', choices: ['East US', 'West Europe'] },
@@ -263,7 +281,13 @@ describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
       ],
       answer: { Region: 'North Europe', Enabled: 'yes' },
     } as unknown as LessonItem
-    expect(shapeErrors(config)).toEqual(expect.arrayContaining(['answer "North Europe" is not a choice of "Region"', 'answer for toggle "Enabled" must be true or false']))
+    expect(shapeErrors(config)).toEqual(
+      expect.arrayContaining([
+        'answer "North Europe" is not a choice of "Region"',
+        'answer for toggle "Enabled" must be true or false',
+        expect.stringContaining('unknown portal "Entra portal"'),
+      ]),
+    )
     const kql = { ...base, id: 'u99-l1-e5', type: 'kql', examReady: true, tokens: ['T'], answer: ['T', '| take'], sampleResult: [['C'], ['1']] } as LessonItem
     expect(shapeErrors(kql)).toEqual(expect.arrayContaining(['answer token "| take" is not available in tokens', 'type "kql" cannot be examReady']))
   })

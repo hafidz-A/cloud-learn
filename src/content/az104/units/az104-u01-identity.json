@@ -6,27 +6,1926 @@
     {
       "id": "az104-u01-l1",
       "title": "Jenis dan properti user",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u01-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "entra-users",
+            "member-vs-guest"
+          ],
+          "title": "Jenis user di Microsoft Entra ID",
+          "body": "Setiap user punya properti User type: Member atau Guest. Karyawan biasanya internal member. Partner yang diundang lewat B2B (business-to-business) collaboration biasanya external guest: akunnya ada di tenant kamu, tapi dia login dengan akun organisasinya sendiri. Ada juga internal guest (akun lokal dengan hak guest) dan external member (akun eksternal dengan hak member).",
+          "keyPoints": [
+            "User type: Member atau Guest",
+            "External guest login dengan akun organisasinya sendiri",
+            "Tenant kamu tidak menyimpan password guest B2B"
+          ],
+          "visual": "EntraObjects",
+          "trap": "Guest tidak selalu berarti eksternal. User type menentukan hak, sedangkan asal akun menentukan cara login.",
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users",
+          "teaches": [
+            "az104-f-u01-user-types",
+            "az104-f-u01-usertype-prop",
+            "az104-f-u01-guest-auth"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e1",
+          "type": "match",
+          "concept": "entra-users",
+          "prompt": "Match each user type to its description.",
+          "pairs": [
+            [
+              "Internal member",
+              "A full-time employee with an account in your tenant"
+            ],
+            [
+              "Internal guest",
+              "An account in your tenant with only guest-level privileges"
+            ],
+            [
+              "External member",
+              "Signs in with an external account but has member access"
+            ],
+            [
+              "External guest",
+              "Signs in with an external account and has guest-level access"
+            ]
+          ],
+          "explanation": "Internal atau external menunjukkan asal akun dan cara login. Member atau guest menunjukkan tingkat hak di tenant kamu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-user-types"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e2",
+          "type": "truefalse",
+          "concept": "member-vs-guest",
+          "prompt": "When you invite a B2B (business-to-business) guest user, Microsoft Entra ID stores a password for that guest in your tenant.",
+          "answer": false,
+          "explanation": "Salah. Akun guest B2B (business-to-business) di tenant kamu tidak punya kredensial. Autentikasinya dilakukan penyedia identitas milik guest, misalnya tenant Microsoft Entra organisasinya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-guest-auth"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "default-user-permissions"
+          ],
+          "title": "Hak default member dan guest",
+          "body": "Tanpa pengaturan tambahan, member bisa melihat daftar semua user dan group, membuat security group dan Microsoft 365 group, dan mengundang guest. Guest jauh lebih terbatas. Mereka bisa membaca properti sendiri, mengganti password sendiri, dan membaca sebagian info user lain seperti display name dan email. Tapi guest tidak bisa melihat daftar semua user, group, atau objek direktori lain.",
+          "keyPoints": [
+            "Member: melihat semua user dan group, membuat group, mengundang guest",
+            "Guest: tidak bisa melihat daftar semua user dan group",
+            "Keduanya bisa mengganti password sendiri"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/users-default-permissions",
+          "teaches": [
+            "az104-f-u01-member-default",
+            "az104-f-u01-guest-default"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e3",
+          "type": "sort",
+          "concept": "default-user-permissions",
+          "prompt": "Sort each default permission: members only, or both members and guests.",
+          "buckets": [
+            "Members only",
+            "Members and guests"
+          ],
+          "items": [
+            {
+              "text": "Enumerate the list of all users",
+              "bucket": 0
+            },
+            {
+              "text": "Create security groups",
+              "bucket": 0
+            },
+            {
+              "text": "Create Microsoft 365 groups",
+              "bucket": 0
+            },
+            {
+              "text": "Change their own password",
+              "bucket": 1
+            },
+            {
+              "text": "Read another user's display name",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Melihat daftar semua user dan membuat group adalah hak default member. Guest tetap bisa mengganti password sendiri dan membaca sebagian info user lain, misalnya display name.",
+          "requires": [
+            "az104-f-u01-member-default",
+            "az104-f-u01-guest-default"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e4",
+          "type": "yesno",
+          "concept": "member-vs-guest",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso hires Adele as a full-time employee and creates her account in the Contoso tenant. Contoso also invites Omar, a consultant from Fabrikam, as a B2B (business-to-business) guest. All settings are default.",
+          "statements": [
+            {
+              "text": "Adele's User type is Member.",
+              "answer": true
+            },
+            {
+              "text": "Omar signs in to Contoso apps with a password that is stored in the Contoso tenant.",
+              "answer": false
+            },
+            {
+              "text": "Omar can enumerate the list of all users in the Contoso tenant.",
+              "answer": false
+            }
+          ],
+          "explanation": "Adele karyawan, jadi Member. Omar guest B2B (business-to-business): dia login dengan akun Fabrikam, dan secara default guest tidak bisa melihat daftar semua user.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-usertype-prop",
+            "az104-f-u01-guest-auth",
+            "az104-f-u01-guest-default"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "entra-users",
+            "user-admin-roles"
+          ],
+          "title": "Membuat user",
+          "body": "Buat user di Entra ID > Users > New user > Create new user. UPN (User Principal Name) adalah nama unik plus domain tenant setelah @, misalnya adele@contoso.com. Opsi Account enabled tercentang secara default; hapus centangnya kalau user belum boleh login. Untuk banyak user sekaligus, pakai Bulk create dengan template CSV (Comma-Separated Values). Role paling kecil untuk semua ini adalah User Administrator; Global Administrator bisa juga, tapi terlalu luas.",
+          "keyPoints": [
+            "UPN = nama unik @ domain tenant",
+            "Account enabled aktif secara default",
+            "Least privilege: User Administrator, bukan Global Administrator"
+          ],
+          "example": "Role lain yang sering muncul: Guest Inviter hanya untuk mengundang guest, dan Privileged Role Administrator untuk memberi role Microsoft Entra.",
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users",
+          "teaches": [
+            "az104-f-u01-upn",
+            "az104-f-u01-account-enabled",
+            "az104-f-u01-bulk-create",
+            "az104-f-u01-least-priv-roles",
+            "az104-f-u01-global-admin"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e5",
+          "type": "choice",
+          "concept": "user-admin-roles",
+          "prompt": "A helpdesk employee must create user accounts in Microsoft Entra ID. The solution must follow the principle of least privilege. Which role should you assign?",
+          "options": [
+            "Global Administrator",
+            "Guest Inviter",
+            "User Administrator",
+            "Privileged Role Administrator"
+          ],
+          "answer": 2,
+          "explanation": "User Administrator cukup untuk membuat user. Global Administrator bisa, tapi haknya jauh lebih luas. Guest Inviter hanya bisa mengundang guest, dan Privileged Role Administrator untuk memberi role Microsoft Entra.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-least-priv-roles",
+            "az104-f-u01-global-admin"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e6",
+          "type": "config",
+          "concept": "entra-users",
+          "prompt": "Adele Vance starts next month. Create her account with the username adele and the contoso.com domain. She must not be able to sign in yet. Configure the form.",
+          "portal": "Microsoft Entra admin center",
+          "blade": "New user > Create new user",
+          "fields": [
+            {
+              "label": "User principal name",
+              "kind": "select",
+              "choices": [
+                "Adele Vance",
+                "adele@contoso.com",
+                "contoso.com\\adele"
+              ]
+            },
+            {
+              "label": "Display name",
+              "kind": "text",
+              "value": "Adele Vance",
+              "readOnly": true
+            },
+            {
+              "label": "Auto-generate password",
+              "kind": "toggle",
+              "value": true,
+              "readOnly": true
+            },
+            {
+              "label": "Account enabled",
+              "kind": "toggle",
+              "value": true
+            }
+          ],
+          "answer": {
+            "User principal name": "adele@contoso.com",
+            "Account enabled": false
+          },
+          "explanation": "UPN (User Principal Name) berbentuk nama@domain, jadi adele@contoso.com. Account enabled tercentang secara default, jadi matikan supaya Adele belum bisa login. Nanti tinggal diaktifkan lagi di hari pertamanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-upn",
+            "az104-f-u01-account-enabled"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "user-properties"
+          ],
+          "title": "Properti user dan user hasil sinkronisasi",
+          "body": "Properti user dikelompokkan dalam kategori, antara lain Identity (nama, UPN (User Principal Name), User type), Job information (job title, department, manager), Contact info, dan Settings (boleh login atau tidak, serta usage location). User yang disinkronkan dari Active Directory on-premises, misalnya lewat Microsoft Entra Connect, tetap diedit di Active Directory. Perubahannya muncul setelah siklus sinkronisasi berikutnya. Pengecualiannya atribut milik Entra ID seperti Usage location, yang bisa diubah langsung.",
+          "keyPoints": [
+            "Job information: job title, department, manager",
+            "User sinkronisasi diedit di Active Directory on-premises",
+            "Usage location bisa diubah langsung di Entra"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-user-profile-info",
+          "teaches": [
+            "az104-f-u01-prop-categories",
+            "az104-f-u01-synced-edit"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e7",
+          "type": "multi",
+          "concept": "user-properties",
+          "prompt": "Which two properties are in the Job information category of a Microsoft Entra user? Choose two.",
+          "options": [
+            "Department",
+            "Usage location",
+            "User principal name",
+            "Manager"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Job information berisi job title, department, dan manager. Usage location ada di Settings, dan UPN (User Principal Name) ada di Identity.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-prop-categories"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e8",
+          "type": "fix",
+          "concept": "user-properties",
+          "prompt": "Megan's account is synced from on-premises Active Directory by Microsoft Entra Connect. Her manager asks you to change her job title. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "Megan Bowen · Properties",
+            "message": "On-premises sync enabled: Yes",
+            "portal": "Microsoft Entra admin center"
+          },
+          "options": [
+            "Change the job title in the Microsoft Entra admin center",
+            "Change the job title in on-premises Active Directory, then wait for the next sync",
+            "Delete Megan and create her again as a cloud-only user",
+            "Change Megan's User type to Guest"
+          ],
+          "answer": 1,
+          "explanation": "Untuk user hasil sinkronisasi, sumber datanya Active Directory on-premises. Jadi job title diubah di sana, lalu tunggu siklus sinkronisasi. Yang boleh diubah langsung di Entra hanya atribut milik Entra seperti Usage location. Cara mengeceknya: lihat On-premises sync enabled di properti user.",
+          "requires": [
+            "az104-f-u01-synced-edit",
+            "az104-f-u01-usertype-prop"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-m5",
+          "type": "learn",
+          "concepts": [
+            "user-lifecycle"
+          ],
+          "title": "Menghapus dan me-restore user",
+          "body": "User yang dihapus tidak langsung hilang. Selama 30 hari, akunnya ada di halaman Deleted users dan bisa di-restore lengkap dengan semua propertinya. Setelah 30 hari, penghapusan permanen berjalan otomatis dan tidak bisa dihentikan. User yang sudah terhapus permanen tidak bisa dikembalikan, bahkan oleh Microsoft Support. Restore butuh minimal role User Administrator.",
+          "keyPoints": [
+            "30 hari di Deleted users",
+            "Setelah itu permanen, tidak bisa dikembalikan",
+            "Restore: minimal User Administrator"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/users-restore",
+          "teaches": [
+            "az104-f-u01-restore-30",
+            "az104-f-u01-permanent-delete"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e9",
+          "type": "choice",
+          "concept": "user-lifecycle",
+          "prompt": "A user account was deleted 12 days ago by mistake. You need to recover the account with all of its properties. What should you do?",
+          "options": [
+            "Create a new user with the same user principal name",
+            "Open a support request so that Microsoft can recover the account",
+            "Restore the user from the Deleted users page",
+            "Nothing, because deleted users can't be recovered"
+          ],
+          "answer": 2,
+          "explanation": "Masih di bawah 30 hari, jadi user bisa di-restore dari Deleted users lengkap dengan propertinya. Membuat user baru dengan UPN (User Principal Name) yang sama menghasilkan akun lain tanpa properti lamanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-restore-30",
+            "az104-f-u01-permanent-delete",
+            "az104-f-u01-upn"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e10",
+          "type": "truefalse",
+          "concept": "user-lifecycle",
+          "prompt": "After a user is permanently deleted, Microsoft Support can still restore the account.",
+          "answer": false,
+          "explanation": "Salah. Setelah terhapus permanen, akun tidak bisa dikembalikan oleh siapa pun, termasuk Microsoft Support.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-permanent-delete"
+          ]
+        },
+        {
+          "id": "az104-u01-l1-e11",
+          "type": "fill",
+          "concept": "user-lifecycle",
+          "prompt": "Complete the sentence.",
+          "sentence": "A deleted user can be restored for ___ days. After that, the user is ___ deleted.",
+          "bank": [
+            "30",
+            "90",
+            "permanently",
+            "temporarily"
+          ],
+          "answers": [
+            "30",
+            "permanently"
+          ],
+          "explanation": "30 hari di Deleted users, setelah itu terhapus permanen.",
+          "requires": [
+            "az104-f-u01-restore-30",
+            "az104-f-u01-permanent-delete"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u01-l2",
       "title": "Group",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u01-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "security-vs-m365-group"
+          ],
+          "title": "Security group vs Microsoft 365 group",
+          "body": "Security group dipakai untuk mengatur akses ke resource bersama. Anggotanya bisa user, device, service principal, dan group lain (nested). Microsoft 365 group dipakai untuk kolaborasi, punya alamat email group, dan anggotanya hanya user, termasuk orang di luar organisasi. Group type tidak bisa diubah setelah group dibuat, jadi kalau salah pilih, hapus lalu buat ulang.",
+          "keyPoints": [
+            "Security: akses ke resource, anggota user, device, service principal, group",
+            "Microsoft 365: kolaborasi, anggota hanya user",
+            "Group type tidak bisa diubah"
+          ],
+          "visual": "GroupTypes",
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/concept-learn-about-groups",
+          "teaches": [
+            "az104-f-u01-security-group",
+            "az104-f-u01-m365-group",
+            "az104-f-u01-group-type-fixed"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e1",
+          "type": "truefalse",
+          "concept": "security-vs-m365-group",
+          "prompt": "A Microsoft 365 group can have devices as members.",
+          "answer": false,
+          "explanation": "Salah. Anggota Microsoft 365 group hanya user. Untuk device, pakai security group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-m365-group"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e2",
+          "type": "multi",
+          "concept": "security-vs-m365-group",
+          "prompt": "Which two can be members of a security group in Microsoft Entra ID? Choose two.",
+          "options": [
+            "Azure subscriptions",
+            "Service principals",
+            "Resource groups",
+            "Devices"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Anggota security group bisa user, device, service principal, dan group lain. Subscription dan resource group adalah wadah resource Azure, bukan objek direktori yang bisa jadi anggota group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-security-group"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "dynamic-membership"
+          ],
+          "title": "Assigned atau dynamic",
+          "body": "Membership type menentukan cara anggota masuk. Assigned berarti anggota ditambah manual. Dynamic user atau Dynamic device berarti anggota ditambah dan dikeluarkan otomatis lewat aturan, misalnya user.department -eq \"Sales\". Anggota dynamic group tidak bisa ditambah atau dihapus manual. Satu dynamic group berisi user saja atau device saja, tidak bisa keduanya.",
+          "keyPoints": [
+            "Assigned: manual",
+            "Dynamic: aturan dari atribut, otomatis masuk dan keluar",
+            "Dynamic group: user saja atau device saja"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership",
+          "teaches": [
+            "az104-f-u01-membership-types",
+            "az104-f-u01-dynamic-rule",
+            "az104-f-u01-dynamic-users-or-devices"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e3",
+          "type": "choice",
+          "concept": "assigned-vs-dynamic-membership",
+          "prompt": "Users whose Department attribute is Finance must automatically become members of the Finance-Team group. Users who move to another department must be removed automatically. What should you configure?",
+          "options": [
+            "Assigned membership, and review the members every week",
+            "Dynamic user membership with the rule user.department -eq \"Finance\"",
+            "Dynamic device membership with the rule user.department -eq \"Finance\"",
+            "A Microsoft 365 group with Assigned membership"
+          ],
+          "answer": 1,
+          "explanation": "Dynamic user membership memasukkan dan mengeluarkan user otomatis sesuai aturan. Assigned harus diurus manual. Dynamic device hanya berisi device, jadi tidak bisa memakai aturan untuk user.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-membership-types",
+            "az104-f-u01-dynamic-rule",
+            "az104-f-u01-dynamic-users-or-devices"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e4",
+          "type": "choice",
+          "concept": "security-vs-m365-group",
+          "prompt": "You need one group that contains three laptops and two users. The group will control access to a shared resource. What should you create?",
+          "options": [
+            "A security group with Assigned membership",
+            "A Microsoft 365 group with Assigned membership",
+            "A security group with Dynamic user membership",
+            "A security group with Dynamic device membership"
+          ],
+          "answer": 0,
+          "explanation": "Hanya security group yang bisa berisi device. Dynamic group berisi user saja atau device saja, jadi campuran laptop dan user harus memakai Assigned.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-security-group",
+            "az104-f-u01-m365-group",
+            "az104-f-u01-membership-types",
+            "az104-f-u01-dynamic-users-or-devices"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e5",
+          "type": "truefalse",
+          "concept": "assigned-vs-dynamic-membership",
+          "prompt": "You can manually add a user to a group that uses Dynamic user membership.",
+          "answer": false,
+          "explanation": "Salah. Anggota dynamic group hanya diatur oleh aturannya. Kalau user harus masuk, ubah atributnya supaya cocok dengan aturan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-dynamic-rule"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "dynamic-membership-license"
+          ],
+          "title": "Lisensi dan perubahan ke dynamic",
+          "body": "Dynamic membership group butuh lisensi Microsoft Entra ID P1 (atau Intune for Education) untuk setiap user unik yang menjadi anggota satu atau lebih dynamic group. Lisensi itu tidak harus di-assign ke user, tapi jumlahnya harus cukup. Device di dynamic device group tidak butuh lisensi. Kalau group Assigned diubah jadi dynamic, anggota yang tidak cocok dengan aturan dikeluarkan.",
+          "keyPoints": [
+            "P1 per user unik di dynamic group",
+            "Device tidak butuh lisensi",
+            "Assigned ke dynamic: anggota yang tidak cocok dikeluarkan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership",
+          "teaches": [
+            "az104-f-u01-dynamic-p1",
+            "az104-f-u01-static-to-dynamic"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e6",
+          "type": "yesno",
+          "concept": "dynamic-membership-license",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso has 800 users. 300 users are members of one or more dynamic user groups. 200 laptops are members of a dynamic device group.",
+          "statements": [
+            {
+              "text": "Contoso needs at least 300 Microsoft Entra ID P1 or Intune for Education licenses for these groups.",
+              "answer": true
+            },
+            {
+              "text": "The 200 laptops also need Microsoft Entra ID P1 licenses.",
+              "answer": false
+            },
+            {
+              "text": "Each of the 300 users must have a P1 license assigned directly to their account.",
+              "answer": false
+            }
+          ],
+          "explanation": "Hitungannya per user unik di dynamic group, jadi 300. Device tidak butuh lisensi, dan lisensinya tidak harus di-assign ke user, yang penting jumlahnya cukup.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-dynamic-p1"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e7",
+          "type": "fix",
+          "concept": "dynamic-membership-license",
+          "prompt": "You changed the Sales-Team group from Assigned to Dynamic user membership. Twelve members are no longer in the group. What is the most likely cause?",
+          "scene": {
+            "kind": "portal",
+            "title": "Sales-Team · Properties",
+            "message": "Membership type: Dynamic User. Rule: user.department -eq \"Sales\"",
+            "portal": "Microsoft Entra admin center"
+          },
+          "options": [
+            "Dynamic groups can only contain devices",
+            "Their Department attribute isn't Sales, so the rule removed them",
+            "The twelve users don't have a P1 license assigned to their accounts",
+            "The group type changed to Microsoft 365"
+          ],
+          "answer": 1,
+          "explanation": "Saat diubah ke dynamic, anggota yang tidak cocok dengan aturan dikeluarkan. Cek atribut Department dua belas user itu. Lisensi P1 tidak harus di-assign per user, dan group type tidak ikut berubah.",
+          "requires": [
+            "az104-f-u01-static-to-dynamic",
+            "az104-f-u01-dynamic-users-or-devices",
+            "az104-f-u01-dynamic-p1",
+            "az104-f-u01-group-type-fixed"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-m4",
+          "type": "learn",
+          "concepts": [
+            "nested-groups"
+          ],
+          "title": "Nested group dan group untuk role",
+          "body": "Security group bisa dimasukkan ke security group lain (nested group). Anggota nested group tidak ikut mendapat aplikasi dan resource bersama yang di-assign ke group induk. Pengecualian penting: role Azure RBAC (Role-Based Access Control) bersifat transitif, jadi role yang diberikan ke group induk juga berlaku untuk anggota nested group. Security group tidak bisa dimasukkan ke Microsoft 365 group. Group untuk memberi role Microsoft Entra harus mengaktifkan Microsoft Entra roles can be assigned to the group, dan membership-nya otomatis Assigned.",
+          "keyPoints": [
+            "Aplikasi group induk tidak turun ke nested group",
+            "Role Azure RBAC tetap berlaku untuk anggota nested group",
+            "Group untuk role Entra: selalu Assigned"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups",
+          "teaches": [
+            "az104-f-u01-nested-no-access",
+            "az104-f-u01-rbac-transitive",
+            "az104-f-u01-role-assignable"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e8",
+          "type": "truefalse",
+          "concept": "nested-groups",
+          "prompt": "If Group B is a member of Group A, the members of Group B get access to the apps that are assigned to Group A.",
+          "answer": false,
+          "explanation": "Salah. Anggota nested group tidak ikut mendapat aplikasi yang di-assign ke group induk, jadi assign aplikasinya langsung ke Group B. Beda dengan role Azure RBAC (Role-Based Access Control), yang tetap berlaku untuk anggota nested group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-nested-no-access",
+            "az104-f-u01-rbac-transitive"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e9",
+          "type": "truefalse",
+          "concept": "nested-groups",
+          "prompt": "Group B is a member of Group A. An Azure role is assigned to Group A on a resource group. The members of Group B also get the permissions of that role.",
+          "answer": true,
+          "explanation": "Benar. Role assignment Azure RBAC (Role-Based Access Control) bersifat transitif untuk group. Jadi jangan menyamakannya dengan assignment aplikasi, yang tidak turun ke nested group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-rbac-transitive",
+            "az104-f-u01-nested-no-access"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e10",
+          "type": "choice",
+          "concept": "nested-groups",
+          "prompt": "You need a group that you can use to assign Microsoft Entra roles. Which membership type does the group use?",
+          "options": [
+            "Assigned",
+            "Dynamic user",
+            "Dynamic device",
+            "Any membership type"
+          ],
+          "answer": 0,
+          "explanation": "Saat opsi Microsoft Entra roles can be assigned to the group aktif, membership type otomatis Assigned dan tidak bisa diubah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-role-assignable",
+            "az104-f-u01-membership-types"
+          ]
+        },
+        {
+          "id": "az104-u01-l2-e11",
+          "type": "fill",
+          "concept": "security-vs-m365-group",
+          "prompt": "Complete the sentence.",
+          "sentence": "A ___ group can contain users, devices, and service principals, while a ___ group can only contain users.",
+          "bank": [
+            "security",
+            "Microsoft 365",
+            "dynamic device",
+            "role-assignable"
+          ],
+          "answers": [
+            "security",
+            "Microsoft 365"
+          ],
+          "explanation": "Security group untuk akses dengan anggota yang beragam, Microsoft 365 group untuk kolaborasi dengan anggota user saja.",
+          "requires": [
+            "az104-f-u01-security-group",
+            "az104-f-u01-m365-group"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u01-l3",
       "title": "Lisensi",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u01-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "license-assignment",
+            "usage-location"
+          ],
+          "title": "Assign lisensi",
+          "body": "Layanan berbayar seperti Microsoft 365 butuh lisensi per user. Sebelum lisensi di-assign, user harus punya usage location, karena sebagian layanan tidak tersedia di semua negara. Sejak September 2024, assign lisensi lewat portal dilakukan di Microsoft 365 admin center (Billing > Licenses), bukan lagi di portal Azure atau Microsoft Entra admin center. Role paling kecil untuk ini adalah License Administrator.",
+          "keyPoints": [
+            "Usage location wajib sebelum lisensi",
+            "Portal lisensi: Microsoft 365 admin center",
+            "License Administrator: hanya lisensi dan usage location"
+          ],
+          "trap": "Materi dan soal lama sering menyebut assign lisensi di portal Entra. Konsepnya tetap sama, hanya tempatnya di portal yang pindah.",
+          "link": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/assign-licenses-to-users",
+          "teaches": [
+            "az104-f-u01-usage-location",
+            "az104-f-u01-license-portal",
+            "az104-f-u01-license-roles"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e1",
+          "type": "truefalse",
+          "concept": "usage-location",
+          "prompt": "You must set a user's usage location before you can assign a license directly to that user.",
+          "answer": true,
+          "explanation": "Benar. Sebagian layanan Microsoft tidak tersedia di semua negara, jadi usage location wajib diisi sebelum lisensi di-assign.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-usage-location"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e2",
+          "type": "choice",
+          "concept": "license-assignment",
+          "prompt": "An administrator wants to assign a Microsoft 365 license to a user by using a web portal. Which portal should the administrator use?",
+          "options": [
+            "Microsoft Entra admin center",
+            "Microsoft 365 admin center",
+            "Azure portal",
+            "Microsoft Defender portal"
+          ],
+          "answer": 1,
+          "explanation": "Sejak September 2024, Microsoft Entra admin center dan portal Azure tidak lagi menyediakan antarmuka untuk assign lisensi. Pakai Microsoft 365 admin center, atau Microsoft Graph PowerShell untuk otomatisasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-license-portal"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e3",
+          "type": "choice",
+          "concept": "license-assignment",
+          "prompt": "Diego must assign licenses to users. He must not be able to create users or groups. Which role should you assign to Diego?",
+          "options": [
+            "User Administrator",
+            "License Administrator",
+            "Global Administrator",
+            "Guest Inviter"
+          ],
+          "answer": 1,
+          "explanation": "License Administrator hanya mengelola lisensi dan usage location, jadi Diego tidak bisa membuat user atau group. User Administrator dan Global Administrator bisa membuat user, sedangkan Guest Inviter tidak bisa assign lisensi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-license-roles",
+            "az104-f-u01-least-priv-roles",
+            "az104-f-u01-global-admin"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "group-based-licensing"
+          ],
+          "title": "Group-based licensing",
+          "body": "Dengan group-based licensing, lisensi di-assign ke group, dan setiap anggotanya ikut mendapat lisensi. Anggota baru otomatis dapat lisensi, anggota yang keluar kehilangan lisensinya. Fitur ini bisa dipakai di security group, mail-enabled security group, dan Microsoft 365 group, termasuk dynamic group. Syaratnya, setiap user yang memakainya tercakup Microsoft Entra ID P1, atau paket seperti Microsoft 365 Business Premium atau Office 365 E3.",
+          "keyPoints": [
+            "Lisensi ikut keanggotaan group",
+            "Cocok dipadukan dengan dynamic group",
+            "Butuh P1 atau paket yang menyertakannya"
+          ],
+          "visual": "LicenseFlow",
+          "link": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-group-licenses",
+          "teaches": [
+            "az104-f-u01-gbl-def",
+            "az104-f-u01-gbl-groups",
+            "az104-f-u01-gbl-license-req"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e4",
+          "type": "yesno",
+          "concept": "group-based-licensing",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You assign a Microsoft 365 license to the Sales security group. Sales uses Dynamic user membership.",
+          "statements": [
+            {
+              "text": "A user who joins Sales gets the license automatically.",
+              "answer": true
+            },
+            {
+              "text": "A user who leaves Sales keeps the license.",
+              "answer": false
+            },
+            {
+              "text": "The users who get licenses through Sales must be covered by Microsoft Entra ID P1 or a plan that includes it.",
+              "answer": true
+            }
+          ],
+          "explanation": "Lisensi mengikuti keanggotaan: masuk dapat, keluar hilang. Group-based licensing butuh Microsoft Entra ID P1 (atau paket yang menyertakannya), dan dynamic group-nya sendiri juga butuh P1.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-gbl-def",
+            "az104-f-u01-gbl-groups",
+            "az104-f-u01-gbl-license-req",
+            "az104-f-u01-dynamic-p1"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e5",
+          "type": "choice",
+          "concept": "group-based-licensing",
+          "prompt": "Every employee in the Marketing department must get a Microsoft 365 license automatically, including new hires. The solution must minimize administrative effort. What should you do?",
+          "options": [
+            "Assign the license to a dynamic user group with the rule user.department -eq \"Marketing\"",
+            "Assign the license to each user when you create the account",
+            "Assign the license to an Assigned group, and add new hires every week",
+            "Assign the license to a dynamic device group"
+          ],
+          "answer": 0,
+          "explanation": "Dynamic group memasukkan user Marketing otomatis, dan group-based licensing memberi lisensi ke setiap anggotanya. Assign per user atau group Assigned butuh kerja manual, dan dynamic device group hanya berisi device.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-gbl-def",
+            "az104-f-u01-gbl-groups",
+            "az104-f-u01-dynamic-rule",
+            "az104-f-u01-dynamic-users-or-devices",
+            "az104-f-u01-membership-types"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "usage-location",
+            "group-based-licensing-rules"
+          ],
+          "title": "Usage location dan nested group",
+          "body": "Lewat group-based licensing, anggota yang belum punya usage location memakai lokasi tenant. Ini praktis, tapi bisa salah kalau user sebenarnya di negara lain. Karena itu Microsoft menyarankan mengisi usage location sejak user dibuat. Group-based licensing juga tidak mendukung nested group: kalau group berisi group lain, hanya anggota level pertama yang dapat lisensi.",
+          "keyPoints": [
+            "Lewat group: usage location kosong ikut lokasi tenant",
+            "Isi usage location sejak user dibuat",
+            "Nested group tidak ikut dapat lisensi"
+          ],
+          "link": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-group-licenses",
+          "teaches": [
+            "az104-f-u01-gbl-location",
+            "az104-f-u01-gbl-nested"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e6",
+          "type": "fix",
+          "concept": "usage-location",
+          "prompt": "You try to assign a Microsoft 365 license directly to Adele, a new user. The assignment fails. What should you do first?",
+          "scene": {
+            "kind": "error",
+            "title": "License assignment failed",
+            "message": "Adele Vance: the user's usage location isn't set."
+          },
+          "options": [
+            "Buy more licenses",
+            "Set Adele's usage location, then assign the license again",
+            "Change Adele's User type to Guest",
+            "Add Adele to a group that is nested inside a licensed group"
+          ],
+          "answer": 1,
+          "explanation": "Pesan error-nya menyebut usage location, jadi isi dulu usage location Adele lalu ulangi. Menambah lisensi tidak membantu, dan anggota nested group tidak ikut mendapat lisensi.",
+          "requires": [
+            "az104-f-u01-usage-location",
+            "az104-f-u01-gbl-nested",
+            "az104-f-u01-usertype-prop"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e7",
+          "type": "truefalse",
+          "concept": "usage-location",
+          "prompt": "With group-based licensing, a member who has no usage location uses the tenant's location.",
+          "answer": true,
+          "explanation": "Benar. Lewat group, usage location yang kosong mengikuti lokasi tenant. Assign langsung ke user tetap butuh usage location diisi dulu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-gbl-location"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e8",
+          "type": "choice",
+          "concept": "group-based-licensing-rules",
+          "prompt": "The Sales group is assigned a Microsoft 365 license. Sales contains the user Ana and the group Sales-Interns. Who gets the license from Sales?",
+          "options": [
+            "Ana and every member of Sales-Interns",
+            "Only the members of Sales-Interns",
+            "No one, because Sales contains a group",
+            "Only Ana"
+          ],
+          "answer": 3,
+          "explanation": "Group-based licensing tidak mendukung nested group, jadi hanya anggota level pertama (Ana) yang dapat lisensi. Anggota Sales-Interns tidak ikut, tapi Ana tetap dapat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-gbl-nested"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-m4",
+          "type": "learn",
+          "concepts": [
+            "license-errors"
+          ],
+          "title": "Saat lisensi gagal",
+          "body": "Masalah lisensi dilihat di Microsoft 365 admin center. Buka Billing > Licenses, pilih produknya, lalu tab Errors & issues. Penyebab umumnya lisensi yang habis, service plan yang bentrok dengan lisensi lain milik user, dan usage location yang tidak valid. Perbaiki penyebabnya, misalnya beli lisensi tambahan atau isi usage location, lalu pilih Reprocess.",
+          "keyPoints": [
+            "Cek tab Errors & issues di halaman produk",
+            "Penyebab umum: lisensi habis, service plan bentrok, usage location",
+            "Setelah diperbaiki, pilih Reprocess"
+          ],
+          "link": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/assign-licenses-to-users",
+          "teaches": [
+            "az104-f-u01-gbl-errors"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e9",
+          "type": "choice",
+          "concept": "license-errors",
+          "prompt": "Some members of a licensed group didn't get the license. Where can you see the reason for each user?",
+          "options": [
+            "Microsoft Entra admin center > Groups > the group > Dynamic membership rules",
+            "Microsoft 365 admin center > Licenses > the product > Errors & issues",
+            "Azure portal > Cost Management > Invoices",
+            "Azure portal > Subscriptions > Activity log"
+          ],
+          "answer": 1,
+          "explanation": "Tab Errors & issues di halaman produk menunjukkan user yang gagal dapat lisensi beserta alasannya. Setelah masalahnya diperbaiki, pilih Reprocess.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-gbl-errors"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e10",
+          "type": "rules",
+          "concept": "license-errors",
+          "prompt": "Three new users join Sales-Team. Based on the tables, what happens?",
+          "tables": [
+            {
+              "title": "Licenses",
+              "columns": [
+                "Product",
+                "Total",
+                "Assigned"
+              ],
+              "rows": [
+                [
+                  "Microsoft 365 Business Premium",
+                  "50",
+                  "50"
+                ]
+              ]
+            },
+            {
+              "title": "Sales-Team group",
+              "columns": [
+                "Setting",
+                "Value"
+              ],
+              "rows": [
+                [
+                  "Assigned license",
+                  "Microsoft 365 Business Premium"
+                ],
+                [
+                  "New members",
+                  "Ana, Budi, Citra"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "The new users don't get the license and appear under Errors & issues",
+            "The three users who got the license first lose it",
+            "Microsoft adds three licenses automatically",
+            "The new users get the license, and the price is added to the next invoice"
+          ],
+          "answer": 0,
+          "explanation": "Semua 50 lisensi sudah terpakai, jadi tiga user baru tidak kebagian dan muncul di Errors & issues. Tambah lisensi atau kosongkan lisensi yang tidak dipakai, lalu pilih Reprocess.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-gbl-errors",
+            "az104-f-u01-gbl-def"
+          ]
+        },
+        {
+          "id": "az104-u01-l3-e11",
+          "type": "fill",
+          "concept": "usage-location",
+          "prompt": "Complete the sentence.",
+          "sentence": "Before you assign a license directly, set the user's ___. With group-based licensing, a user without one uses the ___ location.",
+          "bank": [
+            "usage location",
+            "tenant",
+            "department",
+            "manager"
+          ],
+          "answers": [
+            "usage location",
+            "tenant"
+          ],
+          "explanation": "Usage location wajib untuk assign langsung. Lewat group, yang kosong ikut lokasi tenant.",
+          "requires": [
+            "az104-f-u01-usage-location",
+            "az104-f-u01-gbl-location"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u01-l4",
       "title": "User eksternal",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u01-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "b2b-guest-invite"
+          ],
+          "title": "Mengundang guest B2B",
+          "body": "Guest B2B (business-to-business) diundang lewat Entra ID > Users > New user > Invite external user. Akun guest langsung dibuat di tenant kamu dengan User type Guest, lalu undangan dikirim lewat email. Sebelum guest menerima undangan, Invitation state-nya Pending acceptance. User yang mengundang otomatis menjadi Sponsor akun itu.",
+          "keyPoints": [
+            "Invite external user membuat akun dengan User type Guest",
+            "Belum diterima: Pending acceptance",
+            "Pengundang menjadi Sponsor"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/external-id/user-properties",
+          "teaches": [
+            "az104-f-u01-b2b-invite"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e1",
+          "type": "truefalse",
+          "concept": "b2b-guest-invite",
+          "prompt": "A guest user who hasn't redeemed the invitation yet has the Invitation state Pending acceptance.",
+          "answer": true,
+          "explanation": "Benar. Pending acceptance berarti akunnya sudah ada, tapi guest belum menerima undangannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-b2b-invite"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e2",
+          "type": "choice",
+          "concept": "b2b-guest-invite",
+          "prompt": "You invite a consultant from Fabrikam to the Contoso tenant by using Invite external user. Which User type does the new account have by default?",
+          "options": [
+            "Member",
+            "Guest",
+            "External",
+            "Partner"
+          ],
+          "answer": 1,
+          "explanation": "User type hanya bernilai Member atau Guest, dan user yang diundang lewat Invite external user mendapat Guest.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-b2b-invite",
+            "az104-f-u01-usertype-prop"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "external-collaboration-settings"
+          ],
+          "title": "Batas akses guest",
+          "body": "Di Entra ID > External Identities > External collaboration settings, bagian Guest user access menentukan seberapa banyak guest bisa melihat direktori. Level paling longgar memberi guest akses yang sama dengan member. Level default, limited access, memblokir guest dari melihat daftar user dan group, tapi guest masih bisa melihat keanggotaan group yang tidak hidden. Level paling ketat membuat guest hanya bisa melihat profilnya sendiri.",
+          "keyPoints": [
+            "Tiga level: sama dengan member, limited (default), restricted",
+            "Limited: tidak bisa melihat daftar user dan group",
+            "Restricted: hanya profil sendiri"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/external-id/external-collaboration-settings-configure",
+          "teaches": [
+            "az104-f-u01-guest-access-levels"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e3",
+          "type": "choice",
+          "concept": "external-collaboration-settings",
+          "prompt": "Guests must see only their own profile. They must not see other users, groups, or group memberships. Which Guest user access option should you choose?",
+          "options": [
+            "Guest user access is restricted to properties and memberships of their own directory objects",
+            "Guest users have limited access to properties and memberships of directory objects",
+            "Guest users have the same access as members",
+            "Change each guest's User type to Member"
+          ],
+          "answer": 0,
+          "explanation": "Level paling ketat hanya mengizinkan guest melihat profilnya sendiri. Limited access (default) masih mengizinkan guest melihat keanggotaan group yang tidak hidden, dan mengubah guest menjadi Member malah menambah haknya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-guest-access-levels",
+            "az104-f-u01-member-default"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e4",
+          "type": "yesno",
+          "concept": "external-collaboration-settings",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso keeps the default Guest user access option. Omar is a guest from Fabrikam.",
+          "statements": [
+            {
+              "text": "Omar can enumerate the list of all users in the Contoso tenant.",
+              "answer": false
+            },
+            {
+              "text": "Omar can see the membership of groups that are not hidden.",
+              "answer": true
+            },
+            {
+              "text": "The default option is the most restrictive one.",
+              "answer": false
+            }
+          ],
+          "explanation": "Default-nya limited access: guest tidak bisa melihat daftar user dan group, tapi masih bisa melihat keanggotaan group yang tidak hidden. Level paling ketat adalah restricted to their own directory objects.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-guest-access-levels"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "guest-invite-settings"
+          ],
+          "title": "Siapa yang boleh mengundang",
+          "body": "Guest invite settings punya empat pilihan, dari paling longgar ke paling ketat. Default-nya siapa pun di organisasi boleh mengundang, termasuk guest. Lalu member dan admin tertentu; hanya admin tertentu, yaitu User Administrator atau Guest Inviter; dan terakhir tidak ada siapa pun, termasuk admin. Role Guest Inviter hanya memberi hak mengundang, dan tetap bisa mengundang walau pilihan hanya admin tertentu aktif.",
+          "keyPoints": [
+            "Default: siapa pun, termasuk guest",
+            "Hanya admin tertentu: User Administrator atau Guest Inviter",
+            "Guest Inviter: least privilege untuk mengundang"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/external-id/external-collaboration-settings-configure",
+          "teaches": [
+            "az104-f-u01-invite-settings",
+            "az104-f-u01-guest-inviter"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e5",
+          "type": "config",
+          "concept": "guest-invite-settings",
+          "prompt": "Guests must see only their own profile. Only users with the User Administrator or Guest Inviter role can invite guests. Invitations can still go to any domain. Configure the settings.",
+          "portal": "Microsoft Entra admin center",
+          "blade": "External collaboration settings",
+          "fields": [
+            {
+              "label": "Guest user access",
+              "kind": "select",
+              "value": "Limited access (default)",
+              "choices": [
+                "Same access as members (most inclusive)",
+                "Limited access (default)",
+                "Restricted to own directory objects (most restrictive)"
+              ]
+            },
+            {
+              "label": "Guest invite settings",
+              "kind": "select",
+              "value": "Anyone in the organization, including guests",
+              "choices": [
+                "Anyone in the organization, including guests",
+                "Member users and users assigned to specific admin roles",
+                "Only users assigned to specific admin roles",
+                "No one in the organization, including admins"
+              ]
+            },
+            {
+              "label": "Collaboration restrictions",
+              "kind": "select",
+              "value": "Allow invitations to be sent to any domain",
+              "readOnly": true,
+              "choices": [
+                "Allow invitations to be sent to any domain",
+                "Deny invitations to the specified domains",
+                "Allow invitations only to the specified domains"
+              ]
+            }
+          ],
+          "answer": {
+            "Guest user access": "Restricted to own directory objects (most restrictive)",
+            "Guest invite settings": "Only users assigned to specific admin roles"
+          },
+          "explanation": "Level restricted membuat guest hanya melihat profil sendiri. Pilihan Only users assigned to specific admin roles membatasi pengundang ke User Administrator dan Guest Inviter. Collaboration restrictions tetap default karena domain tujuan tidak dibatasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-guest-access-levels",
+            "az104-f-u01-invite-settings"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e6",
+          "type": "choice",
+          "concept": "guest-invite-settings",
+          "prompt": "Guest invite settings is set to Only users assigned to specific admin roles can invite guest users. Maria must invite partners, but she must not get any other admin permissions. Which role should you assign to Maria?",
+          "options": [
+            "User Administrator",
+            "Global Administrator",
+            "License Administrator",
+            "Guest Inviter"
+          ],
+          "answer": 3,
+          "explanation": "Guest Inviter hanya memberi hak mengundang dan tetap berlaku di pengaturan itu. User Administrator dan Global Administrator punya hak lain yang jauh lebih luas, dan License Administrator tidak bisa mengundang guest.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-guest-inviter",
+            "az104-f-u01-least-priv-roles",
+            "az104-f-u01-global-admin",
+            "az104-f-u01-license-roles"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-m4",
+          "type": "learn",
+          "concepts": [
+            "collaboration-restrictions"
+          ],
+          "title": "Membatasi domain partner",
+          "body": "Bagian Collaboration restrictions mengatur ke domain mana undangan boleh dikirim. Default-nya semua domain diizinkan. Kamu bisa membuat block list lewat Deny invitations to the specified domains, misalnya untuk memblokir gmail.com. Atau allow list lewat Allow invitations only to the specified domains, misalnya hanya fabrikam.com. Pilih salah satu, karena allow list dan block list tidak bisa dipakai bersamaan.",
+          "keyPoints": [
+            "Default: semua domain boleh",
+            "Allow list atau block list, tidak keduanya",
+            "Allow list: pilihan paling ketat"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/external-id/allow-deny-list",
+          "teaches": [
+            "az104-f-u01-collab-restrictions"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e7",
+          "type": "choice",
+          "concept": "collaboration-restrictions",
+          "prompt": "Contoso must send B2B (business-to-business) invitations only to users from fabrikam.com and litware.com. What should you configure?",
+          "options": [
+            "Collaboration restrictions: Deny invitations to the specified domains",
+            "Collaboration restrictions: Allow invitations only to the specified domains",
+            "Guest user access: restricted to their own directory objects",
+            "Guest invite settings: No one in the organization can invite guest users"
+          ],
+          "answer": 1,
+          "explanation": "Allow list membatasi undangan ke domain yang disebut saja. Block list justru mengizinkan semua domain kecuali yang diblokir. Guest user access dan Guest invite settings tidak mengatur domain tujuan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-collab-restrictions",
+            "az104-f-u01-guest-access-levels",
+            "az104-f-u01-invite-settings"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e8",
+          "type": "truefalse",
+          "concept": "collaboration-restrictions",
+          "prompt": "You can use an allow list and a block list of domains for B2B (business-to-business) invitations at the same time.",
+          "answer": false,
+          "explanation": "Salah. Kamu hanya bisa memilih salah satu: allow list atau block list.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-collab-restrictions"
+          ]
+        },
+        {
+          "id": "az104-u01-l4-e9",
+          "type": "sort",
+          "concept": "external-collaboration-settings",
+          "prompt": "Sort each requirement into the section of External collaboration settings that controls it.",
+          "buckets": [
+            "Guest user access",
+            "Guest invite settings",
+            "Collaboration restrictions"
+          ],
+          "items": [
+            {
+              "text": "Guests can see only their own profile",
+              "bucket": 0
+            },
+            {
+              "text": "Guests can't enumerate users",
+              "bucket": 0
+            },
+            {
+              "text": "Only admins can send invitations",
+              "bucket": 1
+            },
+            {
+              "text": "Guests can invite other guests",
+              "bucket": 1
+            },
+            {
+              "text": "Block invitations to gmail.com",
+              "bucket": 2
+            },
+            {
+              "text": "Invite only users from fabrikam.com",
+              "bucket": 2
+            }
+          ],
+          "explanation": "Guest user access mengatur apa yang bisa dilihat guest, Guest invite settings mengatur siapa yang boleh mengundang, dan Collaboration restrictions mengatur domain tujuan undangan.",
+          "requires": [
+            "az104-f-u01-guest-access-levels",
+            "az104-f-u01-invite-settings",
+            "az104-f-u01-collab-restrictions"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u01-l5",
       "title": "Reset password mandiri",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u01-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "sspr"
+          ],
+          "title": "Apa itu SSPR",
+          "body": "SSPR (Self-Service Password Reset) membuat user bisa mengganti atau me-reset password sendiri tanpa menghubungi helpdesk. Sebelum bisa me-reset, user harus mendaftarkan metode autentikasi yang diizinkan admin. Admin menentukan jumlah metode yang wajib dipakai saat reset: satu atau dua. Kalau user belum mendaftarkan metode sebanyak itu, dia melihat halaman error dan harus minta admin me-reset passwordnya.",
+          "keyPoints": [
+            "Reset password tanpa helpdesk",
+            "User wajib mendaftarkan metode dulu",
+            "Jumlah metode wajib: satu atau dua"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks",
+          "teaches": [
+            "az104-f-u01-sspr-def",
+            "az104-f-u01-sspr-register"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e1",
+          "type": "truefalse",
+          "concept": "sspr",
+          "prompt": "A user must register authentication methods before they can use SSPR (self-service password reset) to reset a password.",
+          "answer": true,
+          "explanation": "Benar. Tanpa metode yang terdaftar, SSPR (Self-Service Password Reset) tidak bisa memverifikasi user.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-register"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e2",
+          "type": "choice",
+          "concept": "sspr",
+          "prompt": "Number of methods required to reset is set to 2. A user registered only one method. What happens when the user tries SSPR (self-service password reset)?",
+          "options": [
+            "SSPR resets the password by using the one registered method",
+            "SSPR sends a reset link to the user's manager",
+            "The user must wait 30 days before trying again",
+            "The user sees an error page and must ask an administrator to reset the password"
+          ],
+          "answer": 3,
+          "explanation": "User yang belum mendaftarkan jumlah metode minimum melihat halaman error saat memakai SSPR (Self-Service Password Reset), jadi admin yang harus me-reset passwordnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-register"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "sspr-licensing"
+          ],
+          "title": "Lisensi SSPR",
+          "body": "Fitur SSPR (Self-Service Password Reset) tergantung lisensi. Dengan Microsoft Entra ID Free, user cloud-only hanya bisa mengganti password yang masih diingat. Me-reset password yang lupa butuh Microsoft 365 Business Standard, Business Premium, atau Microsoft Entra ID P1/P2. Untuk user hybrid, change atau reset dengan writeback ke Active Directory on-premises butuh Business Premium atau P1/P2.",
+          "keyPoints": [
+            "Free: hanya ganti password yang diingat",
+            "Reset cloud-only: Business Standard ke atas atau P1/P2",
+            "Writeback: Business Premium atau P1/P2"
+          ],
+          "visual": "SsprLicensing",
+          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-licensing",
+          "teaches": [
+            "az104-f-u01-sspr-licensing"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e3",
+          "type": "rules",
+          "concept": "sspr-licensing",
+          "prompt": "SSPR (self-service password reset) with password writeback is enabled for all users. Based on the table, which users are licensed to reset a forgotten password by using SSPR?",
+          "tables": [
+            {
+              "title": "Users",
+              "columns": [
+                "User",
+                "Source",
+                "License"
+              ],
+              "rows": [
+                [
+                  "Ani",
+                  "Cloud-only",
+                  "Microsoft Entra ID Free"
+                ],
+                [
+                  "Budi",
+                  "Cloud-only",
+                  "Microsoft 365 Business Standard"
+                ],
+                [
+                  "Citra",
+                  "Synced from on-premises",
+                  "Microsoft 365 Business Standard"
+                ],
+                [
+                  "Dewi",
+                  "Synced from on-premises",
+                  "Microsoft Entra ID P1"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Budi and Dewi only",
+            "Dewi only",
+            "Ani, Budi, Citra, and Dewi",
+            "Budi, Citra, and Dewi"
+          ],
+          "answer": 0,
+          "explanation": "Ani hanya bisa mengganti password yang masih diingat (Free). Budi cloud-only dengan Business Standard, jadi bisa reset. Citra user hybrid, dan writeback butuh Business Premium atau P1/P2, jadi Business Standard tidak cukup. Dewi user hybrid dengan P1, jadi bisa.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-licensing",
+            "az104-f-u01-synced-edit"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e4",
+          "type": "yesno",
+          "concept": "sspr-licensing",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso uses Microsoft Entra ID Free. All users are cloud-only.",
+          "statements": [
+            {
+              "text": "Users can change their password when they know the current password.",
+              "answer": true
+            },
+            {
+              "text": "Users can reset a forgotten password by using SSPR (self-service password reset).",
+              "answer": false
+            },
+            {
+              "text": "After Contoso buys Microsoft Entra ID P1 for the users, they can reset a forgotten password.",
+              "answer": true
+            }
+          ],
+          "explanation": "Entra ID Free hanya mendukung ganti password yang masih diingat. Reset untuk user cloud-only butuh Business Standard ke atas atau Microsoft Entra ID P1/P2.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-licensing"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "sspr-scope"
+          ],
+          "title": "Mengaktifkan SSPR",
+          "body": "Di Entra ID > Password reset > Properties, opsi Self service password reset enabled bisa None, Selected, atau All. Pilih Selected untuk uji coba di satu group; admin center hanya bisa memilih satu group, tapi nested group di dalamnya ikut. Pilih All untuk semua user. Kamu juga bisa mewajibkan user mendaftar saat login, dan meminta mereka mengonfirmasi ulang datanya setelah 0 sampai 730 hari (0 berarti tidak pernah).",
+          "keyPoints": [
+            "None, Selected (satu group), atau All",
+            "Wajibkan registrasi saat login",
+            "Konfirmasi ulang: 0 sampai 730 hari"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/tutorial-enable-sspr",
+          "teaches": [
+            "az104-f-u01-sspr-scope",
+            "az104-f-u01-sspr-registration"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e5",
+          "type": "choice",
+          "concept": "sspr-scope",
+          "prompt": "You need to enable SSPR (self-service password reset) only for the members of the SSPR-Pilot group. What should you do?",
+          "options": [
+            "Set Self service password reset enabled to Selected, and choose SSPR-Pilot",
+            "Set Self service password reset enabled to All",
+            "Assign the Global Administrator role to SSPR-Pilot",
+            "Set Number of methods required to reset to 2"
+          ],
+          "answer": 0,
+          "explanation": "Selected membatasi SSPR (Self-Service Password Reset) ke satu group. All berlaku untuk semua user, jumlah metode tidak mengatur siapa yang bisa reset, dan role Global Administrator terlalu luas.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-scope",
+            "az104-f-u01-global-admin",
+            "az104-f-u01-sspr-register"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e6",
+          "type": "config",
+          "concept": "sspr-scope",
+          "prompt": "Enable SSPR (self-service password reset) for the SSPR-Pilot group. Users must register when they sign in, and must reconfirm their information every 90 days.",
+          "portal": "Microsoft Entra admin center",
+          "blade": "Password reset > Properties and Registration",
+          "fields": [
+            {
+              "label": "Self service password reset enabled",
+              "kind": "select",
+              "choices": [
+                "None",
+                "Selected",
+                "All"
+              ],
+              "value": "None"
+            },
+            {
+              "label": "Selected group",
+              "kind": "select",
+              "choices": [
+                "No group selected",
+                "SSPR-Pilot",
+                "Finance-Team"
+              ],
+              "value": "No group selected"
+            },
+            {
+              "label": "Require users to register when signing in",
+              "kind": "toggle",
+              "value": false
+            },
+            {
+              "label": "Days before users are asked to reconfirm",
+              "kind": "number",
+              "value": 180,
+              "min": 0,
+              "max": 730,
+              "step": 30
+            }
+          ],
+          "answer": {
+            "Self service password reset enabled": "Selected",
+            "Selected group": "SSPR-Pilot",
+            "Require users to register when signing in": true,
+            "Days before users are asked to reconfirm": 90
+          },
+          "explanation": "Self-Service Password Reset (SSPR) dibatasi ke group SSPR-Pilot lewat pilihan Selected. Registrasi saat login diaktifkan, dan konfirmasi ulang diatur 90 hari (nilai yang valid 0 sampai 730).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-scope",
+            "az104-f-u01-sspr-registration"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e7",
+          "type": "truefalse",
+          "concept": "sspr-scope",
+          "prompt": "When Self service password reset enabled is set to Selected, you can choose several groups in the Microsoft Entra admin center.",
+          "answer": false,
+          "explanation": "Salah. Admin center hanya bisa memilih satu group. Kalau butuh lebih banyak user, masukkan group lain ke group itu (nested) atau pilih All.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-scope"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-m4",
+          "type": "learn",
+          "concepts": [
+            "sspr-methods"
+          ],
+          "title": "Metode dan kebijakan admin",
+          "body": "Metode untuk SSPR (Self-Service Password Reset) antara lain notifikasi Microsoft Authenticator, SMS (Short Message Service), panggilan suara, dan kode sekali pakai lewat email. Akun dengan role admin Microsoft Entra selalu memakai kebijakan two-gate: dua data autentikasi wajib, security questions dilarang, dan kebijakan ini tidak bisa diubah. Security questions hanya untuk SSPR, bukan untuk login, dan untuk SSPR akan dipensiunkan pada Maret 2027.",
+          "keyPoints": [
+            "Admin: two-gate, dua metode, tanpa security questions",
+            "Kebijakan admin tidak bisa diubah",
+            "Security questions: hanya SSPR, pensiun Maret 2027"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-policy",
+          "teaches": [
+            "az104-f-u01-sspr-methods",
+            "az104-f-u01-sspr-admin",
+            "az104-f-u01-security-questions"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e8",
+          "type": "multi",
+          "concept": "sspr-methods",
+          "prompt": "Which two statements about SSPR (self-service password reset) for accounts that have a Microsoft Entra administrator role are true? Choose two.",
+          "options": [
+            "An administrator can change their policy to require one method",
+            "They must provide two pieces of authentication data to reset",
+            "Their SSPR works only with Microsoft Entra ID Free",
+            "They can't use security questions"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Akun admin memakai kebijakan two-gate: dua data autentikasi, tanpa security questions, dan kebijakan itu tidak bisa diubah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-admin",
+            "az104-f-u01-sspr-licensing"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e9",
+          "type": "truefalse",
+          "concept": "sspr-methods",
+          "prompt": "Security questions can be used as a sign-in method in Microsoft Entra ID.",
+          "answer": false,
+          "explanation": "Salah. Security questions hanya dipakai saat SSPR (Self-Service Password Reset), tidak untuk login, dan akan dipensiunkan untuk SSPR pada Maret 2027.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-security-questions"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-m5",
+          "type": "learn",
+          "concepts": [
+            "password-writeback"
+          ],
+          "title": "Password writeback",
+          "body": "User hybrid disinkronkan dari Active Directory Domain Services on-premises. Kalau user me-reset password lewat SSPR (Self-Service Password Reset), password baru itu harus sampai juga ke on-premises. Password writeback menuliskannya ke Active Directory secara real time, lewat Microsoft Entra Connect atau Microsoft Entra Connect cloud sync. Fitur ini butuh Microsoft 365 Business Premium atau Microsoft Entra ID P1/P2.",
+          "keyPoints": [
+            "Menulis password dari cloud ke Active Directory on-premises",
+            "Lewat Entra Connect atau cloud sync",
+            "Butuh Business Premium atau P1/P2"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-writeback",
+          "teaches": [
+            "az104-f-u01-writeback"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e10",
+          "type": "choice",
+          "concept": "password-writeback",
+          "prompt": "Contoso syncs users from on-premises Active Directory Domain Services by using Microsoft Entra Connect. After users reset their password with SSPR (self-service password reset), they must use the new password on on-premises computers. What should you enable?",
+          "options": [
+            "Password writeback",
+            "Group-based licensing",
+            "Dynamic device membership",
+            "Guest user access"
+          ],
+          "answer": 0,
+          "explanation": "Password writeback mengirim password baru ke Active Directory on-premises. Fitur ini butuh Microsoft 365 Business Premium atau Microsoft Entra ID P1/P2.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-writeback",
+            "az104-f-u01-sspr-licensing",
+            "az104-f-u01-gbl-def",
+            "az104-f-u01-membership-types",
+            "az104-f-u01-guest-access-levels"
+          ]
+        },
+        {
+          "id": "az104-u01-l5-e11",
+          "type": "fill",
+          "concept": "sspr-licensing",
+          "prompt": "Complete the sentence.",
+          "sentence": "With Microsoft Entra ID Free, cloud-only users can only ___ a password they know. To ___ a forgotten password, they need Microsoft 365 Business Standard or higher, or Microsoft Entra ID P1.",
+          "bank": [
+            "change",
+            "reset",
+            "write back",
+            "delete"
+          ],
+          "answers": [
+            "change",
+            "reset"
+          ],
+          "explanation": "Free: ganti password yang masih diingat. Reset password yang lupa butuh Business Standard ke atas atau P1/P2.",
+          "requires": [
+            "az104-f-u01-sspr-licensing"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u01-user-types",
+      "statement": "Microsoft Entra ID mengenal empat jenis user: internal member (biasanya karyawan), internal guest (akun di tenant sendiri dengan hak guest), external member (login dengan akun eksternal tapi punya hak member), dan external guest (login dengan akun eksternal dan punya hak guest).",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users"
+    },
+    {
+      "id": "az104-f-u01-usertype-prop",
+      "statement": "Properti User type bernilai Member atau Guest. User B2B (business-to-business) collaboration yang diundang sebagai tamu mendapat User type Guest.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/user-properties"
+    },
+    {
+      "id": "az104-f-u01-guest-auth",
+      "statement": "Akun guest B2B (business-to-business) di tenant pengundang tidak punya kredensial; autentikasinya dilakukan oleh penyedia identitas milik guest.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/user-properties"
+    },
+    {
+      "id": "az104-f-u01-member-default",
+      "statement": "Secara default, member bisa melihat daftar semua user dan group, membuat security group dan Microsoft 365 group, serta mengundang guest.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/users-default-permissions"
+    },
+    {
+      "id": "az104-f-u01-guest-default",
+      "statement": "Secara default, guest tidak bisa melihat daftar semua user, group, dan objek direktori lain. Guest bisa membaca propertinya sendiri, mengganti passwordnya sendiri, dan membaca sebagian properti user lain seperti display name, email, dan UPN (User Principal Name).",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/users-default-permissions"
+    },
+    {
+      "id": "az104-f-u01-upn",
+      "statement": "UPN (User Principal Name) adalah nama unik ditambah domain tenant setelah tanda @, misalnya adele@contoso.com.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users"
+    },
+    {
+      "id": "az104-f-u01-account-enabled",
+      "statement": "Di formulir New user, opsi Account enabled tercentang secara default. Hapus centangnya supaya user baru belum bisa login; dulu opsi ini bernama Block sign in.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users"
+    },
+    {
+      "id": "az104-f-u01-bulk-create",
+      "statement": "Banyak user bisa dibuat sekaligus dengan mengisi template CSV (Comma-Separated Values) yang diunduh dari portal, dan butuh minimal role User Administrator.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/users/users-bulk-add"
+    },
+    {
+      "id": "az104-f-u01-least-priv-roles",
+      "statement": "Role dengan hak paling kecil untuk membuat user adalah User Administrator, untuk mengundang guest adalah Guest Inviter, dan untuk memberi role Microsoft Entra adalah Privileged Role Administrator. Microsoft menyarankan memakai role dengan hak paling kecil.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-create-delete-users"
+    },
+    {
+      "id": "az104-f-u01-global-admin",
+      "statement": "Global Administrator punya akses ke semua fitur administrasi Microsoft Entra ID, jadi terlalu luas untuk tugas yang cukup memakai role yang lebih kecil.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference#global-administrator"
+    },
+    {
+      "id": "az104-f-u01-prop-categories",
+      "statement": "Properti user dikelompokkan dalam kategori, antara lain Identity (nama, UPN, User type), Job information (job title, department, manager), Contact info, dan Settings (boleh login atau tidak, serta usage location).",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-user-profile-info"
+    },
+    {
+      "id": "az104-f-u01-synced-edit",
+      "statement": "Untuk user yang disinkronkan dari Active Directory on-premises, identity, contact info, dan job info diubah di Active Directory lalu menunggu siklus sinkronisasi berikutnya. Atribut milik Microsoft Entra ID seperti Usage location bisa diubah langsung di admin center.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-user-profile-info"
+    },
+    {
+      "id": "az104-f-u01-restore-30",
+      "statement": "User yang dihapus bisa di-restore dari halaman Deleted users selama 30 hari, lengkap dengan semua propertinya. Restore butuh minimal role User Administrator.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/users-restore"
+    },
+    {
+      "id": "az104-f-u01-permanent-delete",
+      "statement": "Setelah 30 hari, penghapusan permanen berjalan otomatis dan tidak bisa dihentikan. User yang sudah terhapus permanen tidak bisa dikembalikan, bahkan oleh Microsoft Support.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/users-restore"
+    },
+    {
+      "id": "az104-f-u01-security-group",
+      "statement": "Security group dipakai untuk mengatur akses ke resource bersama. Anggotanya bisa user, device, service principal, dan group lain (nested group).",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/concept-learn-about-groups"
+    },
+    {
+      "id": "az104-f-u01-m365-group",
+      "statement": "Microsoft 365 group dipakai untuk kolaborasi dan punya alamat email group. Anggotanya hanya user, termasuk orang di luar organisasi.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/concept-learn-about-groups"
+    },
+    {
+      "id": "az104-f-u01-group-type-fixed",
+      "statement": "Group type tidak bisa diubah setelah group dibuat. Untuk mengubahnya, hapus group lalu buat yang baru.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups"
+    },
+    {
+      "id": "az104-f-u01-membership-types",
+      "statement": "Ada tiga membership type: Assigned (anggota ditambah manual), Dynamic user, dan Dynamic device (anggota ditambah dan dikeluarkan otomatis berdasarkan aturan).",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/concept-learn-about-groups"
+    },
+    {
+      "id": "az104-f-u01-dynamic-rule",
+      "statement": "Aturan dynamic membership memakai atribut user atau device, misalnya user.department -eq \"Sales\". Anggota dynamic group tidak bisa ditambah atau dihapus manual.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership"
+    },
+    {
+      "id": "az104-f-u01-dynamic-users-or-devices",
+      "statement": "Satu dynamic group berisi user saja atau device saja, tidak bisa keduanya.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/concept-learn-about-groups"
+    },
+    {
+      "id": "az104-f-u01-dynamic-p1",
+      "statement": "Dynamic membership group butuh lisensi Microsoft Entra ID P1 atau Intune for Education untuk setiap user unik yang menjadi anggota satu atau lebih dynamic group. Lisensinya tidak harus di-assign ke user, tapi jumlahnya harus cukup. Device di dynamic device group tidak butuh lisensi.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership"
+    },
+    {
+      "id": "az104-f-u01-static-to-dynamic",
+      "statement": "Saat group Assigned diubah menjadi dynamic, anggota yang cocok dengan aturan tetap ada, anggota yang tidak cocok dikeluarkan, dan user lain yang cocok ditambahkan otomatis.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/users/groups-change-type"
+    },
+    {
+      "id": "az104-f-u01-nested-no-access",
+      "statement": "Anggota nested group tidak ikut mendapat aplikasi dan resource bersama yang di-assign ke group induknya. Security group juga tidak bisa dimasukkan ke Microsoft 365 group.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups#add-a-group-to-another-group"
+    },
+    {
+      "id": "az104-f-u01-rbac-transitive",
+      "statement": "Role assignment Azure RBAC (Role-Based Access Control) bersifat transitif untuk group: kalau user anggota group yang menjadi anggota group lain yang punya role assignment, user itu ikut mendapat izinnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview"
+    },
+    {
+      "id": "az104-f-u01-role-assignable",
+      "statement": "Group yang opsi Microsoft Entra roles can be assigned to the group-nya aktif otomatis memakai membership Assigned, dan membership type-nya tidak bisa diubah.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-to-manage-groups"
+    },
+    {
+      "id": "az104-f-u01-usage-location",
+      "statement": "Sebelum lisensi bisa di-assign ke user, admin harus mengisi usage location user itu, karena sebagian layanan Microsoft tidak tersedia di semua lokasi.",
+      "source": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-group-licenses"
+    },
+    {
+      "id": "az104-f-u01-license-portal",
+      "statement": "Lisensi user dan group di-assign lewat Microsoft 365 admin center (Billing > Licenses), atau lewat Microsoft Graph PowerShell. Sejak September 2024, Microsoft Entra admin center dan portal Azure tidak lagi menyediakan antarmuka untuk assign lisensi.",
+      "source": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-group-licenses"
+    },
+    {
+      "id": "az104-f-u01-license-roles",
+      "statement": "Assign lisensi ke user butuh minimal License Administrator atau User Administrator. License Administrator hanya mengelola lisensi dan usage location; role itu tidak bisa membuat user atau group.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference#license-administrator"
+    },
+    {
+      "id": "az104-f-u01-gbl-def",
+      "statement": "Dengan group-based licensing, lisensi di-assign ke group dan setiap anggotanya mendapat lisensi itu. Anggota yang masuk otomatis mendapat lisensi, anggota yang keluar kehilangan lisensinya.",
+      "source": "https://learn.microsoft.com/en-us/microsoft-365/enterprise/assign-licenses-to-user-accounts"
+    },
+    {
+      "id": "az104-f-u01-gbl-groups",
+      "statement": "Group-based licensing bisa dipakai untuk security group, mail-enabled security group, dan Microsoft 365 group, termasuk group dengan dynamic membership.",
+      "source": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-group-licenses"
+    },
+    {
+      "id": "az104-f-u01-gbl-license-req",
+      "statement": "Setiap user yang memakai group-based licensing harus tercakup lisensi Microsoft Entra ID P1 atau lebih tinggi, atau paket seperti Microsoft 365 Business Premium atau Office 365 E3.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/concept-group-based-licensing",
+      "verify": true
+    },
+    {
+      "id": "az104-f-u01-gbl-location",
+      "statement": "Lewat group-based licensing, anggota tanpa usage location memakai lokasi tenant. Microsoft menyarankan mengisi usage location sejak user dibuat, terutama kalau user tersebar di beberapa negara.",
+      "source": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-group-licenses"
+    },
+    {
+      "id": "az104-f-u01-gbl-nested",
+      "statement": "Group-based licensing tidak mendukung nested group: kalau lisensi di-assign ke group yang berisi group lain, hanya anggota level pertama yang mendapat lisensi.",
+      "source": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-group-licenses"
+    },
+    {
+      "id": "az104-f-u01-gbl-errors",
+      "statement": "Masalah lisensi dilihat di Microsoft 365 admin center, di halaman produk pada Licenses, tab Errors & issues. Penyebab umumnya lisensi yang habis, service plan yang bentrok, dan usage location yang tidak valid. Setelah penyebabnya diperbaiki, pilih Reprocess.",
+      "source": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/assign-licenses-to-users"
+    },
+    {
+      "id": "az104-f-u01-b2b-invite",
+      "statement": "Guest diundang lewat New user > Invite external user. Akunnya langsung dibuat dengan User type Guest; sebelum undangan diterima, Invitation state-nya Pending acceptance, dan pengundang otomatis menjadi Sponsor.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/user-properties"
+    },
+    {
+      "id": "az104-f-u01-guest-access-levels",
+      "statement": "Guest user access punya tiga level: sama dengan member (paling longgar); limited access (default), yang memblokir guest dari melihat daftar user dan group tapi masih bisa melihat keanggotaan group yang tidak hidden; dan restricted to their own directory objects (paling ketat), yang hanya mengizinkan guest melihat profilnya sendiri.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/external-collaboration-settings-configure"
+    },
+    {
+      "id": "az104-f-u01-invite-settings",
+      "statement": "Guest invite settings punya empat pilihan: siapa pun termasuk guest (default, paling longgar); member dan admin tertentu; hanya admin tertentu, yaitu User Administrator atau Guest Inviter; dan tidak ada siapa pun termasuk admin (paling ketat).",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/external-collaboration-settings-configure"
+    },
+    {
+      "id": "az104-f-u01-guest-inviter",
+      "statement": "Role Guest Inviter hanya memberi hak mengundang guest, dan tetap bisa mengundang walau Guest invite settings diatur ke Only users assigned to specific admin roles can invite guest users.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/external-collaboration-settings-configure"
+    },
+    {
+      "id": "az104-f-u01-collab-restrictions",
+      "statement": "Collaboration restrictions mengatur domain tujuan undangan. Default-nya semua domain diizinkan. Kamu bisa membuat allow list atau block list, tapi tidak keduanya.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/allow-deny-list"
+    },
+    {
+      "id": "az104-f-u01-sspr-def",
+      "statement": "SSPR (Self-Service Password Reset) membuat user bisa mengganti atau me-reset password sendiri tanpa bantuan admin atau helpdesk.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks"
+    },
+    {
+      "id": "az104-f-u01-sspr-register",
+      "statement": "User hanya bisa me-reset password kalau sudah mendaftarkan metode autentikasi yang diizinkan admin. Jumlah metode yang wajib saat reset bisa satu atau dua; user yang belum mendaftarkan sebanyak itu melihat halaman error dan harus minta admin me-reset passwordnya.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks"
+    },
+    {
+      "id": "az104-f-u01-sspr-licensing",
+      "statement": "Dengan Microsoft Entra ID Free, user cloud-only hanya bisa mengganti password yang masih diingat. Reset password untuk user cloud-only butuh Microsoft 365 Business Standard, Business Premium, atau Microsoft Entra ID P1/P2. Change atau reset untuk user hybrid dengan writeback ke on-premises butuh Microsoft 365 Business Premium atau Microsoft Entra ID P1/P2.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-licensing"
+    },
+    {
+      "id": "az104-f-u01-sspr-scope",
+      "statement": "Opsi Self service password reset enabled bisa None, Selected, atau All. Dengan Selected, admin center hanya bisa memilih satu group, tapi nested group di dalamnya ikut.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/tutorial-enable-sspr"
+    },
+    {
+      "id": "az104-f-u01-sspr-registration",
+      "statement": "Admin bisa mewajibkan user mendaftar SSPR (Self-Service Password Reset) saat login, dan meminta konfirmasi ulang data autentikasi setelah 0 sampai 730 hari; 0 berarti tidak pernah diminta.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks"
+    },
+    {
+      "id": "az104-f-u01-sspr-methods",
+      "statement": "Metode yang bisa dipakai untuk SSPR (Self-Service Password Reset) antara lain notifikasi Microsoft Authenticator, SMS (Short Message Service), panggilan suara, dan kode sekali pakai lewat email.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks"
+    },
+    {
+      "id": "az104-f-u01-sspr-admin",
+      "statement": "Akun dengan role admin Microsoft Entra memakai kebijakan two-gate: dua data autentikasi wajib, security questions dilarang, dan kebijakan ini tidak bisa diubah.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-policy"
+    },
+    {
+      "id": "az104-f-u01-security-questions",
+      "statement": "Security questions tidak dipakai untuk login, hanya untuk SSPR (Self-Service Password Reset), dan akun admin tidak bisa memakainya. Security questions untuk SSPR akan dipensiunkan pada Maret 2027.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-security-questions"
+    },
+    {
+      "id": "az104-f-u01-writeback",
+      "statement": "Password writeback menulis password yang diganti atau di-reset di cloud ke Active Directory Domain Services on-premises secara real time, lewat Microsoft Entra Connect atau Microsoft Entra Connect cloud sync.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-writeback"
     }
   ]
 }

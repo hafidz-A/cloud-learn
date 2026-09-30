@@ -55,6 +55,11 @@
     "description": "Prosesor yang menjalankan perhitungan di komputer atau VM (Virtual Machine)."
   },
   {
+    "term": "CSV",
+    "expansion": "Comma-Separated Values",
+    "description": "Format file teks berisi tabel, satu baris per data dan kolom dipisah koma. Dipakai untuk membuat banyak user sekaligus di Microsoft Entra ID."
+  },
+  {
     "term": "DDoS",
     "expansion": "Distributed Denial of Service",
     "description": "Serangan yang membanjiri layanan dengan lalu lintas dari banyak sumber sampai layanan itu lumpuh."
@@ -220,6 +225,11 @@
     "description": "Sekali login untuk mengakses banyak aplikasi."
   },
   {
+    "term": "SSPR",
+    "expansion": "Self-Service Password Reset",
+    "description": "Fitur Microsoft Entra ID yang membuat user bisa mengganti atau me-reset password sendiri tanpa menghubungi helpdesk."
+  },
+  {
     "term": "TCO",
     "expansion": "Total Cost of Ownership",
     "description": "Total biaya memiliki sesuatu, termasuk server, listrik, pendingin, dan tenaga kerja."
@@ -228,6 +238,11 @@
     "term": "TCP",
     "expansion": "Transmission Control Protocol",
     "description": "Protokol jaringan yang menjamin data sampai berurutan. Web biasa memakai TCP port 80 atau 443."
+  },
+  {
+    "term": "UPN",
+    "expansion": "User Principal Name",
+    "description": "Nama login user di Microsoft Entra ID: nama unik plus domain tenant, misalnya adele@contoso.com."
   },
   {
     "term": "URL",

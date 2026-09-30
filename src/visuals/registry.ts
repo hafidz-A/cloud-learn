@@ -8,7 +8,10 @@ import { CloudModels } from './CloudModels'
 import { ComputeOptions } from './ComputeOptions'
 import { ConditionalAccessFlow } from './ConditionalAccessFlow'
 import { DefenseInDepth } from './DefenseInDepth'
+import { EntraObjects } from './EntraObjects'
+import { GroupTypes } from './GroupTypes'
 import { HybridConnectivity } from './HybridConnectivity'
+import { LicenseFlow } from './LicenseFlow'
 import { ManagementTools } from './ManagementTools'
 import { MonitorPipeline } from './MonitorPipeline'
 import { PolicyRbacLock } from './PolicyRbacLock'
@@ -20,6 +23,7 @@ import { ScaleUpVsOut } from './ScaleUpVsOut'
 import { ServiceHealthScopes } from './ServiceHealthScopes'
 import { ServiceModelsStack } from './ServiceModelsStack'
 import { SharedResponsibility } from './SharedResponsibility'
+import { SsprLicensing } from './SsprLicensing'
 import { StorageRedundancy } from './StorageRedundancy'
 import { StorageServices } from './StorageServices'
 import { VNetPeering } from './VNetPeering'
@@ -35,7 +39,10 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   ComputeOptions,
   ConditionalAccessFlow,
   DefenseInDepth,
+  EntraObjects,
+  GroupTypes,
   HybridConnectivity,
+  LicenseFlow,
   ManagementTools,
   MonitorPipeline,
   PolicyRbacLock,
@@ -47,6 +54,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   ServiceHealthScopes,
   ServiceModelsStack,
   SharedResponsibility,
+  SsprLicensing,
   StorageRedundancy,
   StorageServices,
   VNetPeering,

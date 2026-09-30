@@ -1,4 +1,4 @@
-import type { CourseId, Exercise, Fact, IntroCard, LearnCard, Lesson, LessonItem, Unit } from '../lib/types'
+import { PORTAL_NAMES, type CourseId, type Exercise, type Fact, type IntroCard, type LearnCard, type Lesson, type LessonItem, type Unit } from '../lib/types'
 import { courseCoverage } from './coverage'
 import { EXAM_TYPES } from './examTypes'
 import { isVisualName, VISUAL_NAMES, VISUALS_BY_CONCEPT } from './visuals'
@@ -48,7 +48,7 @@ const COUNT_WORDS = ['', 'one', 'two', 'three', 'four', 'five']
 const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet', 'vCPU', 'IaC', 'DDoS']
 
 /** Tokens that look like abbreviations but are names or labels. */
-const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2'])
+const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3'])
 
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')
@@ -160,6 +160,7 @@ function checkExercise(e: Exercise, push: (message: string, level?: Issue['level
     case 'fix':
       checkOptions(e.options, e.answer, push)
       if (e.type === 'fix' && !['portal', 'error'].includes(e.scene?.kind)) push('scene.kind must be "portal" or "error"')
+      if (e.type === 'fix') checkPortal(e.scene?.portal, push)
       break
     case 'truefalse':
       if (typeof e.answer !== 'boolean') push('answer must be true or false')
@@ -260,6 +261,7 @@ function checkExercise(e: Exercise, push: (message: string, level?: Issue['level
       break
     }
     case 'config': {
+      checkPortal(e.portal, push)
       const labels = (e.fields ?? []).map((f) => f.label)
       if (labels.length < 2) push('config needs at least 2 fields')
       if (new Set(labels).size !== labels.length) push('config field labels must be unique')
@@ -310,6 +312,10 @@ function checkExercise(e: Exercise, push: (message: string, level?: Issue['level
 
   checkEntraName([...questionTexts(e), e.explanation], push)
   if (e.verify) push('marked verify: true, double-check this fact', 'warn')
+}
+
+function checkPortal(portal: string | undefined, push: (m: string) => void) {
+  if (portal !== undefined && !(PORTAL_NAMES as readonly string[]).includes(portal)) push(`unknown portal "${portal}", known: ${PORTAL_NAMES.join(', ')}`)
 }
 
 function checkEntraName(texts: string[], push: (m: string) => void) {
