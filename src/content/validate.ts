@@ -49,10 +49,10 @@ const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet
 
 /**
  * Tokens that look like abbreviations but are names or labels: exam and plan
- * names (AZ, P1, E3), region names (East US), HTTP methods (DELETE, POST), and the
- * DNS record type AAAA.
+ * names (AZ, P1, E3, the App Service Free plan F1), region names (East US), HTTP
+ * methods (DELETE, POST), and the DNS record type AAAA.
  */
-const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA'])
+const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA'])
 
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')

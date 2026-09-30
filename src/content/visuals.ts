@@ -88,6 +88,10 @@ export const VISUAL_CATALOG = {
   AciRestartPolicy: ['restart-policy'],
   ContainerAppsScale: ['scale-to-zero'],
   ContainerOptions: ['container-scaling'],
+  // Unit 13
+  AppServiceTierLadder: ['plan-tiers'],
+  VnetIntegrationVsPrivateEndpoint: ['vnet-integration'],
+  SlotSwap: ['slot-settings'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

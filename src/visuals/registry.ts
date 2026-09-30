@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import type { VisualName } from '../content/visuals'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
+import { AppServiceTierLadder } from './AppServiceTierLadder'
 import { ArmStructure } from './ArmStructure'
 import { AsgTiers } from './AsgTiers'
 import { AuthNvsAuthZ } from './AuthNvsAuthZ'
@@ -47,6 +48,7 @@ import { ServiceHealthScopes } from './ServiceHealthScopes'
 import { ServiceModelsStack } from './ServiceModelsStack'
 import { ServiceVsPrivateEndpoint } from './ServiceVsPrivateEndpoint'
 import { SharedResponsibility } from './SharedResponsibility'
+import { SlotSwap } from './SlotSwap'
 import { SoftDeleteVsVersioning } from './SoftDeleteVsVersioning'
 import { SsprLicensing } from './SsprLicensing'
 import { StorageRedundancy } from './StorageRedundancy'
@@ -55,6 +57,7 @@ import { StoredAccessPolicy } from './StoredAccessPolicy'
 import { UdrNextHop } from './UdrNextHop'
 import { VmResizeFlow } from './VmResizeFlow'
 import { VNetAddressPlan } from './VNetAddressPlan'
+import { VnetIntegrationVsPrivateEndpoint } from './VnetIntegrationVsPrivateEndpoint'
 import { VNetPeering } from './VNetPeering'
 import { ZonesInRegion } from './ZonesInRegion'
 
@@ -62,6 +65,7 @@ import { ZonesInRegion } from './ZonesInRegion'
 export const VISUALS: Partial<Record<VisualName, FC>> = {
   AccountFailover,
   AciRestartPolicy,
+  AppServiceTierLadder,
   ArmStructure,
   AsgTiers,
   AuthNvsAuthZ,
@@ -107,6 +111,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   ServiceModelsStack,
   ServiceVsPrivateEndpoint,
   SharedResponsibility,
+  SlotSwap,
   SoftDeleteVsVersioning,
   SsprLicensing,
   StorageRedundancy,
@@ -115,6 +120,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   UdrNextHop,
   VmResizeFlow,
   VNetAddressPlan,
+  VnetIntegrationVsPrivateEndpoint,
   VNetPeering,
   ZonesInRegion,
 }

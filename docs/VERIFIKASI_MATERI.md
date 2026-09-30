@@ -374,3 +374,22 @@ Tidak ada fakta bertanda `verify`.
 | Revision tidak bisa diubah, mode Single (default) dan Multiple (bagi trafik); ingress external vs internal tanpa load balancer tambahan | Diajarkan | `revisions.md`, `ingress-overview.md` |
 
 Tidak ada fakta bertanda `verify`.
+
+### Unit 13: Azure App Service (30 September 2026)
+
+22 fakta, 15 kartu learn, 40 soal (37 examReady), 3 visual baru (`AppServiceTierLadder`,
+`VnetIntegrationVsPrivateEndpoint`, `SlotSwap`). Sumber: `azure-docs/articles/app-service` dan
+`includes/azure-websites-limits.md`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Plan menentukan OS, region, jumlah dan ukuran instance, tier; app di satu plan berbagi instance dan scale bersama; tier dedicated ditagih per instance | Diajarkan | `overview-hosting-plans.md` (24 Agustus 2026) |
+| Tabel batas tier: custom domain mulai Shared; TLS binding, managed certificate, backup, VNet integration, private endpoint mulai Basic; autoscale mulai Standard; slot Standard 5, Premium dan Isolated 20; scale out Basic 3, Standard 10, Premium 30 (Premium v1: 20), Isolated 100 | Soal sort rencana; semua angka rencana terkonfirmasi | `includes/azure-websites-limits.md`, `manage-scale-up.md` |
+| Tiga cara scale out: manual (Basic+), autoscale aturan dan jadwal (Standard+), automatic scaling trafik HTTP (Premium v2–v4) dengan instance prewarmed default 1 | Soal config jadwal jam kerja, soal match | `manage-automatic-scaling.md` (16 April 2026) |
+| Custom domain butuh tier berbayar (bukan F1); A untuk root, CNAME untuk subdomain; TXT `asuid`/`asuid.<sub>`; TXT untuk CNAME "highly recommended" demi mencegah subdomain takeover | Fakta rencana terkonfirmasi, soal order | `app-service-web-tutorial-custom-domain.md` (7 April 2026) |
+| Managed certificate gratis, diperbarui otomatis, butuh Basic+, tanpa wildcard | Diajarkan | `configure-ssl-certificate.md` (4 Juni 2026) |
+| Backup di Basic, Standard, Premium, Isolated; di Basic hanya slot production; automatic backup tanpa storage account, simpan 30 hari; custom backup butuh storage account, maksimal 10 GB. Backup linked database berhenti didukung mulai 31 Maret 2028 | Diajarkan (catatan 2028 tidak diuji) | `manage-backup.md` |
+| VNet integration Basic+ dan hanya trafik keluar; private endpoint hanya trafik masuk; access restriction berprioritas dengan deny all implisit dan HTTP 403 | Soal sort rencana dan soal fix | `overview-vnet-integration.md`, `networking-features.md`, `app-service-ip-restrictions.md` |
+| Slot butuh Standard, Premium, Isolated; tanpa biaya tambahan; swap tanpa downtime dan bisa diulang; swap with preview; app setting dan connection string ikut swap kecuali ditandai slot setting; custom domain, TLS, scale, managed identity, VNet integration tetap di slot | Soal fix rencana (database staging) | `deploy-staging-slots.md`, include `app-service-deployment-slots-settings.md` |
+
+Tidak ada fakta bertanda `verify`.

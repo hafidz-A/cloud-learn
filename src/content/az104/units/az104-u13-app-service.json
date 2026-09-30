@@ -6,27 +6,1168 @@
     {
       "id": "az104-u13-l1",
       "title": "App Service plan",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u13-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "app-service-plan"
+          ],
+          "title": "App Service plan",
+          "body": "Setiap web app berjalan di App Service plan, yang menentukan OS (operating system), region, serta jumlah dan ukuran instance. Semua app di satu plan berbagi instance yang sama dan scale bersama; deployment slot dan backup juga memakai instance itu. Di tier dedicated, yang ditagih adalah setiap instance di plan, bukan setiap app.",
+          "keyPoints": [
+            "Plan = kumpulan instance",
+            "App di satu plan berbagi dan scale bersama",
+            "Ditagih per instance"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans",
+          "teaches": [
+            "az104-f-u13-plan",
+            "az104-f-u13-plan-share",
+            "az104-f-u13-billing"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-e1",
+          "type": "truefalse",
+          "concept": "app-service-plan",
+          "prompt": "Three apps in the same Standard plan with 2 instances are billed as 6 instances.",
+          "answer": false,
+          "explanation": "Salah. Di tier dedicated, yang ditagih adalah instance di plan. Ketiga app berbagi 2 instance yang sama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-billing",
+            "az104-f-u13-plan-share"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-e2",
+          "type": "choice",
+          "concept": "app-service-plan",
+          "prompt": "You scale an App Service plan out from 2 to 4 instances. What happens to the three apps in the plan?",
+          "options": [
+            "All three apps run on the 4 instances",
+            "Only the busiest app gets the new instances",
+            "Each app gets its own 4 instances",
+            "Nothing until each app is scaled separately"
+          ],
+          "answer": 0,
+          "explanation": "Semua app di satu plan berbagi instance yang sama, jadi scale plan berlaku untuk semuanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-plan-share"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-e3",
+          "type": "truefalse",
+          "concept": "app-service-plan",
+          "prompt": "The App Service plan decides the region where its apps run.",
+          "answer": true,
+          "explanation": "Benar. Plan menentukan OS (operating system), region, serta jumlah dan ukuran instance.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-plan"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "plan-tiers"
+          ],
+          "title": "Pricing tier",
+          "body": "Free dan Shared memakai VM (virtual machine) bersama dan tidak bisa scale out; Shared sudah bisa custom domain. Basic memakai VM dedicated, scale manual sampai 3 instance, dan membuka TLS (Transport Layer Security) binding, managed certificate, backup, VNet (virtual network) integration, dan private endpoint. Standard menambah autoscale, sampai 10 instance, dan 5 deployment slot. Premium sampai 30 instance dan 20 slot. Isolated v2 menambah isolasi jaringan.",
+          "keyPoints": [
+            "Shared: custom domain",
+            "Basic: TLS, backup, VNet integration",
+            "Standard: autoscale dan slot"
+          ],
+          "visual": "AppServiceTierLadder",
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans#pricing-tiers",
+          "teaches": [
+            "az104-f-u13-tiers",
+            "az104-f-u13-tier-features",
+            "az104-f-u13-scale-up-out"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-e4",
+          "type": "sort",
+          "concept": "plan-tiers",
+          "prompt": "Sort each feature to the lowest tier that supports it.",
+          "buckets": [
+            "Shared",
+            "Basic",
+            "Standard"
+          ],
+          "items": [
+            {
+              "text": "A custom domain",
+              "bucket": 0
+            },
+            {
+              "text": "Backups",
+              "bucket": 1
+            },
+            {
+              "text": "VNet (virtual network) integration",
+              "bucket": 1
+            },
+            {
+              "text": "Autoscale",
+              "bucket": 2
+            },
+            {
+              "text": "Deployment slots",
+              "bucket": 2
+            }
+          ],
+          "explanation": "Custom domain mulai Shared. Backup dan VNet (virtual network) integration mulai Basic. Autoscale dan deployment slot mulai Standard.",
+          "requires": [
+            "az104-f-u13-tier-features"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-e5",
+          "type": "choice",
+          "concept": "plan-tiers",
+          "prompt": "A web app needs deployment slots and rule-based autoscale at the lowest cost. Which tier should you choose?",
+          "options": [
+            "Basic",
+            "Shared",
+            "Premium v3",
+            "Standard"
+          ],
+          "answer": 3,
+          "explanation": "Deployment slot dan autoscale mulai tersedia di Standard. Basic tidak punya keduanya, dan Premium lebih mahal dari yang diperlukan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-tier-features"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-e6",
+          "type": "yesno",
+          "concept": "plan-tiers",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An app runs in a Basic plan.",
+          "statements": [
+            {
+              "text": "It can scale out to 3 instances.",
+              "answer": true
+            },
+            {
+              "text": "It can use a free App Service Managed Certificate.",
+              "answer": true
+            },
+            {
+              "text": "It can add a staging deployment slot.",
+              "answer": false
+            }
+          ],
+          "explanation": "Basic bisa scale manual sampai 3 instance dan memakai managed certificate. Deployment slot butuh Standard ke atas.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-scale-up-out",
+            "az104-f-u13-tier-features"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "scale-up-vs-out"
+          ],
+          "title": "Scale up vs scale out",
+          "body": "Scale up berarti pindah ke pricing tier yang lebih tinggi untuk CPU (central processing unit), memori, disk, atau fitur tambahan seperti slot dan autoscale. Scale out berarti menambah jumlah instance yang menjalankan app. Batas scale out: Basic 3, Standard 10, dan Premium 30 instance. Free dan Shared tidak bisa scale out.",
+          "keyPoints": [
+            "Scale up: tier lebih tinggi",
+            "Scale out: tambah instance",
+            "Basic 3, Standard 10, Premium 30"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/manage-scale-up",
+          "teaches": [
+            "az104-f-u13-scale-up-out",
+            "az104-f-u13-tiers"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-e7",
+          "type": "choice",
+          "concept": "scale-up-vs-out",
+          "prompt": "An app in the Basic tier needs deployment slots. Which kind of scaling gives it slots?",
+          "options": [
+            "Scale out to 3 instances",
+            "Scale out to 10 instances",
+            "Add an autoscale rule",
+            "Scale up to Standard"
+          ],
+          "answer": 3,
+          "explanation": "Slot adalah fitur tier, jadi harus scale up. Menambah instance tidak menambah fitur.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-scale-up-out",
+            "az104-f-u13-tier-features"
+          ]
+        },
+        {
+          "id": "az104-u13-l1-e8",
+          "type": "truefalse",
+          "concept": "scale-up-vs-out",
+          "prompt": "A Standard App Service plan can scale out to 10 instances.",
+          "answer": true,
+          "explanation": "Benar. Basic sampai 3, Standard sampai 10, dan Premium sampai 30 instance.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-scale-up-out"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u13-l2",
       "title": "Membuat dan scaling app",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u13-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "web-app-create"
+          ],
+          "title": "Web app di dalam plan",
+          "body": "Saat membuat web app, kamu memilih App Service plan yang sudah ada atau membuat plan baru; app itu lalu berjalan di semua instance plan tersebut. Karena semua app di satu plan scale bersama, pisahkan app yang butuh scaling berbeda ke plan sendiri.",
+          "keyPoints": [
+            "App berjalan di semua instance plan",
+            "App dengan kebutuhan beda: plan terpisah"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans#considerations-for-running-and-scaling-an-app",
+          "teaches": [
+            "az104-f-u13-plan-share",
+            "az104-f-u13-plan"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-e1",
+          "type": "choice",
+          "concept": "web-app-create",
+          "prompt": "A busy public API (Application Programming Interface) and a small internal admin site are in the same plan. The API needs 8 instances, but the admin site doesn't. What should you do?",
+          "options": [
+            "Move the admin site to its own plan",
+            "Scale out only the API inside the shared plan",
+            "Create a deployment slot for the admin site",
+            "Switch the plan to the Shared tier"
+          ],
+          "answer": 0,
+          "explanation": "App di satu plan scale bersama, jadi app dengan kebutuhan berbeda sebaiknya punya plan sendiri. Shared tidak bisa scale out.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-plan-share"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-e2",
+          "type": "truefalse",
+          "concept": "web-app-create",
+          "prompt": "Each web app always gets its own VM (virtual machine) instances, even when it shares a plan with other apps.",
+          "answer": false,
+          "explanation": "Salah. App di satu plan berbagi instance yang sama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-plan-share"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "app-autoscale"
+          ],
+          "title": "Tiga cara scale out",
+          "body": "Ada tiga cara scale out App Service. Manual, dari Basic ke atas: kamu mengatur jumlah instance. Autoscale, dari Standard ke atas: aturan berbasis metrik seperti CPU (central processing unit) dan memori, atau berbasis jadwal. Automatic scaling, di Premium v2 sampai v4: App Service menambah instance sesuai trafik HTTP (Hypertext Transfer Protocol) tanpa aturan, dengan instance prewarmed untuk mengurangi cold start.",
+          "keyPoints": [
+            "Manual: Basic ke atas",
+            "Autoscale: Standard ke atas, aturan dan jadwal",
+            "Automatic scaling: Premium v2 ke atas, trafik HTTP"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/manage-automatic-scaling",
+          "teaches": [
+            "az104-f-u13-scale-ways",
+            "az104-f-u13-automatic-scaling"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-e3",
+          "type": "config",
+          "concept": "app-autoscale",
+          "prompt": "On weekdays from 08:00 to 18:00, the plan must run 5 instances. Outside those hours, 2 instances are enough. Configure the scale condition for office hours.",
+          "blade": "plan-web > Scale out (App Service plan) > Custom autoscale > Add a scale condition",
+          "fields": [
+            {
+              "label": "Scale mode",
+              "kind": "select",
+              "choices": [
+                "Scale based on a metric",
+                "Scale to a specific instance count"
+              ],
+              "value": "Scale based on a metric"
+            },
+            {
+              "label": "Instance count",
+              "kind": "number",
+              "value": 2,
+              "min": 1,
+              "max": 10,
+              "step": 1
+            },
+            {
+              "label": "Schedule",
+              "kind": "select",
+              "choices": [
+                "Specify start/end dates",
+                "Repeat specific days"
+              ],
+              "value": "Specify start/end dates"
+            },
+            {
+              "label": "Start time",
+              "kind": "text",
+              "value": ""
+            },
+            {
+              "label": "End time",
+              "kind": "text",
+              "value": ""
+            }
+          ],
+          "answer": {
+            "Scale mode": "Scale to a specific instance count",
+            "Instance count": 5,
+            "Schedule": "Repeat specific days",
+            "Start time": "08:00",
+            "End time": "18:00"
+          },
+          "explanation": "Kondisi berbasis jadwal memakai jumlah instance tetap yang berulang setiap hari kerja. Default condition menangani jam lainnya dengan 2 instance.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-scale-ways"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-e4",
+          "type": "choice",
+          "concept": "app-autoscale",
+          "prompt": "An app in Premium v3 must scale on HTTP (Hypertext Transfer Protocol) traffic without writing any rules, and cold starts must be reduced. What should you use?",
+          "options": [
+            "Autoscale with a CPU (central processing unit) rule",
+            "Manual scale out",
+            "A second deployment slot",
+            "Automatic scaling"
+          ],
+          "answer": 3,
+          "explanation": "Automatic scaling mengikuti trafik HTTP (Hypertext Transfer Protocol) tanpa aturan, dan memakai instance prewarmed.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-automatic-scaling"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-e5",
+          "type": "truefalse",
+          "concept": "app-autoscale",
+          "prompt": "Rule-based autoscale is available in the Basic tier.",
+          "answer": false,
+          "explanation": "Salah. Basic hanya bisa scale manual. Autoscale mulai dari Standard.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-scale-ways"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-e6",
+          "type": "match",
+          "concept": "app-autoscale",
+          "prompt": "Match each way to scale out to the lowest tier that offers it.",
+          "pairs": [
+            [
+              "Manual",
+              "Basic"
+            ],
+            [
+              "Autoscale with rules and schedules",
+              "Standard"
+            ],
+            [
+              "Automatic scaling on HTTP (Hypertext Transfer Protocol) traffic",
+              "Premium v2"
+            ]
+          ],
+          "explanation": "Manual mulai Basic, autoscale mulai Standard, dan automatic scaling di Premium v2 sampai v4.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-scale-ways"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "scale-metric-vs-traffic"
+          ],
+          "title": "Memilih cara scale",
+          "body": "Automatic scaling hanya melihat trafik HTTP (Hypertext Transfer Protocol). Kalau keputusan scaling harus berdasarkan CPU (central processing unit), memori, atau waktu, pakai autoscale. Di automatic scaling, App Service menyiapkan instance prewarmed, default-nya 1, dan setiap instance, termasuk yang prewarmed, ditagih per detik.",
+          "keyPoints": [
+            "HTTP saja: automatic scaling",
+            "CPU, memori, jadwal: autoscale",
+            "Prewarmed default 1"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/manage-automatic-scaling",
+          "teaches": [
+            "az104-f-u13-automatic-scaling"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-e7",
+          "type": "choice",
+          "concept": "scale-metric-vs-traffic",
+          "prompt": "A batch app must add instances when memory use passes 80%. Which option fits?",
+          "options": [
+            "Automatic scaling",
+            "Manual scale out every morning",
+            "A custom domain",
+            "Autoscale with a memory rule"
+          ],
+          "answer": 3,
+          "explanation": "Automatic scaling hanya berdasarkan trafik HTTP (Hypertext Transfer Protocol). Scaling berbasis memori butuh autoscale.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-automatic-scaling"
+          ]
+        },
+        {
+          "id": "az104-u13-l2-e8",
+          "type": "truefalse",
+          "concept": "scale-metric-vs-traffic",
+          "prompt": "Automatic scaling keeps one prewarmed instance by default.",
+          "answer": true,
+          "explanation": "Benar. Instance prewarmed default-nya 1, untuk mengurangi cold start.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-automatic-scaling"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u13-l3",
       "title": "Custom domain dan TLS",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u13-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "custom-domain"
+          ],
+          "title": "Custom domain",
+          "body": "Custom domain butuh plan berbayar, bukan Free (F1). Di penyedia domain, buat record pemetaan: A record untuk root domain seperti contoso.com, atau CNAME (canonical name) untuk subdomain seperti www. CNAME dipilih untuk subdomain karena IP (Internet Protocol) app bisa berubah, sedangkan default hostname-nya tetap.",
+          "keyPoints": [
+            "Tidak bisa di Free",
+            "Root: A record",
+            "Subdomain: CNAME"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain",
+          "teaches": [
+            "az104-f-u13-domain-tier",
+            "az104-f-u13-domain-records"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-e1",
+          "type": "choice",
+          "concept": "custom-domain",
+          "prompt": "You map the root domain contoso.com to a web app. Which mapping record should you create?",
+          "options": [
+            "A CNAME (canonical name) record",
+            "An A record",
+            "An MX (mail exchange) record",
+            "An NS (name server) record"
+          ],
+          "answer": 1,
+          "explanation": "Root domain memakai A record; CNAME (canonical name) tidak dipakai di root domain. MX (mail exchange) untuk email, dan NS (name server) untuk delegasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-records"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-e2",
+          "type": "truefalse",
+          "concept": "custom-domain",
+          "prompt": "You can add a custom domain to an app in the Free (F1) tier.",
+          "answer": false,
+          "explanation": "Salah. Custom domain butuh plan berbayar; Free tidak bisa.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-tier"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "domain-verification"
+          ],
+          "title": "Verifikasi domain",
+          "body": "Selain record pemetaan, portal meminta record TXT (text) bernama asuid (asuid.www untuk subdomain www) berisi domain verification ID (identifier). Record ini membuktikan domain milikmu. Untuk subdomain dengan CNAME (canonical name), TXT asuid tidak wajib, tapi sangat disarankan untuk mencegah subdomain takeover oleh app App Service lain.",
+          "keyPoints": [
+            "TXT asuid berisi verification ID",
+            "asuid.www untuk subdomain",
+            "Mencegah subdomain takeover"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain",
+          "teaches": [
+            "az104-f-u13-domain-records",
+            "az104-f-u13-domain-txt"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-e3",
+          "type": "choice",
+          "concept": "domain-verification",
+          "prompt": "You map www.contoso.com with a CNAME (canonical name). Which other record does App Service ask for, to verify ownership?",
+          "options": [
+            "An A record named www",
+            "A CNAME record named asuid",
+            "A TXT (text) record named asuid.www with the verification ID (identifier)",
+            "An MX (mail exchange) record named www"
+          ],
+          "answer": 2,
+          "explanation": "Verifikasi memakai TXT (text) asuid.www berisi domain verification ID (identifier).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-records"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-e4",
+          "type": "choice",
+          "concept": "domain-verification",
+          "prompt": "What does the asuid TXT (text) record prove to App Service?",
+          "options": [
+            "That the app has a managed certificate",
+            "That you own the custom domain",
+            "That the domain uses Azure DNS (Domain Name System)",
+            "That the app is in the Basic tier"
+          ],
+          "answer": 1,
+          "explanation": "Record TXT (text) asuid berisi domain verification ID (identifier), bukti bahwa domain itu milikmu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-records"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-e5",
+          "type": "truefalse",
+          "concept": "domain-verification",
+          "prompt": "For a subdomain mapped with a CNAME (canonical name), the asuid TXT (text) record is strongly recommended to prevent subdomain takeover.",
+          "answer": true,
+          "explanation": "Benar. Record itu tidak wajib untuk CNAME (canonical name), tapi sangat disarankan demi keamanan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-txt"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "app-certificates"
+          ],
+          "title": "Sertifikat TLS",
+          "body": "Untuk mengamankan custom domain dengan HTTPS (Hypertext Transfer Protocol Secure), App Service Managed Certificate adalah pilihan gratis: dibuat dan diperbarui otomatis oleh App Service. Sertifikat ini butuh tier Basic ke atas dan tidak mendukung wildcard, misalnya *.contoso.com. Untuk wildcard, pakai sertifikat lain, misalnya App Service certificate atau sertifikat yang kamu impor.",
+          "keyPoints": [
+            "Managed certificate: gratis, diperbarui otomatis",
+            "Butuh Basic ke atas",
+            "Tidak untuk wildcard"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-certificate#create-a-free-managed-certificate",
+          "teaches": [
+            "az104-f-u13-managed-cert"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-e6",
+          "type": "choice",
+          "concept": "app-certificates",
+          "prompt": "An app in the Shared tier has the custom domain www.contoso.com. You want a free managed certificate. What must you do first?",
+          "options": [
+            "Change the CNAME (canonical name) to an A record",
+            "Scale up to Basic or higher",
+            "Delete the asuid TXT (text) record",
+            "Create a deployment slot"
+          ],
+          "answer": 1,
+          "explanation": "Managed certificate butuh tier Basic ke atas.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-managed-cert"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-e7",
+          "type": "truefalse",
+          "concept": "app-certificates",
+          "prompt": "An App Service Managed Certificate can cover *.contoso.com.",
+          "answer": false,
+          "explanation": "Salah. Managed certificate tidak mendukung wildcard.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-managed-cert"
+          ]
+        },
+        {
+          "id": "az104-u13-l3-e8",
+          "type": "order",
+          "concept": "app-certificates",
+          "prompt": "Secure www.contoso.com with HTTPS (Hypertext Transfer Protocol Secure) on an app in the Basic tier. Put the steps in order.",
+          "items": [
+            "Add the CNAME (canonical name) and the asuid.www TXT (text) record at the domain provider",
+            "Add the custom domain to the app",
+            "Create a free App Service Managed Certificate and bind it"
+          ],
+          "explanation": "Record DNS (Domain Name System) dibuat dulu supaya domain bisa diverifikasi, lalu domain ditambahkan, baru sertifikat dibuat dan di-bind.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-records",
+            "az104-f-u13-managed-cert"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u13-l4",
       "title": "Backup dan jaringan",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u13-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "app-backup"
+          ],
+          "title": "Backup App Service",
+          "body": "Backup dan restore tersedia di Basic, Standard, Premium, dan Isolated. Di Basic, hanya slot production yang bisa di-backup. Automatic backup dibuat berkala tanpa storage account dan disimpan 30 hari. Custom backup butuh storage account, bisa manual atau terjadwal, dan maksimal 10 GB (gigabyte).",
+          "keyPoints": [
+            "Basic ke atas",
+            "Basic: hanya slot production",
+            "Custom backup: butuh storage account"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup",
+          "teaches": [
+            "az104-f-u13-backup",
+            "az104-f-u13-backup-types"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-e1",
+          "type": "choice",
+          "concept": "app-backup",
+          "prompt": "You want scheduled custom backups of a web app. What must you provide?",
+          "options": [
+            "A storage account",
+            "A deployment slot",
+            "A VNet (virtual network) integration subnet",
+            "A managed certificate"
+          ],
+          "answer": 0,
+          "explanation": "Custom backup butuh storage account. Automatic backup tidak.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-backup-types"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-e2",
+          "type": "truefalse",
+          "concept": "app-backup",
+          "prompt": "In the Basic tier, you can back up a staging slot.",
+          "answer": false,
+          "explanation": "Salah. Di Basic hanya slot production yang bisa di-backup dan di-restore.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-backup"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-e3",
+          "type": "yesno",
+          "concept": "app-backup",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A web app runs in the Standard tier.",
+          "statements": [
+            {
+              "text": "Automatic backups are made without a storage account.",
+              "answer": true
+            },
+            {
+              "text": "Automatic backups are kept for 90 days.",
+              "answer": false
+            },
+            {
+              "text": "A custom backup can be up to 10 GB (gigabyte).",
+              "answer": true
+            }
+          ],
+          "explanation": "Automatic backup tidak butuh storage account dan disimpan 30 hari. Custom backup maksimal 10 GB (gigabyte).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-backup-types"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "vnet-integration",
+            "app-private-endpoint"
+          ],
+          "title": "Trafik keluar vs trafik masuk",
+          "body": "VNet (virtual network) integration, dari Basic ke atas, hanya untuk trafik keluar: app bisa menjangkau VM (virtual machine) atau database di virtual network. Fitur ini tidak memberi akses masuk. Untuk trafik masuk secara privat, pakai private endpoint, yang memberi app alamat IP (Internet Protocol) privat di virtual network.",
+          "keyPoints": [
+            "VNet integration: keluar",
+            "Private endpoint: masuk",
+            "Arah menentukan fitur"
+          ],
+          "visual": "VnetIntegrationVsPrivateEndpoint",
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/overview-vnet-integration",
+          "teaches": [
+            "az104-f-u13-vnet-integration",
+            "az104-f-u13-private-endpoint"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-e4",
+          "type": "sort",
+          "concept": "vnet-integration",
+          "prompt": "Sort each need to the feature that handles it.",
+          "buckets": [
+            "VNet (virtual network) integration",
+            "Private endpoint"
+          ],
+          "items": [
+            {
+              "text": "The app calls a database on a private IP (Internet Protocol) in the VNet",
+              "bucket": 0
+            },
+            {
+              "text": "The app reaches a VM (virtual machine) in a peered VNet",
+              "bucket": 0
+            },
+            {
+              "text": "Users in the VNet open the app on a private IP",
+              "bucket": 1
+            },
+            {
+              "text": "On-premises clients reach the app through a VPN (virtual private network) into the VNet",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Panggilan dari app ke virtual network adalah trafik keluar (VNet (virtual network) integration). Klien yang mengakses app secara privat adalah trafik masuk (private endpoint).",
+          "requires": [
+            "az104-f-u13-vnet-integration",
+            "az104-f-u13-private-endpoint"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-e5",
+          "type": "choice",
+          "concept": "app-private-endpoint",
+          "prompt": "You enabled VNet (virtual network) integration, but VMs (virtual machines) in the VNet still can't reach the app on a private IP (Internet Protocol). Why?",
+          "options": [
+            "VNet integration handles only outbound traffic; inbound needs a private endpoint",
+            "VNet integration needs the Premium tier",
+            "The subnet must be /8",
+            "Access restrictions block all VNets by default"
+          ],
+          "answer": 0,
+          "explanation": "VNet (virtual network) integration hanya untuk trafik keluar dari app. Akses masuk privat butuh private endpoint.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-vnet-integration",
+            "az104-f-u13-private-endpoint"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-e6",
+          "type": "truefalse",
+          "concept": "vnet-integration",
+          "prompt": "VNet (virtual network) integration requires at least the Basic tier.",
+          "answer": true,
+          "explanation": "Benar. VNet (virtual network) integration butuh tier dedicated, Basic ke atas.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-vnet-integration"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "access-restrictions"
+          ],
+          "title": "Access restriction",
+          "body": "Access restriction membatasi trafik masuk ke app dengan daftar allow dan deny berprioritas, berdasarkan IP (Internet Protocol), subnet, atau service tag. Aturan dengan angka prioritas terkecil dicek lebih dulu. Begitu ada satu aturan, ada deny all implisit di akhir, jadi sumber yang tidak cocok ditolak dengan HTTP (Hypertext Transfer Protocol) 403.",
+          "keyPoints": [
+            "Allow dan deny berprioritas",
+            "Angka kecil dicek dulu",
+            "Satu aturan = deny all implisit"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/app-service-ip-restrictions",
+          "teaches": [
+            "az104-f-u13-access-restrictions"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-e7",
+          "type": "choice",
+          "concept": "access-restrictions",
+          "prompt": "You add one access restriction rule that allows 203.0.113.0/24. What happens to requests from other addresses?",
+          "options": [
+            "They are denied with HTTP (Hypertext Transfer Protocol) 403",
+            "They are allowed, because only one rule exists",
+            "They are sent to a staging slot",
+            "They are allowed until you add a deny rule"
+          ],
+          "answer": 0,
+          "explanation": "Begitu ada satu aturan, ada deny all implisit di akhir, jadi alamat lain ditolak dengan 403.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-access-restrictions"
+          ]
+        },
+        {
+          "id": "az104-u13-l4-e8",
+          "type": "truefalse",
+          "concept": "access-restrictions",
+          "prompt": "Access restriction rules with the lowest priority number are evaluated first.",
+          "answer": true,
+          "explanation": "Benar. Aturan dicek mulai dari angka prioritas terkecil.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-access-restrictions"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u13-l5",
       "title": "Deployment slot",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u13-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "deployment-slots"
+          ],
+          "title": "Deployment slot",
+          "body": "Deployment slot adalah app yang berjalan dengan host name sendiri, misalnya staging, dan butuh tier Standard, Premium, atau Isolated. Standard mendukung sampai 5 slot, Premium dan Isolated sampai 20, tanpa biaya tambahan. App dengan lebih dari 5 slot tidak bisa diturunkan ke Standard.",
+          "keyPoints": [
+            "Standard ke atas",
+            "Standard 5, Premium 20",
+            "Tanpa biaya tambahan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots",
+          "teaches": [
+            "az104-f-u13-slots",
+            "az104-f-u13-slots-downscale",
+            "az104-f-u13-tier-features"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-e1",
+          "type": "truefalse",
+          "concept": "deployment-slots",
+          "prompt": "Deployment slots cost extra on top of the App Service plan.",
+          "answer": false,
+          "explanation": "Salah. Slot tidak dikenai biaya tambahan; slot berjalan di instance plan yang sama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-slots",
+            "az104-f-u13-plan-share"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-e2",
+          "type": "choice",
+          "concept": "deployment-slots",
+          "prompt": "An app in Premium v3 uses 8 deployment slots. Can you scale the plan down to Standard?",
+          "options": [
+            "Yes, slots move to a new plan automatically",
+            "No, Standard supports only 5 slots",
+            "Yes, but only 5 slots keep running",
+            "No, slots require Isolated"
+          ],
+          "answer": 1,
+          "explanation": "Tier tujuan harus mendukung jumlah slot yang sudah dipakai. Standard hanya 5.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-slots-downscale"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-e3",
+          "type": "choice",
+          "concept": "deployment-slots",
+          "prompt": "What is the lowest tier that supports deployment slots?",
+          "options": [
+            "Basic",
+            "Shared",
+            "Standard",
+            "Premium v2"
+          ],
+          "answer": 2,
+          "explanation": "Deployment slot butuh Standard, Premium, atau Isolated.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-slots"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "slot-swap"
+          ],
+          "title": "Swap",
+          "body": "Swap menukar isi dan konfigurasi dua slot, biasanya staging ke production. Slot sumber di-warm up dulu, jadi tidak ada downtime. Kalau versi baru bermasalah, swap yang sama bisa diulang untuk mengembalikan versi lama. Swap with preview berhenti setelah langkah pertama, supaya slot sumber bisa dicek dengan setting production sebelum swap diselesaikan.",
+          "keyPoints": [
+            "Tanpa downtime",
+            "Swap lagi untuk kembali",
+            "Preview: cek dulu sebelum selesai"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots",
+          "teaches": [
+            "az104-f-u13-swap",
+            "az104-f-u13-swap-preview"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-e4",
+          "type": "choice",
+          "concept": "slot-swap",
+          "prompt": "Right after a swap from staging to production, the new version shows errors. What is the fastest way back?",
+          "options": [
+            "Restore the app from a backup",
+            "Redeploy the old code to production",
+            "Scale out production",
+            "Swap the same two slots again"
+          ],
+          "answer": 3,
+          "explanation": "Setelah swap, versi lama ada di staging, jadi swap ulang langsung mengembalikannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-swap"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-e5",
+          "type": "truefalse",
+          "concept": "slot-swap",
+          "prompt": "With swap with preview, you can check the source slot with the production settings before the swap completes.",
+          "answer": true,
+          "explanation": "Benar. Swap berhenti setelah langkah pertama supaya kamu bisa memeriksa hasilnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-swap-preview"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-e6",
+          "type": "truefalse",
+          "concept": "slot-swap",
+          "prompt": "During a swap, the production slot stays online while the source slot warms up.",
+          "answer": true,
+          "explanation": "Benar. Semua persiapan terjadi di slot sumber, jadi production tetap melayani tanpa downtime.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-swap"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "slot-settings"
+          ],
+          "title": "Slot setting",
+          "body": "App setting dan connection string ikut di-swap bersama kode, kecuali ditandai sebagai deployment slot setting. Setting yang ditandai tetap di slot-nya. Beberapa hal selalu tetap di slot: custom domain, pengaturan TLS (Transport Layer Security), scale setting, managed identity, dan VNet (virtual network) integration. Jadi tandai connection string database staging sebagai slot setting.",
+          "keyPoints": [
+            "Ikut swap, kecuali ditandai slot setting",
+            "Custom domain dan scale tetap",
+            "Tandai connection string per lingkungan"
+          ],
+          "visual": "SlotSwap",
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots#which-settings-are-swapped",
+          "teaches": [
+            "az104-f-u13-swapped-settings"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-e7",
+          "type": "fix",
+          "concept": "slot-settings",
+          "prompt": "After swapping staging into production, production now writes to the staging database. What should you have done?",
+          "scene": {
+            "kind": "portal",
+            "title": "webapp-contoso/staging > Configuration > Connection strings",
+            "message": "DB_CONNECTION = staging-db. Deployment slot setting: unchecked."
+          },
+          "options": [
+            "Use swap with preview only",
+            "Mark DB_CONNECTION as a deployment slot setting in both slots",
+            "Scale out the staging slot",
+            "Add a custom domain to staging"
+          ],
+          "answer": 1,
+          "explanation": "Connection string yang tidak ditandai slot setting ikut pindah saat swap. Menandainya membuat nilai itu tetap di slot masing-masing.",
+          "requires": [
+            "az104-f-u13-swapped-settings"
+          ]
+        },
+        {
+          "id": "az104-u13-l5-e8",
+          "type": "multi",
+          "concept": "slot-settings",
+          "prompt": "Which two stay with their slot during a swap, without extra configuration? Choose two.",
+          "options": [
+            "Scale settings",
+            "The app code",
+            "An unmarked app setting",
+            "Custom domain names"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Custom domain dan scale setting selalu tetap di slot. Kode dan app setting yang tidak ditandai ikut di-swap.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-swapped-settings"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u13-plan",
+      "statement": "Setiap app App Service berjalan di App Service plan, yang menentukan OS (operating system), region, jumlah dan ukuran instance VM (virtual machine), serta pricing tier.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans"
+    },
+    {
+      "id": "az104-f-u13-plan-share",
+      "statement": "Semua app di satu App Service plan berbagi instance VM (virtual machine) yang sama dan scale bersama; deployment slot, backup, dan WebJobs juga memakai instance itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans#considerations-for-running-and-scaling-an-app"
+    },
+    {
+      "id": "az104-f-u13-tiers",
+      "statement": "Free dan Shared menjalankan app di VM (virtual machine) bersama dengan pelanggan lain dan tidak bisa scale out. Basic, Standard, dan Premium memakai VM dedicated. Isolated v2 menambah isolasi jaringan.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans#pricing-tiers"
+    },
+    {
+      "id": "az104-f-u13-billing",
+      "statement": "Di tier dedicated, yang ditagih adalah setiap instance VM (virtual machine) di plan, bukan setiap app.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans#cost-of-app-service-plans"
+    },
+    {
+      "id": "az104-f-u13-scale-up-out",
+      "statement": "Scale up berarti mengganti pricing tier untuk mendapat CPU (central processing unit), memori, disk, atau fitur lebih. Scale out berarti menambah jumlah instance: Basic sampai 3, Standard sampai 10, dan Premium sampai 30.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-scale-up"
+    },
+    {
+      "id": "az104-f-u13-tier-features",
+      "statement": "Custom domain butuh tier berbayar (Shared ke atas). TLS (Transport Layer Security) binding untuk custom domain, managed certificate, backup, VNet (virtual network) integration, dan private endpoint butuh Basic ke atas. Autoscale butuh Standard ke atas. Deployment slot: Standard 5, Premium dan Isolated 20.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-app-service-limits"
+    },
+    {
+      "id": "az104-f-u13-scale-ways",
+      "statement": "Tiga cara scale out App Service: manual (Basic ke atas), autoscale berbasis aturan metrik dan jadwal (Standard ke atas), dan automatic scaling berbasis trafik HTTP (Premium v2 sampai v4).",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-automatic-scaling"
+    },
+    {
+      "id": "az104-f-u13-automatic-scaling",
+      "statement": "Automatic scaling menambah instance berdasarkan trafik HTTP tanpa aturan atau jadwal, dengan instance prewarmed (default 1) untuk mengurangi cold start. Untuk scaling berbasis CPU (central processing unit), memori, atau waktu, pakai autoscale.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-automatic-scaling"
+    },
+    {
+      "id": "az104-f-u13-domain-tier",
+      "statement": "Custom domain butuh App Service plan berbayar, bukan Free (F1).",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain"
+    },
+    {
+      "id": "az104-f-u13-domain-records",
+      "statement": "Untuk custom domain, buat record DNS (Domain Name System) di penyedia domain: A record untuk root domain seperti contoso.com, atau CNAME untuk subdomain seperti www. Tambahkan juga TXT asuid (asuid.www untuk subdomain) berisi domain verification ID.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain"
+    },
+    {
+      "id": "az104-f-u13-domain-txt",
+      "statement": "Record TXT asuid untuk subdomain dengan CNAME tidak wajib, tapi sangat disarankan untuk mencegah subdomain takeover oleh app App Service lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-custom-domain"
+    },
+    {
+      "id": "az104-f-u13-managed-cert",
+      "statement": "App Service Managed Certificate gratis, diperbarui otomatis, dan butuh tier Basic ke atas. Sertifikat ini tidak mendukung wildcard.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-certificate#create-a-free-managed-certificate"
+    },
+    {
+      "id": "az104-f-u13-backup",
+      "statement": "Backup dan restore didukung di Basic, Standard, Premium, dan Isolated. Di Basic, hanya slot production yang bisa di-backup dan di-restore.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup"
+    },
+    {
+      "id": "az104-f-u13-backup-types",
+      "statement": "Automatic backup dibuat berkala tanpa storage account dan disimpan 30 hari. Custom backup butuh storage account, bisa manual atau terjadwal, dan maksimal 10 GB (gigabyte).",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup#automatic-vs-custom-backups"
+    },
+    {
+      "id": "az104-f-u13-vnet-integration",
+      "statement": "VNet (virtual network) integration butuh tier dedicated (Basic ke atas) dan hanya menangani trafik keluar dari app ke virtual network. Fitur ini memakai subnet khusus.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview-vnet-integration"
+    },
+    {
+      "id": "az104-f-u13-private-endpoint",
+      "statement": "Private endpoint memberi app alamat IP privat di virtual network, dan hanya untuk trafik masuk ke app.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/networking-features#private-endpoint"
+    },
+    {
+      "id": "az104-f-u13-access-restrictions",
+      "statement": "Access restriction adalah daftar allow dan deny berprioritas untuk trafik masuk, berdasarkan IP (Internet Protocol), subnet, atau service tag. Begitu ada satu aturan, ada deny all implisit di akhir, dan request yang ditolak mendapat HTTP 403.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/app-service-ip-restrictions"
+    },
+    {
+      "id": "az104-f-u13-slots",
+      "statement": "Deployment slot adalah app yang berjalan dengan host name sendiri, dan butuh tier Standard, Premium, atau Isolated. Standard mendukung sampai 5 slot, dan slot tidak dikenai biaya tambahan.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots"
+    },
+    {
+      "id": "az104-f-u13-swap",
+      "statement": "Swap menukar isi dan konfigurasi dua slot. Slot sumber di-warm up dulu, jadi tidak ada downtime, dan swap yang sama bisa diulang untuk kembali ke versi sebelumnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots"
+    },
+    {
+      "id": "az104-f-u13-swapped-settings",
+      "statement": "App setting dan connection string ikut di-swap, kecuali ditandai sebagai deployment slot setting. Custom domain, TLS (Transport Layer Security) setting, scale setting, managed identity, dan VNet (virtual network) integration tetap di slot-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots#which-settings-are-swapped"
+    },
+    {
+      "id": "az104-f-u13-swap-preview",
+      "statement": "Swap with preview berhenti setelah langkah pertama, supaya slot sumber bisa dicek dengan setting slot tujuan sebelum swap diselesaikan.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots#swap-with-preview-multiple-phase-swap"
+    },
+    {
+      "id": "az104-f-u13-slots-downscale",
+      "statement": "App dengan lebih dari 5 slot tidak bisa diturunkan ke tier Standard, karena Standard hanya mendukung 5 slot.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots"
     }
   ]
 }
