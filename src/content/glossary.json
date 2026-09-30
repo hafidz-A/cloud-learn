@@ -5,6 +5,11 @@
     "description": "Cara paling sederhana menjalankan container di Azure tanpa mengelola VM (Virtual Machine) atau cluster."
   },
   {
+    "term": "ACL",
+    "expansion": "Access Control List",
+    "description": "Daftar izin di folder atau file. Azure Files memakai Windows ACL untuk izin folder dan file."
+  },
+  {
     "term": "AES",
     "expansion": "Advanced Encryption Standard",
     "description": "Algoritma enkripsi standar. Azure Storage memakai AES 256-bit untuk mengenkripsi data yang disimpan."

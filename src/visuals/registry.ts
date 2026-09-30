@@ -14,6 +14,7 @@ import { ConditionalAccessFlow } from './ConditionalAccessFlow'
 import { DefenseInDepth } from './DefenseInDepth'
 import { DnsDelegation } from './DnsDelegation'
 import { EntraObjects } from './EntraObjects'
+import { FilesPermissionLayers } from './FilesPermissionLayers'
 import { GroupTypes } from './GroupTypes'
 import { HealthProbeBlocked } from './HealthProbeBlocked'
 import { HybridConnectivity } from './HybridConnectivity'
@@ -33,6 +34,7 @@ import { RbacScope } from './RbacScope'
 import { RegionPair } from './RegionPair'
 import { ResourceHierarchy } from './ResourceHierarchy'
 import { RoleScopeTree } from './RoleScopeTree'
+import { SasTypes } from './SasTypes'
 import { ScaleUpVsOut } from './ScaleUpVsOut'
 import { ServiceHealthScopes } from './ServiceHealthScopes'
 import { ServiceModelsStack } from './ServiceModelsStack'
@@ -41,6 +43,7 @@ import { SharedResponsibility } from './SharedResponsibility'
 import { SsprLicensing } from './SsprLicensing'
 import { StorageRedundancy } from './StorageRedundancy'
 import { StorageServices } from './StorageServices'
+import { StoredAccessPolicy } from './StoredAccessPolicy'
 import { UdrNextHop } from './UdrNextHop'
 import { VNetAddressPlan } from './VNetAddressPlan'
 import { VNetPeering } from './VNetPeering'
@@ -62,6 +65,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   DefenseInDepth,
   DnsDelegation,
   EntraObjects,
+  FilesPermissionLayers,
   GroupTypes,
   HealthProbeBlocked,
   HybridConnectivity,
@@ -81,6 +85,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   RegionPair,
   ResourceHierarchy,
   RoleScopeTree,
+  SasTypes,
   ScaleUpVsOut,
   ServiceHealthScopes,
   ServiceModelsStack,
@@ -89,6 +94,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   SsprLicensing,
   StorageRedundancy,
   StorageServices,
+  StoredAccessPolicy,
   UdrNextHop,
   VNetAddressPlan,
   VNetPeering,

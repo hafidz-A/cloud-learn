@@ -272,3 +272,26 @@ Tidak ada fakta bertanda `verify`.
 | Storage Explorer: cara terhubung (akun Azure, Microsoft Entra ID, account name dan key, SAS, emulator), Microsoft Entra direkomendasikan, account key akses tanpa batas. Halaman sumbernya lama (2019 dan 2020) | Hanya fakta dasar yang stabil yang dipakai | `vs-azure-tools-storage-manage-with-storage-explorer.md`, `storage-explorer-security.md` |
 
 Tidak ada fakta bertanda `verify`.
+
+### Unit 8: Akses ke storage (30 September 2026)
+
+43 fakta, 13 kartu learn, 44 soal (40 examReady), 3 visual baru (`SasTypes`, `StoredAccessPolicy`,
+`FilesPermissionLayers`). Sumber: `azure-docs/articles/storage/common`, `storage/blobs`, dan `storage/files`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Default storage account menerima semua jaringan; pilihan Public network access sekarang Enabled from all networks, Enabled from selected networks, Disabled (hanya private endpoint), dan Secured by perimeter | Soal config memakai nama pilihan persis | `storage-network-security.md`, `storage-network-security-set-default-access.md` (25 Agustus 2025) |
+| Firewall tidak memengaruhi private endpoint; sumber yang diizinkan tetap harus lolos otorisasi; firewall hanya untuk data plane | Diajarkan, soal yesno dari rumah | `storage-network-security-overview.md`, `storage-network-security-limitations.md` |
+| Virtual network rule butuh service endpoint Microsoft.Storage (portal membuatnya otomatis, CLI tidak) | Soal fix | `storage-network-security.md` |
+| IP rule hanya IPv4 publik, tanpa rentang privat, dan tidak berpengaruh untuk sumber di region yang sama | Soal choice kantor dan VM satu region | `storage-network-security-limitations.md` |
+| Pengecualian layanan tepercaya (Azure Backup, Azure Monitor, Event Grid, Azure Site Recovery, dan lainnya) | Diajarkan | `storage-network-security-trusted-azure-services.md` |
+| Tiga jenis SAS: user delegation (Microsoft Entra; Blob, Queue, Table, Files; disarankan), service (account key, satu layanan), account (account key, satu atau lebih layanan). SAS tidak dicatat dan pembuatannya tidak bisa diaudit | Diajarkan persis, fakta rencana terkonfirmasi | `storage-sas-overview.md` (27 Februari 2026) |
+| User delegation SAS paling lama 7 hari (batas user delegation key). Halaman sumbernya dari 2019, tapi batas ini masih berlaku di referensi REST | Diajarkan | `storage-blob-user-delegation-sas-create-cli.md` |
+| Stored access policy hanya untuk service SAS, bisa mengubah atau mencabut SAS yang sudah dibagikan, maksimal lima per container | Fakta rencana terkonfirmasi, soal fix link bocor | `storage-sas-overview.md`, `storage-stored-access-policy-define-dotnet.md` |
+| Rotasi key tanpa downtime: aplikasi ke key2, buat ulang key1, aplikasi ke key1 baru, buat ulang key2. Membuat ulang key membatalkan service SAS dan account SAS dari key itu; user delegation SAS tidak terpengaruh | Soal order dan choice | `storage-account-keys-manage.md` (11 Agustus 2026) |
+| Melihat key: Owner, Contributor, Storage Account Key Operator Service Role; Reader tidak | Soal choice role | `storage-account-keys-manage.md` |
+| Allow storage account key access Disabled menolak Shared Key, termasuk service SAS dan account SAS ke Blob Storage; user delegation SAS tetap diterima | Diajarkan | `shared-key-authorization-prevent.md` (11 Agustus 2026) |
+| Azure Files: tiga identity source (AD DS, Microsoft Entra Domain Services, Microsoft Entra Kerberos), satu per akun, hanya SMB. **Microsoft Entra Kerberos kini juga untuk identitas cloud-only**, tidak untuk user Linux | Diajarkan; soal laptop Microsoft Entra joined tanpa domain controller | `storage-files-active-directory-overview.md` (18 September 2026) |
+| Izin share memakai RBAC (SMB Share Reader, Contributor, Elevated Contributor), izin folder dan file memakai Windows ACL, dan yang paling ketat yang berlaku; perubahan izin share biasanya berlaku dalam 30 menit | Diajarkan, visual `FilesPermissionLayers` | `storage-files-identity-assign-share-level-permissions.md`, `storage-files-identity-configure-file-level-permissions.md` |
+
+Tidak ada fakta bertanda `verify`.

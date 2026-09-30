@@ -71,6 +71,10 @@ export const VISUAL_CATALOG = {
   // Unit 7 (the redundancy card reuses StorageRedundancy)
   AccountFailover: ['storage-failover'],
   ObjectReplication: ['object-replication'],
+  // Unit 8
+  SasTypes: ['sas-types'],
+  StoredAccessPolicy: ['stored-access-policy'],
+  FilesPermissionLayers: ['share-vs-file-permissions'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

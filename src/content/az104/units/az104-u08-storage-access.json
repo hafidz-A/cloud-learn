@@ -6,27 +6,1393 @@
     {
       "id": "az104-u08-l1",
       "title": "Firewall storage dan virtual network",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u08-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "storage-firewall"
+          ],
+          "title": "Firewall storage account",
+          "body": "Secara default storage account menerima koneksi dari jaringan mana pun. Di Networking, Public network access bisa diubah ke Enabled from selected networks: hanya sumber yang kamu izinkan yang bisa masuk lewat public endpoint. Pilihan Disabled menutup public endpoint, jadi akses hanya lewat private endpoint. Firewall tidak memengaruhi private endpoint, dan request yang lolos firewall tetap harus punya izin.",
+          "keyPoints": [
+            "Default: semua jaringan",
+            "Selected networks: hanya sumber yang diizinkan",
+            "Disabled: hanya private endpoint"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security-set-default-access",
+          "teaches": [
+            "az104-f-u08-fw-default",
+            "az104-f-u08-fw-options",
+            "az104-f-u08-fw-private",
+            "az104-f-u08-fw-auth"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e1",
+          "type": "truefalse",
+          "concept": "storage-firewall",
+          "prompt": "A new storage account accepts connections from any network until you configure its firewall.",
+          "answer": true,
+          "explanation": "Benar. Default-nya Enabled from all networks.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-fw-default"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e2",
+          "type": "choice",
+          "concept": "storage-firewall",
+          "prompt": "contosodata must be reachable only through its private endpoint. Nothing may reach its public endpoint. What should you set?",
+          "options": [
+            "Public network access: Disabled",
+            "Public network access: Enabled from selected networks, with no rules",
+            "Public network access: Enabled from all networks",
+            "A virtual network rule for the private endpoint subnet"
+          ],
+          "answer": 0,
+          "explanation": "Disabled menutup public endpoint, jadi akses hanya lewat private endpoint. Firewall rule tidak berlaku untuk private endpoint.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-fw-options",
+            "az104-f-u08-fw-private"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e3",
+          "type": "truefalse",
+          "concept": "storage-firewall",
+          "prompt": "A request from an allowed subnet can read blobs even without a role, a SAS (shared access signature), or an account key.",
+          "answer": false,
+          "explanation": "Salah. Firewall hanya menyaring jaringan. Request yang lolos tetap harus punya izin, misalnya role, SAS (shared access signature), atau key.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-fw-auth"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "selected-networks"
+          ],
+          "title": "Subnet dan IP yang diizinkan",
+          "body": "Virtual network rule mengizinkan satu subnet, dan subnet itu butuh service endpoint Microsoft.Storage; portal membuatnya otomatis. IP (Internet Protocol) network rule mengizinkan alamat IPv4 publik, misalnya IP kantor. Rentang privat seperti 10.x atau 192.168.x tidak bisa dipakai. IP rule juga tidak berpengaruh untuk sumber di region Azure yang sama dengan storage account; untuk itu pakai virtual network rule.",
+          "keyPoints": [
+            "Subnet: virtual network rule + service endpoint",
+            "Kantor: IP publik",
+            "Region sama: pakai virtual network rule"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security",
+          "teaches": [
+            "az104-f-u08-fw-sources",
+            "az104-f-u08-vnet-rule",
+            "az104-f-u08-ip-rule",
+            "az104-f-u08-ip-same-region",
+            "az104-f-u08-ip-onprem",
+            "az104-f-u05-se-def"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e4",
+          "type": "config",
+          "concept": "selected-networks",
+          "prompt": "Only the subnet snet-app in vnet-app and the office public IP (Internet Protocol) address 203.0.113.10 may reach contosodata. Configure the storage firewall.",
+          "blade": "contosodata > Networking",
+          "fields": [
+            {
+              "label": "Public network access",
+              "kind": "select",
+              "choices": [
+                "Enabled from all networks",
+                "Enabled from selected networks",
+                "Disabled"
+              ],
+              "value": "Enabled from all networks"
+            },
+            {
+              "label": "Virtual networks",
+              "kind": "select",
+              "choices": [
+                "vnet-app",
+                "vnet-hub"
+              ],
+              "value": "vnet-hub"
+            },
+            {
+              "label": "Subnets",
+              "kind": "select",
+              "choices": [
+                "snet-app",
+                "snet-db"
+              ],
+              "value": "snet-db"
+            },
+            {
+              "label": "IPv4 address or CIDR",
+              "kind": "text",
+              "value": ""
+            }
+          ],
+          "answer": {
+            "Public network access": "Enabled from selected networks",
+            "Virtual networks": "vnet-app",
+            "Subnets": "snet-app",
+            "IPv4 address or CIDR": "203.0.113.10"
+          },
+          "explanation": "Enabled from selected networks mengaktifkan firewall. Subnet snet-app diizinkan lewat virtual network rule, dan kantor lewat IP (Internet Protocol) publiknya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-fw-options",
+            "az104-f-u08-vnet-rule",
+            "az104-f-u08-ip-onprem"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e5",
+          "type": "choice",
+          "concept": "selected-networks",
+          "prompt": "The office network uses 192.168.10.0/24 internally and reaches the internet through 203.0.113.10. Which IP (Internet Protocol) network rule lets the office reach contosodata?",
+          "options": [
+            "192.168.10.0/24",
+            "10.0.0.0/8",
+            "No rule is possible for an office",
+            "203.0.113.10"
+          ],
+          "answer": 3,
+          "explanation": "IP (Internet Protocol) network rule hanya untuk alamat publik. Storage account melihat IP publik kantor, bukan rentang privat 192.168.10.0/24.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-ip-rule",
+            "az104-f-u08-ip-onprem"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e6",
+          "type": "choice",
+          "concept": "selected-networks",
+          "prompt": "vm1 runs in the same Azure region as contosodata. An IP (Internet Protocol) network rule allows the public IP address of vm1, but vm1 still gets 403 errors. What should you do?",
+          "options": [
+            "Add the private IP address of vm1 to the IP rules",
+            "Add a virtual network rule for the subnet of vm1",
+            "Set Public network access to Disabled",
+            "Regenerate the account keys"
+          ],
+          "answer": 1,
+          "explanation": "IP (Internet Protocol) network rule tidak berpengaruh untuk sumber di region yang sama. Izinkan subnet vm1 lewat virtual network rule, yang memakai service endpoint.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-ip-same-region",
+            "az104-f-u08-vnet-rule"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e7",
+          "type": "fix",
+          "concept": "selected-networks",
+          "prompt": "You added a virtual network rule for snet-app with the Azure CLI (command-line interface). VMs (virtual machines) in snet-app still get 403 errors from contosodata. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "vnet-app > snet-app · Service endpoints",
+            "message": "Service endpoints: none."
+          },
+          "options": [
+            "Add the private IP (Internet Protocol) range of snet-app as an IP network rule",
+            "Enable the Microsoft.Storage service endpoint on snet-app",
+            "Set Public network access to Enabled from all networks",
+            "Create a stored access policy"
+          ],
+          "answer": 1,
+          "explanation": "Virtual network rule butuh service endpoint Microsoft.Storage di subnet itu. Portal membuatnya otomatis, tapi dengan CLI (command-line interface) harus dibuat sendiri. Rentang privat tidak boleh di IP (Internet Protocol) rule.",
+          "requires": [
+            "az104-f-u08-vnet-rule",
+            "az104-f-u08-ip-rule"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "trusted-services"
+          ],
+          "title": "Layanan tepercaya dan batas firewall",
+          "body": "Beberapa layanan Azure tidak bisa dimasukkan ke virtual network rule atau IP (Internet Protocol) rule. Untuk itu ada pengecualian Allow Azure services on the trusted services list to access this storage account, misalnya untuk Azure Backup, Azure Monitor, Event Grid, dan Azure Site Recovery. Ingat juga: firewall hanya berlaku untuk data. Membuka isi blob lewat portal atau Storage Explorer butuh komputermu berada di sumber yang diizinkan.",
+          "keyPoints": [
+            "Pengecualian untuk layanan tepercaya",
+            "Firewall hanya untuk data",
+            "Portal pun butuh jaringan yang diizinkan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security#exceptions-for-trusted-azure-services-and-network-security",
+          "teaches": [
+            "az104-f-u08-trusted",
+            "az104-f-u08-fw-data-plane"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e8",
+          "type": "choice",
+          "concept": "trusted-services",
+          "prompt": "Azure Monitor must write resource logs to contosodata, which allows only selected networks. What should you enable?",
+          "options": [
+            "Allow Azure services on the trusted services list to access this storage account",
+            "Public network access: Enabled from all networks",
+            "An IP (Internet Protocol) network rule for the public IP addresses of Azure Monitor",
+            "A virtual network rule for Azure Monitor"
+          ],
+          "answer": 0,
+          "explanation": "Azure Monitor ada di daftar layanan tepercaya. Membuka ke semua jaringan terlalu luas, dan layanan itu tidak punya subnet sendiri.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-trusted"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e9",
+          "type": "yesno",
+          "concept": "trusted-services",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "contosodata allows only the subnet snet-app. Ani works from home and opens the Azure portal.",
+          "statements": [
+            {
+              "text": "Ani can see contosodata in the portal.",
+              "answer": true
+            },
+            {
+              "text": "Ani can open the contents of blobs from home.",
+              "answer": false
+            },
+            {
+              "text": "Adding the public IP (Internet Protocol) address of her home would let her open blob data.",
+              "answer": true
+            }
+          ],
+          "explanation": "Firewall hanya berlaku untuk operasi data, jadi resource-nya tetap terlihat. Membuka isi blob butuh jaringan yang diizinkan, misalnya IP (Internet Protocol) rule untuk IP publik rumahnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-fw-data-plane",
+            "az104-f-u08-ip-onprem"
+          ]
+        },
+        {
+          "id": "az104-u08-l1-e10",
+          "type": "multi",
+          "concept": "trusted-services",
+          "prompt": "Which two can a storage firewall allow? Choose two.",
+          "options": [
+            "A public IP (Internet Protocol) address range",
+            "A subnet in a virtual network",
+            "A private IP address range such as 10.0.0.0/8",
+            "A single user account in Microsoft Entra ID"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Firewall mengizinkan subnet, IP (Internet Protocol) publik, resource instance, dan layanan tepercaya. Rentang privat tidak boleh, dan user diatur lewat izin, bukan firewall.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-fw-sources",
+            "az104-f-u08-ip-rule"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u08-l2",
       "title": "Jenis SAS",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u08-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "sas-types"
+          ],
+          "title": "Tiga jenis SAS",
+          "body": "SAS (shared access signature) adalah token di URL (Uniform Resource Locator) yang memberi akses terbatas: resource apa, izin apa, dan sampai kapan. User delegation SAS diamankan dengan kredensial Microsoft Entra. Service SAS diamankan dengan account key dan hanya untuk satu layanan storage. Account SAS juga diamankan dengan account key, tapi bisa untuk satu atau lebih layanan.",
+          "keyPoints": [
+            "User delegation: Microsoft Entra",
+            "Service: account key, satu layanan",
+            "Account: account key, satu atau lebih layanan"
+          ],
+          "visual": "SasTypes",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#types-of-shared-access-signatures",
+          "teaches": [
+            "az104-f-u08-sas-what",
+            "az104-f-u08-ud-sas",
+            "az104-f-u08-service-sas",
+            "az104-f-u08-account-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e1",
+          "type": "sort",
+          "concept": "sas-types",
+          "prompt": "Sort each statement to the SAS (shared access signature) type it describes.",
+          "buckets": [
+            "User delegation SAS",
+            "Service SAS",
+            "Account SAS"
+          ],
+          "items": [
+            {
+              "text": "Secured with Microsoft Entra credentials",
+              "bucket": 0
+            },
+            {
+              "text": "Secured with the account key, for one storage service only",
+              "bucket": 1
+            },
+            {
+              "text": "Secured with the account key, for one or more storage services",
+              "bucket": 2
+            }
+          ],
+          "explanation": "User delegation SAS (shared access signature) memakai kredensial Microsoft Entra. Service SAS dan account SAS memakai account key; bedanya jumlah layanan.",
+          "requires": [
+            "az104-f-u08-ud-sas",
+            "az104-f-u08-service-sas",
+            "az104-f-u08-account-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e2",
+          "type": "choice",
+          "concept": "sas-types",
+          "prompt": "One token must let an app read blobs and add messages to a queue in the same storage account. Which SAS (shared access signature) type fits?",
+          "options": [
+            "Service SAS",
+            "Account SAS",
+            "Two user delegation SAS tokens for Blob Storage",
+            "A stored access policy"
+          ],
+          "answer": 1,
+          "explanation": "Account SAS (shared access signature) bisa mencakup lebih dari satu layanan. Service SAS hanya untuk satu layanan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-account-sas",
+            "az104-f-u08-service-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e3",
+          "type": "truefalse",
+          "concept": "sas-types",
+          "prompt": "A service SAS (shared access signature) can give access to blobs and to file shares with one token.",
+          "answer": false,
+          "explanation": "Salah. Service SAS (shared access signature) hanya untuk satu layanan storage.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-service-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "user-delegation-sas"
+          ],
+          "title": "User delegation SAS",
+          "body": "Microsoft menyarankan user delegation SAS (shared access signature), karena ditandatangani dengan kunci dari kredensial Microsoft Entra, bukan account key. Jadi account key tidak perlu disimpan di kode. Jenis ini didukung untuk Blob Storage, Queue Storage, Table Storage, dan Azure Files. User delegation key berlaku paling lama 7 hari, jadi SAS-nya juga paling lama 7 hari.",
+          "keyPoints": [
+            "Disarankan Microsoft",
+            "Tanpa account key di kode",
+            "Paling lama 7 hari"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#user-delegation-sas",
+          "teaches": [
+            "az104-f-u08-ud-sas",
+            "az104-f-u08-ud-7days"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e4",
+          "type": "choice",
+          "concept": "user-delegation-sas",
+          "prompt": "A web app hands out links to single blobs. Security rules say the storage account key must not be stored in the app. Which SAS (shared access signature) type should the app create?",
+          "options": [
+            "Service SAS",
+            "Account SAS",
+            "Any SAS, as long as it is shared over an encrypted connection",
+            "User delegation SAS"
+          ],
+          "answer": 3,
+          "explanation": "User delegation SAS (shared access signature) ditandatangani dengan kredensial Microsoft Entra, jadi app tidak butuh account key. Service SAS dan account SAS butuh account key.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-ud-sas",
+            "az104-f-u08-service-sas",
+            "az104-f-u08-account-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e5",
+          "type": "truefalse",
+          "concept": "user-delegation-sas",
+          "prompt": "You can create a user delegation SAS (shared access signature) that stays valid for 30 days.",
+          "answer": false,
+          "explanation": "Salah. User delegation key berlaku paling lama 7 hari, jadi SAS (shared access signature) ini juga paling lama 7 hari.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-ud-7days"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e6",
+          "type": "match",
+          "concept": "user-delegation-sas",
+          "prompt": "Match each SAS (shared access signature) type to what signs it.",
+          "pairs": [
+            [
+              "User delegation SAS",
+              "A key from Microsoft Entra credentials"
+            ],
+            [
+              "Service SAS",
+              "The storage account key"
+            ]
+          ],
+          "explanation": "Hanya user delegation SAS (shared access signature) yang tidak memakai account key.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-ud-sas",
+            "az104-f-u08-service-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "sas-permissions-expiry"
+          ],
+          "title": "Izin dan masa berlaku SAS",
+          "body": "SAS (shared access signature) yang bocor bisa dipakai siapa saja, dan Azure tidak mencatat SAS mana saja yang sudah dibuat. Jadi beri izin sesedikit mungkin, misalnya hanya read untuk satu blob, dan masa berlaku yang pendek. Bagikan hanya lewat koneksi terenkripsi (HTTPS). Jam antar mesin bisa berbeda, jadi set start time minimal 15 menit ke belakang, atau kosongkan.",
+          "keyPoints": [
+            "Izin minimal, satu resource",
+            "Masa berlaku pendek",
+            "Start time 15 menit ke belakang"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#best-practices-when-using-sas",
+          "teaches": [
+            "az104-f-u08-sas-least",
+            "az104-f-u08-sas-not-tracked",
+            "az104-f-u08-sas-https",
+            "az104-f-u08-sas-start"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e7",
+          "type": "choice",
+          "concept": "sas-permissions-expiry",
+          "prompt": "A partner must download one report blob today. Which SAS (shared access signature) is the best choice?",
+          "options": [
+            "Read and write permissions on the container, expiring in a year",
+            "An account SAS with all permissions, expiring in a week",
+            "Read permission on the container, with no expiry time",
+            "Read permission on that blob, expiring in a few hours"
+          ],
+          "answer": 3,
+          "explanation": "Izin minimal pada satu resource dengan masa berlaku pendek membatasi kerusakan kalau SAS (shared access signature) bocor.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sas-least"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e8",
+          "type": "choice",
+          "concept": "sas-permissions-expiry",
+          "prompt": "Clients sometimes get 403 errors during the first minutes after a SAS (shared access signature) is created. The start time is set to the current time. What should you change?",
+          "options": [
+            "Set the expiry time to one year",
+            "Use HTTP (Hypertext Transfer Protocol) instead of HTTPS (HTTP Secure)",
+            "Set the start time at least 15 minutes in the past, or leave it empty",
+            "Add write permission to the SAS"
+          ],
+          "answer": 2,
+          "explanation": "Jam antar mesin bisa berbeda, jadi start time yang sama dengan waktu sekarang bisa dianggap belum berlaku.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sas-start",
+            "az104-f-u08-sas-not-tracked"
+          ]
+        },
+        {
+          "id": "az104-u08-l2-e9",
+          "type": "multi",
+          "concept": "sas-permissions-expiry",
+          "prompt": "Which two practices reduce the damage of a leaked SAS (shared access signature)? Choose two.",
+          "options": [
+            "Set the start time to the current time",
+            "Grant only the permissions and resources that are needed",
+            "Use a short expiry time",
+            "Share the SAS over HTTP (Hypertext Transfer Protocol)"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Izin minimal dan masa berlaku pendek membatasi apa dan berapa lama SAS (shared access signature) bocor bisa dipakai. HTTP (Hypertext Transfer Protocol) membuat token bisa disadap.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sas-least",
+            "az104-f-u08-sas-https",
+            "az104-f-u08-sas-start"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u08-l3",
       "title": "Stored access policy",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u08-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "stored-access-policy"
+          ],
+          "title": "Stored access policy",
+          "body": "Stored access policy dibuat di container, file share, queue, atau table. Service SAS (shared access signature) yang merujuk ke policy itu mengikuti izin, start time, dan expiry time dari policy. Keuntungannya: izin atau masa berlaku bisa diubah setelah SAS dibagikan, dan SAS bisa dicabut. Policy hanya bisa dipakai service SAS, dan satu container maksimal punya lima policy.",
+          "keyPoints": [
+            "SAS mengikuti policy",
+            "Hanya untuk service SAS",
+            "Maksimal lima per container"
+          ],
+          "visual": "StoredAccessPolicy",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-stored-access-policy-define-dotnet",
+          "teaches": [
+            "az104-f-u08-sap-what",
+            "az104-f-u08-sap-service-only",
+            "az104-f-u08-sap-change",
+            "az104-f-u08-sap-revoke"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-e1",
+          "type": "choice",
+          "concept": "stored-access-policy",
+          "prompt": "Which SAS (shared access signature) type can reference a stored access policy?",
+          "options": [
+            "Service SAS",
+            "Account SAS",
+            "User delegation SAS",
+            "All three types"
+          ],
+          "answer": 0,
+          "explanation": "Stored access policy hanya didukung untuk service SAS (shared access signature).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sap-service-only"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-e2",
+          "type": "truefalse",
+          "concept": "stored-access-policy",
+          "prompt": "You can create ten stored access policies on one blob container.",
+          "answer": false,
+          "explanation": "Salah. Satu container maksimal punya lima stored access policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sap-revoke"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-e3",
+          "type": "truefalse",
+          "concept": "stored-access-policy",
+          "prompt": "You can extend the expiry time of service SAS (shared access signature) tokens that were already issued by editing the stored access policy they reference.",
+          "answer": true,
+          "explanation": "Benar. SAS (shared access signature) mengikuti expiry time dari policy yang dirujuknya, jadi mengubah policy ikut mengubah SAS yang sudah dibagikan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sap-change",
+            "az104-f-u08-sap-what"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-e4",
+          "type": "yesno",
+          "concept": "stored-access-policy",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Two service SAS (shared access signature) tokens reference the stored access policy mitra-baca on the container kontrak.",
+          "statements": [
+            {
+              "text": "Shortening the expiry time of mitra-baca also shortens both SAS tokens.",
+              "answer": true
+            },
+            {
+              "text": "You can also attach an account SAS to mitra-baca.",
+              "answer": false
+            },
+            {
+              "text": "Deleting mitra-baca revokes both SAS tokens.",
+              "answer": true
+            }
+          ],
+          "explanation": "SAS (shared access signature) mengikuti policy yang dirujuknya, jadi mengubah atau menghapus policy berlaku untuk keduanya. Account SAS tidak bisa memakai policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sap-change",
+            "az104-f-u08-sap-service-only",
+            "az104-f-u08-sap-revoke"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "revoke-sas"
+          ],
+          "title": "Mencabut SAS yang bocor",
+          "body": "Cara mencabut SAS (shared access signature) tergantung jenisnya. Service SAS yang merujuk stored access policy dicabut dengan menghapus atau mengubah policy-nya, tanpa merotasi account key. SAS biasa tanpa policy tidak bisa dicabut satu per satu; satu-satunya jalan adalah membuat ulang key yang menandatanganinya. User delegation SAS dicabut dengan mencabut user delegation key akun itu.",
+          "keyPoints": [
+            "Dengan policy: hapus atau ubah policy",
+            "Tanpa policy: buat ulang key",
+            "User delegation: cabut delegation key"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#best-practices-when-using-sas",
+          "teaches": [
+            "az104-f-u08-sap-revoke",
+            "az104-f-u08-bare-sas",
+            "az104-f-u08-ud-revoke",
+            "az104-f-u08-keys-rotate-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-e5",
+          "type": "fix",
+          "concept": "revoke-sas",
+          "prompt": "A SAS (shared access signature) link for the container kontrak was posted on a public forum. It must stop working now. Other apps use the account key, so you must not rotate it. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "kontrak · Access policy",
+            "message": "Stored access policies: mitra-baca (read, expires 31 Oct). The leaked SAS contains si=mitra-baca."
+          },
+          "options": [
+            "Regenerate key1 and key2",
+            "Delete the stored access policy mitra-baca",
+            "Change the container access level to Private",
+            "Revoke the user delegation keys"
+          ],
+          "answer": 1,
+          "explanation": "SAS (shared access signature) itu merujuk ke mitra-baca, jadi menghapus policy langsung mencabutnya tanpa merotasi key. Delegation key hanya untuk user delegation SAS.",
+          "requires": [
+            "az104-f-u08-sap-revoke",
+            "az104-f-u08-sap-change",
+            "az104-f-u08-ud-revoke"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-e6",
+          "type": "choice",
+          "concept": "revoke-sas",
+          "prompt": "An account SAS (shared access signature) signed with key1 leaked. It doesn't use a stored access policy. How do you make it stop working?",
+          "options": [
+            "Delete the stored access policies on every container",
+            "Regenerate key1",
+            "Revoke the user delegation keys",
+            "Disable blob versioning"
+          ],
+          "answer": 1,
+          "explanation": "SAS (shared access signature) tanpa policy tidak bisa dicabut satu per satu. Membuat ulang key yang menandatanganinya membatalkan semua SAS dari key itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-bare-sas",
+            "az104-f-u08-keys-rotate-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-e7",
+          "type": "match",
+          "concept": "revoke-sas",
+          "prompt": "Match each leaked SAS (shared access signature) to the way to revoke it.",
+          "pairs": [
+            [
+              "Service SAS with a stored access policy",
+              "Delete or change the policy"
+            ],
+            [
+              "Account SAS",
+              "Regenerate the key that signed it"
+            ],
+            [
+              "User delegation SAS",
+              "Revoke the user delegation keys"
+            ]
+          ],
+          "explanation": "Policy hanya untuk service SAS (shared access signature). SAS lain yang memakai key dicabut dengan membuat ulang key, dan user delegation SAS dengan mencabut delegation key.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sap-revoke",
+            "az104-f-u08-bare-sas",
+            "az104-f-u08-ud-revoke"
+          ]
+        },
+        {
+          "id": "az104-u08-l3-e8",
+          "type": "order",
+          "concept": "revoke-sas",
+          "prompt": "In the Azure portal, you want partners to get service SAS (shared access signature) tokens that you can revoke later. Put the steps in order.",
+          "items": [
+            "Open Access policy on the container",
+            "Add a stored access policy with an identifier and permissions",
+            "Select Save to apply the policy to the container",
+            "Generate a SAS that uses the stored access policy"
+          ],
+          "explanation": "Policy ditambahkan lalu disimpan ke container. Baru setelah itu SAS (shared access signature) bisa dibuat dengan merujuk ke policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sap-what",
+            "az104-f-u08-sap-revoke"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u08-l4",
       "title": "Access key",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u08-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "access-keys"
+          ],
+          "title": "Access key",
+          "body": "Setiap storage account punya dua access key 512-bit: key1 dan key2. Key memberi akses tanpa batas ke seluruh akun, dan juga dipakai untuk menandatangani service SAS (shared access signature) dan account SAS. Melihat key butuh role seperti Owner, Contributor, atau Storage Account Key Operator Service Role; Reader tidak bisa. Microsoft menyarankan Microsoft Entra ID dan managed identity, dan menyimpan key di Azure Key Vault kalau terpaksa memakainya.",
+          "keyPoints": [
+            "Dua key: key1 dan key2",
+            "Akses tanpa batas",
+            "Lebih baik: Microsoft Entra ID"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage",
+          "teaches": [
+            "az104-f-u08-keys-two",
+            "az104-f-u08-keys-view",
+            "az104-f-u08-keys-reco",
+            "az104-f-u07-se-keys"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e1",
+          "type": "truefalse",
+          "concept": "access-keys",
+          "prompt": "Every storage account has two access keys.",
+          "answer": true,
+          "explanation": "Benar. key1 dan key2, supaya bisa dirotasi bergantian.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-keys-two"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e2",
+          "type": "choice",
+          "concept": "access-keys",
+          "prompt": "Budi must be able to view and rotate the access keys of contosodata, and nothing else. Which built-in role fits best?",
+          "options": [
+            "Storage Account Key Operator Service Role",
+            "Reader",
+            "Owner",
+            "Storage Blob Data Reader"
+          ],
+          "answer": 0,
+          "explanation": "Storage Account Key Operator Service Role bisa melihat dan merotasi key tanpa izin lain. Reader tidak bisa melihat key, dan Owner terlalu luas.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-keys-view"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e3",
+          "type": "yesno",
+          "concept": "access-keys",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An app uses key1 of contosodata in its connection string.",
+          "statements": [
+            {
+              "text": "The app can reach every service in the account.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft recommends a managed identity instead, when the app supports it.",
+              "answer": true
+            },
+            {
+              "text": "A user with only the Reader role can view key1.",
+              "answer": false
+            }
+          ],
+          "explanation": "Account key memberi akses tanpa batas. Microsoft menyarankan Microsoft Entra ID dan managed identity. Reader tidak punya aksi listkeys.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-se-keys",
+            "az104-f-u08-keys-reco",
+            "az104-f-u08-keys-view"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "key-rotation"
+          ],
+          "title": "Rotasi key tanpa downtime",
+          "body": "Dua key ada supaya rotasi tidak mengganggu aplikasi. Pindahkan aplikasi ke key2, buat ulang key1, pindahkan aplikasi ke key1 yang baru, lalu buat ulang key2. Ingat, membuat ulang key membatalkan service SAS (shared access signature) dan account SAS yang ditandatangani key itu; user delegation SAS tidak terpengaruh. Set rotation reminder membuat pengingat kalau key lama belum dirotasi.",
+          "keyPoints": [
+            "Pindah ke key2, buat ulang key1",
+            "SAS dari key itu ikut batal",
+            "Set rotation reminder"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage#manually-rotate-access-keys",
+          "teaches": [
+            "az104-f-u08-keys-rotate",
+            "az104-f-u08-keys-rotate-sas",
+            "az104-f-u08-keys-reminder"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e4",
+          "type": "choice",
+          "concept": "key-rotation",
+          "prompt": "After you regenerate key1, some partner links stop working. Which links were they?",
+          "options": [
+            "User delegation SAS (shared access signature) tokens",
+            "Service SAS and account SAS tokens signed with key1",
+            "SAS tokens signed with key2",
+            "Links that use a private endpoint"
+          ],
+          "answer": 1,
+          "explanation": "Membuat ulang key membatalkan SAS (shared access signature) yang ditandatangani key itu. User delegation SAS memakai Microsoft Entra, dan SAS dari key2 tetap berlaku.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-keys-rotate-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e5",
+          "type": "truefalse",
+          "concept": "key-rotation",
+          "prompt": "Regenerating an access key doesn't affect user delegation SAS (shared access signature) tokens.",
+          "answer": true,
+          "explanation": "Benar. User delegation SAS (shared access signature) diamankan dengan kredensial Microsoft Entra, bukan account key.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-keys-rotate-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e6",
+          "type": "order",
+          "concept": "key-rotation",
+          "prompt": "An app uses key1. Rotate both keys without downtime. Put the steps in order.",
+          "items": [
+            "Update the app to use key2",
+            "Regenerate key1",
+            "Update the app to use the new key1",
+            "Regenerate key2"
+          ],
+          "explanation": "Aplikasi selalu memakai key yang tidak sedang dibuat ulang, jadi tidak pernah kehilangan akses.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-keys-rotate"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e7",
+          "type": "choice",
+          "concept": "key-rotation",
+          "prompt": "You want a reminder when the access keys of contosodata haven't been rotated for 90 days. What should you configure?",
+          "options": [
+            "A stored access policy with a 90-day expiry",
+            "A key expiration policy with Set rotation reminder",
+            "A lifecycle management rule",
+            "A SAS (shared access signature) expiration policy"
+          ],
+          "answer": 1,
+          "explanation": "Key expiration policy menampilkan pengingat kalau key belum dirotasi dalam jangka waktu itu. Azure Policy bisa memantau kepatuhannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-keys-reminder"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "disallow-shared-key"
+          ],
+          "title": "Mematikan akses dengan key",
+          "body": "Kalau Allow storage account key access diatur Disabled, request dengan account key (Shared Key) ditolak, sehingga klien wajib memakai Microsoft Entra ID. Service SAS (shared access signature) dan account SAS ke Blob Storage juga ditolak, karena ditandatangani key. User delegation SAS tetap bisa dipakai. Sebelum mematikannya, pastikan aplikasi yang masih memakai key sudah dipindah.",
+          "keyPoints": [
+            "Shared Key ditolak",
+            "SAS dari key ikut ditolak",
+            "User delegation SAS tetap jalan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/shared-key-authorization-prevent",
+          "teaches": [
+            "az104-f-u08-shared-key-off",
+            "az104-f-u08-keys-reco"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e8",
+          "type": "choice",
+          "concept": "disallow-shared-key",
+          "prompt": "Every client of contosodata must authenticate with Microsoft Entra ID. Requests signed with the account key must fail. What should you set?",
+          "options": [
+            "Public network access: Disabled",
+            "Regenerate both keys every day",
+            "Allow storage account key access: Disabled",
+            "Infrastructure encryption"
+          ],
+          "answer": 2,
+          "explanation": "Menonaktifkan Allow storage account key access menolak semua request dengan Shared Key. Menutup jaringan atau merotasi key tidak memaksa Microsoft Entra ID.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-shared-key-off"
+          ]
+        },
+        {
+          "id": "az104-u08-l4-e9",
+          "type": "truefalse",
+          "concept": "disallow-shared-key",
+          "prompt": "After you disable storage account key access, a user delegation SAS (shared access signature) for Blob Storage still works.",
+          "answer": true,
+          "explanation": "Benar. User delegation SAS (shared access signature) diotorisasi dengan Microsoft Entra ID, jadi tetap diterima.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-shared-key-off"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u08-l5",
       "title": "Akses berbasis identitas untuk Azure Files",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u08-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "files-identity-auth"
+          ],
+          "title": "Identity source untuk Azure Files",
+          "body": "Azure Files bisa memakai identitas user lewat SMB (Server Message Block) dengan Kerberos, bukan account key. Ada tiga identity source, dan satu storage account hanya memakai satu. Active Directory Domain Services on-premises cocok kalau klien bisa menjangkau domain controller. Microsoft Entra Domain Services cocok untuk managed domain di Azure. Microsoft Entra Kerberos cocok untuk perangkat Microsoft Entra joined tanpa akses ke domain controller.",
+          "keyPoints": [
+            "Tiga identity source, satu per akun",
+            "Punya domain controller: Active Directory",
+            "Tanpa domain controller: Microsoft Entra Kerberos"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-active-directory-overview",
+          "teaches": [
+            "az104-f-u08-files-id",
+            "az104-f-u08-files-sources",
+            "az104-f-u08-files-adds",
+            "az104-f-u08-files-entra-kerberos",
+            "az104-f-u08-files-entra-ds"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-e1",
+          "type": "choice",
+          "concept": "files-identity-auth",
+          "prompt": "Office computers are joined to the on-premises Active Directory domain and reach its domain controllers. Users must open an Azure file share with their existing domain accounts. Which identity source should you enable?",
+          "options": [
+            "Microsoft Entra Kerberos for cloud-only identities",
+            "The storage account key",
+            "A user delegation SAS (shared access signature)",
+            "On-premises Active Directory Domain Services"
+          ],
+          "answer": 3,
+          "explanation": "Komputer yang tergabung ke domain on-premises dan bisa menjangkau domain controller cocok dengan Active Directory Domain Services. User-nya juga disinkronkan ke Microsoft Entra ID untuk izin level share.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-files-adds",
+            "az104-f-u08-files-sources"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-e2",
+          "type": "choice",
+          "concept": "files-identity-auth",
+          "prompt": "Laptops are Microsoft Entra joined and have no connection to any domain controller. Users must mount an Azure file share with their own identities. Which identity source fits?",
+          "options": [
+            "On-premises Active Directory Domain Services",
+            "Microsoft Entra Domain Services",
+            "An account SAS (shared access signature)",
+            "Microsoft Entra Kerberos"
+          ],
+          "answer": 3,
+          "explanation": "Microsoft Entra Kerberos tidak butuh koneksi ke domain controller. Dua pilihan lain butuh klien menjangkau domain controller.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-files-entra-kerberos",
+            "az104-f-u08-files-adds",
+            "az104-f-u08-files-entra-ds"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-e3",
+          "type": "truefalse",
+          "concept": "files-identity-auth",
+          "prompt": "One storage account can use Active Directory Domain Services for one file share and Microsoft Entra Kerberos for another.",
+          "answer": false,
+          "explanation": "Salah. Satu storage account hanya memakai satu identity source, dan berlaku untuk semua file share-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-files-sources"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-e4",
+          "type": "truefalse",
+          "concept": "files-identity-auth",
+          "prompt": "Identity-based authentication works for NFS (Network File System) file shares.",
+          "answer": false,
+          "explanation": "Salah. Akses berbasis identitas di Azure Files hanya untuk SMB (Server Message Block), tidak untuk NFS (Network File System).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-files-id"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "share-vs-file-permissions"
+          ],
+          "title": "Izin share dan izin file",
+          "body": "Akses ke file dicek di dua lapis. Lapis share memakai Azure RBAC (role-based access control): SMB (Server Message Block) Share Reader untuk baca, SMB Share Contributor untuk baca, tulis, dan hapus, SMB Share Elevated Contributor juga bisa mengubah ACL (access control list). Lapis folder dan file memakai Windows ACL, diatur lewat File Explorer atau icacls. Kalau keduanya berbeda, yang paling ketat yang berlaku.",
+          "keyPoints": [
+            "Share: Azure RBAC",
+            "Folder dan file: Windows ACL",
+            "Yang paling ketat menang"
+          ],
+          "visual": "FilesPermissionLayers",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-configure-file-level-permissions",
+          "teaches": [
+            "az104-f-u08-share-roles",
+            "az104-f-u08-file-acl",
+            "az104-f-u08-most-restrictive",
+            "az104-f-u08-share-default",
+            "az104-f-u08-share-delay"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-e5",
+          "type": "choice",
+          "concept": "share-vs-file-permissions",
+          "prompt": "Budi has Storage File Data SMB (Server Message Block) Share Contributor on the share. The Windows ACL (access control list) of the folder \\laporan gives him read only. What can Budi do in \\laporan?",
+          "options": [
+            "Read, write, and delete files",
+            "Nothing, because the two permissions conflict",
+            "Change the ACL of the folder",
+            "Read files only"
+          ],
+          "answer": 3,
+          "explanation": "Izin share dan izin folder sama-sama dicek, dan yang paling ketat yang berlaku, jadi Budi hanya bisa membaca.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-most-restrictive",
+            "az104-f-u08-share-roles"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-e6",
+          "type": "match",
+          "concept": "share-vs-file-permissions",
+          "prompt": "Match each share-level role to what it allows.",
+          "pairs": [
+            [
+              "Storage File Data SMB (Server Message Block) Share Reader",
+              "Read files and directories"
+            ],
+            [
+              "Storage File Data SMB Share Contributor",
+              "Read, write, and delete"
+            ],
+            [
+              "Storage File Data SMB Share Elevated Contributor",
+              "Read, write, delete, and modify ACLs (access control lists)"
+            ]
+          ],
+          "explanation": "Reader untuk baca, Contributor menambah tulis dan hapus, Elevated Contributor juga bisa mengubah ACL (access control list).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-share-roles"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-e7",
+          "type": "yesno",
+          "concept": "share-vs-file-permissions",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "contosodata uses Active Directory Domain Services for Azure Files. You gave Ani the SMB (Server Message Block) Share Reader role on the share five minutes ago.",
+          "statements": [
+            {
+              "text": "Ani might need to wait before the new share permission applies.",
+              "answer": true
+            },
+            {
+              "text": "The role controls the permissions on each folder and file.",
+              "answer": false
+            },
+            {
+              "text": "A default share-level permission can give every signed-in identity the same share access.",
+              "answer": true
+            }
+          ],
+          "explanation": "Izin level share biasanya berlaku dalam 30 menit. Izin folder dan file diatur Windows ACL (access control list). Default share-level permission berlaku untuk semua identitas yang sudah login.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-share-delay",
+            "az104-f-u08-file-acl",
+            "az104-f-u08-share-default"
+          ]
+        },
+        {
+          "id": "az104-u08-l5-e8",
+          "type": "fill",
+          "concept": "share-vs-file-permissions",
+          "prompt": "Complete the sentence.",
+          "sentence": "Share-level permissions are Azure ___, and folder and file permissions are Windows ___.",
+          "bank": [
+            "role assignments",
+            "access control lists",
+            "account keys",
+            "stored access policies"
+          ],
+          "answers": [
+            "role assignments",
+            "access control lists"
+          ],
+          "explanation": "Lapis share memakai Azure RBAC (role-based access control), dan lapis folder serta file memakai Windows ACL (access control list).",
+          "requires": [
+            "az104-f-u08-share-roles",
+            "az104-f-u08-file-acl"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u08-fw-default",
+      "statement": "Secara default storage account menerima koneksi dari jaringan mana pun. Setelah firewall diaktifkan, hanya sumber yang diizinkan yang bisa masuk lewat public endpoint; sisanya ditolak.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security"
+    },
+    {
+      "id": "az104-f-u08-fw-options",
+      "statement": "Public network access punya pilihan Enabled from all networks, Enabled from selected networks, dan Disabled. Dengan Disabled, akses hanya lewat private endpoint.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security-set-default-access"
+    },
+    {
+      "id": "az104-f-u08-fw-private",
+      "statement": "Firewall rule hanya membatasi public endpoint dan tidak memengaruhi trafik lewat private endpoint.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security-overview#firewall-rules"
+    },
+    {
+      "id": "az104-f-u08-fw-auth",
+      "statement": "Request dari sumber yang diizinkan firewall tetap harus lolos otorisasi storage account.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security"
+    },
+    {
+      "id": "az104-f-u08-fw-sources",
+      "statement": "Firewall storage bisa mengizinkan subnet di virtual network, rentang IP (Internet Protocol) publik, resource instance tertentu, dan layanan Azure tepercaya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security"
+    },
+    {
+      "id": "az104-f-u08-vnet-rule",
+      "statement": "Virtual network rule mengizinkan satu subnet, dan subnet itu harus punya service endpoint Microsoft.Storage. Portal membuat service endpoint-nya otomatis; PowerShell dan Azure CLI (command-line interface) punya perintah untuk membuatnya sendiri.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security#virtual-network-rules"
+    },
+    {
+      "id": "az104-f-u08-ip-rule",
+      "statement": "IP network rule hanya untuk alamat IPv4 publik. Rentang privat seperti 10.x, 172.16 sampai 172.31, dan 192.168.x tidak boleh dipakai.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security-limitations#restrictions-for-ip-network-rules"
+    },
+    {
+      "id": "az104-f-u08-ip-same-region",
+      "statement": "IP network rule tidak berpengaruh untuk request dari region Azure yang sama dengan storage account. Untuk sumber di region yang sama, pakai virtual network rule.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security-limitations#restrictions-for-ip-network-rules"
+    },
+    {
+      "id": "az104-f-u08-ip-onprem",
+      "statement": "Untuk jaringan on-premises, buat IP network rule dengan alamat IP publik yang dipakai jaringan itu ke internet.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security#access-from-an-on-premises-network"
+    },
+    {
+      "id": "az104-f-u08-trusted",
+      "statement": "Pengecualian Allow Azure services on the trusted services list mengizinkan layanan tepercaya seperti Azure Backup, Azure Monitor, Event Grid, dan Azure Site Recovery melewati firewall.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security-trusted-azure-services"
+    },
+    {
+      "id": "az104-f-u08-fw-data-plane",
+      "statement": "Firewall storage hanya berlaku untuk operasi data plane. Untuk membuka data lewat portal, Storage Explorer, atau AzCopy, komputermu harus berada di sumber yang diizinkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security-limitations#general-guidelines-and-limitations"
+    },
+    {
+      "id": "az104-f-u08-sas-what",
+      "statement": "SAS (shared access signature) adalah token yang ditempel di URL (Uniform Resource Locator) resource storage. Token itu menentukan resource mana yang boleh diakses, izinnya, dan masa berlakunya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview"
+    },
+    {
+      "id": "az104-f-u08-ud-sas",
+      "statement": "User delegation SAS (shared access signature) diamankan dengan kredensial Microsoft Entra, dan didukung untuk Blob Storage, Queue Storage, Table Storage, dan Azure Files. Microsoft menyarankan jenis ini kalau memakai SAS.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#user-delegation-sas"
+    },
+    {
+      "id": "az104-f-u08-service-sas",
+      "statement": "Service SAS (shared access signature) diamankan dengan storage account key, dan hanya untuk satu layanan storage.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#service-sas"
+    },
+    {
+      "id": "az104-f-u08-account-sas",
+      "statement": "Account SAS (shared access signature) diamankan dengan storage account key, dan bisa untuk satu atau lebih layanan storage, termasuk operasi di level layanan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#account-sas"
+    },
+    {
+      "id": "az104-f-u08-ud-7days",
+      "statement": "User delegation key berlaku paling lama 7 hari, jadi user delegation SAS (shared access signature) juga paling lama berlaku 7 hari.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-user-delegation-sas-create-cli"
+    },
+    {
+      "id": "az104-f-u08-sas-not-tracked",
+      "statement": "Azure Storage tidak mencatat SAS (shared access signature) yang dibuat, dan pembuatannya tidak bisa diaudit. SAS yang tidak valid ditolak dengan error 403.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#sas-token"
+    },
+    {
+      "id": "az104-f-u08-sas-least",
+      "statement": "Beri izin sesedikit mungkin lewat SAS (shared access signature), misalnya hanya read untuk satu blob, dan pakai masa berlaku pendek supaya SAS yang bocor cepat tidak berguna.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#best-practices-when-using-sas"
+    },
+    {
+      "id": "az104-f-u08-sas-start",
+      "statement": "Karena perbedaan jam antar mesin, SAS (shared access signature) dengan start time sama dengan waktu sekarang bisa gagal beberapa menit pertama. Set start time minimal 15 menit ke belakang, atau kosongkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#best-practices-when-using-sas"
+    },
+    {
+      "id": "az104-f-u08-sas-https",
+      "statement": "Selalu pakai HTTPS untuk membuat dan membagikan SAS (shared access signature), supaya tokennya tidak bisa disadap.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#best-practices-when-using-sas"
+    },
+    {
+      "id": "az104-f-u08-sap-what",
+      "statement": "Stored access policy dibuat di container, file share, queue, atau table. SAS (shared access signature) yang merujuk ke policy itu mengikuti start time, expiry time, dan izin dari policy.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#types-of-shared-access-signatures"
+    },
+    {
+      "id": "az104-f-u08-sap-service-only",
+      "statement": "Stored access policy hanya bisa dipakai dengan service SAS (shared access signature), tidak dengan account SAS maupun user delegation SAS.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-stored-access-policy-define-dotnet"
+    },
+    {
+      "id": "az104-f-u08-sap-change",
+      "statement": "Stored access policy bisa mengubah start time, expiry time, atau izin SAS (shared access signature) yang sudah diterbitkan, atau mencabutnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-stored-access-policy-define-dotnet"
+    },
+    {
+      "id": "az104-f-u08-sap-revoke",
+      "statement": "Stored access policy memungkinkan mencabut service SAS (shared access signature) tanpa membuat ulang storage account key. Satu container maksimal punya lima stored access policy.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview#best-practices-when-using-sas"
+    },
+    {
+      "id": "az104-f-u08-bare-sas",
+      "statement": "SAS (shared access signature) tanpa stored access policy tidak bisa dicabut satu per satu. Karena itu masa berlakunya harus pendek.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-explorer-security#shared-access-signatures-sas"
+    },
+    {
+      "id": "az104-f-u08-ud-revoke",
+      "statement": "User delegation SAS (shared access signature) dicabut dengan mencabut user delegation key akun itu, misalnya lewat az storage account revoke-delegation-keys. Semua SAS dari key itu ikut tidak berlaku.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-user-delegation-sas-create-cli#revoke-a-user-delegation-sas"
+    },
+    {
+      "id": "az104-f-u08-keys-two",
+      "statement": "Setiap storage account punya dua access key 512-bit, key1 dan key2. Key dipakai untuk otorisasi Shared Key dan untuk menandatangani SAS (shared access signature).",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage"
+    },
+    {
+      "id": "az104-f-u08-keys-view",
+      "statement": "Melihat access key butuh aksi listkeys, yang ada di role Owner, Contributor, dan Storage Account Key Operator Service Role. Reader tidak bisa melihat key.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage#view-account-access-keys"
+    },
+    {
+      "id": "az104-f-u08-keys-reco",
+      "statement": "Microsoft menyarankan Microsoft Entra ID dan managed identity untuk akses ke storage. Kalau harus memakai access key, simpan di Azure Key Vault dan rotasi secara berkala.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage#use-azure-key-vault-to-manage-your-access-keys"
+    },
+    {
+      "id": "az104-f-u08-keys-rotate",
+      "statement": "Dua key ada supaya rotasi tanpa gangguan: pindahkan aplikasi ke key2, buat ulang key1, pindahkan aplikasi ke key1 yang baru, lalu buat ulang key2.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage#manually-rotate-access-keys"
+    },
+    {
+      "id": "az104-f-u08-keys-rotate-sas",
+      "statement": "Membuat ulang access key membatalkan service SAS (shared access signature) dan account SAS yang ditandatangani key itu. User delegation SAS tidak terpengaruh.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage#manually-rotate-access-keys"
+    },
+    {
+      "id": "az104-f-u08-keys-reminder",
+      "statement": "Key expiration policy (tombol Set rotation reminder) menampilkan pengingat kalau key belum dirotasi dalam jangka waktu tertentu, dan Azure Policy bisa memantau kepatuhannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage#create-a-key-expiration-policy"
+    },
+    {
+      "id": "az104-f-u08-shared-key-off",
+      "statement": "Allow storage account key access yang diatur Disabled menolak request dengan Shared Key, sehingga klien wajib memakai Microsoft Entra ID. Service SAS (shared access signature) dan account SAS ke Blob Storage juga ditolak, tapi user delegation SAS tetap bisa.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/shared-key-authorization-prevent"
+    },
+    {
+      "id": "az104-f-u08-files-id",
+      "statement": "Azure Files mendukung akses berbasis identitas lewat SMB (Server Message Block) dengan Kerberos, tapi tidak untuk file share NFS (Network File System).",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-active-directory-overview"
+    },
+    {
+      "id": "az104-f-u08-files-sources",
+      "statement": "Identity source untuk Azure Files ada tiga: Active Directory Domain Services on-premises, Microsoft Entra Domain Services, dan Microsoft Entra Kerberos. Satu storage account hanya memakai satu identity source untuk semua file share-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-active-directory-overview#supported-authentication-scenarios"
+    },
+    {
+      "id": "az104-f-u08-files-adds",
+      "statement": "Dengan Active Directory Domain Services on-premises, klien harus bisa menjangkau domain controller, dan user harus disinkronkan ke Microsoft Entra ID supaya bisa diberi izin level share.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-active-directory-overview#ad-ds"
+    },
+    {
+      "id": "az104-f-u08-files-entra-kerberos",
+      "statement": "Microsoft Entra Kerberos cocok untuk perangkat yang Microsoft Entra joined dan tidak terhubung ke domain controller. Mendukung identitas hybrid dan cloud-only, tapi tidak untuk user Linux.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-active-directory-overview#supported-authentication-scenarios"
+    },
+    {
+      "id": "az104-f-u08-files-entra-ds",
+      "statement": "Microsoft Entra Domain Services cocok untuk organisasi yang memakai managed domain di Azure; klien bergabung ke managed domain itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-active-directory-overview#supported-authentication-scenarios"
+    },
+    {
+      "id": "az104-f-u08-share-roles",
+      "statement": "Izin level share memakai Azure RBAC (role-based access control): Storage File Data SMB Share Reader untuk baca, SMB Share Contributor untuk baca, tulis, dan hapus, serta SMB Share Elevated Contributor untuk juga mengubah ACL (access control list).",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-assign-share-level-permissions#azure-rbac-roles-for-azure-files"
+    },
+    {
+      "id": "az104-f-u08-share-default",
+      "statement": "Default share-level permission memberi izin ke semua identitas yang sudah login, misalnya kalau Active Directory on-premises tidak bisa disinkronkan ke Microsoft Entra ID.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-assign-share-level-permissions"
+    },
+    {
+      "id": "az104-f-u08-file-acl",
+      "statement": "Izin folder dan file memakai Windows ACL (access control list), yang bisa diatur lewat File Explorer atau icacls.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-configure-file-level-permissions"
+    },
+    {
+      "id": "az104-f-u08-most-restrictive",
+      "statement": "Saat mengakses file, izin level share dan izin folder serta file sama-sama dicek. Kalau berbeda, yang paling ketat yang berlaku.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-configure-file-level-permissions"
+    },
+    {
+      "id": "az104-f-u08-share-delay",
+      "statement": "Perubahan izin level share biasanya berlaku dalam 30 menit.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-identity-assign-share-level-permissions"
     }
   ]
 }
