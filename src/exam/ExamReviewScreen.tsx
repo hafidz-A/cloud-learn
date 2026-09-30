@@ -1,7 +1,7 @@
 import { BookOpen, ChevronLeft, CircleCheck, CircleMinus, CircleX, Flag } from 'lucide-react'
 import { useState, type CSSProperties } from 'react'
 import { GlossaryText } from '../components/GlossaryText'
-import { materialFor } from '../content/course'
+import { caseStudyOf, materialFor } from '../content/course'
 import { ExerciseInput } from '../exercises/ExerciseInput'
 import { INSTRUCTIONS } from '../exercises/instructions'
 import { correctAnswerText, type Response } from '../exercises/logic'
@@ -9,6 +9,7 @@ import { MaterialSheet } from '../lesson/MaterialSheet'
 import type { TeachingCard } from '../lib/types'
 import { navigate } from '../lib/router'
 import { useProgress } from '../store/progress'
+import { CaseScenarioPanel } from './CaseScenario'
 import { scoreAttempt } from './examLogic'
 import { examQuestion } from './pool'
 
@@ -71,6 +72,7 @@ export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
           if (!q || !r) return null
           const answer = correctAnswerText(q.exercise)
           const status = !r.answered ? 'Tidak dijawab' : r.correct ? 'Benar' : 'Salah'
+          const caseStudy = caseStudyOf(id)
           return (
             <article
               key={id}
@@ -81,6 +83,7 @@ export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
               <p className="flex items-center justify-between gap-2 text-13 font-semibold text-tinta-lembut">
                 <span>
                   Soal {n} · Jalur {q.path}
+                  {caseStudy && ' · Studi kasus'}
                   {attempt.flagged.includes(id) && <Flag size={13} className="ml-1.5 inline fill-matahari text-matahari-dalam" aria-label="ditandai" />}
                 </span>
                 <span className={`flex items-center gap-1 rounded-lg px-2 py-0.5 font-display text-13 font-bold text-tinta ${r.correct ? 'bg-mint-muda' : r.answered ? 'bg-koral-muda' : 'bg-kabut'}`}>
@@ -89,6 +92,11 @@ export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
                   {q.exercise.type === 'yesno' && ` · ${r.points}/${r.maxPoints}`}
                 </span>
               </p>
+              {caseStudy && (
+                <div className="mt-3">
+                  <CaseScenarioPanel caseStudy={caseStudy} />
+                </div>
+              )}
               <p className="mt-2 font-display text-13 font-semibold text-tinta-lembut">{INSTRUCTIONS[q.exercise.type]}</p>
               <h2 id={`q-${id}`} lang="en" className="mt-1 text-17 font-bold">
                 <GlossaryText text={q.exercise.prompt} />

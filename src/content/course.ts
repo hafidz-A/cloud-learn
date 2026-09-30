@@ -1,4 +1,4 @@
-import type { CourseId, Exercise, Fact, LearnCard, Lesson, LessonItem, PathId, TeachingCard, Unit } from '../lib/types'
+import type { CaseStudy, CourseId, Exercise, Fact, LearnCard, Lesson, LessonItem, PathId, TeachingCard, Unit } from '../lib/types'
 
 // Every unit lives in its own JSON file: AZ-900 under ./units, AZ-104 under
 // ./az104/units. New files are picked up automatically and sorted by id.
@@ -12,6 +12,18 @@ export const AZ104_UNITS: Unit[] = byId(import.meta.glob<Unit>('./az104/units/*.
 
 /** The units of both courses. Their ids never collide, because every AZ-104 id starts with "az104-". */
 export const ALL_UNITS: Unit[] = [...UNITS, ...AZ104_UNITS]
+
+/** AZ-104 case studies (LANGIT_AZ104_PLAN.md section 9), one JSON file each under ./az104/casestudies. */
+export const CASE_STUDIES: CaseStudy[] = Object.values(
+  import.meta.glob<CaseStudy>('./az104/casestudies/*.json', { eager: true, import: 'default' }),
+).sort((a, b) => a.id.localeCompare(b.id))
+
+const CASE_BY_QUESTION = new Map(CASE_STUDIES.flatMap((cs) => cs.questions.map((q) => [q.id, cs] as const)))
+
+/** The case study a question belongs to; its scenario must be shown with it. */
+export function caseStudyOf(exerciseId: string): CaseStudy | undefined {
+  return CASE_BY_QUESTION.get(exerciseId)
+}
 
 export type PathInfo = { id: PathId; title: string; short: string; domain: string; weight: [number, number] }
 
@@ -111,14 +123,25 @@ export function unitNumber(unit: Unit): number {
 
 export type ExerciseRef = { exercise: Exercise; unit: Unit; lesson: Lesson; path: PathId }
 
-/** Every exercise of both courses by id, retired ones included, with where it lives. */
-export const EXERCISES: ReadonlyMap<string, ExerciseRef> = new Map(
-  ALL_UNITS.flatMap((unit) =>
+/**
+ * Every exercise of both courses by id, retired ones included, with where it lives.
+ * Case study questions are in it too, so a missed one can come back from the review
+ * queue; their "lesson" is the case study and their unit the one they count toward.
+ */
+export const EXERCISES: ReadonlyMap<string, ExerciseRef> = new Map([
+  ...ALL_UNITS.flatMap((unit) =>
     unit.lessons.flatMap((lesson) =>
       lesson.items.filter(isExercise).map((exercise) => [exercise.id, { exercise, unit, lesson, path: unit.path }] as const),
     ),
   ),
-)
+  ...CASE_STUDIES.flatMap((cs) => {
+    const lesson: Lesson = { id: cs.id, title: cs.title, items: cs.questions }
+    return cs.questions.flatMap((exercise) => {
+      const unit = ALL_UNITS.find((u) => u.id === exercise.unit)
+      return unit ? [[exercise.id, { exercise, unit, lesson, path: unit.path }] as const] : []
+    })
+  }),
+])
 
 /** The exercise with this id, unless it is unknown or retired. */
 export function activeExercise(id: string): ExerciseRef | undefined {
@@ -191,7 +214,7 @@ export function lessonsInOrder(course: CourseId): { unit: Unit; lesson: Lesson }
 /** Active exercises of one path of a course, for its checkpoint. */
 export function exercisesInPath(course: CourseId, path: PathId): Exercise[] {
   return [...EXERCISES.values()]
-    .filter((r) => courseOf(r.unit.id) === course && r.path === path && isActive(r.exercise))
+    .filter((r) => courseOf(r.unit.id) === course && r.path === path && isActive(r.exercise) && !caseStudyOf(r.exercise.id))
     .map((r) => r.exercise)
 }
 

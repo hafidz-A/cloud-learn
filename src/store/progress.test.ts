@@ -59,3 +59,26 @@ describe('progress per course', () => {
     expect(courseProgress(store(), 'az104').examHistory.map((a) => a.id)).toEqual(['new'])
   })
 })
+
+describe('placement test (LANGIT_AZ104_PLAN.md section 3)', () => {
+  it('marks every lesson of the chosen units done without XP, and keeps AZ-900 as it was', () => {
+    store().finishPlacement({ 'az104-u01-identity': { right: 2, total: 2 }, 'az104-u02-rbac': { right: 2, total: 2 }, 'az104-u03-governance': { right: 1, total: 2 } })
+    store().applyPlacement(['az104-u02-rbac'])
+    const az104 = courseProgress(store(), 'az104')
+    expect(Object.keys(az104.lessonsDone).every((id) => id.startsWith('az104-u02-'))).toBe(true)
+    expect(Object.keys(az104.lessonsDone).length).toBeGreaterThanOrEqual(4)
+    expect(az104.unitLevel['az104-u02-rbac']).toBe(1)
+    expect(az104.placement?.applied).toEqual(['az104-u02-rbac'])
+    expect(az104.conceptStats).toEqual({})
+    expect(store().xp).toBe(0)
+    expect(store().lessonsDone).toEqual({})
+  })
+
+  it('keeps a lesson result that is already better', () => {
+    store().completeLesson('az104-u02-l1', 1, 10, 'az104-u02-rbac', ['az104-u02-l1'])
+    store().finishPlacement({ 'az104-u02-rbac': { right: 2, total: 2 } })
+    store().applyPlacement(['az104-u02-rbac'])
+    expect(courseProgress(store(), 'az104').lessonsDone['az104-u02-l1'].bestAccuracy).toBe(1)
+  })
+})
+

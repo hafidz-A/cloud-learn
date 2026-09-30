@@ -1,0 +1,147 @@
+{
+  "id": "az104-cs03-litware",
+  "title": "Litware, Inc.",
+  "tabs": [
+    {
+      "title": "Overview",
+      "paragraphs": [
+        "Litware, Inc. runs an online store. Most traffic arrives on weekdays during office hours. Its Azure resources are in the East US region."
+      ]
+    },
+    {
+      "title": "Existing environment",
+      "paragraphs": [
+        "- The web app shop runs in the App Service plan asp-shop, in the Standard tier with two instances. The app has a staging deployment slot.",
+        "- A nightly batch job is packaged as a Linux container image in the registry crlitware, which uses the Basic tier.",
+        "- The VMs (virtual machines) vm-legacy1 and vm-legacy2 run in the availability set as-legacy."
+      ]
+    },
+    {
+      "title": "Requirements",
+      "paragraphs": [
+        "- New versions of shop must be tested in the staging slot and moved to production without downtime. The production database connection string must never be used by the staging slot.",
+        "- The batch job must run until it finishes, and must be restarted only if it fails. No VMs or orchestrators may be managed for it, and it must be billed only while it runs.",
+        "- Images in crlitware must also be available from a registry replica in West Europe.",
+        "- vm-legacy1 must be resized to a size that is not available on its current hardware cluster."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "az104-cs03-e1",
+      "type": "choice",
+      "concept": "slot-settings",
+      "prompt": "How should you configure the database connection strings of shop?",
+      "options": [
+        "Mark the connection string as a deployment slot setting in each slot",
+        "Store the connection string only in the staging slot",
+        "Use swap with preview for every release",
+        "Move the staging slot to a second App Service plan"
+      ],
+      "answer": 0,
+      "explanation": "Connection string ikut di-swap kecuali ditandai deployment slot setting. Dengan tanda itu, setiap slot tetap memakai database-nya sendiri setelah swap.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u13-swapped-settings",
+        "az104-f-u13-swap",
+        "az104-f-u13-swap-preview"
+      ],
+      "unit": "az104-u13-app-service"
+    },
+    {
+      "id": "az104-cs03-e2",
+      "type": "choice",
+      "concept": "restart-policy",
+      "prompt": "Which service and restart policy should you use for the batch job?",
+      "options": [
+        "Azure Container Instances with the OnFailure restart policy",
+        "Azure Container Instances with the Always restart policy",
+        "Azure Container Apps with a minimum of one replica",
+        "A virtual machine scale set with autoscale"
+      ],
+      "answer": 0,
+      "explanation": "ACI (Azure Container Instances) ditagih per detik tanpa VM (virtual machine) atau orchestrator, dan OnFailure hanya me-restart container yang gagal. Always akan terus me-restart job yang sudah selesai.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u12-aci",
+        "az104-f-u12-restart-policies",
+        "az104-f-u12-replicas",
+        "az104-f-u12-zero-cost",
+        "az104-f-u11-vmss"
+      ],
+      "unit": "az104-u12-containers"
+    },
+    {
+      "id": "az104-cs03-e3",
+      "type": "choice",
+      "concept": "acr-geo-replication",
+      "prompt": "What should you do first to meet the requirement for crlitware?",
+      "options": [
+        "Enable the admin user of crlitware",
+        "Enable zone redundancy on crlitware",
+        "Create a Standard registry in West Europe",
+        "Change crlitware to the Premium tier"
+      ],
+      "answer": 3,
+      "explanation": "Geo-replication hanya ada di tier Premium, dan mengganti tier tidak menimbulkan downtime. Registry kedua yang terpisah bukan replika dari registry yang sama.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u12-acr-premium",
+        "az104-f-u12-acr-change-sku",
+        "az104-f-u12-acr-admin",
+        "az104-f-u12-acr-zone"
+      ],
+      "unit": "az104-u12-containers"
+    },
+    {
+      "id": "az104-cs03-e4",
+      "type": "choice",
+      "concept": "vm-resize",
+      "prompt": "The new size for vm-legacy1 is not available on the current hardware cluster. What must you do before the resize?",
+      "options": [
+        "Deallocate every VM (virtual machine) in as-legacy",
+        "Deallocate only vm-legacy1",
+        "Restart vm-legacy1",
+        "Move vm-legacy1 to another resource group"
+      ],
+      "answer": 0,
+      "explanation": "Untuk VM (virtual machine) di availability set, kalau ukuran baru tidak ada di cluster yang sekarang, semua VM di availability set itu harus di-deallocate.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u11-resize-avset",
+        "az104-f-u11-resize",
+        "az104-f-u11-move-basics"
+      ],
+      "unit": "az104-u11-virtual-machines"
+    },
+    {
+      "id": "az104-cs03-e5",
+      "type": "yesno",
+      "concept": "app-autoscale",
+      "prompt": "For each statement, select Yes or No.",
+      "scenario": "You plan how shop will scale in its current App Service plan.",
+      "statements": [
+        {
+          "text": "asp-shop supports rule-based autoscale in its current tier.",
+          "answer": true
+        },
+        {
+          "text": "asp-shop can scale out to 20 instances in its current tier.",
+          "answer": false
+        },
+        {
+          "text": "Scaling out asp-shop adds instances that run every app in the plan.",
+          "answer": true
+        }
+      ],
+      "explanation": "Standard mendukung autoscale berbasis aturan sampai 10 instance. Semua app di satu plan berbagi dan ikut scale bersama instance plan itu.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u13-scale-ways",
+        "az104-f-u13-scale-up-out",
+        "az104-f-u13-plan-share"
+      ],
+      "unit": "az104-u13-app-service"
+    }
+  ]
+}

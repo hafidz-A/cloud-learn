@@ -1,0 +1,149 @@
+{
+  "id": "az104-cs06-woodgrove",
+  "title": "Woodgrove Bank",
+  "tabs": [
+    {
+      "title": "Overview",
+      "paragraphs": [
+        "Woodgrove Bank runs its core banking app on Azure VMs (virtual machines) in the Southeast Asia region. Regulators require a tested disaster recovery plan and protected backups."
+      ]
+    },
+    {
+      "title": "Existing environment",
+      "paragraphs": [
+        "- The app has three VMs: vm-db (database), vm-app (middleware), and vm-web (web front end).",
+        "- The Recovery Services vault rsv-sea in Southeast Asia uses geo-redundant storage and backs up the three VMs every day.",
+        "- Auditors from the partner company Fabrikam use accounts in the fabrikam.com tenant."
+      ]
+    },
+    {
+      "title": "Requirements",
+      "paragraphs": [
+        "- The three VMs must be replicated to East Asia. During a failover, vm-db must start first, then vm-app, then vm-web.",
+        "- Disaster recovery must be tested every quarter without any impact on production.",
+        "- A single deleted file on vm-app must be recoverable without restoring the whole VM.",
+        "- Only the security team may invite the Fabrikam auditors as guests. Guests must not be able to browse the list of users and groups.",
+        "- Attackers who gain administrator access must not be able to delete backups or shorten their retention."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "az104-cs06-e1",
+      "type": "choice",
+      "concept": "site-recovery",
+      "prompt": "Where should you create the Recovery Services vault for the replication?",
+      "options": [
+        "In East Asia",
+        "In Southeast Asia",
+        "Use rsv-sea",
+        "In a Backup vault in Southeast Asia"
+      ],
+      "answer": 0,
+      "explanation": "Vault Site Recovery dibuat di region mana pun kecuali region sumber, jadi bukan Southeast Asia dan bukan rsv-sea. Backup vault tidak dipakai Site Recovery.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u15-asr-vault-region",
+        "az104-f-u15-rsv-workloads"
+      ],
+      "unit": "az104-u15-backup"
+    },
+    {
+      "id": "az104-cs06-e2",
+      "type": "multi",
+      "concept": "recovery-plan",
+      "prompt": "Which two should you use to meet the disaster recovery requirements? Choose two.",
+      "options": [
+        "Cross Region Restore from rsv-sea every quarter",
+        "A recovery plan with the groups vm-db, then vm-app, then vm-web",
+        "A failover followed by commit every quarter",
+        "A test failover into a non-production virtual network"
+      ],
+      "answers": [
+        1,
+        3
+      ],
+      "explanation": "Recovery plan mengatur urutan start saat failover, dan test failover menguji tanpa mengganggu produksi. Failover plus commit adalah failover sungguhan, dan Cross Region Restore memulihkan backup, bukan replikasi.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u15-recovery-plan",
+        "az104-f-u15-test-failover",
+        "az104-f-u15-crr",
+        "az104-f-u15-commit"
+      ],
+      "unit": "az104-u15-backup"
+    },
+    {
+      "id": "az104-cs06-e3",
+      "type": "choice",
+      "concept": "file-recovery",
+      "prompt": "How should you recover the deleted file on vm-app?",
+      "options": [
+        "Use Restore disk",
+        "Use File Recovery from the VM (virtual machine) backup",
+        "Use Replace existing",
+        "Fail over vm-app with Site Recovery"
+      ],
+      "answer": 1,
+      "explanation": "File Recovery me-mount volume recovery point sehingga satu file bisa disalin tanpa me-restore VM (virtual machine).",
+      "examReady": true,
+      "requires": [
+        "az104-f-u15-file-recovery",
+        "az104-f-u15-restore-disk",
+        "az104-f-u15-replace-existing"
+      ],
+      "unit": "az104-u15-backup"
+    },
+    {
+      "id": "az104-cs06-e4",
+      "type": "yesno",
+      "concept": "guest-invite-settings",
+      "prompt": "For each statement, select Yes or No.",
+      "scenario": "You configure the external collaboration settings of the Woodgrove tenant.",
+      "statements": [
+        {
+          "text": "If guest invitations are limited to specific admin roles and the security team has the Guest Inviter role, the security team can invite guests and regular members cannot.",
+          "answer": true
+        },
+        {
+          "text": "The default guest user access level prevents guests from browsing the list of users and groups.",
+          "answer": true
+        },
+        {
+          "text": "The auditors sign in with passwords stored in the Woodgrove tenant.",
+          "answer": false
+        }
+      ],
+      "explanation": "Hanya admin tertentu, termasuk Guest Inviter, yang bisa mengundang. Level default limited access memblokir guest dari daftar user dan group. Akun guest B2B (business-to-business) diautentikasi oleh penyedia identitas milik guest.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u01-invite-settings",
+        "az104-f-u01-guest-inviter",
+        "az104-f-u01-guest-access-levels",
+        "az104-f-u01-guest-auth"
+      ],
+      "unit": "az104-u01-identity"
+    },
+    {
+      "id": "az104-cs06-e5",
+      "type": "choice",
+      "concept": "immutable-vault",
+      "prompt": "What should you configure on rsv-sea to protect the backups?",
+      "options": [
+        "Cross Region Restore",
+        "Locally redundant storage",
+        "Immutability, then lock it",
+        "A Backup Reader role for the administrators"
+      ],
+      "answer": 2,
+      "explanation": "Immutable vault memblokir penghapusan data backup dan pengurangan retensi, dan kuncinya membuat pengaturan itu tidak bisa dibatalkan.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u15-immutable",
+        "az104-f-u15-crr",
+        "az104-f-u15-backup-roles"
+      ],
+      "unit": "az104-u15-backup"
+    }
+  ]
+}

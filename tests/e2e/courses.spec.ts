@@ -95,7 +95,8 @@ test('practice, stats, exam, and the unit guide follow the chosen course', async
   await expect(page.getByText('konsep untuk course AZ-104')).toBeVisible()
 
   await page.goto('/#/ujian')
-  await expect(page.getByRole('heading', { name: 'Soal ujian AZ-104 sedang disiapkan' })).toBeVisible()
+  await expect(page.getByText('Simulasi kondisi AZ-104 asli')).toBeVisible()
+  await expect(page.getByText(/ditambah \d+ studi kasus/)).toBeVisible()
 
   await page.goto('/#/guide/az104-u01-identity')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Microsoft Entra/)

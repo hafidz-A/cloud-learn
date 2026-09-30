@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { useShallow } from 'zustand/react/shallow'
-import { courseOf } from '../content/course'
+import { COURSES, courseOf } from '../content/course'
 import { dayKey } from '../lib/date'
 import { missed, scheduleReview } from '../lib/review'
 import { bumpStreak, liveStreak } from '../lib/streak'
-import type { CourseId, CourseProgress, DailyGoal, ExamAttempt, Progress } from '../lib/types'
+import type { CourseId, CourseProgress, DailyGoal, ExamAttempt, PlacementResult, Progress } from '../lib/types'
 
 export const MAX_HEARTS = 5
 /** Finished exams kept in history (full simulations drive the readiness indicator). */
@@ -26,7 +26,8 @@ export const initialProgress: Progress = {
   review: {},
   conceptStats: {},
   examHistory: [],
-  activeExam: undefined,
+  activeExam: null,
+  activeExamAt: undefined,
   reviewRemoved: {},
   settingsAt: undefined,
   heartsAt: undefined,
@@ -83,10 +84,18 @@ type Actions = {
   setHeartsEnabled: (on: boolean) => void
   setSoundEnabled: (on: boolean) => void
   startExam: (attempt: ExamAttempt) => void
+  /** An answer, flag, or move: stamps `activeExamAt`, which makes the running exam sync. */
   updateExam: (patch: Partial<ExamAttempt>) => void
+  /** The countdown. It does not stamp `activeExamAt`, so a tick never starts a sync on its own. */
+  tickExam: (elapsedSec: number) => void
   /** Moves a scored attempt into its course's history and clears the active exam. */
   finishExam: (attempt: ExamAttempt) => void
   abandonExam: () => void
+  /** Stores the per-unit result of the AZ-104 placement test. */
+  finishPlacement: (units: PlacementResult['units']) => void
+  skipPlacement: () => void
+  /** Marks every lesson of the chosen units done, without XP; an empty list just closes the offer. */
+  applyPlacement: (unitIds: string[]) => void
   resetProgress: () => void
 }
 
@@ -206,15 +215,39 @@ export const useProgress = create<ProgressStore>()(
       setHeartsEnabled: (heartsEnabled) => set({ heartsEnabled, settingsAt: now() }),
       setSoundEnabled: (soundEnabled) => set({ soundEnabled, settingsAt: now() }),
 
-      startExam: (attempt) => set({ activeExam: attempt }),
-      updateExam: (patch) => set((s) => (s.activeExam ? { activeExam: { ...s.activeExam, ...patch } } : s)),
+      // The running exam syncs (docs/AZ104_TAHAP1_RENCANA.md section 5). Submitting or
+      // discarding writes null, not undefined: a key left out of a push stays on the server.
+      startExam: (attempt) => set({ activeExam: attempt, activeExamAt: now() }),
+      updateExam: (patch) => set((s) => (s.activeExam ? { activeExam: { ...s.activeExam, ...patch }, activeExamAt: now() } : s)),
+      tickExam: (elapsedSec) => set((s) => (s.activeExam ? { activeExam: { ...s.activeExam, elapsedSec } } : s)),
       finishExam: (attempt) =>
         set((s) => {
           const course = attempt.course ?? 'az900'
           const examHistory = [...courseProgress(s, course).examHistory, attempt].slice(-EXAM_HISTORY_LIMIT)
-          return { activeExam: undefined, ...withCourse(s, course, { examHistory }) }
+          return { activeExam: null, activeExamAt: now(), ...withCourse(s, course, { examHistory }) }
         }),
-      abandonExam: () => set({ activeExam: undefined }),
+      abandonExam: () => set({ activeExam: null, activeExamAt: now() }),
+
+      finishPlacement: (units) => set((s) => withCourse(s, 'az104', { placement: { takenAt: now(), units } })),
+      skipPlacement: () => set((s) => withCourse(s, 'az104', { placement: { takenAt: now(), skipped: true, units: {} } })),
+      applyPlacement: (unitIds) =>
+        set((s) => {
+          const c = courseProgress(s, 'az104')
+          if (!c.placement) return s
+          const at = now()
+          const lessonsDone = { ...c.lessonsDone }
+          const unitLevel = { ...c.unitLevel }
+          for (const unit of COURSES.az104.units.filter((u) => unitIds.includes(u.id))) {
+            const score = c.placement.units[unit.id]
+            const accuracy = score && score.total ? score.right / score.total : 1
+            for (const lesson of unit.lessons) {
+              const prev = lessonsDone[lesson.id]
+              lessonsDone[lesson.id] = prev ?? { bestAccuracy: accuracy, completedAt: at, count: 1 }
+            }
+            unitLevel[unit.id] = Math.max(unitLevel[unit.id] ?? 0, 1) as 0 | 1 | 2 | 3
+          }
+          return withCourse(s, 'az104', { lessonsDone, unitLevel, placement: { ...c.placement, applied: unitIds, appliedAt: at } })
+        }),
 
       resetProgress: () => set({ ...initialProgress, resetAt: now() }),
     }),

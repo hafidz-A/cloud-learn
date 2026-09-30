@@ -1,0 +1,154 @@
+{
+  "id": "az104-cs01-contoso",
+  "title": "Contoso, Ltd.",
+  "tabs": [
+    {
+      "title": "Overview",
+      "paragraphs": [
+        "Contoso, Ltd. is a consulting company with offices in Jakarta and Singapore. It runs its internal apps in Azure, in the Southeast Asia region."
+      ]
+    },
+    {
+      "title": "Existing environment",
+      "paragraphs": [
+        "- The Microsoft Entra tenant contoso.com is synchronized from the on-premises Active Directory Domain Services forest. Every user has a Microsoft Entra ID P1 license.",
+        "- The management group mg-contoso contains two subscriptions: sub-prod and sub-dev.",
+        "- The resource group rg-finance in sub-prod contains the VMs (virtual machines) of the finance app and the general-purpose v2 storage account stfinance, which uses LRS (locally redundant storage). The container invoices stores scanned invoices.",
+        "- The virtual network vnet-hub (10.10.0.0/16) has a VPN (virtual private network) gateway connected to the Jakarta office. The virtual network vnet-app (10.20.0.0/16) is peered with vnet-hub."
+      ]
+    },
+    {
+      "title": "Requirements",
+      "paragraphs": [
+        "- Users of the Sales department must get access to the sales resources as soon as their department attribute is Sales, and lose it when the attribute changes, without manual work.",
+        "- The finance team leads must be able to create, start, and resize the VMs in rg-finance. They must not be able to change virtual networks or grant access to others.",
+        "- No resource may be created outside the Southeast Asia and East Asia regions in any subscription, including subscriptions added later.",
+        "- Invoices must stay available if a datacenter in the primary region fails, and must be readable from the secondary region at any time.",
+        "- VMs in vnet-app must reach the Jakarta office through the existing VPN gateway.",
+        "- Use the principle of least privilege and minimize administrative effort."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "az104-cs01-e1",
+      "type": "choice",
+      "concept": "assigned-vs-dynamic-membership",
+      "prompt": "What should you create to meet the requirement for the Sales users?",
+      "options": [
+        "A security group with Assigned membership",
+        "A Microsoft 365 group with Assigned membership",
+        "A security group with Dynamic user membership and the rule user.department -eq \"Sales\"",
+        "A Dynamic device group for the Sales computers"
+      ],
+      "answer": 2,
+      "explanation": "Dynamic user membership menambah dan mengeluarkan anggota otomatis menurut atribut department. Lisensi P1 yang dibutuhkan dynamic group sudah ada.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u01-membership-types",
+        "az104-f-u01-dynamic-rule",
+        "az104-f-u01-dynamic-p1",
+        "az104-f-u01-dynamic-users-or-devices"
+      ],
+      "unit": "az104-u01-identity"
+    },
+    {
+      "id": "az104-cs01-e2",
+      "type": "choice",
+      "concept": "job-function-roles",
+      "prompt": "Which role should you assign to the finance team leads at the scope of rg-finance?",
+      "options": [
+        "Contributor",
+        "Owner",
+        "Network Contributor",
+        "Virtual Machine Contributor"
+      ],
+      "answer": 3,
+      "explanation": "Virtual Machine Contributor mengelola VM (virtual machine) tanpa hak atas virtual network dan tanpa memberi role. Contributor juga bisa mengubah jaringan, Owner bisa memberi akses, dan Network Contributor tidak bisa mengelola VM.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u02-vm-contributor",
+        "az104-f-u02-contributor",
+        "az104-f-u02-owner",
+        "az104-f-u02-network-contributor",
+        "az104-f-u02-least-priv"
+      ],
+      "unit": "az104-u02-rbac"
+    },
+    {
+      "id": "az104-cs01-e3",
+      "type": "yesno",
+      "concept": "policy-assignment",
+      "prompt": "For each statement, select Yes or No.",
+      "scenario": "You assign a policy with the deny effect to mg-contoso. The policy allows only the Southeast Asia and East Asia regions.",
+      "statements": [
+        {
+          "text": "The policy also applies to a subscription that is added to mg-contoso later.",
+          "answer": true
+        },
+        {
+          "text": "Existing resources in other regions are deleted.",
+          "answer": false
+        },
+        {
+          "text": "A user with the Owner role on sub-dev can still create a VM (virtual machine) in West Europe.",
+          "answer": false
+        }
+      ],
+      "explanation": "Assignment di management group berlaku untuk semua subscription di dalamnya. Deny hanya menolak request create atau update, tidak menghapus resource lama, dan tetap berlaku walau user punya role Owner.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u03-assignment",
+        "az104-f-u03-deny",
+        "az104-f-u03-policy-vs-rbac",
+        "az104-f-u02-mg-scope"
+      ],
+      "unit": "az104-u03-governance"
+    },
+    {
+      "id": "az104-cs01-e4",
+      "type": "choice",
+      "concept": "storage-redundancy",
+      "prompt": "Which redundancy option should you configure for stfinance?",
+      "options": [
+        "RA-GZRS (read-access geo-zone-redundant storage)",
+        "RA-GRS (read-access geo-redundant storage)",
+        "GZRS (geo-zone-redundant storage)",
+        "ZRS (zone-redundant storage)"
+      ],
+      "answer": 0,
+      "explanation": "Tahan kegagalan datacenter di region utama butuh ZRS (zone-redundant storage) di region utama, dan baca dari region kedua kapan saja butuh opsi read-access. RA-GRS (read-access geo-redundant storage) memakai LRS (locally redundant storage) di region utama, GZRS (geo-zone-redundant storage) tidak bisa dibaca sebelum failover, dan ZRS tidak punya region kedua.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u07-geo",
+        "az104-f-u07-read-access",
+        "az104-f-u07-zrs",
+        "az104-f-u07-lrs"
+      ],
+      "unit": "az104-u07-storage-accounts"
+    },
+    {
+      "id": "az104-cs01-e5",
+      "type": "multi",
+      "concept": "gateway-transit",
+      "prompt": "You need the VMs (virtual machines) in vnet-app to reach the Jakarta office. Which two settings should you enable? Choose two.",
+      "options": [
+        "Create a second VPN (virtual private network) gateway in vnet-app",
+        "On the peering in vnet-app, use the remote gateway of vnet-hub",
+        "On the peering in vnet-hub, allow gateway transit to vnet-app",
+        "Peer vnet-app directly with the Jakarta office"
+      ],
+      "answers": [
+        1,
+        2
+      ],
+      "explanation": "Gateway transit butuh dua sisi: hub mengizinkan gateway-nya dipakai VNet (virtual network) peer, dan spoke memakai remote gateway. Gateway kedua tidak perlu, dan peering hanya antar virtual network.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u04-gateway-transit",
+        "az104-f-u04-peering-def"
+      ],
+      "unit": "az104-u04-virtual-networks"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import { hrefFor } from '../lib/router'
 import { useActiveCourse } from '../store/course'
 import { useCourseProgress, useLiveStreak, useProgress, useXpToday } from '../store/progress'
 import { PathMap } from './PathMap'
+import { PlacementCard } from './PlacementCard'
 
 function DailyCard() {
   const goal = useProgress((s) => s.dailyGoal)
@@ -55,6 +56,7 @@ export function HomeScreen() {
       <h1 className="sr-only">Langit: jalur belajar {COURSES[course].name}</h1>
       <CoursePicker />
       <DailyCard />
+      {course === 'az104' && <PlacementCard />}
       <PathMap key={course} course={course} />
     </main>
   )

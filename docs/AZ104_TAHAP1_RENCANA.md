@@ -138,3 +138,8 @@ data sinkron, jadi ujian yang dimulai di HP bisa dilanjutkan di laptop dengan si
 - **Tes:** merge (terbaru menang, ujian yang sudah dikumpulkan tidak hidup lagi, batal tidak
   tertimpa), dan e2e dua perangkat: mulai ujian di perangkat A, lanjutkan di B dengan jawaban
   dan sisa waktu yang sama.
+
+**Status (tahap 6, 30 September 2026):** diterapkan. `activeExam` dan `activeExamAt` ada di data sinkron
+(`src/sync/merge.ts`), timer memakai `tickExam` yang tidak memicu sinkron, dan menyembunyikan atau menutup
+tab mengirim sisa waktu. Tesnya: `src/sync/merge.test.ts` (terbaru menang, ujian yang sudah dikumpulkan tidak
+hidup lagi, batal tidak tertimpa) dan e2e dua perangkat di `tests/e2e/sync.spec.ts`.

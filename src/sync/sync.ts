@@ -53,6 +53,7 @@ export function formatCode(code: string): string {
 }
 
 const DEFAULTS = toSyncData(initialProgress)
+const TRIGGER_KEYS = SYNC_KEYS.filter((key) => key !== 'activeExam')
 const now = () => new Date().toISOString()
 
 function failureText(e: unknown): string {
@@ -182,13 +183,15 @@ export function startSync(): () => void {
   }
   const unsubscribe = useProgress.subscribe((s, prev) => {
     if (applying || !useSync.getState().code) return
-    if (!SYNC_KEYS.some((key) => s[key] !== prev[key])) return // for example the exam timer
+    // The exam timer changes activeExam every second without stamping activeExamAt: that alone never syncs.
+    if (!TRIGGER_KEYS.some((key) => s[key] !== prev[key])) return
     pending = true
     clearTimeout(timer)
     timer = setTimeout(flush, 3000)
   })
+  // Hiding or closing the tab sends the remaining time of a running exam, even without other changes.
   const onVisibility = () => {
-    if (document.visibilityState === 'visible' || pending) flush()
+    if (document.visibilityState === 'visible' || pending || useProgress.getState().activeExam) flush()
   }
   document.addEventListener('visibilitychange', onVisibility)
   window.addEventListener('online', flush)

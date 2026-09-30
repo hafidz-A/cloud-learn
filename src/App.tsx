@@ -7,6 +7,7 @@ import { ExamResultScreen } from './exam/ExamResultScreen'
 import { ExamReviewScreen } from './exam/ExamReviewScreen'
 import { ExamRunScreen } from './exam/ExamRunScreen'
 import { ExamScreen } from './exam/ExamScreen'
+import { PlacementRun } from './lesson/PlacementRun'
 import { CheckpointScreen } from './lesson/CheckpointScreen'
 import { LessonScreen } from './lesson/LessonScreen'
 import { PracticeRun } from './lesson/PracticeRun'
@@ -53,6 +54,8 @@ function FullScreen({ route }: { route: Exclude<Route, { name: 'tab' }> }) {
       return <ExamReviewScreen attemptId={route.attemptId} />
     case 'guide':
       return <GuideScreen unitId={route.unitId} />
+    case 'placement':
+      return <PlacementRun />
   }
 }
 

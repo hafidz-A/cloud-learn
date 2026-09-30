@@ -2,14 +2,14 @@ import { CircleAlert, CircleCheck, ClipboardCheck, History, Play, Timer } from '
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { LineChart } from '../charts/LineChart'
 import { Button } from '../components/Button'
-import { Mascot } from '../components/Mascot'
-import { COURSES, PATHS, UNITS } from '../content/course'
+import { COURSES } from '../content/course'
 import { hrefFor, navigate } from '../lib/router'
 import type { CourseId, ExamMode, PathId } from '../lib/types'
 import { useActiveCourse } from '../store/course'
-import { useProgress } from '../store/progress'
+import { useCourseProgress, useProgress } from '../store/progress'
 import {
   EXAM_MODES,
+  FULL_SPLIT,
   PASS_SCORE,
   READY_SCORE,
   createAttempt,
@@ -22,75 +22,60 @@ import {
   weakestDomain,
 } from './examLogic'
 import { formatDate, modeLabel } from './format'
-import { EXAM_POOL, examQuestion } from './pool'
+import { CASE_POOLS, EXAM_POOLS, examQuestion } from './pool'
 
 function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <section className={`rounded-2xl border-2 border-kabut bg-white p-4 ${className}`}>{children}</section>
 }
 
 /** True when every lesson of the path is finished in the journey. */
-function useJourneyDone(): Record<PathId, boolean> {
-  const done = useProgress((s) => s.lessonsDone)
+function useJourneyDone(course: CourseId): Record<PathId, boolean> {
+  const done = useCourseProgress(course).lessonsDone
   const out = {} as Record<PathId, boolean>
-  for (const p of PATHS) out[p.id] = UNITS.filter((u) => u.path === p.id).every((u) => u.lessons.every((l) => done[l.id]))
+  for (const p of COURSES[course].paths) out[p.id] = COURSES[course].units.filter((u) => u.path === p.id).every((u) => u.lessons.every((l) => done[l.id]))
   return out
-}
-
-/** The exam page follows the active course (LANGIT_AZ104_PLAN.md section 9). */
-export function ExamScreen() {
-  return useActiveCourse() === 'az900' ? <Az900ExamScreen /> : <ExamInPreparation />
 }
 
 /** A course code such as AZ-104, kept on one line instead of breaking at its hyphen. */
 const Code = ({ course }: { course: CourseId }) => <span className="whitespace-nowrap">{COURSES[course].name}</span>
 
-/** AZ-104 has no exam questions yet; its exam page comes with stage 6 of the plan. */
-function ExamInPreparation() {
-  return (
-    <main className="space-y-5 px-4 pb-32 pt-6">
-      <div>
-        <h1 className="font-display text-28 font-bold">Ujian</h1>
-        <p className="text-15 text-tinta-lembut">Course {COURSES.az104.name}</p>
-      </div>
-      <Card className="flex items-center gap-4">
-        <Mascot mood="netral" size={80} className="shrink-0" />
-        <div>
-          <h2 className="font-display text-17 font-bold">
-            Soal ujian <Code course="az104" /> sedang disiapkan
-          </h2>
-          <p className="mt-1 text-15 text-tinta-lembut">
-            Simulasi, mini ujian per domain, dan ujian titik lemah akan memakai soal dan riwayat <Code course="az104" /> saja. Untuk
-            berlatih ujian <Code course="az900" />, pilih course <Code course="az900" /> di home.
-          </p>
-        </div>
-      </Card>
-    </main>
-  )
+/** The exam page follows the active course: its questions, history, and readiness only (LANGIT_AZ104_PLAN.md section 9). */
+export function ExamScreen() {
+  const course = useActiveCourse()
+  return <CourseExamScreen key={course} course={course} />
 }
 
-function Az900ExamScreen() {
-  const history = useProgress((s) => s.examHistory)
+function CourseExamScreen({ course }: { course: CourseId }) {
+  const { examHistory: history, conceptStats } = useCourseProgress(course)
   const active = useProgress((s) => s.activeExam)
-  const conceptStats = useProgress((s) => s.conceptStats)
   const startExam = useProgress((s) => s.startExam)
   const abandonExam = useProgress((s) => s.abandonExam)
-  const journeyDone = useJourneyDone()
+  const journeyDone = useJourneyDone(course)
   const [domain, setDomain] = useState<PathId>(1)
   const [confirmAbandon, setConfirmAbandon] = useState(false)
+  const paths = COURSES[course].paths
+  const pool = EXAM_POOLS[course]
+  const cases = CASE_POOLS[course]
+  const modes = EXAM_MODES[course]
 
   const start = (mode: ExamMode) => {
     const questions =
-      mode === 'full' ? pickFull(EXAM_POOL, history) : mode === 'domain' ? pickDomain(EXAM_POOL, domain, history) : pickWeak(EXAM_POOL, conceptStats).questions
+      mode === 'full'
+        ? pickFull(pool, history, Math.random, course, cases)
+        : mode === 'domain'
+          ? pickDomain(pool, domain, history, Math.random, course)
+          : pickWeak(pool, conceptStats, Math.random, course).questions
     if (!questions.length) return
-    startExam(createAttempt(mode, questions, mode === 'domain' ? domain : undefined))
+    startExam(createAttempt(mode, questions, mode === 'domain' ? domain : undefined, Math.random, course))
     navigate({ name: 'exam' })
   }
 
   const ready = readiness(history)
   const weakest = weakestDomain(history.slice(-5))
   const fullRuns = history.filter((a) => a.mode === 'full' && a.score !== undefined)
-  const poolByPath = (p: PathId) => EXAM_POOL.filter((q) => q.path === p).length
-  const weakFromStats = pickWeak(EXAM_POOL, conceptStats).fromStats
+  const poolByPath = (p: PathId) => pool.filter((q) => q.path === p).length
+  const weakFromStats = pickWeak(pool, conceptStats, Math.random, course).fromStats
+  const activeCourse = active ? (active.course ?? 'az900') : course
 
   const warning = (paths: PathId[]) => {
     const open = paths.filter((p) => !journeyDone[p])
@@ -104,7 +89,7 @@ function Az900ExamScreen() {
   }
 
   const modeCard = (mode: ExamMode, extra: ReactNode, paths: PathId[], note?: string) => {
-    const m = EXAM_MODES[mode]
+    const m = modes[mode]
     return (
       <Card>
         <h2 className="font-display text-20 font-bold">{m.title}</h2>
@@ -122,7 +107,7 @@ function Az900ExamScreen() {
         {extra}
         {note && <p className="mt-2 text-13 text-tinta-lembut">{note}</p>}
         {warning(paths)}
-        <Button block className="mt-4" disabled={!!active || EXAM_POOL.length === 0} onClick={() => start(mode)}>
+        <Button block className="mt-4" disabled={!!active || pool.length === 0} onClick={() => start(mode)}>
           Mulai
         </Button>
       </Card>
@@ -133,14 +118,21 @@ function Az900ExamScreen() {
     <main className="space-y-4 px-4 pb-32 pt-6">
       <h1 className="font-display text-28 font-bold">Ujian</h1>
       <p className="text-15 text-tinta-lembut">
-        Simulasi kondisi AZ-900 asli: waktu terbatas, tanpa hearts, tanpa penjelasan sampai selesai. Bank soal: {EXAM_POOL.length} soal
-        ({poolByPath(1)} / {poolByPath(2)} / {poolByPath(3)} per domain).
+        Simulasi kondisi <Code course={course} /> asli: waktu terbatas, tanpa hearts, tanpa penjelasan sampai selesai. Bank soal: {pool.length} soal (
+        {paths.map((p) => poolByPath(p.id)).join(' / ')} per domain){cases.length > 0 && `, ditambah ${cases.length} studi kasus`}.
       </p>
 
       {active && (
         <Card className="border-biru">
-          <p className="font-display text-13 font-semibold text-tinta-lembut">Ujian yang belum selesai</p>
+          <p className="font-display text-13 font-semibold text-tinta-lembut">
+            Ujian <Code course={activeCourse} /> yang belum selesai
+          </p>
           <h2 className="font-display text-20 font-bold">{modeLabel(active.mode, active.domain)}</h2>
+          {activeCourse !== course && (
+            <p className="mt-1 text-15 text-tinta-lembut">
+              Hanya satu ujian yang bisa berjalan. Selesaikan atau buang ujian ini sebelum mulai ujian <Code course={course} />.
+            </p>
+          )}
           <p className="text-15 text-tinta-lembut">
             Sisa waktu {formatClock(active.timeLimitSec - active.elapsedSec)} ·{' '}
             {active.questionIds.filter((id) => {
@@ -188,16 +180,21 @@ function Az900ExamScreen() {
         </p>
         {!ready.ready && weakest && (
           <p className="mt-2 text-15 text-tinta-lembut">
-            Saran: latih jalur {weakest} ({PATHS[weakest - 1].title}), domain dengan skor terendahmu belakangan ini.
+            Saran: latih jalur {weakest} ({paths[weakest - 1]?.title}), domain dengan skor terendahmu belakangan ini.
           </p>
         )}
       </Card>
 
-      {modeCard('full', null, [1, 2, 3], '14 soal jalur 1, 19 soal jalur 2, 17 soal jalur 3.')}
+      {modeCard(
+        'full',
+        null,
+        paths.map((p) => p.id),
+        `${paths.map((p) => `${FULL_SPLIT[course][p.id]} soal jalur ${p.id}`).join(', ')}${cases.length ? ', termasuk satu studi kasus di bagian akhir' : ''}.`,
+      )}
       {modeCard(
         'domain',
         <div className="mt-3 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Pilih domain">
-          {PATHS.map((p) => {
+          {paths.map((p) => {
             const on = domain === p.id
             return (
               <button

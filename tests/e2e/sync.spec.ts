@@ -1,5 +1,5 @@
 import { expect, test, type BrowserContext, type Page } from '@playwright/test'
-import { play, startFromMap } from './helpers'
+import { ITEMS, answer, play, startFromMap } from './helpers'
 
 test.use({ reducedMotion: 'reduce' })
 
@@ -119,4 +119,66 @@ test('a wrong code is refused, and no internet is reported without losing progre
   await context.route('**/rest/v1/rpc/*', (route) => route.abort('internetdisconnected'))
   await page.getByRole('button', { name: 'Sinkronkan sekarang' }).click()
   await expect(page.getByRole('status')).toContainText(/internet/)
+})
+
+test('a running exam goes on on another device with the same answers and remaining time', async ({ browser }) => {
+  const server = fakeServer()
+  const phone = await browser.newContext()
+  const pc = await browser.newContext()
+  await server.attach(phone)
+  await server.attach(pc)
+  const a = await phone.newPage()
+  const b = await pc.newPage()
+
+  // The phone connects, starts a domain mini exam, answers and flags the first question.
+  await openSettings(a)
+  await a.getByRole('button', { name: 'Buat kode sinkron' }).click()
+  const code = (await a.getByLabel(/^Kode sinkron /).textContent())!.trim()
+  await a.goto('/#/ujian')
+  await a.getByRole('button', { name: 'Mulai' }).nth(1).click()
+  await expect(a.getByRole('timer')).toBeVisible()
+  const first = (await a.locator('main[data-exam-question]').getAttribute('data-exam-question'))!
+  await answer(a, ITEMS.get(first)!, { submit: false })
+  await a.getByRole('button', { name: 'Tandai' }).click()
+  // Leaving the app sends the remaining time too.
+  await a.waitForTimeout(2500)
+  await a.evaluate(() => {
+    Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true })
+    document.dispatchEvent(new Event('visibilitychange'))
+  })
+  await expect
+    .poll(() => (server.rows.values().next().value?.data as { activeExam?: { flagged: string[] } } | undefined)?.activeExam?.flagged)
+    .toEqual([first])
+  const sent = (server.rows.values().next().value!.data as { activeExam: { elapsedSec: number; timeLimitSec: number } }).activeExam
+  expect(sent.elapsedSec).toBeGreaterThan(0)
+
+  // The PC joins with the code and picks the exam up where the phone left it.
+  await openSettings(b)
+  await b.getByRole('button', { name: 'Saya sudah punya kode' }).click()
+  await b.getByLabel('Kode dari perangkat lain').fill(code)
+  await b.getByRole('button', { name: 'Sambungkan' }).click()
+  await expect(b.getByRole('status')).toContainText('Tersinkron')
+  await b.goto('/#/ujian')
+  const left = sent.timeLimitSec - sent.elapsedSec
+  const clock = `${String(Math.floor(left / 60)).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`
+  await expect(b.getByText(`Sisa waktu ${clock} · 1 dari 15 dijawab`)).toBeVisible()
+  await b.getByRole('button', { name: 'Lanjutkan' }).click()
+  await expect(b.locator('main[data-exam-question]')).toHaveAttribute('data-exam-question', first)
+  await expect(b.getByRole('button', { name: 'Ditandai' })).toBeVisible()
+
+  // Submitting on the PC ends the exam on the phone as well.
+  await b.getByRole('button', { name: 'Daftar nomor soal' }).click()
+  await b.getByRole('dialog').getByRole('button', { name: 'Kumpulkan' }).click()
+  await b.getByRole('button', { name: 'Kumpulkan sekarang' }).click()
+  await expect(b.getByRole('heading', { name: 'Skor kamu' })).toBeVisible()
+  await openSettings(b)
+  await b.getByRole('button', { name: 'Sinkronkan sekarang' }).click()
+  await expect(b.getByRole('status')).toContainText('Tersinkron')
+  await a.goto('/#/ujian')
+  await a.reload()
+  await expect(a.getByText('Ujian AZ-900 yang belum selesai')).toHaveCount(0)
+  await expect(a.getByRole('link', { name: /Mini ujian per domain/ })).toBeVisible()
+
+  await phone.close()
+  await pc.close()
 })

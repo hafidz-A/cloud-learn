@@ -1,0 +1,155 @@
+{
+  "id": "az104-cs04-adatum",
+  "title": "A. Datum Corporation",
+  "tabs": [
+    {
+      "title": "Overview",
+      "paragraphs": [
+        "A. Datum Corporation runs a three-tier app in the Azure region Southeast Asia and keeps a disaster recovery copy in East Asia."
+      ]
+    },
+    {
+      "title": "Existing environment",
+      "paragraphs": [
+        "- The virtual network vnet1 (10.1.0.0/16) has the subnets web (10.1.1.0/24), app (10.1.2.0/24), data (10.1.3.0/24), and nva (10.1.4.0/24).",
+        "- The virtual network vnet2 (10.2.0.0/16) is in East Asia.",
+        "- The VMs (virtual machines) web1 and web2 run in the web subnet, and app1 and app2 run in the app subnet. The network virtual appliance nva1 is a VM in the nva subnet, with the IP (Internet Protocol) address 10.1.4.4.",
+        "- The private DNS (Domain Name System) zone adatum.internal is linked to vnet1 with auto registration.",
+        "- The storage account stadatumdata stores the app data and currently accepts connections from all networks."
+      ]
+    },
+    {
+      "title": "Requirements",
+      "paragraphs": [
+        "- Administrators must connect to the VMs with RDP (Remote Desktop Protocol) from the Azure portal. No VM may have a public IP address.",
+        "- VMs in vnet2 must resolve the names in adatum.internal, but must not register their own names in it.",
+        "- All traffic from the app subnet to the internet must pass through nva1.",
+        "- The app VMs must accept traffic on TCP (Transmission Control Protocol) port 8080 only from the web VMs. Rules must not use IP addresses.",
+        "- The data subnet must reach stadatumdata through a private IP address, and stadatumdata must not be reachable from the internet."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "az104-cs04-e1",
+      "type": "choice",
+      "concept": "bastion-requirements",
+      "prompt": "You deploy Azure Bastion with the Basic SKU (stock-keeping unit) in vnet1. What must vnet1 contain first?",
+      "options": [
+        "A subnet named BastionSubnet with a /29 prefix",
+        "A public IP (Internet Protocol) address on each VM (virtual machine)",
+        "A subnet named AzureBastionSubnet with a /29 prefix",
+        "A subnet named AzureBastionSubnet with a /26 prefix or larger"
+      ],
+      "answer": 3,
+      "explanation": "Selain SKU (stock-keeping unit) Developer, Bastion butuh subnet bernama persis AzureBastionSubnet berukuran /26 atau lebih besar. VM (virtual machine) tujuan tidak butuh public IP (Internet Protocol).",
+      "examReady": true,
+      "requires": [
+        "az104-f-u05-bastion-subnet",
+        "az104-f-u05-bastion-def"
+      ],
+      "unit": "az104-u05-secure-access"
+    },
+    {
+      "id": "az104-cs04-e2",
+      "type": "choice",
+      "concept": "auto-registration",
+      "prompt": "What should you do so that VMs (virtual machines) in vnet2 can resolve names in adatum.internal?",
+      "options": [
+        "Link adatum.internal to vnet2 with auto registration",
+        "Link adatum.internal to vnet2 without auto registration",
+        "Create a public DNS (Domain Name System) zone named adatum.internal",
+        "Add vnet2 to the auto registration of vnet1"
+      ],
+      "answer": 1,
+      "explanation": "Link tanpa auto registration menjadikan vnet2 resolution virtual network: VM (virtual machine) di sana bisa mencari nama, tapi tidak didaftarkan.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u06-private-link",
+        "az104-f-u06-registration-resolution"
+      ],
+      "unit": "az104-u06-dns-load-balancing"
+    },
+    {
+      "id": "az104-cs04-e3",
+      "type": "multi",
+      "concept": "udr",
+      "prompt": "Which two actions should you perform to send the internet traffic of the app subnet through nva1? Choose two.",
+      "options": [
+        "Associate the route table with the nva subnet",
+        "Add a route 0.0.0.0/0 with the next hop type Virtual appliance and the address 10.1.4.4, in a route table associated with the app subnet",
+        "Enable IP (Internet Protocol) forwarding on the network interface of nva1",
+        "Add a route 0.0.0.0/0 with the next hop type Internet"
+      ],
+      "answers": [
+        1,
+        2
+      ],
+      "explanation": "UDR (user-defined route) dengan next hop Virtual appliance harus ada di route table subnet app, dan network interface appliance harus mengaktifkan IP (Internet Protocol) forwarding. Route table di subnet nva akan membuat routing loop.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u04-route-table",
+        "az104-f-u04-udr-next-hops",
+        "az104-f-u04-nva-forwarding"
+      ],
+      "unit": "az104-u04-virtual-networks"
+    },
+    {
+      "id": "az104-cs04-e4",
+      "type": "yesno",
+      "concept": "asg-rules",
+      "prompt": "For each statement, select Yes or No.",
+      "scenario": "You create asg-web and asg-app. In the NSG (network security group) of the app subnet, you add an inbound rule with priority 100 that allows TCP (Transmission Control Protocol) port 8080 from asg-web to asg-app, and a rule with priority 200 that denies all traffic from any source to asg-app.",
+      "statements": [
+        {
+          "text": "web1 can reach app1 on port 8080 when the network interface of web1 is in asg-web and that of app1 is in asg-app.",
+          "answer": true
+        },
+        {
+          "text": "A VM (virtual machine) in vnet2 can be added to asg-web.",
+          "answer": false
+        },
+        {
+          "text": "Without the rule with priority 200, other VMs in vnet1 could still reach app1.",
+          "answer": true
+        }
+      ],
+      "explanation": "Aturan 100 mengizinkan anggota asg-web. Anggota ASG (application security group) harus di VNet (virtual network) yang sama. Tanpa aturan deny, AllowVNetInBound mengizinkan semua trafik dari dalam VNet.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u05-asg-def",
+        "az104-f-u05-asg-apply",
+        "az104-f-u05-asg-same-vnet",
+        "az104-f-u05-asg-pattern",
+        "az104-f-u05-default-in"
+      ],
+      "unit": "az104-u05-secure-access"
+    },
+    {
+      "id": "az104-cs04-e5",
+      "type": "multi",
+      "concept": "private-endpoint",
+      "prompt": "Which two actions should you perform for stadatumdata? Choose two.",
+      "options": [
+        "Set Public network access to Disabled",
+        "Enable a service endpoint for Microsoft.Storage on the data subnet",
+        "Add an IP (Internet Protocol) network rule for 10.1.3.0/24",
+        "Create a private endpoint for the blob subresource in the data subnet"
+      ],
+      "answers": [
+        0,
+        3
+      ],
+      "explanation": "Private endpoint memberi IP (Internet Protocol) privat untuk subresource blob, dan Disabled menutup public endpoint. Service endpoint tetap memakai alamat publik layanan, dan IP network rule tidak menerima rentang privat.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u05-pe-def",
+        "az104-f-u05-pe-subresource",
+        "az104-f-u08-fw-options",
+        "az104-f-u05-se-limits",
+        "az104-f-u08-ip-rule"
+      ],
+      "unit": "az104-u05-secure-access"
+    }
+  ]
+}

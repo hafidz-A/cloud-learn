@@ -1,18 +1,35 @@
-import { EXERCISES, courseOf } from '../content/course'
+import { CASE_STUDIES, EXERCISES, caseStudyOf, courseOf } from '../content/course'
 import { navigate } from '../lib/router'
-import type { ExamAttempt } from '../lib/types'
+import type { CourseId, ExamAttempt } from '../lib/types'
 import { useProgress } from '../store/progress'
-import { isExamQuestion, scoreAttempt, type ExamQuestion } from './examLogic'
+import { isExamQuestion, scoreAttempt, type CasePool, type ExamQuestion } from './examLogic'
 
-/** Every examReady AZ-900 question. AZ-104 gets its own pool with its exam page (plan stage 6). */
-export const EXAM_POOL: ExamQuestion[] = [...EXERCISES.values()]
-  .filter((r) => courseOf(r.unit.id) === 'az900' && isExamQuestion(r.exercise))
-  .map((r) => ({ exercise: r.exercise, path: r.path }))
+/** Every examReady question of a course outside the case studies, which only come as a whole section. */
+function poolOf(course: CourseId): ExamQuestion[] {
+  return [...EXERCISES.values()]
+    .filter((r) => courseOf(r.unit.id) === course && !caseStudyOf(r.exercise.id) && isExamQuestion(r.exercise))
+    .map((r) => ({ exercise: r.exercise, path: r.path }))
+}
 
-const BY_ID = new Map(EXAM_POOL.map((q) => [q.exercise.id, q]))
+export const EXAM_POOLS: Record<CourseId, ExamQuestion[]> = { az900: poolOf('az900'), az104: poolOf('az104') }
+
+/** Case studies per course, for the full simulation (AZ-104 only). */
+export const CASE_POOLS: Record<CourseId, CasePool[]> = {
+  az900: [],
+  az104: CASE_STUDIES.map((cs) => ({
+    id: cs.id,
+    questions: cs.questions.flatMap((exercise) => {
+      const ref = EXERCISES.get(exercise.id)
+      return ref && isExamQuestion(exercise) ? [{ exercise, path: ref.path, caseStudy: cs.id }] : []
+    }),
+  })).filter((c) => c.questions.length > 0),
+}
 
 export function examQuestion(id: string): ExamQuestion | undefined {
-  return BY_ID.get(id) ?? (EXERCISES.get(id) ? { exercise: EXERCISES.get(id)!.exercise, path: EXERCISES.get(id)!.path } : undefined)
+  const ref = EXERCISES.get(id)
+  if (!ref) return undefined
+  const cs = caseStudyOf(id)
+  return cs ? { exercise: ref.exercise, path: ref.path, caseStudy: cs.id } : { exercise: ref.exercise, path: ref.path }
 }
 
 /**

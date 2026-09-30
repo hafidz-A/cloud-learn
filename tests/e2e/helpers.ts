@@ -17,9 +17,16 @@ const readUnits = (dir: string): Unit[] =>
 export const UNITS: Unit[] = readUnits('src/content/units')
 export const AZ104_UNITS: Unit[] = readUnits('src/content/az104/units')
 
-export const ITEMS = new Map<string, Item>(
-  [...UNITS, ...AZ104_UNITS].flatMap((u) => u.lessons.flatMap((l) => l.items.map((i) => [i.id, i] as const))),
-)
+type CaseStudy = { id: string; title: string; tabs: { title: string; paragraphs: string[] }[]; questions: Item[] }
+export const CASE_STUDIES: CaseStudy[] = readdirSync('src/content/az104/casestudies')
+  .filter((f) => f.endsWith('.json'))
+  .sort()
+  .map((f) => JSON.parse(readFileSync(`src/content/az104/casestudies/${f}`, 'utf8')))
+
+export const ITEMS = new Map<string, Item>([
+  ...[...UNITS, ...AZ104_UNITS].flatMap((u) => u.lessons.flatMap((l) => l.items.map((i) => [i.id, i] as const))),
+  ...CASE_STUDIES.flatMap((cs) => cs.questions.map((q) => [q.id, q] as const)),
+])
 
 /** Learn and intro cards teach; everything else is an exercise. */
 export const isCard = (item: Item) => item.type === 'learn' || item.type === 'intro'

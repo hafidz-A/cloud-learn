@@ -14,6 +14,7 @@ export type Route =
   | { name: 'exam-result'; attemptId: string }
   | { name: 'exam-review'; attemptId: string }
   | { name: 'guide'; unitId: string }
+  | { name: 'placement' }
 
 const TABS: readonly Tab[] = ['home', 'latihan', 'ujian', 'statistik', 'glosarium', 'pengaturan']
 
@@ -29,6 +30,8 @@ export function parseHash(hash: string): Route {
       break
     case 'practice':
       return { name: 'practice' }
+    case 'placement':
+      return { name: 'placement' }
     case 'guide':
       if (arg) return { name: 'guide', unitId: arg }
       break
@@ -49,6 +52,8 @@ export function hrefFor(route: Route): string {
       return `#/checkpoint/${encodeURIComponent(route.checkpointId)}`
     case 'practice':
       return '#/practice'
+    case 'placement':
+      return '#/placement'
     case 'exam':
       return '#/exam'
     case 'exam-result':

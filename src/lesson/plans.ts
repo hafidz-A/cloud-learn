@@ -1,4 +1,4 @@
-import { EXERCISES, activeExercise, courseOf, exercisesInPath, isActive, isExercise, lessonsInOrder, playableItems, type Checkpoint, type LessonRef } from '../content/course'
+import { COURSES, EXERCISES, activeExercise, caseStudyOf, courseOf, exercisesInPath, isActive, isExercise, lessonsInOrder, playableItems, type Checkpoint, type LessonRef } from '../content/course'
 import { dayKey } from '../lib/date'
 import { dueIds } from '../lib/review'
 import { shuffle } from '../lib/shuffle'
@@ -55,6 +55,24 @@ export function practicePlan(course: CourseId, progress: Pick<CourseProgress, 'r
     for (const ex of pool.slice(0, PRACTICE_MIN - items.length)) items.push({ item: ex })
   }
   return { kind: 'practice', title: 'Latihan', items }
+}
+
+/** Questions per unit in the AZ-104 placement test: 15 units, 30 questions (LANGIT_AZ104_PLAN.md section 3). */
+export const PLACEMENT_PER_UNIT = 2
+
+/**
+ * The AZ-104 placement test: 2 exam-ready questions from every unit, in course
+ * order. True/false is used only when a unit has too few other questions, since
+ * a guess would pass it half the time.
+ */
+export function placementPlan(random = Math.random): RunPlan {
+  const items: SessionItem[] = []
+  for (const unit of COURSES.az104.units) {
+    const pool = unit.lessons.flatMap((l) => l.items.filter(isExercise).filter((e) => isActive(e) && e.examReady && !caseStudyOf(e.id)))
+    const ordered = [...shuffle(pool.filter((e) => e.type !== 'truefalse'), random), ...shuffle(pool.filter((e) => e.type === 'truefalse'), random)]
+    for (const item of ordered.slice(0, PLACEMENT_PER_UNIT)) items.push({ item })
+  }
+  return { kind: 'placement', title: 'Placement test AZ-104', items }
 }
 
 /** 20 mixed exercises from the whole path, no intro cards. */

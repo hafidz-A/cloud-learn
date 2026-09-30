@@ -77,7 +77,9 @@ Yang perlu diingat:
 
 - Siapa pun yang tahu kodenya bisa melihat dan mengubah progresmu, jadi jangan dibagikan.
 - **Reset progres** di satu perangkat ikut mereset semua perangkat yang tersambung.
-- Ujian yang sedang berjalan tidak ikut disinkron; selesaikan ujian di perangkat tempat kamu memulainya.
+- Ujian yang sedang berjalan ikut disinkron: ujian yang dimulai di HP bisa dilanjutkan di laptop dengan
+  jawaban, tanda, dan sisa waktu yang sama. Sisa waktu terkirim setiap kali kamu menjawab, menandai, pindah
+  soal, atau menutup app. Hanya satu ujian yang bisa berjalan, apa pun course-nya.
 - Server sinkron memakai paket gratis Supabase. Kalau Langit tidak dibuka sama sekali selama sekitar
   seminggu, Supabase bisa menidurkan server-nya; status sinkron akan menampilkan pesan gagal. Progres di
   perangkat tetap aman. Buka project **langit** di <https://supabase.com/dashboard> lalu klik **Restore**
@@ -105,6 +107,10 @@ Rencana kasar sampai siap ujian:
 2. **Minggu 2**: satu **Simulasi penuh** (50 soal, 45 menit) per hari, diselingi **Ujian titik lemah**.
 3. Daftar ujian AZ-900 setelah indikator **Siap ujian** menyala, yaitu rata-rata 3 simulasi penuh terakhir minimal 800.
 
+Untuk AZ-104, halaman Ujian memakai soal dan riwayat AZ-104 saja (pilih course AZ-104 di home): mini ujian
+per domain 15 soal dalam 30 menit, ujian titik lemah 20 soal dalam 40 menit, dan simulasi penuh 50 soal
+dalam 100 menit yang ditutup satu studi kasus. Indikator **Siap ujian** memakai aturan yang sama.
+
 ## 6. Cara kerja fiturnya
 
 - **Lesson**: kartu **Konsep baru** memperkenalkan konsep, lalu soal naik dari mudah ke sulit. Soal yang
@@ -121,7 +127,12 @@ Rencana kasar sampai siap ujian:
   melihat kepanjangannya. Daftar lengkap ada di tab **Glosarium**.
 - **Lihat konsep**: saat latihan, tombol ini membuka lagi kartu konsep dari soal tersebut.
 - **Ujian**: tiga mode, timer, grid nomor soal, dan tanda bendera untuk soal yang mau ditinjau. Kalau app
-  tertutup di tengah ujian, jawaban dan sisa waktu tersimpan. Soal yang salah otomatis masuk antrean Latihan.
+  tertutup di tengah ujian, jawaban dan sisa waktu tersimpan. Soal yang dijawab salah otomatis masuk antrean
+  Latihan; soal yang tidak dijawab tidak.
+- **Studi kasus (simulasi penuh AZ-104)**: bagian terakhir ujian. Skenarionya dibaca lewat tab **Skenario**
+  (Overview, Existing environment, Requirements), soalnya lewat tab **Soal**. Seperti ujian asli, setelah
+  kamu lanjut ke studi kasus, soal di bagian sebelumnya terkunci, jadi periksa dulu soal yang ditandai.
+  Soal studi kasus yang salah juga masuk Latihan, lengkap dengan skenarionya.
 - **Statistik**: XP 7 hari terakhir, penguasaan per unit, dan per konsep (yang paling lemah di atas).
 - **Keyboard di PC**: **Enter** untuk Lanjut dan Periksa, angka **1–4** untuk memilih jawaban,
   panah **→** (Benar) dan **←** (Salah) di kartu benar/salah, **Esc** untuk menutup panel di lesson. Di Ujian, panah
@@ -134,7 +145,7 @@ Rencana kasar sampai siap ujian:
   ikon Langit (uninstall), atau pindah HP akan memulai dari nol. Nyalakan sinkron (bagian 3) supaya progres
   aman dan sama di semua perangkat.
 - Skor di halaman Ujian adalah perkiraan. Microsoft memakai skala skor sendiri.
-- Soal ditulis mengikuti materi AZ-900 terbaru. Kalau menemukan soal yang janggal, catat ID-nya (terlihat
+- Soal ditulis mengikuti materi AZ-900 dan AZ-104 terbaru, dicek ke dokumentasi Microsoft Learn. Kalau menemukan soal yang janggal, catat ID-nya (terlihat
   di pembahasan) supaya bisa diperbaiki.
 
 ## 8. Untuk developer (opsional)

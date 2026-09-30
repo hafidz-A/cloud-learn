@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import type { Fact, LearnCard, Lesson, LessonItem, Unit } from '../lib/types'
-import { AZ104_UNITS, UNITS, courseOf } from './course'
+import { AZ104_UNITS, CASE_STUDIES, UNITS, courseOf } from './course'
 import { GLOSSARY } from './glossary'
-import { glossaryGaps, unexpandedAbbreviations, validateUnits, type Issue } from './validate'
+import { abbreviationsIn, caseStudyTexts, glossaryGaps, unexpandedAbbreviations, validateCaseStudies, validateUnits, type Issue } from './validate'
 
 /**
  * Coverage errors (LANGIT_AZ900_PERBAIKAN_MATERI.md section 4) count once a unit
@@ -52,6 +52,35 @@ describe('AZ-104 content (LANGIT_AZ104_PLAN.md)', () => {
   it('rejects an AZ-104 id without the prefix', () => {
     const bad: Unit = { id: 'az104-u01-identity', path: 1, title: 'x', lessons: [{ id: 'u01-l1', title: 'x', items: [] }] }
     expect(validateUnits([bad], 'az104').some((i) => i.level === 'error' && i.message.includes('must start with "az104-"'))).toBe(true)
+  })
+})
+
+describe('AZ-104 case studies (LANGIT_AZ104_PLAN.md section 9)', () => {
+  const issues = validateCaseStudies(CASE_STUDIES, AZ104_UNITS)
+
+  it('has at least 5 case studies without content errors', () => {
+    expect(CASE_STUDIES.length).toBeGreaterThanOrEqual(5)
+    expect(issues.filter((i) => i.level === 'error')).toEqual([])
+  })
+
+  it('expands every abbreviation on first use, and explains it in the glossary', () => {
+    expect(issues.filter((i) => i.message.startsWith('expand on first use'))).toEqual([])
+    const terms = new Set(GLOSSARY.map((g) => g.term))
+    expect([...abbreviationsIn(CASE_STUDIES.flatMap(caseStudyTexts))].filter((a) => !terms.has(a))).toEqual([])
+  })
+
+  it('shares no id with the units', () => {
+    const unitIds = new Set(AZ104_UNITS.flatMap((u) => [u.id, ...u.lessons.flatMap((l) => [l.id, ...l.items.map((i) => i.id)])]))
+    expect(CASE_STUDIES.flatMap((cs) => [cs.id, ...cs.questions.map((q) => q.id)]).filter((id) => unitIds.has(id))).toEqual([])
+  })
+
+  it('catches a question without facts, with an unknown unit, or that is not examReady', () => {
+    const cs = structuredClone(CASE_STUDIES[0])
+    cs.questions[0] = { ...cs.questions[0], requires: [], unit: 'az104-u99-none', examReady: false }
+    const found = validateCaseStudies([cs], AZ104_UNITS).map((i) => i.message)
+    expect(found).toContain('requires is empty: list the facts needed to answer and to rule out every wrong option')
+    expect(found).toContain('unknown unit "az104-u99-none"')
+    expect(found).toContain('case study questions must be examReady exam types')
   })
 })
 

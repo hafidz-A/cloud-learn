@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { ExamAttempt } from '../lib/types'
+import type { ExamAttempt, PlacementResult } from '../lib/types'
 import { initialProgress } from '../store/progress'
 import { mergeProgress, readSyncData, stableJson, toSyncData, type SyncData } from './merge'
 
@@ -157,10 +157,75 @@ describe('mergeProgress', () => {
   })
 })
 
+describe('the running exam (docs/AZ104_TAHAP1_RENCANA.md section 5)', () => {
+  const running = (id: string, elapsedSec: number, answer?: string): ExamAttempt => ({
+    ...exam(id, '2026-09-30T08:00:00Z'),
+    finishedAt: undefined,
+    score: undefined,
+    elapsedSec,
+    responses: answer ? { q1: answer } : {},
+  })
+
+  it('keeps the newest change, from either side', () => {
+    const a = data({ activeExam: running('exam-x', 300, 'A'), activeExamAt: '2026-09-30T08:05:00Z' })
+    const b = data({ activeExam: running('exam-x', 120), activeExamAt: '2026-09-30T08:02:00Z' })
+    expect(mergeProgress(a, b).activeExam?.responses).toEqual({ q1: 'A' })
+    expect(mergeProgress(b, a).activeExam?.responses).toEqual({ q1: 'A' })
+    expect(mergeProgress(b, a).activeExamAt).toBe('2026-09-30T08:05:00Z')
+  })
+
+  it('keeps the side where more time ran when only the timer differs', () => {
+    const a = data({ activeExam: running('exam-x', 400), activeExamAt: '2026-09-30T08:05:00Z' })
+    const b = data({ activeExam: running('exam-x', 350), activeExamAt: '2026-09-30T08:05:00Z' })
+    expect(mergeProgress(a, b).activeExam?.elapsedSec).toBe(400)
+    expect(mergeProgress(b, a).activeExam?.elapsedSec).toBe(400)
+  })
+
+  it('does not bring back an exam that was discarded or submitted later on another device', () => {
+    const open = data({ activeExam: running('exam-x', 400), activeExamAt: '2026-09-30T08:05:00Z' })
+    const discarded = data({ activeExam: null, activeExamAt: '2026-09-30T08:06:00Z' })
+    expect(mergeProgress(open, discarded).activeExam).toBeNull()
+    expect(mergeProgress(discarded, open).activeExam).toBeNull()
+  })
+
+  it('drops a running exam that is already in the history, in either course', () => {
+    const submitted = { ...exam('exam-x', '2026-09-30T08:10:00Z'), course: 'az104' as const }
+    const az104 = { lessonsDone: {}, checkpoints: {}, unitLevel: {}, review: {}, reviewRemoved: {}, conceptStats: {}, examHistory: [submitted] }
+    // The stale side has the newer stamp (a clock that runs ahead), but the exam is over.
+    const stale = data({ activeExam: running('exam-x', 500), activeExamAt: '2026-09-30T09:00:00Z' })
+    const done = data({ activeExam: null, activeExamAt: '2026-09-30T08:10:00Z', courses: { az104 } })
+    expect(mergeProgress(stale, done).activeExam).toBeNull()
+    expect(mergeProgress(done, stale).activeExam).toBeNull()
+  })
+
+  it('merges to the same result again (idempotent)', () => {
+    const a = data({ activeExam: running('exam-x', 300, 'A'), activeExamAt: '2026-09-30T08:05:00Z' })
+    const b = data({ activeExam: running('exam-y', 30), activeExamAt: '2026-09-30T08:05:00Z' })
+    const once = mergeProgress(a, b)
+    expect(stableJson(mergeProgress(once, b))).toBe(stableJson(once))
+    expect(stableJson(mergeProgress(b, a))).toBe(stableJson(once))
+  })
+})
+
+describe('the AZ-104 placement result', () => {
+  const course = (placement: PlacementResult) => ({
+    az104: { lessonsDone: {}, checkpoints: {}, unitLevel: {}, review: {}, reviewRemoved: {}, conceptStats: {}, examHistory: [], placement },
+  })
+  it('keeps the latest change, applied or taken', () => {
+    const taken = data({ courses: course({ takenAt: '2026-09-30T08:00:00Z', units: { u: { right: 2, total: 2 } } }) })
+    const applied = data({ courses: course({ takenAt: '2026-09-30T08:00:00Z', units: { u: { right: 2, total: 2 } }, applied: ['u'], appliedAt: '2026-09-30T08:05:00Z' }) })
+    expect(mergeProgress(taken, applied).courses.az104?.placement?.applied).toEqual(['u'])
+    expect(mergeProgress(applied, taken).courses.az104?.placement?.applied).toEqual(['u'])
+    expect(mergeProgress(taken, data({})).courses.az104?.placement?.takenAt).toBe('2026-09-30T08:00:00Z')
+  })
+})
+
 describe('toSyncData and readSyncData', () => {
-  it('leaves a running exam on its own device', () => {
+  it('sends a running exam, and null once there is none', () => {
     const withExam = { ...initialProgress, activeExam: exam('running', '2026-09-29T08:00:00Z') }
-    expect('activeExam' in toSyncData(withExam)).toBe(false)
+    expect(toSyncData(withExam).activeExam?.id).toBe('running')
+    const none = JSON.parse(JSON.stringify(toSyncData({ ...initialProgress, activeExam: undefined }))) as SyncData
+    expect(none.activeExam).toBeNull()
   })
 
   it('fills fields that older saved data does not have, and rejects junk', () => {

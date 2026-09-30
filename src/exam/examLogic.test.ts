@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ExamAttempt, Exercise, PathId } from '../lib/types'
-import { FULL_SPLIT, createAttempt, isAnswered, pickFull, pickWeak, readiness, scoreAttempt, weakestDomain, type ExamQuestion } from './examLogic'
+import { EXAM_MODES, FULL_SPLIT, createAttempt, isAnswered, openRange, pickDomain, pickFull, pickWeak, readiness, scoreAttempt, weakestDomain, type CasePool, type ExamQuestion } from './examLogic'
 
 const q = (id: string, path: PathId, concept = 'c'): ExamQuestion => ({
   path,
@@ -17,7 +17,7 @@ describe('pickFull', () => {
   it('takes 14 / 19 / 17 questions from the three domains', () => {
     const picked = pickFull(pool, [])
     expect(picked).toHaveLength(50)
-    for (const p of [1, 2, 3] as PathId[]) expect(picked.filter((x) => x.path === p)).toHaveLength(FULL_SPLIT[p])
+    for (const p of [1, 2, 3] as PathId[]) expect(picked.filter((x) => x.path === p)).toHaveLength(FULL_SPLIT.az900[p])
   })
 
   it('prefers questions not used in the last 3 simulations', () => {
@@ -30,6 +30,94 @@ describe('pickFull', () => {
   it('tops up from other domains when one is thin', () => {
     const thin = [...pool.filter((x) => x.path !== 1), q('only', 1)]
     expect(pickFull(thin, [])).toHaveLength(50)
+  })
+})
+
+describe('AZ-104 (LANGIT_AZ104_PLAN.md section 9)', () => {
+  const choice = (id: string, path: PathId): ExamQuestion => ({
+    path,
+    exercise: { id, type: 'choice', concept: 'c', prompt: 'P', explanation: 'E', options: ['a', 'b', 'c', 'd'], answer: 0, examReady: true },
+  })
+  // Per domain: 20 true/false and 20 choice questions.
+  const az104 = [1, 2, 3, 4, 5].flatMap((p) => [
+    ...Array.from({ length: 20 }, (_, i) => q(`t${p}-${i}`, p)),
+    ...Array.from({ length: 20 }, (_, i) => choice(`m${p}-${i}`, p)),
+  ])
+  const cases: CasePool[] = [
+    { id: 'az104-cs01-a', questions: [choice('az104-cs01-e1', 1), choice('az104-cs01-e2', 2), choice('az104-cs01-e3', 2)] },
+    { id: 'az104-cs02-b', questions: [choice('az104-cs02-e1', 4), choice('az104-cs02-e2', 5)] },
+  ]
+
+  it('uses 50 questions in 100 minutes, 15 in 30, and 20 in 40', () => {
+    expect([EXAM_MODES.az104.full, EXAM_MODES.az104.domain, EXAM_MODES.az104.weak].map((m) => [m.count, m.minutes])).toEqual([
+      [50, 100],
+      [15, 30],
+      [20, 40],
+    ])
+    expect(Object.values(FULL_SPLIT.az104).reduce((a, b) => a + b, 0)).toBe(50)
+  })
+
+  it('weights the domains 12 / 10 / 9 / 12 / 7 without a case study', () => {
+    const picked = pickFull(az104, [], Math.random, 'az104')
+    expect(picked).toHaveLength(50)
+    for (const p of [1, 2, 3, 4, 5]) expect(picked.filter((x) => x.path === p)).toHaveLength(FULL_SPLIT.az104[p])
+  })
+
+  it('ends with one case study whose questions count toward their domains', () => {
+    const picked = pickFull(az104, [], () => 0, 'az104', cases)
+    expect(picked).toHaveLength(50)
+    const cs = picked.filter((x) => x.caseStudy)
+    expect(cs.length).toBeGreaterThan(0)
+    expect(picked.slice(-cs.length).every((x) => x.caseStudy === cs[0].caseStudy)).toBe(true)
+    for (const p of [1, 2, 3, 4, 5]) expect(picked.filter((x) => x.path === p)).toHaveLength(FULL_SPLIT.az104[p])
+  })
+
+  it('uses the case study of the last simulations last', () => {
+    const history = [{ mode: 'full', questionIds: [], caseStudyId: 'az104-cs01-a' } as unknown as ExamAttempt]
+    for (let i = 0; i < 5; i++) expect(pickFull(az104, history, Math.random, 'az104', cases).at(-1)?.caseStudy).toBe('az104-cs02-b')
+  })
+
+  it('keeps true/false questions to about a fifth when there are enough others', () => {
+    const full = pickFull(az104, [], Math.random, 'az104')
+    expect(full.filter((x) => x.exercise.type === 'truefalse').length).toBeLessThanOrEqual(10)
+    const domain = pickDomain(az104, 3, [], Math.random, 'az104')
+    expect(domain).toHaveLength(15)
+    expect(domain.filter((x) => x.exercise.type === 'truefalse').length).toBeLessThanOrEqual(3)
+    // Without enough other questions, true/false still fills the exam.
+    expect(pickDomain(az104.filter((x) => x.exercise.type === 'truefalse'), 3, [], Math.random, 'az104')).toHaveLength(15)
+  })
+
+  it('marks where the case study section starts, and locks the questions before it once entered', () => {
+    const attempt = createAttempt('full', pickFull(az104, [], Math.random, 'az104', cases), undefined, Math.random, 'az104')
+    expect(attempt.timeLimitSec).toBe(6000)
+    expect(attempt.caseStudyId).toMatch(/^az104-cs0[12]/)
+    expect(attempt.questionIds.slice(attempt.caseStart).every((id) => id.startsWith(attempt.caseStudyId!.slice(0, 10)))).toBe(true)
+    expect(openRange(attempt)).toEqual([0, attempt.caseStart])
+    expect(openRange({ ...attempt, caseEntered: true })).toEqual([attempt.caseStart, 50])
+    const plain = createAttempt('domain', pickDomain(az104, 1, [], Math.random, 'az104'), 1, Math.random, 'az104')
+    expect(plain.caseStart).toBeUndefined()
+    expect(openRange(plain)).toEqual([0, 15])
+  })
+})
+
+describe('isAnswered', () => {
+  it('does not count a config question as answered until a field changes', () => {
+    const config: Exercise = {
+      id: 'cfg',
+      type: 'config',
+      concept: 'c',
+      prompt: 'P',
+      explanation: 'E',
+      blade: 'b',
+      fields: [
+        { label: 'Tier', kind: 'select', choices: ['Hot', 'Cool'], value: 'Hot' },
+        { label: 'Days', kind: 'number', value: 7 },
+      ],
+      answer: { Tier: 'Cool', Days: 30 },
+    }
+    expect(isAnswered(config, ['Hot', 7])).toBe(false)
+    expect(isAnswered(config, ['Cool', 7])).toBe(true)
+    expect(isAnswered(config, ['Cool', null])).toBe(false)
   })
 })
 

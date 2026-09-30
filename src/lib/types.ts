@@ -212,6 +212,21 @@ export type ExerciseType = Exercise['type']
 
 export type DailyGoal = 20 | 50 | 100
 
+/**
+ * An AZ-104 case study (LANGIT_AZ104_PLAN.md section 9): a scenario read in tabs, then
+ * questions about it. It only appears as the last section of a full simulation.
+ */
+export type CaseStudy = {
+  id: string // "az104-cs01-contoso"
+  title: string // "Contoso, Ltd."
+  /** Scenario tabs such as "Overview" and "Requirements". A paragraph starting with "- " is a list item. */
+  tabs: { title: string; paragraphs: string[] }[]
+  questions: CaseQuestion[]
+}
+
+/** A case study question counts toward the exam domain of its unit (section 9.3). */
+export type CaseQuestion = Exercise & { unit: string }
+
 export type ExamMode = 'full' | 'domain' | 'weak'
 
 /** Section 12.4. `elapsedSec` and `current` are extra: they let a closed exam resume where it stopped. */
@@ -234,10 +249,36 @@ export type ExamAttempt = {
   optionOrder: Record<string, number[]>
   score?: number // 0-1000
   domainScores?: Record<PathId, { right: number; total: number }>
+  /**
+   * AZ-104 full simulation: the case study, whose questions are the section from
+   * `caseStart` to the end of `questionIds`. Once `caseEntered`, the questions
+   * before it are locked, as in the real exam.
+   */
+  caseStudyId?: string
+  caseStart?: number
+  caseEntered?: boolean
+}
+
+/**
+ * The optional AZ-104 placement test (LANGIT_AZ104_PLAN.md section 3): 30 questions,
+ * 2 per unit. Units scored at least 80% may be marked done.
+ */
+export type PlacementResult = {
+  /** When the test was finished or skipped. */
+  takenAt: string
+  skipped?: boolean
+  /** Unit id -> questions right and asked. */
+  units: Record<string, { right: number; total: number }>
+  /** The units the player chose to mark done, once that choice was made. */
+  applied?: string[]
+  appliedAt?: string
 }
 
 /** Progress that belongs to one course (plan section 3): everything else is shared by the whole app. */
-export type CourseProgress = Pick<Progress, 'lessonsDone' | 'checkpoints' | 'unitLevel' | 'review' | 'reviewRemoved' | 'conceptStats' | 'examHistory'>
+export type CourseProgress = Pick<Progress, 'lessonsDone' | 'checkpoints' | 'unitLevel' | 'review' | 'reviewRemoved' | 'conceptStats' | 'examHistory'> & {
+  /** AZ-104 only. */
+  placement?: PlacementResult | null
+}
 
 export type Progress = {
   xp: number
@@ -258,7 +299,10 @@ export type Progress = {
   review: Record<string, { dueDay: string; correctStreak: number; at?: string }>
   conceptStats: Record<string, { right: number; wrong: number }>
   examHistory: ExamAttempt[]
-  activeExam?: ExamAttempt
+  /** The running exam of either course (one at a time). Syncs; `null` once it is submitted or thrown away. */
+  activeExam?: ExamAttempt | null
+  /** Last change to the running exam (start, answer, flag, move, submit, discard), not the timer. */
+  activeExamAt?: string
   // Sync bookkeeping (stage 8). ISO times that let two devices merge their progress.
   /** Exercise id -> when it left the review queue, so the removal reaches other devices. */
   reviewRemoved: Record<string, string>

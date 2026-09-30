@@ -445,3 +445,52 @@ dari rencana (daftar workload tiap vault) terkonfirmasi. Sumber: `azure-docs/art
 
 Tidak ada fakta bertanda `verify`. `SAP` dan `HANA` ditambahkan ke daftar nama merek yang bukan singkatan; MARS,
 MABS, DPM, RPO, dan RTO ditambahkan ke glosarium.
+
+### Studi kasus AZ-104 (30 September 2026)
+
+Enam studi kasus, masing-masing 5 soal (30 soal, semua examReady), di `src/content/az104/casestudies/`.
+Perusahaannya fiktif (nama-nama yang juga dipakai Microsoft di dokumentasinya). Setiap soal hanya memakai
+fakta yang sudah diverifikasi di unit 1–15 lewat `requires`, dan validator (`validateCaseStudies`) menolak
+soal yang fakta-nya tidak ada atau tidak diajarkan kartu materi mana pun. Jadi tidak ada klaim baru di luar
+tabel unit di atas.
+
+| Studi kasus | Domain soal | Topik |
+|---|---|---|
+| Contoso, Ltd. | 1, 1, 1, 3, 2 | Dynamic group, Virtual Machine Contributor, policy deny di management group, RA-GZRS, gateway transit |
+| Fabrikam, Inc. | 3, 3, 3, 5, 3 | Lifecycle management, identity source Azure Files, soft delete + versioning, Enhanced policy, stored access policy |
+| Litware, Inc. | 4, 4, 4, 4, 4 | Slot setting, ACI OnFailure, ACR Premium untuk geo-replication, resize di availability set, autoscale Standard |
+| A. Datum Corporation | 2, 2, 2, 2, 2 | AzureBastionSubnet /26, link private DNS tanpa auto registration, UDR ke NVA + IP forwarding, ASG, private endpoint |
+| Tailspin Toys | 1, 1, 5, 5, 5 | Budget forecast, policy tag inheritance + remediation, Azure Monitor Agent + DCR, alert processing rule, retensi activity log dan Delete lock |
+| Woodgrove Bank | 5, 5, 5, 1, 5 | Vault Site Recovery di region target, recovery plan + test failover, File Recovery, guest invite settings, immutable vault |
+
+Keputusan desain halaman Ujian AZ-104 yang perlu diketahui:
+
+- **Kunci bagian.** Rencana bagian 9.2 meminta peringatan "You can't return to this section after you continue."
+  sebelum meninggalkan bagian studi kasus. Di ujian asli, setiap bagian terkunci setelah kamu pindah ke bagian
+  berikutnya. Karena studi kasus ada di akhir, bagian yang ditinggalkan adalah bagian soal biasa: peringatan
+  muncul saat pindah ke studi kasus, lalu soal 1 sampai sebelum studi kasus terkunci. Di dalam studi kasus,
+  soal-soalnya bebas dibuka sampai dikumpulkan.
+- **Batas soal benar/salah.** Sepertiga bank AZ-104 adalah soal benar/salah tunggal, format yang jarang di ujian
+  asli. Simulasi penuh dan mini ujian per domain AZ-104 memakai paling banyak sekitar 20% soal benar/salah
+  selama soal lain cukup. Ujian titik lemah dan AZ-900 tidak dibatasi.
+- **Latihan resmi.** Layar hasil menautkan halaman sertifikasi Microsoft Learn (Azure Administrator untuk
+  AZ-104), tempat Practice Assessment gratis berada. Alamat halaman Practice Assessment-nya sendiri tidak
+  bisa dicek dari lingkungan pengembangan, jadi yang ditautkan halaman sertifikasinya.
+
+### Misi unit dan tips praktik AZ-104 (30 September 2026)
+
+Rencana bagian 8: satu tips per lesson (72) dan satu misi per unit (15), di `src/content/az104/practice.json`
+(dibuat dari `practice.py`). Setiap langkah hanya memakai fitur yang diajarkan lesson-nya, dengan nama menu
+portal yang sudah ada di fakta terverifikasi (misalnya Access control (IAM) > Check access, Deleted users,
+Availability + scale > Size, Properties > Backup Configuration). Tips tidak menyebut harga, karena harga tidak
+bisa dicek dari dokumentasi lokal dan berubah per region.
+
+Label **hati-hati** mengikuti daftar rencana: Bastion selain SKU Developer (tips Unit 5 lesson 4), Standard Load
+Balancer (tips Unit 6 lesson 3 dan 4, misi Unit 6), Site Recovery (tips Unit 15 lesson 4, misi Unit 15), tier App
+Service berbayar (tips Unit 13 lesson 2, 3, 5, misi Unit 13), dan lisensi Microsoft Entra ID P1/P2 (tips Unit 1
+lesson 2, 3, 5, misi Unit 1). VPN Gateway tidak dipakai di misi mana pun. Misi yang memakai VM (virtual machine)
+tidak berlabel, tapi langkah bersih-bersihnya selalu mengingatkan bahwa VM ditagih selama berjalan.
+
+Dua hal yang sengaja ditulis di tips karena sering membuat bingung saat membersihkan: vault Recovery Services
+yang berisi data soft delete baru bisa dihapus setelah masa soft delete lewat, dan blob Archive yang dihapus
+sebelum 180 hari kena biaya early deletion.

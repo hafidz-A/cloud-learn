@@ -29,7 +29,7 @@ import {
 import type { TeachingCard } from '../lib/types'
 import type { Verdict } from './types'
 
-export type RunKind = 'lesson' | 'practice' | 'checkpoint'
+export type RunKind = 'lesson' | 'practice' | 'checkpoint' | 'placement'
 
 export type RunPlan = {
   kind: RunKind
@@ -42,11 +42,14 @@ export type RunPlan = {
  * - lesson:     learn cards, wrong answers come back at the end, every miss costs a heart
  * - practice:   wrong answers come back, every first-try right answer earns a heart back
  * - checkpoint: no retries and no hearts; the first-try score decides
+ * - placement:  like a checkpoint, but the answers stay out of the stats and the review
+ *               queue: they come before the material, which must never be tested first
  */
-const RULES: Record<RunKind, { retryWrong: boolean; hearts: 'lose' | 'gain' | 'none' }> = {
-  lesson: { retryWrong: true, hearts: 'lose' },
-  practice: { retryWrong: true, hearts: 'gain' },
-  checkpoint: { retryWrong: false, hearts: 'none' },
+const RULES: Record<RunKind, { retryWrong: boolean; hearts: 'lose' | 'gain' | 'none'; record: boolean }> = {
+  lesson: { retryWrong: true, hearts: 'lose', record: true },
+  practice: { retryWrong: true, hearts: 'gain', record: true },
+  checkpoint: { retryWrong: false, hearts: 'none', record: true },
+  placement: { retryWrong: false, hearts: 'none', record: false },
 }
 
 function Badge({ icon, children }: { icon: ReactNode; children: ReactNode }) {
@@ -114,7 +117,7 @@ export function Player({
   const { item } = entry
   const handleVerdict = (v: Verdict) => {
     if (verdict || !isExercise(item)) return
-    if (isFirstAttempt(session)) {
+    if (isFirstAttempt(session) && rules.record) {
       // Stats and the review queue count first attempts only.
       if (entry.fromReview) recordReview(item.id, item.concept, v.correct)
       else recordAnswer(item.id, item.concept, v.correct)

@@ -1,0 +1,148 @@
+{
+  "id": "az104-cs02-fabrikam",
+  "title": "Fabrikam, Inc.",
+  "tabs": [
+    {
+      "title": "Overview",
+      "paragraphs": [
+        "Fabrikam, Inc. is a media company that produces video for streaming services. Its production office is in Amsterdam, and its Azure resources are in the West Europe region."
+      ]
+    },
+    {
+      "title": "Existing environment",
+      "paragraphs": [
+        "- The general-purpose v2 storage account stmedia uses LRS (locally redundant storage) and the Hot default access tier. The container raw-footage holds video files that are rarely opened after 60 days.",
+        "- The storage account stprojects has an SMB (Server Message Block) file share named projects. Editors map it as a network drive. Their computers are joined to the on-premises Active Directory Domain Services domain, and the domain is synchronized to Microsoft Entra ID.",
+        "- The VM (virtual machine) vm-db1 runs SQL (Structured Query Language) Server. The Recovery Services vault rsv-weu in West Europe backs up vm-db1 with the default policy."
+      ]
+    },
+    {
+      "title": "Requirements",
+      "paragraphs": [
+        "- Files in raw-footage must move to the Cool tier 60 days after they were last modified, to the Archive tier after 365 days, and must be deleted after seven years. The solution must not require scripts.",
+        "- Editors must open projects with their existing domain credentials, authenticated by the existing domain controllers. Folder permissions must be managed with Windows ACLs (access control lists).",
+        "- Blobs in stmedia that are deleted or overwritten must be recoverable, following the protection that Microsoft recommends for important blob data.",
+        "- vm-db1 must have a VM recovery point at least every four hours.",
+        "- An external contractor must be able to upload files to the container incoming for two days. You must be able to revoke that access at any time without affecting any other access to stmedia."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "az104-cs02-e1",
+      "type": "choice",
+      "concept": "lifecycle-rules",
+      "prompt": "What should you configure for raw-footage?",
+      "options": [
+        "Smart tier as the default access tier",
+        "Object replication",
+        "A stored access policy",
+        "A lifecycle management policy"
+      ],
+      "answer": 3,
+      "explanation": "Lifecycle management memindahkan blob ke Cool dan Archive lalu menghapusnya berdasarkan hari sejak terakhir diubah. Smart tier tidak memindahkan ke Archive dan hanya untuk akun zone-redundant, sedangkan object replication hanya menyalin blob.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u09-lc-what",
+        "az104-f-u09-smart-tier",
+        "az104-f-u07-or-what",
+        "az104-f-u08-sap-what"
+      ],
+      "unit": "az104-u09-files-blobs"
+    },
+    {
+      "id": "az104-cs02-e2",
+      "type": "choice",
+      "concept": "files-identity-auth",
+      "prompt": "Which identity source should you configure for stprojects?",
+      "options": [
+        "On-premises Active Directory Domain Services",
+        "Microsoft Entra Domain Services",
+        "The storage account key",
+        "Anonymous access"
+      ],
+      "answer": 0,
+      "explanation": "Autentikasi harus lewat domain controller yang sudah ada, jadi identity source-nya Active Directory Domain Services on-premises. Microsoft Entra Domain Services memakai managed domain terpisah, dan account key tidak memakai kredensial user.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u08-files-sources",
+        "az104-f-u08-files-adds",
+        "az104-f-u08-files-entra-ds",
+        "az104-f-u07-se-keys",
+        "az104-f-u09-anon-default"
+      ],
+      "unit": "az104-u08-storage-access"
+    },
+    {
+      "id": "az104-cs02-e3",
+      "type": "multi",
+      "concept": "blob-soft-delete",
+      "prompt": "Which two features should you enable for stmedia to meet the recovery requirement? Choose two.",
+      "options": [
+        "File share soft delete",
+        "Blob versioning",
+        "Blob soft delete",
+        "Container soft delete only"
+      ],
+      "answers": [
+        1,
+        2
+      ],
+      "explanation": "Microsoft menyarankan soft delete dan versioning sekaligus untuk data blob penting. Container soft delete hanya memulihkan container utuh, dan file share soft delete untuk Azure Files.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u09-both",
+        "az104-f-u09-blob-sd",
+        "az104-f-u09-versioning",
+        "az104-f-u09-container-sd-limits",
+        "az104-f-u09-share-sd"
+      ],
+      "unit": "az104-u09-files-blobs"
+    },
+    {
+      "id": "az104-cs02-e4",
+      "type": "choice",
+      "concept": "enhanced-policy",
+      "prompt": "What should you do to meet the requirement for vm-db1?",
+      "options": [
+        "Keep the default policy and run Backup Now twice a day",
+        "Protect vm-db1 with an Enhanced backup policy that runs every 4 hours",
+        "Move the backup of vm-db1 to a Backup vault",
+        "Change the default policy to a weekly schedule"
+      ],
+      "answer": 1,
+      "explanation": "Hanya Enhanced policy yang bisa backup VM (virtual machine) setiap 4 jam. Policy default sekali sehari, dan Backup vault tidak melindungi VM Azure.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u15-enhanced-policy",
+        "az104-f-u15-default-policy",
+        "az104-f-u15-bv-workloads",
+        "az104-f-u15-backup-now"
+      ],
+      "unit": "az104-u15-backup"
+    },
+    {
+      "id": "az104-cs02-e5",
+      "type": "choice",
+      "concept": "stored-access-policy",
+      "prompt": "What should you give the contractor?",
+      "options": [
+        "An account SAS (shared access signature) that expires in two days",
+        "A user delegation SAS that expires in two days",
+        "The key1 access key of stmedia",
+        "A service SAS that references a stored access policy on the container incoming"
+      ],
+      "answer": 3,
+      "explanation": "Stored access policy bisa mencabut service SAS (shared access signature) kapan saja tanpa memengaruhi akses lain. Account SAS hanya bisa dicabut dengan membuat ulang key, dan user delegation SAS dicabut bersama semua SAS dari user delegation key yang sama.",
+      "examReady": true,
+      "requires": [
+        "az104-f-u08-sap-what",
+        "az104-f-u08-sap-revoke",
+        "az104-f-u08-bare-sas",
+        "az104-f-u08-ud-revoke",
+        "az104-f-u08-keys-rotate-sas"
+      ],
+      "unit": "az104-u08-storage-access"
+    }
+  ]
+}

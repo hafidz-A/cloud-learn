@@ -1,4 +1,4 @@
-import { PORTAL_NAMES, type CourseId, type Exercise, type Fact, type IntroCard, type LearnCard, type Lesson, type LessonItem, type Unit } from '../lib/types'
+import { PORTAL_NAMES, type CaseStudy, type CourseId, type Exercise, type Fact, type IntroCard, type LearnCard, type Lesson, type LessonItem, type Unit } from '../lib/types'
 import { courseCoverage } from './coverage'
 import { EXAM_TYPES } from './examTypes'
 import { isVisualName, VISUAL_NAMES, VISUALS_BY_CONCEPT } from './visuals'
@@ -536,4 +536,59 @@ export function coverageIssues(units: Unit[]): Issue[] {
     for (const fact of cov.badSources) push(`${cov.unitId} > ${fact}`, `fact "${fact}" needs a Microsoft Learn source, or verify: true`)
   }
   return issues
+}
+
+/**
+ * Case studies (LANGIT_AZ104_PLAN.md section 9): a scenario in tabs and 4-6
+ * exam-ready questions, each counted toward an AZ-104 unit and requiring facts
+ * that a learn card teaches, so "Pelajari lagi" always has material.
+ */
+export function validateCaseStudies(cases: CaseStudy[], units: Unit[]): Issue[] {
+  const issues: Issue[] = []
+  const ids = new Set<string>()
+  const unitIds = new Set(units.map((u) => u.id))
+  const facts = new Set(units.flatMap((u) => (u.facts ?? []).map((f) => f.id)))
+  const taught = new Set(units.flatMap((u) => u.lessons.flatMap((l) => l.items.flatMap((i) => (i.type === 'learn' ? (i.teaches ?? []) : [])))))
+  for (const cs of cases) {
+    const pusher = (where: string) => (message: string, level: Issue['level'] = 'error') => issues.push({ level, where, message })
+    const push = pusher(cs.id)
+    const claim = (id: string, where: string) => {
+      if (ids.has(id)) pusher(where)(`duplicate id "${id}"`)
+      ids.add(id)
+    }
+    claim(cs.id, cs.id)
+    if (!/^az104-cs\d{2}-[a-z0-9]+(-[a-z0-9]+)*$/.test(cs.id)) push('case study id must look like "az104-cs01-contoso"')
+    if (!cs.title?.trim()) push('title is empty')
+    if (!Array.isArray(cs.tabs) || cs.tabs.length < 2) push('a case study needs at least 2 scenario tabs')
+    for (const tab of cs.tabs ?? []) {
+      if (!tab.title?.trim()) push('a scenario tab has no title')
+      if (!Array.isArray(tab.paragraphs) || tab.paragraphs.length === 0 || tab.paragraphs.some((p) => !p.trim())) push(`tab "${tab.title}" needs non-empty paragraphs`)
+    }
+    const scenario = (cs.tabs ?? []).flatMap((t) => t.paragraphs ?? [])
+    const missing = unexpandedAbbreviations(scenario)
+    if (missing.length) push(`expand on first use in the scenario: ${missing.join(', ')}`, 'warn')
+    checkEntraName(scenario, push)
+    if (!Array.isArray(cs.questions) || cs.questions.length < 4 || cs.questions.length > 6) push(`a case study should have 4-6 questions, found ${cs.questions?.length ?? 0}`, 'warn')
+    const prefix = cs.id.split('-').slice(0, 2).join('-')
+    for (const q of cs.questions ?? []) {
+      const qw = `${cs.id} > ${q.id}`
+      const qpush = pusher(qw)
+      claim(q.id, qw)
+      if (!new RegExp(`^${prefix}-e\\d+$`).test(q.id)) qpush(`question id should look like "${prefix}-e1"`)
+      checkExercise(q, qpush)
+      if (!q.examReady || !EXAM_TYPES.has(q.type)) qpush('case study questions must be examReady exam types')
+      if (!unitIds.has(q.unit)) qpush(`unknown unit "${q.unit}"`)
+      if (!q.requires?.length) qpush('requires is empty: list the facts needed to answer and to rule out every wrong option')
+      for (const f of q.requires ?? []) {
+        if (!facts.has(f)) qpush(`requires unknown fact "${f}"`)
+        else if (!taught.has(f)) qpush(`fact "${f}" is not taught by any learn card`)
+      }
+    }
+  }
+  return issues
+}
+
+/** Everything a case study shows, for the glossary check. */
+export function caseStudyTexts(cs: CaseStudy): string[] {
+  return [...cs.tabs.flatMap((t) => [t.title, ...t.paragraphs]), ...cs.questions.flatMap((q) => [...questionTexts(q), q.explanation])]
 }
