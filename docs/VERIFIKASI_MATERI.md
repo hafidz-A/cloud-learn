@@ -393,3 +393,27 @@ Tidak ada fakta bertanda `verify`.
 | Slot butuh Standard, Premium, Isolated; tanpa biaya tambahan; swap tanpa downtime dan bisa diulang; swap with preview; app setting dan connection string ikut swap kecuali ditandai slot setting; custom domain, TLS, scale, managed identity, VNet integration tetap di slot | Soal fix rencana (database staging) | `deploy-staging-slots.md`, include `app-service-deployment-slots-settings.md` |
 
 Tidak ada fakta bertanda `verify`.
+
+### Unit 14: Azure Monitor (30 September 2026)
+
+28 fakta, 16 kartu learn, 42 soal (39 examReady), 2 visual baru (`KqlPipe`, `AlertFlow`) dan `MonitorPipeline`
+dari AZ-900. Rencana belum punya daftar "fakta wajib akurat" untuk unit ini; semua fakta ditulis dari sumber
+berikut. Sumber: `azure-monitor-docs/articles/azure-monitor`, `azure-docs/articles/network-watcher`, dan
+`azure-docs/articles/storage/common`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Platform metrics otomatis tanpa konfigurasi, umumnya tiap menit; disimpan 93 hari; satu grafik maks. 30 hari | Diajarkan | `metrics/data-platform-metrics.md` (21 Agustus 2026) |
+| Agregasi Sum, Count, Average, Min, Max; granularity lebih besar menghaluskan lonjakan dan mengurangi alert palsu | Soal rencana (Max untuk lonjakan sesaat) | `metrics/metrics-aggregation-explained.md` (7 Agustus 2026) |
+| Activity log: operasi control plane, otomatis, gratis, 90 hari; lebih lama lewat diagnostic setting | Diajarkan | `fundamentals/activity-log.md` (4 Mei 2026) |
+| Resource logs tidak otomatis; diagnostic setting per resource; tujuan workspace, storage, Event Hubs, partner; tujuan harus sudah ada; storage dan Event Hubs satu region dengan resource regional; maks. 5 setting per resource, satu tujuan per jenis | Soal fix rencana (log tidak sampai ke workspace) | `data-collection/diagnostic-settings.md` (31 Maret 2026) |
+| Log Analytics workspace: query KQL, retensi sampai 12 tahun, bayar data masuk dan masa simpan | Diajarkan | `logs/log-analytics-workspace-overview.md` |
+| KQL: tabel dulu, pipe meneruskan hasil, take tanpa urutan, sort/top default descending, where, `ago()`, summarize count() by, `bin(TimeGenerated, 1h)`, project | Dua soal KQL (rencana: error per jam) | `logs/get-started-queries.md` (29 April 2026) |
+| Alert rule (resource, sinyal, kondisi), alert disimpan 30 hari; jenis metric, log search, activity log (Service Health, Resource Health); action group untuk notifikasi dan otomasi | Diajarkan | `alerts/alerts-overview.md` (8 Juli 2026), `alerts/action-groups.md` |
+| Alert processing rule: suppress atau tambah action group; scope resource, resource group, subscription; jadwal Always, waktu tertentu, Recurring; lebih baik dari mematikan alert rule untuk maintenance; alert yang ditekan tetap tercatat; suppress menang; tidak memengaruhi Service Health | Soal config rencana (maintenance Minggu 01:00–05:00) | `alerts/alerts-processing-rules.md` (24 April 2026) |
+| Monitoring VM: host metrics otomatis; data tamu butuh Azure Monitor Agent dan data collection rule; skala besar lewat Azure Policy. Istilah "VM insights" kini bagian dari "enhanced monitoring" | Materi memakai istilah baru | `vm/vm-enable-monitoring.md` (25 Agustus 2026), `vm/monitor-vm.md` |
+| Storage insights tanpa konfigurasi; Network insights dan Topology | Diajarkan | `storage-insights-overview.md`, `visualize/insights-overview.md`, `network-watcher-overview.md` |
+| Connection monitor: pemantauan terus-menerus latensi dan packet loss, endpoint sumber butuh Network Watcher extension; IP flow verify, Next hop, Connection troubleshoot (satu waktu), Packet capture | Soal rencana (latensi VM ke on-premises) | `connection-monitor-overview.md`, `network-watcher-overview.md` (25 Februari 2026) |
+| NSG flow logs pensiun 30 September 2027, tidak bisa dibuat baru; ganti ke virtual network flow logs | Fakta rencana terkonfirmasi | include `network-watcher-nsg-flow-logs-retirement.md`, `vnet-flow-logs-overview.md` |
+
+Tidak ada fakta bertanda `verify`.

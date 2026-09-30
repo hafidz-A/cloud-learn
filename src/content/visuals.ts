@@ -40,7 +40,7 @@ export const VISUAL_CATALOG = {
   ManagementTools: ['arm'],
   // Unit 12
   ServiceHealthScopes: ['service-health'],
-  MonitorPipeline: ['azure-monitor'],
+  MonitorPipeline: ['azure-monitor', 'metrics-vs-logs'],
 
   // AZ-104 (LANGIT_AZ104_PLAN.md section 5, column "Visual")
   // Unit 1
@@ -92,6 +92,9 @@ export const VISUAL_CATALOG = {
   AppServiceTierLadder: ['plan-tiers'],
   VnetIntegrationVsPrivateEndpoint: ['vnet-integration'],
   SlotSwap: ['slot-settings'],
+  // Unit 14 (the metrics card reuses MonitorPipeline)
+  KqlPipe: ['kql-basics'],
+  AlertFlow: ['alert-processing-rules'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

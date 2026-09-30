@@ -6,27 +6,1354 @@
     {
       "id": "az104-u14-l1",
       "title": "Metrik",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u14-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "metrics-vs-logs",
+            "metrics"
+          ],
+          "title": "Metrik di Azure Monitor",
+          "body": "Azure Monitor mengumpulkan dua jenis data utama: metrik dan log. Platform metrics, seperti Percentage CPU (central processing unit) sebuah VM (virtual machine), dikumpulkan otomatis tanpa konfigurasi, umumnya setiap menit, dan disimpan 93 hari. Satu grafik di Metrics explorer hanya menampilkan paling banyak 30 hari sekaligus, tapi grafiknya bisa digeser untuk melihat sisa datanya.",
+          "keyPoints": [
+            "Metrik platform: otomatis, tiap menit",
+            "Disimpan 93 hari",
+            "Satu grafik maks. 30 hari"
+          ],
+          "visual": "MonitorPipeline",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/data-platform-metrics",
+          "teaches": [
+            "az104-f-u14-metrics-auto",
+            "az104-f-u14-metrics-retention"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-e1",
+          "type": "truefalse",
+          "concept": "metrics",
+          "prompt": "You must create a diagnostic setting before Azure collects the platform metrics of a VM (virtual machine).",
+          "answer": false,
+          "explanation": "Salah. Platform metrics dikumpulkan otomatis tanpa konfigurasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-metrics-auto"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-e2",
+          "type": "choice",
+          "concept": "metrics",
+          "prompt": "How long does Azure Monitor keep platform metrics?",
+          "options": [
+            "30 days",
+            "90 days",
+            "93 days",
+            "12 years"
+          ],
+          "answer": 2,
+          "explanation": "Platform metrics disimpan 93 hari. 30 hari adalah batas satu grafik, dan 90 hari masa simpan activity log.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-metrics-retention"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-e3",
+          "type": "truefalse",
+          "concept": "metrics",
+          "prompt": "A single chart in Metrics explorer shows at most 30 days of data at once.",
+          "answer": true,
+          "explanation": "Benar. Data disimpan 93 hari, tapi satu grafik hanya menampilkan paling banyak 30 hari; geser grafiknya untuk melihat sisanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-metrics-retention"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "metric-aggregation"
+          ],
+          "title": "Agregasi",
+          "body": "Saat metrik digambar, nilai dalam satu interval digabung dengan agregasi. Sum menjumlahkan, Count menghitung banyaknya pengukuran, Average merata-rata, Min mengambil yang terkecil, dan Max mengambil yang terbesar. Untuk melihat lonjakan sesaat, pakai Max: Average bisa menutupinya karena lonjakan dirata-rata dengan nilai rendah di sekitarnya.",
+          "keyPoints": [
+            "Max: lonjakan",
+            "Average: kecenderungan",
+            "Count: banyaknya pengukuran"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/metrics-aggregation-explained",
+          "teaches": [
+            "az104-f-u14-aggregations"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-e4",
+          "type": "choice",
+          "concept": "metric-aggregation",
+          "prompt": "CPU (central processing unit) spikes to 100% for a few seconds, but the chart with Average shows only 35%. Which aggregation shows the spikes?",
+          "options": [
+            "Average",
+            "Count",
+            "Max",
+            "Min"
+          ],
+          "answer": 2,
+          "explanation": "Max mengambil nilai terbesar dalam interval, jadi lonjakan sesaat terlihat. Average merata-ratakan lonjakan itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-aggregations"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-e5",
+          "type": "match",
+          "concept": "metric-aggregation",
+          "prompt": "Match each aggregation to what it returns.",
+          "pairs": [
+            [
+              "Sum",
+              "The total of all values in the interval"
+            ],
+            [
+              "Count",
+              "The number of measurements in the interval"
+            ],
+            [
+              "Average",
+              "The mean of the values in the interval"
+            ],
+            [
+              "Max",
+              "The largest value in the interval"
+            ]
+          ],
+          "explanation": "Sum menjumlahkan, Count menghitung pengukuran, Average merata-rata, dan Max mengambil nilai terbesar.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-aggregations"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-e6",
+          "type": "truefalse",
+          "concept": "metric-aggregation",
+          "prompt": "The Count aggregation looks at the values of the measurements.",
+          "answer": false,
+          "explanation": "Salah. Count hanya menghitung banyaknya pengukuran, tanpa melihat nilainya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-aggregations"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "metric-granularity"
+          ],
+          "title": "Granularity",
+          "body": "Granularity menentukan panjang interval tiap titik di grafik, misalnya 1 menit atau 30 menit. Interval yang lebih besar menghaluskan lonjakan singkat. Untuk alert, ini berguna: CPU (central processing unit) yang sesaat menyentuh 90% biasanya tidak penting, tapi CPU yang bertahan di 90% selama lima menit penting. Granularity lebih besar mengurangi alert palsu.",
+          "keyPoints": [
+            "Interval besar: grafik lebih halus",
+            "Interval kecil: lonjakan terlihat",
+            "Alert: interval besar kurangi alert palsu"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/metrics-aggregation-explained",
+          "teaches": [
+            "az104-f-u14-granularity"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-e7",
+          "type": "choice",
+          "concept": "metric-granularity",
+          "prompt": "A CPU (central processing unit) alert fires many times a day because of spikes that last a few seconds. How can you reduce these false alerts?",
+          "options": [
+            "Use a smaller time granularity",
+            "Change the aggregation to Count",
+            "Use a larger time granularity for the alert rule",
+            "Delete the action group"
+          ],
+          "answer": 2,
+          "explanation": "Granularity yang lebih besar menghaluskan lonjakan singkat, jadi alert hanya fired kalau CPU (central processing unit) tinggi cukup lama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-granularity"
+          ]
+        },
+        {
+          "id": "az104-u14-l1-e8",
+          "type": "yesno",
+          "concept": "metric-granularity",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You chart Percentage CPU (central processing unit) of vm1 for the last 24 hours.",
+          "statements": [
+            {
+              "text": "Switching from 30-minute to 1-minute granularity can reveal short spikes.",
+              "answer": true
+            },
+            {
+              "text": "The chart can show 60 days of data at once.",
+              "answer": false
+            },
+            {
+              "text": "The Max aggregation shows the highest value in each interval.",
+              "answer": true
+            }
+          ],
+          "explanation": "Granularity kecil memperlihatkan lonjakan, satu grafik maksimal 30 hari, dan Max menampilkan nilai terbesar di setiap interval.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-granularity",
+            "az104-f-u14-metrics-retention",
+            "az104-f-u14-aggregations"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u14-l2",
       "title": "Log dan diagnostic settings",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u14-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "activity-log"
+          ],
+          "title": "Activity log",
+          "body": "Activity log mencatat operasi manajemen: siapa membuat, mengubah, atau menghapus resource, dan kapan. Datanya dikumpulkan otomatis, gratis, dan disimpan 90 hari. Untuk menyimpan lebih lama atau meng-query-nya bersama log lain, buat diagnostic setting yang mengirimnya ke Log Analytics workspace atau storage account.",
+          "keyPoints": [
+            "Operasi manajemen: siapa dan kapan",
+            "Gratis, 90 hari",
+            "Lebih lama: diagnostic setting"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/activity-log",
+          "teaches": [
+            "az104-f-u14-activity-log",
+            "az104-f-u14-activity-export"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-e1",
+          "type": "choice",
+          "concept": "activity-log",
+          "prompt": "Someone deleted vm-web yesterday. Where do you find who did it?",
+          "options": [
+            "The activity log",
+            "The Percentage CPU (central processing unit) metric",
+            "Storage insights",
+            "The Next hop tool"
+          ],
+          "answer": 0,
+          "explanation": "Activity log mencatat operasi manajemen seperti menghapus resource, termasuk siapa yang melakukannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-activity-log"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-e2",
+          "type": "truefalse",
+          "concept": "activity-log",
+          "prompt": "Azure keeps activity log events for 90 days at no charge.",
+          "answer": true,
+          "explanation": "Benar. Setelah 90 hari, data dihapus kecuali dikirim ke tempat lain lewat diagnostic setting.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-activity-log"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-e3",
+          "type": "choice",
+          "concept": "activity-log",
+          "prompt": "Auditors need activity log entries from the last 18 months. What should you configure?",
+          "options": [
+            "A diagnostic setting that sends the activity log to a Log Analytics workspace or storage account",
+            "Nothing, the activity log keeps 18 months",
+            "A metric alert",
+            "An alert processing rule"
+          ],
+          "answer": 0,
+          "explanation": "Activity log hanya disimpan 90 hari. Diagnostic setting mengirimnya ke tempat dengan masa simpan lebih panjang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-activity-export",
+            "az104-f-u14-activity-log"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "diagnostic-settings"
+          ],
+          "title": "Diagnostic settings",
+          "body": "Resource logs, misalnya log akses Key Vault atau log query database, tidak dikumpulkan secara default. Buat diagnostic setting di setiap resource untuk memilih kategori log dan tujuannya: Log Analytics workspace, storage account, Event Hubs, atau solusi partner. Tujuannya harus sudah ada. Satu resource boleh punya paling banyak lima diagnostic setting.",
+          "keyPoints": [
+            "Resource logs: tidak otomatis",
+            "Satu setting per resource",
+            "Maks. lima setting per resource"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/diagnostic-settings",
+          "teaches": [
+            "az104-f-u14-resource-logs",
+            "az104-f-u14-diag-destinations",
+            "az104-f-u14-diag-limits"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-e4",
+          "type": "fix",
+          "concept": "diagnostic-settings",
+          "prompt": "The workspace law-ops has no Key Vault audit logs at all, even though the vault is used every day. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "kv-contoso > Diagnostic settings",
+            "message": "No diagnostic settings are defined."
+          },
+          "options": [
+            "Wait 24 hours for the logs to appear",
+            "Create a metric alert on the vault",
+            "Add a diagnostic setting that sends the audit logs to law-ops",
+            "Enable the activity log"
+          ],
+          "answer": 2,
+          "explanation": "Resource logs tidak dikumpulkan tanpa diagnostic setting. Activity log sudah otomatis, tapi tidak berisi log akses isi Key Vault.",
+          "requires": [
+            "az104-f-u14-resource-logs",
+            "az104-f-u14-diag-destinations"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-e5",
+          "type": "multi",
+          "concept": "diagnostic-settings",
+          "prompt": "Which two can be destinations of a diagnostic setting? Choose two.",
+          "options": [
+            "An Event Hubs namespace",
+            "An action group",
+            "A private DNS (Domain Name System) zone",
+            "A Log Analytics workspace"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Tujuannya Log Analytics workspace, storage account, Event Hubs, atau partner. Action group dan private DNS (Domain Name System) zone bukan tujuan log.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-diag-destinations"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-e6",
+          "type": "yesno",
+          "concept": "diagnostic-settings",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You configure diagnostic settings for sql-app, which is in West Europe.",
+          "statements": [
+            {
+              "text": "The storage account destination must also be in West Europe.",
+              "answer": true
+            },
+            {
+              "text": "One diagnostic setting can send to two different Log Analytics workspaces.",
+              "answer": false
+            },
+            {
+              "text": "sql-app can have up to five diagnostic settings.",
+              "answer": true
+            }
+          ],
+          "explanation": "Storage account harus satu region dengan resource regional. Satu setting hanya satu tujuan per jenis, jadi dua workspace butuh dua setting. Batasnya lima setting per resource.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-diag-destinations",
+            "az104-f-u14-diag-limits"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "log-analytics-workspace"
+          ],
+          "title": "Log Analytics workspace",
+          "body": "Log Analytics workspace adalah tempat menyimpan log dari banyak sumber, lalu meng-query-nya dengan KQL (Kusto Query Language). Tabelnya dibuat otomatis saat data pertama masuk. Data bisa disimpan sampai 12 tahun. Membuat workspace gratis; yang dibayar adalah data yang masuk dan masa simpannya.",
+          "keyPoints": [
+            "Satu tempat untuk log",
+            "Di-query dengan KQL",
+            "Bayar data masuk dan masa simpan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-workspace-overview",
+          "teaches": [
+            "az104-f-u14-workspace"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-e7",
+          "type": "truefalse",
+          "concept": "log-analytics-workspace",
+          "prompt": "You pay a fixed monthly fee just for creating a Log Analytics workspace.",
+          "answer": false,
+          "explanation": "Salah. Membuat workspace gratis; biaya dihitung dari data yang masuk dan masa simpannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-workspace"
+          ]
+        },
+        {
+          "id": "az104-u14-l2-e8",
+          "type": "choice",
+          "concept": "log-analytics-workspace",
+          "prompt": "You want to query the activity log together with VM (virtual machine) logs in one place. Where should both go?",
+          "options": [
+            "Two different storage accounts",
+            "An action group",
+            "The same Log Analytics workspace",
+            "The Metrics explorer"
+          ],
+          "answer": 2,
+          "explanation": "Log Analytics workspace menampung log dari banyak sumber supaya bisa di-query bersama dengan KQL (Kusto Query Language).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-workspace",
+            "az104-f-u14-activity-export"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u14-l3",
       "title": "Query log dengan KQL",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u14-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "kql-basics"
+          ],
+          "title": "Dasar KQL",
+          "body": "Query KQL (Kusto Query Language) dimulai dari nama tabel, misalnya AppRequests. Tanda pipe (|) meneruskan hasil ke perintah berikutnya, jadi query dibaca dari atas ke bawah. take 10 mengambil 10 baris tanpa urutan tertentu, cocok untuk melihat isi tabel. where menyaring baris, misalnya where TimeGenerated > ago(1h) untuk satu jam terakhir.",
+          "keyPoints": [
+            "Mulai dari tabel",
+            "Pipe meneruskan hasil",
+            "where menyaring, take mengintip"
+          ],
+          "visual": "KqlPipe",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries",
+          "teaches": [
+            "az104-f-u14-kql-pipe",
+            "az104-f-u14-kql-take",
+            "az104-f-u14-kql-where"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e1",
+          "type": "choice",
+          "concept": "kql-basics",
+          "prompt": "In a KQL (Kusto Query Language) query, what does the pipe character (|) do?",
+          "options": [
+            "It joins two tables",
+            "It starts a comment",
+            "It passes the output of one command to the next",
+            "It sorts the results"
+          ],
+          "answer": 2,
+          "explanation": "Pipe meneruskan hasil satu perintah ke perintah berikutnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-pipe"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e2",
+          "type": "truefalse",
+          "concept": "kql-basics",
+          "prompt": "take 10 returns the 10 newest records.",
+          "answer": false,
+          "explanation": "Salah. take mengembalikan baris tanpa urutan tertentu. Untuk yang terbaru, pakai top atau sort.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-take"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "kql-where-summarize"
+          ],
+          "title": "where dan summarize",
+          "body": "summarize mengelompokkan baris dan menghitung agregasi, misalnya summarize count() by Computer untuk jumlah baris per komputer. Dengan bin(TimeGenerated, 1h), pengelompokannya per jam, cocok untuk grafik tren. Biasanya where diletakkan sebelum summarize, supaya yang dihitung hanya baris yang relevan.",
+          "keyPoints": [
+            "summarize count() by kolom",
+            "bin(TimeGenerated, 1h): per jam",
+            "where dulu, baru summarize"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries",
+          "teaches": [
+            "az104-f-u14-kql-summarize",
+            "az104-f-u14-kql-where"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e3",
+          "type": "choice",
+          "concept": "kql-where-summarize",
+          "prompt": "Which line counts rows per hour?",
+          "options": [
+            "| where TimeGenerated > ago(1h)",
+            "| take 1h",
+            "| project TimeGenerated, 1h",
+            "| summarize count() by bin(TimeGenerated, 1h)"
+          ],
+          "answer": 3,
+          "explanation": "summarize count() dengan bin(TimeGenerated, 1h) menghitung baris per jam. where ago(1h) hanya menyaring satu jam terakhir.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-summarize",
+            "az104-f-u14-kql-where"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e4",
+          "type": "truefalse",
+          "concept": "kql-where-summarize",
+          "prompt": "summarize count() by Computer returns one row for each computer.",
+          "answer": true,
+          "explanation": "Benar. summarize mengelompokkan baris per nilai Computer dan menghitung jumlahnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-summarize"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e5",
+          "type": "kql",
+          "concept": "kql-where-summarize",
+          "prompt": "Count the failed requests in AppRequests per hour, for the last day.",
+          "tokens": [
+            "AppRequests",
+            "| where TimeGenerated > ago(1d)",
+            "| where Success == false",
+            "| summarize count() by bin(TimeGenerated, 1h)",
+            "| take 10",
+            "| summarize count() by ResultCode"
+          ],
+          "answer": [
+            "AppRequests",
+            "| where TimeGenerated > ago(1d)",
+            "| where Success == false",
+            "| summarize count() by bin(TimeGenerated, 1h)"
+          ],
+          "sampleResult": [
+            [
+              "TimeGenerated",
+              "count_"
+            ],
+            [
+              "2026-09-29 08:00",
+              "4"
+            ],
+            [
+              "2026-09-29 09:00",
+              "17"
+            ],
+            [
+              "2026-09-29 10:00",
+              "2"
+            ]
+          ],
+          "explanation": "Mulai dari tabel, saring satu hari terakhir dan request yang gagal, lalu hitung per jam dengan bin.",
+          "requires": [
+            "az104-f-u14-kql-pipe",
+            "az104-f-u14-kql-where",
+            "az104-f-u14-kql-summarize"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e6",
+          "type": "kql",
+          "concept": "kql-where-summarize",
+          "prompt": "Count the Heartbeat records per Computer in the last hour.",
+          "tokens": [
+            "Heartbeat",
+            "| where TimeGenerated > ago(1h)",
+            "| summarize count() by Computer",
+            "| take 10",
+            "| summarize count() by bin(TimeGenerated, 1h)"
+          ],
+          "answer": [
+            "Heartbeat",
+            "| where TimeGenerated > ago(1h)",
+            "| summarize count() by Computer"
+          ],
+          "sampleResult": [
+            [
+              "Computer",
+              "count_"
+            ],
+            [
+              "vm-web-01",
+              "60"
+            ],
+            [
+              "vm-web-02",
+              "58"
+            ]
+          ],
+          "explanation": "Saring satu jam terakhir dulu, lalu hitung per komputer dengan summarize count() by Computer.",
+          "requires": [
+            "az104-f-u14-kql-where",
+            "az104-f-u14-kql-summarize"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "kql-sort-project"
+          ],
+          "title": "Mengurutkan dan memilih kolom",
+          "body": "sort by mengurutkan semua baris, dan top 10 by mengambil 10 baris teratas menurut satu kolom. Urutan default keduanya descending, jadi yang terbaru atau terbesar di atas. project memilih kolom yang ditampilkan dan bisa memberi nama baru, misalnya project TimeGenerated, Computer.",
+          "keyPoints": [
+            "top 10 by: sepuluh teratas",
+            "Default descending",
+            "project: pilih kolom"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries#sort-results",
+          "teaches": [
+            "az104-f-u14-kql-take",
+            "az104-f-u14-kql-project"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e7",
+          "type": "choice",
+          "concept": "kql-sort-project",
+          "prompt": "You need the 10 most recent events from SecurityEvent. Which line fits?",
+          "options": [
+            "| take 10",
+            "| project TimeGenerated",
+            "| summarize count() by TimeGenerated",
+            "| top 10 by TimeGenerated"
+          ],
+          "answer": 3,
+          "explanation": "top mengambil baris teratas menurut kolom, dengan urutan default descending, jadi yang terbaru di atas. take tidak berurutan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-take"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e8",
+          "type": "truefalse",
+          "concept": "kql-sort-project",
+          "prompt": "project can show only the columns TimeGenerated and Computer.",
+          "answer": true,
+          "explanation": "Benar. project memilih kolom yang ditampilkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-project"
+          ]
+        },
+        {
+          "id": "az104-u14-l3-e9",
+          "type": "match",
+          "concept": "kql-sort-project",
+          "prompt": "Match each KQL (Kusto Query Language) operator to what it does.",
+          "pairs": [
+            [
+              "where",
+              "Keeps only the rows that match a condition"
+            ],
+            [
+              "take",
+              "Returns some rows in no particular order"
+            ],
+            [
+              "summarize",
+              "Groups rows and calculates aggregates"
+            ],
+            [
+              "project",
+              "Chooses which columns to show"
+            ]
+          ],
+          "explanation": "where menyaring, take mengambil contoh, summarize mengelompokkan dan menghitung, project memilih kolom.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-where",
+            "az104-f-u14-kql-take",
+            "az104-f-u14-kql-summarize",
+            "az104-f-u14-kql-project"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u14-l4",
       "title": "Alert",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u14-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "alert-rules"
+          ],
+          "title": "Alert rule",
+          "body": "Alert rule terdiri dari resource yang dipantau, sinyalnya, dan kondisinya. Kalau kondisi terpenuhi, alert fired dan action group dijalankan. Jenisnya antara lain metric alert, log search alert yang memakai query Log Analytics, dan activity log alert, termasuk Service Health. Alert disimpan 30 hari, dan statusnya bisa diatur New, Acknowledged, atau Closed.",
+          "keyPoints": [
+            "Resource, sinyal, kondisi",
+            "Metric, log search, activity log",
+            "Alert disimpan 30 hari"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview",
+          "teaches": [
+            "az104-f-u14-alert-rule",
+            "az104-f-u14-alert-types"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-e1",
+          "type": "choice",
+          "concept": "alert-rules",
+          "prompt": "You must be notified whenever anyone deletes a virtual machine in the subscription. Which alert type fits?",
+          "options": [
+            "A metric alert on Percentage CPU (central processing unit)",
+            "A log search alert on the Heartbeat table",
+            "A smart detection alert",
+            "An activity log alert"
+          ],
+          "answer": 3,
+          "explanation": "Penghapusan resource adalah operasi manajemen yang dicatat activity log.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-alert-types",
+            "az104-f-u14-activity-log"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-e2",
+          "type": "truefalse",
+          "concept": "alert-rules",
+          "prompt": "Fired alerts are kept for 30 days.",
+          "answer": true,
+          "explanation": "Benar. Setelah 30 hari, alert dihapus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-alert-rule"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-e3",
+          "type": "match",
+          "concept": "alert-rules",
+          "prompt": "Match each alert type to what it watches.",
+          "pairs": [
+            [
+              "Metric alert",
+              "A metric value such as Percentage CPU (central processing unit)"
+            ],
+            [
+              "Log search alert",
+              "The result of a Log Analytics query"
+            ],
+            [
+              "Activity log alert",
+              "A management operation or a Service Health event"
+            ]
+          ],
+          "explanation": "Metric alert memantau nilai metrik, log search alert menjalankan query, dan activity log alert memantau operasi dan Service Health.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-alert-types"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "action-groups"
+          ],
+          "title": "Action group",
+          "body": "Action group menentukan apa yang terjadi saat alert fired: notifikasi seperti email, SMS (Short Message Service), atau push, dan otomasi seperti runbook, Azure Functions, Logic Apps, atau webhook. Satu action group bisa dipakai banyak alert rule, jadi daftar penerima cukup diubah di satu tempat.",
+          "keyPoints": [
+            "Notifikasi: email, SMS, push",
+            "Otomasi: runbook, Functions, Logic Apps, webhook",
+            "Dipakai ulang oleh banyak rule"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/action-groups",
+          "teaches": [
+            "az104-f-u14-action-group"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-e4",
+          "type": "choice",
+          "concept": "action-groups",
+          "prompt": "Twenty alert rules must email the same on-call team. The team's address will change often. What should you do?",
+          "options": [
+            "Create one action group and use it in all twenty rules",
+            "Type the address into each alert rule",
+            "Create twenty alert processing rules",
+            "Use a log search alert"
+          ],
+          "answer": 0,
+          "explanation": "Satu action group dipakai banyak alert rule, jadi alamat cukup diubah di satu tempat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-action-group"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-e5",
+          "type": "truefalse",
+          "concept": "action-groups",
+          "prompt": "An action group can start an Automation runbook when an alert fires.",
+          "answer": true,
+          "explanation": "Benar. Selain notifikasi, action group bisa menjalankan runbook, Azure Functions, Logic Apps, atau webhook.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-action-group"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "alert-processing-rules"
+          ],
+          "title": "Alert processing rule",
+          "body": "Alert processing rule mengubah alert yang sudah fired: menekan (suppress) notifikasinya, atau menambah action group. Scope-nya satu resource, resource group, atau subscription, dan jadwalnya bisa selalu, pada waktu tertentu, atau berulang. Untuk maintenance, ini lebih praktis daripada mematikan alert rule satu per satu. Alert yang ditekan tetap terlihat di daftar alert, dan suppress menang atas rule yang menambah action group.",
+          "keyPoints": [
+            "Suppress atau tambah action group",
+            "Bisa terjadwal",
+            "Alert tetap tercatat"
+          ],
+          "visual": "AlertFlow",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-processing-rules",
+          "teaches": [
+            "az104-f-u14-apr",
+            "az104-f-u14-apr-maintenance",
+            "az104-f-u14-apr-priority"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-e6",
+          "type": "config",
+          "concept": "alert-processing-rules",
+          "prompt": "Every Sunday from 01:00 to 05:00, VMs (virtual machines) in rg-prod are patched. Alerts may still fire, but nobody should be notified during that window.",
+          "blade": "Create an alert processing rule > Rule settings and Scheduling",
+          "fields": [
+            {
+              "label": "Scope",
+              "kind": "select",
+              "choices": [
+                "rg-prod",
+                "rg-dev",
+                "Subscription Production"
+              ],
+              "value": "Subscription Production"
+            },
+            {
+              "label": "Rule type",
+              "kind": "select",
+              "choices": [
+                "Suppress notifications",
+                "Apply action group"
+              ],
+              "value": "Apply action group"
+            },
+            {
+              "label": "Apply the rule",
+              "kind": "select",
+              "choices": [
+                "Always",
+                "At a specific time",
+                "Recurring"
+              ],
+              "value": "Always"
+            },
+            {
+              "label": "Repeat",
+              "kind": "select",
+              "choices": [
+                "Daily",
+                "Weekly"
+              ],
+              "value": "Daily"
+            },
+            {
+              "label": "Day",
+              "kind": "select",
+              "choices": [
+                "Saturday",
+                "Sunday",
+                "Monday"
+              ],
+              "value": "Monday"
+            },
+            {
+              "label": "Start time",
+              "kind": "text",
+              "value": ""
+            },
+            {
+              "label": "End time",
+              "kind": "text",
+              "value": ""
+            }
+          ],
+          "answer": {
+            "Scope": "rg-prod",
+            "Rule type": "Suppress notifications",
+            "Apply the rule": "Recurring",
+            "Repeat": "Weekly",
+            "Day": "Sunday",
+            "Start time": "01:00",
+            "End time": "05:00"
+          },
+          "explanation": "Rule suppress dengan jadwal berulang setiap Minggu menekan notifikasi hanya selama jendela maintenance, tanpa mematikan alert rule.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-apr",
+            "az104-f-u14-apr-maintenance"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-e7",
+          "type": "choice",
+          "concept": "alert-processing-rules",
+          "prompt": "Why use an alert processing rule for maintenance instead of disabling the alert rules?",
+          "options": [
+            "Disabled alert rules can't be enabled again",
+            "Alert processing rules delete the alerts",
+            "One rule can cover many alert rules and also alerts that don't come from an alert rule",
+            "Alert rules can't be scheduled at all"
+          ],
+          "answer": 2,
+          "explanation": "Satu alert processing rule menekan banyak alert rule sekaligus, termasuk alert dari Azure Backup yang tidak punya alert rule.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-apr-maintenance"
+          ]
+        },
+        {
+          "id": "az104-u14-l4-e8",
+          "type": "yesno",
+          "concept": "alert-processing-rules",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A suppression rule is active for rg-prod during maintenance.",
+          "statements": [
+            {
+              "text": "Alerts that fire during the window still appear in the alert list.",
+              "answer": true
+            },
+            {
+              "text": "A second rule that adds an action group to the same alerts wins over the suppression.",
+              "answer": false
+            },
+            {
+              "text": "Service Health alerts are suppressed too.",
+              "answer": false
+            }
+          ],
+          "explanation": "Alert yang ditekan tetap tercatat, suppress menang atas penambahan action group, dan alert processing rule tidak memengaruhi Service Health.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-apr-maintenance",
+            "az104-f-u14-apr-priority"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u14-l5",
       "title": "Insights dan Network Watcher",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u14-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "vm-insights"
+          ],
+          "title": "Monitoring VM",
+          "body": "Host metrics dan activity log VM (virtual machine) sudah dikumpulkan otomatis. Tapi data dari dalam OS (operating system), seperti pemakaian memori dan log aplikasi, butuh Azure Monitor Agent dan data collection rule yang menentukan data apa yang dikumpulkan dan ke mana. Enhanced monitoring di portal memasang keduanya, dan untuk banyak VM bisa diaktifkan dengan Azure Policy.",
+          "keyPoints": [
+            "Host metrics: otomatis",
+            "Data tamu: Azure Monitor Agent + data collection rule",
+            "Skala besar: Azure Policy"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vm-enable-monitoring",
+          "teaches": [
+            "az104-f-u14-vm-guest",
+            "az104-f-u14-vm-policy"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e1",
+          "type": "choice",
+          "concept": "vm-insights",
+          "prompt": "You need the Windows event logs from inside vm1 in a Log Analytics workspace. What is required?",
+          "options": [
+            "Only the platform metrics",
+            "Azure Monitor Agent and a data collection rule",
+            "A diagnostic setting on the subscription",
+            "A Network Watcher packet capture"
+          ],
+          "answer": 1,
+          "explanation": "Log dari dalam OS (operating system) butuh Azure Monitor Agent dan data collection rule yang mengirimnya ke workspace.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-vm-guest"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e2",
+          "type": "truefalse",
+          "concept": "vm-insights",
+          "prompt": "Azure Policy can turn on VM (virtual machine) monitoring for many machines at once.",
+          "answer": true,
+          "explanation": "Benar. Monitoring VM (virtual machine) dalam skala besar bisa diaktifkan dengan Azure Policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-vm-policy"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "storage-insights",
+            "network-insights"
+          ],
+          "title": "Storage insights dan Network insights",
+          "body": "Insights adalah tampilan siap pakai di Azure Monitor. Storage insights menampilkan kapasitas, performa, dan ketersediaan banyak storage account sekaligus, tanpa konfigurasi tambahan. Network insights menampilkan kesehatan dan metrik semua resource jaringan, dan Topology menggambarkan hubungan antar resource jaringan lintas subscription dan region.",
+          "keyPoints": [
+            "Storage insights: tanpa konfigurasi",
+            "Network insights: kesehatan jaringan",
+            "Topology: peta resource jaringan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/insights-overview",
+          "teaches": [
+            "az104-f-u14-storage-insights",
+            "az104-f-u14-network-insights"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e3",
+          "type": "choice",
+          "concept": "storage-insights",
+          "prompt": "You want one view of capacity and latency for fifty storage accounts, without setting anything up. What should you open?",
+          "options": [
+            "The activity log",
+            "Connection monitor",
+            "Packet capture",
+            "Storage insights in Azure Monitor"
+          ],
+          "answer": 3,
+          "explanation": "Storage insights menampilkan kapasitas, performa, dan ketersediaan banyak storage account tanpa konfigurasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-storage-insights"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e4",
+          "type": "truefalse",
+          "concept": "network-insights",
+          "prompt": "Network Watcher Topology can show network resources across subscriptions and regions.",
+          "answer": true,
+          "explanation": "Benar. Topology menggambarkan resource jaringan dan hubungannya lintas subscription, resource group, dan region.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-network-insights"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "connection-monitor"
+          ],
+          "title": "Network Watcher",
+          "body": "Connection monitor memantau konektivitas terus-menerus, termasuk latensi dan packet loss, antara VM (virtual machine), scale set, host on-premises lewat Azure Arc, URL (Uniform Resource Locator), atau alamat IP (Internet Protocol). Untuk diagnosis sekali jalan: IP flow verify mengecek apakah paket diizinkan dan oleh aturan mana, Next hop mengecek rute, Connection troubleshoot menguji koneksi pada satu waktu, dan Packet capture merekam trafik.",
+          "keyPoints": [
+            "Terus-menerus: Connection monitor",
+            "Aturan NSG (network security group): IP flow verify",
+            "Rute: Next hop"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-overview",
+          "teaches": [
+            "az104-f-u14-connection-monitor",
+            "az104-f-u14-nw-tools"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e5",
+          "type": "choice",
+          "concept": "connection-monitor",
+          "prompt": "You must continuously track latency and packet loss between vm-app and an on-premises server. What should you use?",
+          "options": [
+            "Connection monitor",
+            "Connection troubleshoot",
+            "IP (Internet Protocol) flow verify",
+            "Next hop"
+          ],
+          "answer": 0,
+          "explanation": "Connection monitor memantau terus-menerus. Connection troubleshoot hanya menguji pada satu waktu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-connection-monitor",
+            "az104-f-u14-nw-tools"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e6",
+          "type": "match",
+          "concept": "connection-monitor",
+          "prompt": "Match each Network Watcher tool to its job.",
+          "pairs": [
+            [
+              "IP (Internet Protocol) flow verify",
+              "Shows whether a packet is allowed, and by which rule"
+            ],
+            [
+              "Next hop",
+              "Shows where traffic to an address is routed"
+            ],
+            [
+              "Packet capture",
+              "Records the traffic of a VM (virtual machine)"
+            ],
+            [
+              "Connection monitor",
+              "Tracks latency and packet loss over time"
+            ]
+          ],
+          "explanation": "IP (Internet Protocol) flow verify untuk aturan keamanan, Next hop untuk rute, Packet capture merekam trafik, dan Connection monitor memantau terus-menerus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-nw-tools",
+            "az104-f-u14-connection-monitor"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e7",
+          "type": "choice",
+          "concept": "connection-monitor",
+          "prompt": "vm1 can't reach 10.2.0.5 on port 1433. You want to know which security rule blocks it. Which tool answers that directly?",
+          "options": [
+            "IP (Internet Protocol) flow verify",
+            "Next hop",
+            "Storage insights",
+            "Topology"
+          ],
+          "answer": 0,
+          "explanation": "IP (Internet Protocol) flow verify mengecek apakah paket diizinkan dan menyebutkan aturan yang memutuskannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-nw-tools",
+            "az104-f-u04-effective-rules"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-m4",
+          "type": "learn",
+          "concepts": [
+            "flow-logs"
+          ],
+          "title": "Flow logs",
+          "body": "Flow logs mencatat trafik IP (Internet Protocol) yang lewat. NSG (network security group) flow logs pensiun 30 September 2027 dan sudah tidak bisa dibuat baru. Penggantinya virtual network flow logs, yang lebih hemat dan mengirim datanya ke Azure Storage untuk dianalisis.",
+          "keyPoints": [
+            "NSG flow logs pensiun 30 September 2027",
+            "Tidak bisa dibuat baru",
+            "Pakai virtual network flow logs"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/network-watcher/nsg-flow-logs-overview",
+          "teaches": [
+            "az104-f-u14-flow-logs"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e8",
+          "type": "truefalse",
+          "concept": "flow-logs",
+          "prompt": "You can still create new NSG (network security group) flow logs today.",
+          "answer": false,
+          "explanation": "Salah. NSG (network security group) flow logs sudah tidak bisa dibuat baru dan pensiun 30 September 2027.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-flow-logs"
+          ]
+        },
+        {
+          "id": "az104-u14-l5-e9",
+          "type": "choice",
+          "concept": "flow-logs",
+          "prompt": "You must start logging the IP (Internet Protocol) traffic of a virtual network. What should you create?",
+          "options": [
+            "NSG (network security group) flow logs",
+            "A metric alert",
+            "An action group",
+            "Virtual network flow logs"
+          ],
+          "answer": 3,
+          "explanation": "Virtual network flow logs adalah pengganti NSG (network security group) flow logs.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-flow-logs"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u14-metrics-auto",
+      "statement": "Platform metrics dari resource Azure dikumpulkan otomatis tanpa konfigurasi, umumnya setiap satu menit, dan disimpan di database time series.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/data-platform-metrics"
+    },
+    {
+      "id": "az104-f-u14-metrics-retention",
+      "statement": "Platform metrics dan custom metrics disimpan 93 hari, tapi satu grafik di Metrics explorer hanya bisa menampilkan paling banyak 30 hari sekaligus.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/data-platform-metrics"
+    },
+    {
+      "id": "az104-f-u14-aggregations",
+      "statement": "Agregasi metrik: Sum menjumlahkan nilai, Count menghitung banyaknya pengukuran, Average merata-rata, Min mengambil nilai terkecil, dan Max mengambil nilai terbesar dalam interval.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/metrics-aggregation-explained"
+    },
+    {
+      "id": "az104-f-u14-granularity",
+      "statement": "Granularity yang lebih besar menghaluskan lonjakan sesaat. Untuk alert, granularity yang lebih besar mengurangi alert palsu dari lonjakan singkat.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/metrics/metrics-aggregation-explained"
+    },
+    {
+      "id": "az104-f-u14-activity-log",
+      "statement": "Activity log mencatat operasi manajemen (control plane), misalnya membuat VM (virtual machine) atau mengubah pengaturan resource. Isinya dikumpulkan otomatis, gratis, dan disimpan 90 hari.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/activity-log"
+    },
+    {
+      "id": "az104-f-u14-activity-export",
+      "statement": "Untuk menyimpan activity log lebih dari 90 hari atau meng-query-nya bersama log lain, buat diagnostic setting yang mengirimnya ke Log Analytics workspace atau storage account.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/activity-log"
+    },
+    {
+      "id": "az104-f-u14-resource-logs",
+      "statement": "Resource logs tidak dikumpulkan secara default. Buat diagnostic setting di setiap resource untuk mengumpulkannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/diagnostic-settings#sources"
+    },
+    {
+      "id": "az104-f-u14-diag-destinations",
+      "statement": "Tujuan diagnostic setting: Log Analytics workspace, storage account, Event Hubs, atau solusi partner. Tujuan harus sudah ada, dan untuk resource regional, storage account dan Event Hubs harus di region yang sama.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/diagnostic-settings#destinations"
+    },
+    {
+      "id": "az104-f-u14-diag-limits",
+      "statement": "Satu resource bisa punya paling banyak lima diagnostic setting, dan satu setting hanya bisa punya satu tujuan untuk setiap jenis tujuan.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/diagnostic-settings#destinations"
+    },
+    {
+      "id": "az104-f-u14-workspace",
+      "statement": "Log Analytics workspace menyimpan log yang di-query dengan KQL (Kusto Query Language). Data bisa disimpan sampai 12 tahun, dan biayanya dihitung dari data yang masuk dan masa simpannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-workspace-overview"
+    },
+    {
+      "id": "az104-f-u14-kql-pipe",
+      "statement": "Query KQL (Kusto Query Language) dimulai dari nama tabel. Tanda pipe (|) meneruskan hasil satu perintah ke perintah berikutnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries#structure-a-query"
+    },
+    {
+      "id": "az104-f-u14-kql-take",
+      "statement": "take mengembalikan sejumlah baris tanpa urutan tertentu. Untuk urutan, pakai sort atau top; urutan default keduanya descending.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries#sort-results"
+    },
+    {
+      "id": "az104-f-u14-kql-where",
+      "statement": "where menyaring baris, misalnya where TimeGenerated > ago(1h) untuk data satu jam terakhir.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries"
+    },
+    {
+      "id": "az104-f-u14-kql-summarize",
+      "statement": "summarize mengelompokkan baris dan menghitung agregasi, misalnya summarize count() by Computer. Dengan bin(TimeGenerated, 1h), hasilnya dikelompokkan per jam.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries"
+    },
+    {
+      "id": "az104-f-u14-kql-project",
+      "statement": "project memilih kolom yang ditampilkan, dan bisa memberi nama baru pada kolom.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries"
+    },
+    {
+      "id": "az104-f-u14-alert-rule",
+      "statement": "Alert rule terdiri dari resource yang dipantau, sinyal atau data, dan kondisi. Kalau kondisinya terpenuhi, alert fired dan action group dijalankan. Alert disimpan 30 hari.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview"
+    },
+    {
+      "id": "az104-f-u14-alert-types",
+      "statement": "Jenis alert antara lain metric alert, log search alert yang memakai query Log Analytics, dan activity log alert, termasuk Service Health dan Resource Health.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview#types-of-alerts"
+    },
+    {
+      "id": "az104-f-u14-action-group",
+      "statement": "Action group menentukan tindakan saat alert fired: notifikasi seperti email, SMS, dan push, atau otomasi seperti runbook, Azure Functions, Logic Apps, dan webhook. Satu action group bisa dipakai banyak alert rule.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview"
+    },
+    {
+      "id": "az104-f-u14-apr",
+      "statement": "Alert processing rule mengubah alert yang sudah fired: menekan (suppress) atau menambah action group. Scope-nya bisa satu resource, resource group, atau subscription, dan bisa berlaku selalu, pada waktu tertentu, atau berulang.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-processing-rules"
+    },
+    {
+      "id": "az104-f-u14-apr-maintenance",
+      "statement": "Untuk maintenance terencana, alert processing rule lebih praktis daripada mematikan alert rule: bisa menutup banyak rule sekaligus dan juga alert yang bukan dari alert rule, seperti Azure Backup. Alert yang ditekan tetap terlihat di daftar alert.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-processing-rules#suppress-notifications-during-planned-maintenance"
+    },
+    {
+      "id": "az104-f-u14-apr-priority",
+      "statement": "Kalau satu alert terkena rule suppress dan rule yang menambah action group, suppress yang menang. Alert processing rule tidak memengaruhi alert Service Health.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-processing-rules"
+    },
+    {
+      "id": "az104-f-u14-vm-guest",
+      "statement": "Host metrics dan activity log VM (virtual machine) dikumpulkan otomatis. Data dari dalam OS (operating system), seperti performance counter dan log tamu, butuh Azure Monitor Agent dan data collection rule; enhanced monitoring di portal memasang keduanya.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vm-enable-monitoring#overview"
+    },
+    {
+      "id": "az104-f-u14-vm-policy",
+      "statement": "Monitoring VM (virtual machine) dalam skala besar bisa diaktifkan dengan Azure Policy.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vm-enable-monitoring"
+    },
+    {
+      "id": "az104-f-u14-storage-insights",
+      "statement": "Storage insights menampilkan kapasitas, performa, dan ketersediaan banyak storage account sekaligus, tanpa konfigurasi tambahan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-insights-overview"
+    },
+    {
+      "id": "az104-f-u14-network-insights",
+      "statement": "Network insights menampilkan kesehatan dan metrik semua resource jaringan, dan Topology menggambarkan hubungan resource jaringan lintas subscription dan region.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-overview"
+    },
+    {
+      "id": "az104-f-u14-connection-monitor",
+      "statement": "Connection monitor memantau konektivitas terus-menerus, termasuk latensi dan packet loss, antara VM (virtual machine), scale set, host on-premises lewat Azure Arc, URL, atau alamat IP. Endpoint sumber butuh Network Watcher extension.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/connection-monitor-overview"
+    },
+    {
+      "id": "az104-f-u14-nw-tools",
+      "statement": "Alat diagnosis Network Watcher: IP flow verify mengecek apakah paket diizinkan dan oleh aturan mana, Next hop mengecek rute, Connection troubleshoot menguji koneksi pada satu waktu, dan Packet capture merekam trafik VM (virtual machine).",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-overview"
+    },
+    {
+      "id": "az104-f-u14-flow-logs",
+      "statement": "NSG (network security group) flow logs pensiun 30 September 2027 dan sudah tidak bisa dibuat baru. Penggantinya virtual network flow logs, yang datanya dikirim ke Azure Storage.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/nsg-flow-logs-overview"
     }
   ]
 }

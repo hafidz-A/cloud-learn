@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import type { VisualName } from '../content/visuals'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
+import { AlertFlow } from './AlertFlow'
 import { AppServiceTierLadder } from './AppServiceTierLadder'
 import { ArmStructure } from './ArmStructure'
 import { AsgTiers } from './AsgTiers'
@@ -26,6 +27,7 @@ import { GroupTypes } from './GroupTypes'
 import { HealthProbeBlocked } from './HealthProbeBlocked'
 import { HybridConnectivity } from './HybridConnectivity'
 import { IncrementalVsComplete } from './IncrementalVsComplete'
+import { KqlPipe } from './KqlPipe'
 import { LicenseFlow } from './LicenseFlow'
 import { LoadBalancerAnatomy } from './LoadBalancerAnatomy'
 import { ManagementTools } from './ManagementTools'
@@ -65,6 +67,7 @@ import { ZonesInRegion } from './ZonesInRegion'
 export const VISUALS: Partial<Record<VisualName, FC>> = {
   AccountFailover,
   AciRestartPolicy,
+  AlertFlow,
   AppServiceTierLadder,
   ArmStructure,
   AsgTiers,
@@ -89,6 +92,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   HealthProbeBlocked,
   HybridConnectivity,
   IncrementalVsComplete,
+  KqlPipe,
   LicenseFlow,
   LoadBalancerAnatomy,
   ManagementTools,
