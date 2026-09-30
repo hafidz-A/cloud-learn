@@ -6,22 +6,1013 @@
     {
       "id": "az104-u12-l1",
       "title": "Azure Container Registry",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u12-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "acr",
+            "acr-sku"
+          ],
+          "title": "Tier Azure Container Registry",
+          "body": "ACR (Azure Container Registry) adalah registry privat untuk image container, dengan tiga tier: Basic, Standard, dan Premium. Semua tier punya zone redundancy secara default di region yang mendukung. Premium menambah storage dan throughput tertinggi, geo-replication ke beberapa region, dan private endpoint. Mengganti tier tidak menimbulkan downtime, tapi turun dari Premium butuh geo-replication dihapus dulu.",
+          "keyPoints": [
+            "Basic, Standard, Premium",
+            "Geo-replication dan private endpoint: Premium",
+            "Ganti tier tanpa downtime"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-skus",
+          "teaches": [
+            "az104-f-u12-acr-tiers",
+            "az104-f-u12-acr-premium",
+            "az104-f-u12-acr-zone",
+            "az104-f-u12-acr-change-sku"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-e1",
+          "type": "choice",
+          "concept": "acr-geo-replication",
+          "prompt": "Developers in West Europe and Southeast Asia must pull the same images from a registry replica close to them. Which ACR (Azure Container Registry) tier is required?",
+          "options": [
+            "Premium",
+            "Standard",
+            "Basic",
+            "Any tier"
+          ],
+          "answer": 0,
+          "explanation": "Geo-replication hanya ada di tier Premium.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-premium"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-e2",
+          "type": "truefalse",
+          "concept": "acr-sku",
+          "prompt": "Only the Premium tier of ACR (Azure Container Registry) gets zone redundancy.",
+          "answer": false,
+          "explanation": "Salah. Zone redundancy aktif secara default di semua tier, di region yang mendukung.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-zone"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-e3",
+          "type": "yesno",
+          "concept": "acr-sku",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A Standard registry is in production use.",
+          "statements": [
+            {
+              "text": "You can upgrade it to Premium without downtime.",
+              "answer": true
+            },
+            {
+              "text": "It can use a private endpoint.",
+              "answer": false
+            },
+            {
+              "text": "Moving it from Premium back to Standard later requires removing geo-replications first.",
+              "answer": true
+            }
+          ],
+          "explanation": "Ganti tier tanpa downtime. Private endpoint hanya di Premium, dan geo-replication harus dihapus sebelum turun dari Premium.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-change-sku",
+            "az104-f-u12-acr-premium"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "acr-access"
+          ],
+          "title": "Akses ke registry",
+          "body": "Untuk login dengan identitas Microsoft Entra, jalankan az acr login --name setelah az login; tokennya berlaku 3 jam. Beri role AcrPull untuk menarik image dan AcrPush untuk mendorong image. Di registry yang memakai izin per repository, padanannya Container Registry Repository Reader dan Writer. Admin user nonaktif secara default, punya izin penuh, dan hanya satu per registry.",
+          "keyPoints": [
+            "az acr login: identitas Microsoft Entra",
+            "AcrPull menarik, AcrPush mendorong",
+            "Admin user: nonaktif, hindari"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-rbac-built-in-roles-overview",
+          "teaches": [
+            "az104-f-u12-acr-login",
+            "az104-f-u12-acr-roles",
+            "az104-f-u12-acr-admin"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-e4",
+          "type": "choice",
+          "concept": "acr-access",
+          "prompt": "The managed identity of a container app must only pull images from a registry that uses standard role assignments. Which role should you assign?",
+          "options": [
+            "AcrPush",
+            "Owner",
+            "AcrPull",
+            "Container Registry Contributor and Data Access Configuration Administrator"
+          ],
+          "answer": 2,
+          "explanation": "AcrPull memberi akses baca untuk menarik image. AcrPush juga bisa mendorong, dan dua role lain terlalu luas.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-roles"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-e5",
+          "type": "truefalse",
+          "concept": "acr-access",
+          "prompt": "The admin user of a new container registry is enabled by default.",
+          "answer": false,
+          "explanation": "Salah. Admin user nonaktif secara default, dan sebaiknya diaktifkan hanya kalau perlu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-admin"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-e6",
+          "type": "match",
+          "concept": "acr-access",
+          "prompt": "Match each identity to the role it needs.",
+          "pairs": [
+            [
+              "A build pipeline that pushes images",
+              "AcrPush"
+            ],
+            [
+              "A container app that pulls images",
+              "AcrPull"
+            ]
+          ],
+          "explanation": "Pipeline yang mendorong image butuh AcrPush, sedangkan yang hanya menarik cukup AcrPull.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-roles"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "acr-tasks"
+          ],
+          "title": "Build di registry",
+          "body": "az acr build mengirim source code ke ACR (Azure Container Registry), membangun image di sana, lalu secara default mendorongnya ke registry. Komputer lokal tidak perlu Docker. Perintah ini juga bisa dipakai pipeline yang login dengan service principal.",
+          "keyPoints": [
+            "Build di Azure, bukan lokal",
+            "Image langsung masuk registry",
+            "Tanpa Docker lokal"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tasks-overview",
+          "teaches": [
+            "az104-f-u12-acr-build"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-e7",
+          "type": "choice",
+          "concept": "acr-tasks",
+          "prompt": "A laptop has no Docker installed. How can you build an image from its source folder and push it to contosoacr?",
+          "options": [
+            "Run docker push",
+            "Run az acr build against contosoacr",
+            "Enable the admin user",
+            "Run az acr login only"
+          ],
+          "answer": 1,
+          "explanation": "az acr build membangun image di ACR (Azure Container Registry) dan mendorongnya, jadi Docker lokal tidak diperlukan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-build"
+          ]
+        },
+        {
+          "id": "az104-u12-l1-e8",
+          "type": "truefalse",
+          "concept": "acr-tasks",
+          "prompt": "By default, az acr build pushes the image to the registry when the build completes.",
+          "answer": true,
+          "explanation": "Benar. Setelah build selesai, image didorong ke registry secara default.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-build"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u12-l2",
       "title": "Azure Container Instances",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u12-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "aci",
+            "container-group"
+          ],
+          "title": "Azure Container Instances",
+          "body": "ACI (Azure Container Instances) menjalankan container tanpa mengelola VM (virtual machine) dan tanpa orchestrator, dan ditagih per detik. Resource utamanya container group: kumpulan container di host yang sama, yang berbagi lifecycle, resource, jaringan lokal, dan volume, mirip pod di Kubernetes. Container group bisa diberi public IP (Internet Protocol) dan DNS (Domain Name System) name label.",
+          "keyPoints": [
+            "Tanpa VM, tanpa orchestrator",
+            "Container group = mirip pod",
+            "Ditagih per detik"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview",
+          "teaches": [
+            "az104-f-u12-aci",
+            "az104-f-u12-container-group",
+            "az104-f-u12-aci-dns"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e1",
+          "type": "choice",
+          "concept": "container-group",
+          "prompt": "A web container and a log-shipper container must run on the same host and share a local network and a volume. What should you deploy?",
+          "options": [
+            "Two separate container groups",
+            "One container group with both containers",
+            "A scale set with two VMs (virtual machines)",
+            "Two container registries"
+          ],
+          "answer": 1,
+          "explanation": "Container dalam satu container group berbagi host, jaringan lokal, dan volume.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-container-group"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e2",
+          "type": "truefalse",
+          "concept": "container-group",
+          "prompt": "A container group with several containers can run Windows containers.",
+          "answer": false,
+          "explanation": "Salah. Multi-container group saat ini hanya untuk container Linux.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-container-group"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e3",
+          "type": "truefalse",
+          "concept": "aci",
+          "prompt": "Azure Container Instances bills by the second.",
+          "answer": true,
+          "explanation": "Benar. ACI (Azure Container Instances) ditagih per detik, jadi cocok untuk tugas yang berjalan sebentar.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "aci-networking"
+          ],
+          "title": "Jaringan container group",
+          "body": "Container group bisa diberi public IP (Internet Protocol) dan DNS (Domain Name System) name label, jadi app bisa diakses di label.region.azurecontainer.io. Jangan menulis alamat IP secara tetap, karena IP bisa berubah saat container group di-restart. Container group juga bisa di-deploy ke subnet di virtual network; di sana, koneksi keluar wajib lewat NAT (network address translation) gateway.",
+          "keyPoints": [
+            "DNS name label untuk alamat tetap",
+            "IP bisa berubah saat restart",
+            "Di virtual network: keluar lewat NAT gateway"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview",
+          "teaches": [
+            "az104-f-u12-aci-dns",
+            "az104-f-u12-restart-ip",
+            "az104-f-u12-aci-vnet-nat"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e4",
+          "type": "choice",
+          "concept": "aci-networking",
+          "prompt": "Clients must reach a container group by a stable name, even after it restarts. What should you use?",
+          "options": [
+            "A DNS (Domain Name System) name label, such as report.westeurope.azurecontainer.io",
+            "The current public IP (Internet Protocol) address",
+            "The private IP of the host",
+            "The container name only"
+          ],
+          "answer": 0,
+          "explanation": "IP (Internet Protocol) container group bisa berubah saat restart, sedangkan DNS (Domain Name System) name label tetap.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci-dns",
+            "az104-f-u12-restart-ip"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e5",
+          "type": "truefalse",
+          "concept": "aci-networking",
+          "prompt": "A container group deployed into a virtual network must use a NAT (network address translation) gateway for outbound traffic.",
+          "answer": true,
+          "explanation": "Benar. NAT (network address translation) gateway adalah satu-satunya cara keluar yang didukung untuk container group di virtual network.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci-vnet-nat"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "restart-policy"
+          ],
+          "title": "Restart policy",
+          "body": "Restart policy ada tiga. Always, default-nya, selalu me-restart container. OnFailure me-restart hanya kalau proses gagal dengan exit code bukan nol, dan container berjalan minimal sekali. Never menjamin container tidak di-restart setelah sukses dengan exit code 0, tapi kalau gagal, platform masih mungkin me-restart-nya. Setiap restart bisa mengubah alamat IP (Internet Protocol) container group.",
+          "keyPoints": [
+            "Always: default",
+            "OnFailure: restart hanya kalau gagal",
+            "Never: tidak restart setelah sukses"
+          ],
+          "visual": "AciRestartPolicy",
+          "link": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-restart-policy",
+          "teaches": [
+            "az104-f-u12-restart-policies",
+            "az104-f-u12-restart-never",
+            "az104-f-u12-restart-ip",
+            "az104-f-u12-restart-cli"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e6",
+          "type": "config",
+          "concept": "restart-policy",
+          "prompt": "A container renders a report once and then exits. It must be retried only if it fails. Configure the container.",
+          "blade": "Create container instance > Advanced",
+          "fields": [
+            {
+              "label": "Restart policy",
+              "kind": "select",
+              "choices": [
+                "Always",
+                "On failure",
+                "Never"
+              ],
+              "value": "Always"
+            },
+            {
+              "label": "Image",
+              "kind": "text",
+              "value": "contosoacr.azurecr.io/report:1.0",
+              "readOnly": true
+            }
+          ],
+          "answer": {
+            "Restart policy": "On failure"
+          },
+          "explanation": "On failure me-restart hanya kalau exit code bukan nol. Always akan menjalankan container berulang-ulang walau sudah sukses.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-restart-policies"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e7",
+          "type": "choice",
+          "concept": "restart-policy",
+          "prompt": "You don't set a restart policy when you create a container group. Which policy applies?",
+          "options": [
+            "OnFailure",
+            "Always",
+            "Never",
+            "None; the command fails"
+          ],
+          "answer": 1,
+          "explanation": "Always adalah default kalau restart policy tidak ditentukan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-restart-policies"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e8",
+          "type": "yesno",
+          "concept": "restart-policy",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A container group uses the restart policy Never and has a public IP (Internet Protocol) address.",
+          "statements": [
+            {
+              "text": "After the process exits with code 0, the container isn't restarted.",
+              "answer": true
+            },
+            {
+              "text": "After the process exits with code 1, a restart is guaranteed not to happen.",
+              "answer": false
+            },
+            {
+              "text": "If the group restarts, its IP address can change.",
+              "answer": true
+            }
+          ],
+          "explanation": "Never hanya menjamin tidak ada restart setelah sukses. Setiap restart bisa mengubah alamat IP (Internet Protocol) container group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-restart-never",
+            "az104-f-u12-restart-ip"
+          ]
+        },
+        {
+          "id": "az104-u12-l2-e9",
+          "type": "shell",
+          "concept": "restart-policy",
+          "prompt": "Create the container instance report-job from the image contosoacr.azurecr.io/report:1.0 in rg-jobs, so that it is restarted only when it fails.",
+          "tokens": [
+            "az container create",
+            "--resource-group rg-jobs",
+            "--name report-job",
+            "--image contosoacr.azurecr.io/report:1.0",
+            "--restart-policy OnFailure",
+            "--restart-policy Always",
+            "az containerapp create"
+          ],
+          "answer": [
+            "az container create",
+            "--resource-group rg-jobs",
+            "--name report-job",
+            "--image contosoacr.azurecr.io/report:1.0",
+            "--restart-policy OnFailure"
+          ],
+          "explanation": "az container create membuat container group, dan --restart-policy OnFailure me-restart hanya saat gagal.",
+          "requires": [
+            "az104-f-u12-restart-cli",
+            "az104-f-u12-restart-policies"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u12-l3",
       "title": "Azure Container Apps",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u12-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "scale-rules",
+            "scale-to-zero"
+          ],
+          "title": "Scaling Container Apps",
+          "body": "Container Apps menambah atau mengurangi replica sesuai scale rule: HTTP (Hypertext Transfer Protocol) untuk jumlah request bersamaan, TCP (Transmission Control Protocol), atau custom seperti CPU (central processing unit), memori, dan event. Default-nya minimal 0 dan maksimal 10 replica. Saat di 0 replica tidak ada biaya pemakaian. Kalau harus selalu ada instance yang berjalan, set replica minimal ke 1 atau lebih.",
+          "keyPoints": [
+            "Rule: HTTP, TCP, custom",
+            "Default: minimal 0, maksimal 10",
+            "0 replica: tanpa biaya pemakaian"
+          ],
+          "visual": "ContainerAppsScale",
+          "link": "https://learn.microsoft.com/en-us/azure/container-apps/scale-app",
+          "teaches": [
+            "az104-f-u12-replicas",
+            "az104-f-u12-scale-rules",
+            "az104-f-u12-zero-cost",
+            "az104-f-u12-jobs-no-http"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-e1",
+          "type": "choice",
+          "concept": "scale-to-zero",
+          "prompt": "An internal tool is used only during office hours. It must cost nothing in usage charges when nobody uses it. Which service and setting fit?",
+          "options": [
+            "Container Apps with minimum replicas 1",
+            "Container Instances with restart policy Always",
+            "A VM (virtual machine) scale set with 2 instances",
+            "Container Apps with minimum replicas 0"
+          ],
+          "answer": 3,
+          "explanation": "Container Apps bisa turun ke 0 replica, dan tidak ada biaya pemakaian di 0 replica. Minimal 1 selalu menyisakan satu replica.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-zero-cost",
+            "az104-f-u12-replicas"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-e2",
+          "type": "truefalse",
+          "concept": "scale-to-zero",
+          "prompt": "By default, a container app can scale out to at most 10 replicas.",
+          "answer": true,
+          "explanation": "Benar. Default-nya minimal 0 dan maksimal 10 replica per revision.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-replicas"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-e3",
+          "type": "choice",
+          "concept": "scale-rules",
+          "prompt": "A background app must add replicas when messages pile up in an Azure Service Bus queue. Which type of scale rule should you use?",
+          "options": [
+            "HTTP (Hypertext Transfer Protocol)",
+            "TCP (Transmission Control Protocol)",
+            "Custom",
+            "None; Container Apps can't read queues"
+          ],
+          "answer": 2,
+          "explanation": "Event seperti Azure Service Bus memakai scale rule custom. HTTP (Hypertext Transfer Protocol) dan TCP (Transmission Control Protocol) mengukur request dan koneksi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-scale-rules"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-e4",
+          "type": "truefalse",
+          "concept": "scale-rules",
+          "prompt": "A Container Apps job can use an HTTP (Hypertext Transfer Protocol) scale rule.",
+          "answer": false,
+          "explanation": "Salah. Container Apps jobs tidak mendukung scale rule HTTP (Hypertext Transfer Protocol).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-jobs-no-http"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "revisions"
+          ],
+          "title": "Revision",
+          "body": "Revision adalah snapshot container app yang tidak bisa diubah; mengubah image atau scale rule membuat revision baru. Mode Single, default-nya, memindahkan trafik ke revision baru setelah semua replica-nya siap, dan revision lama dimatikan otomatis. Mode Multiple menjalankan beberapa revision sekaligus dan bisa membagi trafik, misalnya untuk menguji versi baru.",
+          "keyPoints": [
+            "Perubahan = revision baru",
+            "Single: default",
+            "Multiple: bagi trafik"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-apps/revisions",
+          "teaches": [
+            "az104-f-u12-revisions"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-e5",
+          "type": "choice",
+          "concept": "revisions",
+          "prompt": "You want 10% of users on a new version of a container app and 90% on the current one. Which revision mode do you need?",
+          "options": [
+            "Single",
+            "Labels are impossible",
+            "Revisions can't split traffic",
+            "Multiple"
+          ],
+          "answer": 3,
+          "explanation": "Mode Multiple menjalankan beberapa revision dan bisa membagi trafik. Mode Single memindahkan semua trafik ke revision terbaru.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-revisions"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-e6",
+          "type": "truefalse",
+          "concept": "revisions",
+          "prompt": "Changing the scale rules of a container app creates a new revision.",
+          "answer": true,
+          "explanation": "Benar. Revision tidak bisa diubah, jadi perubahan seperti scale rule atau image membuat revision baru.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-revisions"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "ingress"
+          ],
+          "title": "Ingress",
+          "body": "Ingress external membuka app ke internet, kalau environment punya IP (Internet Protocol) publik. Ingress internal hanya bisa dijangkau dari dalam Container Apps environment, misalnya oleh app lain. Ingress tidak butuh load balancer atau public IP tambahan. Hati-hati: tanpa ingress, replica minimal, atau scale rule custom, app yang turun ke 0 tidak bisa hidup lagi.",
+          "keyPoints": [
+            "External: internet",
+            "Internal: hanya dalam environment",
+            "Tanpa ingress: jaga replica minimal"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-apps/ingress-overview",
+          "teaches": [
+            "az104-f-u12-ingress",
+            "az104-f-u12-no-ingress-zero"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-e7",
+          "type": "choice",
+          "concept": "ingress",
+          "prompt": "A backend API (Application Programming Interface) must be reachable only by other container apps in the same environment, not from the internet. Which ingress setting fits?",
+          "options": [
+            "External ingress",
+            "Ingress disabled with minimum replicas 0",
+            "A public load balancer",
+            "Internal ingress"
+          ],
+          "answer": 3,
+          "explanation": "Ingress internal hanya bisa dijangkau dari dalam environment. Ingress tidak butuh load balancer tambahan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-ingress"
+          ]
+        },
+        {
+          "id": "az104-u12-l3-e8",
+          "type": "fix",
+          "concept": "ingress",
+          "prompt": "A worker container app stopped and never starts again. What should you change?",
+          "scene": {
+            "kind": "portal",
+            "title": "worker-app > Scale",
+            "message": "Ingress: Disabled. Min replicas: 0. Scale rules: none."
+          },
+          "options": [
+            "Enable external ingress on another app",
+            "Set min replicas to 1, or add a custom scale rule",
+            "Change the revision mode to Multiple",
+            "Set max replicas to 20"
+          ],
+          "answer": 1,
+          "explanation": "Tanpa ingress, app yang turun ke 0 dan tidak punya scale rule custom tidak punya pemicu untuk hidup lagi. Replica minimal 1 atau rule custom mencegahnya.",
+          "requires": [
+            "az104-f-u12-no-ingress-zero",
+            "az104-f-u12-zero-cost"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u12-l4",
       "title": "Sizing dan scaling container",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u12-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "aci-sizing"
+          ],
+          "title": "Sizing Container Instances",
+          "body": "Di Container Instances, CPU (central processing unit) dan memori diminta per container, dan container group mendapat jumlah semua permintaan itu. Satu container group maksimal berisi 60 container. Sebuah container juga boleh diberi resource limit: minimal sebesar request-nya, dan paling besar sebesar total resource group. Tanpa limit, pemakaian maksimalnya sama dengan request.",
+          "keyPoints": [
+            "Group = jumlah request semua container",
+            "Limit: dari request sampai total group",
+            "Maks. 60 container per group"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-container-groups#resource-allocation",
+          "teaches": [
+            "az104-f-u12-aci-resources",
+            "az104-f-u12-aci-limit"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-e1",
+          "type": "choice",
+          "concept": "aci-sizing",
+          "prompt": "A container group has two containers that each request 1 CPU (central processing unit). How many CPUs does the group get?",
+          "options": [
+            "1",
+            "4",
+            "2",
+            "It depends on the restart policy"
+          ],
+          "answer": 2,
+          "explanation": "Container group mendapat jumlah permintaan resource semua container di dalamnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci-resources"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-e2",
+          "type": "truefalse",
+          "concept": "aci-sizing",
+          "prompt": "One container group can hold up to 60 containers.",
+          "answer": true,
+          "explanation": "Benar. Batasnya 60 container per container group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci-resources"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-e3",
+          "type": "yesno",
+          "concept": "aci-sizing",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A container group has two containers that each request 1 CPU (central processing unit).",
+          "statements": [
+            {
+              "text": "One container can get a limit of 2 CPUs.",
+              "answer": true
+            },
+            {
+              "text": "One container can get a limit of 3 CPUs.",
+              "answer": false
+            },
+            {
+              "text": "Without a limit, each container can use at most 1 CPU.",
+              "answer": true
+            }
+          ],
+          "explanation": "Limit paling besar sebesar total resource group, yaitu 2 CPU (central processing unit). Tanpa limit, pemakaian maksimal sama dengan request.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci-limit",
+            "az104-f-u12-aci-resources"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "container-choice"
+          ],
+          "title": "Memilih layanan container",
+          "body": "Container Instances cocok untuk tugas yang berjalan lalu selesai, seperti build atau laporan malam, karena ditagih per detik dan punya restart policy. Container Apps cocok untuk app dan API (Application Programming Interface) yang naik turun mengikuti beban, karena bisa menambah replica dan turun ke 0 tanpa biaya pemakaian.",
+          "keyPoints": [
+            "Tugas sekali jalan: Container Instances",
+            "App yang naik turun: Container Apps",
+            "Container Apps bisa turun ke 0"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview",
+          "teaches": [
+            "az104-f-u12-aci",
+            "az104-f-u12-restart-policies",
+            "az104-f-u12-zero-cost"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-e4",
+          "type": "choice",
+          "concept": "container-choice",
+          "prompt": "A nightly data export runs for 20 minutes and then exits. A public API (Application Programming Interface) must scale with traffic and drop to zero at night. Which pairing fits best?",
+          "options": [
+            "Container Apps for the export, Container Instances for the API",
+            "Container Instances for both",
+            "A VM (virtual machine) for both",
+            "Container Instances for the export, Container Apps for the API"
+          ],
+          "answer": 3,
+          "explanation": "Tugas sekali jalan cocok di Container Instances dengan restart policy yang tepat. App yang naik turun dan bisa turun ke 0 cocok di Container Apps.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci",
+            "az104-f-u12-zero-cost",
+            "az104-f-u12-restart-policies"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-e5",
+          "type": "match",
+          "concept": "container-choice",
+          "prompt": "Match each workload to the service that fits it.",
+          "pairs": [
+            [
+              "A test run that starts, finishes, and is billed by the second",
+              "Container Instances"
+            ],
+            [
+              "A web API (Application Programming Interface) that adds replicas under load and scales to zero",
+              "Container Apps"
+            ]
+          ],
+          "explanation": "Container Instances untuk tugas yang selesai sendiri, Container Apps untuk app yang naik turun mengikuti beban.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci",
+            "az104-f-u12-zero-cost"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-e6",
+          "type": "truefalse",
+          "concept": "container-choice",
+          "prompt": "Container Apps charge no usage when an app is at zero replicas.",
+          "answer": true,
+          "explanation": "Benar. Di 0 replica tidak ada biaya pemakaian.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-zero-cost"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "container-scaling"
+          ],
+          "title": "Pengaturan scaling",
+          "body": "Pengaturan yang kamu isi berbeda. Di Container Instances: CPU (central processing unit) dan memori per container, plus restart policy. Di Container Apps: replica minimal dan maksimal, serta scale rule HTTP (Hypertext Transfer Protocol), TCP (Transmission Control Protocol), atau custom. Scale rule dan replica tidak ada di Container Instances, dan restart policy tidak ada di Container Apps.",
+          "keyPoints": [
+            "Container Instances: CPU, memori, restart policy",
+            "Container Apps: replica dan scale rule"
+          ],
+          "visual": "ContainerOptions",
+          "link": "https://learn.microsoft.com/en-us/azure/container-apps/scale-app",
+          "teaches": [
+            "az104-f-u12-aci-resources",
+            "az104-f-u12-restart-policies",
+            "az104-f-u12-replicas",
+            "az104-f-u12-scale-rules"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-e7",
+          "type": "sort",
+          "concept": "container-scaling",
+          "prompt": "Sort each setting to the service where you configure it.",
+          "buckets": [
+            "Container Instances",
+            "Container Apps"
+          ],
+          "items": [
+            {
+              "text": "CPU (central processing unit) and memory requested by each container",
+              "bucket": 0
+            },
+            {
+              "text": "Restart policy OnFailure",
+              "bucket": 0
+            },
+            {
+              "text": "Minimum and maximum replicas",
+              "bucket": 1
+            },
+            {
+              "text": "An HTTP (Hypertext Transfer Protocol) scale rule",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Container Instances diatur per container dengan CPU (central processing unit), memori, dan restart policy. Container Apps diatur dengan replica dan scale rule.",
+          "requires": [
+            "az104-f-u12-aci-resources",
+            "az104-f-u12-restart-policies",
+            "az104-f-u12-replicas",
+            "az104-f-u12-scale-rules"
+          ]
+        },
+        {
+          "id": "az104-u12-l4-e8",
+          "type": "multi",
+          "concept": "container-scaling",
+          "prompt": "Which two settings do you configure on a container app to control scaling? Choose two.",
+          "options": [
+            "Scale rules",
+            "Restart policy",
+            "Minimum and maximum replicas",
+            "Fault domain count"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Container Apps scale diatur dengan batas replica dan scale rule. Restart policy milik Container Instances, dan fault domain milik availability set.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-replicas",
+            "az104-f-u12-scale-rules",
+            "az104-f-u12-restart-policies"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u12-acr-tiers",
+      "statement": "ACR (Azure Container Registry) punya tiga tier: Basic, Standard, dan Premium. Basic untuk belajar dan pemakaian rendah, Standard untuk banyak skenario production, dan Premium punya storage dan throughput tertinggi.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-skus"
+    },
+    {
+      "id": "az104-f-u12-acr-premium",
+      "statement": "Geo-replication dan private endpoint hanya ada di tier Premium. Geo-replication mengelola satu registry di beberapa region.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-skus"
+    },
+    {
+      "id": "az104-f-u12-acr-zone",
+      "statement": "Zone redundancy aktif secara default di semua tier ACR (Azure Container Registry), di region yang mendukung.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-skus"
+    },
+    {
+      "id": "az104-f-u12-acr-change-sku",
+      "statement": "Mengganti tier ACR (Azure Container Registry) tidak menimbulkan downtime. Untuk turun dari Premium, geo-replication harus dihapus dulu.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-skus#change-registry-sku"
+    },
+    {
+      "id": "az104-f-u12-acr-login",
+      "statement": "az acr login --name masuk ke registry memakai identitas Microsoft Entra dari az login, dan tokennya berlaku 3 jam.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication"
+    },
+    {
+      "id": "az104-f-u12-acr-admin",
+      "statement": "Setiap registry punya admin user yang nonaktif secara default. Admin user punya izin penuh dan hanya satu per registry, jadi aktifkan hanya kalau perlu.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication#admin-account"
+    },
+    {
+      "id": "az104-f-u12-acr-roles",
+      "statement": "Untuk menarik image, beri role AcrPull; untuk mendorong image, beri AcrPush. Di registry dengan izin per repository, padanannya Container Registry Repository Reader dan Container Registry Repository Writer.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-rbac-built-in-roles-overview"
+    },
+    {
+      "id": "az104-f-u12-acr-build",
+      "statement": "az acr build membangun image dari source di ACR (Azure Container Registry) dan secara default mendorongnya ke registry setelah selesai, tanpa Docker di komputer lokal.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tasks-overview"
+    },
+    {
+      "id": "az104-f-u12-aci",
+      "statement": "ACI (Azure Container Instances) menjalankan container di Azure tanpa mengelola VM (virtual machine) dan tanpa orchestrator, dan ditagih per detik.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview"
+    },
+    {
+      "id": "az104-f-u12-container-group",
+      "statement": "Container group adalah resource utama ACI (Azure Container Instances): kumpulan container di host yang sama, yang berbagi lifecycle, resource, jaringan lokal, dan volume, mirip pod di Kubernetes. Multi-container group hanya untuk container Linux.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-container-groups"
+    },
+    {
+      "id": "az104-f-u12-aci-dns",
+      "statement": "Container group bisa diberi public IP dan DNS (Domain Name System) name label, sehingga bisa diakses di label.region.azurecontainer.io.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview"
+    },
+    {
+      "id": "az104-f-u12-restart-policies",
+      "statement": "Restart policy ACI (Azure Container Instances) ada tiga: Always (default kalau tidak ditentukan), Never, dan OnFailure. OnFailure me-restart container hanya kalau prosesnya gagal (exit code bukan nol), dan container berjalan minimal sekali.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-restart-policy#container-restart-policy"
+    },
+    {
+      "id": "az104-f-u12-restart-never",
+      "statement": "Never hanya menjamin container tidak di-restart kalau selesai dengan sukses (exit code 0). Kalau exit code bukan nol, platform masih mungkin me-restart-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-restart-policy#container-restart-policy"
+    },
+    {
+      "id": "az104-f-u12-restart-ip",
+      "statement": "Alamat IP container group bisa berubah saat di-restart, jadi jangan pakai IP yang ditulis tetap.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-restart-policy"
+    },
+    {
+      "id": "az104-f-u12-restart-cli",
+      "statement": "Di Azure CLI (command-line interface), restart policy diatur dengan --restart-policy pada az container create.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-restart-policy#specify-a-restart-policy"
+    },
+    {
+      "id": "az104-f-u12-aci-vnet-nat",
+      "statement": "Container group yang di-deploy ke virtual network wajib memakai NAT (network address translation) gateway untuk koneksi keluar.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview#virtual-network-deployment"
+    },
+    {
+      "id": "az104-f-u12-replicas",
+      "statement": "Di Container Apps, jumlah replica minimal default adalah 0 dan maksimal default 10, dengan batas yang bisa diatur sampai 1.000.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-apps/scale-app#scale-definition"
+    },
+    {
+      "id": "az104-f-u12-scale-rules",
+      "statement": "Scale rule Container Apps berbasis HTTP (jumlah request bersamaan), TCP (Transmission Control Protocol), atau custom, misalnya CPU (central processing unit), memori, atau event dari Azure Service Bus. Kalau ada beberapa rule, app mulai scale begitu salah satu terpenuhi.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-apps/scale-app#scale-rules"
+    },
+    {
+      "id": "az104-f-u12-zero-cost",
+      "statement": "Tidak ada biaya pemakaian saat container app berada di 0 replica, tapi replica yang tetap di memori tanpa memproses bisa ditagih dengan tarif idle yang lebih rendah. Untuk selalu punya instance yang berjalan, set replica minimal ke 1 atau lebih.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-apps/scale-app#scale-definition"
+    },
+    {
+      "id": "az104-f-u12-jobs-no-http",
+      "statement": "Container Apps jobs tidak mendukung scale rule HTTP.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-apps/scale-app#http"
+    },
+    {
+      "id": "az104-f-u12-no-ingress-zero",
+      "statement": "Kalau ingress dinonaktifkan dan tidak ada replica minimal atau scale rule custom, container app bisa turun ke 0 dan tidak bisa hidup lagi.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-apps/scale-app#default-scale-rule"
+    },
+    {
+      "id": "az104-f-u12-revisions",
+      "statement": "Revision adalah snapshot container app yang tidak bisa diubah. Mengubah scale rule atau image membuat revision baru. Mode Single (default) memindahkan trafik ke revision baru setelah siap; mode Multiple menjalankan beberapa revision sekaligus dan bisa membagi trafik.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-apps/revisions"
+    },
+    {
+      "id": "az104-f-u12-ingress",
+      "statement": "Ingress external membuka app ke internet (kalau environment punya IP publik); ingress internal hanya bisa dijangkau dari dalam Container Apps environment. Ingress tidak butuh load balancer atau public IP tambahan.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-apps/ingress-overview#external-and-internal-ingress"
+    },
+    {
+      "id": "az104-f-u12-aci-limit",
+      "statement": "Resource limit sebuah container harus lebih besar atau sama dengan resource request-nya, dan paling besar sebesar total resource container group. Tanpa limit, pemakaian maksimalnya sama dengan request.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-container-groups#resource-usage-by-container-instances"
+    },
+    {
+      "id": "az104-f-u12-aci-resources",
+      "statement": "Di ACI (Azure Container Instances), CPU (central processing unit) dan memori diminta per container; container group mendapat jumlah semua permintaan itu. Satu container group maksimal berisi 60 container.",
+      "source": "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-container-groups#resource-allocation"
     }
   ]
 }

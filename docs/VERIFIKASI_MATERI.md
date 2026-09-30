@@ -355,3 +355,22 @@ Sumber: `azure-compute-docs/articles/virtual-machines`, `virtual-machine-scale-s
 | Scale set: Flexible disarankan, mode tidak bisa diubah; upgrade policy Automatic, Manual, Rolling (Flexible butuh Application Health Extension); aturan autoscale dan batas instance; scale-in default: seimbangkan zone, fault domain, lalu instance ID tertinggi | Soal config rencana (CPU di atas 70%) | `virtual-machine-scale-sets-*.md` (19 Mei 2026) |
 
 Tidak ada fakta bertanda `verify`.
+
+### Unit 12: Container (30 September 2026)
+
+25 fakta, 12 kartu learn, 33 soal (30 examReady), 3 visual baru (`AciRestartPolicy`, `ContainerAppsScale`,
+`ContainerOptions`). Sumber: `azure-management-docs/articles/container-registry`,
+`azure-compute-docs/articles/container-instances`, dan `azure-docs/articles/container-apps`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| ACR tiga tier; geo-replication dan private endpoint hanya Premium; zone redundancy default di semua tier; ganti tier tanpa downtime (turun dari Premium: hapus geo-replication dulu) | Fakta rencana terkonfirmasi | `container-registry-skus.md` (25 Maret 2026), `container-registry-geo-replication.md` |
+| `az acr login` memakai identitas Microsoft Entra, token 3 jam; admin user nonaktif default dan punya izin penuh | Diajarkan | `container-registry-authentication.md` (2 Februari 2026) |
+| **Role ACR kini tergantung mode izin registry**: mode RBAC biasa memakai AcrPull dan AcrPush; mode dengan izin per repository (ABAC) memakai Container Registry Repository Reader, Writer, dan Contributor | Materi mengajarkan AcrPull/AcrPush dan menyebut padanan barunya | `container-registry-rbac-built-in-roles-overview.md` |
+| `az acr build` membangun image di ACR dan mendorongnya secara default | Satu kartu | `container-registry-tasks-overview.md` |
+| Container group mirip pod: satu host, berbagi lifecycle, resource, jaringan, volume; multi-container hanya Linux; resource group = jumlah request; limit ≥ request dan ≤ total group; maks. 60 container | Soal choice dan yesno | `container-instances-container-groups.md`, `container-instances-resource-and-quota-limits.md` |
+| Restart policy Always (default), Never, OnFailure; Never hanya menjamin tidak restart setelah exit 0; IP bisa berubah saat restart; container group di virtual network wajib keluar lewat NAT gateway | Fakta rencana terkonfirmasi, soal config dan shell | `container-instances-restart-policy.md` (25 Juli 2026), `container-instances-overview.md` |
+| Container Apps: replica default min 0 max 10 (sampai 1.000); rule HTTP, TCP, custom; tanpa biaya pemakaian di 0 replica, tarif idle untuk replica menganggur; min 1 untuk selalu jalan; jobs tanpa rule HTTP; tanpa ingress dan tanpa rule custom, app di 0 tidak bisa hidup lagi | Fakta rencana terkonfirmasi, soal fix | `scale-app.md` (19 Mei 2026) |
+| Revision tidak bisa diubah, mode Single (default) dan Multiple (bagi trafik); ingress external vs internal tanpa load balancer tambahan | Diajarkan | `revisions.md`, `ingress-overview.md` |
+
+Tidak ada fakta bertanda `verify`.

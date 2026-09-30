@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import type { VisualName } from '../content/visuals'
 import { AccountFailover } from './AccountFailover'
+import { AciRestartPolicy } from './AciRestartPolicy'
 import { ArmStructure } from './ArmStructure'
 import { AsgTiers } from './AsgTiers'
 import { AuthNvsAuthZ } from './AuthNvsAuthZ'
@@ -13,6 +14,8 @@ import { CapexVsOpex } from './CapexVsOpex'
 import { CloudModels } from './CloudModels'
 import { ComputeOptions } from './ComputeOptions'
 import { ConditionalAccessFlow } from './ConditionalAccessFlow'
+import { ContainerAppsScale } from './ContainerAppsScale'
+import { ContainerOptions } from './ContainerOptions'
 import { DefenseInDepth } from './DefenseInDepth'
 import { DnsDelegation } from './DnsDelegation'
 import { EntraObjects } from './EntraObjects'
@@ -58,6 +61,7 @@ import { ZonesInRegion } from './ZonesInRegion'
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
   AccountFailover,
+  AciRestartPolicy,
   ArmStructure,
   AsgTiers,
   AuthNvsAuthZ,
@@ -70,6 +74,8 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   CloudModels,
   ComputeOptions,
   ConditionalAccessFlow,
+  ContainerAppsScale,
+  ContainerOptions,
   DefenseInDepth,
   DnsDelegation,
   EntraObjects,

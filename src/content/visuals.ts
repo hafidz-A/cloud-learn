@@ -84,6 +84,10 @@ export const VISUAL_CATALOG = {
   // Unit 11
   VmResizeFlow: ['vm-resize'],
   FaultUpdateDomains: ['availability-set'],
+  // Unit 12
+  AciRestartPolicy: ['restart-policy'],
+  ContainerAppsScale: ['scale-to-zero'],
+  ContainerOptions: ['container-scaling'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

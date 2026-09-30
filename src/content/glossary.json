@@ -10,6 +10,11 @@
     "description": "Daftar izin di folder atau file. Azure Files memakai Windows ACL untuk izin folder dan file."
   },
   {
+    "term": "ACR",
+    "expansion": "Azure Container Registry",
+    "description": "Registry privat untuk menyimpan image container di Azure. Tier-nya Basic, Standard, dan Premium."
+  },
+  {
     "term": "ADE",
     "expansion": "Azure Disk Encryption",
     "description": "Enkripsi disk VM dari dalam OS memakai BitLocker atau DM-Crypt. Pensiun 15 September 2028; untuk VM baru pakai encryption at host."
@@ -108,6 +113,11 @@
     "term": "FIDO2",
     "expansion": "Fast IDentity Online 2",
     "description": "Standar kunci keamanan fisik (security key) untuk login passwordless."
+  },
+  {
+    "term": "FQDN",
+    "expansion": "Fully Qualified Domain Name",
+    "description": "Nama domain lengkap sebuah host, misalnya app.westeurope.azurecontainer.io."
   },
   {
     "term": "GB",
