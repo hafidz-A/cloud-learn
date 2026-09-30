@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import type { VisualName } from '../content/visuals'
 import { AuthNvsAuthZ } from './AuthNvsAuthZ'
 import { AvailabilityVsReliability } from './AvailabilityVsReliability'
+import { AzureVsEntraRoles } from './AzureVsEntraRoles'
 import { BlobTiers } from './BlobTiers'
 import { CapexVsOpex } from './CapexVsOpex'
 import { CloudModels } from './CloudModels'
@@ -19,6 +20,7 @@ import { PricingVsTco } from './PricingVsTco'
 import { RbacScope } from './RbacScope'
 import { RegionPair } from './RegionPair'
 import { ResourceHierarchy } from './ResourceHierarchy'
+import { RoleScopeTree } from './RoleScopeTree'
 import { ScaleUpVsOut } from './ScaleUpVsOut'
 import { ServiceHealthScopes } from './ServiceHealthScopes'
 import { ServiceModelsStack } from './ServiceModelsStack'
@@ -33,6 +35,7 @@ import { ZonesInRegion } from './ZonesInRegion'
 export const VISUALS: Partial<Record<VisualName, FC>> = {
   AuthNvsAuthZ,
   AvailabilityVsReliability,
+  AzureVsEntraRoles,
   BlobTiers,
   CapexVsOpex,
   CloudModels,
@@ -50,6 +53,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   RbacScope,
   RegionPair,
   ResourceHierarchy,
+  RoleScopeTree,
   ScaleUpVsOut,
   ServiceHealthScopes,
   ServiceModelsStack,

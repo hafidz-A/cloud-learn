@@ -171,6 +171,31 @@ export function judgeConfig(e: ConfigExercise, values: (ConfigValue | null)[]): 
 /** How a config value reads in text: toggles as On/Off. */
 export const configValueText = (v: ConfigValue): string => (typeof v === 'boolean' ? (v ? 'On' : 'Off') : String(v))
 
+/** Words of a command line; a quoted value such as "Virtual Machine Contributor" stays one word. */
+const commandWords = (tokens: string[]) => tokens.join(' ').match(/"[^"]*"|'[^']*'|\S+/g) ?? []
+
+/**
+ * True when two command lines do the same thing: the command itself (the words
+ * before the first parameter) must match, but parameters with their values may
+ * come in any order, as the Azure CLI and PowerShell accept them.
+ */
+export function sameCommand(typed: string[], answer: string[]): boolean {
+  const split = (tokens: string[]) => {
+    const words = commandWords(tokens)
+    const first = words.findIndex((w) => /^--?[A-Za-z]/.test(w))
+    const head = (first < 0 ? words : words.slice(0, first)).join(' ')
+    const params: string[] = []
+    for (const w of first < 0 ? [] : words.slice(first)) {
+      if (/^--?[A-Za-z]/.test(w) || params.length === 0) params.push(w)
+      else params[params.length - 1] += ' ' + w
+    }
+    return { head, params: params.sort() }
+  }
+  const a = split(typed)
+  const b = split(answer)
+  return a.head === b.head && a.params.join('\n') === b.params.join('\n')
+}
+
 export function judge(e: Exercise, r: Response): Judgement {
   const one = (correct: boolean): Judgement => ({ correct, points: correct ? 1 : 0, maxPoints: 1 })
   switch (e.type) {
@@ -202,7 +227,9 @@ export function judge(e: Exercise, r: Response): Judgement {
     case 'place':
       return one(judgePlace(e, (r ?? []) as (number | null)[]).correct)
     case 'shell':
+      return one(sameCommand(((r ?? []) as number[]).map((i) => e.tokens[i]), e.answer))
     case 'kql': {
+      // Pipe order changes a query's result, so a query must match token for token.
       const typed = ((r ?? []) as number[]).map((i) => e.tokens[i]).join(' ')
       return one(typed === e.answer.join(' '))
     }

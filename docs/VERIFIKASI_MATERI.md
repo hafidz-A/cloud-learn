@@ -142,3 +142,21 @@ Masih bertanda `verify`:
   versi terakhir halaman Entra sebelum dihapus (Juli 2026), tapi halaman Microsoft 365 yang menggantikannya tidak menyebut
   syarat lisensi. Cek ulang di halaman lisensi Microsoft Entra kalau muncul versi baru.
 
+### Unit 2: Akses ke resource Azure (RBAC) (30 September 2026)
+
+34 fakta, 16 kartu learn, 41 soal (35 examReady), 2 visual (`RoleScopeTree`, `AzureVsEntraRoles`). Semua sumber dari
+`azure-docs/articles/role-based-access-control`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Ada lima privileged administrator roles; Role Based Access Control Administrator memberi role tanpa bisa mengatur akses lewat Azure Policy, sedangkan User Access Administrator memegang seluruh `Microsoft.Authorization/*` | Soal least privilege untuk "hanya memberi role" menjawab Role Based Access Control Administrator | `role-assignments-steps.md`, `built-in-roles/privileged.md` |
+| NotActions Contributor berisi `Microsoft.Authorization/*/Write` dan `*/Delete` | Diajarkan sebagai alasan Contributor tidak bisa memberi role (dan nanti di Unit 3: tidak bisa mengatur lock) | `built-in-roles/privileged.md` |
+| Role assignment Azure transitif untuk nested group | Diajarkan, beda dengan assignment aplikasi di Unit 1 | `overview.md` |
+| Perubahan role assignment butuh sampai 10 menit; sign out lalu sign in untuk refresh | Soal troubleshooting AuthorizationFailed | `troubleshooting.md` |
+| Deny assignment tidak bisa dibuat langsung, kecuali lewat deny settings di deployment stack | Dipertajam dari "hanya Azure yang membuat" | `deny-assignments.md` |
+| Role administrator klasik pensiun penuh Mei 2026; pemegang Service Administrator dan Co-Administrator otomatis diberi Owner | Diajarkan sebagai jebakan soal lama | `includes/classic-administrators-retirement-note.md` |
+| Batas role assignment kini 5.000 per subscription (bukan 4.000) dan 500 per management group | Tidak diuji, dicatat untuk referensi | `troubleshoot-limits.md` |
+| Global Administrator tidak punya akses Azure secara default; elevate access memberi User Access Administrator di root scope (/) | Diajarkan dan diuji | `rbac-and-directory-admin-roles.md`, `elevate-access-global-admin.md` |
+
+Tidak ada fakta bertanda `verify`.
+

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Exercise } from '../lib/types'
-import { correctAnswerText, initialResponse, isComplete, judge, judgePlace, makeLayout } from './logic'
+import { correctAnswerText, initialResponse, isComplete, judge, judgePlace, makeLayout, sameCommand } from './logic'
 
 const base = { id: 'x', concept: 'c', prompt: 'P', explanation: 'E' }
 
@@ -40,6 +40,26 @@ describe('judge', () => {
     const e: Exercise = { ...base, type: 'shell', tokens: ['az', 'group', 'create', 'delete'], answer: ['az', 'group', 'create'] }
     expect(judge(e, [0, 1, 2]).correct).toBe(true)
     expect(judge(e, [0, 1, 3]).correct).toBe(false)
+  })
+
+  it('shell accepts parameters in any order, but not a different command or value', () => {
+    const answer = ['az', 'group', 'create', '--name', 'MyRG', '--location', 'eastus']
+    expect(sameCommand(['az', 'group', 'create', '--location', 'eastus', '--name', 'MyRG'], answer)).toBe(true)
+    expect(sameCommand(['az', 'group', 'create', '--name', 'eastus', '--location', 'MyRG'], answer)).toBe(false)
+    expect(sameCommand(['az', 'create', 'group', '--name', 'MyRG', '--location', 'eastus'], answer)).toBe(false)
+    expect(sameCommand(['az', 'group', 'create', '--name', 'MyRG'], answer)).toBe(false)
+    // Parameter tokens that carry their value, including a quoted value with spaces.
+    const role = ['az role assignment create', '--assignee ani@contoso.com', '--role "Virtual Machine Contributor"', '--scope /subscriptions/1/resourceGroups/rg-web']
+    expect(sameCommand([role[0], role[3], role[1], role[2]], role)).toBe(true)
+    expect(sameCommand([role[0], role[1], '--role "Virtual Machine"', role[3]], role)).toBe(false)
+    // PowerShell parameters use one dash.
+    expect(sameCommand(['New-AzResourceGroup', '-Location', 'eastus', '-Name', 'MyRG'], ['New-AzResourceGroup', '-Name', 'MyRG', '-Location', 'eastus'])).toBe(true)
+  })
+
+  it('kql still needs the exact order, because pipe order changes the result', () => {
+    const e: Exercise = { ...base, type: 'kql', tokens: ['T', '| take 10', '| sort by x'], answer: ['T', '| sort by x', '| take 10'], sampleResult: [['x'], ['1']] }
+    expect(judge(e, [0, 2, 1]).correct).toBe(true)
+    expect(judge(e, [0, 1, 2]).correct).toBe(false)
   })
 
   it('sort and order', () => {

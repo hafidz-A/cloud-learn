@@ -48,6 +48,9 @@ export const VISUAL_CATALOG = {
   GroupTypes: ['security-vs-m365-group', 'assigned-vs-dynamic-membership'],
   LicenseFlow: ['group-based-licensing'],
   SsprLicensing: ['sspr-licensing'],
+  // Unit 2
+  RoleScopeTree: ['rbac-scope', 'rbac-inheritance'],
+  AzureVsEntraRoles: ['azure-vs-entra-roles'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

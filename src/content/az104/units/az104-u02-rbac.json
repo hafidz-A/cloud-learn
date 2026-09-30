@@ -6,22 +6,1431 @@
     {
       "id": "az104-u02-l1",
       "title": "Role bawaan",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u02-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "azure-rbac"
+          ],
+          "title": "Cara kerja Azure RBAC",
+          "body": "Azure RBAC (Role-Based Access Control) mengatur siapa bisa melakukan apa pada resource Azure. Aksesnya diberikan lewat role assignment, yang terdiri dari tiga bagian: security principal (user, group, service principal, atau managed identity), role definition (kumpulan izin), dan scope (tempat izin berlaku). Akses dicabut dengan menghapus role assignment-nya. Microsoft menyarankan memberi role ke group, bukan ke user satu per satu.",
+          "keyPoints": [
+            "Role assignment = siapa + role + scope",
+            "Hapus assignment untuk mencabut akses",
+            "Beri role ke group, bukan ke user"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview",
+          "teaches": [
+            "az104-f-u02-rbac-def",
+            "az104-f-u02-assignment-parts",
+            "az104-f-u02-groups-best"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e1",
+          "type": "truefalse",
+          "concept": "azure-rbac",
+          "prompt": "A role assignment consists of a security principal, a role definition, and a scope.",
+          "answer": true,
+          "explanation": "Benar. Tiga bagian itu menjawab siapa, izin apa, dan di mana.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-assignment-parts"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e2",
+          "type": "choice",
+          "concept": "azure-rbac",
+          "prompt": "Twenty developers need the same access to a resource group. What is the recommended way to grant it?",
+          "options": [
+            "Assign the role to each developer separately",
+            "Create one shared account for all the developers",
+            "Ask each developer to assign the role to themselves",
+            "Add the developers to a group, then assign the role to the group"
+          ],
+          "answer": 3,
+          "explanation": "Memberi role ke group membuat assignment lebih sedikit dan mudah dikelola: developer baru cukup dimasukkan ke group. Akun bersama melanggar prinsip akses per orang, dan developer tidak bisa memberi role ke dirinya sendiri tanpa izin memberi role.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-groups-best",
+            "az104-f-u02-assignment-parts"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "owner-contributor-reader"
+          ],
+          "title": "Owner, Contributor, Reader",
+          "body": "Tiga role dasar ini berlaku untuk semua jenis resource. Owner punya akses penuh untuk mengelola resource, termasuk memberi role ke orang lain. Contributor juga bisa mengelola semua resource, tapi tidak bisa memberi role. Reader hanya bisa melihat resource, tanpa mengubah apa pun.",
+          "keyPoints": [
+            "Owner: kelola semua + memberi role",
+            "Contributor: kelola semua, tidak bisa memberi role",
+            "Reader: hanya melihat"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles",
+          "teaches": [
+            "az104-f-u02-owner",
+            "az104-f-u02-contributor",
+            "az104-f-u02-reader"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e3",
+          "type": "truefalse",
+          "concept": "owner-contributor-reader",
+          "prompt": "A user who has the Contributor role on a resource group can assign the Reader role to a colleague on that resource group.",
+          "answer": false,
+          "explanation": "Salah. Contributor bisa mengelola semua resource, tapi tidak bisa memberi role. Untuk memberi role, butuh Owner atau role yang khusus mengatur akses.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-contributor"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e4",
+          "type": "yesno",
+          "concept": "owner-contributor-reader",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "On the rg-web resource group, Ani has the Owner role, Budi has the Contributor role, and Citra has the Reader role.",
+          "statements": [
+            {
+              "text": "Budi can delete a VM (virtual machine) in rg-web.",
+              "answer": true
+            },
+            {
+              "text": "Citra can restart a VM in rg-web.",
+              "answer": false
+            },
+            {
+              "text": "Budi can give Citra the Contributor role on rg-web.",
+              "answer": false
+            }
+          ],
+          "explanation": "Contributor bisa mengelola resource, termasuk menghapus VM (virtual machine), tapi tidak bisa memberi role. Reader hanya melihat, jadi Citra tidak bisa me-restart VM.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-owner",
+            "az104-f-u02-contributor",
+            "az104-f-u02-reader"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "user-access-admin"
+          ],
+          "title": "Role untuk mengatur akses",
+          "body": "User Access Administrator bisa membaca semua resource dan memberi role apa pun, termasuk Owner ke dirinya sendiri. Role ini sendiri tidak berisi izin mengubah resource. Role Based Access Control Administrator juga bisa memberi dan menghapus role assignment, tapi tidak bisa mengatur akses lewat cara lain seperti Azure Policy. Owner, Contributor, dan dua role ini termasuk privileged administrator roles, jadi berikan seperlunya; Microsoft menyarankan maksimal 3 Owner per subscription.",
+          "keyPoints": [
+            "User Access Administrator: memberi role apa pun",
+            "Role Based Access Control Administrator: memberi role, tanpa Azure Policy",
+            "Maksimal 3 Owner per subscription"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-steps#privileged-administrator-roles",
+          "teaches": [
+            "az104-f-u02-uaa",
+            "az104-f-u02-rbac-admin",
+            "az104-f-u02-privileged"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e5",
+          "type": "match",
+          "concept": "user-access-admin",
+          "prompt": "Match each role to what it allows.",
+          "pairs": [
+            [
+              "Owner",
+              "Manage all resources and assign roles"
+            ],
+            [
+              "Contributor",
+              "Manage all resources, but can't assign roles"
+            ],
+            [
+              "Reader",
+              "View resources, but can't change them"
+            ],
+            [
+              "User Access Administrator",
+              "Assign roles, but has no permission to change resources"
+            ]
+          ],
+          "explanation": "Owner = kelola + memberi role. Contributor = kelola saja. Reader = lihat saja. User Access Administrator = memberi role saja.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-owner",
+            "az104-f-u02-contributor",
+            "az104-f-u02-reader",
+            "az104-f-u02-uaa"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e6",
+          "type": "choice",
+          "concept": "user-access-admin",
+          "prompt": "Maria must assign Azure roles to other users in a subscription. She must not get permissions to change resources, and she must not manage access in other ways, such as Azure Policy. Which role should you assign to Maria?",
+          "options": [
+            "User Access Administrator",
+            "Owner",
+            "Role Based Access Control Administrator",
+            "Contributor"
+          ],
+          "answer": 2,
+          "explanation": "Role Based Access Control Administrator hanya memberi dan menghapus role assignment, tanpa akses lewat cara lain seperti Azure Policy. Owner bisa mengubah resource, Contributor tidak bisa memberi role, dan User Access Administrator tidak dibatasi dari cara lain itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-rbac-admin",
+            "az104-f-u02-uaa",
+            "az104-f-u02-owner",
+            "az104-f-u02-contributor"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e7",
+          "type": "truefalse",
+          "concept": "user-access-admin",
+          "prompt": "Microsoft recommends a maximum of 3 Owners for each subscription.",
+          "answer": true,
+          "explanation": "Benar. Owner adalah privileged administrator role, jadi jumlahnya dibatasi untuk mengurangi risiko kalau satu akun dibobol.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-privileged"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "job-function-roles"
+          ],
+          "title": "Role untuk tugas tertentu",
+          "body": "Selain role privileged, ada job function roles untuk layanan tertentu. Virtual Machine Contributor bisa membuat dan mengelola VM (virtual machine) serta disk-nya, tapi tidak bisa mengelola virtual network atau storage account yang terhubung, dan tidak bisa memberi role. Network Contributor mengelola jaringan, tapi tidak bisa men-deploy atau mengelola VM. Mulailah dari role paling sempit yang cukup.",
+          "keyPoints": [
+            "Virtual Machine Contributor: VM dan disk, bukan jaringan",
+            "Network Contributor: jaringan, bukan VM",
+            "Pilih role paling sempit yang cukup"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-steps#job-function-roles",
+          "teaches": [
+            "az104-f-u02-job-function",
+            "az104-f-u02-vm-contributor",
+            "az104-f-u02-network-contributor"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e8",
+          "type": "choice",
+          "concept": "job-function-roles",
+          "prompt": "Diego must create and manage VMs (virtual machines) in a resource group. He must not manage the virtual networks. The solution must follow the principle of least privilege. Which role should you assign?",
+          "options": [
+            "Virtual Machine Contributor",
+            "Contributor",
+            "Network Contributor",
+            "Owner"
+          ],
+          "answer": 0,
+          "explanation": "Virtual Machine Contributor mengelola VM (virtual machine) tanpa akses ke virtual network. Contributor dan Owner terlalu luas, sedangkan Network Contributor justru mengelola jaringan dan tidak bisa mengelola VM.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-vm-contributor",
+            "az104-f-u02-contributor",
+            "az104-f-u02-network-contributor",
+            "az104-f-u02-owner",
+            "az104-f-u02-job-function"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e9",
+          "type": "multi",
+          "concept": "job-function-roles",
+          "prompt": "Which two statements about the Virtual Machine Contributor role are true? Choose two.",
+          "options": [
+            "It can manage the virtual network that the virtual machines connect to",
+            "It can't assign roles in Azure RBAC (role-based access control)",
+            "It can manage every resource in the subscription",
+            "It can create and manage VMs (virtual machines) and their disks"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Virtual Machine Contributor terbatas pada VM (virtual machine) dan disk-nya, tanpa virtual network, dan tanpa memberi role.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-vm-contributor"
+          ]
+        },
+        {
+          "id": "az104-u02-l1-e10",
+          "type": "sort",
+          "concept": "job-function-roles",
+          "prompt": "Sort each role: can it assign roles in Azure RBAC (role-based access control)?",
+          "buckets": [
+            "Can assign roles",
+            "Can't assign roles"
+          ],
+          "items": [
+            {
+              "text": "Owner",
+              "bucket": 0
+            },
+            {
+              "text": "User Access Administrator",
+              "bucket": 0
+            },
+            {
+              "text": "Role Based Access Control Administrator",
+              "bucket": 0
+            },
+            {
+              "text": "Contributor",
+              "bucket": 1
+            },
+            {
+              "text": "Reader",
+              "bucket": 1
+            },
+            {
+              "text": "Virtual Machine Contributor",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Yang bisa memberi role: Owner, User Access Administrator, dan Role Based Access Control Administrator. Contributor, Reader, dan Virtual Machine Contributor tidak bisa.",
+          "requires": [
+            "az104-f-u02-owner",
+            "az104-f-u02-uaa",
+            "az104-f-u02-rbac-admin",
+            "az104-f-u02-contributor",
+            "az104-f-u02-reader",
+            "az104-f-u02-vm-contributor"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u02-l2",
       "title": "Scope dan pewarisan",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u02-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "rbac-scope",
+            "rbac-inheritance"
+          ],
+          "title": "Scope dan pewarisan",
+          "body": "Role bisa di-assign di empat level scope: management group, subscription, resource group, atau resource. Scope tersusun sebagai induk dan anak, dan level bawah mewarisi role dari level atasnya. Jadi role di resource group berlaku untuk semua resource di dalamnya, tapi tidak untuk subscription di atasnya atau resource group lain. Role di management group berlaku untuk semua subscription di dalamnya.",
+          "keyPoints": [
+            "Empat level: management group, subscription, resource group, resource",
+            "Diwariskan ke bawah",
+            "Tidak naik ke atas atau ke samping"
+          ],
+          "visual": "RoleScopeTree",
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview",
+          "teaches": [
+            "az104-f-u02-scope-levels",
+            "az104-f-u02-mg-scope"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e1",
+          "type": "truefalse",
+          "concept": "rbac-scope",
+          "prompt": "A role that is assigned at a resource group scope also applies to the subscription that contains the resource group.",
+          "answer": false,
+          "explanation": "Salah. Role hanya diwariskan ke bawah: ke resource di dalam resource group itu, bukan ke subscription di atasnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-scope-levels"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e2",
+          "type": "choice",
+          "concept": "rbac-scope",
+          "prompt": "You assign the Reader role to Ani at the Marketing management group. Which resources can Ani view?",
+          "options": [
+            "Only the management group itself, not its subscriptions",
+            "Only the resources that Ani created",
+            "The resources in every subscription under Marketing",
+            "Nothing until you also assign the role on each subscription"
+          ],
+          "answer": 2,
+          "explanation": "Role di management group berlaku untuk semua subscription di dalamnya, lalu diwariskan ke resource group dan resource-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-mg-scope",
+            "az104-f-u02-scope-levels"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e3",
+          "type": "order",
+          "concept": "rbac-scope",
+          "prompt": "Put the scope levels in order, from the broadest to the narrowest.",
+          "items": [
+            "Management group",
+            "Subscription",
+            "Resource group",
+            "Resource"
+          ],
+          "explanation": "Management group paling luas, lalu subscription, resource group, dan resource paling sempit.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-scope-levels"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "rbac-least-privilege"
+          ],
+          "title": "Pilih scope tersempit",
+          "body": "Praktik terbaik Azure RBAC (Role-Based Access Control) adalah least privilege: beri role sesempit mungkin di scope sesempit mungkin. Hindari role luas di scope luas walau terasa lebih praktis. Kalau akun itu dibobol, resource yang terancam jadi lebih sedikit. Contohnya, orang yang hanya perlu me-restart satu VM (virtual machine) cukup diberi role di VM itu, bukan di resource group.",
+          "keyPoints": [
+            "Role sesempit mungkin",
+            "Scope sesempit mungkin",
+            "Membatasi dampak akun yang dibobol"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/best-practices#only-grant-the-access-users-need",
+          "teaches": [
+            "az104-f-u02-least-priv"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e4",
+          "type": "place",
+          "concept": "rbac-least-privilege",
+          "prompt": "Place each role assignment at the narrowest scope that still meets the need.",
+          "zones": [
+            "Management group Contoso",
+            "Subscription Production",
+            "Resource group rg-web",
+            "Virtual machine web-01"
+          ],
+          "pieces": [
+            {
+              "text": "Ani manages every resource in rg-web",
+              "validZones": [
+                2
+              ]
+            },
+            {
+              "text": "Budi restarts only web-01",
+              "validZones": [
+                3
+              ]
+            },
+            {
+              "text": "Citra manages all resource groups in Production",
+              "validZones": [
+                1
+              ]
+            },
+            {
+              "text": "Auditors view every subscription under Contoso",
+              "validZones": [
+                0
+              ]
+            }
+          ],
+          "rule": "valid",
+          "explanation": "Setiap kebutuhan diletakkan di scope paling sempit yang masih mencakup semua resource yang dibutuhkan. Scope yang lebih luas memberi akses lebih dari yang diperlukan.",
+          "requires": [
+            "az104-f-u02-least-priv",
+            "az104-f-u02-scope-levels",
+            "az104-f-u02-mg-scope"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e5",
+          "type": "choice",
+          "concept": "rbac-least-privilege",
+          "prompt": "Budi must restart the VM (virtual machine) web-01. He must not be able to manage the other VMs in rg-web. Where should you assign his role?",
+          "options": [
+            "On the resource group rg-web",
+            "On the VM web-01",
+            "On the subscription",
+            "On the management group"
+          ],
+          "answer": 1,
+          "explanation": "Role di VM (virtual machine) web-01 hanya berlaku untuk VM itu. Di rg-web atau scope yang lebih luas, role itu ikut berlaku untuk VM lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-scope-levels",
+            "az104-f-u02-least-priv"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "rbac-groups-timing"
+          ],
+          "title": "Group dan waktu berlaku",
+          "body": "Role assignment ke group juga berlaku untuk anggota nested group di dalamnya, karena Azure RBAC (Role-Based Access Control) transitif untuk group. Setelah role diberikan atau dicabut, perubahannya bisa butuh sampai 10 menit untuk berlaku. Kalau memakai portal, Azure PowerShell, atau Azure CLI (Command-Line Interface), sign out lalu sign in lagi untuk memaksa refresh.",
+          "keyPoints": [
+            "Role group ikut berlaku untuk nested group",
+            "Perubahan bisa butuh sampai 10 menit",
+            "Sign out lalu sign in untuk refresh"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/troubleshooting",
+          "teaches": [
+            "az104-f-u01-rbac-transitive",
+            "az104-f-u02-propagation"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e6",
+          "type": "truefalse",
+          "concept": "rbac-inheritance",
+          "prompt": "Group A has the Contributor role on rg-web. Group B is a member of Group A. Users in Group B can manage the resources in rg-web.",
+          "answer": true,
+          "explanation": "Benar. Role assignment Azure RBAC (Role-Based Access Control) transitif untuk group, jadi anggota nested group ikut mendapat role-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-rbac-transitive"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e7",
+          "type": "fix",
+          "concept": "rbac-inheritance",
+          "prompt": "Two minutes ago, you assigned Ani the Virtual Machine Contributor role on rg-web. Ani still gets this error when she starts a VM (virtual machine) in rg-web. What should Ani do first?",
+          "scene": {
+            "kind": "error",
+            "title": "AuthorizationFailed",
+            "message": "The client 'ani@contoso.com' does not have authorization to perform action 'Microsoft.Compute/virtualMachines/start/action'."
+          },
+          "options": [
+            "Ask for the Owner role on the subscription",
+            "Sign out, sign in again, and retry",
+            "Ask you to assign the role again every minute",
+            "Move the VM to another resource group"
+          ],
+          "answer": 1,
+          "explanation": "Role assignment bisa butuh sampai 10 menit untuk berlaku, dan sign out lalu sign in memaksa refresh. Role yang diberikan sudah cukup, jadi Owner di subscription melanggar least privilege.",
+          "requires": [
+            "az104-f-u02-propagation",
+            "az104-f-u02-least-priv",
+            "az104-f-u02-vm-contributor"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-m4",
+          "type": "learn",
+          "concepts": [
+            "rbac-cli"
+          ],
+          "title": "Role assignment lewat command line",
+          "body": "Di Azure CLI (Command-Line Interface), role diberikan dengan az role assignment create memakai parameter --assignee, --role, dan --scope. Scope ditulis sebagai path. Subscription ditulis /subscriptions/{subscriptionId}, resource group ditulis /subscriptions/{subscriptionId}/resourceGroups/{nama}, dan management group ditulis /providers/Microsoft.Management/managementGroups/{nama}.",
+          "keyPoints": [
+            "az role assignment create",
+            "--assignee, --role, --scope",
+            "Scope = path lengkap"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-cli",
+          "teaches": [
+            "az104-f-u02-cli-assign",
+            "az104-f-u02-scope-format"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e8",
+          "type": "choice",
+          "concept": "rbac-cli",
+          "prompt": "Which --scope value assigns a role on the resource group rg-web in the subscription 1111?",
+          "options": [
+            "/resourceGroups/rg-web",
+            "/subscriptions/1111/resourceGroups/rg-web",
+            "/subscriptions/1111",
+            "/providers/Microsoft.Management/managementGroups/rg-web"
+          ],
+          "answer": 1,
+          "explanation": "Scope resource group selalu diawali subscription-nya: /subscriptions/1111/resourceGroups/rg-web. Tanpa resourceGroups, scope-nya subscription.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-scope-format"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e9",
+          "type": "truefalse",
+          "concept": "rbac-cli",
+          "prompt": "In the Azure CLI (command-line interface), you assign a role with az role assignment create and the --assignee, --role, and --scope parameters.",
+          "answer": true,
+          "explanation": "Benar. Tiga parameter itu mengisi tiga bagian role assignment: siapa, role apa, dan di mana.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-cli-assign",
+            "az104-f-u02-assignment-parts"
+          ]
+        },
+        {
+          "id": "az104-u02-l2-e10",
+          "type": "shell",
+          "concept": "rbac-cli",
+          "prompt": "Assign the Reader role to ani@contoso.com on the resource group rg-web in the subscription 1111. Build the Azure CLI (command-line interface) command.",
+          "tokens": [
+            "az role assignment create",
+            "--assignee ani@contoso.com",
+            "--role Reader",
+            "--scope /subscriptions/1111/resourceGroups/rg-web",
+            "--scope /subscriptions/1111",
+            "az group create"
+          ],
+          "answer": [
+            "az role assignment create",
+            "--assignee ani@contoso.com",
+            "--role Reader",
+            "--scope /subscriptions/1111/resourceGroups/rg-web"
+          ],
+          "explanation": "Perintahnya az role assignment create, dengan --scope berupa path resource group. Urutan parameter bebas.",
+          "requires": [
+            "az104-f-u02-cli-assign",
+            "az104-f-u02-scope-format"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u02-l3",
       "title": "Membaca akses",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u02-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "effective-permissions"
+          ],
+          "title": "Izin efektif",
+          "body": "Azure RBAC (Role-Based Access Control) bersifat aditif: izin efektif seseorang adalah gabungan semua role assignment miliknya, langsung maupun lewat group. Contributor di subscription ditambah Reader di satu resource group hasilnya tetap Contributor di resource group itu. Pengecualiannya deny assignment, yang dicek lebih dulu dan memblokir aksi walau ada role yang mengizinkan. Kamu tidak bisa membuat deny assignment langsung; Azure yang membuatnya, misalnya lewat deny settings di deployment stack.",
+          "keyPoints": [
+            "Izin efektif = gabungan semua role",
+            "Deny assignment menang dan dicek lebih dulu",
+            "Deny assignment dibuat oleh Azure"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview#multiple-role-assignments",
+          "teaches": [
+            "az104-f-u02-additive",
+            "az104-f-u02-deny"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e1",
+          "type": "yesno",
+          "concept": "effective-permissions",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Ani is a member of the Ops group. Ops has the Reader role on the subscription. Ani also has the Contributor role on the rg-web resource group. There are no deny assignments.",
+          "statements": [
+            {
+              "text": "Ani can create a VM (virtual machine) in rg-web.",
+              "answer": true
+            },
+            {
+              "text": "Ani can create a VM in rg-data, another resource group in the subscription.",
+              "answer": false
+            },
+            {
+              "text": "Ani can view the resources in rg-data.",
+              "answer": true
+            }
+          ],
+          "explanation": "Izinnya digabung: Contributor berlaku di rg-web saja, sedangkan Reader dari group Ops berlaku di seluruh subscription. Jadi di rg-data, Ani hanya bisa melihat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-additive",
+            "az104-f-u02-scope-levels",
+            "az104-f-u02-reader",
+            "az104-f-u02-contributor"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e2",
+          "type": "truefalse",
+          "concept": "effective-permissions",
+          "prompt": "When a deny assignment blocks an action, a role assignment that allows the action overrides the deny.",
+          "answer": false,
+          "explanation": "Salah. Deny assignment dicek lebih dulu, dan kalau berlaku, aksinya diblokir walau ada role yang mengizinkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-deny"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e3",
+          "type": "choice",
+          "concept": "effective-permissions",
+          "prompt": "Which statement about deny assignments is true?",
+          "options": [
+            "You create them on the Access control (IAM) page with Add > Add deny assignment",
+            "They are checked only after a role assignment allows the action",
+            "Azure creates and manages them; you can't create one directly",
+            "They apply only to guest users"
+          ],
+          "answer": 2,
+          "explanation": "Deny assignment dibuat dan dikelola Azure, misalnya lewat deny settings di deployment stack. Deny assignment dicek sebelum role assignment.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-deny"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "check-access"
+          ],
+          "title": "Mengecek akses",
+          "body": "Buka scope-nya, lalu Access control (IAM). Tab Check access menampilkan role assignment dan deny assignment seseorang di scope itu dan yang diwariskan ke sana; assignment di scope anak tidak ikut tampil. Di tab Role assignments, kolom Scope menunjukkan This resource untuk assignment langsung dan (Inherited) untuk yang diwariskan. Kalau Add role assignment nonaktif, kamu tidak punya izin Microsoft.Authorization/roleAssignments/write di scope itu.",
+          "keyPoints": [
+            "Check access: scope ini dan yang diwariskan",
+            "Kolom Scope: This resource atau (Inherited)",
+            "Add role assignment butuh roleAssignments/write"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/check-access",
+          "teaches": [
+            "az104-f-u02-check-access",
+            "az104-f-u02-iam-inherited",
+            "az104-f-u02-assign-permission"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e4",
+          "type": "choice",
+          "concept": "check-access",
+          "prompt": "You need to see every role that Ani has on rg-web, including roles inherited from the subscription. What should you use?",
+          "options": [
+            "Access control (IAM) > Check access on one virtual machine in rg-web",
+            "The Activity log of rg-web",
+            "The Deployments page of rg-web",
+            "Access control (IAM) > Check access on rg-web"
+          ],
+          "answer": 3,
+          "explanation": "Check access di rg-web menampilkan role di scope itu dan yang diwariskan dari atas. Di satu VM (virtual machine), tampilannya ikut memuat role milik VM itu, yang tidak berlaku untuk seluruh rg-web.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-check-access"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e5",
+          "type": "truefalse",
+          "concept": "check-access",
+          "prompt": "Check access on a resource group also lists the role assignments that were made on the VMs (virtual machines) inside it.",
+          "answer": false,
+          "explanation": "Salah. Check access menampilkan scope itu dan yang diwariskan ke sana. Assignment di scope anak, seperti VM (virtual machine) di dalamnya, tidak ditampilkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-check-access"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e6",
+          "type": "choice",
+          "concept": "check-access",
+          "prompt": "On the Access control (IAM) page of rg-web, Add role assignment is disabled for Ani. What is the cause?",
+          "options": [
+            "rg-web contains too many resources",
+            "Ani has no role with Microsoft.Authorization/roleAssignments/write at this scope",
+            "Ani signed in with a guest account from another tenant",
+            "rg-web is in a different region from Ani"
+          ],
+          "answer": 1,
+          "explanation": "Opsi itu nonaktif kalau kamu tidak punya izin roleAssignments/write di scope itu, misalnya kalau Ani hanya Contributor atau Reader.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-assign-permission"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "role-definitions"
+          ],
+          "title": "Actions dan NotActions",
+          "body": "Role definition berisi daftar izin. Actions dan NotActions dipakai untuk control plane (mengelola resource), DataActions dan NotDataActions untuk data plane (isi data, misalnya blob). Izin efektif sebuah role adalah Actions dikurangi NotActions. Contohnya, Contributor punya Actions * tapi NotActions-nya berisi Microsoft.Authorization/*/Write dan */Delete, jadi Contributor tidak bisa membuat atau menghapus role assignment.",
+          "keyPoints": [
+            "Actions dikurangi NotActions = izin efektif",
+            "DataActions untuk isi data",
+            "Contributor: NotActions Microsoft.Authorization"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-definitions",
+          "teaches": [
+            "az104-f-u02-actions-notactions",
+            "az104-f-u02-contributor-notactions"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e7",
+          "type": "rules",
+          "concept": "role-definitions",
+          "prompt": "Based on the tables, what can Ani do with the VM (virtual machine) web-01 in rg-web?",
+          "tables": [
+            {
+              "title": "Custom role: VM Operator",
+              "columns": [
+                "Property",
+                "Value"
+              ],
+              "rows": [
+                [
+                  "Actions",
+                  "Microsoft.Compute/virtualMachines/*"
+                ],
+                [
+                  "NotActions",
+                  "Microsoft.Compute/virtualMachines/delete"
+                ],
+                [
+                  "DataActions",
+                  "(none)"
+                ]
+              ]
+            },
+            {
+              "title": "Role assignments",
+              "columns": [
+                "Principal",
+                "Role",
+                "Scope"
+              ],
+              "rows": [
+                [
+                  "Ani",
+                  "VM Operator",
+                  "rg-web"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Start and restart it, but not delete it",
+            "Delete it, because Actions ends with *",
+            "Nothing, because DataActions is empty",
+            "Assign the VM Operator role to other users"
+          ],
+          "answer": 0,
+          "explanation": "Actions virtualMachines/* dikurangi NotActions delete, jadi semua aksi VM (virtual machine) boleh kecuali menghapus. DataActions hanya untuk data plane, dan tanpa Microsoft.Authorization/roleAssignments/write Ani tidak bisa memberi role.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-actions-notactions",
+            "az104-f-u02-assign-permission"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e8",
+          "type": "truefalse",
+          "concept": "role-definitions",
+          "prompt": "The Contributor role can't create role assignments because Microsoft.Authorization/*/Write is in its NotActions.",
+          "answer": true,
+          "explanation": "Benar. Actions * dikurangi NotActions Microsoft.Authorization/*/Write dan */Delete, jadi izin memberi role hilang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-contributor-notactions"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-m4",
+          "type": "learn",
+          "concepts": [
+            "control-vs-data-plane"
+          ],
+          "title": "Control plane vs data plane",
+          "body": "Role untuk mengelola resource tidak otomatis membuka datanya. Reader di subscription bisa melihat storage account, tapi secara default tidak bisa membaca isi blob-nya. Untuk data blob dengan login Microsoft Entra ID, pakai role data plane. Storage Blob Data Reader bisa membaca dan melihat daftar container dan blob. Storage Blob Data Contributor bisa membaca, menulis, dan menghapusnya.",
+          "keyPoints": [
+            "Mengelola resource tidak sama dengan membaca data",
+            "Storage Blob Data Reader: baca",
+            "Storage Blob Data Contributor: baca, tulis, hapus"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-definitions",
+          "teaches": [
+            "az104-f-u02-control-data",
+            "az104-f-u02-blob-data-roles"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e9",
+          "type": "choice",
+          "concept": "control-vs-data-plane",
+          "prompt": "A user has the Reader role on a storage account. The user must read the blobs in a container by signing in with Microsoft Entra ID. The solution must follow the principle of least privilege. Which role should you add?",
+          "options": [
+            "Storage Blob Data Contributor",
+            "Storage Blob Data Reader",
+            "Owner",
+            "Contributor"
+          ],
+          "answer": 1,
+          "explanation": "Reader hanya control plane. Untuk membaca blob, tambahkan Storage Blob Data Reader. Storage Blob Data Contributor juga bisa menulis dan menghapus, jadi terlalu luas, begitu juga Owner dan Contributor.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-control-data",
+            "az104-f-u02-blob-data-roles",
+            "az104-f-u02-least-priv",
+            "az104-f-u02-owner",
+            "az104-f-u02-contributor"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e10",
+          "type": "truefalse",
+          "concept": "control-vs-data-plane",
+          "prompt": "By default, a user with the Reader role on a subscription can read the blob data in every storage account in that subscription.",
+          "answer": false,
+          "explanation": "Salah. Reader bisa melihat storage account (control plane), tapi tidak membaca datanya (data plane).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-control-data"
+          ]
+        },
+        {
+          "id": "az104-u02-l3-e11",
+          "type": "rules",
+          "concept": "effective-permissions",
+          "prompt": "Based on the tables, who can delete the VM (virtual machine) web-01 in rg-web?",
+          "tables": [
+            {
+              "title": "Role assignments",
+              "columns": [
+                "Principal",
+                "Role",
+                "Scope"
+              ],
+              "rows": [
+                [
+                  "Ops group",
+                  "Reader",
+                  "Subscription"
+                ],
+                [
+                  "Ani",
+                  "Virtual Machine Contributor",
+                  "rg-web"
+                ],
+                [
+                  "Budi",
+                  "Contributor",
+                  "rg-data"
+                ],
+                [
+                  "Ops group",
+                  "Contributor",
+                  "VM db-01 in rg-data"
+                ]
+              ]
+            },
+            {
+              "title": "Group membership",
+              "columns": [
+                "Group",
+                "Members"
+              ],
+              "rows": [
+                [
+                  "Ops",
+                  "Budi, Citra"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Ani and Budi",
+            "Ani and Citra",
+            "Ani, Budi, and Citra",
+            "Ani only"
+          ],
+          "answer": 3,
+          "explanation": "Hanya Ani yang punya role pengelola di scope yang mencakup web-01. Budi dan Citra mendapat Reader dari group Ops di subscription, sedangkan role Contributor mereka ada di rg-data dan db-01, bukan di rg-web.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-scope-levels",
+            "az104-f-u02-additive",
+            "az104-f-u02-vm-contributor",
+            "az104-f-u02-contributor",
+            "az104-f-u02-reader"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u02-l4",
       "title": "Azure role vs Entra role",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u02-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "azure-vs-entra-roles"
+          ],
+          "title": "Azure role vs Microsoft Entra role",
+          "body": "Azure roles mengatur izin ke resource Azure, seperti VM (virtual machine), storage, dan VNet (virtual network). Microsoft Entra roles mengatur izin ke direktori: user, group, lisensi, dan domain. Keduanya sistem terpisah dengan scope berbeda: Azure role di management group sampai resource, Entra role di tenant, administrative unit, atau satu objek. Azure role diberikan di Access control (IAM), Entra role di Roles and administrators.",
+          "keyPoints": [
+            "Azure role: resource Azure",
+            "Entra role: user, group, lisensi, domain",
+            "IAM vs Roles and administrators"
+          ],
+          "visual": "AzureVsEntraRoles",
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles",
+          "teaches": [
+            "az104-f-u02-azure-vs-entra",
+            "az104-f-u02-scope-diff",
+            "az104-f-u02-where-assigned"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e1",
+          "type": "truefalse",
+          "concept": "azure-vs-entra-roles",
+          "prompt": "Azure roles and Microsoft Entra roles are two separate systems.",
+          "answer": true,
+          "explanation": "Benar. Azure role mengatur resource Azure, Microsoft Entra role mengatur direktori, dan secara default keduanya tidak saling mencakup.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-azure-vs-entra"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e2",
+          "type": "choice",
+          "concept": "azure-vs-entra-roles",
+          "prompt": "Ani must create users in Microsoft Entra ID. Where do you assign her role?",
+          "options": [
+            "Subscription > Access control (IAM)",
+            "Resource group > Access control (IAM)",
+            "Microsoft Entra ID > Roles and administrators",
+            "Management group > Access control (IAM)"
+          ],
+          "answer": 2,
+          "explanation": "Membuat user adalah tugas direktori, jadi butuh Microsoft Entra role yang diberikan di Roles and administrators. Access control (IAM) memberi Azure role untuk resource Azure.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-where-assigned",
+            "az104-f-u02-azure-vs-entra"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "entra-roles"
+          ],
+          "title": "Contoh Microsoft Entra roles",
+          "body": "Global Administrator bisa mengelola semua fitur administrasi Microsoft Entra ID, memberi role admin ke orang lain, dan me-reset password semua user. User Administrator membuat dan mengelola user dan group. Billing Administrator melakukan pembelian dan mengelola subscription dari sisi tagihan. Tapi secara default, Global Administrator pun tidak punya akses ke resource Azure.",
+          "keyPoints": [
+            "Global Administrator: semua fitur Entra",
+            "User Administrator: user dan group",
+            "Global Administrator tidak otomatis punya akses Azure"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles#microsoft-entra-roles",
+          "teaches": [
+            "az104-f-u02-entra-examples",
+            "az104-f-u02-global-no-azure"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e3",
+          "type": "sort",
+          "concept": "azure-vs-entra-roles",
+          "prompt": "Sort each role: Azure role or Microsoft Entra role?",
+          "buckets": [
+            "Azure role",
+            "Microsoft Entra role"
+          ],
+          "items": [
+            {
+              "text": "Owner",
+              "bucket": 0
+            },
+            {
+              "text": "Contributor",
+              "bucket": 0
+            },
+            {
+              "text": "Virtual Machine Contributor",
+              "bucket": 0
+            },
+            {
+              "text": "User Access Administrator",
+              "bucket": 0
+            },
+            {
+              "text": "Global Administrator",
+              "bucket": 1
+            },
+            {
+              "text": "User Administrator",
+              "bucket": 1
+            },
+            {
+              "text": "Billing Administrator",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Owner, Contributor, Virtual Machine Contributor, dan User Access Administrator adalah Azure role. Global Administrator, User Administrator, dan Billing Administrator adalah Microsoft Entra role.",
+          "requires": [
+            "az104-f-u02-owner",
+            "az104-f-u02-contributor",
+            "az104-f-u02-vm-contributor",
+            "az104-f-u02-uaa",
+            "az104-f-u02-entra-examples"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e4",
+          "type": "yesno",
+          "concept": "entra-roles",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Ani is a Global Administrator. She has no Azure role assignments, and she has not elevated her access.",
+          "statements": [
+            {
+              "text": "Ani can reset the password of any user.",
+              "answer": true
+            },
+            {
+              "text": "Ani can delete a VM (virtual machine) in the Production subscription.",
+              "answer": false
+            },
+            {
+              "text": "Ani can assign Microsoft Entra roles to other users.",
+              "answer": true
+            }
+          ],
+          "explanation": "Global Administrator menguasai direktori, termasuk reset password dan memberi role Entra. Tapi tanpa Azure role atau elevate access, dia tidak punya akses ke resource Azure.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-entra-examples",
+            "az104-f-u02-global-no-azure",
+            "az104-f-u01-global-admin"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e5",
+          "type": "choice",
+          "concept": "entra-roles",
+          "prompt": "Which role lets a user manage Microsoft Entra users and groups, but gives no access to Azure resources?",
+          "options": [
+            "User Access Administrator",
+            "User Administrator",
+            "Contributor",
+            "Owner"
+          ],
+          "answer": 1,
+          "explanation": "Namanya mirip, tapi beda sistem. User Administrator adalah Microsoft Entra role untuk user dan group. User Access Administrator adalah Azure role untuk memberi akses ke resource Azure.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-entra-examples",
+            "az104-f-u02-uaa",
+            "az104-f-u02-contributor",
+            "az104-f-u02-owner",
+            "az104-f-u02-azure-vs-entra"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "elevate-access"
+          ],
+          "title": "Elevate access",
+          "body": "Kalau tidak ada lagi yang bisa mengelola akses sebuah subscription, Global Administrator bisa membuka Microsoft Entra ID > Properties dan menyalakan Access management for Azure resources. Hasilnya, dia mendapat role User Access Administrator di root scope (/), sehingga bisa memberi akses di semua subscription dan management group tenant itu. Toggle ini hanya tersedia untuk Global Administrator. Setelah selesai, matikan lagi.",
+          "keyPoints": [
+            "Hanya untuk Global Administrator",
+            "Memberi User Access Administrator di root scope (/)",
+            "Matikan lagi setelah selesai"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/elevate-access-global-admin",
+          "teaches": [
+            "az104-f-u02-elevate"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e6",
+          "type": "choice",
+          "concept": "elevate-access",
+          "prompt": "A subscription's only Owner left the company, and no one else can assign roles on it. You are a Global Administrator. What should you do first?",
+          "options": [
+            "Assign yourself the User Administrator role",
+            "Create a new subscription and move the resources to it",
+            "Turn on Access management for Azure resources, then assign a role on the subscription",
+            "Ask a Reader of the subscription to assign you the Owner role"
+          ],
+          "answer": 2,
+          "explanation": "Elevate access memberi Global Administrator role User Access Administrator di root scope, sehingga bisa memberi role di subscription itu. User Administrator hanya untuk direktori, dan Reader tidak bisa memberi role.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-elevate",
+            "az104-f-u02-entra-examples",
+            "az104-f-u02-reader"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e7",
+          "type": "truefalse",
+          "concept": "elevate-access",
+          "prompt": "After elevating access, a Global Administrator has the User Access Administrator role at root scope (/).",
+          "answer": true,
+          "explanation": "Benar. Role itu berlaku di semua subscription dan management group tenant, jadi matikan lagi setelah selesai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-elevate"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e8",
+          "type": "multi",
+          "concept": "elevate-access",
+          "prompt": "Which two statements about elevate access are true? Choose two.",
+          "options": [
+            "You should turn it off after you finish",
+            "It gives the Owner role on every resource group",
+            "It is on by default for every Global Administrator",
+            "Only a Global Administrator can turn it on"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Toggle-nya hanya untuk Global Administrator, memberi User Access Administrator (bukan Owner), dan secara default Global Administrator tidak punya akses Azure.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-elevate",
+            "az104-f-u02-global-no-azure"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-m4",
+          "type": "learn",
+          "concepts": [
+            "classic-admins"
+          ],
+          "title": "Role administrator klasik sudah pensiun",
+          "body": "Dulu subscription diatur dengan tiga role klasik: Account Administrator, Service Administrator, dan Co-Administrator. Role klasik ini sudah pensiun. Pemegang Service Administrator dan Co-Administrator yang tersisa otomatis diberi Owner di subscription, dan sejak Mei 2026 akses hanya diatur lewat Azure RBAC (Role-Based Access Control).",
+          "keyPoints": [
+            "Account Administrator, Service Administrator, Co-Administrator: pensiun",
+            "Sekarang hanya Azure RBAC",
+            "Pengganti Co-Administrator: Owner"
+          ],
+          "trap": "Soal lama kadang menawarkan Co-Administrator sebagai jawaban. Sekarang jawabannya selalu role Azure RBAC.",
+          "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles#classic-subscription-administrator-roles",
+          "teaches": [
+            "az104-f-u02-classic-retired"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e9",
+          "type": "truefalse",
+          "concept": "classic-admins",
+          "prompt": "You can still add a Co-Administrator to a subscription to give a user full access.",
+          "answer": false,
+          "explanation": "Salah. Role administrator klasik sudah pensiun. Untuk akses penuh ke subscription, pakai role Owner di Azure RBAC (Role-Based Access Control).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-classic-retired",
+            "az104-f-u02-owner"
+          ]
+        },
+        {
+          "id": "az104-u02-l4-e10",
+          "type": "fill",
+          "concept": "azure-vs-entra-roles",
+          "prompt": "Complete the sentence.",
+          "sentence": "Azure roles are assigned on the ___ page, and Microsoft Entra roles are assigned on the ___ page.",
+          "bank": [
+            "Access control (IAM)",
+            "Roles and administrators",
+            "Cost Management",
+            "Licenses"
+          ],
+          "answers": [
+            "Access control (IAM)",
+            "Roles and administrators"
+          ],
+          "explanation": "Azure role di Access control (IAM), Microsoft Entra role di Roles and administrators.",
+          "requires": [
+            "az104-f-u02-where-assigned"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u02-rbac-def",
+      "statement": "Azure RBAC (Role-Based Access Control) mengatur akses ke resource Azure. Akses diberikan dengan membuat role assignment, dan dicabut dengan menghapus role assignment itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview"
+    },
+    {
+      "id": "az104-f-u02-assignment-parts",
+      "statement": "Role assignment terdiri dari tiga bagian: security principal (user, group, service principal, atau managed identity), role definition (kumpulan izin), dan scope (tempat izin berlaku).",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview"
+    },
+    {
+      "id": "az104-f-u02-groups-best",
+      "statement": "Microsoft menyarankan memberi role ke group, bukan langsung ke user, supaya role assignment lebih mudah dikelola dan jumlahnya tidak mendekati batas per subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/best-practices#assign-roles-to-groups-not-users"
+    },
+    {
+      "id": "az104-f-u02-owner",
+      "statement": "Owner memberi akses penuh untuk mengelola semua resource, termasuk memberi role di Azure RBAC (Role-Based Access Control).",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner"
+    },
+    {
+      "id": "az104-f-u02-contributor",
+      "statement": "Contributor memberi akses penuh untuk mengelola semua resource, tapi tidak bisa memberi role di Azure RBAC (Role-Based Access Control).",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor"
+    },
+    {
+      "id": "az104-f-u02-reader",
+      "statement": "Reader bisa melihat semua resource, tapi tidak bisa mengubah apa pun.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#reader"
+    },
+    {
+      "id": "az104-f-u02-uaa",
+      "statement": "User Access Administrator bisa membaca semua resource dan memberi role di Azure RBAC (Role-Based Access Control), termasuk memberi role Owner ke dirinya sendiri atau orang lain. Role ini sendiri tidak berisi izin untuk mengubah resource.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-steps#privileged-administrator-roles"
+    },
+    {
+      "id": "az104-f-u02-rbac-admin",
+      "statement": "Role Based Access Control Administrator bisa memberi dan menghapus role assignment, tapi tidak bisa mengatur akses lewat cara lain seperti Azure Policy.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-steps#privileged-administrator-roles"
+    },
+    {
+      "id": "az104-f-u02-privileged",
+      "statement": "Owner, Contributor, User Access Administrator, dan Role Based Access Control Administrator termasuk privileged administrator roles. Microsoft menyarankan membatasinya, termasuk maksimal 3 Owner per subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/best-practices#limit-the-number-of-subscription-owners"
+    },
+    {
+      "id": "az104-f-u02-job-function",
+      "statement": "Job function roles mengatur resource tertentu, misalnya Virtual Machine Contributor untuk VM (virtual machine). Microsoft menyarankan mulai dari role paling sempit yang cukup.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-steps#job-function-roles"
+    },
+    {
+      "id": "az104-f-u02-vm-contributor",
+      "statement": "Virtual Machine Contributor bisa membuat dan mengelola VM (virtual machine) serta disk-nya, tapi tidak memberi akses mengelola virtual network atau storage account yang terhubung, dan tidak bisa memberi role.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#virtual-machine-contributor"
+    },
+    {
+      "id": "az104-f-u02-network-contributor",
+      "statement": "Network Contributor bisa mengelola jaringan, tapi tidak memberi izin men-deploy atau mengelola VM (virtual machine).",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#network-contributor"
+    },
+    {
+      "id": "az104-f-u02-scope-levels",
+      "statement": "Scope role assignment ada di empat level: management group, subscription, resource group, dan resource. Level yang lebih rendah mewarisi role dari level di atasnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview#scope-levels"
+    },
+    {
+      "id": "az104-f-u02-mg-scope",
+      "statement": "Role assignment di management group berlaku untuk subscription di dalamnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview"
+    },
+    {
+      "id": "az104-f-u02-least-priv",
+      "statement": "Praktik terbaik Azure RBAC (Role-Based Access Control) adalah least privilege: beri akses secukupnya, dan hindari role luas di scope luas walau lebih praktis. Kalau akun dibobol, resource yang terancam jadi lebih sedikit.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/best-practices#only-grant-the-access-users-need"
+    },
+    {
+      "id": "az104-f-u02-propagation",
+      "statement": "Perubahan role assignment bisa butuh sampai 10 menit untuk berlaku. Di portal, Azure PowerShell, atau Azure CLI (Command-Line Interface), sign out lalu sign in untuk memaksa refresh.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/troubleshooting"
+    },
+    {
+      "id": "az104-f-u02-cli-assign",
+      "statement": "Di Azure CLI (Command-Line Interface), role diberikan dengan az role assignment create memakai parameter --assignee, --role, dan --scope.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-cli"
+    },
+    {
+      "id": "az104-f-u02-scope-format",
+      "statement": "Di command line, scope ditulis sebagai path: /subscriptions/{subscriptionId} untuk subscription, /subscriptions/{subscriptionId}/resourceGroups/{nama} untuk resource group, dan /providers/Microsoft.Management/managementGroups/{nama} untuk management group.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview#scope-format"
+    },
+    {
+      "id": "az104-f-u02-additive",
+      "statement": "Azure RBAC (Role-Based Access Control) bersifat aditif: izin efektif adalah gabungan semua role assignment. Contributor di subscription ditambah Reader di sebuah resource group tetap berarti Contributor di resource group itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview#multiple-role-assignments"
+    },
+    {
+      "id": "az104-f-u02-deny",
+      "statement": "Deny assignment memblokir aksi walau ada role assignment yang mengizinkan, dan dicek lebih dulu. Kamu tidak bisa membuat deny assignment langsung; Azure yang membuat dan mengelolanya, misalnya lewat deny settings di deployment stack.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/deny-assignments"
+    },
+    {
+      "id": "az104-f-u02-check-access",
+      "statement": "Access control (IAM) > Check access menampilkan role assignment dan deny assignment seseorang di scope itu dan yang diwariskan ke scope itu. Assignment di scope anak tidak ditampilkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/check-access"
+    },
+    {
+      "id": "az104-f-u02-iam-inherited",
+      "statement": "Di tab Role assignments, kolom Scope menunjukkan This resource untuk assignment langsung dan (Inherited) untuk assignment yang diwariskan dari scope induk.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-list-portal"
+    },
+    {
+      "id": "az104-f-u02-assign-permission",
+      "statement": "Untuk memberi role, kamu butuh izin Microsoft.Authorization/roleAssignments/write di scope itu, misalnya lewat Role Based Access Control Administrator. Tanpa izin itu, opsi Add role assignment nonaktif.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-steps"
+    },
+    {
+      "id": "az104-f-u02-actions-notactions",
+      "statement": "Role definition memakai Actions dan NotActions untuk control plane, serta DataActions dan NotDataActions untuk data plane. Izin efektif sebuah role = Actions dikurangi NotActions (dan DataActions dikurangi NotDataActions).",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview#how-azure-rbac-determines-if-a-user-has-access-to-a-resource"
+    },
+    {
+      "id": "az104-f-u02-contributor-notactions",
+      "statement": "Contributor punya Actions * tapi NotActions-nya berisi Microsoft.Authorization/*/Write dan Microsoft.Authorization/*/Delete, sehingga tidak bisa membuat atau menghapus role assignment.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor"
+    },
+    {
+      "id": "az104-f-u02-control-data",
+      "statement": "Akses control plane tidak otomatis memberi akses data plane. Reader di subscription bisa melihat storage account, tapi secara default tidak bisa melihat datanya.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-definitions"
+    },
+    {
+      "id": "az104-f-u02-blob-data-roles",
+      "statement": "Storage Blob Data Reader bisa membaca dan melihat daftar container dan blob; Storage Blob Data Contributor bisa membaca, menulis, dan menghapusnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-reader"
+    },
+    {
+      "id": "az104-f-u02-azure-vs-entra",
+      "statement": "Azure roles mengatur izin untuk resource Azure, sedangkan Microsoft Entra roles mengatur izin untuk resource Microsoft Entra seperti user, group, dan domain. Secara default keduanya tidak saling mencakup.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles"
+    },
+    {
+      "id": "az104-f-u02-scope-diff",
+      "statement": "Scope Azure role: management group, subscription, resource group, atau resource. Scope Microsoft Entra role: tenant, administrative unit, atau satu objek.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles"
+    },
+    {
+      "id": "az104-f-u02-where-assigned",
+      "statement": "Azure role diberikan di halaman Access control (IAM). Microsoft Entra role dilihat dan diberikan di halaman Roles and administrators.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles"
+    },
+    {
+      "id": "az104-f-u02-entra-examples",
+      "statement": "Global Administrator bisa mengelola semua fitur administrasi Microsoft Entra ID, memberi role admin ke orang lain, dan me-reset password semua user. User Administrator membuat dan mengelola user dan group. Billing Administrator melakukan pembelian dan mengelola subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles"
+    },
+    {
+      "id": "az104-f-u02-global-no-azure",
+      "statement": "Secara default, Global Administrator tidak punya akses ke resource Azure.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles"
+    },
+    {
+      "id": "az104-f-u02-elevate",
+      "statement": "Global Administrator bisa menyalakan Access management for Azure resources di Microsoft Entra ID > Properties untuk mendapat User Access Administrator di root scope (/), sehingga bisa memberi akses di semua subscription dan management group tenant itu. Akses ini sebaiknya dimatikan lagi setelah selesai.",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/elevate-access-global-admin"
+    },
+    {
+      "id": "az104-f-u02-classic-retired",
+      "statement": "Role administrator klasik (Account Administrator, Service Administrator, Co-Administrator) sudah pensiun. Pemegang Service Administrator dan Co-Administrator yang tersisa otomatis diberi Owner di subscription, dan sejak Mei 2026 akses hanya diatur lewat Azure RBAC (Role-Based Access Control).",
+      "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/rbac-and-directory-admin-roles#classic-subscription-administrator-roles"
     }
   ]
 }

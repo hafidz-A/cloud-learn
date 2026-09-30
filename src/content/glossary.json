@@ -105,6 +105,11 @@
     "description": "Menulis infrastruktur sebagai kode, misalnya ARM template atau Bicep, supaya deployment bisa diulang dengan hasil sama."
   },
   {
+    "term": "IAM",
+    "expansion": "Identity and Access Management",
+    "description": "Halaman Access control (IAM) di portal Azure, tempat melihat, memberi, dan mengecek role Azure RBAC di sebuah scope."
+  },
+  {
     "term": "IP",
     "expansion": "Internet Protocol",
     "description": "Aturan pengalamatan di jaringan. Alamat IP menandai perangkat atau resource."
