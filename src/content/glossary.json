@@ -20,6 +20,11 @@
     "description": "Lapisan deployment dan manajemen Azure. Semua permintaan dari portal, CLI, PowerShell, dan template lewat ARM."
   },
   {
+    "term": "ASG",
+    "expansion": "Application Security Group",
+    "description": "Kelompok network interface VM berdasarkan peran aplikasinya. Nama ASG dipakai di aturan NSG sebagai pengganti alamat IP."
+  },
+  {
     "term": "AVD",
     "expansion": "Azure Virtual Desktop",
     "description": "Layanan desktop dan aplikasi Windows yang dijalankan di cloud dan diakses dari mana saja."
@@ -273,6 +278,11 @@
     "term": "TCP",
     "expansion": "Transmission Control Protocol",
     "description": "Protokol jaringan yang menjamin data sampai berurutan. Web biasa memakai TCP port 80 atau 443."
+  },
+  {
+    "term": "TLS",
+    "expansion": "Transport Layer Security",
+    "description": "Protokol enkripsi untuk koneksi jaringan, misalnya HTTPS. Azure Bastion memakai TLS di port 443."
   },
   {
     "term": "UDR",

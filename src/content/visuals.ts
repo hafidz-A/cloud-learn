@@ -57,6 +57,12 @@ export const VISUAL_CATALOG = {
   VNetAddressPlan: ['vnet-address-space', 'reserved-ips'],
   PeeringNonTransitive: ['peering-non-transitive'],
   UdrNextHop: ['udr', 'next-hop-types'],
+  // Unit 5
+  NsgRuleTable: ['nsg-rules', 'nsg-priority', 'nsg-default-rules'],
+  NsgEvaluationOrder: ['nsg-subnet-vs-nic'],
+  AsgTiers: ['asg'],
+  BastionArchitecture: ['bastion', 'bastion-subnet'],
+  ServiceVsPrivateEndpoint: ['service-endpoint', 'private-endpoint'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

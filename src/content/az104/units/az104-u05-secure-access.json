@@ -6,27 +6,1565 @@
     {
       "id": "az104-u05-l1",
       "title": "Aturan NSG",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u05-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "nsg-rules",
+            "nsg-priority"
+          ],
+          "title": "Aturan NSG",
+          "body": "NSG (network security group) berisi aturan allow atau deny berdasarkan sumber, port sumber, tujuan, port tujuan, dan protokol. NSG di-associate ke subnet atau network interface. Setiap aturan punya prioritas 100 sampai 4096. Angka kecil dicek lebih dulu, dan pemrosesan berhenti di aturan pertama yang cocok, jadi aturan berikutnya tidak dilihat lagi.",
+          "keyPoints": [
+            "Prioritas 100 sampai 4096",
+            "Angka kecil dicek dulu",
+            "Berhenti di aturan pertama yang cocok"
+          ],
+          "visual": "NsgRuleTable",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+          "teaches": [
+            "az104-f-u05-nsg-def",
+            "az104-f-u05-nsg-priority"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e1",
+          "type": "truefalse",
+          "concept": "nsg-priority",
+          "prompt": "NSG (network security group) rules with priority 100 are processed before rules with priority 200.",
+          "answer": true,
+          "explanation": "Benar. Angka prioritas kecil diproses lebih dulu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-priority"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e2",
+          "type": "choice",
+          "concept": "nsg-priority",
+          "prompt": "An NSG (network security group) has an inbound rule at priority 300 that allows TCP (Transmission Control Protocol) 3389, and an inbound rule at priority 200 that denies TCP 3389 from any source. What happens to inbound RDP (Remote Desktop Protocol) traffic?",
+          "options": [
+            "It is denied by the rule at priority 200",
+            "It is allowed by the rule at priority 300",
+            "It is allowed, because allow rules always win",
+            "It is denied only if no public IP (Internet Protocol) exists"
+          ],
+          "answer": 0,
+          "explanation": "Aturan 200 dicek lebih dulu dan cocok, jadi trafik ditolak dan aturan 300 tidak pernah dilihat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-priority"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "nsg-defaults"
+          ],
+          "title": "Aturan default",
+          "body": "Setiap NSG (network security group) punya aturan default dengan prioritas terendah. Arah masuk: AllowVNetInBound (65000), AllowAzureLoadBalancerInBound (65001), dan DenyAllInBound (65500). Arah keluar: AllowVnetOutBound, AllowInternetOutBound, dan DenyAllOutBound. Aturan default tidak bisa dihapus, tapi bisa dikalahkan oleh aturan buatan sendiri yang angkanya lebih kecil.",
+          "keyPoints": [
+            "Masuk dari internet ditolak DenyAllInBound",
+            "Keluar ke internet diizinkan secara default",
+            "Tidak bisa dihapus, bisa dikalahkan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview#default-security-rules",
+          "teaches": [
+            "az104-f-u05-default-in",
+            "az104-f-u05-default-out",
+            "az104-f-u05-default-fixed"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e3",
+          "type": "rules",
+          "concept": "nsg-defaults",
+          "prompt": "A user on the internet at 198.51.100.7 connects to vm1 on TCP (Transmission Control Protocol) 443. Based on the table, what happens?",
+          "tables": [
+            {
+              "title": "NSG inbound rules for vm1",
+              "columns": [
+                "Priority",
+                "Name",
+                "Source",
+                "Port",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "Allow-Office",
+                  "203.0.113.0/24",
+                  "443",
+                  "Allow"
+                ],
+                [
+                  "150",
+                  "Deny-Web",
+                  "Any",
+                  "443",
+                  "Deny"
+                ],
+                [
+                  "65000",
+                  "AllowVNetInBound",
+                  "VirtualNetwork",
+                  "Any",
+                  "Allow"
+                ],
+                [
+                  "65500",
+                  "DenyAllInBound",
+                  "Any",
+                  "Any",
+                  "Deny"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "It is denied by the rule at priority 150",
+            "It is allowed by the rule at priority 100",
+            "It is allowed by AllowVNetInBound",
+            "It is denied by DenyAllInBound only"
+          ],
+          "answer": 0,
+          "explanation": "198.51.100.7 tidak ada di 203.0.113.0/24, jadi aturan 100 tidak cocok. Aturan 150 cocok (sumber Any, port 443) dan menolaknya, sehingga aturan default tidak pernah dilihat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-priority",
+            "az104-f-u05-default-in"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e4",
+          "type": "multi",
+          "concept": "nsg-defaults",
+          "prompt": "Which two default inbound rules exist in every NSG (network security group)? Choose two.",
+          "options": [
+            "AllowAzureLoadBalancerInBound",
+            "DenyAllInBound",
+            "AllowInternetInBound",
+            "AllowRdpInBound"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Aturan default masuk adalah AllowVNetInBound, AllowAzureLoadBalancerInBound, dan DenyAllInBound. Tidak ada aturan default yang mengizinkan internet atau RDP (Remote Desktop Protocol) masuk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-default-in"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e5",
+          "type": "truefalse",
+          "concept": "nsg-defaults",
+          "prompt": "You can delete the DenyAllInBound default rule from an NSG (network security group).",
+          "answer": false,
+          "explanation": "Salah. Aturan default tidak bisa dihapus. Untuk mengizinkan trafik, buat aturan allow dengan prioritas lebih tinggi (angka lebih kecil).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-default-fixed"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "nsg-stateful"
+          ],
+          "title": "NSG bersifat stateful",
+          "body": "NSG (network security group) mencatat koneksi yang sedang berjalan. Kalau trafik keluar ke port 443 diizinkan, balasannya otomatis diizinkan masuk tanpa aturan tambahan. Menghapus aturan juga tidak memutus koneksi yang sudah ada, karena aturan baru atau yang diubah hanya berlaku untuk koneksi baru.",
+          "keyPoints": [
+            "Balasan koneksi otomatis diizinkan",
+            "Aturan hanya berlaku untuk koneksi baru",
+            "Koneksi lama tidak terputus saat aturan dihapus"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview#security-rules",
+          "teaches": [
+            "az104-f-u05-nsg-stateful"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e6",
+          "type": "choice",
+          "concept": "nsg-stateful",
+          "prompt": "An NSG (network security group) allows outbound TCP (Transmission Control Protocol) 443 from vm1 to the internet. There is no inbound rule for the replies. What happens to the replies?",
+          "options": [
+            "They are blocked by DenyAllInBound",
+            "They are allowed, because NSGs are stateful",
+            "They need an inbound rule for TCP 443",
+            "They are allowed only if vm1 has a public IP (Internet Protocol) address"
+          ],
+          "answer": 1,
+          "explanation": "NSG (network security group) stateful: balasan dari koneksi yang diizinkan otomatis ikut diizinkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-stateful"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e7",
+          "type": "truefalse",
+          "concept": "nsg-stateful",
+          "prompt": "When you delete an NSG (network security group) rule that allowed a connection, the existing connection is dropped immediately.",
+          "answer": false,
+          "explanation": "Salah. Koneksi yang sudah ada tetap berjalan. Perubahan aturan hanya berlaku untuk koneksi baru.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-stateful"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "service-tags"
+          ],
+          "title": "Service tag",
+          "body": "Service tag mewakili kumpulan alamat IP (Internet Protocol) sebuah layanan Azure, misalnya Internet, VirtualNetwork, AzureLoadBalancer, atau Storage. Microsoft yang memperbarui daftar alamatnya, jadi aturanmu tetap benar walau alamat layanan berubah. Sebagian tag bisa dibatasi per region, misalnya Storage.WestUS. Tag VirtualNetwork mencakup VNet (virtual network)-mu, VNet yang di-peering, dan on-premises yang terhubung.",
+          "keyPoints": [
+            "Pengganti daftar IP yang dikelola Microsoft",
+            "Bisa per region, misalnya Storage.WestUS",
+            "VirtualNetwork termasuk peering dan on-premises"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/service-tags-overview",
+          "teaches": [
+            "az104-f-u05-service-tags",
+            "az104-f-u05-vnet-tag"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e8",
+          "type": "choice",
+          "concept": "service-tags",
+          "prompt": "Outbound traffic from a subnet must reach only Azure Storage in the West US region. The rule must stay correct when Microsoft changes the storage IP (Internet Protocol) ranges. What should you use as the destination of the rule?",
+          "options": [
+            "The service tag Storage.WestUS",
+            "A list of the current storage IP ranges",
+            "The service tag Internet",
+            "The service tag VirtualNetwork"
+          ],
+          "answer": 0,
+          "explanation": "Storage.WestUS hanya berisi alamat Storage di West US, dan Microsoft memperbaruinya otomatis. Daftar IP (Internet Protocol) manual bisa basi, Internet terlalu luas, dan VirtualNetwork tidak berisi Storage.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-service-tags",
+            "az104-f-u05-vnet-tag"
+          ]
+        },
+        {
+          "id": "az104-u05-l1-e9",
+          "type": "fill",
+          "concept": "nsg-priority",
+          "prompt": "Complete the sentence.",
+          "sentence": "NSG (network security group) rule priorities range from ___ to 4096, and the ___ number is processed first.",
+          "bank": [
+            "100",
+            "1",
+            "lowest",
+            "highest"
+          ],
+          "answers": [
+            "100",
+            "lowest"
+          ],
+          "explanation": "Prioritas 100 sampai 4096, dan angka terkecil diproses lebih dulu.",
+          "requires": [
+            "az104-f-u05-nsg-priority"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u05-l2",
       "title": "NSG di subnet dan NIC",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u05-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "nsg-subnet-vs-nic"
+          ],
+          "title": "NSG di subnet dan di network interface",
+          "body": "Sebuah VM (virtual machine) bisa kena dua NSG (network security group): di subnet dan di network interface. Untuk trafik masuk, NSG subnet dicek dulu, lalu NSG network interface. Untuk trafik keluar, urutannya dibalik. Trafik harus diizinkan keduanya; kalau ditolak di NSG pertama, NSG kedua tidak pernah melihatnya. Kalau hanya salah satu yang punya NSG, hanya NSG itu yang menentukan.",
+          "keyPoints": [
+            "Masuk: subnet, lalu network interface",
+            "Keluar: network interface, lalu subnet",
+            "Keduanya harus mengizinkan"
+          ],
+          "visual": "NsgEvaluationOrder",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-group-how-it-works",
+          "teaches": [
+            "az104-f-u05-nsg-order",
+            "az104-f-u05-nsg-one-side"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-e1",
+          "type": "rules",
+          "concept": "nsg-subnet-vs-nic",
+          "prompt": "A user on the internet connects to web1 on TCP (Transmission Control Protocol) 80. Based on the tables, what happens?",
+          "tables": [
+            {
+              "title": "NSG on snet-web (inbound)",
+              "columns": [
+                "Priority",
+                "Port",
+                "Source",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "80",
+                  "Any",
+                  "Allow"
+                ],
+                [
+                  "65500",
+                  "Any",
+                  "Any",
+                  "Deny"
+                ]
+              ]
+            },
+            {
+              "title": "NSG on the network interface of web1 (inbound)",
+              "columns": [
+                "Priority",
+                "Port",
+                "Source",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "443",
+                  "Any",
+                  "Allow"
+                ],
+                [
+                  "65500",
+                  "Any",
+                  "Any",
+                  "Deny"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "It is allowed, because the subnet NSG (network security group) allows port 80",
+            "It is denied by the subnet NSG",
+            "It is denied by the NSG on the network interface",
+            "It is allowed, because web1 is in snet-web"
+          ],
+          "answer": 2,
+          "explanation": "NSG (network security group) subnet mengizinkan port 80, lalu NSG network interface memeriksanya. Di sana port 80 tidak diizinkan, jadi DenyAllInBound menolaknya. Trafik masuk harus diizinkan keduanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-order"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-e2",
+          "type": "rules",
+          "concept": "nsg-subnet-vs-nic",
+          "prompt": "A user on the internet connects to web1 on TCP (Transmission Control Protocol) 443. Based on the tables, what happens?",
+          "tables": [
+            {
+              "title": "NSG on snet-web (inbound)",
+              "columns": [
+                "Priority",
+                "Port",
+                "Source",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "80",
+                  "Any",
+                  "Allow"
+                ],
+                [
+                  "65500",
+                  "Any",
+                  "Any",
+                  "Deny"
+                ]
+              ]
+            },
+            {
+              "title": "NSG on the network interface of web1 (inbound)",
+              "columns": [
+                "Priority",
+                "Port",
+                "Source",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "443",
+                  "Any",
+                  "Allow"
+                ],
+                [
+                  "65500",
+                  "Any",
+                  "Any",
+                  "Deny"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "It is denied by the subnet NSG (network security group), so the network interface NSG never sees it",
+            "It is allowed by the NSG on the network interface",
+            "It is allowed, because one NSG is enough",
+            "It is denied by the NSG on the network interface"
+          ],
+          "answer": 0,
+          "explanation": "Trafik masuk dicek NSG (network security group) subnet dulu. Port 443 tidak diizinkan di sana, jadi langsung ditolak, dan NSG network interface tidak sempat melihatnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-order"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-e3",
+          "type": "truefalse",
+          "concept": "nsg-subnet-vs-nic",
+          "prompt": "For outbound traffic, Azure processes the NSG (network security group) on the network interface before the NSG on the subnet.",
+          "answer": true,
+          "explanation": "Benar. Keluar: network interface dulu, lalu subnet. Masuk: subnet dulu, lalu network interface.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-order"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "nsg-placement"
+          ],
+          "title": "Di mana memasang NSG",
+          "body": "NSG (network security group) di subnet berlaku untuk semua resource di subnet itu, termasuk trafik antar-VM (virtual machine) di subnet yang sama. Microsoft menyarankan memasang NSG di subnet atau di network interface saja, bukan keduanya, karena dua lapis aturan mudah saling bentrok dan sulit dilacak.",
+          "keyPoints": [
+            "NSG subnet juga mengatur trafik dalam subnet",
+            "Pilih subnet atau network interface",
+            "Hindari memasang di keduanya"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-group-how-it-works#intra-subnet-traffic",
+          "teaches": [
+            "az104-f-u05-nsg-subnet-all",
+            "az104-f-u05-nsg-avoid-both"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-e4",
+          "type": "yesno",
+          "concept": "nsg-placement",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "The NSG (network security group) on snet-app has an inbound rule at priority 100 that denies all traffic from VirtualNetwork. vm1 and vm2 are both in snet-app, and their network interfaces have no NSG.",
+          "statements": [
+            {
+              "text": "vm2 can still reach vm1, because they are in the same subnet.",
+              "answer": false
+            },
+            {
+              "text": "The NSG on snet-app also applies to traffic between vm1 and vm2.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft recommends also adding an NSG to each network interface.",
+              "answer": false
+            }
+          ],
+          "explanation": "NSG (network security group) di subnet juga mengatur trafik antar-VM (virtual machine) di subnet itu, jadi aturan deny ikut memblokir vm2 ke vm1. Microsoft menyarankan satu lapis NSG saja.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-subnet-all",
+            "az104-f-u05-nsg-avoid-both"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-e5",
+          "type": "choice",
+          "concept": "nsg-placement",
+          "prompt": "vm3's subnet has no NSG (network security group). The network interface of vm3 has an NSG that allows inbound TCP (Transmission Control Protocol) 22. Which NSG decides whether SSH (Secure Shell) to vm3 is allowed?",
+          "options": [
+            "Only the NSG on the network interface",
+            "Both, and the missing subnet NSG denies everything",
+            "Only the default rules of the virtual network",
+            "None, because a subnet without an NSG blocks all traffic"
+          ],
+          "answer": 0,
+          "explanation": "Kalau hanya network interface yang punya NSG (network security group), hanya NSG itu yang menentukan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-one-side"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "effective-security-rules"
+          ],
+          "title": "Cara mendiagnosis dua lapis NSG",
+          "body": "Saat VM (virtual machine) tidak bisa dijangkau, jangan menebak lapis mana yang menolak. Buka Effective security rules di network interface-nya untuk melihat aturan dari NSG (network security group) subnet dan network interface sekaligus. Lalu jalankan IP (Internet Protocol) flow verify untuk trafik yang bermasalah. Hasilnya menyebut aturan dan NSG yang menolak, dari lapis mana pun.",
+          "keyPoints": [
+            "Effective security rules: semua lapis sekaligus",
+            "IP flow verify: aturan yang memutuskan",
+            "Perbaiki NSG yang disebut hasilnya"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/network-watcher/ip-flow-verify-overview",
+          "teaches": [
+            "az104-f-u04-effective-rules",
+            "az104-f-u04-ip-flow-verify",
+            "az104-f-u05-ipflow-both"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-e6",
+          "type": "fix",
+          "concept": "effective-security-rules",
+          "prompt": "Users can't open the site on web1 over HTTPS (TCP (Transmission Control Protocol) 443). Based on the effective security rules, what should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "Effective security rules · web1",
+            "message": "Inbound. nsg-subnet: 100 Allow TCP 80, 65500 DenyAllInBound. nsg-web1-nic: 100 Allow TCP 443, 65500 DenyAllInBound."
+          },
+          "options": [
+            "Allow inbound TCP 443 in nsg-subnet",
+            "Allow inbound TCP 443 in nsg-web1-nic",
+            "Delete DenyAllInBound from both NSGs (network security groups)",
+            "Restart web1"
+          ],
+          "answer": 0,
+          "explanation": "Trafik masuk dicek NSG (network security group) subnet dulu, dan nsg-subnet hanya mengizinkan port 80, jadi 443 ditolak di sana. NSG network interface sudah mengizinkan 443. Aturan default tidak bisa dihapus.",
+          "requires": [
+            "az104-f-u05-nsg-order",
+            "az104-f-u04-effective-rules",
+            "az104-f-u05-default-fixed"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-e7",
+          "type": "choice",
+          "concept": "effective-security-rules",
+          "prompt": "Which tool shows the combined rules of the subnet NSG (network security group) and the network interface NSG that apply to vm1?",
+          "options": [
+            "Next hop",
+            "Azure Advisor",
+            "Cost Management budgets",
+            "Effective security rules"
+          ],
+          "answer": 3,
+          "explanation": "Effective security rules menampilkan gabungan aturan yang berlaku di network interface, dari semua NSG (network security group).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-effective-rules"
+          ]
+        },
+        {
+          "id": "az104-u05-l2-e8",
+          "type": "truefalse",
+          "concept": "effective-security-rules",
+          "prompt": "IP (Internet Protocol) flow verify checks the rules of the NSGs (network security groups) on both the subnet and the network interface of a VM (virtual machine).",
+          "answer": true,
+          "explanation": "Benar. IP (Internet Protocol) flow verify melihat semua NSG (network security group) yang berlaku untuk network interface VM (virtual machine), di subnet maupun di network interface.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-ipflow-both"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u05-l3",
       "title": "Application security group",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u05-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "asg"
+          ],
+          "title": "Application security group",
+          "body": "ASG (application security group) mengelompokkan network interface VM (virtual machine) sesuai perannya, misalnya AsgWeb, AsgLogic, dan AsgDb. Aturan NSG (network security group) lalu memakai nama ASG sebagai sumber atau tujuan, tanpa menulis alamat IP (Internet Protocol). Satu network interface boleh masuk beberapa ASG. VM baru cukup dimasukkan ke ASG yang tepat, dan aturannya langsung berlaku.",
+          "keyPoints": [
+            "Kelompok network interface per peran",
+            "Aturan memakai nama ASG, bukan IP",
+            "VM baru cukup masuk ASG"
+          ],
+          "visual": "AsgTiers",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups",
+          "teaches": [
+            "az104-f-u05-asg-def",
+            "az104-f-u05-asg-members"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-e1",
+          "type": "truefalse",
+          "concept": "asg",
+          "prompt": "An application security group contains the network interfaces of VMs (virtual machines), not IP (Internet Protocol) address ranges.",
+          "answer": true,
+          "explanation": "Benar. Anggota ASG (application security group) adalah network interface, dan alamat IP (Internet Protocol)-nya diurus platform.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-asg-members"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-e2",
+          "type": "choice",
+          "concept": "asg",
+          "prompt": "The web tier grows from 2 to 20 VMs (virtual machines). What is the simplest way to keep the NSG (network security group) rules for the web tier correct?",
+          "options": [
+            "Add a rule with the IP (Internet Protocol) address of each new VM",
+            "Add each new VM's network interface to AsgWeb",
+            "Create a separate NSG for each new VM",
+            "Use the service tag VirtualNetwork in every rule"
+          ],
+          "answer": 1,
+          "explanation": "Aturan yang memakai AsgWeb otomatis berlaku untuk anggota baru. Menulis IP (Internet Protocol) satu per satu justru hal yang ingin dihindari ASG (application security group).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-asg-def",
+            "az104-f-u05-asg-members"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "asg-rules"
+          ],
+          "title": "Aturan dengan ASG",
+          "body": "Aturan yang menyebut sebuah ASG (application security group) hanya berlaku untuk network interface anggotanya. Perhatikan aturan default AllowVNetInBound, yang mengizinkan semua trafik di dalam VNet (virtual network). Karena itu, untuk melindungi database, izinkan AsgLogic ke AsgDb di port 1433 dengan prioritas lebih tinggi, lalu tolak semua sumber lain ke AsgDb.",
+          "keyPoints": [
+            "Berlaku hanya untuk anggota ASG",
+            "AllowVNetInBound mengizinkan semua trafik VNet",
+            "Izinkan yang boleh, lalu tolak sisanya"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups",
+          "teaches": [
+            "az104-f-u05-asg-apply",
+            "az104-f-u05-asg-pattern"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-e3",
+          "type": "config",
+          "concept": "asg-rules",
+          "prompt": "Allow the business logic tier (AsgLogic) to reach the database tier (AsgDb) on TCP (Transmission Control Protocol) 1433, without writing any IP (Internet Protocol) addresses. Use priority 150, so the rule runs before the rule at 200 that denies all traffic to AsgDb.",
+          "blade": "nsg-app > Add inbound security rule",
+          "fields": [
+            {
+              "label": "Source",
+              "kind": "select",
+              "choices": [
+                "Any",
+                "IP Addresses",
+                "Service Tag",
+                "Application security group"
+              ],
+              "value": "Any"
+            },
+            {
+              "label": "Source application security groups",
+              "kind": "select",
+              "choices": [
+                "AsgWeb",
+                "AsgLogic",
+                "AsgDb"
+              ],
+              "value": "AsgWeb"
+            },
+            {
+              "label": "Destination",
+              "kind": "select",
+              "choices": [
+                "Any",
+                "IP Addresses",
+                "Application security group"
+              ],
+              "value": "Any"
+            },
+            {
+              "label": "Destination application security groups",
+              "kind": "select",
+              "choices": [
+                "AsgWeb",
+                "AsgLogic",
+                "AsgDb"
+              ],
+              "value": "AsgWeb"
+            },
+            {
+              "label": "Destination port ranges",
+              "kind": "select",
+              "choices": [
+                "80",
+                "443",
+                "1433",
+                "3389"
+              ],
+              "value": "80"
+            },
+            {
+              "label": "Protocol",
+              "kind": "select",
+              "choices": [
+                "Any",
+                "TCP",
+                "UDP"
+              ],
+              "value": "Any"
+            },
+            {
+              "label": "Action",
+              "kind": "select",
+              "choices": [
+                "Allow",
+                "Deny"
+              ],
+              "value": "Deny"
+            },
+            {
+              "label": "Priority",
+              "kind": "number",
+              "value": 300,
+              "min": 100,
+              "max": 4096,
+              "step": 50
+            }
+          ],
+          "answer": {
+            "Source": "Application security group",
+            "Source application security groups": "AsgLogic",
+            "Destination": "Application security group",
+            "Destination application security groups": "AsgDb",
+            "Destination port ranges": "1433",
+            "Protocol": "TCP",
+            "Action": "Allow",
+            "Priority": 150
+          },
+          "explanation": "Sumber dan tujuan memakai ASG (application security group), port 1433 dengan TCP (Transmission Control Protocol), aksi Allow, dan prioritas 150 supaya dicek sebelum aturan deny di 200.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-asg-def",
+            "az104-f-u05-asg-pattern",
+            "az104-f-u05-nsg-priority"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-e4",
+          "type": "yesno",
+          "concept": "asg-rules",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An NSG (network security group) has these inbound rules: 100 allows Internet to AsgWeb on TCP (Transmission Control Protocol) 80; 110 allows AsgLogic to AsgDb on TCP 1433; 120 denies Any to AsgDb on port 1433. The default rules also apply.",
+          "statements": [
+            {
+              "text": "A VM (virtual machine) in AsgWeb can connect to AsgDb on port 1433.",
+              "answer": false
+            },
+            {
+              "text": "A VM in AsgLogic can connect to AsgDb on port 1433.",
+              "answer": true
+            },
+            {
+              "text": "Users on the internet can reach AsgLogic on port 80.",
+              "answer": false
+            }
+          ],
+          "explanation": "AsgWeb ke AsgDb cocok dengan aturan 120 dan ditolak sebelum AllowVNetInBound. AsgLogic cocok dengan 110. Internet ke AsgLogic tidak diizinkan aturan mana pun, jadi DenyAllInBound menolaknya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-asg-pattern",
+            "az104-f-u05-default-in",
+            "az104-f-u05-nsg-priority"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-e5",
+          "type": "truefalse",
+          "concept": "asg-rules",
+          "prompt": "An NSG (network security group) rule that names AsgDb as its destination also applies to network interfaces that are not members of AsgDb.",
+          "answer": false,
+          "explanation": "Salah. Aturan yang menyebut ASG (application security group) hanya berlaku untuk network interface anggota ASG itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-asg-apply"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "asg-limits"
+          ],
+          "title": "Batasan ASG",
+          "body": "Semua network interface di satu ASG (application security group) harus berada di VNet (virtual network) yang sama dengan anggota pertamanya. Kalau sebuah aturan memakai ASG sebagai sumber sekaligus tujuan, kedua ASG itu juga harus di VNet yang sama. Untuk VNet lain, buat ASG sendiri atau pakai alamat IP (Internet Protocol) dan service tag.",
+          "keyPoints": [
+            "Satu ASG, satu VNet",
+            "Sumber dan tujuan ASG di VNet yang sama",
+            "VNet lain: ASG lain"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups#constraints",
+          "teaches": [
+            "az104-f-u05-asg-same-vnet"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-e6",
+          "type": "choice",
+          "concept": "asg-limits",
+          "prompt": "AsgWeb already contains a network interface in VNet1. You try to add the network interface of a VM (virtual machine) in VNet2. What happens?",
+          "options": [
+            "It works, because VNet1 and VNet2 are peered",
+            "It fails, because all members must be in the same virtual network as the first member",
+            "It works if both VNets (virtual networks) are in the same region",
+            "It moves the VM to VNet1"
+          ],
+          "answer": 1,
+          "explanation": "Anggota satu ASG (application security group) harus di VNet (virtual network) yang sama dengan anggota pertamanya, apa pun hubungan antar-VNet-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-asg-same-vnet"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-e7",
+          "type": "multi",
+          "concept": "asg-limits",
+          "prompt": "Which two statements about application security groups are true? Choose two.",
+          "options": [
+            "A network interface can be a member of more than one ASG (application security group)",
+            "An ASG can be the source or destination of an NSG (network security group) rule",
+            "An ASG can contain IP (Internet Protocol) address ranges",
+            "An ASG can contain network interfaces from several VNets (virtual networks)"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Anggota ASG (application security group) adalah network interface dari satu VNet (virtual network), dan satu network interface boleh masuk beberapa ASG.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-asg-members",
+            "az104-f-u05-asg-def",
+            "az104-f-u05-asg-same-vnet"
+          ]
+        },
+        {
+          "id": "az104-u05-l3-e8",
+          "type": "fill",
+          "concept": "asg",
+          "prompt": "Complete the sentence.",
+          "sentence": "Group network interfaces into an ___ and use its name in ___ rules instead of IP (Internet Protocol) addresses.",
+          "bank": [
+            "application security group",
+            "NSG (network security group)",
+            "route table",
+            "service tag"
+          ],
+          "answers": [
+            "application security group",
+            "NSG (network security group)"
+          ],
+          "explanation": "ASG (application security group) dipakai di aturan NSG (network security group) sebagai pengganti alamat IP (Internet Protocol).",
+          "requires": [
+            "az104-f-u05-asg-def"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u05-l4",
       "title": "Azure Bastion",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u05-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "bastion"
+          ],
+          "title": "Azure Bastion",
+          "body": "Azure Bastion membuka koneksi RDP (Remote Desktop Protocol) atau SSH (Secure Shell) ke VM (virtual machine) dari portal lewat TLS (Transport Layer Security) di port 443. Port RDP dan SSH tidak perlu dibuka ke internet. VM tujuan juga tidak butuh public IP (Internet Protocol), karena Bastion menyambung lewat IP privatnya. Tidak ada agen yang perlu dipasang.",
+          "keyPoints": [
+            "RDP dan SSH lewat 443 dari browser",
+            "VM tanpa public IP",
+            "Tanpa agen"
+          ],
+          "visual": "BastionArchitecture",
+          "link": "https://learn.microsoft.com/en-us/azure/bastion/bastion-overview",
+          "teaches": [
+            "az104-f-u05-bastion-def"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e1",
+          "type": "truefalse",
+          "concept": "bastion",
+          "prompt": "To connect through Azure Bastion, the target VM (virtual machine) needs a public IP (Internet Protocol) address.",
+          "answer": false,
+          "explanation": "Salah. Bastion menyambung ke VM (virtual machine) lewat IP (Internet Protocol) privatnya, jadi VM tidak butuh public IP.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-def"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e2",
+          "type": "choice",
+          "concept": "bastion",
+          "prompt": "Admins must connect to VMs (virtual machines) by RDP (Remote Desktop Protocol) without exposing port 3389 to the internet and without public IP (Internet Protocol) addresses on the VMs. What should you deploy?",
+          "options": [
+            "Azure Bastion",
+            "A public IP on each VM, with an NSG (network security group) rule for port 3389",
+            "A NAT (network address translation) gateway",
+            "A route table with the next hop Internet"
+          ],
+          "answer": 0,
+          "explanation": "Bastion memberi RDP (Remote Desktop Protocol) lewat port 443 ke IP (Internet Protocol) privat VM (virtual machine). Public IP dan aturan 3389 justru membuka port ke internet, dan NAT (network address translation) gateway hanya untuk trafik keluar.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-def",
+            "az104-f-u04-private-subnet"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "bastion-requirements"
+          ],
+          "title": "Syarat subnet dan public IP",
+          "body": "Selain SKU (stock-keeping unit) Developer, Bastion butuh subnet bernama persis AzureBastionSubnet. Ukurannya /26 atau lebih besar, letaknya di VNet (virtual network) dan resource group yang sama dengan Bastion, dan subnet itu tidak boleh berisi resource lain. UDR (user-defined route) tidak didukung di subnet itu. Bastion juga butuh public IP (Internet Protocol) Standard dengan alokasi static, kecuali deployment Private-only di SKU Premium.",
+          "keyPoints": [
+            "Nama wajib AzureBastionSubnet",
+            "/26 atau lebih besar, tanpa resource lain",
+            "Public IP Standard static"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/bastion/configuration-settings",
+          "teaches": [
+            "az104-f-u05-bastion-subnet",
+            "az104-f-u05-bastion-udr",
+            "az104-f-u05-bastion-pip"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e3",
+          "type": "fix",
+          "concept": "bastion-requirements",
+          "prompt": "You deploy Azure Bastion with the Standard SKU (stock-keeping unit) into the subnet shown, and the deployment fails. What should you do?",
+          "scene": {
+            "kind": "error",
+            "title": "Deployment failed",
+            "message": "Validation failed for subnet 'BastionSubnet' (10.0.5.0/27)."
+          },
+          "options": [
+            "Create a subnet named AzureBastionSubnet with a /26 or larger range, and deploy there",
+            "Rename the subnet to BastionSubnet01",
+            "Use a /28 subnet instead",
+            "Associate a route table with the subnet"
+          ],
+          "answer": 0,
+          "explanation": "Subnet-nya salah nama dan terlalu kecil. Bastion (selain Developer) butuh subnet bernama AzureBastionSubnet berukuran /26 atau lebih besar. UDR (user-defined route) tidak didukung di subnet itu.",
+          "requires": [
+            "az104-f-u05-bastion-subnet",
+            "az104-f-u05-bastion-udr"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e4",
+          "type": "multi",
+          "concept": "bastion-requirements",
+          "prompt": "Which two are requirements for AzureBastionSubnet when you deploy the Standard SKU (stock-keeping unit)? Choose two.",
+          "options": [
+            "It can't contain other resources",
+            "It needs a route table with a default route",
+            "It must be /26 or larger",
+            "It can be in a different virtual network from the Bastion host"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "AzureBastionSubnet harus /26 atau lebih besar, hanya untuk Bastion, dan berada di VNet (virtual network) yang sama. Route table (UDR) justru tidak didukung.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-subnet",
+            "az104-f-u05-bastion-udr"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e5",
+          "type": "truefalse",
+          "concept": "bastion-requirements",
+          "prompt": "The public IP (Internet Protocol) address of an Azure Bastion Standard host can use dynamic allocation.",
+          "answer": false,
+          "explanation": "Salah. Bastion butuh public IP (Internet Protocol) SKU (stock-keeping unit) Standard dengan alokasi static.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-pip",
+            "az104-f-u04-standard-static"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "bastion-skus"
+          ],
+          "title": "SKU Bastion",
+          "body": "Bastion punya empat SKU (stock-keeping unit). Developer gratis dan memakai infrastruktur bersama, tapi hanya satu VM (virtual machine) dalam satu waktu, di region tertentu, dan bukan untuk production. Basic memberi host khusus dengan 2 instance tetap. Standard menambah host scaling (2 sampai 50 instance), native client, custom port, shareable link, dan file transfer. Premium menambah session recording dan deployment Private-only.",
+          "keyPoints": [
+            "Developer: gratis, satu VM, untuk uji coba",
+            "Standard: scaling, native client, file transfer",
+            "Premium: session recording, Private-only"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/bastion/bastion-sku-comparison",
+          "teaches": [
+            "az104-f-u05-bastion-skus",
+            "az104-f-u05-bastion-developer"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e6",
+          "type": "rules",
+          "concept": "bastion-skus",
+          "prompt": "Based on the requirements, which Bastion SKU (stock-keeping unit) should you choose?",
+          "tables": [
+            {
+              "title": "Requirements",
+              "columns": [
+                "Requirement",
+                "Value"
+              ],
+              "rows": [
+                [
+                  "Cost",
+                  "Free"
+                ],
+                [
+                  "Target",
+                  "One Linux test VM, one session at a time"
+                ],
+                [
+                  "Region",
+                  "Supported for the Developer SKU"
+                ],
+                [
+                  "Environment",
+                  "Development and testing only"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Basic",
+            "Standard",
+            "Developer",
+            "Premium"
+          ],
+          "answer": 2,
+          "explanation": "Developer gratis, satu VM (virtual machine) dalam satu waktu, dan memang untuk development dan testing. SKU (stock-keeping unit) lain berbayar.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-skus",
+            "az104-f-u05-bastion-developer"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e7",
+          "type": "choice",
+          "concept": "bastion-skus",
+          "prompt": "Admins must connect with the native RDP (Remote Desktop Protocol) client on their own computers and upload files to the VMs (virtual machines). Which is the lowest Bastion SKU (stock-keeping unit) that supports this?",
+          "options": [
+            "Standard",
+            "Basic",
+            "Developer",
+            "Premium"
+          ],
+          "answer": 0,
+          "explanation": "Native client dan file transfer mulai tersedia di Standard. Premium juga bisa, tapi lebih tinggi dari yang dibutuhkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-skus"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e8",
+          "type": "choice",
+          "concept": "bastion-skus",
+          "prompt": "Every Bastion session must be recorded for compliance. Which SKU (stock-keeping unit) should you choose?",
+          "options": [
+            "Standard",
+            "Basic",
+            "Premium",
+            "Developer"
+          ],
+          "answer": 2,
+          "explanation": "Session recording hanya ada di Premium.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-skus"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-m4",
+          "type": "learn",
+          "concepts": [
+            "bastion-sku-changes"
+          ],
+          "title": "Peering dan upgrade",
+          "body": "Bastion Basic ke atas bisa menyambung ke VM (virtual machine) di VNet (virtual network) yang di-peering, jadi satu Bastion bisa melayani beberapa VNet. Developer tidak mendukung peering. SKU (stock-keeping unit) bisa di-upgrade dari portal, tapi tidak bisa di-downgrade; untuk turun SKU, Bastion harus dihapus lalu dibuat ulang.",
+          "keyPoints": [
+            "Basic ke atas: VM di VNet peering",
+            "Developer: tanpa peering",
+            "Upgrade bisa, downgrade tidak"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/bastion/bastion-sku-comparison",
+          "teaches": [
+            "az104-f-u05-bastion-peering",
+            "az104-f-u05-bastion-upgrade"
+          ]
+        },
+        {
+          "id": "az104-u05-l4-e9",
+          "type": "yesno",
+          "concept": "bastion-sku-changes",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Bastion Developer is deployed for VNet (virtual network)-A. VNet-A is peered with VNet-B.",
+          "statements": [
+            {
+              "text": "Bastion Developer can connect to VMs (virtual machines) in VNet-B.",
+              "answer": false
+            },
+            {
+              "text": "After an upgrade to Basic, Bastion can connect to VMs in peered VNets.",
+              "answer": true
+            },
+            {
+              "text": "Later, you can downgrade Bastion from Standard to Basic without recreating it.",
+              "answer": false
+            }
+          ],
+          "explanation": "Developer tidak mendukung peering, Basic ke atas mendukung. Downgrade SKU (stock-keeping unit) tidak didukung, jadi Bastion harus dibuat ulang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-peering",
+            "az104-f-u05-bastion-developer",
+            "az104-f-u05-bastion-upgrade"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u05-l5",
       "title": "Service endpoint vs private endpoint",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u05-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "service-endpoint",
+            "private-endpoint"
+          ],
+          "title": "Service endpoint vs private endpoint",
+          "body": "Service endpoint diaktifkan per subnet. Trafik ke layanan seperti Storage lewat backbone Azure dengan IP (Internet Protocol) privat sebagai sumber, tapi layanan tetap memakai alamat publiknya dan DNS (Domain Name System)-nya tidak berubah. Service endpoint juga tidak berlaku dari on-premises. Private endpoint berbeda: network interface dengan IP privat di subnet-mu yang menuju satu resource tertentu lewat Private Link.",
+          "keyPoints": [
+            "Service endpoint: per subnet, layanan tetap publik",
+            "Private endpoint: IP privat untuk satu resource",
+            "Service endpoint tidak untuk on-premises"
+          ],
+          "visual": "ServiceVsPrivateEndpoint",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview",
+          "teaches": [
+            "az104-f-u05-se-def",
+            "az104-f-u05-se-limits",
+            "az104-f-u05-pe-def"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e1",
+          "type": "truefalse",
+          "concept": "service-endpoint",
+          "prompt": "With a service endpoint, the storage account gets a private IP (Internet Protocol) address in your virtual network.",
+          "answer": false,
+          "explanation": "Salah. Dengan service endpoint, layanan tetap memakai alamat publiknya. Yang memberi IP (Internet Protocol) privat adalah private endpoint.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-se-def",
+            "az104-f-u05-pe-def"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e2",
+          "type": "choice",
+          "concept": "service-endpoint",
+          "prompt": "The firewall of a storage account must allow only traffic from snet-app, and the traffic must stay on the Azure backbone. There is no need for on-premises access or a private IP (Internet Protocol) address. What is the simplest option?",
+          "options": [
+            "Create a private endpoint and a private DNS (Domain Name System) zone",
+            "Enable a service endpoint for Microsoft.Storage on snet-app, and allow snet-app in the storage firewall",
+            "Create a NAT (network address translation) gateway for snet-app",
+            "Add a user-defined route with the next hop Internet"
+          ],
+          "answer": 1,
+          "explanation": "Service endpoint cukup untuk membatasi akses per subnet lewat backbone Azure, tanpa perlu private endpoint dan DNS (Domain Name System).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-se-def",
+            "az104-f-u05-se-limits",
+            "az104-f-u05-pe-def"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "private-endpoint-details"
+          ],
+          "title": "Detail private endpoint",
+          "body": "Private endpoint bisa dipakai dari VNet (virtual network) yang sama, VNet yang di-peering secara regional maupun global, dan on-premises lewat VPN (virtual private network) atau ExpressRoute. Satu private endpoint menuju satu subresource, jadi blob dan file di satu storage account butuh private endpoint masing-masing. Koneksinya harus berstatus Approved sebelum trafik bisa lewat, disetujui otomatis atau manual.",
+          "keyPoints": [
+            "Bisa dari peering dan on-premises",
+            "Satu endpoint per subresource",
+            "Harus Approved"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview",
+          "teaches": [
+            "az104-f-u05-pe-reach",
+            "az104-f-u05-pe-subresource",
+            "az104-f-u05-pe-approved"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e3",
+          "type": "sort",
+          "concept": "private-endpoint",
+          "prompt": "Sort each statement: service endpoint or private endpoint?",
+          "buckets": [
+            "Service endpoint",
+            "Private endpoint"
+          ],
+          "items": [
+            {
+              "text": "Enabled on a subnet",
+              "bucket": 0
+            },
+            {
+              "text": "The service keeps its public IP (Internet Protocol) address",
+              "bucket": 0
+            },
+            {
+              "text": "Gets a private IP address in your subnet",
+              "bucket": 1
+            },
+            {
+              "text": "Points to one specific resource",
+              "bucket": 1
+            },
+            {
+              "text": "Works from on-premises over VPN (virtual private network)",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Service endpoint diaktifkan per subnet dan layanan tetap publik. Private endpoint memberi IP (Internet Protocol) privat untuk satu resource dan bisa dipakai dari on-premises.",
+          "requires": [
+            "az104-f-u05-se-def",
+            "az104-f-u05-se-limits",
+            "az104-f-u05-pe-def",
+            "az104-f-u05-pe-reach"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e4",
+          "type": "choice",
+          "concept": "private-endpoint",
+          "prompt": "Users on-premises connect to Azure over VPN (virtual private network) and must reach a storage account through a private IP (Internet Protocol) address. What should you use?",
+          "options": [
+            "A service endpoint",
+            "A public IP address on the storage account",
+            "A private endpoint",
+            "A NAT (network address translation) gateway"
+          ],
+          "answer": 2,
+          "explanation": "Private endpoint memberi IP (Internet Protocol) privat yang bisa dijangkau dari on-premises lewat VPN (virtual private network). Service endpoint tidak berlaku untuk trafik dari on-premises.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-pe-reach",
+            "az104-f-u05-se-limits"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e5",
+          "type": "choice",
+          "concept": "private-endpoint",
+          "prompt": "You created a private endpoint for the blob subresource of st1. Apps also need Azure Files on st1 over a private IP (Internet Protocol) address. What should you do?",
+          "options": [
+            "Create another private endpoint for the file subresource",
+            "Nothing, because the blob private endpoint covers every subresource",
+            "Enable a service endpoint for Azure Files",
+            "Add a second IP address to the blob private endpoint"
+          ],
+          "answer": 0,
+          "explanation": "Satu private endpoint hanya untuk satu subresource. Blob dan file butuh private endpoint masing-masing.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-pe-subresource"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e6",
+          "type": "truefalse",
+          "concept": "private-endpoint",
+          "prompt": "Only private endpoints in the Approved state can send traffic.",
+          "answer": true,
+          "explanation": "Benar. Private endpoint yang masih Pending atau ditolak tidak bisa dipakai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-pe-approved"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "private-dns-zone"
+          ],
+          "title": "Private DNS zone untuk private endpoint",
+          "body": "Aplikasi tetap memanggil nama biasa, misalnya st1.blob.core.windows.net. Supaya nama itu mengarah ke IP (Internet Protocol) privat private endpoint, pakai private DNS (Domain Name System) zone yang di-link ke VNet (virtual network), misalnya privatelink.blob.core.windows.net untuk blob. Tanpa zone itu, nama tetap mengarah ke alamat publik, dan trafik tidak lewat private endpoint.",
+          "keyPoints": [
+            "Nama tetap sama di aplikasi",
+            "Zone privatelink yang di-link ke VNet",
+            "Tanpa zone: tetap ke alamat publik"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
+          "teaches": [
+            "az104-f-u05-pe-dns"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e7",
+          "type": "fix",
+          "concept": "private-dns-zone",
+          "prompt": "You created a private endpoint for the blob storage of st1, but vm1 still resolves the name to a public IP (Internet Protocol) address. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "vm1 · nslookup st1.blob.core.windows.net",
+            "message": "st1.blob.core.windows.net → st1.privatelink.blob.core.windows.net → 20.60.1.4"
+          },
+          "options": [
+            "Enable a service endpoint on the subnet of vm1",
+            "Delete the private endpoint and create it again",
+            "Add a public IP address to vm1",
+            "Link a private DNS (Domain Name System) zone named privatelink.blob.core.windows.net to the VNet (virtual network) of vm1"
+          ],
+          "answer": 3,
+          "explanation": "Nama sudah diarahkan ke privatelink, tapi masih dijawab alamat publik, jadi VNet (virtual network) vm1 belum di-link ke private DNS (Domain Name System) zone yang berisi record private endpoint.",
+          "requires": [
+            "az104-f-u05-pe-dns"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e8",
+          "type": "choice",
+          "concept": "private-dns-zone",
+          "prompt": "Which private DNS (Domain Name System) zone do you link to the virtual network for private endpoints to Azure Blob Storage?",
+          "options": [
+            "blob.core.windows.net",
+            "privatelink.azurewebsites.net",
+            "st1.local",
+            "privatelink.blob.core.windows.net"
+          ],
+          "answer": 3,
+          "explanation": "Untuk blob Storage, nama zone-nya privatelink.blob.core.windows.net.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-pe-dns"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u05-nsg-def",
+      "statement": "NSG (network security group) berisi aturan yang mengizinkan atau menolak trafik masuk dan keluar berdasarkan sumber, port sumber, tujuan, port tujuan, dan protokol. NSG di-associate ke subnet atau network interface.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview"
+    },
+    {
+      "id": "az104-f-u05-nsg-priority",
+      "statement": "Prioritas aturan NSG (network security group) bernilai 100 sampai 4096. Angka kecil diproses lebih dulu, dan pemrosesan berhenti di aturan pertama yang cocok. Dua aturan tidak boleh punya prioritas dan arah yang sama.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview#security-rules"
+    },
+    {
+      "id": "az104-f-u05-default-in",
+      "statement": "Aturan default masuk di setiap NSG (network security group): AllowVNetInBound (65000), AllowAzureLoadBalancerInBound (65001), dan DenyAllInBound (65500).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview#default-security-rules"
+    },
+    {
+      "id": "az104-f-u05-default-out",
+      "statement": "Aturan default keluar: AllowVnetOutBound (65000), AllowInternetOutBound (65001), dan DenyAllOutBound (65500).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview#default-security-rules"
+    },
+    {
+      "id": "az104-f-u05-default-fixed",
+      "statement": "Aturan default NSG (network security group) tidak bisa dihapus, tapi bisa dikalahkan oleh aturan buatan sendiri yang prioritasnya lebih tinggi (angka lebih kecil).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview#default-security-rules"
+    },
+    {
+      "id": "az104-f-u05-nsg-stateful",
+      "statement": "NSG (network security group) bersifat stateful: balasan untuk koneksi yang diizinkan otomatis diizinkan tanpa aturan arah sebaliknya. Menghapus aturan tidak memutus koneksi yang sudah ada; aturan hanya berlaku untuk koneksi baru.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview#security-rules"
+    },
+    {
+      "id": "az104-f-u05-service-tags",
+      "statement": "Service tag mewakili kumpulan prefix IP (Internet Protocol) sebuah layanan Azure, misalnya Internet, VirtualNetwork, AzureLoadBalancer, atau Storage. Microsoft mengelola dan memperbarui prefix-nya. Sebagian bisa dibatasi per region, misalnya Storage.WestUS.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/service-tags-overview"
+    },
+    {
+      "id": "az104-f-u05-vnet-tag",
+      "statement": "Service tag VirtualNetwork mencakup address space VNet (virtual network), VNet yang di-peering, dan jaringan on-premises yang terhubung.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/service-tags-overview"
+    },
+    {
+      "id": "az104-f-u05-nsg-order",
+      "statement": "Untuk trafik masuk, Azure memproses NSG (network security group) di subnet dulu, lalu NSG di network interface; untuk trafik keluar, network interface dulu lalu subnet. Trafik harus diizinkan keduanya, dan trafik yang ditolak NSG pertama tidak diproses NSG kedua.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-group-how-it-works"
+    },
+    {
+      "id": "az104-f-u05-nsg-one-side",
+      "statement": "Kalau hanya subnet atau hanya network interface yang punya NSG (network security group), hanya NSG itu yang menentukan.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-group-how-it-works"
+    },
+    {
+      "id": "az104-f-u05-nsg-subnet-all",
+      "statement": "NSG (network security group) di subnet berlaku untuk semua resource di subnet itu, termasuk trafik antar-VM (virtual machine) di subnet yang sama.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-group-how-it-works#intra-subnet-traffic"
+    },
+    {
+      "id": "az104-f-u05-nsg-avoid-both",
+      "statement": "Microsoft menyarankan memasang NSG (network security group) di subnet atau di network interface, bukan keduanya, supaya aturannya tidak saling bentrok.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-group-how-it-works"
+    },
+    {
+      "id": "az104-f-u05-ipflow-both",
+      "statement": "IP flow verify memeriksa aturan semua NSG (network security group) yang berlaku untuk network interface VM (virtual machine), baik yang di-associate ke subnet maupun ke network interface.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/ip-flow-verify-overview"
+    },
+    {
+      "id": "az104-f-u05-asg-def",
+      "statement": "ASG (application security group) mengelompokkan network interface VM (virtual machine) sesuai peran aplikasinya. Aturan NSG (network security group) lalu memakai nama ASG sebagai sumber atau tujuan, tanpa menulis alamat IP.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups"
+    },
+    {
+      "id": "az104-f-u05-asg-members",
+      "statement": "Anggota ASG (application security group) adalah network interface, dan satu network interface bisa menjadi anggota beberapa ASG.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups"
+    },
+    {
+      "id": "az104-f-u05-asg-apply",
+      "statement": "Aturan NSG (network security group) yang menyebut sebuah ASG (application security group) hanya berlaku untuk network interface anggota ASG itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups"
+    },
+    {
+      "id": "az104-f-u05-asg-same-vnet",
+      "statement": "Semua network interface di satu ASG (application security group) harus berada di VNet (virtual network) yang sama dengan anggota pertamanya. Kalau sebuah aturan memakai ASG sebagai sumber dan tujuan, keduanya juga harus di VNet yang sama.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups#constraints"
+    },
+    {
+      "id": "az104-f-u05-asg-pattern",
+      "statement": "Karena AllowVNetInBound mengizinkan semua trafik di dalam VNet (virtual network), pola yang umum: izinkan AsgLogic ke AsgDb dengan prioritas lebih tinggi, lalu tolak semua sumber lain ke AsgDb.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups"
+    },
+    {
+      "id": "az104-f-u05-bastion-def",
+      "statement": "Azure Bastion memberi koneksi RDP (Remote Desktop Protocol) dan SSH (Secure Shell) ke VM (virtual machine) lewat TLS (Transport Layer Security) di port 443, dari portal atau native client, tanpa membuka port RDP atau SSH ke internet. VM tujuan tidak butuh public IP dan tidak butuh agen.",
+      "source": "https://learn.microsoft.com/en-us/azure/bastion/bastion-overview"
+    },
+    {
+      "id": "az104-f-u05-bastion-subnet",
+      "statement": "Selain SKU (stock-keeping unit) Developer, Bastion butuh subnet khusus bernama AzureBastionSubnet berukuran /26 atau lebih besar, di VNet (virtual network) dan resource group yang sama dengan Bastion, dan subnet itu tidak boleh berisi resource lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/bastion/configuration-settings"
+    },
+    {
+      "id": "az104-f-u05-bastion-udr",
+      "statement": "UDR (user-defined route) tidak didukung di AzureBastionSubnet.",
+      "source": "https://learn.microsoft.com/en-us/azure/bastion/bastion-faq"
+    },
+    {
+      "id": "az104-f-u05-bastion-pip",
+      "statement": "Selain SKU (stock-keeping unit) Developer dan deployment Private-only, Bastion butuh public IP SKU Standard dengan alokasi static.",
+      "source": "https://learn.microsoft.com/en-us/azure/bastion/configuration-settings"
+    },
+    {
+      "id": "az104-f-u05-bastion-skus",
+      "statement": "Bastion punya empat SKU (stock-keeping unit): Developer (gratis, infrastruktur bersama, satu VM dalam satu waktu), Basic (2 instance tetap), Standard (host scaling 2 sampai 50 instance, native client, custom port, shareable link, file transfer), dan Premium (fitur Standard ditambah session recording dan deployment Private-only).",
+      "source": "https://learn.microsoft.com/en-us/azure/bastion/bastion-sku-comparison"
+    },
+    {
+      "id": "az104-f-u05-bastion-developer",
+      "statement": "Bastion Developer hanya tersedia di region tertentu, tidak mendukung VNet (virtual network) peering, dan ditujukan untuk development dan testing, bukan production.",
+      "source": "https://learn.microsoft.com/en-us/azure/bastion/bastion-sku-comparison"
+    },
+    {
+      "id": "az104-f-u05-bastion-peering",
+      "statement": "Bastion Basic ke atas bisa menyambung ke VM (virtual machine) di VNet (virtual network) yang di-peering.",
+      "source": "https://learn.microsoft.com/en-us/azure/bastion/bastion-sku-comparison"
+    },
+    {
+      "id": "az104-f-u05-bastion-upgrade",
+      "statement": "SKU (stock-keeping unit) Bastion bisa di-upgrade, tapi tidak bisa di-downgrade; untuk turun SKU, hapus lalu buat ulang Bastion.",
+      "source": "https://learn.microsoft.com/en-us/azure/bastion/bastion-sku-comparison"
+    },
+    {
+      "id": "az104-f-u05-se-def",
+      "statement": "Service endpoint diaktifkan per subnet dan membuat trafik ke layanan Azure seperti Storage lewat backbone Azure. Sumber trafiknya menjadi IP (Internet Protocol) privat VNet, sehingga firewall layanan bisa mengizinkan subnet tertentu.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview"
+    },
+    {
+      "id": "az104-f-u05-se-limits",
+      "statement": "Dengan service endpoint, DNS (Domain Name System) layanan tetap mengarah ke alamat publiknya, dan service endpoint tidak berlaku untuk trafik dari on-premises.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview"
+    },
+    {
+      "id": "az104-f-u05-pe-def",
+      "statement": "Private endpoint adalah network interface dengan IP (Internet Protocol) privat dari subnet-mu yang terhubung ke satu resource tertentu lewat Private Link.",
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
+    },
+    {
+      "id": "az104-f-u05-pe-reach",
+      "statement": "Private endpoint bisa dipakai dari VNet (virtual network) yang sama, VNet yang di-peering secara regional atau global, dan on-premises lewat VPN (virtual private network) atau ExpressRoute.",
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
+    },
+    {
+      "id": "az104-f-u05-pe-subresource",
+      "statement": "Satu private endpoint menuju satu subresource. Untuk Storage, blob dan file butuh private endpoint masing-masing.",
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
+    },
+    {
+      "id": "az104-f-u05-pe-approved",
+      "statement": "Hanya private endpoint berstatus Approved yang bisa mengirim trafik. Koneksi bisa disetujui otomatis atau lewat permintaan manual.",
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
+    },
+    {
+      "id": "az104-f-u05-pe-dns",
+      "statement": "Supaya nama layanan mengarah ke IP (Internet Protocol) privat private endpoint, pakai private DNS (Domain Name System) zone yang di-link ke VNet, misalnya privatelink.blob.core.windows.net untuk blob Storage.",
+      "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns"
     }
   ]
 }

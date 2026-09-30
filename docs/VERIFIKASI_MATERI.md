@@ -205,3 +205,22 @@ ditambah `VNetPeering` dari AZ-900. Tipe soal baru yang dipakai: topology (2), c
 
 Tidak ada fakta bertanda `verify`.
 
+### Unit 5: Akses aman ke virtual network (30 September 2026)
+
+33 fakta, 17 kartu learn, 42 soal (36 examReady), 5 visual baru (`NsgRuleTable`, `NsgEvaluationOrder`, `AsgTiers`,
+`BastionArchitecture`, `ServiceVsPrivateEndpoint`). Sumber: `azure-docs/articles/virtual-network`, `bastion`,
+`private-link`, dan `network-watcher`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Prioritas 100 sampai 4096, berhenti di aturan pertama yang cocok; aturan default 65000, 65001, 65500 untuk masuk dan keluar; tidak bisa dihapus | Diajarkan, dua soal rules | `network-security-groups-overview.md` |
+| NSG stateful; menghapus aturan tidak memutus koneksi yang sudah ada | Diajarkan (sering keliru dipahami) | `network-security-groups-overview.md` |
+| Masuk: NSG subnet lalu NSG network interface; keluar dibalik; yang ditolak NSG pertama tidak dilihat NSG kedua; Microsoft menyarankan satu lapis saja | Diajarkan, dengan soal rules dan soal fix dari Effective security rules | `network-security-group-how-it-works.md` |
+| Service tag regional (Storage.WestUS); VirtualNetwork termasuk peering dan on-premises | Diajarkan | `service-tags-overview.md` |
+| ASG: anggota network interface, bisa ikut beberapa ASG, semua anggota di VNet yang sama; pola izinkan lalu tolak karena AllowVNetInBound | Diajarkan, soal config aturan ASG | `application-security-groups.md` |
+| Bastion: AzureBastionSubnet /26 atau lebih, VNet dan resource group sama, tanpa resource lain, UDR tidak didukung; public IP Standard static kecuali Developer dan Private-only; tabel lengkap empat SKU; downgrade tidak didukung | Diajarkan, termasuk soal rules pemilihan SKU | `bastion/configuration-settings.md`, `bastion-faq.md`, `bastion-sku-comparison.md` |
+| Service endpoint: sumber trafik jadi IP privat, layanan tetap publik, DNS tidak berubah, tidak untuk on-premises | Diajarkan | `virtual-network-service-endpoints-overview.md` |
+| Private endpoint: satu subresource per endpoint (blob dan file terpisah), harus Approved, bisa dari peering dan on-premises; private DNS zone privatelink | Diajarkan, soal fix dari hasil nslookup | `private-link/private-endpoint-overview.md`, `private-endpoint-dns.md` |
+
+Tidak ada fakta bertanda `verify`.
+
