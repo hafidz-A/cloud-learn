@@ -6,27 +6,1528 @@
     {
       "id": "az104-u04-l1",
       "title": "Perencanaan alamat",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u04-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "vnet-address-space"
+          ],
+          "title": "Address space dan subnet",
+          "body": "Setiap VNet (virtual network) punya address space dalam notasi CIDR (Classless Inter-Domain Routing), misalnya 10.0.0.0/16. Microsoft menyarankan rentang privat 10.0.0.0/8, 172.16.0.0/12, atau 192.168.0.0/16. Address space itu dibagi menjadi subnet yang tidak boleh tumpang tindih. VNet yang nanti dihubungkan, lewat peering atau VPN (virtual private network), juga tidak boleh tumpang tindih.",
+          "keyPoints": [
+            "Pakai rentang privat",
+            "Subnet tidak boleh tumpang tindih",
+            "Rencanakan agar VNet yang akan dihubungkan tidak bentrok"
+          ],
+          "visual": "VNetAddressPlan",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq",
+          "teaches": [
+            "az104-f-u04-vnet-cidr",
+            "az104-f-u04-private-ranges",
+            "az104-f-u04-subnets-no-overlap"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e1",
+          "type": "truefalse",
+          "concept": "vnet-address-space",
+          "prompt": "You can connect two virtual networks whose address spaces overlap.",
+          "answer": false,
+          "explanation": "Salah. VNet (virtual network) hanya bisa dihubungkan kalau address space-nya tidak tumpang tindih, jadi rencanakan alamat sejak awal.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-vnet-cidr"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e2",
+          "type": "choice",
+          "concept": "vnet-address-space",
+          "prompt": "Which address space follows the Microsoft recommendation for a new VNet (virtual network)?",
+          "options": [
+            "8.8.0.0/16",
+            "10.20.0.0/16",
+            "20.40.0.0/16",
+            "52.10.0.0/16"
+          ],
+          "answer": 1,
+          "explanation": "10.20.0.0/16 ada di rentang privat 10.0.0.0/8. Rentang lain adalah alamat publik.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-private-ranges"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "subnet-sizing"
+          ],
+          "title": "Alamat yang dicadangkan",
+          "body": "Azure mencadangkan 5 alamat di setiap subnet: alamat jaringan (.0), default gateway (.1), dua alamat DNS (Domain Name System) Azure (.2 dan .3), dan alamat broadcast (yang terakhir). Jadi alamat terpakai = total alamat dikurangi 5. Subnet /24 punya 251, /27 punya 27, dan /29, subnet IPv4 terkecil, hanya punya 3. Subnet IPv6 harus tepat /64.",
+          "keyPoints": [
+            "5 alamat dicadangkan di setiap subnet",
+            "/24 = 251, /27 = 27, /29 = 3",
+            "Subnet IPv4 terkecil /29"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq",
+          "teaches": [
+            "az104-f-u04-reserved-5",
+            "az104-f-u04-subnet-limits"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e3",
+          "type": "choice",
+          "concept": "subnet-sizing",
+          "prompt": "How many IP (Internet Protocol) addresses can you assign to resources in a /28 subnet in Azure?",
+          "options": [
+            "11",
+            "16",
+            "14",
+            "13"
+          ],
+          "answer": 0,
+          "explanation": "/28 berisi 16 alamat, dan Azure mencadangkan 5, jadi 11 bisa dipakai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-reserved-5"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e4",
+          "type": "multi",
+          "concept": "subnet-sizing",
+          "prompt": "Which two addresses in the subnet 10.0.2.0/27 are reserved by Azure? Choose two.",
+          "options": [
+            "10.0.2.1",
+            "10.0.2.4",
+            "10.0.2.31",
+            "10.0.2.30"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": ".1 adalah default gateway dan .31 adalah broadcast untuk /27. Alamat .4 sampai .30 bisa dipakai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-reserved-5"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e5",
+          "type": "fill",
+          "concept": "subnet-sizing",
+          "prompt": "Complete the sentence.",
+          "sentence": "A /27 subnet has ___ addresses. Azure reserves ___ of them, so ___ can be assigned.",
+          "bank": [
+            "32",
+            "5",
+            "27",
+            "30",
+            "4"
+          ],
+          "answers": [
+            "32",
+            "5",
+            "27"
+          ],
+          "explanation": "/27 = 32 alamat, dikurangi 5 yang dicadangkan = 27.",
+          "requires": [
+            "az104-f-u04-reserved-5"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "default-outbound"
+          ],
+          "title": "Subnet privat dan akses keluar",
+          "body": "Untuk API (Application Programming Interface) versi setelah 31 Maret 2026, subnet di VNet (virtual network) baru bersifat privat. VM (virtual machine) di subnet privat butuh metode outbound eksplisit untuk menjangkau internet, misalnya NAT (Network Address Translation) gateway, load balancer dengan outbound rule, atau public IP (Internet Protocol). Tanpa itu, Windows Update dan aktivasi Windows tidak berjalan. Di subnet lama yang non-privat, VM masih mendapat default outbound IP milik Microsoft yang bisa berubah sewaktu-waktu.",
+          "keyPoints": [
+            "Subnet baru: privat",
+            "Butuh outbound eksplisit, misalnya NAT gateway",
+            "Default outbound IP bisa berubah"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/default-outbound-access",
+          "teaches": [
+            "az104-f-u04-private-subnet",
+            "az104-f-u04-default-outbound-ip"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e6",
+          "type": "yesno",
+          "concept": "default-outbound",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You create a new VNet (virtual network) with an API (application programming interface) version released after March 31, 2026. vm1 in its subnet has no public IP (Internet Protocol), no NAT (network address translation) gateway, and no load balancer.",
+          "statements": [
+            {
+              "text": "The subnet is a private subnet by default.",
+              "answer": true
+            },
+            {
+              "text": "vm1 can download Windows updates from the internet.",
+              "answer": false
+            },
+            {
+              "text": "Associating a NAT gateway with the subnet gives vm1 outbound internet access.",
+              "answer": true
+            }
+          ],
+          "explanation": "Subnet di VNet (virtual network) baru bersifat privat, jadi VM (virtual machine) butuh metode outbound eksplisit. NAT (network address translation) gateway adalah salah satunya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-private-subnet"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e7",
+          "type": "truefalse",
+          "concept": "default-outbound",
+          "prompt": "The default outbound IP (Internet Protocol) address of a VM (virtual machine) belongs to your subscription and never changes.",
+          "answer": false,
+          "explanation": "Salah. Default outbound IP (Internet Protocol) milik Microsoft dan bisa berubah tanpa pemberitahuan. Pakai metode outbound eksplisit kalau alamatnya penting.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-default-outbound-ip"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "private-ip-allocation"
+          ],
+          "title": "IP privat: dynamic dan static",
+          "body": "IP (Internet Protocol) privat VM (virtual machine) diatur di network interface. Default-nya dynamic: Azure memilih alamat yang kosong di subnet. Alamat dynamic tidak berubah saat VM di-stop atau di-deallocate; alamat itu baru dilepas kalau network interface dihapus atau dipindah ke subnet lain. Kalau alamatnya harus kamu tentukan sendiri, misalnya untuk server DNS (Domain Name System), pakai static.",
+          "keyPoints": [
+            "Default dynamic",
+            "Stop atau deallocate tidak mengubah IP privat",
+            "Static: kamu pilih alamatnya"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/private-ip-addresses",
+          "teaches": [
+            "az104-f-u04-private-dynamic",
+            "az104-f-u04-private-static"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e8",
+          "type": "choice",
+          "concept": "private-ip-allocation",
+          "prompt": "vm1 has a dynamic private IP (Internet Protocol) address. You stop (deallocate) vm1 and then start it again. What happens to its private IP address?",
+          "options": [
+            "It always changes to the next free address",
+            "It becomes a public IP address",
+            "It is released until you assign it again",
+            "It stays the same"
+          ],
+          "answer": 3,
+          "explanation": "Alamat privat dynamic hanya dilepas kalau network interface dihapus, dipindah subnet, atau diubah ke static dengan alamat lain. Deallocate tidak termasuk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-private-dynamic"
+          ]
+        },
+        {
+          "id": "az104-u04-l1-e9",
+          "type": "choice",
+          "concept": "private-ip-allocation",
+          "prompt": "A DNS (Domain Name System) server VM (virtual machine) must always use the private address 10.0.1.10. What should you do?",
+          "options": [
+            "Keep the dynamic allocation and restart the VM until it gets 10.0.1.10",
+            "Set the private IP (Internet Protocol) allocation of its network interface to static, with 10.0.1.10",
+            "Assign a public IP address to the VM",
+            "Move the VM to a /29 subnet"
+          ],
+          "answer": 1,
+          "explanation": "Dengan static, kamu memilih alamatnya sendiri, dan alamat itu hanya dilepas kalau network interface dihapus. Dengan dynamic, Azure yang memilih alamatnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-private-static",
+            "az104-f-u04-private-dynamic"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u04-l2",
       "title": "Public IP",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u04-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "public-ip-sku"
+          ],
+          "title": "Public IP Standard",
+          "body": "Public IP (Internet Protocol) SKU (stock-keeping unit) Basic sudah pensiun pada 30 September 2025, jadi public IP baru memakai Standard (v1 atau v2). Public IP Standard selalu static. Standard juga aman secara default: trafik masuk tertutup sampai diizinkan NSG (network security group).",
+          "keyPoints": [
+            "Basic pensiun 30 September 2025",
+            "Standard selalu static",
+            "Masuk tertutup sampai NSG mengizinkan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses",
+          "teaches": [
+            "az104-f-u04-basic-retired",
+            "az104-f-u04-standard-static"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-e1",
+          "type": "truefalse",
+          "concept": "public-ip-sku",
+          "prompt": "You can create a new public IP (Internet Protocol) address with the Basic SKU (stock-keeping unit).",
+          "answer": false,
+          "explanation": "Salah. SKU (stock-keeping unit) Basic pensiun pada 30 September 2025. Public IP (Internet Protocol) baru memakai Standard.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-basic-retired"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-e2",
+          "type": "choice",
+          "concept": "public-ip-sku",
+          "prompt": "You need a public IP (Internet Protocol) address for a new VM (virtual machine). Which option can you choose?",
+          "options": [
+            "Basic SKU (stock-keeping unit) with dynamic allocation",
+            "Basic SKU with static allocation",
+            "Standard SKU with dynamic allocation",
+            "Standard SKU with static allocation"
+          ],
+          "answer": 3,
+          "explanation": "Basic sudah pensiun, dan Standard selalu static. Pilihan yang tersisa hanya Standard static.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-basic-retired",
+            "az104-f-u04-standard-static"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-e3",
+          "type": "yesno",
+          "concept": "public-ip-sku",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "vm1 has a Standard public IP (Internet Protocol) address. No NSG (network security group) is associated with its subnet or network interface.",
+          "statements": [
+            {
+              "text": "Inbound traffic from the internet reaches vm1 by default.",
+              "answer": false
+            },
+            {
+              "text": "You can allow inbound RDP (Remote Desktop Protocol) traffic by adding an NSG with an allow rule.",
+              "answer": true
+            },
+            {
+              "text": "The public IP address can use dynamic allocation.",
+              "answer": false
+            }
+          ],
+          "explanation": "Standard aman secara default, jadi trafik masuk butuh NSG (network security group) yang mengizinkan. Standard juga selalu static.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-standard-static"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "static-vs-dynamic-ip"
+          ],
+          "title": "Static vs dynamic",
+          "body": "Public IP (Internet Protocol) static diberikan saat resource dibuat dan baru dilepas saat resource dihapus. Kamu tidak bisa memilih angkanya, karena Azure mengambil alamat dari pool region itu. Alokasi dynamic hanya ada di SKU (stock-keeping unit) Basic yang sudah pensiun; alamatnya dilepas saat VM (virtual machine) dihentikan atau dihapus.",
+          "keyPoints": [
+            "Static: tetap sampai resource dihapus",
+            "Alamatnya dipilih Azure",
+            "Dynamic hanya di Basic yang sudah pensiun"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses",
+          "teaches": [
+            "az104-f-u04-static-dynamic"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-e4",
+          "type": "choice",
+          "concept": "static-vs-dynamic-ip",
+          "prompt": "Which statement about a static public IP (Internet Protocol) address is true?",
+          "options": [
+            "You can type the exact address that you want",
+            "It changes every time the VM (virtual machine) restarts",
+            "It is released when the VM is stopped",
+            "Azure assigns it when you create the resource, and it stays until you delete the resource"
+          ],
+          "answer": 3,
+          "explanation": "Public IP (Internet Protocol) static tetap sampai resource-nya dihapus, dan alamatnya dipilih Azure dari pool region itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-static-dynamic"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-e5",
+          "type": "truefalse",
+          "concept": "static-vs-dynamic-ip",
+          "prompt": "A static public IP (Internet Protocol) address is released when the VM (virtual machine) that uses it is stopped.",
+          "answer": false,
+          "explanation": "Salah. Public IP (Internet Protocol) static baru dilepas saat resource public IP dihapus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-static-dynamic"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "public-ip-zones"
+          ],
+          "title": "Public IP dan availability zone",
+          "body": "Public IP (Internet Protocol) Standard v1 bisa zonal (terikat satu zona) atau zone-redundant (ada di beberapa zona). Standard v2 selalu zone-redundant. Public IP zone-redundant tetap bertahan saat satu zona gagal. Zona sebuah public IP tidak bisa diubah setelah dibuat.",
+          "keyPoints": [
+            "Zone-redundant bertahan saat satu zona gagal",
+            "Standard v2 selalu zone-redundant",
+            "Zona tidak bisa diubah"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses#availability-zone",
+          "teaches": [
+            "az104-f-u04-ip-zones"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-e6",
+          "type": "choice",
+          "concept": "public-ip-zones",
+          "prompt": "A public IP (Internet Protocol) address must keep working if any single availability zone in the region fails. What should you create?",
+          "options": [
+            "A zonal Standard public IP in zone 1",
+            "A zone-redundant Standard public IP",
+            "A Basic public IP",
+            "Two Basic public IPs in different zones"
+          ],
+          "answer": 1,
+          "explanation": "Public IP (Internet Protocol) zone-redundant ada di beberapa zona, jadi bertahan saat satu zona gagal. Zonal terikat ke satu zona, dan Basic sudah pensiun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-ip-zones",
+            "az104-f-u04-basic-retired"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-e7",
+          "type": "truefalse",
+          "concept": "public-ip-zones",
+          "prompt": "You can change the availability zone of a public IP (Internet Protocol) address after you create it.",
+          "answer": false,
+          "explanation": "Salah. Zona public IP (Internet Protocol) ditentukan saat dibuat dan tidak bisa diubah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-ip-zones"
+          ]
+        },
+        {
+          "id": "az104-u04-l2-e8",
+          "type": "match",
+          "concept": "public-ip-zones",
+          "prompt": "Match each public IP (Internet Protocol) option to how it behaves.",
+          "pairs": [
+            [
+              "Standard SKU (stock-keeping unit)",
+              "Static, and closed to inbound traffic until an NSG (network security group) allows it"
+            ],
+            [
+              "Standard v2 SKU",
+              "Always zone-redundant"
+            ],
+            [
+              "Zonal IP",
+              "Tied to one availability zone"
+            ],
+            [
+              "Basic SKU",
+              "Retired on September 30, 2025"
+            ]
+          ],
+          "explanation": "Standard selalu static dan tertutup secara default, Standard v2 selalu zone-redundant, IP (Internet Protocol) zonal terikat satu zona, dan Basic sudah pensiun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-standard-static",
+            "az104-f-u04-ip-zones",
+            "az104-f-u04-basic-retired"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u04-l3",
       "title": "VNet peering",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u04-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "vnet-peering"
+          ],
+          "title": "VNet peering",
+          "body": "VNet (virtual network) peering menghubungkan dua VNet (virtual network) sehingga resource-nya berkomunikasi lewat alamat privat di backbone Microsoft, tidak lewat internet. Peering bisa di region yang sama (local) atau antar region (global), juga antar subscription dan antar tenant. Address space kedua VNet tidak boleh tumpang tindih. Membuat peering gratis, tapi transfer datanya ditagih.",
+          "keyPoints": [
+            "Alamat privat lewat backbone Microsoft",
+            "Local, global, antar subscription",
+            "Address space tidak boleh tumpang tindih"
+          ],
+          "visual": "VNetPeering",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview",
+          "teaches": [
+            "az104-f-u04-peering-def",
+            "az104-f-u04-peering-overlap",
+            "az104-f-u04-peering-cost"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e1",
+          "type": "truefalse",
+          "concept": "vnet-peering",
+          "prompt": "Traffic between two peered VNets (virtual networks) travels over the public internet.",
+          "answer": false,
+          "explanation": "Salah. Trafik peering memakai alamat privat di backbone Microsoft.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-peering-def"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e2",
+          "type": "multi",
+          "concept": "vnet-peering",
+          "prompt": "Which two pairs of virtual networks can you peer? Choose two.",
+          "options": [
+            "Two VNets (virtual networks) with overlapping address spaces",
+            "Two VNets that both use 10.0.0.0/16",
+            "Two VNets in different subscriptions",
+            "Two VNets in different Azure regions"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Peering bisa antar region dan antar subscription, tapi address space-nya tidak boleh tumpang tindih. Dua VNet (virtual network) yang sama-sama 10.0.0.0/16 jelas tumpang tindih.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-peering-def",
+            "az104-f-u04-peering-overlap"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "peering-non-transitive"
+          ],
+          "title": "Peering tidak transitif",
+          "body": "Peering hanya menghubungkan dua VNet (virtual network) yang di-peering langsung. Kalau A di-peering ke B dan B ke C, A tetap tidak bisa menjangkau C. Pilihannya, buat peering A ke C sendiri. Atau pakai topologi hub-and-spoke: trafik antar-spoke dilewatkan ke NVA (network virtual appliance) atau gateway di hub dengan UDR (user-defined route).",
+          "keyPoints": [
+            "A-B dan B-C tidak berarti A-C",
+            "Buat peering langsung",
+            "Atau lewat hub dengan NVA dan UDR"
+          ],
+          "visual": "PeeringNonTransitive",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq",
+          "teaches": [
+            "az104-f-u04-non-transitive",
+            "az104-f-u04-hub-spoke"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e3",
+          "type": "topology",
+          "concept": "peering-non-transitive",
+          "prompt": "Based on the diagram, can a VM (virtual machine) in VNet (virtual network) A reach a VM in VNet C?",
+          "nodes": [
+            {
+              "id": "a",
+              "label": "VNet A",
+              "cidr": "10.1.0.0/16"
+            },
+            {
+              "id": "b",
+              "label": "VNet B",
+              "cidr": "10.2.0.0/16"
+            },
+            {
+              "id": "c",
+              "label": "VNet C",
+              "cidr": "10.3.0.0/16"
+            }
+          ],
+          "links": [
+            {
+              "from": "a",
+              "to": "b",
+              "kind": "peering"
+            },
+            {
+              "from": "b",
+              "to": "c",
+              "kind": "peering"
+            }
+          ],
+          "options": [
+            "Yes, through VNet B automatically",
+            "Yes, but only if all three VNets are in one region",
+            "No, because the address spaces overlap",
+            "No, because peering isn't transitive"
+          ],
+          "answer": 3,
+          "explanation": "Peering tidak transitif, jadi A tidak bisa menjangkau C lewat B. Address space-nya tidak tumpang tindih; yang kurang adalah peering A ke C.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-non-transitive",
+            "az104-f-u04-peering-overlap",
+            "az104-f-u04-peering-def"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e4",
+          "type": "choice",
+          "concept": "peering-non-transitive",
+          "prompt": "Spoke1 and Spoke2 are both peered with Hub. VMs (virtual machines) in Spoke1 must reach Spoke2, and a firewall must inspect the traffic. What should you do?",
+          "options": [
+            "Send the traffic through a firewall NVA (network virtual appliance) in Hub by using UDRs (user-defined routes)",
+            "Nothing, because the spokes already reach each other through Hub",
+            "Change the Hub peerings to global peering",
+            "Give both spokes the same address space"
+          ],
+          "answer": 0,
+          "explanation": "Peering tidak transitif, jadi spoke tidak otomatis saling terhubung. Dengan UDR (user-defined route), trafik dilewatkan ke firewall di hub, yang sekaligus memeriksanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-hub-spoke",
+            "az104-f-u04-non-transitive",
+            "az104-f-u04-peering-overlap"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "peering-status"
+          ],
+          "title": "Status peering",
+          "body": "Peering butuh link dari kedua VNet (virtual network). Kalau baru satu link yang dibuat, statusnya Initiated dan trafik belum jalan. Setelah link kedua dibuat, statusnya Connected. Kalau salah satu link dihapus, statusnya Disconnected, dan kedua link harus dibuat ulang. VNet yang punya peering juga tidak bisa dipindah sebelum peering-nya dihapus.",
+          "keyPoints": [
+            "Initiated: baru satu arah",
+            "Connected: dua arah",
+            "Disconnected: buat ulang kedua link"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq",
+          "teaches": [
+            "az104-f-u04-peering-links",
+            "az104-f-u04-peering-move"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e5",
+          "type": "fix",
+          "concept": "peering-status",
+          "prompt": "VMs (virtual machines) in vnet-a can't reach vnet-b. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "vnet-a · Peerings",
+            "message": "peer-a-to-b · Peering status: Initiated"
+          },
+          "options": [
+            "Delete vnet-b and create it again",
+            "Add a public IP (Internet Protocol) address to each VM",
+            "Change the address space of vnet-a",
+            "Create the peering link from vnet-b to vnet-a"
+          ],
+          "answer": 3,
+          "explanation": "Status Initiated berarti baru satu link yang ada. Buat link dari vnet-b ke vnet-a supaya statusnya Connected. Cara menemukannya: buka Peerings di kedua VNet (virtual network) dan lihat kolom Peering status.",
+          "requires": [
+            "az104-f-u04-peering-links"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e6",
+          "type": "truefalse",
+          "concept": "peering-status",
+          "prompt": "You can move a VNet (virtual network) that has a peering to another resource group without deleting the peering first.",
+          "answer": false,
+          "explanation": "Salah. VNet (virtual network) yang punya peering tidak bisa dipindah. Hapus peering-nya dulu, lalu buat lagi setelah pindah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-peering-move"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-m4",
+          "type": "learn",
+          "concepts": [
+            "gateway-transit"
+          ],
+          "title": "Gateway transit",
+          "body": "Gateway transit membuat VNet (virtual network) memakai VPN (virtual private network) gateway atau ExpressRoute gateway milik VNet lain yang di-peering. Jadi spoke tidak perlu gateway sendiri. Di sisi hub, aktifkan opsi agar gateway meneruskan trafik ke VNet peer; di sisi spoke, aktifkan opsi memakai remote gateway. Local dan global peering sama-sama mendukungnya, tapi satu VNet hanya bisa memakai remote gateway di satu peering.",
+          "keyPoints": [
+            "Spoke memakai gateway di hub",
+            "Hub: izinkan gateway; spoke: pakai remote gateway",
+            "Remote gateway hanya di satu peering"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-manage-peering",
+          "teaches": [
+            "az104-f-u04-gateway-transit",
+            "az104-f-u04-remote-gw-once"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e7",
+          "type": "topology",
+          "concept": "gateway-transit",
+          "prompt": "VMs (virtual machines) in Spoke must reach the on-premises network through the VPN (virtual private network) gateway in Hub. Spoke has no gateway. What must you configure on the peering?",
+          "nodes": [
+            {
+              "id": "spoke",
+              "label": "Spoke",
+              "cidr": "10.2.0.0/16"
+            },
+            {
+              "id": "hub",
+              "label": "Hub",
+              "cidr": "10.1.0.0/16"
+            },
+            {
+              "id": "onprem",
+              "label": "On-premises",
+              "cidr": "192.168.0.0/16"
+            }
+          ],
+          "links": [
+            {
+              "from": "spoke",
+              "to": "hub",
+              "kind": "peering"
+            },
+            {
+              "from": "hub",
+              "to": "onprem",
+              "kind": "vpn"
+            }
+          ],
+          "options": [
+            "Use the remote gateway on the Hub side only",
+            "Gateway transit on the Hub side, and use the remote gateway on the Spoke side",
+            "A second VPN gateway in Spoke, with no peering changes",
+            "Global peering from Spoke to the on-premises network"
+          ],
+          "answer": 1,
+          "explanation": "Hub mengizinkan gatewaynya dipakai peer, lalu Spoke memakai remote gateway itu. Peering hanya antar VNet (virtual network), jadi tidak bisa langsung ke on-premises.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-gateway-transit",
+            "az104-f-u04-peering-def"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e8",
+          "type": "truefalse",
+          "concept": "gateway-transit",
+          "prompt": "Global virtual network peering doesn't support gateway transit.",
+          "answer": false,
+          "explanation": "Salah. Local maupun global peering sama-sama mendukung gateway transit.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-gateway-transit"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e9",
+          "type": "choice",
+          "concept": "gateway-transit",
+          "prompt": "VNet1 already uses the remote gateway of Hub1 through its peering. You also peer VNet1 with Hub2, which has its own VPN (virtual private network) gateway. Can VNet1 also use Hub2's gateway?",
+          "options": [
+            "No, because the remote gateway option can be on for only one peering",
+            "Yes, on both peerings at once",
+            "Yes, if both hubs are in the same region",
+            "Yes, if the peering to Hub2 is global"
+          ],
+          "answer": 0,
+          "explanation": "Satu VNet (virtual network) hanya bisa memakai remote gateway di satu peering.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-remote-gw-once"
+          ]
+        },
+        {
+          "id": "az104-u04-l3-e10",
+          "type": "fill",
+          "concept": "peering-non-transitive",
+          "prompt": "Complete the sentence.",
+          "sentence": "If VNet (virtual network) A is peered with B and B is peered with C, A ___ reach C, because peering isn't ___.",
+          "bank": [
+            "can't",
+            "can",
+            "transitive",
+            "global"
+          ],
+          "answers": [
+            "can't",
+            "transitive"
+          ],
+          "explanation": "Peering tidak transitif, jadi A tidak bisa menjangkau C lewat B.",
+          "requires": [
+            "az104-f-u04-non-transitive"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u04-l4",
       "title": "User-defined route",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u04-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "system-routes"
+          ],
+          "title": "System route",
+          "body": "Tanpa pengaturan apa pun, Azure membuat system route untuk setiap subnet. Trafik ke address space VNet (virtual network) memakai next hop Virtual network, sehingga semua subnet dalam satu VNet saling terhubung. Trafik ke alamat lain (0.0.0.0/0) memakai next hop Internet. Peering dan gateway juga menambah system route sendiri.",
+          "keyPoints": [
+            "Address space VNet: next hop Virtual network",
+            "0.0.0.0/0: next hop Internet",
+            "Subnet dalam satu VNet saling terhubung"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview",
+          "teaches": [
+            "az104-f-u04-system-routes"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e1",
+          "type": "truefalse",
+          "concept": "system-routes",
+          "prompt": "Without any route table, traffic from a subnet to 0.0.0.0/0 uses the Internet next hop.",
+          "answer": true,
+          "explanation": "Benar. System route default mengirim 0.0.0.0/0 ke Internet.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-system-routes"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e2",
+          "type": "choice",
+          "concept": "system-routes",
+          "prompt": "Which next hop does the system route for the address space of a VNet (virtual network) use?",
+          "options": [
+            "Internet",
+            "None",
+            "Virtual network",
+            "Virtual appliance"
+          ],
+          "answer": 2,
+          "explanation": "Address space VNet (virtual network) memakai next hop Virtual network, jadi semua subnet di VNet itu bisa saling menjangkau.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-system-routes"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "udr"
+          ],
+          "title": "User-defined route",
+          "body": "Untuk mengubah routing, buat route table berisi UDR (user-defined route), lalu associate ke subnet. Satu subnet punya nol atau satu route table, dan satu route table boleh dipakai banyak subnet. Next hop yang bisa dipilih: Virtual appliance, Virtual network gateway, Virtual network, Internet, dan None (dibuang). Untuk Virtual appliance, network interface firewall-nya harus mengaktifkan Enable IP (Internet Protocol) forwarding, dan firewall ditaruh di subnet lain.",
+          "keyPoints": [
+            "Route table di-associate ke subnet",
+            "Next hop: Virtual appliance, gateway, network, Internet, None",
+            "Firewall: aktifkan IP forwarding"
+          ],
+          "visual": "UdrNextHop",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview#user-defined",
+          "teaches": [
+            "az104-f-u04-route-table",
+            "az104-f-u04-udr-next-hops",
+            "az104-f-u04-nva-forwarding"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e3",
+          "type": "config",
+          "concept": "next-hop-types",
+          "prompt": "All internet-bound traffic from snet-app must go through the firewall VM (virtual machine) at 10.0.100.4. Add the route to the route table of snet-app.",
+          "blade": "Route table rt-app > Add route",
+          "fields": [
+            {
+              "label": "Route name",
+              "kind": "text",
+              "value": "to-firewall",
+              "readOnly": true
+            },
+            {
+              "label": "Destination type",
+              "kind": "select",
+              "choices": [
+                "IP Addresses",
+                "Service Tag"
+              ],
+              "value": "IP Addresses"
+            },
+            {
+              "label": "Destination IP addresses/CIDR ranges",
+              "kind": "select",
+              "choices": [
+                "10.0.0.0/16",
+                "0.0.0.0/0",
+                "10.0.100.4/32"
+              ],
+              "value": "10.0.0.0/16"
+            },
+            {
+              "label": "Next hop type",
+              "kind": "select",
+              "choices": [
+                "Virtual network gateway",
+                "Virtual network",
+                "Internet",
+                "Virtual appliance",
+                "None"
+              ],
+              "value": "Internet"
+            },
+            {
+              "label": "Next hop address",
+              "kind": "select",
+              "choices": [
+                "10.0.1.4",
+                "10.0.100.4"
+              ],
+              "value": "10.0.1.4"
+            }
+          ],
+          "answer": {
+            "Destination type": "IP Addresses",
+            "Destination IP addresses/CIDR ranges": "0.0.0.0/0",
+            "Next hop type": "Virtual appliance",
+            "Next hop address": "10.0.100.4"
+          },
+          "explanation": "Trafik internet = 0.0.0.0/0. Next hop type Virtual appliance mengarah ke alamat privat firewall, 10.0.100.4. Karena prefix-nya sama dengan system route, UDR (user-defined route) ini yang menang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-route-table",
+            "az104-f-u04-udr-next-hops",
+            "az104-f-u04-system-routes"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e4",
+          "type": "choice",
+          "concept": "udr",
+          "prompt": "A route sends traffic to a firewall VM (virtual machine), but the traffic never passes through the firewall. The route is correct. What should you check on the network interface of the firewall?",
+          "options": [
+            "Enable IP (Internet Protocol) forwarding",
+            "The public IP address",
+            "The DNS (Domain Name System) server setting",
+            "The availability zone"
+          ],
+          "answer": 0,
+          "explanation": "Network interface yang meneruskan trafik untuk alamat lain harus mengaktifkan Enable IP (Internet Protocol) forwarding.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-nva-forwarding"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e5",
+          "type": "truefalse",
+          "concept": "udr",
+          "prompt": "A subnet can have two route tables associated with it at the same time.",
+          "answer": false,
+          "explanation": "Salah. Satu subnet punya nol atau satu route table. Sebaliknya, satu route table boleh dipakai banyak subnet.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-route-table"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "route-selection"
+          ],
+          "title": "Route mana yang dipakai",
+          "body": "Azure memilih route dengan longest prefix match: prefix yang paling spesifik menang. Contohnya, trafik ke 10.0.2.5 memakai route 10.0.2.0/24, bukan 10.0.0.0/16. Kalau prefix-nya sama persis, urutannya UDR (user-defined route), lalu BGP (Border Gateway Protocol) route, lalu system route. Jadi UDR 0.0.0.0/0 mengalahkan system route 0.0.0.0/0 ke Internet.",
+          "keyPoints": [
+            "Prefix paling spesifik menang",
+            "Prefix sama: UDR, lalu BGP, lalu system",
+            "UDR 0.0.0.0/0 mengalahkan default Internet"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview#how-azure-selects-routes-for-traffic-routing",
+          "teaches": [
+            "az104-f-u04-route-selection"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e6",
+          "type": "rules",
+          "concept": "route-selection",
+          "prompt": "A VM (virtual machine) in snet-app sends traffic to 10.0.2.5. Based on the table, which next hop is used?",
+          "tables": [
+            {
+              "title": "Effective routes of snet-app",
+              "columns": [
+                "Source",
+                "Address prefix",
+                "Next hop type"
+              ],
+              "rows": [
+                [
+                  "Default",
+                  "10.0.0.0/16",
+                  "Virtual network"
+                ],
+                [
+                  "Default",
+                  "0.0.0.0/0",
+                  "Internet"
+                ],
+                [
+                  "User",
+                  "10.0.2.0/24",
+                  "Virtual appliance (10.0.100.4)"
+                ],
+                [
+                  "User",
+                  "0.0.0.0/0",
+                  "None"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Virtual network",
+            "Virtual appliance (10.0.100.4)",
+            "None",
+            "Internet"
+          ],
+          "answer": 1,
+          "explanation": "10.0.2.5 cocok dengan 10.0.2.0/24, 10.0.0.0/16, dan 0.0.0.0/0. Prefix paling spesifik, /24, yang menang, jadi trafiknya ke virtual appliance.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-route-selection"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e7",
+          "type": "rules",
+          "concept": "route-selection",
+          "prompt": "A VM (virtual machine) in snet-app sends traffic to 52.1.2.3 on the internet. Based on the table, what happens?",
+          "tables": [
+            {
+              "title": "Effective routes of snet-app",
+              "columns": [
+                "Source",
+                "Address prefix",
+                "Next hop type"
+              ],
+              "rows": [
+                [
+                  "Default",
+                  "10.0.0.0/16",
+                  "Virtual network"
+                ],
+                [
+                  "Default",
+                  "0.0.0.0/0",
+                  "Internet"
+                ],
+                [
+                  "User",
+                  "10.0.2.0/24",
+                  "Virtual appliance (10.0.100.4)"
+                ],
+                [
+                  "User",
+                  "0.0.0.0/0",
+                  "None"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "The traffic goes to the internet",
+            "The traffic goes to the virtual appliance",
+            "The traffic is dropped, because the user route 0.0.0.0/0 uses None",
+            "The traffic stays in the VNet (virtual network)"
+          ],
+          "answer": 2,
+          "explanation": "Hanya 0.0.0.0/0 yang cocok. Dua route punya prefix sama, dan UDR (user-defined route) mengalahkan system route, jadi next hop None dipakai dan trafiknya dibuang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-route-selection",
+            "az104-f-u04-udr-next-hops"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e8",
+          "type": "order",
+          "concept": "route-selection",
+          "prompt": "Two routes have the same address prefix. Put the route sources in order of preference, highest first.",
+          "items": [
+            "User-defined route",
+            "BGP (Border Gateway Protocol) route",
+            "System route"
+          ],
+          "explanation": "Untuk prefix yang sama: UDR (user-defined route), lalu BGP (Border Gateway Protocol), lalu system route.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-route-selection"
+          ]
+        },
+        {
+          "id": "az104-u04-l4-e9",
+          "type": "multi",
+          "concept": "next-hop-types",
+          "prompt": "Which two next hop types can you choose when you create a user-defined route? Choose two.",
+          "options": [
+            "Virtual appliance",
+            "Virtual network peering",
+            "None",
+            "VirtualNetworkServiceEndpoint"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Virtual network peering dan VirtualNetworkServiceEndpoint hanya dibuat Azure sebagai system route, tidak bisa dipilih di UDR (user-defined route).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-udr-next-hops"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u04-l5",
       "title": "Troubleshooting koneksi",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u04-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "network-diagnosis"
+          ],
+          "title": "Cara mendiagnosis koneksi",
+          "body": "Mulai dari pertanyaannya, lalu pilih alat Network Watcher yang cocok. IP (Internet Protocol) flow verify menjawab aturan mana yang menolak sebuah paket, dan Next hop menjawab ke mana trafik dikirim. Connection troubleshoot menguji koneksi dari VM (virtual machine) ke tujuan secara menyeluruh, sedangkan Effective security rules menampilkan semua aturan keamanan di network interface. Network Watcher aktif otomatis di region yang punya virtual network.",
+          "keyPoints": [
+            "Ditolak aturan apa: IP flow verify",
+            "Ke mana trafiknya: Next hop",
+            "Semua aturan di network interface: Effective security rules"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-overview",
+          "teaches": [
+            "az104-f-u04-nw-auto",
+            "az104-f-u04-connection-troubleshoot",
+            "az104-f-u04-effective-rules"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e1",
+          "type": "truefalse",
+          "concept": "network-diagnosis",
+          "prompt": "You must deploy and pay for Network Watcher before you can use it in a region.",
+          "answer": false,
+          "explanation": "Salah. Network Watcher otomatis aktif saat kamu membuat atau mengubah virtual network di region itu, tanpa biaya untuk mengaktifkannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-nw-auto"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e2",
+          "type": "choice",
+          "concept": "network-diagnosis",
+          "prompt": "You need to see all the inbound and outbound security rules that apply to the network interface of vm1, from every NSG (network security group) combined. Which tool should you use?",
+          "options": [
+            "Effective security rules",
+            "Connection troubleshoot",
+            "Azure Advisor",
+            "The activity log of vm1"
+          ],
+          "answer": 0,
+          "explanation": "Effective security rules menampilkan gabungan aturan yang berlaku di network interface. Connection troubleshoot menguji sebuah koneksi, bukan menampilkan semua aturan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-effective-rules",
+            "az104-f-u04-connection-troubleshoot"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "ip-flow-verify"
+          ],
+          "title": "IP flow verify",
+          "body": "IP (Internet Protocol) flow verify mengecek apakah sebuah paket ke atau dari VM (virtual machine) diizinkan oleh aturan NSG (network security group). Isinya arah trafik, protokol, IP dan port lokal, serta IP dan port remote. Hasilnya Access allowed atau Access denied, lengkap dengan nama aturan dan NSG yang memutuskan. Jadi kamu tahu persis aturan mana yang harus diubah.",
+          "keyPoints": [
+            "Masukan: arah, protokol, IP, dan port",
+            "Hasil: allowed atau denied",
+            "Menyebut aturan dan NSG-nya"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/network-watcher/ip-flow-verify-overview",
+          "teaches": [
+            "az104-f-u04-ip-flow-verify"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e3",
+          "type": "fix",
+          "concept": "ip-flow-verify",
+          "prompt": "Users can't reach the website on vm1 over TCP (Transmission Control Protocol) port 443. You run IP (Internet Protocol) flow verify for inbound TCP 443 to vm1. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "IP flow verify result",
+            "message": "Access denied. Security rule: DenyWebInbound. Network security group: nsg-snet-web."
+          },
+          "options": [
+            "Restart vm1",
+            "Add a user-defined route to the subnet of vm1",
+            "Assign a new public IP address to vm1",
+            "Change or remove the DenyWebInbound rule in nsg-snet-web"
+          ],
+          "answer": 3,
+          "explanation": "IP (Internet Protocol) flow verify sudah menyebut aturan dan NSG (network security group) yang menolak trafik. Perbaiki aturan itu. Restart, route, atau IP baru tidak mengubah keputusan aturan tersebut.",
+          "requires": [
+            "az104-f-u04-ip-flow-verify"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e4",
+          "type": "multi",
+          "concept": "ip-flow-verify",
+          "prompt": "Which two inputs does IP (Internet Protocol) flow verify use? Choose two.",
+          "options": [
+            "The user's role assignments",
+            "The direction of the traffic",
+            "The remote IP address and port",
+            "The key of a storage account"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "IP (Internet Protocol) flow verify memakai arah, protokol, IP dan port lokal, serta IP dan port remote.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-ip-flow-verify"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "next-hop"
+          ],
+          "title": "Next hop",
+          "body": "Next hop menjawab ke mana trafik ke sebuah alamat tujuan dikirim. Hasilnya next hop type, alamat IP (Internet Protocol) next hop, dan route table yang dipakai. Kalau route-nya system route, route table-nya tertulis System Route. Pakai alat ini saat curiga ada UDR (user-defined route) yang mengirim trafik ke tempat yang salah.",
+          "keyPoints": [
+            "Menunjukkan next hop type dan alamatnya",
+            "Menyebut route table yang dipakai",
+            "System route tertulis System Route"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/network-watcher/next-hop-overview",
+          "teaches": [
+            "az104-f-u04-next-hop"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e5",
+          "type": "choice",
+          "concept": "next-hop",
+          "prompt": "Traffic from vm1 to 10.0.5.4 never arrives. You suspect that a route sends it to the wrong place. Which tool shows the next hop type and the route table that is used?",
+          "options": [
+            "IP (Internet Protocol) flow verify",
+            "Effective security rules",
+            "Next hop",
+            "Azure Advisor"
+          ],
+          "answer": 2,
+          "explanation": "Next hop menampilkan next hop type, alamatnya, dan route table yang dipakai. IP (Internet Protocol) flow verify dan Effective security rules memeriksa aturan keamanan, bukan route.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-next-hop",
+            "az104-f-u04-ip-flow-verify",
+            "az104-f-u04-effective-rules"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e6",
+          "type": "truefalse",
+          "concept": "next-hop",
+          "prompt": "When traffic uses a system route, Next hop shows System Route as the route table.",
+          "answer": true,
+          "explanation": "Benar. Kalau route-nya dari UDR (user-defined route), Next hop menyebut route table-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-next-hop"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e7",
+          "type": "match",
+          "concept": "network-diagnosis",
+          "prompt": "Match each Network Watcher tool to the question it answers.",
+          "pairs": [
+            [
+              "IP (Internet Protocol) flow verify",
+              "Is a packet to or from a VM (virtual machine) allowed, and by which rule?"
+            ],
+            [
+              "Next hop",
+              "Where is traffic to a destination sent next?"
+            ],
+            [
+              "Connection troubleshoot",
+              "Does a connection from a VM to a destination work end to end?"
+            ],
+            [
+              "Effective security rules",
+              "Which security rules apply to a network interface?"
+            ]
+          ],
+          "explanation": "Pilih alat dari pertanyaannya: aturan untuk satu paket, arah routing, koneksi menyeluruh, atau semua aturan di network interface.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-ip-flow-verify",
+            "az104-f-u04-next-hop",
+            "az104-f-u04-connection-troubleshoot",
+            "az104-f-u04-effective-rules"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-m4",
+          "type": "learn",
+          "concepts": [
+            "flow-logs"
+          ],
+          "title": "Flow logs",
+          "body": "Flow logs mencatat trafik IP (Internet Protocol) untuk analisis. NSG (network security group) flow logs pensiun pada 30 September 2027 dan sudah tidak bisa dibuat baru. Untuk mencatat trafik sekarang, pakai virtual network flow logs.",
+          "keyPoints": [
+            "NSG flow logs pensiun 30 September 2027",
+            "Tidak bisa membuat NSG flow logs baru",
+            "Pakai virtual network flow logs"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/network-watcher/nsg-flow-logs-overview",
+          "teaches": [
+            "az104-f-u04-flow-logs"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e8",
+          "type": "choice",
+          "concept": "flow-logs",
+          "prompt": "You need to log the IP (Internet Protocol) traffic that flows through a virtual network, for later analysis. What should you create?",
+          "options": [
+            "NSG (network security group) flow logs",
+            "Virtual network flow logs",
+            "A resource lock",
+            "A budget"
+          ],
+          "answer": 1,
+          "explanation": "NSG (network security group) flow logs sudah tidak bisa dibuat baru dan akan pensiun. Virtual network flow logs adalah penggantinya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-flow-logs"
+          ]
+        },
+        {
+          "id": "az104-u04-l5-e9",
+          "type": "truefalse",
+          "concept": "flow-logs",
+          "prompt": "You can still create new NSG (network security group) flow logs.",
+          "answer": false,
+          "explanation": "Salah. Pembuatan NSG (network security group) flow logs baru sudah tidak didukung, dan fiturnya pensiun pada 30 September 2027.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-flow-logs"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u04-vnet-cidr",
+      "statement": "Setiap VNet (virtual network) punya address space dalam notasi CIDR (Classless Inter-Domain Routing). VNet bisa dihubungkan ke VNet lain atau jaringan on-premises selama address space-nya tidak tumpang tindih.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-private-ranges",
+      "statement": "Microsoft menyarankan rentang alamat privat 10.0.0.0/8, 172.16.0.0/12, dan 192.168.0.0/16 untuk address space VNet (virtual network).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-subnets-no-overlap",
+      "statement": "Subnet membagi address space VNet (virtual network), dan address space antar-subnet tidak boleh tumpang tindih.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-reserved-5",
+      "statement": "Azure mencadangkan 5 alamat di setiap subnet: alamat jaringan (.0), default gateway (.1), dua alamat untuk DNS (Domain Name System) Azure (.2 dan .3), dan alamat broadcast (terakhir). Jadi /24 punya 251 alamat yang bisa dipakai dan /27 punya 27.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-subnet-limits",
+      "statement": "Subnet IPv4 terkecil /29 dan terbesar /2. Subnet IPv6 harus tepat /64.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-private-subnet",
+      "statement": "Untuk API (Application Programming Interface) versi setelah 31 Maret 2026, subnet di VNet baru bersifat privat (defaultOutboundAccess false). VM (virtual machine) di subnet privat butuh metode outbound eksplisit, misalnya NAT (Network Address Translation) gateway, load balancer dengan outbound rule, atau public IP; tanpa itu, misalnya Windows Update dan aktivasi Windows tidak berjalan.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/default-outbound-access"
+    },
+    {
+      "id": "az104-f-u04-default-outbound-ip",
+      "statement": "VM (virtual machine) tanpa metode outbound eksplisit di subnet non-privat mendapat default outbound IP milik Microsoft yang bisa berubah tanpa pemberitahuan. Microsoft menyarankan metode outbound eksplisit.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/default-outbound-access"
+    },
+    {
+      "id": "az104-f-u04-private-dynamic",
+      "statement": "Alokasi IP privat default adalah dynamic. Alamat dynamic hanya dilepas kalau network interface dihapus, dipindah ke subnet lain, atau diubah ke static dengan alamat berbeda; stop atau deallocate VM tidak melepasnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/private-ip-addresses"
+    },
+    {
+      "id": "az104-f-u04-private-static",
+      "statement": "Dengan alokasi static, kamu memilih sendiri alamat yang belum terpakai di rentang subnet, dan alamat itu hanya dilepas kalau network interface dihapus.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/private-ip-addresses"
+    },
+    {
+      "id": "az104-f-u04-basic-retired",
+      "statement": "Public IP SKU (stock-keeping unit) Basic pensiun pada 30 September 2025. SKU yang dipakai sekarang adalah Standard (v1 atau v2).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
+    },
+    {
+      "id": "az104-f-u04-standard-static",
+      "statement": "Public IP Standard selalu static, dan aman secara default: tertutup untuk trafik masuk sampai diizinkan NSG (network security group).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
+    },
+    {
+      "id": "az104-f-u04-static-dynamic",
+      "statement": "Public IP static diberikan saat resource dibuat dan baru dilepas saat resource dihapus; alamatnya dipilih Azure dari pool region itu, tidak bisa ditentukan sendiri. Dynamic, yang hanya ada di SKU Basic yang sudah pensiun, dilepas saat VM dihentikan atau dihapus.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
+    },
+    {
+      "id": "az104-f-u04-ip-zones",
+      "statement": "Public IP Standard v1 bisa zonal atau zone-redundant, sedangkan Standard v2 selalu zone-redundant. Zone-redundant bertahan saat satu zona gagal, dan zona public IP tidak bisa diubah setelah dibuat.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses#availability-zone"
+    },
+    {
+      "id": "az104-f-u04-peering-def",
+      "statement": "VNet peering menghubungkan dua VNet (virtual network) sehingga resource di keduanya berkomunikasi lewat alamat privat di backbone Microsoft. Peering bisa di region yang sama (local) atau antar region (global), dan antar subscription maupun tenant Microsoft Entra.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview"
+    },
+    {
+      "id": "az104-f-u04-peering-overlap",
+      "statement": "Peering tidak bisa dibuat kalau address space kedua VNet (virtual network) tumpang tindih.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-peering-cost",
+      "statement": "Membuat peering tidak dikenai biaya, tapi transfer data lewat peering ditagih.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-non-transitive",
+      "statement": "Peering tidak transitif: kalau VNet A di-peering ke B dan B ke C, A tidak otomatis terhubung ke C. Buat peering A ke C sendiri kalau perlu.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-hub-spoke",
+      "statement": "Di topologi hub-and-spoke, trafik bisa dilewatkan ke NVA (network virtual appliance) atau gateway di VNet hub dengan UDR (user-defined route), yang disebut service chaining.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview"
+    },
+    {
+      "id": "az104-f-u04-peering-links",
+      "statement": "Peering butuh link dari kedua arah. Kalau baru satu link, statusnya Initiated; setelah keduanya dibuat, Connected. Kalau salah satu link dihapus, statusnya Disconnected dan kedua link harus dibuat ulang.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-peering-move",
+      "statement": "VNet (virtual network) yang punya peering tidak bisa dipindah; hapus peering-nya dulu.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-gateway-transit",
+      "statement": "Gateway transit membuat VNet memakai VPN (virtual private network) gateway atau ExpressRoute gateway di VNet yang di-peering. Di hub, aktifkan opsi agar gateway meneruskan trafik ke VNet peer; di spoke, aktifkan opsi memakai remote gateway. Local dan global peering sama-sama mendukungnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview"
+    },
+    {
+      "id": "az104-f-u04-remote-gw-once",
+      "statement": "Opsi memakai remote gateway hanya bisa aktif di satu peering per VNet (virtual network).",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+    },
+    {
+      "id": "az104-f-u04-system-routes",
+      "statement": "Azure membuat system route untuk setiap subnet, antara lain address space VNet (virtual network) dengan next hop Virtual network, dan 0.0.0.0/0 dengan next hop Internet.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview"
+    },
+    {
+      "id": "az104-f-u04-route-table",
+      "statement": "Untuk mengubah routing, buat route table berisi UDR (user-defined route) lalu associate ke subnet. Satu subnet punya nol atau satu route table, dan satu route table bisa dipakai banyak subnet. UDR mengalahkan system route.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview#user-defined"
+    },
+    {
+      "id": "az104-f-u04-udr-next-hops",
+      "statement": "Next hop type yang bisa dipilih di UDR (user-defined route): Virtual appliance, Virtual network gateway, Virtual network, Internet, dan None (trafik dibuang). Virtual network peering dan VirtualNetworkServiceEndpoint tidak bisa dipilih.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview#user-defined"
+    },
+    {
+      "id": "az104-f-u04-nva-forwarding",
+      "statement": "Untuk next hop Virtual appliance, network interface VM appliance harus mengaktifkan Enable IP forwarding. Taruh appliance di subnet yang berbeda dari resource yang dilewatkan, supaya tidak terjadi routing loop.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview#user-defined"
+    },
+    {
+      "id": "az104-f-u04-route-selection",
+      "statement": "Azure memilih route dengan longest prefix match. Kalau prefix-nya sama, urutan pilihannya UDR (user-defined route), lalu BGP (Border Gateway Protocol) route, lalu system route.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview#how-azure-selects-routes-for-traffic-routing"
+    },
+    {
+      "id": "az104-f-u04-nw-auto",
+      "statement": "Network Watcher otomatis aktif di sebuah region saat kamu membuat atau mengubah virtual network di sana, tanpa biaya untuk mengaktifkannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-overview"
+    },
+    {
+      "id": "az104-f-u04-effective-rules",
+      "statement": "Effective security rules menampilkan gabungan aturan masuk dan keluar yang berlaku di sebuah network interface.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/effective-security-rules-overview"
+    },
+    {
+      "id": "az104-f-u04-connection-troubleshoot",
+      "statement": "Connection troubleshoot menguji koneksi dari VM (virtual machine) ke tujuan dan memeriksa NSG (network security group), UDR (user-defined route), dan port yang diblokir, lalu memberi penyebab dan langkah perbaikan.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/connection-troubleshoot-overview"
+    },
+    {
+      "id": "az104-f-u04-ip-flow-verify",
+      "statement": "IP flow verify mengecek apakah paket ke atau dari VM (virtual machine) diizinkan oleh aturan NSG (network security group), berdasarkan arah, protokol, IP dan port lokal, serta IP dan port remote. Hasilnya Access allowed atau Access denied, beserta nama aturan dan NSG-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/ip-flow-verify-overview"
+    },
+    {
+      "id": "az104-f-u04-next-hop",
+      "statement": "Next hop memberi next hop type, alamat IP, dan route table untuk sebuah tujuan. Kalau route-nya system route, route table-nya tertulis System Route.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/next-hop-overview"
+    },
+    {
+      "id": "az104-f-u04-flow-logs",
+      "statement": "NSG (network security group) flow logs pensiun pada 30 September 2027 dan tidak bisa dibuat baru lagi. Pakai virtual network flow logs sebagai gantinya.",
+      "source": "https://learn.microsoft.com/en-us/azure/network-watcher/nsg-flow-logs-overview"
     }
   ]
 }

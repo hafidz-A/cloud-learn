@@ -53,6 +53,10 @@ export const VISUAL_CATALOG = {
   AzureVsEntraRoles: ['azure-vs-entra-roles'],
   // Unit 3 (lock and hierarchy cards reuse PolicyRbacLock and ResourceHierarchy)
   PolicyFlow: ['policy-definition', 'initiative', 'policy-assignment'],
+  // Unit 4 (the first peering card reuses VNetPeering)
+  VNetAddressPlan: ['vnet-address-space', 'reserved-ips'],
+  PeeringNonTransitive: ['peering-non-transitive'],
+  UdrNextHop: ['udr', 'next-hop-types'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

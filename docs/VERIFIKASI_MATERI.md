@@ -186,3 +186,22 @@ resource group dan subscription. Materi hanya mengajarkan bagian yang disepakati
 
 Tidak ada fakta bertanda `verify`.
 
+### Unit 4: Virtual network dan subnet (30 September 2026)
+
+33 fakta, 18 kartu learn, 45 soal (41 examReady), 3 visual baru (`VNetAddressPlan`, `PeeringNonTransitive`, `UdrNextHop`)
+ditambah `VNetPeering` dari AZ-900. Tipe soal baru yang dipakai: topology (2), config (1), rules (2). Sumber:
+`azure-docs/articles/virtual-network` (termasuk `ip-services`) dan `network-watcher`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| 5 alamat dicadangkan per subnet (.0, .1 gateway, .2 dan .3 DNS, broadcast); subnet IPv4 terkecil /29, terbesar /2; IPv6 harus /64 | Diajarkan dengan hitungan /24, /27, /28, /29 | `virtual-networks-faq.md` |
+| Subnet di VNet baru bersifat privat untuk API setelah 31 Maret 2026; VM butuh outbound eksplisit (Windows Update dan aktivasi tidak jalan tanpa itu). Default outbound IP milik Microsoft dan bisa berubah | Diajarkan. Klaim "portal lebih dulu" di rencana tidak ada di dokumen, jadi tidak dipakai | `ip-services/default-outbound-access.md` |
+| IP privat dynamic tidak dilepas saat VM di-stop atau di-deallocate, hanya saat network interface dihapus, pindah subnet, atau diubah ke static | Soal khusus, karena miskonsepsi ini umum | `ip-services/private-ip-addresses.md` |
+| Public IP kini Standard v1 dan v2; Standard selalu static dan tertutup untuk trafik masuk; v2 selalu zone-redundant; zona tidak bisa diubah | Diajarkan | `ip-services/public-ip-addresses.md` |
+| Status peering Initiated (baru satu link), Connected, Disconnected (buat ulang kedua link); VNet yang punya peering tidak bisa dipindah; remote gateway hanya di satu peering | Diajarkan, dengan soal fix dari status Initiated | `virtual-networks-faq.md` |
+| Gateway transit didukung local dan global peering; nama opsi di portal | Soal topology hub, spoke, dan on-premises | `virtual-network-peering-overview.md`, `virtual-network-manage-peering.md` |
+| Satu subnet nol atau satu route table; UDR menang atas BGP dan system route untuk prefix sama; longest prefix match; NVA butuh Enable IP forwarding dan subnet terpisah | Soal config dan dua soal rules dari satu tabel route | `virtual-networks-udr-overview.md` |
+| NSG flow logs pensiun 30 September 2027 dan tidak bisa dibuat baru; ganti virtual network flow logs | Diajarkan | `network-watcher/nsg-flow-logs-overview.md` |
+
+Tidak ada fakta bertanda `verify`.
+

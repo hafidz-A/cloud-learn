@@ -35,6 +35,11 @@
     "description": "Kolaborasi antar organisasi. Dengan B2B collaboration, partner masuk ke aplikasimu sebagai guest memakai identitas mereka sendiri."
   },
   {
+    "term": "BGP",
+    "expansion": "Border Gateway Protocol",
+    "description": "Protokol untuk bertukar route antarjaringan, misalnya antara Azure dan jaringan on-premises lewat VPN gateway atau ExpressRoute."
+  },
+  {
     "term": "CapEx",
     "expansion": "Capital Expenditure",
     "description": "Belanja modal di depan, misalnya membeli server dan membangun datacenter sendiri."
@@ -43,6 +48,11 @@
     "term": "CDN",
     "expansion": "Content Delivery Network",
     "description": "Jaringan server yang menyimpan salinan konten di dekat pengguna supaya lebih cepat diakses."
+  },
+  {
+    "term": "CIDR",
+    "expansion": "Classless Inter-Domain Routing",
+    "description": "Cara menulis rentang alamat IP dengan panjang prefix, misalnya 10.0.0.0/16. Makin besar angka setelah garis miring, makin kecil rentangnya."
   },
   {
     "term": "CLI",
@@ -150,6 +160,11 @@
     "description": "Login dengan dua faktor atau lebih, misalnya password ditambah kode di aplikasi HP."
   },
   {
+    "term": "NAT",
+    "expansion": "Network Address Translation",
+    "description": "Menerjemahkan alamat IP privat ke alamat publik. NAT gateway memberi VM di subnet akses keluar ke internet."
+  },
+  {
     "term": "NFS",
     "expansion": "Network File System",
     "description": "Protokol berbagi file yang umum di Linux. Azure Files mendukung NFS dan SMB (Server Message Block)."
@@ -158,6 +173,11 @@
     "term": "NSG",
     "expansion": "Network Security Group",
     "description": "Aturan firewall sederhana yang mengizinkan atau menolak lalu lintas ke subnet atau network interface."
+  },
+  {
+    "term": "NVA",
+    "expansion": "Network Virtual Appliance",
+    "description": "VM yang menjalankan fungsi jaringan seperti firewall. Trafik diarahkan ke sana lewat user-defined route."
   },
   {
     "term": "OpEx",
@@ -198,6 +218,11 @@
     "term": "SaaS",
     "expansion": "Software as a Service",
     "description": "Model layanan di mana aplikasi sudah jadi dan dikelola penyedia, misalnya Microsoft 365."
+  },
+  {
+    "term": "SKU",
+    "expansion": "Stock-Keeping Unit",
+    "description": "Varian atau tingkatan sebuah layanan Azure, misalnya public IP SKU Standard."
   },
   {
     "term": "SLA",
@@ -248,6 +273,11 @@
     "term": "TCP",
     "expansion": "Transmission Control Protocol",
     "description": "Protokol jaringan yang menjamin data sampai berurutan. Web biasa memakai TCP port 80 atau 443."
+  },
+  {
+    "term": "UDR",
+    "expansion": "User-Defined Route",
+    "description": "Route buatan sendiri di route table yang di-associate ke subnet, untuk mengganti route bawaan Azure."
   },
   {
     "term": "UPN",

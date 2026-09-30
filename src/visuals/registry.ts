@@ -15,6 +15,7 @@ import { HybridConnectivity } from './HybridConnectivity'
 import { LicenseFlow } from './LicenseFlow'
 import { ManagementTools } from './ManagementTools'
 import { MonitorPipeline } from './MonitorPipeline'
+import { PeeringNonTransitive } from './PeeringNonTransitive'
 import { PolicyFlow } from './PolicyFlow'
 import { PolicyRbacLock } from './PolicyRbacLock'
 import { PricingVsTco } from './PricingVsTco'
@@ -29,6 +30,8 @@ import { SharedResponsibility } from './SharedResponsibility'
 import { SsprLicensing } from './SsprLicensing'
 import { StorageRedundancy } from './StorageRedundancy'
 import { StorageServices } from './StorageServices'
+import { UdrNextHop } from './UdrNextHop'
+import { VNetAddressPlan } from './VNetAddressPlan'
 import { VNetPeering } from './VNetPeering'
 import { ZonesInRegion } from './ZonesInRegion'
 
@@ -49,6 +52,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   LicenseFlow,
   ManagementTools,
   MonitorPipeline,
+  PeeringNonTransitive,
   PolicyFlow,
   PolicyRbacLock,
   PricingVsTco,
@@ -63,6 +67,8 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   SsprLicensing,
   StorageRedundancy,
   StorageServices,
+  UdrNextHop,
+  VNetAddressPlan,
   VNetPeering,
   ZonesInRegion,
 }
