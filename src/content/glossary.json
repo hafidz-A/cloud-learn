@@ -5,6 +5,11 @@
     "description": "Cara paling sederhana menjalankan container di Azure tanpa mengelola VM (Virtual Machine) atau cluster."
   },
   {
+    "term": "AES",
+    "expansion": "Advanced Encryption Standard",
+    "description": "Algoritma enkripsi standar. Azure Storage memakai AES 256-bit untuk mengenkripsi data yang disimpan."
+  },
+  {
     "term": "AKS",
     "expansion": "Azure Kubernetes Service",
     "description": "Layanan Kubernetes terkelola untuk menjalankan dan mengatur banyak container."
@@ -103,6 +108,11 @@
     "term": "GZRS",
     "expansion": "Geo-Zone-Redundant Storage",
     "description": "Menyimpan data di 3 availability zone region utama, lalu menyalinnya ke region pasangan. Durability 16 nines."
+  },
+  {
+    "term": "HSM",
+    "expansion": "Hardware Security Module",
+    "description": "Perangkat khusus untuk menyimpan dan memakai kunci kriptografi. Azure Key Vault Managed HSM adalah versi terkelolanya."
   },
   {
     "term": "HTTP",
@@ -230,6 +240,16 @@
     "description": "Record DNS untuk reverse lookup, dari alamat IP ke nama."
   },
   {
+    "term": "RA-GRS",
+    "expansion": "Read-Access Geo-Redundant Storage",
+    "description": "GRS yang juga memberi akses baca ke region kedua kapan saja, lewat endpoint berakhiran -secondary."
+  },
+  {
+    "term": "RA-GZRS",
+    "expansion": "Read-Access Geo-Zone-Redundant Storage",
+    "description": "GZRS yang juga memberi akses baca ke region kedua kapan saja, lewat endpoint berakhiran -secondary."
+  },
+  {
     "term": "RBAC",
     "expansion": "Role-Based Access Control",
     "description": "Mengatur siapa boleh melakukan apa pada resource lewat role, misalnya Reader, Contributor, atau Owner."
@@ -248,6 +268,11 @@
     "term": "SaaS",
     "expansion": "Software as a Service",
     "description": "Model layanan di mana aplikasi sudah jadi dan dikelola penyedia, misalnya Microsoft 365."
+  },
+  {
+    "term": "SAS",
+    "expansion": "Shared Access Signature",
+    "description": "Token yang ditempel di URL untuk memberi akses terbatas ke resource storage, dengan izin dan masa berlaku tertentu."
   },
   {
     "term": "SKU",
@@ -283,6 +308,11 @@
     "term": "SQL",
     "expansion": "Structured Query Language",
     "description": "Bahasa untuk mengelola dan membaca data di database relasional."
+  },
+  {
+    "term": "SSD",
+    "expansion": "Solid-State Drive",
+    "description": "Media penyimpanan tanpa bagian bergerak. Akun storage premium memakai SSD untuk latensi rendah."
   },
   {
     "term": "SSH",

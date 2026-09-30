@@ -6,27 +6,1793 @@
     {
       "id": "az104-u07-l1",
       "title": "Jenis dan performa",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u07-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "storage-account-types"
+          ],
+          "title": "Jenis storage account",
+          "body": "Standard general-purpose v2 adalah pilihan untuk sebagian besar skenario. Satu akun ini bisa berisi Blob Storage, Queue Storage, Table Storage, dan Azure Files, dan mendukung semua opsi redundancy. Kalau butuh performa tinggi, ada tiga jenis akun premium yang masing-masing khusus satu layanan: Premium block blobs, Premium file shares, dan Premium page blobs.",
+          "keyPoints": [
+            "Default: Standard general-purpose v2",
+            "Premium: khusus satu layanan",
+            "General-purpose v1 sudah tidak direkomendasikan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#types-of-storage-accounts",
+          "teaches": [
+            "az104-f-u07-types",
+            "az104-f-u07-gpv2",
+            "az104-f-u07-legacy"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e1",
+          "type": "truefalse",
+          "concept": "storage-account-types",
+          "prompt": "A Premium file shares storage account can also store queues and tables.",
+          "answer": false,
+          "explanation": "Salah. Premium file shares khusus untuk Azure Files. Queue dan table butuh Standard general-purpose v2.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-types"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e2",
+          "type": "match",
+          "concept": "storage-account-types",
+          "prompt": "Match each storage account type to what it holds.",
+          "pairs": [
+            [
+              "Standard general-purpose v2",
+              "Blobs, file shares, queues, and tables"
+            ],
+            [
+              "Premium block blobs",
+              "Block blobs and append blobs only"
+            ],
+            [
+              "Premium file shares",
+              "Azure Files shares only"
+            ],
+            [
+              "Premium page blobs",
+              "Page blobs only"
+            ]
+          ],
+          "explanation": "Hanya general-purpose v2 yang bisa berisi keempat layanan. Setiap jenis premium khusus untuk satu jenis data.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-types"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e3",
+          "type": "choice",
+          "concept": "storage-account-types",
+          "prompt": "A new app needs blob containers and queues in one storage account. Which account type should you create?",
+          "options": [
+            "Premium block blobs",
+            "Premium file shares",
+            "General-purpose v1",
+            "Standard general-purpose v2"
+          ],
+          "answer": 3,
+          "explanation": "Hanya general-purpose v2 yang bisa berisi blob dan queue sekaligus. General-purpose v1 sudah tidak direkomendasikan untuk deployment baru.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-types",
+            "az104-f-u07-gpv2",
+            "az104-f-u07-legacy"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "standard-vs-premium"
+          ],
+          "title": "Standard vs premium",
+          "body": "Akun premium memakai SSD (solid-state drive) untuk latensi rendah dan throughput tinggi. Premium file shares dipakai untuk file share yang butuh performa tinggi, dan wajib kalau butuh file share NFS (Network File System). Premium block blobs cocok untuk transaksi tinggi atau objek kecil. Harganya: akun premium tidak mendukung geo-redundancy; redundancy-nya hanya LRS (locally redundant storage) atau ZRS (zone-redundant storage) di region utama.",
+          "keyPoints": [
+            "Premium: SSD, latensi rendah",
+            "NFS di Azure Files: Premium file shares",
+            "Premium: tanpa geo-redundancy"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#types-of-storage-accounts",
+          "teaches": [
+            "az104-f-u07-premium-ssd",
+            "az104-f-u07-premium-files",
+            "az104-f-u07-premium-blocks"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e4",
+          "type": "choice",
+          "concept": "standard-vs-premium",
+          "prompt": "Linux servers need a low-latency file share that they mount over NFS (Network File System). Which storage account type should you create?",
+          "options": [
+            "Standard general-purpose v2",
+            "Premium block blobs",
+            "Premium file shares",
+            "Premium page blobs"
+          ],
+          "answer": 2,
+          "explanation": "File share NFS (Network File System) di Azure Files butuh Premium file shares, yang juga memakai SSD (solid-state drive) untuk latensi rendah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-premium-files",
+            "az104-f-u07-premium-ssd"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e5",
+          "type": "yesno",
+          "concept": "standard-vs-premium",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You create a Premium block blobs storage account for an app with many small writes.",
+          "statements": [
+            {
+              "text": "The account uses SSDs (solid-state drives).",
+              "answer": true
+            },
+            {
+              "text": "You can set the redundancy to GRS (geo-redundant storage).",
+              "answer": false
+            },
+            {
+              "text": "The account can hold append blobs.",
+              "answer": true
+            }
+          ],
+          "explanation": "Akun premium memakai SSD (solid-state drive) dan hanya mendukung LRS (locally redundant storage) atau ZRS (zone-redundant storage), tanpa geo-redundancy. Premium block blobs berisi block blob dan append blob.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-premium-ssd",
+            "az104-f-u07-premium-blocks"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e6",
+          "type": "multi",
+          "concept": "standard-vs-premium",
+          "prompt": "Which two requirements rule out a Premium block blobs account? Choose two.",
+          "options": [
+            "The account must also hold queues",
+            "Writes need consistently low latency",
+            "The data must be copied to a secondary region",
+            "The app writes many small objects"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Akun premium tidak mendukung geo-redundancy, dan hanya general-purpose v2 yang bisa berisi queue. Latensi rendah dan objek kecil justru alasan memilih premium.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-premium-ssd",
+            "az104-f-u07-premium-blocks",
+            "az104-f-u07-types"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "account-type-fixed"
+          ],
+          "title": "Jenis akun tidak bisa diganti",
+          "body": "Setelah storage account dibuat, jenisnya tidak bisa diganti. Kalau butuh jenis lain, misalnya dari standard ke premium, buat akun baru lalu salin datanya, misalnya dengan AzCopy. Satu-satunya pengecualian: general-purpose v1 dan akun Blob Storage lama bisa di-upgrade ke general-purpose v2. Upgrade itu tidak bisa dibatalkan.",
+          "keyPoints": [
+            "Jenis akun tetap setelah dibuat",
+            "Ganti jenis: akun baru dan salin data",
+            "Upgrade ke general-purpose v2 tidak bisa dibatalkan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#migrating-a-storage-account",
+          "teaches": [
+            "az104-f-u07-type-fixed"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e7",
+          "type": "choice",
+          "concept": "account-type-fixed",
+          "prompt": "A file share in a Standard general-purpose v2 account needs better performance, so it must move to a Premium file shares account. What should you do?",
+          "options": [
+            "Change the account type to Premium file shares in the portal",
+            "Upgrade the account to general-purpose v2",
+            "Change the redundancy to ZRS (zone-redundant storage)",
+            "Create a Premium file shares account and copy the data to it"
+          ],
+          "answer": 3,
+          "explanation": "Jenis storage account tidak bisa diganti setelah dibuat, jadi datanya disalin ke akun baru. Upgrade hanya berlaku dari general-purpose v1 atau Blob Storage lama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-type-fixed"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e8",
+          "type": "truefalse",
+          "concept": "account-type-fixed",
+          "prompt": "After you upgrade a general-purpose v1 account to general-purpose v2, you can switch it back.",
+          "answer": false,
+          "explanation": "Salah. Upgrade ke general-purpose v2 tidak bisa dibatalkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-type-fixed"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "account-name-endpoints"
+          ],
+          "title": "Nama dan endpoint",
+          "body": "Nama storage account harus 3 sampai 24 karakter, hanya angka dan huruf kecil, dan unik di seluruh Azure. Nama itu menjadi bagian alamat setiap layanan. Contohnya, akun contosodata punya endpoint contosodata.blob.core.windows.net untuk Blob Storage dan contosodata.file.core.windows.net untuk Azure Files.",
+          "keyPoints": [
+            "3 sampai 24 karakter",
+            "Hanya angka dan huruf kecil",
+            "Unik di seluruh Azure"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#storage-account-name",
+          "teaches": [
+            "az104-f-u07-name",
+            "az104-f-u07-endpoints"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e9",
+          "type": "choice",
+          "concept": "account-name-endpoints",
+          "prompt": "Which name can you use for a new storage account?",
+          "options": [
+            "Contoso-Data",
+            "contosodata01",
+            "contoso_data",
+            "cd"
+          ],
+          "answer": 1,
+          "explanation": "Nama storage account hanya boleh berisi angka dan huruf kecil, dengan panjang 3 sampai 24 karakter. Huruf besar, tanda hubung, dan garis bawah tidak boleh.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-name"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e10",
+          "type": "truefalse",
+          "concept": "account-name-endpoints",
+          "prompt": "The Azure Files endpoint of the account contosodata is https://contosodata.file.core.windows.net.",
+          "answer": true,
+          "explanation": "Benar. Setiap layanan punya endpoint sendiri: blob untuk Blob Storage, file untuk Azure Files, queue, dan table.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-endpoints"
+          ]
+        },
+        {
+          "id": "az104-u07-l1-e11",
+          "type": "fill",
+          "concept": "account-name-endpoints",
+          "prompt": "Complete the endpoint of the blob service.",
+          "sentence": "The account contosodata stores blobs at https://contosodata.___.core.windows.net, and a name can have at most ___ characters.",
+          "bank": [
+            "blob",
+            "file",
+            "24",
+            "63"
+          ],
+          "answers": [
+            "blob",
+            "24"
+          ],
+          "explanation": "Endpoint Blob Storage memakai blob.core.windows.net, dan nama storage account maksimal 24 karakter.",
+          "requires": [
+            "az104-f-u07-endpoints",
+            "az104-f-u07-name"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u07-l2",
       "title": "Redundancy dan failover",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u07-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "storage-redundancy"
+          ],
+          "title": "Empat pilihan redundancy",
+          "body": "LRS (locally redundant storage) paling murah: tiga salinan di satu datacenter, 11 nines. ZRS (zone-redundant storage) menyalin secara sinkron ke tiga atau lebih availability zone, 12 nines. GRS (geo-redundant storage) dan GZRS (geo-zone-redundant storage) menambah salinan asinkron ke region kedua, 16 nines; di region utama GRS memakai LRS dan GZRS memakai ZRS. Region kedua ditentukan dari region utama dan tidak bisa dipilih.",
+          "keyPoints": [
+            "LRS: satu datacenter",
+            "ZRS: beberapa zone",
+            "GRS dan GZRS: tambah region kedua"
+          ],
+          "visual": "StorageRedundancy",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+          "teaches": [
+            "az104-f-u07-lrs",
+            "az104-f-u07-zrs",
+            "az104-f-u07-geo",
+            "az104-f-u07-paired"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e1",
+          "type": "match",
+          "concept": "storage-redundancy",
+          "prompt": "Match each redundancy option to where the copies live.",
+          "pairs": [
+            [
+              "LRS (locally redundant storage)",
+              "One datacenter in the primary region"
+            ],
+            [
+              "ZRS (zone-redundant storage)",
+              "Availability zones in the primary region"
+            ],
+            [
+              "GRS (geo-redundant storage)",
+              "One datacenter, plus a secondary region"
+            ],
+            [
+              "GZRS (geo-zone-redundant storage)",
+              "Availability zones, plus a secondary region"
+            ]
+          ],
+          "explanation": "LRS (locally redundant storage) dan GRS (geo-redundant storage) memakai satu datacenter di region utama, ZRS (zone-redundant storage) dan GZRS (geo-zone-redundant storage) memakai beberapa zone. GRS dan GZRS juga menyalin ke region kedua.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-lrs",
+            "az104-f-u07-zrs",
+            "az104-f-u07-geo"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e2",
+          "type": "choice",
+          "concept": "storage-redundancy",
+          "prompt": "Data must stay available if one availability zone fails, and data governance rules say it must not leave the region. Which redundancy should you choose?",
+          "options": [
+            "LRS (locally redundant storage)",
+            "ZRS (zone-redundant storage)",
+            "GRS (geo-redundant storage)",
+            "GZRS (geo-zone-redundant storage)"
+          ],
+          "answer": 1,
+          "explanation": "ZRS (zone-redundant storage) menyalin ke beberapa zone di region yang sama. LRS (locally redundant storage) hanya satu datacenter, sedangkan GRS (geo-redundant storage) dan GZRS (geo-zone-redundant storage) menyalin ke region lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-zrs",
+            "az104-f-u07-lrs",
+            "az104-f-u07-geo"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e3",
+          "type": "truefalse",
+          "concept": "storage-redundancy",
+          "prompt": "With GRS (geo-redundant storage), you can choose any region as the secondary region.",
+          "answer": false,
+          "explanation": "Salah. Region kedua ditentukan dari region utama dan tidak bisa diubah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-paired"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "read-access-secondary"
+          ],
+          "title": "Akses baca ke region kedua",
+          "body": "Dengan GRS (geo-redundant storage) atau GZRS (geo-zone-redundant storage), data di region kedua tidak bisa dibaca sampai terjadi failover. Kalau aplikasi harus bisa membaca dari region kedua kapan saja, pilih RA-GRS (read-access geo-redundant storage) atau RA-GZRS (read-access geo-zone-redundant storage). Endpoint-nya berakhiran -secondary, misalnya contosodata-secondary.blob.core.windows.net. Dua jebakan: Azure Files tidak mendukung RA-GRS maupun RA-GZRS, dan tier Archive tidak didukung di ZRS (zone-redundant storage), GZRS, atau RA-GZRS.",
+          "keyPoints": [
+            "GRS: region kedua baru bisa dibaca setelah failover",
+            "RA-GRS dan RA-GZRS: baca kapan saja",
+            "Azure Files: tanpa RA-GRS atau RA-GZRS",
+            "Archive: hanya LRS (locally redundant storage), GRS, RA-GRS"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy#read-access-to-data-in-the-secondary-region",
+          "teaches": [
+            "az104-f-u07-read-access",
+            "az104-f-u07-files-no-ra",
+            "az104-f-u07-archive-redundancy"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e4",
+          "type": "choice",
+          "concept": "read-access-secondary",
+          "prompt": "An app must keep reading blobs if the primary region is down, without waiting for a failover. It must also survive a zone failure in the primary region. Which redundancy should you choose?",
+          "options": [
+            "GZRS (geo-zone-redundant storage)",
+            "RA-GZRS (read-access geo-zone-redundant storage)",
+            "GRS (geo-redundant storage)",
+            "ZRS (zone-redundant storage)"
+          ],
+          "answer": 1,
+          "explanation": "RA-GZRS (read-access geo-zone-redundant storage) memakai ZRS (zone-redundant storage) di region utama dan memberi akses baca ke region kedua kapan saja. Dengan GZRS (geo-zone-redundant storage) biasa, region kedua baru bisa dibaca setelah failover.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-read-access",
+            "az104-f-u07-zrs"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e5",
+          "type": "truefalse",
+          "concept": "read-access-secondary",
+          "prompt": "You can configure RA-GRS (read-access geo-redundant storage) for a storage account that you use only for Azure Files shares.",
+          "answer": false,
+          "explanation": "Salah. Azure Files tidak mendukung RA-GRS (read-access geo-redundant storage) maupun RA-GZRS (read-access geo-zone-redundant storage).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-files-no-ra"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e6",
+          "type": "yesno",
+          "concept": "read-access-secondary",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "The storage account contosodata uses GZRS (geo-zone-redundant storage).",
+          "statements": [
+            {
+              "text": "You can move a blob to the Archive tier.",
+              "answer": false
+            },
+            {
+              "text": "Apps can read from contosodata-secondary before a failover.",
+              "answer": false
+            },
+            {
+              "text": "Data is copied to the secondary region asynchronously.",
+              "answer": true
+            }
+          ],
+          "explanation": "Tier Archive tidak didukung di GZRS (geo-zone-redundant storage). Tanpa akses baca (RA-GZRS), region kedua tidak bisa dibaca sebelum failover. Salinan ke region kedua selalu asinkron.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-archive-redundancy",
+            "az104-f-u07-read-access",
+            "az104-f-u07-geo"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e7",
+          "type": "place",
+          "concept": "read-access-secondary",
+          "prompt": "Place each requirement under the only redundancy option that meets it.",
+          "zones": [
+            "LRS (locally redundant storage)",
+            "ZRS (zone-redundant storage)",
+            "GRS (geo-redundant storage)",
+            "RA-GZRS (read-access geo-zone-redundant storage)"
+          ],
+          "pieces": [
+            {
+              "text": "Lowest cost; losing the datacenter is acceptable",
+              "validZones": [
+                0
+              ]
+            },
+            {
+              "text": "Survive a zone failure; data must not leave the region",
+              "validZones": [
+                1
+              ]
+            },
+            {
+              "text": "Copy to a secondary region and use the Archive tier",
+              "validZones": [
+                2
+              ]
+            },
+            {
+              "text": "Read the secondary region at any time and survive a zone failure",
+              "validZones": [
+                3
+              ]
+            }
+          ],
+          "rule": "valid",
+          "explanation": "LRS (locally redundant storage) paling murah. ZRS (zone-redundant storage) tetap di satu region tapi tahan kegagalan zone. Archive hanya didukung LRS, GRS (geo-redundant storage), dan RA-GRS (read-access geo-redundant storage), jadi yang menyalin ke region kedua adalah GRS. RA-GZRS (read-access geo-zone-redundant storage) memakai zone di region utama dan bisa dibaca di region kedua.",
+          "requires": [
+            "az104-f-u07-lrs",
+            "az104-f-u07-zrs",
+            "az104-f-u07-archive-redundancy",
+            "az104-f-u07-read-access"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "storage-failover"
+          ],
+          "title": "Planned dan unplanned failover",
+          "body": "Planned failover dipakai untuk menguji rencana disaster recovery saat kedua region tersedia: primary dan secondary bertukar, geo-redundancy tetap ada, dan tidak ada data hilang. Unplanned failover dipakai saat region utama tidak tersedia: region kedua menjadi primary, salinan di region lama dihapus, dan akun menjadi LRS (locally redundant storage). Karena salinannya asinkron, data yang ditulis setelah Last Sync Time bisa hilang. Microsoft-managed failover hanya untuk bencana besar, jadi jangan diandalkan.",
+          "keyPoints": [
+            "Planned: uji, tanpa data hilang",
+            "Unplanned: akun jadi LRS",
+            "Cek Last Sync Time sebelum failover"
+          ],
+          "visual": "AccountFailover",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance#plan-for-failover",
+          "teaches": [
+            "az104-f-u07-failover-types",
+            "az104-f-u07-planned-result",
+            "az104-f-u07-unplanned-result",
+            "az104-f-u07-last-sync",
+            "az104-f-u07-ms-failover"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e8",
+          "type": "choice",
+          "concept": "storage-failover",
+          "prompt": "You must test your disaster recovery plan for a GRS (geo-redundant storage) account while both regions are healthy, without losing data. What should you do?",
+          "options": [
+            "Start a customer-managed planned failover",
+            "Start a customer-managed unplanned failover",
+            "Wait for a Microsoft-managed failover",
+            "Change the redundancy to RA-GRS (read-access geo-redundant storage)"
+          ],
+          "answer": 0,
+          "explanation": "Planned failover untuk menguji rencana saat kedua region tersedia, tanpa kehilangan data. Microsoft-managed failover hanya untuk bencana besar dan tidak bisa dipicu per akun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-failover-types",
+            "az104-f-u07-ms-failover"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e9",
+          "type": "choice",
+          "concept": "storage-failover",
+          "prompt": "The primary region of a GRS (geo-redundant storage) account is down, and you start a customer-managed unplanned failover. What is the redundancy of the account after the failover?",
+          "options": [
+            "LRS (locally redundant storage) in the new primary region",
+            "GRS with the regions swapped",
+            "ZRS (zone-redundant storage) in the new primary region",
+            "RA-GRS (read-access geo-redundant storage) in the old secondary region"
+          ],
+          "answer": 0,
+          "explanation": "Setelah unplanned failover, akun menjadi LRS (locally redundant storage) di region primary yang baru, dan salinan di region lama dihapus. GRS (geo-redundant storage) harus diaktifkan lagi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-unplanned-result"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e10",
+          "type": "multi",
+          "concept": "storage-failover",
+          "prompt": "Which two statements about a customer-managed unplanned failover are true? Choose two.",
+          "options": [
+            "The primary and secondary regions swap, and geo-redundancy stays",
+            "Writes made after the Last Sync Time can be lost",
+            "Microsoft recommends waiting for a Microsoft-managed failover instead",
+            "You must enable geo-redundancy again afterwards"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Salinan ke region kedua asinkron, jadi data setelah Last Sync Time bisa hilang, dan akun menjadi LRS (locally redundant storage) sampai geo-redundancy diaktifkan lagi. Bertukar region dengan geo-redundancy tetap adalah ciri planned failover.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-last-sync",
+            "az104-f-u07-unplanned-result",
+            "az104-f-u07-planned-result",
+            "az104-f-u07-ms-failover"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e11",
+          "type": "order",
+          "concept": "storage-failover",
+          "prompt": "The primary region of a GRS (geo-redundant storage) account is down. Put the steps in order.",
+          "items": [
+            "Check the Last Sync Time to estimate data loss",
+            "Start a customer-managed unplanned failover",
+            "Enable GRS again on the account"
+          ],
+          "explanation": "Last Sync Time dicek dulu untuk memperkirakan data yang hilang. Setelah failover, akun menjadi LRS (locally redundant storage), jadi GRS (geo-redundant storage) diaktifkan lagi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-last-sync",
+            "az104-f-u07-unplanned-result"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-m4",
+          "type": "learn",
+          "concepts": [
+            "change-redundancy"
+          ],
+          "title": "Mengubah redundancy",
+          "body": "Menambah atau menghapus region kedua, atau akses baca ke sana, bisa langsung diubah di portal, PowerShell, atau CLI (command-line interface), misalnya dari LRS (locally redundant storage) ke GRS (geo-redundant storage). Perubahan yang menyangkut zone, misalnya dari LRS ke ZRS (zone-redundant storage), butuh proses conversion. Perubahan yang menyangkut keduanya dilakukan dalam dua langkah terpisah.",
+          "keyPoints": [
+            "Region kedua dan akses baca: ubah langsung",
+            "Zone: butuh conversion",
+            "Keduanya: dua langkah"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/redundancy-migration",
+          "teaches": [
+            "az104-f-u07-change-redundancy"
+          ]
+        },
+        {
+          "id": "az104-u07-l2-e12",
+          "type": "choice",
+          "concept": "change-redundancy",
+          "prompt": "An account uses LRS (locally redundant storage) and must be changed to ZRS (zone-redundant storage). What does this change need?",
+          "options": [
+            "A new storage account type",
+            "A customer-managed failover",
+            "A conversion",
+            "Nothing, because ZRS is the default"
+          ],
+          "answer": 2,
+          "explanation": "Perubahan yang menyangkut zone, seperti LRS (locally redundant storage) ke ZRS (zone-redundant storage), butuh conversion. Menambah region kedua bisa langsung diubah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-change-redundancy"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u07-l3",
       "title": "Object replication",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u07-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "object-replication"
+          ],
+          "title": "Apa itu object replication",
+          "body": "Object replication menyalin block blob secara asinkron dari container di akun sumber ke container di akun tujuan, sesuai rule yang kamu buat. Berbeda dengan GRS (geo-redundant storage), akun tujuan bebas dipilih: boleh di region, subscription, bahkan tenant lain. Contoh pemakaiannya: menaruh salinan data dekat pengguna di region lain supaya waktu bacanya lebih cepat.",
+          "keyPoints": [
+            "Menyalin block blob antar container",
+            "Asinkron",
+            "Akun tujuan bebas dipilih"
+          ],
+          "visual": "ObjectReplication",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview",
+          "teaches": [
+            "az104-f-u07-or-what",
+            "az104-f-u07-paired"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e1",
+          "type": "choice",
+          "concept": "object-replication",
+          "prompt": "Blobs in the container photos in West Europe must also be copied to a container in an account in Australia East, near the users there. The paired region of West Europe is North Europe. What should you use?",
+          "options": [
+            "GRS (geo-redundant storage) on the source account",
+            "Object replication",
+            "RA-GRS (read-access geo-redundant storage) on the source account",
+            "ZRS (zone-redundant storage) on the source account"
+          ],
+          "answer": 1,
+          "explanation": "Region kedua GRS (geo-redundant storage) ditentukan dari region utama, jadi datanya ke North Europe. Object replication bisa menyalin ke akun di region mana pun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-what",
+            "az104-f-u07-paired"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e2",
+          "type": "truefalse",
+          "concept": "object-replication",
+          "prompt": "Object replication writes each blob to the destination account at the same time as it writes to the source account.",
+          "answer": false,
+          "explanation": "Salah. Object replication menyalin secara asinkron, jadi akun tujuan tidak langsung sama dengan akun sumber.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-what"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e3",
+          "type": "truefalse",
+          "concept": "object-replication",
+          "prompt": "The source and destination accounts of object replication can be in different subscriptions.",
+          "answer": true,
+          "explanation": "Benar. Kedua akun boleh di region, subscription, bahkan tenant Microsoft Entra yang berbeda.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-what"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "blob-versioning-prereq"
+          ],
+          "title": "Syarat object replication",
+          "body": "Object replication butuh blob versioning aktif di akun sumber dan akun tujuan, serta change feed aktif di akun sumber. Kedua akun harus general-purpose v2 atau premium block blob. Hanya block blob yang disalin, dan akun dengan hierarchical namespace tidak didukung. Selama policy ada, versioning tidak bisa dimatikan, dan customer-managed failover tidak didukung untuk kedua akun.",
+          "keyPoints": [
+            "Versioning: sumber dan tujuan",
+            "Change feed: sumber",
+            "Hanya block blob, tanpa hierarchical namespace"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#prerequisites-and-caveats-for-object-replication",
+          "teaches": [
+            "az104-f-u07-or-prereq",
+            "az104-f-u07-or-accounts",
+            "az104-f-u07-or-versioning-lock",
+            "az104-f-u07-or-no-failover"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e4",
+          "type": "fix",
+          "concept": "blob-versioning-prereq",
+          "prompt": "You try to create an object replication policy from stsource to stdest, and it fails. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "stdest · Data protection",
+            "message": "stsource: blob versioning On, change feed On. stdest: blob versioning Off, change feed Off."
+          },
+          "options": [
+            "Turn on change feed in stdest",
+            "Turn off change feed in stsource",
+            "Turn on blob versioning in stdest",
+            "Change stdest to GRS (geo-redundant storage)"
+          ],
+          "answer": 2,
+          "explanation": "Versioning wajib di akun sumber dan akun tujuan, jadi stdest perlu versioning. Change feed hanya wajib di akun sumber.",
+          "requires": [
+            "az104-f-u07-or-prereq"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e5",
+          "type": "yesno",
+          "concept": "blob-versioning-prereq",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You plan object replication from a general-purpose v2 account to another general-purpose v2 account.",
+          "statements": [
+            {
+              "text": "Change feed must be on in the destination account.",
+              "answer": false
+            },
+            {
+              "text": "Page blobs in the source container are replicated.",
+              "answer": false
+            },
+            {
+              "text": "Blob versioning must be on in both accounts.",
+              "answer": true
+            }
+          ],
+          "explanation": "Change feed hanya wajib di akun sumber, hanya block blob yang direplikasi, dan versioning wajib di kedua akun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-prereq",
+            "az104-f-u07-or-accounts"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e6",
+          "type": "multi",
+          "concept": "blob-versioning-prereq",
+          "prompt": "Which two accounts can't be part of an object replication policy? Choose two.",
+          "options": [
+            "A Standard general-purpose v2 account",
+            "A Premium block blobs account",
+            "A Premium file shares account",
+            "An account with a hierarchical namespace"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Object replication hanya untuk general-purpose v2 dan premium block blob, dan tidak mendukung akun dengan hierarchical namespace.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-accounts"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e7",
+          "type": "truefalse",
+          "concept": "blob-versioning-prereq",
+          "prompt": "While an object replication policy exists on an account, you can turn off blob versioning on that account.",
+          "answer": false,
+          "explanation": "Salah. Hapus policy object replication dulu, baru versioning bisa dimatikan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-versioning-lock"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "or-policy-rules"
+          ],
+          "title": "Policy dan rule",
+          "body": "Policy dibuat di akun tujuan, lalu dikaitkan ke akun sumber dengan policy ID (identifier) yang sama. Setiap rule menghubungkan satu container sumber ke satu container tujuan, dan boleh diberi filter prefix. Kedua container harus sudah ada. Secara default hanya blob baru yang disalin. Selama rule aktif, menulis ke container tujuan ditolak dengan error 409; baca dan hapus tetap boleh. Satu akun sumber maksimal punya dua akun tujuan.",
+          "keyPoints": [
+            "Container tujuan jadi hanya-baca",
+            "Default: hanya blob baru",
+            "Maksimal dua akun tujuan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#object-replication-policies-and-rules",
+          "teaches": [
+            "az104-f-u07-or-policy",
+            "az104-f-u07-or-existing",
+            "az104-f-u07-or-readonly",
+            "az104-f-u07-or-limits"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e8",
+          "type": "choice",
+          "concept": "or-policy-rules",
+          "prompt": "An app tries to upload a blob to the destination container of an active replication rule, and gets error 409 (Conflict). Why?",
+          "options": [
+            "Blob versioning is off in the destination account",
+            "The source account needs change feed",
+            "Writes to a destination container are blocked while the rule exists",
+            "The blob is in the Archive tier"
+          ],
+          "answer": 2,
+          "explanation": "Selama rule aktif, container tujuan tidak bisa ditulisi. Hapus rule atau policy-nya kalau ingin menulis ke sana.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-readonly"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e9",
+          "type": "choice",
+          "concept": "or-policy-rules",
+          "prompt": "You created a replication rule for the container photos. Only blobs uploaded after the rule was created appear in the destination. What explains this?",
+          "options": [
+            "Object replication copies only blobs that match a prefix filter",
+            "The destination account uses LRS (locally redundant storage)",
+            "By default, only new blobs are copied",
+            "Existing blobs are copied only once a week"
+          ],
+          "answer": 2,
+          "explanation": "Secara default hanya blob baru yang disalin. Blob lama ikut disalin kalau copy scope rule-nya diatur untuk itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-existing"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e10",
+          "type": "truefalse",
+          "concept": "or-policy-rules",
+          "prompt": "One source account can replicate to three destination accounts.",
+          "answer": false,
+          "explanation": "Salah. Satu akun sumber maksimal mereplikasi ke dua akun tujuan, dengan satu policy per akun tujuan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-limits"
+          ]
+        },
+        {
+          "id": "az104-u07-l3-e11",
+          "type": "order",
+          "concept": "or-policy-rules",
+          "prompt": "You set up object replication with the Azure CLI (command-line interface). Put the steps in order.",
+          "items": [
+            "Create the source and destination containers",
+            "Create the replication policy on the destination account",
+            "Associate the policy with the source account by using its policy ID (identifier)"
+          ],
+          "explanation": "Container harus ada sebelum dipakai di rule. Policy dibuat di akun tujuan, lalu dikaitkan ke akun sumber dengan policy ID (identifier) yang sama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-policy",
+            "az104-f-u07-or-readonly"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u07-l4",
       "title": "Enkripsi",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u07-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "storage-encryption"
+          ],
+          "title": "Enkripsi selalu aktif",
+          "body": "Azure Storage mengenkripsi semua data yang disimpan dengan AES (Advanced Encryption Standard) 256-bit. Enkripsi ini aktif di semua storage account, tidak bisa dimatikan, dan gratis. Cakupannya semua tier termasuk Archive, semua opsi redundancy, dan region utama maupun region kedua. Secara default kuncinya Microsoft-managed keys, yang disimpan dan dirotasi oleh Microsoft.",
+          "keyPoints": [
+            "AES 256-bit, selalu aktif",
+            "Tidak bisa dimatikan, tanpa biaya",
+            "Default: Microsoft-managed keys"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption",
+          "teaches": [
+            "az104-f-u07-sse",
+            "az104-f-u07-sse-scope",
+            "az104-f-u07-mmk"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e1",
+          "type": "truefalse",
+          "concept": "storage-encryption",
+          "prompt": "You can turn off Azure Storage encryption for a storage account to improve performance.",
+          "answer": false,
+          "explanation": "Salah. Enkripsi Azure Storage aktif di semua akun dan tidak bisa dimatikan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-sse"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e2",
+          "type": "choice",
+          "concept": "storage-encryption",
+          "prompt": "Auditors ask how blobs in the Archive tier of a GRS (geo-redundant storage) account are encrypted at rest. What is the answer?",
+          "options": [
+            "They must be encrypted by the app before upload",
+            "They are encrypted automatically with 256-bit AES (Advanced Encryption Standard), in both regions",
+            "Only the primary region is encrypted",
+            "You must enable encryption on the Archive tier"
+          ],
+          "answer": 1,
+          "explanation": "Enkripsi berlaku otomatis di semua tier termasuk Archive, dan di region utama maupun region kedua.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-sse",
+            "az104-f-u07-sse-scope"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "microsoft-vs-customer-managed-keys"
+          ],
+          "title": "Microsoft-managed vs customer-managed key",
+          "body": "Dengan Microsoft-managed keys, Microsoft menyimpan dan merotasi kunci. Dengan customer-managed key, kuncimu disimpan di Azure Key Vault atau Key Vault Managed HSM (hardware security module), dan kamu yang mengendalikan serta merotasinya. Microsoft menyarankan customer-managed key kalau rotasi kunci harus dikelola dan diaudit sendiri. Customer-managed key selalu melindungi Blob Storage dan Azure Files; Queue Storage dan Table Storage hanya ikut kalau dipilih saat akun dibuat.",
+          "keyPoints": [
+            "Microsoft-managed: Microsoft yang merotasi",
+            "Customer-managed: di Key Vault, kamu yang merotasi",
+            "Bisa berpindah kapan saja"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption#about-encryption-key-management",
+          "teaches": [
+            "az104-f-u07-mmk",
+            "az104-f-u07-cmk",
+            "az104-f-u07-cmk-reco",
+            "az104-f-u07-cmk-services",
+            "az104-f-u07-cmk-switch"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e3",
+          "type": "choice",
+          "concept": "microsoft-vs-customer-managed-keys",
+          "prompt": "A company must control the key that protects its storage account data, and rotate that key on its own schedule. What should you configure?",
+          "options": [
+            "Microsoft-managed keys",
+            "A customer-managed key in Azure Key Vault",
+            "Infrastructure encryption",
+            "A new access key for the account"
+          ],
+          "answer": 1,
+          "explanation": "Customer-managed key disimpan di Key Vault, dan pelanggan yang mengendalikan serta merotasinya. Microsoft-managed keys dirotasi oleh Microsoft.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-cmk",
+            "az104-f-u07-cmk-reco",
+            "az104-f-u07-mmk"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e4",
+          "type": "match",
+          "concept": "microsoft-vs-customer-managed-keys",
+          "prompt": "Match each key option to where the key is stored.",
+          "pairs": [
+            [
+              "Microsoft-managed keys",
+              "A Microsoft key store"
+            ],
+            [
+              "Customer-managed key",
+              "Azure Key Vault or Key Vault Managed HSM (hardware security module)"
+            ]
+          ],
+          "explanation": "Microsoft-managed keys disimpan Microsoft. Customer-managed key disimpan di Key Vault atau Managed HSM (hardware security module).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-mmk",
+            "az104-f-u07-cmk"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e5",
+          "type": "sort",
+          "concept": "microsoft-vs-customer-managed-keys",
+          "prompt": "Sort each statement to the key option it describes.",
+          "buckets": [
+            "Microsoft-managed keys",
+            "Customer-managed key"
+          ],
+          "items": [
+            {
+              "text": "The default for a new account",
+              "bucket": 0
+            },
+            {
+              "text": "Microsoft rotates the key",
+              "bucket": 0
+            },
+            {
+              "text": "You rotate the key",
+              "bucket": 1
+            },
+            {
+              "text": "Stored in Azure Key Vault",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Microsoft-managed keys adalah default dan dirotasi Microsoft. Customer-managed key disimpan di Key Vault dan dirotasi pelanggan.",
+          "requires": [
+            "az104-f-u07-mmk",
+            "az104-f-u07-cmk"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "key-vault"
+          ],
+          "title": "Syarat key vault",
+          "body": "Key vault untuk customer-managed key wajib mengaktifkan soft delete dan purge protection. Storage account mengaksesnya lewat managed identity yang minimal punya izin get, wrapkey, dan unwrapkey. Untuk akun baru, wajib memakai user-assigned managed identity. Kalau versi kunci tidak ditentukan, Azure Storage memakai versi terbaru, dicek sekali sehari. Kalau kuncinya dinonaktifkan, baca dan tulis data gagal dengan error 403.",
+          "keyPoints": [
+            "Soft delete dan purge protection wajib",
+            "Akun baru: user-assigned managed identity",
+            "Kunci nonaktif: error 403"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview#key-vault-requirements",
+          "teaches": [
+            "az104-f-u07-cmk-vault",
+            "az104-f-u07-cmk-identity",
+            "az104-f-u07-cmk-version",
+            "az104-f-u07-cmk-revoke"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e6",
+          "type": "fix",
+          "concept": "key-vault",
+          "prompt": "You try to use a key from kv-contoso as the customer-managed key of a storage account. The portal rejects the key vault. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "kv-contoso · Properties",
+            "message": "Soft delete: Enabled. Purge protection: Disabled."
+          },
+          "options": [
+            "Enable purge protection on kv-contoso",
+            "Disable soft delete on kv-contoso",
+            "Enable infrastructure encryption on the storage account",
+            "Move kv-contoso to the same region"
+          ],
+          "answer": 0,
+          "explanation": "Key vault untuk customer-managed key wajib mengaktifkan soft delete dan purge protection. Key vault dan storage account boleh di region berbeda.",
+          "requires": [
+            "az104-f-u07-cmk-vault"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e7",
+          "type": "choice",
+          "concept": "key-vault",
+          "prompt": "You create a new storage account and configure a customer-managed key during creation. Which identity must the account use to reach the key vault?",
+          "options": [
+            "A system-assigned managed identity",
+            "A user-assigned managed identity",
+            "The storage account access key",
+            "A shared access signature"
+          ],
+          "answer": 1,
+          "explanation": "Saat akun baru dibuat dengan customer-managed key, wajib memakai user-assigned managed identity. Akun yang sudah ada boleh memakai system-assigned.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-cmk-identity"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e8",
+          "type": "yesno",
+          "concept": "key-vault",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A storage account uses a customer-managed key from kv-contoso. The key version was not specified.",
+          "statements": [
+            {
+              "text": "A new key version is picked up automatically, within about a day.",
+              "answer": true
+            },
+            {
+              "text": "If you disable the key, reads of blob data fail with error 403.",
+              "answer": true
+            },
+            {
+              "text": "The managed identity only needs the get permission on the key.",
+              "answer": false
+            }
+          ],
+          "explanation": "Tanpa versi yang ditentukan, versi baru dicek sekali sehari. Kunci yang dinonaktifkan membuat baca dan tulis gagal dengan 403. Managed identity minimal butuh get, wrapkey, dan unwrapkey.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-cmk-version",
+            "az104-f-u07-cmk-revoke",
+            "az104-f-u07-cmk-identity"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e9",
+          "type": "multi",
+          "concept": "key-vault",
+          "prompt": "Which two settings must the key vault have before it can hold a customer-managed key for Azure Storage? Choose two.",
+          "options": [
+            "Public network access disabled",
+            "The same region as the storage account",
+            "Soft delete",
+            "Purge protection"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Syarat key vault adalah soft delete dan purge protection. Key vault juga boleh di region, subscription, bahkan tenant lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-cmk-vault"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-m4",
+          "type": "learn",
+          "concepts": [
+            "infrastructure-encryption"
+          ],
+          "title": "Infrastructure encryption",
+          "body": "Kalau aturan kepatuhan mewajibkan enkripsi ganda, aktifkan infrastructure encryption. Data dienkripsi dua kali: sekali di level layanan dan sekali di level infrastruktur, dengan dua algoritma dan dua kunci berbeda. Opsi ini hanya bisa diaktifkan saat akun dibuat dan tidak bisa diubah setelahnya.",
+          "keyPoints": [
+            "Enkripsi dua kali",
+            "Hanya saat akun dibuat",
+            "Untuk kebutuhan kepatuhan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/infrastructure-encryption-enable",
+          "teaches": [
+            "az104-f-u07-infra"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e10",
+          "type": "choice",
+          "concept": "infrastructure-encryption",
+          "prompt": "An existing storage account must now use double encryption for a compliance rule. What should you do?",
+          "options": [
+            "Create a new account with infrastructure encryption and move the data",
+            "Enable infrastructure encryption on the existing account",
+            "Configure a customer-managed key",
+            "Change the redundancy to GZRS (geo-zone-redundant storage)"
+          ],
+          "answer": 0,
+          "explanation": "Infrastructure encryption hanya bisa diaktifkan saat akun dibuat, jadi datanya dipindah ke akun baru. Customer-managed key tidak menambah lapisan enkripsi kedua.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-infra",
+            "az104-f-u07-cmk"
+          ]
+        },
+        {
+          "id": "az104-u07-l4-e11",
+          "type": "truefalse",
+          "concept": "infrastructure-encryption",
+          "prompt": "With infrastructure encryption, data is encrypted twice with two different keys.",
+          "answer": true,
+          "explanation": "Benar. Level layanan dan level infrastruktur memakai algoritma dan kunci yang berbeda.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-infra"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u07-l5",
       "title": "Storage Explorer dan AzCopy",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u07-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "storage-explorer"
+          ],
+          "title": "Azure Storage Explorer",
+          "body": "Azure Storage Explorer adalah aplikasi gratis untuk Windows, macOS, dan Linux untuk mengelola blob, file share, queue, dan table. Cara terhubungnya: login dengan akun Azure, Microsoft Entra ID untuk satu resource, account name dan key, SAS (shared access signature), atau emulator lokal. Microsoft menyarankan login dengan Microsoft Entra ID. Account key memberi akses tanpa batas ke seluruh akun, jadi hindari membagikannya.",
+          "keyPoints": [
+            "Aplikasi desktop gratis",
+            "Utamakan login Microsoft Entra ID",
+            "Account key: akses tanpa batas"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer",
+          "teaches": [
+            "az104-f-u07-se-what",
+            "az104-f-u07-se-connect",
+            "az104-f-u07-se-entra",
+            "az104-f-u07-se-keys"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e1",
+          "type": "choice",
+          "concept": "storage-explorer",
+          "prompt": "A contractor received only a SAS (shared access signature) URL (Uniform Resource Locator) for one container. How can the contractor open the container in Storage Explorer?",
+          "options": [
+            "Sign in with the Azure account of the company",
+            "Attach to the container by using the SAS URL",
+            "Attach by using the account name and key",
+            "Connect to the local storage emulator"
+          ],
+          "answer": 1,
+          "explanation": "Storage Explorer bisa terhubung ke satu resource dengan SAS (shared access signature). Kontraktor tidak punya akun Azure perusahaan maupun account key.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-se-connect"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e2",
+          "type": "truefalse",
+          "concept": "storage-explorer",
+          "prompt": "A storage account key gives access only to the container you open with it.",
+          "answer": false,
+          "explanation": "Salah. Account key memberi akses tanpa batas ke seluruh layanan di storage account.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-se-keys"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "azcopy"
+          ],
+          "title": "AzCopy",
+          "body": "AzCopy adalah utilitas command-line untuk menyalin data ke, dari, atau antar storage account. azcopy copy menyalin; tambahkan --recursive untuk folder beserta subfolder-nya. azcopy make membuat container, dan azcopy sync menyamakan isi tujuan dengan sumber. Saat menyalin antar storage account, data berpindah langsung antar server storage, tidak lewat komputermu.",
+          "keyPoints": [
+            "azcopy copy, --recursive untuk folder",
+            "azcopy make: buat container",
+            "Antar akun: server-to-server"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10",
+          "teaches": [
+            "az104-f-u07-azcopy",
+            "az104-f-u07-azcopy-recursive",
+            "az104-f-u07-azcopy-s2s"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e3",
+          "type": "choice",
+          "concept": "azcopy",
+          "prompt": "You must upload C:\\reports and all its subfolders to a blob container with AzCopy. Which option must you add to azcopy copy?",
+          "options": [
+            "--delete-destination=true",
+            "--tenant-id",
+            "--include-pattern",
+            "--recursive"
+          ],
+          "answer": 3,
+          "explanation": "Opsi --recursive menyalin semua file dan subfolder. Tanpa itu, isi subfolder tidak ikut.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-azcopy-recursive"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e4",
+          "type": "truefalse",
+          "concept": "azcopy",
+          "prompt": "When AzCopy copies blobs between two storage accounts, the data passes through the computer that runs AzCopy.",
+          "answer": false,
+          "explanation": "Salah. AzCopy memakai API (Application Programming Interface) server-to-server, jadi data langsung berpindah antar server storage.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-azcopy-s2s"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e5",
+          "type": "shell",
+          "concept": "azcopy",
+          "prompt": "You already ran azcopy login. Upload the folder C:\\reports and its subfolders to the container reports in the account contosodata.",
+          "tokens": [
+            "azcopy copy",
+            "C:\\reports",
+            "https://contosodata.blob.core.windows.net/reports",
+            "--recursive",
+            "azcopy sync",
+            "https://contosodata.file.core.windows.net/reports",
+            "--delete-destination=true"
+          ],
+          "answer": [
+            "azcopy copy",
+            "C:\\reports",
+            "https://contosodata.blob.core.windows.net/reports",
+            "--recursive"
+          ],
+          "explanation": "Urutannya azcopy copy, lalu sumber, lalu tujuan di endpoint blob, ditambah --recursive untuk subfolder. Endpoint file untuk Azure Files, bukan container blob.",
+          "requires": [
+            "az104-f-u07-azcopy-recursive",
+            "az104-f-u07-endpoints"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "azcopy-auth"
+          ],
+          "title": "Otorisasi AzCopy",
+          "body": "AzCopy bisa diotorisasi dengan Microsoft Entra ID, misalnya lewat azcopy login, atau dengan token SAS (shared access signature) yang ditempel di URL (Uniform Resource Locator). Jebakannya: Owner storage account tidak otomatis punya akses ke data. Dengan Microsoft Entra ID, upload blob butuh Storage Blob Data Contributor atau Storage Blob Data Owner, dan download butuh Storage Blob Data Reader. Role assignment bisa butuh sampai lima menit untuk berlaku.",
+          "keyPoints": [
+            "Microsoft Entra ID atau SAS",
+            "Owner tidak otomatis bisa akses data",
+            "Upload: Storage Blob Data Contributor"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-user-identity#verify-role-assignments",
+          "teaches": [
+            "az104-f-u07-azcopy-auth",
+            "az104-f-u07-azcopy-login",
+            "az104-f-u07-azcopy-roles"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e6",
+          "type": "fix",
+          "concept": "azcopy-auth",
+          "prompt": "Ani has the Owner role on the storage account contosodata. After azcopy login, her upload fails. What should you do?",
+          "scene": {
+            "kind": "error",
+            "title": "azcopy copy",
+            "message": "403 AuthorizationPermissionMismatch: This request is not authorized to perform this operation using this permission."
+          },
+          "options": [
+            "Assign Ani the Storage Blob Data Contributor role",
+            "Assign Ani the Contributor role",
+            "Run azcopy login again with --recursive",
+            "Regenerate the account keys"
+          ],
+          "answer": 0,
+          "explanation": "Owner dan Contributor mengelola resource, bukan data. Upload dengan Microsoft Entra ID butuh role data seperti Storage Blob Data Contributor.",
+          "requires": [
+            "az104-f-u07-azcopy-roles"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e7",
+          "type": "choice",
+          "concept": "azcopy-auth",
+          "prompt": "A script must download blobs with AzCopy by using Microsoft Entra ID. Which role gives the least access that still works?",
+          "options": [
+            "Storage Blob Data Contributor",
+            "Storage Blob Data Owner",
+            "Storage Blob Data Reader",
+            "Reader"
+          ],
+          "answer": 2,
+          "explanation": "Download cukup dengan Storage Blob Data Reader. Role Reader hanya untuk melihat resource, bukan membaca data.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-azcopy-roles"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e8",
+          "type": "yesno",
+          "concept": "azcopy-auth",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You use AzCopy to copy data to contosodata.",
+          "statements": [
+            {
+              "text": "You can append a SAS (shared access signature) token to the destination URL (Uniform Resource Locator) instead of signing in.",
+              "answer": true
+            },
+            {
+              "text": "The Owner role on contosodata is enough to upload blobs after azcopy login.",
+              "answer": false
+            },
+            {
+              "text": "A new role assignment can take a few minutes before AzCopy can use it.",
+              "answer": true
+            }
+          ],
+          "explanation": "SAS (shared access signature) bisa ditempel di URL (Uniform Resource Locator). Owner tidak otomatis punya akses data. Role assignment bisa butuh sampai lima menit.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-azcopy-auth",
+            "az104-f-u07-azcopy-roles"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-m4",
+          "type": "learn",
+          "concepts": [
+            "azcopy-sync"
+          ],
+          "title": "azcopy sync",
+          "body": "azcopy sync menyamakan tujuan dengan sumber. Secara default, sync membandingkan nama file dan waktu modifikasi terakhir, lalu hanya menyalin yang berubah. File yang dihapus di sumber tidak dihapus di tujuan, kecuali memakai --delete-destination. Nilai true langsung menghapus tanpa konfirmasi, sedangkan prompt meminta konfirmasi. Microsoft menyarankan mengaktifkan soft delete dulu sebelum memakai opsi ini.",
+          "keyPoints": [
+            "Membandingkan nama dan waktu modifikasi",
+            "--delete-destination: hapus yang hilang di sumber",
+            "Aktifkan soft delete dulu"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs-synchronize#guidelines",
+          "teaches": [
+            "az104-f-u07-azcopy-sync"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e9",
+          "type": "choice",
+          "concept": "azcopy-sync",
+          "prompt": "Each night, a container must match a local folder, including removing blobs whose files were deleted locally. Which command fits?",
+          "options": [
+            "azcopy copy with --recursive",
+            "azcopy sync with --delete-destination=true",
+            "azcopy make",
+            "azcopy login"
+          ],
+          "answer": 1,
+          "explanation": "azcopy sync hanya menyalin yang berubah, dan --delete-destination=true menghapus blob yang sudah tidak ada di sumber.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-azcopy-sync"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e10",
+          "type": "truefalse",
+          "concept": "azcopy-sync",
+          "prompt": "By default, azcopy sync deletes files in the destination that no longer exist in the source.",
+          "answer": false,
+          "explanation": "Salah. Penghapusan hanya terjadi kalau --delete-destination diatur ke true atau prompt.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-azcopy-sync"
+          ]
+        },
+        {
+          "id": "az104-u07-l5-e11",
+          "type": "match",
+          "concept": "azcopy-sync",
+          "prompt": "Match each AzCopy command to what it does.",
+          "pairs": [
+            [
+              "azcopy copy",
+              "Copies files or blobs to a destination"
+            ],
+            [
+              "azcopy sync",
+              "Makes the destination match the source"
+            ],
+            [
+              "azcopy make",
+              "Creates a container"
+            ],
+            [
+              "azcopy login",
+              "Signs in with Microsoft Entra ID"
+            ]
+          ],
+          "explanation": "copy menyalin, sync menyamakan tujuan dengan sumber, make membuat container, dan login menyimpan token Microsoft Entra.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-azcopy",
+            "az104-f-u07-azcopy-sync",
+            "az104-f-u07-azcopy-login"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u07-types",
+      "statement": "Jenis storage account yang direkomendasikan: Standard general-purpose v2 (Blob Storage, Queue Storage, Table Storage, dan Azure Files), Premium block blobs, Premium file shares, dan Premium page blobs.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#types-of-storage-accounts"
+    },
+    {
+      "id": "az104-f-u07-gpv2",
+      "statement": "Standard general-purpose v2 direkomendasikan untuk sebagian besar skenario, dan mendukung LRS (locally redundant storage), ZRS, GRS, RA-GRS, GZRS, dan RA-GZRS.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#types-of-storage-accounts"
+    },
+    {
+      "id": "az104-f-u07-premium-ssd",
+      "statement": "Akun premium memakai SSD (solid-state drive) untuk latensi rendah dan throughput tinggi, dan redundancy-nya hanya di region utama (LRS atau ZRS), tanpa geo-redundancy.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#types-of-storage-accounts"
+    },
+    {
+      "id": "az104-f-u07-premium-files",
+      "statement": "Premium file shares adalah jenis akun khusus Azure Files. Pakai jenis ini kalau butuh file share NFS (Network File System), atau akun yang mendukung file share SMB dan NFS sekaligus.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#types-of-storage-accounts"
+    },
+    {
+      "id": "az104-f-u07-premium-blocks",
+      "statement": "Premium block blobs cocok untuk block blob dan append blob dengan transaksi tinggi, objek kecil, atau latensi rendah yang konsisten.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#types-of-storage-accounts"
+    },
+    {
+      "id": "az104-f-u07-type-fixed",
+      "statement": "Jenis storage account tidak bisa diganti setelah dibuat; data harus disalin ke akun baru. Pengecualiannya, general-purpose v1 dan akun Blob Storage lama bisa di-upgrade ke general-purpose v2, dan upgrade itu tidak bisa dibatalkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#migrating-a-storage-account"
+    },
+    {
+      "id": "az104-f-u07-legacy",
+      "statement": "General-purpose v1 dan akun Blob Storage lama tidak direkomendasikan untuk deployment baru.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#legacy-storage-account-types"
+    },
+    {
+      "id": "az104-f-u07-name",
+      "statement": "Nama storage account 3 sampai 24 karakter, hanya angka dan huruf kecil, dan harus unik di seluruh Azure.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#storage-account-name"
+    },
+    {
+      "id": "az104-f-u07-endpoints",
+      "statement": "Setiap layanan storage punya endpoint sendiri, misalnya https://<akun>.blob.core.windows.net untuk Blob Storage dan https://<akun>.file.core.windows.net untuk Azure Files.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview#standard-endpoints"
+    },
+    {
+      "id": "az104-f-u07-lrs",
+      "statement": "LRS (locally redundant storage) adalah opsi termurah: tiga salinan di satu datacenter di region utama, dengan durability minimal 11 nines. LRS tidak melindungi dari bencana yang mengenai seluruh datacenter.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance#choose-the-right-redundancy-option"
+    },
+    {
+      "id": "az104-f-u07-zrs",
+      "statement": "ZRS (zone-redundant storage) menyalin data secara sinkron ke tiga atau lebih availability zone di region utama, dengan durability minimal 12 nines.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy#zone-redundant-storage"
+    },
+    {
+      "id": "az104-f-u07-geo",
+      "statement": "GRS dan GZRS menyalin data secara asinkron ke region kedua dan menyimpannya dengan LRS di sana. Di region utama, GRS memakai LRS dan GZRS memakai ZRS. Durability keduanya minimal 16 nines.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy#redundancy-in-a-secondary-region"
+    },
+    {
+      "id": "az104-f-u07-paired",
+      "statement": "Region kedua ditentukan dari region utama dan tidak bisa diubah.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy#redundancy-in-a-secondary-region"
+    },
+    {
+      "id": "az104-f-u07-read-access",
+      "statement": "Dengan GRS atau GZRS, data di region kedua tidak bisa dibaca kecuali setelah failover. RA-GRS dan RA-GZRS memberi akses baca ke region kedua kapan saja, lewat endpoint berakhiran -secondary.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy#read-access-to-data-in-the-secondary-region"
+    },
+    {
+      "id": "az104-f-u07-files-no-ra",
+      "statement": "Azure Files tidak mendukung RA-GRS maupun RA-GZRS.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy#read-access-to-data-in-the-secondary-region"
+    },
+    {
+      "id": "az104-f-u07-archive-redundancy",
+      "statement": "Tier Archive untuk Blob Storage didukung di akun LRS, GRS, dan RA-GRS, tetapi tidak di ZRS, GZRS, atau RA-GZRS.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
+    },
+    {
+      "id": "az104-f-u07-change-redundancy",
+      "statement": "Menambah atau menghapus geo-replication dan akses baca bisa langsung lewat portal, PowerShell, atau CLI (command-line interface). Perubahan yang menyangkut zone, misalnya LRS ke ZRS, butuh conversion.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/redundancy-migration"
+    },
+    {
+      "id": "az104-f-u07-failover-types",
+      "statement": "Customer-managed failover ada dua: planned, untuk menguji rencana disaster recovery saat kedua region tersedia dan tanpa kehilangan data; dan unplanned, saat region utama tidak tersedia.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance#plan-for-failover"
+    },
+    {
+      "id": "az104-f-u07-planned-result",
+      "statement": "Setelah planned failover, region primary dan secondary bertukar, dan geo-redundancy tetap ada.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance#plan-for-failover"
+    },
+    {
+      "id": "az104-f-u07-unplanned-result",
+      "statement": "Setelah unplanned failover, region kedua menjadi primary, salinan di region lama dihapus, dan akun menjadi LRS. Geo-redundancy harus diaktifkan lagi, dan replikasi ulangnya berbayar.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance#the-time-and-cost-of-failing-over"
+    },
+    {
+      "id": "az104-f-u07-last-sync",
+      "statement": "Karena salinan ke region kedua asinkron, data yang ditulis setelah Last Sync Time bisa hilang saat unplanned failover. Last Sync Time dipakai untuk memperkirakan data yang hilang.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance#last-sync-time"
+    },
+    {
+      "id": "az104-f-u07-ms-failover",
+      "statement": "Microsoft-managed failover hanya untuk bencana besar yang mengenai seluruh region, dan tidak bisa dipicu per storage account. Microsoft menyarankan untuk tidak mengandalkannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance#microsoft-managed-failover"
+    },
+    {
+      "id": "az104-f-u07-or-what",
+      "statement": "Object replication menyalin block blob secara asinkron dari container di akun sumber ke container di akun tujuan, sesuai rule. Kedua akun boleh di region, subscription, bahkan tenant yang berbeda.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview"
+    },
+    {
+      "id": "az104-f-u07-or-prereq",
+      "statement": "Object replication butuh blob versioning aktif di akun sumber dan akun tujuan, serta change feed aktif di akun sumber.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#prerequisites-and-caveats-for-object-replication"
+    },
+    {
+      "id": "az104-f-u07-or-accounts",
+      "statement": "Kedua akun harus general-purpose v2 atau premium block blob. Hanya block blob yang direplikasi, bukan append blob atau page blob, dan akun dengan hierarchical namespace tidak didukung.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#prerequisites-and-caveats-for-object-replication"
+    },
+    {
+      "id": "az104-f-u07-or-no-failover",
+      "statement": "Customer-managed failover tidak didukung untuk akun sumber maupun akun tujuan object replication.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#prerequisites-and-caveats-for-object-replication"
+    },
+    {
+      "id": "az104-f-u07-or-versioning-lock",
+      "statement": "Selama ada policy object replication, blob versioning di akun itu tidak bisa dimatikan; hapus policy-nya dulu.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#blob-versioning"
+    },
+    {
+      "id": "az104-f-u07-or-policy",
+      "statement": "Policy dibuat di akun tujuan, lalu dikaitkan ke akun sumber dengan policy ID (identifier) yang sama. Satu policy berisi satu atau lebih rule; tiap rule berisi satu container sumber dan satu container tujuan, dan bisa diberi filter prefix.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#object-replication-policies-and-rules"
+    },
+    {
+      "id": "az104-f-u07-or-limits",
+      "statement": "Satu akun sumber bisa mereplikasi ke paling banyak dua akun tujuan, dengan satu policy untuk setiap akun tujuan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#replication-policies"
+    },
+    {
+      "id": "az104-f-u07-or-existing",
+      "statement": "Secara default, hanya blob baru yang disalin setelah rule dibuat. Blob yang sudah ada ikut disalin kalau copy scope-nya diatur.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#replication-rules"
+    },
+    {
+      "id": "az104-f-u07-or-readonly",
+      "statement": "Container sumber dan tujuan harus sudah ada sebelum rule dibuat. Selama rule aktif, penulisan ke container tujuan ditolak dengan error 409 (Conflict), sedangkan baca dan hapus tetap boleh.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview#replication-rules"
+    },
+    {
+      "id": "az104-f-u07-sse",
+      "statement": "Azure Storage mengenkripsi semua data yang disimpan (service-side encryption) dengan AES (Advanced Encryption Standard) 256-bit. Enkripsi ini aktif di semua akun, tidak bisa dimatikan, dan tanpa biaya tambahan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption#about-azure-storage-service-side-encryption"
+    },
+    {
+      "id": "az104-f-u07-sse-scope",
+      "statement": "Enkripsi berlaku di tier standard dan premium, di semua access tier termasuk Archive, di semua opsi redundancy, dan di region utama maupun region kedua.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption#about-azure-storage-service-side-encryption"
+    },
+    {
+      "id": "az104-f-u07-mmk",
+      "statement": "Akun baru memakai Microsoft-managed keys secara default. Kuncinya disimpan dan dirotasi oleh Microsoft.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption#about-encryption-key-management"
+    },
+    {
+      "id": "az104-f-u07-cmk",
+      "statement": "Customer-managed key disimpan di Azure Key Vault atau Key Vault Managed HSM (hardware security module). Pelanggan yang mengendalikan kunci dan bertanggung jawab merotasinya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption#about-encryption-key-management"
+    },
+    {
+      "id": "az104-f-u07-cmk-reco",
+      "statement": "Kalau ada kebutuhan rotasi kunci khusus, Microsoft menyarankan customer-managed keys supaya rotasinya bisa dikelola dan diaudit sendiri.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption#about-encryption-key-management"
+    },
+    {
+      "id": "az104-f-u07-cmk-services",
+      "statement": "Customer-managed key selalu melindungi Blob Storage dan Azure Files. Queue Storage dan Table Storage hanya ikut kalau dipilih saat akun dibuat.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview#customer-managed-keys-for-queues-and-tables"
+    },
+    {
+      "id": "az104-f-u07-cmk-switch",
+      "statement": "Enkripsi bisa dipindah antara Microsoft-managed keys dan customer-managed keys kapan saja, dan data tetap terenkripsi selama perpindahan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview#enable-customer-managed-keys-for-a-storage-account"
+    },
+    {
+      "id": "az104-f-u07-cmk-identity",
+      "statement": "Storage account mengakses key vault lewat managed identity yang minimal punya izin get, wrapkey, dan unwrapkey. Saat membuat akun baru dengan customer-managed key, wajib memakai user-assigned managed identity; akun yang sudah ada boleh memakai system-assigned.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview"
+    },
+    {
+      "id": "az104-f-u07-cmk-vault",
+      "statement": "Key vault atau managed HSM (hardware security module) untuk customer-managed key wajib mengaktifkan soft delete dan purge protection.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview#key-vault-requirements"
+    },
+    {
+      "id": "az104-f-u07-cmk-version",
+      "statement": "Kalau versi kunci tidak ditentukan, Azure Storage mengecek versi baru sekali sehari dan otomatis memakainya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview#automatically-update-the-key-version"
+    },
+    {
+      "id": "az104-f-u07-cmk-revoke",
+      "statement": "Kalau kunci dinonaktifkan di key vault, operasi baca dan tulis data gagal dengan error 403 (Forbidden) untuk semua pengguna.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview#revoke-access-to-a-storage-account-that-uses-customer-managed-keys"
+    },
+    {
+      "id": "az104-f-u07-infra",
+      "statement": "Infrastructure encryption mengenkripsi data dua kali, dengan dua algoritma dan dua kunci berbeda. Opsi ini hanya bisa diaktifkan saat akun dibuat, dan tidak bisa diubah setelahnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/infrastructure-encryption-enable#create-an-account-with-infrastructure-encryption-enabled"
+    },
+    {
+      "id": "az104-f-u07-se-what",
+      "statement": "Azure Storage Explorer adalah aplikasi gratis untuk Windows, macOS, dan Linux untuk mengelola blob, file share, queue, dan table.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-explorers"
+    },
+    {
+      "id": "az104-f-u07-se-connect",
+      "statement": "Storage Explorer bisa terhubung dengan login akun Azure, dengan Microsoft Entra ID ke satu resource, dengan account name dan key, dengan SAS (shared access signature), atau ke emulator lokal.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer#connect-to-a-storage-account-or-service"
+    },
+    {
+      "id": "az104-f-u07-se-entra",
+      "statement": "Login dengan Microsoft Entra ID adalah cara paling mudah dan paling aman untuk Storage Explorer, dan direkomendasikan kalau memungkinkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-explorer-security#microsoft-entra-authentication"
+    },
+    {
+      "id": "az104-f-u07-se-keys",
+      "statement": "Account key memberi akses tanpa batas ke seluruh layanan di storage account. Microsoft menyarankan memakai Azure RBAC (role-based access control) atau SAS sebagai gantinya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-explorer-security#storage-account-keys"
+    },
+    {
+      "id": "az104-f-u07-azcopy",
+      "statement": "AzCopy adalah utilitas command-line untuk menyalin data ke, dari, atau antar storage account, termasuk Blob Storage dan Azure Files.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10"
+    },
+    {
+      "id": "az104-f-u07-azcopy-auth",
+      "statement": "AzCopy bisa diotorisasi dengan Microsoft Entra ID, atau dengan token SAS (shared access signature) yang ditempel di URL (Uniform Resource Locator) sumber atau tujuan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10#authorize-azcopy"
+    },
+    {
+      "id": "az104-f-u07-azcopy-login",
+      "statement": "azcopy login menyimpan token Microsoft Entra supaya perintah berikutnya tidak butuh SAS (shared access signature). Kalau muncul error, tambahkan --tenant-id.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-user-identity#authorize-with-the-azcopy-login-command"
+    },
+    {
+      "id": "az104-f-u07-azcopy-roles",
+      "statement": "Owner storage account tidak otomatis punya akses ke data. Dengan Microsoft Entra ID, upload blob butuh Storage Blob Data Contributor atau Storage Blob Data Owner, dan download butuh Storage Blob Data Reader. Role assignment bisa butuh sampai lima menit untuk berlaku.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-user-identity#verify-role-assignments"
+    },
+    {
+      "id": "az104-f-u07-azcopy-recursive",
+      "statement": "Untuk meng-upload folder beserta semua subfolder-nya, pakai azcopy copy dengan --recursive.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs-upload#upload-a-directory"
+    },
+    {
+      "id": "az104-f-u07-azcopy-s2s",
+      "statement": "Saat menyalin antar storage account, AzCopy memakai API (Application Programming Interface) server-to-server, jadi data langsung berpindah antar server storage.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs-copy"
+    },
+    {
+      "id": "az104-f-u07-azcopy-sync",
+      "statement": "azcopy sync membandingkan nama file dan waktu modifikasi terakhir. Dengan --delete-destination=true, file di tujuan yang sudah tidak ada di sumber ikut dihapus tanpa konfirmasi.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs-synchronize#guidelines"
     }
   ]
 }

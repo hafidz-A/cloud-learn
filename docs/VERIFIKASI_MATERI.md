@@ -242,3 +242,33 @@ Tidak ada fakta bertanda `verify`.
 
 Tidak ada fakta bertanda `verify`.
 
+
+### Unit 7: Storage account (30 September 2026)
+
+54 fakta, 19 kartu learn, 56 soal (49 examReady), 2 visual baru (`ObjectReplication`, `AccountFailover`) dan
+`StorageRedundancy` dari AZ-900. Sumber: `azure-docs/articles/storage/common`, `storage/blobs`, dan
+`storage/storage-explorer`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Jenis akun: Standard general-purpose v2 (semua layanan, semua redundancy), Premium block blobs, Premium file shares, Premium page blobs; general-purpose v1 dan Blob Storage lama tidak direkomendasikan | Diajarkan dan diuji | `storage-account-overview.md` (16 Juli 2026) |
+| Jenis akun tidak bisa diganti setelah dibuat; upgrade general-purpose v1 ke v2 tidak bisa dibatalkan | Soal pindah ke Premium file shares: akun baru dan salin data | `storage-account-overview.md` |
+| File share NFS di Azure Files butuh Premium file shares; akun premium tanpa geo-redundancy | Diajarkan | `storage-account-overview.md`, `storage-redundancy.md` |
+| Premium page blobs: halaman overview menulis LRS dan ZRS, tabel di `storage-redundancy.md` hanya LRS | Materi hanya bilang "LRS atau ZRS, tanpa geo-redundancy", tanpa mengklaim ZRS untuk page blob | kedua halaman |
+| LRS "tiga salinan": `storage-redundancy.md` (11 Agustus 2026) tidak lagi menyebut jumlah salinan, tapi `storage-disaster-recovery-guidance.md` masih menulis "three copies ... within a single datacenter" | Fakta LRS mengutip halaman disaster recovery | `storage-disaster-recovery-guidance.md` |
+| ZRS sekarang "three or more" availability zone; GRS dan GZRS 16 nines; region kedua tidak bisa diubah; salinan ke region kedua asinkron | Diajarkan persis | `storage-redundancy.md` |
+| Region kedua hanya bisa dibaca dengan RA-GRS atau RA-GZRS (endpoint `-secondary`); Azure Files tidak mendukung keduanya | Diajarkan, soal jebakan | `storage-redundancy.md` |
+| Tier Archive hanya didukung di LRS, GRS, dan RA-GRS, tidak di ZRS, GZRS, atau RA-GZRS | Dipakai di soal place dan yesno | `storage-redundancy.md` |
+| Mengubah geo-replication langsung; mengubah zone butuh conversion | Diajarkan | `redundancy-migration.md` |
+| Planned failover: region bertukar, geo tetap, tanpa data hilang. Unplanned: akun jadi LRS, salinan di region lama dihapus, data setelah Last Sync Time bisa hilang, replikasi ulang berbayar. Microsoft-managed failover jangan diandalkan | Diajarkan, visual `AccountFailover` | `storage-disaster-recovery-guidance.md` |
+| Object replication butuh versioning di kedua akun dan change feed di akun sumber; hanya general-purpose v2 dan premium block blob; hanya block blob; tanpa hierarchical namespace; versioning tidak bisa dimatikan selama ada policy | Diajarkan, soal fix | `object-replication-overview.md` (10 September 2026) |
+| Object replication dan customer-managed failover: dua kalimat eksplisit bilang tidak didukung untuk akun sumber maupun tujuan, tapi tabel fitur di halaman disaster recovery menulis "Supported" untuk unplanned | Materi mengikuti kalimat eksplisit ("tidak didukung") dan tidak menguji beda planned dan unplanned | `object-replication-overview.md`, `storage-disaster-recovery-guidance.md` |
+| Policy dibuat di akun tujuan lalu dikaitkan ke sumber dengan policy ID yang sama; maksimal dua akun tujuan; default hanya blob baru; container tujuan menolak tulis dengan 409 | Diajarkan dan diuji | `object-replication-overview.md` |
+| Enkripsi AES 256-bit selalu aktif, tidak bisa dimatikan, gratis, termasuk Archive dan region kedua; default Microsoft-managed keys | Diajarkan | `storage-service-encryption.md` (11 Agustus 2026) |
+| Customer-managed key di Key Vault atau Managed HSM, pelanggan yang merotasi; soft delete dan purge protection wajib; izin get, wrapkey, unwrapkey; akun baru wajib user-assigned managed identity; versi dicek sekali sehari; kunci dinonaktifkan berarti 403 | Diajarkan, soal fix purge protection | `customer-managed-keys-overview.md` (18 Agustus 2026) |
+| Infrastructure encryption hanya saat akun dibuat | Soal akun lama: buat akun baru | `infrastructure-encryption-enable.md` |
+| AzCopy: Owner tidak otomatis punya akses data; upload butuh Storage Blob Data Contributor atau Owner, download Storage Blob Data Reader; role bisa butuh sampai lima menit | Soal fix error 403 | `storage-use-azcopy-authorize-user-identity.md` (8 Januari 2026) |
+| `azcopy copy ... --recursive` untuk folder; antar akun memakai API server-to-server; `azcopy sync` membandingkan nama dan waktu modifikasi, `--delete-destination` untuk menghapus | Soal shell dan choice | `storage-use-azcopy-blobs-upload.md`, `storage-use-azcopy-blobs-copy.md`, `storage-use-azcopy-blobs-synchronize.md` |
+| Storage Explorer: cara terhubung (akun Azure, Microsoft Entra ID, account name dan key, SAS, emulator), Microsoft Entra direkomendasikan, account key akses tanpa batas. Halaman sumbernya lama (2019 dan 2020) | Hanya fakta dasar yang stabil yang dipakai | `vs-azure-tools-storage-manage-with-storage-explorer.md`, `storage-explorer-security.md` |
+
+Tidak ada fakta bertanda `verify`.

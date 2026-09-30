@@ -10,6 +10,7 @@ import {
 } from '@dnd-kit/core'
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { CARD_LOOKS, type Look } from '../looks'
+import { zoneColumns } from '../logic'
 import { useDragSensors } from './sensors'
 
 // Shared board for "sort" (cards into buckets) and "place" (resources into a
@@ -197,7 +198,7 @@ export function ItemBoard({
           </Zone>
         )}
 
-        <div className={`mt-4 ${variant === 'zones' ? 'grid gap-3' : 'space-y-3'}`} style={variant === 'zones' ? { gridTemplateColumns: `repeat(${Math.min(containers.length, 3)}, minmax(0, 1fr))` } : undefined}>
+        <div className={`mt-4 ${variant === 'zones' ? 'grid gap-3' : 'space-y-3'}`} style={variant === 'zones' ? { gridTemplateColumns: `repeat(${zoneColumns(containers.length, items)}, minmax(0, 1fr))` } : undefined}>
           {containers.map((c) => (
             <Zone
               key={c.id}

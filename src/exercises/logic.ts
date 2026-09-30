@@ -150,6 +150,16 @@ export function judgePlace(e: PlaceExercise, placement: (number | null)[]): { co
   return { correct, pieceOk }
 }
 
+/**
+ * How many zone columns a place board gets. Three narrow columns fit short
+ * cards (VM names), but split the words of sentence-long cards on a phone, so
+ * those get two.
+ */
+export function zoneColumns(zoneCount: number, cards: string[]): number {
+  const longest = Math.max(0, ...cards.map((c) => c.length))
+  return Math.min(zoneCount, longest > 24 ? 2 : 3)
+}
+
 const sameSet = (a: number[], b: number[]) => a.length === b.length && a.every((v) => b.includes(v))
 
 /** Whether a config field value matches the expected one. Text ignores case and surrounding spaces. */

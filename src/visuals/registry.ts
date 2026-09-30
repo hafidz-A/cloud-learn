@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import type { VisualName } from '../content/visuals'
+import { AccountFailover } from './AccountFailover'
 import { AsgTiers } from './AsgTiers'
 import { AuthNvsAuthZ } from './AuthNvsAuthZ'
 import { AvailabilityVsReliability } from './AvailabilityVsReliability'
@@ -22,6 +23,7 @@ import { ManagementTools } from './ManagementTools'
 import { MonitorPipeline } from './MonitorPipeline'
 import { NsgEvaluationOrder } from './NsgEvaluationOrder'
 import { NsgRuleTable } from './NsgRuleTable'
+import { ObjectReplication } from './ObjectReplication'
 import { PeeringNonTransitive } from './PeeringNonTransitive'
 import { PolicyFlow } from './PolicyFlow'
 import { PolicyRbacLock } from './PolicyRbacLock'
@@ -46,6 +48,7 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  AccountFailover,
   AsgTiers,
   AuthNvsAuthZ,
   AvailabilityVsReliability,
@@ -68,6 +71,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   MonitorPipeline,
   NsgEvaluationOrder,
   NsgRuleTable,
+  ObjectReplication,
   PeeringNonTransitive,
   PolicyFlow,
   PolicyRbacLock,

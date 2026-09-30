@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Exercise } from '../lib/types'
-import { correctAnswerText, initialResponse, isComplete, judge, judgePlace, makeLayout, sameCommand } from './logic'
+import { correctAnswerText, initialResponse, isComplete, judge, judgePlace, makeLayout, sameCommand, zoneColumns } from './logic'
 
 const base = { id: 'x', concept: 'c', prompt: 'P', explanation: 'E' }
 
@@ -92,6 +92,15 @@ describe('place rules', () => {
     const spread = { ...e, rule: 'spread' as const }
     expect(judgePlace(spread, [0, 0, 0]).correct).toBe(false)
     expect(judgePlace(spread, [0, 0, 1]).correct).toBe(true)
+  })
+})
+
+describe('zoneColumns', () => {
+  it('keeps three columns for short cards, and two for sentence-long cards', () => {
+    expect(zoneColumns(3, ['VM A', 'VM B'])).toBe(3)
+    expect(zoneColumns(4, ['VM A'])).toBe(3)
+    expect(zoneColumns(2, ['VM A'])).toBe(2)
+    expect(zoneColumns(4, ['Lowest cost; losing the datacenter is acceptable'])).toBe(2)
   })
 })
 

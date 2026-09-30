@@ -24,7 +24,7 @@ export const VISUAL_CATALOG = {
   HybridConnectivity: ['vpn-gateway', 'expressroute'],
   VNetPeering: ['vnet-peering'],
   // Unit 7
-  StorageRedundancy: ['primary-redundancy', 'geo-redundancy'],
+  StorageRedundancy: ['primary-redundancy', 'geo-redundancy', 'storage-redundancy'],
   BlobTiers: ['blob-access-tiers'],
   StorageServices: ['storage-services'],
   // Unit 8
@@ -68,6 +68,9 @@ export const VISUAL_CATALOG = {
   PrivateDnsAutoReg: ['auto-registration'],
   LoadBalancerAnatomy: ['lb-components'],
   HealthProbeBlocked: ['probe-blocked-by-nsg'],
+  // Unit 7 (the redundancy card reuses StorageRedundancy)
+  AccountFailover: ['storage-failover'],
+  ObjectReplication: ['object-replication'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

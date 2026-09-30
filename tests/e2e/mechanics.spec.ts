@@ -189,6 +189,18 @@ test.describe('on a 320px phone', () => {
     expect(await overflow(page)).toEqual([])
   })
 
+  test('shell commands with long URLs stay inside the terminal', async ({ page }) => {
+    await page.goto('/#/lesson/az104-u07-l5')
+    let item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    for (let guard = 0; guard < 20 && item.type !== 'shell'; guard++) {
+      if (!isCard(item)) await answer(page, item)
+      await next(page)
+      item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    }
+    await answer(page, item, { submit: false })
+    expect(await overflow(page)).toEqual([])
+  })
+
   test('long card titles fit on a narrow phone', async ({ page }) => {
     await page.goto('/#/lesson/u01-l2')
     const title = (lesson('u01-l2').items[0] as unknown as { title: string }).title

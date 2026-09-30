@@ -21,7 +21,7 @@ export function ShellInput({ exercise, response, onChange, layout, reveal, locke
           </span>
           Azure Cloud Shell (Bash)
         </div>
-        <div className="min-h-24 px-3 py-3 font-mono text-15 leading-relaxed text-white">
+        <div className="min-h-24 px-3 py-3 font-mono text-15 leading-relaxed text-white wrap-anywhere">
           <span className="text-mint">langit@Azure</span>:<span className="text-matahari">~</span>$
           {response.map((token, i) => (
             <button
@@ -30,7 +30,7 @@ export function ShellInput({ exercise, response, onChange, layout, reveal, locke
               disabled={isLocked}
               onClick={() => onChange(response.filter((_, j) => j !== i))}
               aria-label={`Hapus ${exercise.tokens[token]}`}
-              className={`ml-1.5 rounded px-1 ${isLocked ? '' : 'cursor-pointer underline decoration-white/30 underline-offset-4'}`}
+              className={`ml-1.5 max-w-full rounded px-1 text-left ${isLocked ? '' : 'cursor-pointer underline decoration-white/30 underline-offset-4'}`}
             >
               {exercise.tokens[token]}
             </button>
@@ -53,7 +53,7 @@ export function ShellInput({ exercise, response, onChange, layout, reveal, locke
               type="button"
               disabled={isLocked || taken}
               onClick={() => onChange([...response, token])}
-              className={`btn-3d min-h-11 rounded-xl border-2 px-3 font-mono text-15 font-semibold ${l.className} ${isLocked || taken ? '' : 'cursor-pointer'}`}
+              className={`btn-3d min-h-11 max-w-full rounded-xl border-2 px-3 text-left font-mono text-15 font-semibold wrap-anywhere ${l.className} ${isLocked || taken ? '' : 'cursor-pointer'}`}
               style={{ '--edge': l.edge } as CSSProperties}
             >
               {exercise.tokens[token]}
