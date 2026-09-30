@@ -1,10 +1,31 @@
-import type { ChoiceExercise, FixExercise } from '../../lib/types'
+import type { ChoiceExercise, FixExercise, RulesExercise, TemplateExercise, TopologyExercise } from '../../lib/types'
 import type { Look, InputProps } from '../looks'
 import { FixScene } from './FixScene'
 import { OptionList } from './OptionList'
+import { RuleTables } from './RuleTables'
+import { TemplateCode } from './TemplateCode'
+import { TopologyDiagram } from './TopologyDiagram'
 
-/** Pick one of four (choice), optionally under a fake portal or error scene (fix). */
-export function ChoiceInput({ exercise, response, onChange, layout, reveal, locked }: InputProps<ChoiceExercise | FixExercise, number | null>) {
+type OneAnswer = ChoiceExercise | FixExercise | RulesExercise | TemplateExercise | TopologyExercise
+
+/** What the player reads before picking: a portal or error scene, rule tables, template code, or a network diagram. */
+function Scene({ exercise }: { exercise: OneAnswer }) {
+  switch (exercise.type) {
+    case 'fix':
+      return <FixScene scene={exercise.scene} />
+    case 'rules':
+      return <RuleTables tables={exercise.tables} />
+    case 'template':
+      return <TemplateCode language={exercise.language} code={exercise.code} />
+    case 'topology':
+      return <TopologyDiagram nodes={exercise.nodes} links={exercise.links} />
+    default:
+      return null
+  }
+}
+
+/** Pick one of four, optionally under something to read first (fix, rules, template, topology). */
+export function ChoiceInput({ exercise, response, onChange, layout, reveal, locked }: InputProps<OneAnswer, number | null>) {
   const lookFor = (option: number): Look => {
     if (!reveal) return option === response ? 'selected' : 'idle'
     if (option === exercise.answer) return 'right'
@@ -12,7 +33,7 @@ export function ChoiceInput({ exercise, response, onChange, layout, reveal, lock
   }
   return (
     <div className="space-y-5">
-      {exercise.type === 'fix' && <FixScene scene={exercise.scene} />}
+      <Scene exercise={exercise} />
       <OptionList
         options={exercise.options}
         layout={layout}

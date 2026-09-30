@@ -1,5 +1,5 @@
 import { shuffle } from '../lib/shuffle'
-import type { Exercise, PlaceExercise } from '../lib/types'
+import type { ConfigExercise, ConfigValue, Exercise, PlaceExercise } from '../lib/types'
 
 // Answers ("responses") and judging for every exercise type, kept apart from
 // the UI so lessons, practice, and the exam page all judge the same way.
@@ -17,6 +17,11 @@ export type Responses = {
   fill: (number | null)[] // bank index per blank
   place: (number | null)[] // zone per piece
   shell: number[] // token indices in the order they were tapped
+  rules: number | null
+  template: number | null
+  topology: number | null
+  config: (ConfigValue | null)[] // value per field index
+  kql: number[] // token indices in the order they were tapped
 }
 
 export type Response = Responses[keyof Responses]
@@ -39,6 +44,9 @@ function shuffledLength(e: Exercise): number {
     case 'choice':
     case 'fix':
     case 'multi':
+    case 'rules':
+    case 'template':
+    case 'topology':
       return e.options.length
     case 'match':
       return e.pairs.length
@@ -48,6 +56,7 @@ function shuffledLength(e: Exercise): number {
     case 'fill':
       return e.bank.length
     case 'shell':
+    case 'kql':
       return e.tokens.length
     default:
       return 0
@@ -75,10 +84,16 @@ export function initialResponse(e: Exercise, layout: number[]): Response {
     case 'choice':
     case 'fix':
     case 'truefalse':
+    case 'rules':
+    case 'template':
+    case 'topology':
       return null
     case 'multi':
     case 'shell':
+    case 'kql':
       return []
+    case 'config':
+      return e.fields.map((f) => f.value ?? (f.kind === 'toggle' ? false : null))
     case 'yesno':
       return e.statements.map(() => null)
     case 'match':
@@ -100,11 +115,17 @@ export function isComplete(e: Exercise, r: Response): boolean {
     case 'choice':
     case 'fix':
     case 'truefalse':
+    case 'rules':
+    case 'template':
+    case 'topology':
       return r !== null && r !== undefined
     case 'multi':
       return Array.isArray(r) && r.length === e.answers.length
     case 'shell':
+    case 'kql':
       return Array.isArray(r) && r.length > 0
+    case 'config':
+      return Array.isArray(r) && r.length === e.fields.length && r.every((v) => v !== null && v !== undefined && v !== '')
     case 'order':
       return Array.isArray(r) && r.length === e.items.length
     case 'yesno':
@@ -131,11 +152,33 @@ export function judgePlace(e: PlaceExercise, placement: (number | null)[]): { co
 
 const sameSet = (a: number[], b: number[]) => a.length === b.length && a.every((v) => b.includes(v))
 
+/** Whether a config field value matches the expected one. Text ignores case and surrounding spaces. */
+export function sameConfigValue(expected: ConfigValue, got: ConfigValue | null | undefined): boolean {
+  if (got === null || got === undefined) return false
+  if (typeof expected === 'string' && typeof got === 'string') return expected.trim().toLowerCase() === got.trim().toLowerCase()
+  if (typeof expected === 'number') return Number(got) === expected
+  return expected === got
+}
+
+/** Per graded field of a config exercise: its index and whether the player's value is right. */
+export function judgeConfig(e: ConfigExercise, values: (ConfigValue | null)[]): { field: number; ok: boolean }[] {
+  return Object.entries(e.answer).map(([label, expected]) => {
+    const field = e.fields.findIndex((f) => f.label === label)
+    return { field, ok: field >= 0 && sameConfigValue(expected, values[field]) }
+  })
+}
+
+/** How a config value reads in text: toggles as On/Off. */
+export const configValueText = (v: ConfigValue): string => (typeof v === 'boolean' ? (v ? 'On' : 'Off') : String(v))
+
 export function judge(e: Exercise, r: Response): Judgement {
   const one = (correct: boolean): Judgement => ({ correct, points: correct ? 1 : 0, maxPoints: 1 })
   switch (e.type) {
     case 'choice':
     case 'fix':
+    case 'rules':
+    case 'template':
+    case 'topology':
       return one(r === e.answer)
     case 'truefalse':
       return one(r === e.answer)
@@ -158,10 +201,13 @@ export function judge(e: Exercise, r: Response): Judgement {
     }
     case 'place':
       return one(judgePlace(e, (r ?? []) as (number | null)[]).correct)
-    case 'shell': {
+    case 'shell':
+    case 'kql': {
       const typed = ((r ?? []) as number[]).map((i) => e.tokens[i]).join(' ')
       return one(typed === e.answer.join(' '))
     }
+    case 'config':
+      return one(judgeConfig(e, (r ?? []) as (ConfigValue | null)[]).every((f) => f.ok))
   }
 }
 
@@ -170,7 +216,14 @@ export function correctAnswerText(e: Exercise): string | undefined {
   switch (e.type) {
     case 'choice':
     case 'fix':
+    case 'rules':
+    case 'template':
+    case 'topology':
       return e.options[e.answer]
+    case 'config':
+      return Object.entries(e.answer)
+        .map(([label, v]) => `${label}: ${configValueText(v)}`)
+        .join(' · ')
     case 'multi':
       return e.answers.map((a) => e.options[a]).join(' · ')
     case 'truefalse':
@@ -184,6 +237,7 @@ export function correctAnswerText(e: Exercise): string | undefined {
       return e.sentence.replace(/___/g, () => e.answers[k++] ?? '___')
     }
     case 'shell':
+    case 'kql':
       return e.answer.join(' ')
     default:
       return undefined

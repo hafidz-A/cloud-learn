@@ -82,3 +82,70 @@ describe('makeLayout', () => {
     expect(makeLayout(e, alwaysSame)).toEqual([1, 0])
   })
 })
+
+describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
+  const options = ['a', 'b', 'c', 'd']
+
+  it('rules, template, and topology are judged like one-answer choices', () => {
+    const rules: Exercise = { ...base, type: 'rules', tables: [{ title: 'T', columns: ['A', 'B'], rows: [['1', '2']] }], options, answer: 2 }
+    const template: Exercise = { ...base, type: 'template', language: 'json', code: '{}', options, answer: 1 }
+    const topology: Exercise = {
+      ...base,
+      type: 'topology',
+      nodes: [
+        { id: 'a', label: 'A' },
+        { id: 'b', label: 'B' },
+      ],
+      links: [{ from: 'a', to: 'b', kind: 'peering' }],
+      options,
+      answer: 0,
+    }
+    for (const e of [rules, template, topology]) {
+      const layout = makeLayout(e, () => 0.3)
+      expect([...layout].sort()).toEqual([0, 1, 2, 3])
+      expect(initialResponse(e, layout)).toBeNull()
+      expect(isComplete(e, null)).toBe(false)
+      const right = (e as { answer: number }).answer
+      expect(judge(e, right).correct).toBe(true)
+      expect(judge(e, (right + 1) % 4).correct).toBe(false)
+      expect(correctAnswerText(e)).toBe(options[right])
+    }
+  })
+
+  it('config judges only the fields in the answer, text without case, and keeps presets', () => {
+    const e: Exercise = {
+      ...base,
+      type: 'config',
+      blade: 'Create budget',
+      fields: [
+        { label: 'Name', kind: 'text' },
+        { label: 'Reset period', kind: 'select', choices: ['Monthly', 'Quarterly'] },
+        { label: 'Alert', kind: 'toggle' },
+        { label: 'Threshold (%)', kind: 'number', value: 50 },
+        { label: 'Scope', kind: 'select', choices: ['Subscription'], value: 'Subscription', readOnly: true },
+      ],
+      answer: { Name: 'Budget-Dev', 'Reset period': 'Monthly', Alert: true, 'Threshold (%)': 80 },
+    }
+    const start = initialResponse(e, [])
+    expect(start).toEqual([null, null, false, 50, 'Subscription'])
+    expect(isComplete(e, start)).toBe(false)
+    expect(judge(e, ['  budget-dev ', 'Monthly', true, 80, 'Subscription']).correct).toBe(true)
+    expect(judge(e, ['budget-dev', 'Monthly', true, 50, 'Subscription']).correct).toBe(false)
+    expect(judge(e, ['budget-dev', 'Monthly', false, 80, 'Subscription']).correct).toBe(false)
+    expect(correctAnswerText(e)).toBe('Name: Budget-Dev · Reset period: Monthly · Alert: On · Threshold (%): 80')
+  })
+
+  it('kql compares the query token by token', () => {
+    const e: Exercise = {
+      ...base,
+      type: 'kql',
+      tokens: ['Event', '|', 'where', 'Level == 1', '| summarize', 'count()'],
+      answer: ['Event', '|', 'where', 'Level == 1'],
+      sampleResult: [['EventID'], ['7000']],
+    }
+    expect(judge(e, [0, 1, 2, 3]).correct).toBe(true)
+    expect(judge(e, [0, 2, 1, 3]).correct).toBe(false)
+    expect(isComplete(e, [])).toBe(false)
+    expect(correctAnswerText(e)).toBe('Event | where Level == 1')
+  })
+})

@@ -8,13 +8,18 @@ type Item = { id: string; type: string; [key: string]: unknown }
 type Lesson = { id: string; title: string; items: Item[] }
 type Unit = { id: string; path: number; lessons: Lesson[] }
 
-const DIR = 'src/content/units'
-export const UNITS: Unit[] = readdirSync(DIR)
-  .filter((f) => f.endsWith('.json'))
-  .sort()
-  .map((f) => JSON.parse(readFileSync(`${DIR}/${f}`, 'utf8')))
+const readUnits = (dir: string): Unit[] =>
+  readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .sort()
+    .map((f) => JSON.parse(readFileSync(`${dir}/${f}`, 'utf8')))
 
-export const ITEMS = new Map<string, Item>(UNITS.flatMap((u) => u.lessons.flatMap((l) => l.items.map((i) => [i.id, i] as const))))
+export const UNITS: Unit[] = readUnits('src/content/units')
+export const AZ104_UNITS: Unit[] = readUnits('src/content/az104/units')
+
+export const ITEMS = new Map<string, Item>(
+  [...UNITS, ...AZ104_UNITS].flatMap((u) => u.lessons.flatMap((l) => l.items.map((i) => [i.id, i] as const))),
+)
 
 /** Learn and intro cards teach; everything else is an exercise. */
 export const isCard = (item: Item) => item.type === 'learn' || item.type === 'intro'
@@ -23,7 +28,7 @@ export const isCard = (item: Item) => item.type === 'learn' || item.type === 'in
 export const exercisesOf = (l: Lesson) => l.items.filter((i) => !isCard(i) && !i.retired)
 
 export function lesson(id: string): Lesson {
-  for (const u of UNITS) for (const l of u.lessons) if (l.id === id) return l
+  for (const u of [...UNITS, ...AZ104_UNITS]) for (const l of u.lessons) if (l.id === id) return l
   throw new Error(`no lesson ${id}`)
 }
 
@@ -45,7 +50,10 @@ export async function answer(page: Page, item: Item, { wrong = false, submit = t
       return
     }
     case 'choice':
-    case 'fix': {
+    case 'fix':
+    case 'rules':
+    case 'template':
+    case 'topology': {
       const options = e.options as string[]
       const pick = wrong ? ((e.answer as number) + 1) % options.length : (e.answer as number)
       await exact(page, options[pick]).click()
@@ -113,9 +121,32 @@ export async function answer(page: Page, item: Item, { wrong = false, submit = t
       for (const w of picks) await page.getByLabel('Bank kata').getByRole('button', { name: w, exact: true }).click()
       break
     }
-    case 'shell': {
+    case 'shell':
+    case 'kql': {
       const tokens = wrong ? [(e.answer as string[])[0]] : (e.answer as string[])
-      for (const t of tokens) await page.getByLabel('Potongan perintah').getByRole('button', { name: t, exact: true }).click()
+      const bank = page.getByLabel(item.type === 'shell' ? 'Potongan perintah' : 'Potongan query')
+      // The same word can appear twice (for example two "|"): take the first one still free.
+      for (const t of tokens) await bank.getByRole('button', { name: t, exact: true }).and(page.locator(':enabled')).first().click()
+      break
+    }
+    case 'config': {
+      type Field = { label: string; kind: string; choices?: string[]; value?: unknown; readOnly?: boolean }
+      const fields = e.fields as Field[]
+      const expected = e.answer as Record<string, string | number | boolean>
+      const graded = Object.keys(expected)
+      for (const f of fields) {
+        if (f.readOnly) continue
+        let value = graded.includes(f.label) ? expected[f.label] : f.value
+        if (wrong && f.label === graded[0]) {
+          value = f.kind === 'toggle' ? !value : f.kind === 'number' ? Number(value) + 1 : f.kind === 'select' ? f.choices!.find((c) => c !== value)! : `${value}x`
+        }
+        if (value === undefined) value = f.kind === 'select' ? f.choices![0] : f.kind === 'toggle' ? false : f.kind === 'number' ? 1 : 'x'
+        if (f.kind === 'select') await page.getByLabel(f.label, { exact: true }).selectOption(String(value))
+        else if (f.kind === 'toggle') {
+          const sw = page.getByRole('switch', { name: f.label, exact: true })
+          if ((await sw.getAttribute('aria-checked')) !== String(value)) await sw.click()
+        } else await page.getByLabel(f.label, { exact: true }).fill(String(value))
+      }
       break
     }
     default:

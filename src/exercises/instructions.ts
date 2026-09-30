@@ -13,4 +13,9 @@ export const INSTRUCTIONS: Record<Exercise['type'], string> = {
   fill: 'Lengkapi kalimatnya',
   place: 'Taruh resource di tempat yang tepat',
   shell: 'Susun perintahnya',
+  rules: 'Baca tabel aturannya, lalu jawab',
+  config: 'Isi pengaturannya sesuai kebutuhan',
+  template: 'Baca template-nya, lalu jawab',
+  topology: 'Baca diagram jaringannya, lalu jawab',
+  kql: 'Susun query KQL-nya',
 }

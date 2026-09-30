@@ -123,6 +123,66 @@ export type YesNoExercise = ExerciseBase & {
   statements: { text: string; answer: boolean }[]
 }
 
+// Admin exercise types from LANGIT_AZ104_PLAN.md section 6. Tables, portal
+// forms, template code, and diagrams are data the player reads, like a portal
+// screen, so the abbreviation rule only applies to the prompt and options.
+
+/** A table as the portal shows it, for example the inbound rules of one NSG. */
+export type RuleTable = {
+  title: string // "NSG-Web (subnet Web) · inbound"
+  columns: string[] // ["Priority", "Name", "Source", "Port", "Action"]
+  rows: string[][]
+}
+
+/** Read one or more rule tables (NSG, storage firewall, role assignments), then answer: "hot area" on the exam. */
+export type RulesExercise = ExerciseBase & { type: 'rules'; tables: RuleTable[]; options: string[]; answer: number }
+
+export type ConfigField =
+  | { label: string; kind: 'select'; choices: string[]; value?: string }
+  | { label: string; kind: 'toggle'; value?: boolean }
+  | { label: string; kind: 'number'; value?: number; min?: number; max?: number; step?: number }
+  | { label: string; kind: 'text'; value?: string }
+export type ConfigValue = string | number | boolean
+/**
+ * A pretend portal form: the player fills the fields, then the answer is checked
+ * against `answer` (field label -> expected value). Fields not in `answer` are
+ * not judged. A `readOnly` field shows a fixed value, like a greyed-out setting.
+ */
+export type ConfigExercise = ExerciseBase & {
+  type: 'config'
+  blade: string // portal page title, e.g. "Create budget"
+  fields: (ConfigField & { readOnly?: boolean })[]
+  answer: Record<string, ConfigValue>
+}
+
+/** An ARM template (JSON) or Bicep file to read, then a question about it. */
+export type TemplateExercise = ExerciseBase & {
+  type: 'template'
+  language: 'json' | 'bicep'
+  code: string
+  options: string[]
+  answer: number
+}
+
+export type TopologyNode = { id: string; label: string; cidr?: string }
+export type TopologyLink = { from: string; to: string; kind: 'peering' | 'vpn' | 'route' }
+/** A network diagram (virtual networks, peerings, VPNs, routes), then a question such as "can A reach C?". */
+export type TopologyExercise = ExerciseBase & {
+  type: 'topology'
+  nodes: TopologyNode[]
+  links: TopologyLink[]
+  options: string[]
+  answer: number
+}
+
+/** Build a KQL query from tokens; the pretend result table shows once it is right. */
+export type KqlExercise = ExerciseBase & {
+  type: 'kql'
+  tokens: string[]
+  answer: string[]
+  sampleResult: string[][] // first row is the header
+}
+
 export type Exercise =
   | ChoiceExercise
   | TrueFalseExercise
@@ -135,6 +195,11 @@ export type Exercise =
   | ShellExercise
   | MultiExercise
   | YesNoExercise
+  | RulesExercise
+  | ConfigExercise
+  | TemplateExercise
+  | TopologyExercise
+  | KqlExercise
 
 export type ExerciseType = Exercise['type']
 

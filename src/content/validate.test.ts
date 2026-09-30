@@ -207,3 +207,64 @@ describe('material coverage (perbaikan materi section 4)', () => {
     expect(errors(unitWith([learn('u99-l1-m1', ['f-u99-a']), retired], [fact('f-u99-a')]))).toEqual([])
   })
 })
+
+describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
+  const options = ['A', 'B', 'C', 'D']
+  const base = { concept: 'zones', prompt: 'Which one?', explanation: 'Karena itu.', examReady: true }
+  const shapeErrors = (item: LessonItem) => errors(unitWith([{ ...item }])).filter((m) => !m.includes('requires') && !m.includes('fact'))
+
+  it('accepts well-formed rules, template, topology, config, and kql exercises', () => {
+    const items: LessonItem[] = [
+      { ...base, id: 'u99-l1-e1', type: 'rules', tables: [{ title: 'NSG', columns: ['Priority', 'Action'], rows: [['100', 'Allow']] }], options, answer: 0 },
+      { ...base, id: 'u99-l1-e2', type: 'template', language: 'json', code: '{ "resources": [] }', options, answer: 1 },
+      {
+        ...base,
+        id: 'u99-l1-e3',
+        type: 'topology',
+        nodes: [
+          { id: 'a', label: 'VNet A' },
+          { id: 'b', label: 'VNet B' },
+        ],
+        links: [{ from: 'a', to: 'b', kind: 'peering' }],
+        options,
+        answer: 2,
+      },
+      {
+        ...base,
+        id: 'u99-l1-e4',
+        type: 'config',
+        blade: 'Create',
+        fields: [
+          { label: 'Region', kind: 'select', choices: ['East US', 'West Europe'] },
+          { label: 'Enabled', kind: 'toggle' },
+        ],
+        answer: { Region: 'West Europe', Enabled: true },
+      },
+      { ...base, id: 'u99-l1-e5', type: 'kql', examReady: false, tokens: ['T', '| take', '10'], answer: ['T', '| take', '10'], sampleResult: [['C'], ['1']] },
+    ]
+    for (const item of items) expect(shapeErrors(item)).toEqual([])
+  })
+
+  it('rejects broken shapes', () => {
+    const rules = { ...base, id: 'u99-l1-e1', type: 'rules', tables: [{ title: 'NSG', columns: ['Priority', 'Action'], rows: [['100']] }], options, answer: 0 } as LessonItem
+    expect(shapeErrors(rules)).toContain('table "NSG" has a row with the wrong number of cells')
+    const template = { ...base, id: 'u99-l1-e2', type: 'template', language: 'json', code: '{ resources: [] }', options, answer: 0 } as LessonItem
+    expect(shapeErrors(template)).toContain('template code is not valid JSON')
+    const topology = { ...base, id: 'u99-l1-e3', type: 'topology', nodes: [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }], links: [{ from: 'a', to: 'c', kind: 'peering' }], options, answer: 0 } as LessonItem
+    expect(shapeErrors(topology)).toContain('link a -> c points to a node that does not exist')
+    const config = {
+      ...base,
+      id: 'u99-l1-e4',
+      type: 'config',
+      blade: 'Create',
+      fields: [
+        { label: 'Region', kind: 'select', choices: ['East US', 'West Europe'] },
+        { label: 'Enabled', kind: 'toggle' },
+      ],
+      answer: { Region: 'North Europe', Enabled: 'yes' },
+    } as unknown as LessonItem
+    expect(shapeErrors(config)).toEqual(expect.arrayContaining(['answer "North Europe" is not a choice of "Region"', 'answer for toggle "Enabled" must be true or false']))
+    const kql = { ...base, id: 'u99-l1-e5', type: 'kql', examReady: true, tokens: ['T'], answer: ['T', '| take'], sampleResult: [['C'], ['1']] } as LessonItem
+    expect(shapeErrors(kql)).toEqual(expect.arrayContaining(['answer token "| take" is not available in tokens', 'type "kql" cannot be examReady']))
+  })
+})

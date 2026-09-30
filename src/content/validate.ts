@@ -33,6 +33,11 @@ const KNOWN_TYPES = new Set([
   'shell',
   'multi',
   'yesno',
+  'rules',
+  'config',
+  'template',
+  'topology',
+  'kql',
 ])
 
 const PLACE_RULES = new Set(['valid', 'one-per-zone', 'spread'])
@@ -110,6 +115,14 @@ export function questionTexts(e: Exercise): string[] {
       return [e.prompt, ...e.options]
     case 'yesno':
       return [e.prompt, e.scenario, ...e.statements.map((st) => st.text)]
+    // Tables, portal fields, code, diagrams, and query tokens are screen data (like a portal page), not prose.
+    case 'rules':
+    case 'template':
+    case 'topology':
+      return [e.prompt, ...e.options]
+    case 'config':
+    case 'kql':
+      return [e.prompt]
   }
 }
 
@@ -212,6 +225,73 @@ function checkExercise(e: Exercise, push: (message: string, level?: Issue['level
         push('every statement needs text and a true/false answer')
       } else if (e.statements.length !== 3) push(`yesno should have 3 statements, found ${e.statements.length}`, 'warn')
       break
+    case 'rules':
+      checkOptions(e.options, e.answer, push)
+      if (!Array.isArray(e.tables) || e.tables.length === 0) push('rules needs at least one table')
+      for (const t of e.tables ?? []) {
+        if (!t.title?.trim()) push('every table needs a title')
+        if (!Array.isArray(t.columns) || t.columns.length < 2) push(`table "${t.title}" needs at least 2 columns`)
+        if (!Array.isArray(t.rows) || t.rows.length === 0) push(`table "${t.title}" has no rows`)
+        else if (t.rows.some((row) => row.length !== t.columns.length)) push(`table "${t.title}" has a row with the wrong number of cells`)
+      }
+      break
+    case 'template':
+      checkOptions(e.options, e.answer, push)
+      if (e.language !== 'json' && e.language !== 'bicep') push('language must be "json" or "bicep"')
+      if (!e.code?.trim()) push('template code is empty')
+      else if (e.language === 'json') {
+        try {
+          JSON.parse(e.code)
+        } catch {
+          push('template code is not valid JSON')
+        }
+      }
+      break
+    case 'topology': {
+      checkOptions(e.options, e.answer, push)
+      const ids = (e.nodes ?? []).map((n) => n.id)
+      if (ids.length < 2) push('topology needs at least 2 nodes')
+      if (new Set(ids).size !== ids.length) push('topology node ids must be unique')
+      if (ids.length > 6) push('topology should have at most 6 nodes to stay readable on a phone', 'warn')
+      for (const l of e.links ?? []) {
+        if (!ids.includes(l.from) || !ids.includes(l.to)) push(`link ${l.from} -> ${l.to} points to a node that does not exist`)
+        if (!['peering', 'vpn', 'route'].includes(l.kind)) push(`unknown link kind "${String(l.kind)}"`)
+      }
+      break
+    }
+    case 'config': {
+      const labels = (e.fields ?? []).map((f) => f.label)
+      if (labels.length < 2) push('config needs at least 2 fields')
+      if (new Set(labels).size !== labels.length) push('config field labels must be unique')
+      const graded = Object.entries(e.answer ?? {})
+      if (graded.length === 0) push('config needs at least one graded field in answer')
+      for (const [label, expected] of graded) {
+        const f = e.fields.find((x) => x.label === label)
+        if (!f) push(`answer field "${label}" does not exist`)
+        else if (f.readOnly) push(`answer field "${label}" is read-only`)
+        else if (f.kind === 'select' && !f.choices.includes(String(expected))) push(`answer "${String(expected)}" is not a choice of "${label}"`)
+        else if (f.kind === 'toggle' && typeof expected !== 'boolean') push(`answer for toggle "${label}" must be true or false`)
+        else if (f.kind === 'number' && typeof expected !== 'number') push(`answer for number "${label}" must be a number`)
+      }
+      for (const f of e.fields ?? []) {
+        if (f.kind === 'select' && (!Array.isArray(f.choices) || f.choices.length < 2)) push(`select "${f.label}" needs at least 2 choices`)
+        if (f.kind === 'select' && f.value !== undefined && !f.choices.includes(f.value)) push(`preset value of "${f.label}" is not one of its choices`)
+        if (f.readOnly && f.value === undefined) push(`read-only field "${f.label}" needs a value`)
+      }
+      break
+    }
+    case 'kql': {
+      const pool = [...e.tokens]
+      for (const t of e.answer) {
+        const i = pool.indexOf(t)
+        if (i < 0) push(`answer token "${t}" is not available in tokens`)
+        else pool.splice(i, 1)
+      }
+      if (e.answer.length === 0) push('kql answer is empty')
+      if (!Array.isArray(e.sampleResult) || e.sampleResult.length < 2) push('sampleResult needs a header row and at least one data row')
+      else if (e.sampleResult.some((row) => row.length !== e.sampleResult[0].length)) push('sampleResult rows must have the same number of cells')
+      break
+    }
   }
   if (e.examReady && !EXAM_TYPES.has(e.type)) push(`type "${e.type}" cannot be examReady`)
   if (e.difficulty !== undefined && ![1, 2, 3].includes(e.difficulty)) push('difficulty must be 1, 2, or 3')
