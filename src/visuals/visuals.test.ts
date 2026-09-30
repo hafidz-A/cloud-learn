@@ -18,6 +18,14 @@ describe('visual catalog', () => {
     expect(Math.min(...sizes)).toBeGreaterThanOrEqual(12)
   })
 
+  // SVG draws a marker only at the end of the last subpath, so a path like
+  // "M0 0 V10 M20 0 V10" with an arrowhead shows one arrow and one bare line.
+  it.each(VISUAL_NAMES)('%s draws each arrow as its own path', (name) => {
+    const html = renderToStaticMarkup(createElement(VISUALS[name]!))
+    const arrows = [...html.matchAll(/<path\b[^>]*>/g)].map((m) => m[0]).filter((tag) => /marker-end=/.test(tag))
+    for (const tag of arrows) expect(/ d="([^"]*)"/.exec(tag)![1].match(/M/g)!.length, tag).toBe(1)
+  })
+
   it.each(VISUAL_NAMES)('%s gives its markers and patterns ids that differ per instance', (name) => {
     const ids = (html: string) => [...html.matchAll(/ id="([^"]+)"/g)].map((m) => m[1])
     const twice = renderToStaticMarkup(createElement('div', null, createElement(VISUALS[name]!), createElement(VISUALS[name]!)))

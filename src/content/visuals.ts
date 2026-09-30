@@ -63,6 +63,11 @@ export const VISUAL_CATALOG = {
   AsgTiers: ['asg'],
   BastionArchitecture: ['bastion', 'bastion-subnet'],
   ServiceVsPrivateEndpoint: ['service-endpoint', 'private-endpoint'],
+  // Unit 6
+  DnsDelegation: ['dns-delegation'],
+  PrivateDnsAutoReg: ['auto-registration'],
+  LoadBalancerAnatomy: ['lb-components'],
+  HealthProbeBlocked: ['probe-blocked-by-nsg'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

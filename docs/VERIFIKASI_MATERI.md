@@ -224,3 +224,21 @@ Tidak ada fakta bertanda `verify`.
 
 Tidak ada fakta bertanda `verify`.
 
+### Unit 6: DNS dan load balancing (30 September 2026)
+
+27 fakta, 13 kartu learn, 32 soal (30 examReady), 4 visual baru (`DnsDelegation`, `PrivateDnsAutoReg`,
+`LoadBalancerAnatomy`, `HealthProbeBlocked`). Sumber: `azure-docs/articles/dns` dan `load-balancer`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Azure DNS tidak menjual domain; NS dan SOA di apex otomatis dan tidak bisa dihapus; CNAME tidak boleh di apex atau berbagi nama; TTL per record set | Diajarkan dan diuji | `dns-faq.yml`, `dns-zones-records.md` |
+| Alias record (A, AAAA, CNAME) menunjuk resource Azure, ikut berubah, mencegah record menggantung, dan bisa di apex | Soal apex ke public IP load balancer | `dns-alias.md` |
+| Delegasi: pakai keempat name server Azure di registrar | Soal fix dan order (urutan dipersempit ke tiga langkah yang pasti) | `dns-delegate-domain-azure-dns.md` |
+| Auto registration: hanya VM, hanya NIC utama, tanpa PTR, satu zone registrasi per VNet, record dihapus saat VM dihapus atau dihentikan; link tanpa auto registration = resolution saja | Diajarkan persis | `private-dns-autoregistration.md`, `private-dns-virtual-network-links.md` |
+| Load Balancer layer 4; SKU Standard dan Gateway, Basic pensiun 30 September 2025; VM di backend pool tidak butuh public IP | Diajarkan | `load-balancer-overview.md`, `components.md` |
+| Inbound NAT rule tidak butuh health probe (kalimat eksplisit); versi 2 memetakan rentang port ke seluruh pool | Diajarkan dan diuji | `load-balancer-custom-probe-overview.md`, `inbound-nat-rules.md` |
+| Probe dari 168.63.129.16 (service tag AzureLoadBalancer); semua probe down berarti tidak ada flow baru, tapi koneksi TCP yang ada tetap jalan di Standard; probe HTTP langsung down untuk respons selain 200 | Diajarkan, soal fix dari aturan NSG | `load-balancer-custom-probe-overview.md` |
+| Metrik Health Probe Status dan Data Path Availability, agregasi Average | Kartu cara mendiagnosis | `load-balancer-standard-diagnostics.md` |
+
+Tidak ada fakta bertanda `verify`.
+

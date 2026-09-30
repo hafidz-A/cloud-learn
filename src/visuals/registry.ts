@@ -11,10 +11,13 @@ import { CloudModels } from './CloudModels'
 import { ComputeOptions } from './ComputeOptions'
 import { ConditionalAccessFlow } from './ConditionalAccessFlow'
 import { DefenseInDepth } from './DefenseInDepth'
+import { DnsDelegation } from './DnsDelegation'
 import { EntraObjects } from './EntraObjects'
 import { GroupTypes } from './GroupTypes'
+import { HealthProbeBlocked } from './HealthProbeBlocked'
 import { HybridConnectivity } from './HybridConnectivity'
 import { LicenseFlow } from './LicenseFlow'
+import { LoadBalancerAnatomy } from './LoadBalancerAnatomy'
 import { ManagementTools } from './ManagementTools'
 import { MonitorPipeline } from './MonitorPipeline'
 import { NsgEvaluationOrder } from './NsgEvaluationOrder'
@@ -23,6 +26,7 @@ import { PeeringNonTransitive } from './PeeringNonTransitive'
 import { PolicyFlow } from './PolicyFlow'
 import { PolicyRbacLock } from './PolicyRbacLock'
 import { PricingVsTco } from './PricingVsTco'
+import { PrivateDnsAutoReg } from './PrivateDnsAutoReg'
 import { RbacScope } from './RbacScope'
 import { RegionPair } from './RegionPair'
 import { ResourceHierarchy } from './ResourceHierarchy'
@@ -53,10 +57,13 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   ComputeOptions,
   ConditionalAccessFlow,
   DefenseInDepth,
+  DnsDelegation,
   EntraObjects,
   GroupTypes,
+  HealthProbeBlocked,
   HybridConnectivity,
   LicenseFlow,
+  LoadBalancerAnatomy,
   ManagementTools,
   MonitorPipeline,
   NsgEvaluationOrder,
@@ -65,6 +72,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   PolicyFlow,
   PolicyRbacLock,
   PricingVsTco,
+  PrivateDnsAutoReg,
   RbacScope,
   RegionPair,
   ResourceHierarchy,

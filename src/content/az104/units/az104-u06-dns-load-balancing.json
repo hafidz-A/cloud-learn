@@ -6,22 +6,1026 @@
     {
       "id": "az104-u06-l1",
       "title": "Azure DNS publik",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u06-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "dns-zone"
+          ],
+          "title": "Zone dan record",
+          "body": "Azure DNS (Domain Name System) meng-host zone DNS, misalnya contoso.com, di name server Azure. Azure DNS tidak menjual domain; domain dibeli di registrar lain. Di dalam zone ada record: A untuk IPv4, AAAA untuk IPv6, CNAME (canonical name) sebagai alias ke nama lain, MX (mail exchange) untuk mail server, dan lainnya. Record dengan nama dan tipe yang sama menjadi satu record set, dan TTL (time to live) diatur per record set.",
+          "keyPoints": [
+            "Azure DNS meng-host zone, bukan menjual domain",
+            "A, AAAA, CNAME, MX, TXT (text)",
+            "TTL per record set"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/dns/dns-zones-records",
+          "teaches": [
+            "az104-f-u06-dns-host",
+            "az104-f-u06-record-types",
+            "az104-f-u06-record-set"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-e1",
+          "type": "truefalse",
+          "concept": "dns-zone",
+          "prompt": "You can buy a new domain name directly in Azure DNS (Domain Name System).",
+          "answer": false,
+          "explanation": "Salah. Azure DNS (Domain Name System) hanya meng-host zone. Domain dibeli di registrar pihak ketiga.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-dns-host"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-e2",
+          "type": "match",
+          "concept": "dns-zone",
+          "prompt": "Match each DNS (Domain Name System) record type to what it does.",
+          "pairs": [
+            [
+              "A",
+              "Maps a name to an IPv4 address"
+            ],
+            [
+              "AAAA",
+              "Maps a name to an IPv6 address"
+            ],
+            [
+              "CNAME (canonical name)",
+              "Makes a name an alias of another name"
+            ],
+            [
+              "MX (mail exchange)",
+              "Points to the mail server of a domain"
+            ]
+          ],
+          "explanation": "A untuk IPv4, AAAA untuk IPv6, CNAME (canonical name) untuk alias, dan MX (mail exchange) untuk mail server.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-record-types"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "record-sets"
+          ],
+          "title": "Record otomatis dan aturan CNAME",
+          "body": "Saat zone dibuat, Azure otomatis membuat record set NS (name server) dan SOA (start of authority) di apex (@). Keduanya tidak bisa dihapus terpisah. Karena apex sudah berisi NS dan SOA, CNAME (canonical name) tidak bisa dibuat di apex. CNAME juga tidak bisa berdampingan dengan record lain yang namanya sama, misalnya CNAME www dan A www sekaligus.",
+          "keyPoints": [
+            "NS dan SOA di apex dibuat otomatis",
+            "Tidak ada CNAME di apex",
+            "CNAME tidak bisa berbagi nama"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/dns/dns-zones-records#cname-records",
+          "teaches": [
+            "az104-f-u06-ns-soa",
+            "az104-f-u06-cname-rules"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-e3",
+          "type": "choice",
+          "concept": "record-sets",
+          "prompt": "contoso.com (the zone apex) must point to another hostname. Which record type can't you create at the zone apex?",
+          "options": [
+            "CNAME (canonical name)",
+            "A",
+            "TXT (text)",
+            "MX (mail exchange)"
+          ],
+          "answer": 0,
+          "explanation": "Apex sudah berisi record NS (name server) dan SOA (start of authority), jadi CNAME (canonical name) tidak bisa dibuat di sana. A, TXT (text), dan MX (mail exchange) boleh di apex.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-cname-rules",
+            "az104-f-u06-ns-soa"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-e4",
+          "type": "truefalse",
+          "concept": "record-sets",
+          "prompt": "You can delete the SOA (start of authority) record set of an Azure DNS (Domain Name System) zone.",
+          "answer": false,
+          "explanation": "Salah. Record set SOA (start of authority) dan NS (name server) di apex dibuat dan dihapus otomatis bersama zone.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-ns-soa"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "dns-alias"
+          ],
+          "title": "Alias record",
+          "body": "Alias record set (A, AAAA, atau CNAME (canonical name)) menunjuk langsung ke resource Azure seperti public IP (Internet Protocol), profil Traffic Manager, atau endpoint CDN (content delivery network). Kalau alamat resource berubah, record-nya ikut berubah. Kalau resource dihapus, record tidak menggantung ke alamat lama. Alias juga bisa dipakai di apex, jadi contoso.com bisa langsung menunjuk ke resource Azure.",
+          "keyPoints": [
+            "Menunjuk resource Azure, bukan alamat tetap",
+            "Ikut berubah saat resource berubah",
+            "Bisa di apex"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/dns/dns-alias",
+          "teaches": [
+            "az104-f-u06-alias"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-e5",
+          "type": "choice",
+          "concept": "dns-alias",
+          "prompt": "contoso.com must point to the public IP (Internet Protocol) address of a load balancer. The record must update automatically if the public IP resource changes or is deleted. What should you create?",
+          "options": [
+            "An alias A record set at the apex that references the public IP resource",
+            "An A record with the current IP address",
+            "A CNAME (canonical name) record at the apex",
+            "A TXT (text) record with the IP address"
+          ],
+          "answer": 0,
+          "explanation": "Alias record terikat ke resource public IP (Internet Protocol), jadi ikut berubah dan bisa dipakai di apex. A record biasa berisi alamat tetap, dan CNAME (canonical name) tidak boleh di apex.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-alias",
+            "az104-f-u06-cname-rules"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "dns-delegation"
+          ],
+          "title": "Delegasi domain ke Azure DNS",
+          "body": "Membuat zone di Azure DNS (Domain Name System) belum cukup, karena internet masih bertanya ke name server lama. Setelah zone dibuat, Azure memberi empat name server, dan record NS (name server)-nya dibuat otomatis. Buka registrar tempat domain dibeli, lalu ganti record NS domain ke keempat name server Azure itu. Setelah itu, query untuk domain dijawab oleh Azure DNS.",
+          "keyPoints": [
+            "Zone baru dapat empat name server Azure",
+            "Ganti NS di registrar",
+            "Pakai keempatnya"
+          ],
+          "visual": "DnsDelegation",
+          "link": "https://learn.microsoft.com/en-us/azure/dns/dns-delegate-domain-azure-dns",
+          "teaches": [
+            "az104-f-u06-delegation"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-e6",
+          "type": "choice",
+          "concept": "dns-delegation",
+          "prompt": "You created the zone contoso.com in Azure DNS (Domain Name System) and added all the records. Users on the internet still get answers from the old DNS provider. What is missing?",
+          "options": [
+            "Wait for the next TTL (time to live) of the SOA (start of authority) record in Azure DNS",
+            "Create a CNAME (canonical name) record at the apex",
+            "Link the zone to a virtual network",
+            "Update the NS (name server) records at the registrar to the Azure DNS name servers"
+          ],
+          "answer": 3,
+          "explanation": "Tanpa delegasi, internet masih bertanya ke name server lama. Ubah record NS (name server) di registrar ke name server Azure. Link ke VNet (virtual network) hanya untuk private DNS (Domain Name System) zone.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-delegation",
+            "az104-f-u06-cname-rules"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-e7",
+          "type": "truefalse",
+          "concept": "dns-delegation",
+          "prompt": "When you delegate a domain to Azure DNS (Domain Name System), you use all four name servers that Azure assigns to the zone.",
+          "answer": true,
+          "explanation": "Benar. Pakai keempat name server yang diberikan Azure untuk zone itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-delegation"
+          ]
+        },
+        {
+          "id": "az104-u06-l1-e8",
+          "type": "order",
+          "concept": "dns-delegation",
+          "prompt": "You already own contoso.com at a registrar. Put the steps to host it in Azure DNS (Domain Name System) in order.",
+          "items": [
+            "Create the DNS zone contoso.com in Azure DNS",
+            "Copy the name servers assigned to the zone",
+            "Update the NS (name server) records at the registrar"
+          ],
+          "explanation": "Zone dibuat dulu supaya Azure memberi name server, name server itu dicatat, lalu NS (name server) di registrar diganti ke name server Azure.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-delegation",
+            "az104-f-u06-dns-host"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u06-l2",
       "title": "Private DNS zone",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u06-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "private-dns-zone"
+          ],
+          "title": "Private DNS zone",
+          "body": "Private DNS (Domain Name System) zone, misalnya contoso.internal, memberi nama untuk resource di dalam VNet (virtual network), tanpa terlihat dari internet. Zone harus di-link ke VNet dulu supaya VM (virtual machine) di sana bisa memakainya. Link dengan auto registration menjadikan VNet itu registration virtual network. Link tanpa auto registration hanya untuk resolusi: VM di sana bisa mencari nama, tapi tidak didaftarkan.",
+          "keyPoints": [
+            "Harus di-link ke VNet",
+            "Registration: VM didaftarkan",
+            "Resolution: hanya mencari nama"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links",
+          "teaches": [
+            "az104-f-u06-private-link",
+            "az104-f-u06-registration-resolution"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-e1",
+          "type": "truefalse",
+          "concept": "private-dns-zone",
+          "prompt": "VMs (virtual machines) in a VNet (virtual network) can resolve names in a private DNS (Domain Name System) zone only after the zone is linked to that VNet.",
+          "answer": true,
+          "explanation": "Benar. Tanpa link, VNet (virtual network) itu tidak memakai private DNS (Domain Name System) zone tersebut.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-private-link"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-e2",
+          "type": "choice",
+          "concept": "private-dns-zone",
+          "prompt": "VMs (virtual machines) in VNet2 must resolve names in contoso.internal, but they must not be registered in the zone. How should you link VNet2?",
+          "options": [
+            "Link it with auto registration",
+            "Link it to a public DNS (Domain Name System) zone instead",
+            "Peer VNet2 with the zone",
+            "Link it without auto registration"
+          ],
+          "answer": 3,
+          "explanation": "Link tanpa auto registration hanya untuk resolusi, jadi VM (virtual machine) di VNet2 bisa mencari nama tanpa didaftarkan. Zone tidak di-peering; yang di-peering hanya VNet (virtual network).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-registration-resolution",
+            "az104-f-u06-private-link"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "auto-registration"
+          ],
+          "title": "Auto registration",
+          "body": "Dengan auto registration, setiap VM (virtual machine) di VNet (virtual network) yang di-link otomatis mendapat record A, dan record-nya dihapus saat VM dihapus atau dihentikan. Batasannya: hanya untuk VM, hanya NIC (network interface card) utama, dan tidak membuat record PTR (pointer). Satu VNet hanya bisa punya satu zone dengan auto registration, tapi satu zone boleh punya banyak VNet registrasi.",
+          "keyPoints": [
+            "Record A otomatis untuk VM",
+            "Hanya VM dan NIC utama, tanpa PTR",
+            "Satu VNet, satu zone registrasi"
+          ],
+          "visual": "PrivateDnsAutoReg",
+          "link": "https://learn.microsoft.com/en-us/azure/dns/private-dns-autoregistration",
+          "teaches": [
+            "az104-f-u06-autoreg-records",
+            "az104-f-u06-autoreg-limits"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-e3",
+          "type": "choice",
+          "concept": "auto-registration",
+          "prompt": "VMs (virtual machines) in VNet1 must automatically get DNS (Domain Name System) names in contoso.internal when they are created. What should you do?",
+          "options": [
+            "Create an A record manually for each VM",
+            "Link VNet1 to the zone with auto registration enabled",
+            "Link VNet1 to the zone with auto registration disabled",
+            "Enable a service endpoint on VNet1"
+          ],
+          "answer": 1,
+          "explanation": "Auto registration membuat record A otomatis untuk setiap VM (virtual machine) di VNet (virtual network) yang di-link. Tanpa opsi itu, VNet hanya untuk resolusi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-autoreg-records",
+            "az104-f-u06-registration-resolution"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-e4",
+          "type": "yesno",
+          "concept": "auto-registration",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "VNet1 is linked to contoso.internal with auto registration enabled. vm1 has two network interfaces. An internal load balancer named lb1 is in VNet1.",
+          "statements": [
+            {
+              "text": "The primary network interface of vm1 gets an A record automatically.",
+              "answer": true
+            },
+            {
+              "text": "lb1 gets an A record automatically.",
+              "answer": false
+            },
+            {
+              "text": "A PTR (pointer) record is created automatically for vm1.",
+              "answer": false
+            }
+          ],
+          "explanation": "Auto registration hanya untuk VM (virtual machine), hanya NIC (network interface card) utama, dan tanpa PTR (pointer). Load balancer butuh record manual.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-autoreg-limits",
+            "az104-f-u06-autoreg-records"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-e5",
+          "type": "truefalse",
+          "concept": "auto-registration",
+          "prompt": "You can link one VNet (virtual network) to two different private DNS (Domain Name System) zones with auto registration enabled on both links.",
+          "answer": false,
+          "explanation": "Salah. Satu VNet (virtual network) hanya bisa punya satu zone dengan auto registration. Sebaliknya, satu zone boleh punya banyak VNet registrasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-autoreg-limits"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-e6",
+          "type": "multi",
+          "concept": "auto-registration",
+          "prompt": "Which two statements about auto registration in private DNS (Domain Name System) zones are true? Choose two.",
+          "options": [
+            "The record of a VM (virtual machine) is removed when the VM is deleted",
+            "It creates records for internal load balancers",
+            "It creates PTR (pointer) records for reverse lookup",
+            "Many VNets (virtual networks) can be registration networks for one zone"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Record dihapus saat VM (virtual machine) dihapus atau dihentikan, dan satu zone boleh punya banyak VNet (virtual network) registrasi. Load balancer dan PTR (pointer) tidak didukung.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-autoreg-records",
+            "az104-f-u06-autoreg-limits"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "private-dns-manual"
+          ],
+          "title": "Record manual di private zone",
+          "body": "Auto registration tidak mencakup semua resource. Untuk internal load balancer, NIC (network interface card) tambahan pada VM (virtual machine), atau resource lain, buat record secara manual di private DNS (Domain Name System) zone. Record manual tetap bisa dicari dari semua VNet (virtual network) yang di-link, termasuk VNet yang hanya untuk resolusi.",
+          "keyPoints": [
+            "Load balancer: record manual",
+            "NIC tambahan: record manual",
+            "Tetap bisa dicari dari VNet yang di-link"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/dns/private-dns-autoregistration#restrictions",
+          "teaches": [
+            "az104-f-u06-autoreg-manual"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-e7",
+          "type": "choice",
+          "concept": "private-dns-manual",
+          "prompt": "lb1, an internal load balancer in VNet1, needs the name app.contoso.internal. VNet1 is linked with auto registration. What should you do?",
+          "options": [
+            "Nothing, because auto registration adds it",
+            "Enable auto registration a second time",
+            "Create an A record named app manually in the zone",
+            "Create a CNAME (canonical name) record at the zone apex"
+          ],
+          "answer": 2,
+          "explanation": "Auto registration hanya untuk VM (virtual machine), jadi record untuk load balancer dibuat manual.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-autoreg-manual",
+            "az104-f-u06-autoreg-limits"
+          ]
+        },
+        {
+          "id": "az104-u06-l2-e8",
+          "type": "fill",
+          "concept": "auto-registration",
+          "prompt": "Complete the sentence.",
+          "sentence": "Auto registration creates ___ records only for ___.",
+          "bank": [
+            "A",
+            "reverse lookup",
+            "virtual machines",
+            "load balancers"
+          ],
+          "answers": [
+            "A",
+            "virtual machines"
+          ],
+          "explanation": "Auto registration membuat record A, dan hanya untuk VM (virtual machine).",
+          "requires": [
+            "az104-f-u06-autoreg-records",
+            "az104-f-u06-autoreg-limits"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u06-l3",
       "title": "Dasar load balancer",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u06-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "lb-public-vs-internal"
+          ],
+          "title": "Public vs internal load balancer",
+          "body": "Azure Load Balancer membagi trafik TCP (Transmission Control Protocol) atau UDP (User Datagram Protocol) di layer 4 ke VM (virtual machine) atau scale set. Kalau frontend-nya public IP (Internet Protocol), jadinya public load balancer untuk trafik dari internet. Kalau frontend-nya IP privat, jadinya internal load balancer untuk trafik di dalam VNet (virtual network). SKU (stock-keeping unit) yang dipakai sekarang Standard (dan Gateway untuk kasus khusus); Basic sudah pensiun pada 30 September 2025.",
+          "keyPoints": [
+            "Layer 4: TCP dan UDP",
+            "Frontend publik atau privat",
+            "Basic pensiun, pakai Standard"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-overview",
+          "teaches": [
+            "az104-f-u06-lb-layer4",
+            "az104-f-u06-lb-types",
+            "az104-f-u06-lb-skus"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-e1",
+          "type": "choice",
+          "concept": "lb-public-vs-internal",
+          "prompt": "An app tier must be load-balanced only for VMs (virtual machines) inside the virtual network, with no access from the internet. What should you create?",
+          "options": [
+            "A public load balancer with a public frontend IP (Internet Protocol) address",
+            "A private DNS (Domain Name System) zone",
+            "An inbound NAT (network address translation) rule on a public load balancer",
+            "An internal load balancer with a private frontend IP address"
+          ],
+          "answer": 3,
+          "explanation": "Frontend dengan IP (Internet Protocol) privat membuat internal load balancer, yang hanya melayani trafik di dalam VNet (virtual network).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-types"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-e2",
+          "type": "truefalse",
+          "concept": "lb-public-vs-internal",
+          "prompt": "You can create a new load balancer with the Basic SKU (stock-keeping unit).",
+          "answer": false,
+          "explanation": "Salah. SKU (stock-keeping unit) Basic pensiun pada 30 September 2025. Pakai Standard.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-skus"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "lb-components"
+          ],
+          "title": "Bagian load balancer",
+          "body": "Frontend IP (Internet Protocol) adalah alamat yang dihubungi client. Backend pool berisi VM (virtual machine) dalam satu VNet (virtual network); VM tidak butuh public IP sendiri. Health probe (TCP (Transmission Control Protocol), HTTP (Hypertext Transfer Protocol), atau HTTPS (HTTP Secure)) menentukan instance mana yang sehat. Load-balancing rule membagi trafik satu port ke semua instance sehat dan butuh health probe. Inbound NAT (network address translation) rule meneruskan satu port frontend ke satu VM tertentu, misalnya untuk RDP (Remote Desktop Protocol), tanpa health probe.",
+          "keyPoints": [
+            "Rule: bagi ke semua instance sehat",
+            "Inbound NAT: satu port ke satu VM",
+            "Backend tidak butuh public IP"
+          ],
+          "visual": "LoadBalancerAnatomy",
+          "link": "https://learn.microsoft.com/en-us/azure/load-balancer/components",
+          "teaches": [
+            "az104-f-u06-backend-pool",
+            "az104-f-u06-health-probe",
+            "az104-f-u06-lb-rule",
+            "az104-f-u06-inbound-nat"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-e3",
+          "type": "match",
+          "concept": "lb-components",
+          "prompt": "Match each load balancer part to its job.",
+          "pairs": [
+            [
+              "Frontend IP (Internet Protocol)",
+              "The address that clients connect to"
+            ],
+            [
+              "Backend pool",
+              "The VMs (virtual machines) that receive the traffic"
+            ],
+            [
+              "Health probe",
+              "Checks which instances are healthy"
+            ],
+            [
+              "Load-balancing rule",
+              "Spreads a port across all healthy instances"
+            ],
+            [
+              "Inbound NAT (network address translation) rule",
+              "Forwards one frontend port to one specific VM"
+            ]
+          ],
+          "explanation": "Frontend menerima, backend pool melayani, health probe mengecek, rule membagi, dan inbound NAT (network address translation) rule meneruskan ke satu VM (virtual machine).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-types",
+            "az104-f-u06-backend-pool",
+            "az104-f-u06-health-probe",
+            "az104-f-u06-lb-rule",
+            "az104-f-u06-inbound-nat"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-e4",
+          "type": "choice",
+          "concept": "lb-components",
+          "prompt": "Admins must RDP (Remote Desktop Protocol) to vm1 through the public IP (Internet Protocol) address of the load balancer, on port 50001. What should you create?",
+          "options": [
+            "A load-balancing rule for port 3389",
+            "A second health probe",
+            "An outbound rule",
+            "An inbound NAT (network address translation) rule from port 50001 to vm1 port 3389"
+          ],
+          "answer": 3,
+          "explanation": "Inbound NAT (network address translation) rule meneruskan satu port frontend ke satu VM (virtual machine). Load-balancing rule justru membagi ke semua VM.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-inbound-nat",
+            "az104-f-u06-lb-rule"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-e5",
+          "type": "truefalse",
+          "concept": "lb-components",
+          "prompt": "An inbound NAT (network address translation) rule needs a health probe.",
+          "answer": false,
+          "explanation": "Salah. Berbeda dengan load-balancing rule, inbound NAT (network address translation) rule tidak butuh health probe.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-inbound-nat"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-e6",
+          "type": "yesno",
+          "concept": "lb-components",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A public Standard load balancer has a load-balancing rule for port 80 with a health probe, and an inbound NAT (network address translation) rule from port 50001 to vm1 port 3389. The backend pool has vm1, vm2, and vm3.",
+          "statements": [
+            {
+              "text": "Port 80 traffic is spread across all healthy VMs (virtual machines) in the backend pool.",
+              "answer": true
+            },
+            {
+              "text": "Traffic to port 50001 can reach vm2.",
+              "answer": false
+            },
+            {
+              "text": "vm1 needs its own public IP (Internet Protocol) address to be in the backend pool.",
+              "answer": false
+            }
+          ],
+          "explanation": "Rule port 80 membagi ke semua VM (virtual machine) yang sehat, port 50001 hanya ke vm1, dan VM di backend pool tidak butuh public IP (Internet Protocol) sendiri.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-rule",
+            "az104-f-u06-inbound-nat",
+            "az104-f-u06-backend-pool"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "lb-outbound-distribution"
+          ],
+          "title": "Outbound rule dan session persistence",
+          "body": "Outbound rule memberi outbound NAT (network address translation) untuk VM (virtual machine) di backend pool, sehingga VM bisa ke internet lewat public IP (Internet Protocol) load balancer. Secara default, load balancer membagi trafik dengan hash five-tuple, jadi permintaan berikutnya dari client yang sama bisa ke VM lain. Kalau aplikasi butuh client tetap ke VM yang sama, pilih Session persistence Client IP.",
+          "keyPoints": [
+            "Outbound rule: VM backend ke internet",
+            "Default: hash five-tuple",
+            "Client IP: client yang sama ke VM yang sama"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/load-balancer/distribution-mode-concepts",
+          "teaches": [
+            "az104-f-u06-outbound-rule",
+            "az104-f-u06-distribution"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-e7",
+          "type": "choice",
+          "concept": "lb-outbound-distribution",
+          "prompt": "A web app keeps session data in memory, so each client must keep reaching the same VM (virtual machine). What should you set on the load-balancing rule?",
+          "options": [
+            "Session persistence: Client IP (Internet Protocol)",
+            "Session persistence: None",
+            "A second frontend IP address",
+            "An inbound NAT (network address translation) rule for each client"
+          ],
+          "answer": 0,
+          "explanation": "Client IP (Internet Protocol) mengirim client yang sama ke VM (virtual machine) yang sama. None memakai hash five-tuple, jadi client bisa berpindah VM.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-distribution"
+          ]
+        },
+        {
+          "id": "az104-u06-l3-e8",
+          "type": "choice",
+          "concept": "lb-outbound-distribution",
+          "prompt": "The backend VMs (virtual machines) of a public Standard load balancer must reach the internet through the public IP (Internet Protocol) address of the load balancer. What should you configure?",
+          "options": [
+            "An inbound NAT (network address translation) rule",
+            "An outbound rule",
+            "A health probe",
+            "Session persistence"
+          ],
+          "answer": 1,
+          "explanation": "Outbound rule memberi outbound NAT (network address translation) untuk backend pool. Inbound NAT rule hanya untuk trafik masuk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-outbound-rule",
+            "az104-f-u06-inbound-nat"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u06-l4",
       "title": "Troubleshooting load balancer",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u06-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "lb-troubleshoot"
+          ],
+          "title": "Cara mendiagnosis load balancer",
+          "body": "Mulai dari metrik load balancer di Azure Monitor. Health Probe Status menunjukkan apakah instance backend lolos health probe, sedangkan Data Path Availability menunjukkan kesehatan jalur ke frontend. Pakai agregasi Average untuk keduanya. Kalau probe gagal, cek Effective security rules di network interface backend, lalu pastikan aplikasi benar-benar mendengarkan di port probe.",
+          "keyPoints": [
+            "Health Probe Status: backend lolos probe?",
+            "Data Path Availability: jalur ke frontend",
+            "Lalu cek NSG (network security group) dan port probe"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-standard-diagnostics",
+          "teaches": [
+            "az104-f-u06-lb-metrics",
+            "az104-f-u04-effective-rules"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-e1",
+          "type": "choice",
+          "concept": "lb-troubleshoot",
+          "prompt": "Users can't reach a site behind a Standard load balancer. Which metric shows whether the backend instances pass the health probe?",
+          "options": [
+            "Data Path Availability",
+            "Bytes received by the frontend",
+            "CPU (central processing unit) percentage of the load balancer",
+            "Health Probe Status"
+          ],
+          "answer": 3,
+          "explanation": "Health Probe Status menunjukkan kesehatan backend menurut probe. Data Path Availability menunjukkan jalur ke frontend.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-metrics"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-e2",
+          "type": "truefalse",
+          "concept": "lb-troubleshoot",
+          "prompt": "For the Health Probe Status metric, Microsoft recommends the Average aggregation rather than Count.",
+          "answer": true,
+          "explanation": "Benar. Count tidak disarankan untuk Health Probe Status dan Data Path Availability; Average lebih mewakili kesehatan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-metrics"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "probe-blocked-by-nsg"
+          ],
+          "title": "Probe yang terblokir NSG",
+          "body": "Health probe datang dari 168.63.129.16, yang diwakili service tag AzureLoadBalancer. Aturan default AllowAzureLoadBalancerInBound (65001) sudah mengizinkannya. Tapi aturan deny buatan sendiri dengan prioritas lebih tinggi, misalnya deny semua di 200, bisa memblokir probe. Akibatnya semua instance dianggap mati dan tidak ada flow baru, walau koneksi TCP (Transmission Control Protocol) yang sudah ada masih bisa berjalan.",
+          "keyPoints": [
+            "Probe dari 168.63.129.16",
+            "Deny buatan sendiri bisa memblokirnya",
+            "Semua down: tidak ada flow baru"
+          ],
+          "visual": "HealthProbeBlocked",
+          "link": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview",
+          "teaches": [
+            "az104-f-u06-probe-source",
+            "az104-f-u06-probe-blocked",
+            "az104-f-u06-probe-all-down"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-e3",
+          "type": "fix",
+          "concept": "probe-blocked-by-nsg",
+          "prompt": "After someone added a rule to nsg-web, every VM (virtual machine) behind lb-web is marked unhealthy. The health probe uses TCP (Transmission Control Protocol) port 80. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "lb-web · Health Probe Status: 0%",
+            "message": "nsg-web inbound: 100 Allow TCP 80 from 203.0.113.0/24. 200 Deny All from Any. 65001 AllowAzureLoadBalancerInBound."
+          },
+          "options": [
+            "Delete the rule at priority 100",
+            "Remove the health probe from the load-balancing rule",
+            "Add a rule that allows the AzureLoadBalancer service tag with a priority lower than 200, for example 150",
+            "Give each VM a public IP (Internet Protocol) address"
+          ],
+          "answer": 2,
+          "explanation": "Probe datang dari 168.63.129.16, yang tidak cocok dengan aturan 100, lalu ditolak aturan 200 sebelum sampai ke 65001. Izinkan AzureLoadBalancer dengan angka prioritas lebih kecil dari 200. Load-balancing rule tetap butuh health probe.",
+          "requires": [
+            "az104-f-u06-probe-source",
+            "az104-f-u06-probe-blocked",
+            "az104-f-u05-nsg-priority",
+            "az104-f-u06-lb-rule"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-e4",
+          "type": "yesno",
+          "concept": "probe-blocked-by-nsg",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "All three VMs (virtual machines) behind a Standard load balancer fail the health probe.",
+          "statements": [
+            {
+              "text": "The load balancer still sends new connections to the VMs.",
+              "answer": false
+            },
+            {
+              "text": "Established TCP (Transmission Control Protocol) connections can continue.",
+              "answer": true
+            },
+            {
+              "text": "The probe traffic comes from 168.63.129.16.",
+              "answer": true
+            }
+          ],
+          "explanation": "Kalau semua instance down, tidak ada flow baru. Standard membiarkan koneksi TCP (Transmission Control Protocol) yang sudah ada tetap jalan karena backend punya lebih dari satu instance.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-probe-all-down",
+            "az104-f-u06-probe-source"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-e5",
+          "type": "choice",
+          "concept": "probe-blocked-by-nsg",
+          "prompt": "Which source should an NSG (network security group) rule allow so that load balancer health probes reach the backend VMs (virtual machines)?",
+          "options": [
+            "The service tag Internet",
+            "The service tag AzureLoadBalancer",
+            "The service tag Storage",
+            "The address range of the backend subnet"
+          ],
+          "answer": 1,
+          "explanation": "Service tag AzureLoadBalancer mewakili 168.63.129.16, sumber health probe.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-probe-source",
+            "az104-f-u05-service-tags"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "probe-behavior"
+          ],
+          "title": "Perilaku probe",
+          "body": "Probe TCP (Transmission Control Protocol) gagal kalau tidak ada aplikasi yang mendengarkan di port probe. Probe HTTP (Hypertext Transfer Protocol) atau HTTPS (HTTP Secure) langsung menandai instance down untuk respons selain 200, misalnya 500 dari halaman health. Jangan juga memakai rentang alamat yang berisi 168.63.129.16 di VNet (virtual network), karena bentrok dengan alamat health probe.",
+          "keyPoints": [
+            "TCP: butuh listener di port probe",
+            "HTTP: hanya 200 yang dianggap sehat",
+            "Hindari rentang yang berisi 168.63.129.16"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview",
+          "teaches": [
+            "az104-f-u06-probe-fail",
+            "az104-f-u06-probe-range"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-e6",
+          "type": "choice",
+          "concept": "probe-behavior",
+          "prompt": "An HTTP (Hypertext Transfer Protocol) health probe checks /health on each VM (virtual machine). vm2 returns HTTP 500 on /health. What happens to vm2?",
+          "options": [
+            "It stays healthy until the threshold is reached",
+            "It is marked down right away and gets no new connections",
+            "It keeps getting new connections, because TCP (Transmission Control Protocol) port 80 is open",
+            "It is removed from the backend pool"
+          ],
+          "answer": 1,
+          "explanation": "Probe HTTP (Hypertext Transfer Protocol) langsung menandai down untuk respons selain 200. Instance yang down tidak mendapat koneksi baru, tapi tetap ada di backend pool.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-probe-fail",
+            "az104-f-u06-health-probe"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-e7",
+          "type": "truefalse",
+          "concept": "probe-behavior",
+          "prompt": "You can use the address range 168.63.0.0/16 in a virtual network without any problem.",
+          "answer": false,
+          "explanation": "Salah. Rentang itu berisi 168.63.129.16, alamat health probe, dan bisa membuat skenario gagal.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-probe-range"
+          ]
+        },
+        {
+          "id": "az104-u06-l4-e8",
+          "type": "multi",
+          "concept": "probe-behavior",
+          "prompt": "Which two can make every backend instance appear unhealthy? Choose two.",
+          "options": [
+            "The backend VMs (virtual machines) don't have public IP (Internet Protocol) addresses",
+            "The app doesn't listen on the probe port",
+            "Session persistence is set to None",
+            "An NSG (network security group) rule at priority 200 that denies all inbound traffic"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Deny buatan sendiri yang lebih dulu dari AllowAzureLoadBalancerInBound memblokir probe, dan probe TCP (Transmission Control Protocol) gagal tanpa listener. Public IP (Internet Protocol) dan session persistence tidak memengaruhi probe.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-probe-blocked",
+            "az104-f-u06-probe-fail",
+            "az104-f-u06-backend-pool",
+            "az104-f-u06-distribution"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u06-dns-host",
+      "statement": "Azure DNS (Domain Name System) meng-host zone DNS di infrastruktur name server Azure. Azure DNS tidak menjual domain; domain dibeli di registrar pihak ketiga.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-faq"
+    },
+    {
+      "id": "az104-f-u06-record-types",
+      "statement": "Azure DNS (Domain Name System) mendukung record A (IPv4), AAAA (IPv6), CAA, CNAME, MX (mail server), NS, PTR, SOA, SRV, dan TXT. CNAME menjadikan sebuah nama alias untuk nama lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-zones-records"
+    },
+    {
+      "id": "az104-f-u06-record-set",
+      "statement": "Record dengan nama dan tipe yang sama dikelompokkan menjadi record set, dan TTL (time to live) diatur per record set.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-zones-records"
+    },
+    {
+      "id": "az104-f-u06-ns-soa",
+      "statement": "Record set NS dan SOA di apex zone (@) dibuat otomatis bersama zone dan tidak bisa dihapus terpisah.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-zones-records"
+    },
+    {
+      "id": "az104-f-u06-cname-rules",
+      "statement": "CNAME tidak bisa dibuat di apex zone (@), dan tidak bisa berdampingan dengan record set lain yang namanya sama.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-zones-records#cname-records"
+    },
+    {
+      "id": "az104-f-u06-alias",
+      "statement": "Alias record set (A, AAAA, atau CNAME) menunjuk langsung ke resource Azure seperti public IP, Traffic Manager, atau CDN (content delivery network). Record ikut berubah saat alamat resource berubah, mencegah record menggantung saat resource dihapus, dan bisa dipakai di apex zone.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-alias"
+    },
+    {
+      "id": "az104-f-u06-delegation",
+      "statement": "Untuk memakai Azure DNS (Domain Name System) bagi domain yang sudah dibeli: buat zone, ambil name server yang diberikan Azure, lalu ubah record NS domain di registrar ke keempat name server itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/dns-delegate-domain-azure-dns"
+    },
+    {
+      "id": "az104-f-u06-private-link",
+      "statement": "Private DNS (Domain Name System) zone harus di-link ke VNet (virtual network) supaya VM (virtual machine) di VNet itu bisa memakai nama di dalam zone tersebut.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links"
+    },
+    {
+      "id": "az104-f-u06-registration-resolution",
+      "statement": "Link dengan auto registration menjadikan VNet (virtual network) itu registration virtual network. Link tanpa auto registration hanya resolution virtual network: VM di sana bisa mencari nama di zone, tapi tidak didaftarkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links"
+    },
+    {
+      "id": "az104-f-u06-autoreg-records",
+      "statement": "Auto registration membuat record A untuk setiap VM (virtual machine) di VNet yang di-link, dan menghapusnya saat VM dihapus atau dihentikan.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/private-dns-autoregistration"
+    },
+    {
+      "id": "az104-f-u06-autoreg-limits",
+      "statement": "Auto registration hanya untuk VM (virtual machine) dan hanya NIC (network interface card) utama, serta tidak membuat record PTR. Satu VNet hanya bisa punya satu zone dengan auto registration, tapi satu zone bisa punya banyak VNet.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/private-dns-autoregistration#restrictions"
+    },
+    {
+      "id": "az104-f-u06-autoreg-manual",
+      "statement": "Untuk resource lain seperti internal load balancer, atau NIC (network interface card) tambahan pada VM, buat record secara manual di private DNS (Domain Name System) zone.",
+      "source": "https://learn.microsoft.com/en-us/azure/dns/private-dns-autoregistration#restrictions"
+    },
+    {
+      "id": "az104-f-u06-lb-layer4",
+      "statement": "Azure Load Balancer membagi trafik TCP (Transmission Control Protocol) atau UDP (User Datagram Protocol) di layer 4 ke VM (virtual machine) atau virtual machine scale set.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-overview"
+    },
+    {
+      "id": "az104-f-u06-lb-skus",
+      "statement": "SKU (stock-keeping unit) Load Balancer yang dipakai sekarang adalah Standard dan Gateway. Basic pensiun pada 30 September 2025.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-overview"
+    },
+    {
+      "id": "az104-f-u06-lb-types",
+      "statement": "Frontend dengan public IP membuat public load balancer. Frontend dengan IP privat membuat internal load balancer untuk trafik di dalam VNet (virtual network).",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/components#frontend-ip-configurations"
+    },
+    {
+      "id": "az104-f-u06-backend-pool",
+      "statement": "Backend pool berisi VM (virtual machine) atau instance scale set dalam satu VNet. VM tidak butuh public IP untuk masuk backend pool public load balancer.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/components#backend-pool"
+    },
+    {
+      "id": "az104-f-u06-health-probe",
+      "statement": "Health probe (TCP, HTTP, atau HTTPS) menentukan instance mana yang sehat. Instance yang gagal probe tidak menerima koneksi baru.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/components#health-probes"
+    },
+    {
+      "id": "az104-f-u06-lb-rule",
+      "statement": "Load-balancing rule memetakan frontend IP dan port ke semua instance di backend pool, dan butuh health probe.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/components#load-balancer-rules"
+    },
+    {
+      "id": "az104-f-u06-inbound-nat",
+      "statement": "Inbound NAT (network address translation) rule meneruskan satu port frontend ke satu VM tertentu (port forwarding), misalnya untuk RDP (Remote Desktop Protocol) atau SSH (Secure Shell), dan tidak butuh health probe. Versi 2 memetakan rentang port frontend ke seluruh backend pool.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/inbound-nat-rules"
+    },
+    {
+      "id": "az104-f-u06-outbound-rule",
+      "statement": "Outbound rule memberi outbound NAT (network address translation) untuk instance di backend pool supaya bisa berkomunikasi ke internet.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/components#outbound-rules"
+    },
+    {
+      "id": "az104-f-u06-distribution",
+      "statement": "Distribusi default adalah hash five-tuple (Session persistence None). Session persistence Client IP mengirim trafik dari client yang sama ke instance yang sama.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/distribution-mode-concepts"
+    },
+    {
+      "id": "az104-f-u06-lb-metrics",
+      "statement": "Metrik Health Probe Status menunjukkan kesehatan instance backend menurut health probe, dan Data Path Availability menunjukkan kesehatan jalur data ke frontend. Untuk keduanya, pakai agregasi Average, bukan Count.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-standard-diagnostics"
+    },
+    {
+      "id": "az104-f-u06-probe-source",
+      "statement": "Health probe datang dari 168.63.129.16, yang diwakili service tag AzureLoadBalancer. Alamat itu harus diizinkan di NSG (network security group) dan firewall lokal; aturan default AllowAzureLoadBalancerInBound sudah mengizinkannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview"
+    },
+    {
+      "id": "az104-f-u06-probe-blocked",
+      "statement": "Aturan deny buatan sendiri dengan prioritas lebih tinggi dari 65001 bisa memblokir health probe. Microsoft tidak merekomendasikan memblokir probe dengan NSG (network security group).",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview"
+    },
+    {
+      "id": "az104-f-u06-probe-all-down",
+      "statement": "Kalau semua instance gagal probe, load balancer tidak mengirim flow baru. Standard Load Balancer membiarkan koneksi TCP (Transmission Control Protocol) yang sudah ada tetap berjalan kalau backend punya lebih dari satu instance.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview#probe-down-behavior"
+    },
+    {
+      "id": "az104-f-u06-probe-fail",
+      "statement": "Probe TCP (Transmission Control Protocol) gagal kalau tidak ada listener yang menjawab di port probe. Probe HTTP atau HTTPS langsung menandai instance down untuk respons selain 200.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview"
+    },
+    {
+      "id": "az104-f-u06-probe-range",
+      "statement": "Jangan memakai rentang alamat yang berisi 168.63.129.16 di VNet (virtual network), karena bentrok dengan alamat health probe.",
+      "source": "https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-custom-probe-overview"
     }
   ]
 }

@@ -65,6 +65,11 @@
     "description": "Antarmuka berbasis teks untuk menjalankan perintah, misalnya Azure CLI."
   },
   {
+    "term": "CNAME",
+    "expansion": "Canonical Name",
+    "description": "Record DNS yang membuat satu nama menjadi alias untuk nama lain. Tidak bisa dipakai di apex zone."
+  },
+  {
     "term": "CPU",
     "expansion": "Central Processing Unit",
     "description": "Prosesor yang menjalankan perhitungan di komputer atau VM (Virtual Machine)."
@@ -165,6 +170,11 @@
     "description": "Login dengan dua faktor atau lebih, misalnya password ditambah kode di aplikasi HP."
   },
   {
+    "term": "MX",
+    "expansion": "Mail Exchange",
+    "description": "Record DNS yang menunjuk server email untuk sebuah domain."
+  },
+  {
     "term": "NAT",
     "expansion": "Network Address Translation",
     "description": "Menerjemahkan alamat IP privat ke alamat publik. NAT gateway memberi VM di subnet akses keluar ke internet."
@@ -173,6 +183,16 @@
     "term": "NFS",
     "expansion": "Network File System",
     "description": "Protokol berbagi file yang umum di Linux. Azure Files mendukung NFS dan SMB (Server Message Block)."
+  },
+  {
+    "term": "NIC",
+    "expansion": "Network Interface Card",
+    "description": "Network interface sebuah VM. Di Azure, NSG, IP privat, dan keanggotaan ASG dipasang di network interface."
+  },
+  {
+    "term": "NS",
+    "expansion": "Name Server",
+    "description": "Record DNS berisi name server yang berwenang untuk sebuah zone. Dipakai untuk delegasi domain ke Azure DNS."
   },
   {
     "term": "NSG",
@@ -203,6 +223,11 @@
     "term": "PIN",
     "expansion": "Personal Identification Number",
     "description": "Kode angka rahasia, termasuk faktor 'sesuatu yang kamu tahu'."
+  },
+  {
+    "term": "PTR",
+    "expansion": "Pointer",
+    "description": "Record DNS untuk reverse lookup, dari alamat IP ke nama."
   },
   {
     "term": "RBAC",
@@ -245,6 +270,11 @@
     "description": "Pesan teks di ponsel. Bisa dipakai untuk kode verifikasi atau notifikasi alert."
   },
   {
+    "term": "SOA",
+    "expansion": "Start of Authority",
+    "description": "Record DNS di apex zone yang berisi informasi dasar zone. Di Azure DNS dibuat otomatis."
+  },
+  {
     "term": "SOC",
     "expansion": "System and Organization Controls",
     "description": "Laporan audit independen tentang kontrol keamanan penyedia layanan, tersedia di Service Trust Portal."
@@ -283,6 +313,21 @@
     "term": "TLS",
     "expansion": "Transport Layer Security",
     "description": "Protokol enkripsi untuk koneksi jaringan, misalnya HTTPS. Azure Bastion memakai TLS di port 443."
+  },
+  {
+    "term": "TTL",
+    "expansion": "Time to Live",
+    "description": "Berapa lama sebuah record DNS boleh disimpan di cache sebelum ditanyakan ulang."
+  },
+  {
+    "term": "TXT",
+    "expansion": "Text",
+    "description": "Record DNS berisi teks bebas, misalnya untuk verifikasi domain."
+  },
+  {
+    "term": "UDP",
+    "expansion": "User Datagram Protocol",
+    "description": "Protokol transport tanpa koneksi, lebih ringan dari TCP. Azure Load Balancer membagi trafik TCP dan UDP."
   },
   {
     "term": "UDR",

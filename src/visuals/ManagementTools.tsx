@@ -23,7 +23,9 @@ export const ManagementTools: FC = () => {
         const row = Math.floor(i / 3)
         return <Pill key={t} x={col * 101} y={row * 34} w={96} lines={[t]} />
       })}
-      <path d="M48 62 L110 88 M150 62 V86 M250 62 L190 88" stroke="var(--color-biru-dalam)" strokeWidth={2} markerEnd={`url(#${armArrow})`} />
+      {['M48 62 L110 88', 'M150 62 V86', 'M250 62 L190 88'].map((d) => (
+        <path key={d} d={d} stroke="var(--color-biru-dalam)" strokeWidth={2} markerEnd={`url(#${armArrow})`} />
+      ))}
       <Pill x={40} y={92} w={220} h={40} lines={['Azure Resource Manager', 'cek akses, lalu jalankan']} fill="var(--color-biru-muda)" stroke="var(--color-biru-dalam)" />
       <path d="M150 134 V152" stroke="var(--color-biru-dalam)" strokeWidth={2} markerEnd={`url(#${armArrow})`} />
       {['VM', 'Storage', 'VNet'].map((r, i) => (
