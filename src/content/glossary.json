@@ -110,6 +110,11 @@
     "description": "Halaman Access control (IAM) di portal Azure, tempat melihat, memberi, dan mengecek role Azure RBAC di sebuah scope."
   },
   {
+    "term": "ID",
+    "expansion": "Identifier",
+    "description": "Penanda unik sebuah objek. Resource ID adalah path lengkap resource di Azure, dan berubah kalau resource dipindah ke resource group atau subscription lain."
+  },
+  {
     "term": "IP",
     "expansion": "Internet Protocol",
     "description": "Aturan pengalamatan di jaringan. Alamat IP menandai perangkat atau resource."

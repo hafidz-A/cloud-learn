@@ -51,6 +51,8 @@ export const VISUAL_CATALOG = {
   // Unit 2
   RoleScopeTree: ['rbac-scope', 'rbac-inheritance'],
   AzureVsEntraRoles: ['azure-vs-entra-roles'],
+  // Unit 3 (lock and hierarchy cards reuse PolicyRbacLock and ResourceHierarchy)
+  PolicyFlow: ['policy-definition', 'initiative', 'policy-assignment'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

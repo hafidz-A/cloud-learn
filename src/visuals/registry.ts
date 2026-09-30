@@ -15,6 +15,7 @@ import { HybridConnectivity } from './HybridConnectivity'
 import { LicenseFlow } from './LicenseFlow'
 import { ManagementTools } from './ManagementTools'
 import { MonitorPipeline } from './MonitorPipeline'
+import { PolicyFlow } from './PolicyFlow'
 import { PolicyRbacLock } from './PolicyRbacLock'
 import { PricingVsTco } from './PricingVsTco'
 import { RbacScope } from './RbacScope'
@@ -48,6 +49,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   LicenseFlow,
   ManagementTools,
   MonitorPipeline,
+  PolicyFlow,
   PolicyRbacLock,
   PricingVsTco,
   RbacScope,

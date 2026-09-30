@@ -160,3 +160,29 @@ Masih bertanda `verify`:
 
 Tidak ada fakta bertanda `verify`.
 
+### Unit 3: Subscription dan governance (30 September 2026)
+
+50 fakta, 19 kartu learn, 50 soal (45 examReady), 1 visual baru (`PolicyFlow`), ditambah `PolicyRbacLock` dan
+`ResourceHierarchy` dari AZ-900. Sumber: `azure-docs` (governance/policy, governance/management-groups,
+azure-resource-manager/management, cost-management-billing) dan `azure-monitor-docs` (advisor).
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Beberapa assignment dievaluasi sendiri-sendiri; hasilnya "cumulative most restrictive" (satu deny cukup memblokir) | Soal rules dengan contoh persis dari dokumentasi (deny di subscription, audit di resource group) | `concepts/effect-basics.md` |
+| Urutan evaluasi effect: disabled, append/modify, deny, audit, manual, auditIfNotExists, denyAction | Diajarkan; deny sebelum audit supaya tidak tercatat dua kali | `concepts/effect-basics.md` |
+| denyAction saat ini hanya mendukung DELETE | Soal "tidak boleh dihapus tapi boleh diubah" | `concepts/effect-deny-action.md` |
+| Exclusion (notScopes) vs exemption (tetap tercatat Exempted, bisa kedaluwarsa); Exclusions mulai satu level di bawah scope | Diajarkan dan diuji (config, multi, choice) | `concepts/scope.md`, `tutorials/create-and-manage.md` |
+| Contributor bisa memicu remediation tapi tidak bisa membuat definition atau assignment; Resource Policy Contributor untuk mengelola policy | Soal least privilege | `overview.md` |
+| Lock hanya untuk control plane; Read-only juga memblokir POST (list keys, start VM); Delete lock di satu resource menggagalkan hapus resource group | Diajarkan; soal upload blob menyebut role data yang dibutuhkan supaya tidak ambigu | `lock-resources.md` |
+| Owner dan User Access Administrator bisa mengelola lock; Contributor tidak (NotActions Microsoft.Authorization) | Diajarkan dan diuji | `lock-resources.md`, `built-in-roles/privileged.md` |
+| Tag Contributor di portal hanya bisa memberi tag ke subscription; untuk resource lewat PowerShell atau REST API | Ditambahkan ke fakta dan penjelasan | `tag-resources.md` |
+| Move: region tidak berubah, resource ID berubah, role assignment di resource tidak ikut, Read-only lock memblokir move, resource group dikunci sampai 4 jam tapi resource tetap berjalan | Diajarkan dan diuji | `move-resource-group-and-subscription.md` |
+| Budget tidak menghentikan resource; sampai 5 threshold dan 5 email; evaluasi tiap 24 jam; action group untuk scope subscription dan resource group | Diajarkan dan diuji | `tutorial-acm-create-budgets.md` |
+| Advisor: lima kategori; rekomendasi cost matikan atau kecilkan VM yang jarang dipakai beserta perkiraan penghematan | Diajarkan | azure-monitor-docs `advisor-overview.md`, `advisor-cost-recommendations.md` |
+
+Dua kontradiksi kecil di dokumentasi yang sengaja dihindari: `lock-resources.md` bilang resource dengan Read-only lock
+masih bisa dipindah ke resource group lain, sedangkan `move-resource-group-and-subscription.md` hanya menyebut lock di
+resource group dan subscription. Materi hanya mengajarkan bagian yang disepakati keduanya.
+
+Tidak ada fakta bertanda `verify`.
+

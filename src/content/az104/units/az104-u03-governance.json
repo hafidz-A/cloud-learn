@@ -6,27 +6,1784 @@
     {
       "id": "az104-u03-l1",
       "title": "Azure Policy",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u03-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "policy-definition",
+            "initiative",
+            "policy-assignment"
+          ],
+          "title": "Azure Policy",
+          "body": "Azure Policy mengevaluasi resource terhadap aturan yang ditulis dalam JSON (JavaScript Object Notation), yang disebut policy definition. Beberapa definition bisa digabung menjadi initiative. Definition atau initiative di-assign ke scope, dan berlaku untuk semua resource di dalamnya. Resource dievaluasi saat dibuat atau diubah, saat ada assignment baru, dan setiap 24 jam.",
+          "keyPoints": [
+            "Definition: aturan dalam JSON",
+            "Initiative: kumpulan definition",
+            "Assignment: definition + scope"
+          ],
+          "visual": "PolicyFlow",
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/overview",
+          "teaches": [
+            "az104-f-u03-policy-def",
+            "az104-f-u03-initiative",
+            "az104-f-u03-assignment",
+            "az104-f-u03-evaluation"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e1",
+          "type": "truefalse",
+          "concept": "initiative",
+          "prompt": "An initiative groups several policy definitions so that you can assign them together.",
+          "answer": true,
+          "explanation": "Benar. Initiative (policySet) memudahkan pengelolaan, dan Microsoft menyarankannya walau baru berisi satu definition.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-initiative"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e2",
+          "type": "choice",
+          "concept": "policy-assignment",
+          "prompt": "A resource already exists and nobody changes it. When does Azure Policy evaluate it?",
+          "options": [
+            "Only when the resource is deleted",
+            "Every 5 minutes",
+            "Never, because only new resources are evaluated",
+            "In the standard compliance evaluation cycle, every 24 hours"
+          ],
+          "answer": 3,
+          "explanation": "Selain saat create atau update dan saat ada assignment baru, Azure Policy mengevaluasi ulang semua resource dalam siklus standar setiap 24 jam.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-evaluation"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "policy-vs-rbac"
+          ],
+          "title": "Policy vs RBAC",
+          "body": "Azure RBAC (Role-Based Access Control) mengatur siapa boleh melakukan aksi apa. Azure Policy mengatur resource seperti apa yang boleh ada, tanpa peduli siapa yang membuatnya. Jadi walau seseorang Owner, create atau update yang melanggar policy deny tetap ditolak. Resource Policy Contributor bisa membuat dan meng-assign policy. Contributor dan Reader hanya bisa membaca policy.",
+          "keyPoints": [
+            "RBAC: siapa boleh apa",
+            "Policy: resource seperti apa yang boleh",
+            "Resource Policy Contributor untuk mengelola policy"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/overview#azure-policy-and-azure-rbac",
+          "teaches": [
+            "az104-f-u03-policy-vs-rbac",
+            "az104-f-u03-policy-roles"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e3",
+          "type": "yesno",
+          "concept": "policy-vs-rbac",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Ani has the Owner role on the Production subscription. The Allowed locations policy with the deny effect is assigned to Production and allows only West Europe.",
+          "statements": [
+            {
+              "text": "Ani can create a VM (virtual machine) in West Europe.",
+              "answer": true
+            },
+            {
+              "text": "Ani can create a storage account in East US because she is an Owner.",
+              "answer": false
+            },
+            {
+              "text": "Ani can assign roles in Production.",
+              "answer": true
+            }
+          ],
+          "explanation": "Owner punya semua izin RBAC (Role-Based Access Control), tapi Azure Policy tetap menolak resource yang melanggar aturan lokasi, siapa pun yang membuatnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-policy-vs-rbac",
+            "az104-f-u03-assignment",
+            "az104-f-u02-owner"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e4",
+          "type": "choice",
+          "concept": "policy-vs-rbac",
+          "prompt": "Diego must create policy definitions and assign them. The solution must follow the principle of least privilege. Which role should you assign?",
+          "options": [
+            "Owner",
+            "Contributor",
+            "Reader",
+            "Resource Policy Contributor"
+          ],
+          "answer": 3,
+          "explanation": "Resource Policy Contributor punya sebagian besar operasi Azure Policy. Owner terlalu luas, sedangkan Contributor dan Reader hanya bisa membaca policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-policy-roles",
+            "az104-f-u02-owner"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "policy-scope-exclusion"
+          ],
+          "title": "Exclusion, exemption, dan lokasi definition",
+          "body": "Exclusion (notScopes) membuat scope tertentu tidak dievaluasi sama sekali. Di portal, Exclusions dimulai satu level di bawah Scope, dan cocok untuk pengecualian permanen seperti lingkungan test. Exemption tetap mencatat resource sebagai Exempted dan bisa kedaluwarsa, jadi cocok untuk alasan sementara. Definition yang disimpan di management group bisa di-assign ke semua subscription di bawahnya; yang disimpan di subscription hanya untuk subscription itu.",
+          "keyPoints": [
+            "Exclusion: tidak dievaluasi, permanen",
+            "Exemption: tercatat Exempted, bisa kedaluwarsa",
+            "Definition di management group untuk banyak subscription"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/scope",
+          "teaches": [
+            "az104-f-u03-exclusion-exemption",
+            "az104-f-u03-exclusions-lower",
+            "az104-f-u03-definition-location"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e5",
+          "type": "config",
+          "concept": "policy-scope-exclusion",
+          "prompt": "Assign the Allowed locations policy to the Production subscription so that only West Europe is allowed. Resources in rg-lab must not be evaluated.",
+          "blade": "Assign policy",
+          "fields": [
+            {
+              "label": "Scope",
+              "kind": "select",
+              "choices": [
+                "Management group Contoso",
+                "Subscription Production",
+                "Resource group rg-lab"
+              ],
+              "value": "Management group Contoso"
+            },
+            {
+              "label": "Exclusions",
+              "kind": "select",
+              "choices": [
+                "None",
+                "Resource group rg-lab",
+                "Subscription Production"
+              ],
+              "value": "None"
+            },
+            {
+              "label": "Policy definition",
+              "kind": "text",
+              "value": "Allowed locations",
+              "readOnly": true
+            },
+            {
+              "label": "Allowed locations",
+              "kind": "select",
+              "choices": [
+                "East US",
+                "West Europe",
+                "Southeast Asia"
+              ],
+              "value": "East US"
+            },
+            {
+              "label": "Policy enforcement",
+              "kind": "select",
+              "choices": [
+                "Enabled",
+                "Disabled"
+              ],
+              "value": "Enabled"
+            }
+          ],
+          "answer": {
+            "Scope": "Subscription Production",
+            "Exclusions": "Resource group rg-lab",
+            "Allowed locations": "West Europe",
+            "Policy enforcement": "Enabled"
+          },
+          "explanation": "Scope-nya subscription Production, rg-lab dikecualikan lewat Exclusions (satu level di bawah scope), parameter lokasinya West Europe, dan enforcement tetap Enabled supaya policy benar-benar memblokir.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-assignment",
+            "az104-f-u03-exclusions-lower",
+            "az104-f-u03-exclusion-exemption"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e6",
+          "type": "multi",
+          "concept": "policy-scope-exclusion",
+          "prompt": "A policy is assigned at the Production subscription. Which two can you choose as Exclusions? Choose two.",
+          "options": [
+            "A resource in Production",
+            "The management group above Production",
+            "A resource group in Production",
+            "Another subscription"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Exclusions dimulai satu level di bawah scope assignment, jadi resource group atau resource di dalam Production. Scope di atas atau di luar Production memang tidak termasuk assignment ini.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-exclusions-lower",
+            "az104-f-u03-assignment"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e7",
+          "type": "truefalse",
+          "concept": "policy-scope-exclusion",
+          "prompt": "A policy definition that is saved in a subscription can be assigned to a different subscription.",
+          "answer": false,
+          "explanation": "Salah. Definition yang disimpan di subscription hanya bisa di-assign di subscription itu. Untuk banyak subscription, simpan definition di management group yang membawahi semuanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-definition-location"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "policy-enforcement"
+          ],
+          "title": "Menguji policy dengan aman",
+          "body": "Microsoft menyarankan mulai dengan effect audit atau auditIfNotExists sebelum effect yang memaksa seperti deny. Cara lain adalah mengatur Policy enforcement ke Disabled (DoNotEnforce). Dengan pengaturan itu, compliance tetap terlihat, tapi effect tidak dijalankan saat resource dibuat atau diubah. Setelah dampaknya jelas, aktifkan enforcement atau ganti effect-nya.",
+          "keyPoints": [
+            "Mulai dari audit",
+            "Policy enforcement Disabled: uji tanpa memblokir",
+            "Aktifkan setelah dampaknya jelas"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/assignment-structure#enforcement-mode",
+          "teaches": [
+            "az104-f-u03-start-audit",
+            "az104-f-u03-enforcement"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e8",
+          "type": "choice",
+          "concept": "policy-enforcement",
+          "prompt": "You want to see which existing resources would violate a new deny policy, without blocking anyone yet. What should you do?",
+          "options": [
+            "Assign the policy with the deny effect at the management group",
+            "Add a Read-only lock to the subscription",
+            "Assign the Reader role to all users",
+            "Assign the policy with Policy enforcement set to Disabled, then review compliance"
+          ],
+          "answer": 3,
+          "explanation": "Dengan Policy enforcement Disabled (DoNotEnforce), policy dievaluasi dan compliance terlihat, tapi effect deny tidak dijalankan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-enforcement",
+            "az104-f-u03-start-audit"
+          ]
+        },
+        {
+          "id": "az104-u03-l1-e9",
+          "type": "choice",
+          "concept": "policy-scope-exclusion",
+          "prompt": "rg-migrate must skip one policy assignment for 30 days during a migration, but its resources must still appear in compliance reports. What should you use?",
+          "options": [
+            "An exemption with an expiration date",
+            "An exclusion (notScopes) on the assignment",
+            "Delete the assignment for 30 days",
+            "Set Policy enforcement to Disabled for everyone"
+          ],
+          "answer": 0,
+          "explanation": "Exemption tetap mencatat resource sebagai Exempted dan bisa kedaluwarsa. Exclusion membuat scope tidak dievaluasi sama sekali, jadi tidak muncul di laporan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-exclusion-exemption",
+            "az104-f-u03-enforcement"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u03-l2",
       "title": "Efek policy dan remediasi",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u03-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "policy-effects"
+          ],
+          "title": "Effect yang menolak dan mencatat",
+          "body": "Effect menentukan apa yang terjadi pada resource yang non-compliant. Deny menolak request create atau update. Audit hanya mencatat peringatan di activity log tanpa menghentikan request. DenyAction memblokir aksi tertentu, saat ini hanya DELETE, untuk melindungi resource penting. Disabled mematikan satu assignment tanpa mengganggu assignment lain dari policy yang sama.",
+          "keyPoints": [
+            "deny: tolak",
+            "audit: catat saja",
+            "denyAction: blokir DELETE"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-basics",
+          "teaches": [
+            "az104-f-u03-deny",
+            "az104-f-u03-audit",
+            "az104-f-u03-deny-action",
+            "az104-f-u03-disabled"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e1",
+          "type": "truefalse",
+          "concept": "policy-effects",
+          "prompt": "The audit effect blocks a non-compliant request.",
+          "answer": false,
+          "explanation": "Salah. Audit hanya mencatat peringatan di activity log dan membiarkan request berjalan. Yang menolak adalah deny.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-audit",
+            "az104-f-u03-deny"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e2",
+          "type": "choice",
+          "concept": "policy-effects",
+          "prompt": "Resources tagged critical must never be deleted, but users must still be able to update them. Which Azure Policy effect should you use?",
+          "options": [
+            "deny",
+            "audit",
+            "disabled",
+            "denyAction"
+          ],
+          "answer": 3,
+          "explanation": "DenyAction memblokir aksi DELETE saja, jadi update tetap boleh. Deny menolak create atau update, audit hanya mencatat, dan disabled mematikan policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-deny-action",
+            "az104-f-u03-deny",
+            "az104-f-u03-audit",
+            "az104-f-u03-disabled"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "policy-effects-change"
+          ],
+          "title": "Effect yang mengubah atau menambah",
+          "body": "Append menambahkan field saat resource dibuat atau diubah. Modify menambah, mengubah, atau menghapus properti atau tag, misalnya tag costCenter. AuditIfNotExists mengaudit resource yang tidak punya resource terkait, misalnya pengaturan diagnostik. DeployIfNotExists langsung men-deploy resource terkait yang belum ada. Modify dan deployIfNotExists butuh managed identity untuk remediation.",
+          "keyPoints": [
+            "append: tambah field",
+            "modify: ubah properti atau tag",
+            "IfNotExists: cek resource terkait"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-basics",
+          "teaches": [
+            "az104-f-u03-append",
+            "az104-f-u03-modify",
+            "az104-f-u03-aine",
+            "az104-f-u03-dine"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e3",
+          "type": "match",
+          "concept": "policy-effects-change",
+          "prompt": "Match each effect to what it does.",
+          "pairs": [
+            [
+              "deny",
+              "Fails a non-compliant create or update request"
+            ],
+            [
+              "audit",
+              "Logs a warning and lets the request through"
+            ],
+            [
+              "append",
+              "Adds fields to the resource during create or update"
+            ],
+            [
+              "modify",
+              "Adds, updates, or removes properties or tags"
+            ],
+            [
+              "deployIfNotExists",
+              "Deploys a related resource when it is missing"
+            ]
+          ],
+          "explanation": "Deny menolak, audit mencatat, append menambah field, modify mengubah properti atau tag, dan deployIfNotExists men-deploy resource terkait.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-deny",
+            "az104-f-u03-audit",
+            "az104-f-u03-append",
+            "az104-f-u03-modify",
+            "az104-f-u03-dine"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e4",
+          "type": "choice",
+          "concept": "policy-effects-change",
+          "prompt": "Every storage account must get a diagnostic setting that sends logs to a workspace, created automatically when it is missing. Which effect should the policy use?",
+          "options": [
+            "deployIfNotExists",
+            "auditIfNotExists",
+            "append",
+            "deny"
+          ],
+          "answer": 0,
+          "explanation": "DeployIfNotExists men-deploy resource terkait yang belum ada. AuditIfNotExists hanya mencatat, append menambah field di resource itu sendiri, dan deny menolak request.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-dine",
+            "az104-f-u03-aine",
+            "az104-f-u03-append",
+            "az104-f-u03-deny"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e5",
+          "type": "choice",
+          "concept": "policy-effects-change",
+          "prompt": "Resources must get the tag costCenter=finance, added or corrected automatically when they are created or updated. Which effect should the policy use?",
+          "options": [
+            "modify",
+            "append",
+            "audit",
+            "deny"
+          ],
+          "answer": 0,
+          "explanation": "Modify bisa menambah dan mengubah tag, dan menjadi contoh umum untuk tag. Append hanya menambahkan field, audit hanya mencatat, dan deny menolak request.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-modify",
+            "az104-f-u03-append",
+            "az104-f-u03-audit",
+            "az104-f-u03-deny"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "policy-evaluation-order"
+          ],
+          "title": "Urutan dan tumpukan policy",
+          "body": "Saat resource dibuat atau diubah, Azure Policy mengecek disabled dulu, lalu append dan modify, deny, audit, dan seterusnya. Deny dievaluasi sebelum audit, jadi resource yang ditolak tidak ikut tercatat dua kali. Kalau beberapa assignment berlaku, setiap assignment dievaluasi sendiri-sendiri. Hasilnya cumulative most restrictive: satu deny sudah cukup untuk memblokir.",
+          "keyPoints": [
+            "disabled, append/modify, deny, audit",
+            "Setiap assignment dievaluasi sendiri",
+            "Satu deny cukup untuk memblokir"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-basics#layering-policy-definitions",
+          "teaches": [
+            "az104-f-u03-order",
+            "az104-f-u03-layering"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e6",
+          "type": "rules",
+          "concept": "policy-evaluation-order",
+          "prompt": "A user creates a storage account in East US in resource group B. Based on the table, what happens?",
+          "tables": [
+            {
+              "title": "Policy assignments",
+              "columns": [
+                "Policy",
+                "Scope",
+                "Effect"
+              ],
+              "rows": [
+                [
+                  "Allowed locations: West US only",
+                  "Subscription A",
+                  "deny"
+                ],
+                [
+                  "Allowed locations: East US only",
+                  "Resource group B (in subscription A)",
+                  "audit"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "It is created, because the resource group assignment wins",
+            "The request is denied by the subscription assignment",
+            "It is created and marked compliant for both policies",
+            "It is created and only logged by audit"
+          ],
+          "answer": 1,
+          "explanation": "Setiap assignment dievaluasi sendiri. East US melanggar policy di subscription A yang memakai deny, jadi request ditolak, walau policy di resource group B mengizinkan East US.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-layering",
+            "az104-f-u03-deny",
+            "az104-f-u03-audit",
+            "az104-f-u02-scope-levels"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e7",
+          "type": "truefalse",
+          "concept": "policy-evaluation-order",
+          "prompt": "Azure Policy evaluates deny before audit, so a denied request is not also logged by audit.",
+          "answer": true,
+          "explanation": "Benar. Urutan ini mencegah resource yang ditolak tercatat dua kali.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-order"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-m4",
+          "type": "learn",
+          "concepts": [
+            "remediation-task"
+          ],
+          "title": "Remediation dan managed identity",
+          "body": "Effect bekerja saat resource dibuat atau diubah. Resource lama yang non-compliant pada policy modify atau deployIfNotExists diperbaiki dengan remediation task. Remediation berjalan dengan managed identity milik policy assignment, bukan identitas user. Identity itu butuh role Azure RBAC (Role-Based Access Control) secukupnya. Lewat portal, role diberikan otomatis; memberi role itu butuh izin seperti User Access Administrator.",
+          "keyPoints": [
+            "Resource lama: remediation task",
+            "Berjalan dengan managed identity assignment",
+            "Identity butuh role yang cukup"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/how-to/remediate-resources",
+          "teaches": [
+            "az104-f-u03-remediation",
+            "az104-f-u03-managed-identity",
+            "az104-f-u03-uaa-for-mi"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e8",
+          "type": "fix",
+          "concept": "remediation-task",
+          "prompt": "Three days ago you assigned a tag policy that uses the modify effect. New resources get the tag, but the existing resources still don't have it. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "Policy assignment: Require costCenter tag",
+            "message": "Compliance state: 120 non-compliant resources"
+          },
+          "options": [
+            "Change the effect to deny",
+            "Create a remediation task for the assignment",
+            "Wait for the next 24-hour evaluation cycle to add the tags",
+            "Delete and recreate each resource"
+          ],
+          "answer": 1,
+          "explanation": "Modify bekerja saat resource dibuat atau diubah. Untuk resource yang sudah ada, jalankan remediation task. Siklus 24 jam hanya memperbarui status compliance, tidak mengubah resource, dan deny tidak memperbaiki apa pun.",
+          "requires": [
+            "az104-f-u03-remediation",
+            "az104-f-u03-evaluation",
+            "az104-f-u03-deny"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e9",
+          "type": "multi",
+          "concept": "remediation-task",
+          "prompt": "Which two statements about remediation for modify and deployIfNotExists policies are true? Choose two.",
+          "options": [
+            "The managed identity needs an Azure role with enough permissions",
+            "It runs with the identity of the user who created the resource",
+            "It works only for the audit effect",
+            "It runs with the managed identity of the policy assignment"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Remediation berjalan dengan managed identity milik assignment, dan identity itu harus punya role Azure RBAC (Role-Based Access Control) yang cukup.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-managed-identity",
+            "az104-f-u03-remediation"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e10",
+          "type": "choice",
+          "concept": "remediation-task",
+          "prompt": "A deployIfNotExists assignment was created from code, and its managed identity has no roles yet. Which role lets you grant the required roles to that identity?",
+          "options": [
+            "Contributor",
+            "User Access Administrator",
+            "Reader",
+            "Resource Policy Contributor"
+          ],
+          "answer": 1,
+          "explanation": "Memberi role butuh izin role assignment, seperti User Access Administrator. Contributor dan Reader tidak bisa memberi role, dan Resource Policy Contributor mengelola policy, bukan role assignment.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-uaa-for-mi",
+            "az104-f-u02-contributor",
+            "az104-f-u02-reader",
+            "az104-f-u03-policy-roles"
+          ]
+        },
+        {
+          "id": "az104-u03-l2-e11",
+          "type": "fill",
+          "concept": "policy-effects",
+          "prompt": "Complete the sentence.",
+          "sentence": "The ___ effect fails a non-compliant request, and the ___ effect only logs a warning.",
+          "bank": [
+            "deny",
+            "audit",
+            "modify",
+            "disabled"
+          ],
+          "answers": [
+            "deny",
+            "audit"
+          ],
+          "explanation": "Deny menolak, audit hanya mencatat.",
+          "requires": [
+            "az104-f-u03-deny",
+            "az104-f-u03-audit"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u03-l3",
       "title": "Lock dan tag",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u03-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "resource-locks"
+          ],
+          "title": "Resource lock",
+          "body": "Lock melindungi subscription, resource group, atau resource dari perubahan yang tidak disengaja. Delete (CanNotDelete di command line) mengizinkan baca dan ubah, tapi memblokir hapus. Read-only (ReadOnly) hanya mengizinkan baca, mirip membatasi semua user ke izin Reader. Lock berlaku untuk semua user, termasuk Owner. Lock di scope induk diwariskan ke semua resource di dalamnya, dan lock paling ketat yang berlaku.",
+          "keyPoints": [
+            "Delete: boleh ubah, tidak boleh hapus",
+            "Read-only: hanya baca",
+            "Berlaku untuk semua orang, termasuk Owner"
+          ],
+          "visual": "PolicyRbacLock",
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources",
+          "teaches": [
+            "az104-f-u03-lock-types",
+            "az104-f-u03-lock-all",
+            "az104-f-u03-lock-inherit"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e1",
+          "type": "truefalse",
+          "concept": "resource-locks",
+          "prompt": "A Delete (CanNotDelete) lock still lets authorized users modify the resource.",
+          "answer": true,
+          "explanation": "Benar. Delete lock hanya memblokir penghapusan. Untuk memblokir perubahan juga, pakai Read-only lock.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-types"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e2",
+          "type": "choice",
+          "concept": "resource-locks",
+          "prompt": "Ani is an Owner of rg-prod, which has a Read-only lock. She tries to resize a VM (virtual machine) in rg-prod. What happens?",
+          "options": [
+            "The resize works, because Owner overrides locks",
+            "The resize fails, because the lock applies to every user, including Owners",
+            "The resize works, and the change is only logged",
+            "The VM is deleted instead"
+          ],
+          "answer": 1,
+          "explanation": "Lock mengalahkan izin user mana pun, termasuk Owner. Read-only lock memblokir semua perubahan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-all",
+            "az104-f-u03-lock-types"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "lock-side-effects"
+          ],
+          "title": "Efek samping lock",
+          "body": "Kalau satu resource punya Delete lock, menghapus resource group-nya gagal seluruhnya, tanpa penghapusan sebagian. Lock hanya berlaku untuk control plane, jadi data di dalam storage account atau database tetap bisa diubah. Read-only lock juga memblokir operasi POST. Karena itu, list keys di storage account ikut terblokir, begitu juga start atau restart VM (virtual machine) di resource group yang dikunci.",
+          "keyPoints": [
+            "Delete lock di satu resource memblokir hapus resource group",
+            "Lock tidak melindungi data",
+            "Read-only juga memblokir list keys dan start VM"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources#considerations-before-applying-your-locks",
+          "teaches": [
+            "az104-f-u03-lock-rg-delete",
+            "az104-f-u03-lock-control-plane",
+            "az104-f-u03-lock-post"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e3",
+          "type": "yesno",
+          "concept": "lock-side-effects",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "The storage account st1 has a Read-only lock.",
+          "statements": [
+            {
+              "text": "Users who have the Storage Blob Data Contributor role can still upload blobs to st1 by signing in with Microsoft Entra ID.",
+              "answer": true
+            },
+            {
+              "text": "Users can list the access keys of st1 in the portal.",
+              "answer": false
+            },
+            {
+              "text": "An administrator can change the redundancy setting of st1.",
+              "answer": false
+            }
+          ],
+          "explanation": "Lock hanya berlaku untuk control plane, jadi operasi data seperti upload blob tetap jalan. List keys memakai POST dan ikut terblokir, dan mengubah pengaturan adalah update yang diblokir Read-only lock.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-control-plane",
+            "az104-f-u03-lock-post",
+            "az104-f-u03-lock-types",
+            "az104-f-u02-blob-data-roles"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e4",
+          "type": "choice",
+          "concept": "lock-side-effects",
+          "prompt": "rg-app contains vm1, which has a Delete lock. The rest of rg-app is not locked. You delete rg-app. What happens?",
+          "options": [
+            "The whole deletion fails, and nothing is deleted",
+            "Everything except vm1 is deleted",
+            "vm1 is deleted after the lock expires",
+            "The lock is removed automatically"
+          ],
+          "answer": 0,
+          "explanation": "Delete lock di satu resource memblokir seluruh penghapusan resource group. Tidak ada penghapusan sebagian.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-rg-delete"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "lock-permissions"
+          ],
+          "title": "Siapa yang bisa memasang lock",
+          "body": "Membuat atau menghapus lock butuh akses Microsoft.Authorization/* atau Microsoft.Authorization/locks/*. Owner dan User Access Administrator punya akses itu. Contributor tidak punya, karena NotActions Contributor berisi Microsoft.Authorization/*/Write dan */Delete. Jadi Contributor bisa mengelola resource, tapi tidak bisa memasang atau melepas lock.",
+          "keyPoints": [
+            "Owner dan User Access Administrator bisa",
+            "Contributor tidak bisa",
+            "Penyebabnya NotActions Microsoft.Authorization"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources",
+          "teaches": [
+            "az104-f-u03-lock-who",
+            "az104-f-u02-contributor-notactions"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e5",
+          "type": "choice",
+          "concept": "lock-permissions",
+          "prompt": "Diego must create and delete locks on rg-prod. He must not get permissions to change resources. Which role should you assign?",
+          "options": [
+            "Contributor",
+            "Reader",
+            "User Access Administrator",
+            "Virtual Machine Contributor"
+          ],
+          "answer": 2,
+          "explanation": "User Access Administrator punya Microsoft.Authorization/*, jadi bisa mengelola lock, tanpa izin mengubah resource. Contributor tidak punya izin Microsoft.Authorization, dan Reader hanya membaca.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-who",
+            "az104-f-u02-contributor-notactions",
+            "az104-f-u02-reader"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e6",
+          "type": "truefalse",
+          "concept": "lock-permissions",
+          "prompt": "A user with the Contributor role can delete a resource lock.",
+          "answer": false,
+          "explanation": "Salah. Contributor tidak punya izin Microsoft.Authorization/*/Delete, jadi tidak bisa menghapus lock.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-who",
+            "az104-f-u02-contributor-notactions"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-m4",
+          "type": "learn",
+          "concepts": [
+            "tags"
+          ],
+          "title": "Tag",
+          "body": "Tag adalah pasangan nama dan nilai untuk mengelompokkan resource, misalnya costCenter: finance. Resource tidak mewarisi tag dari resource group atau subscription-nya. Setiap resource, resource group, dan subscription bisa punya maksimal 50 tag. Nama tag tidak case-sensitive, nilainya case-sensitive. Memberi tag butuh akses write ke resource, atau role Tag Contributor yang bisa memberi tag tanpa akses ke resource-nya.",
+          "keyPoints": [
+            "Tag tidak diwariskan",
+            "Maksimal 50 tag",
+            "Tag Contributor: hanya tag"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources",
+          "teaches": [
+            "az104-f-u03-tags-not-inherited",
+            "az104-f-u03-tag-limits",
+            "az104-f-u03-tag-access"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e7",
+          "type": "truefalse",
+          "concept": "tags",
+          "prompt": "Resources inherit the tags of their resource group by default.",
+          "answer": false,
+          "explanation": "Salah. Tag tidak diwariskan. Untuk menyamakannya, pakai Azure Policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-tags-not-inherited"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e8",
+          "type": "choice",
+          "concept": "tags",
+          "prompt": "Maria must add tags to every resource in a subscription, but must not change the resources in any other way. Which role should you assign?",
+          "options": [
+            "Contributor",
+            "Owner",
+            "Tag Contributor",
+            "Reader"
+          ],
+          "answer": 2,
+          "explanation": "Tag Contributor bisa memberi tag tanpa akses ke resource-nya. Contributor dan Owner bisa mengubah resource, sedangkan Reader tidak bisa memberi tag. Catatan: di portal, Tag Contributor hanya bisa memberi tag ke subscription, jadi untuk resource Maria memakai Azure PowerShell atau REST (Representational State Transfer) API (Application Programming Interface).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-tag-access",
+            "az104-f-u02-contributor",
+            "az104-f-u02-owner",
+            "az104-f-u02-reader"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e9",
+          "type": "multi",
+          "concept": "tags",
+          "prompt": "Which two statements about tags are true? Choose two.",
+          "options": [
+            "Tag names are case-sensitive for operations",
+            "A resource can have up to 50 tag name-value pairs",
+            "Resources inherit the tags of their subscription",
+            "Tag values are case-sensitive"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Maksimal 50 tag per resource, nilai tag case-sensitive, nama tag tidak, dan tag tidak diwariskan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-tag-limits",
+            "az104-f-u03-tags-not-inherited"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-m5",
+          "type": "learn",
+          "concepts": [
+            "tag-inheritance-policy"
+          ],
+          "title": "Mewariskan tag lewat policy",
+          "body": "Karena tag tidak diwariskan, pakai policy bawaan seperti Inherit a tag from the resource group if missing. Policy ini memakai effect modify. Tag dari resource group ditambahkan ke resource baru atau yang diubah yang belum punya tag itu. Resource yang sudah ada diperbaiki dengan remediation task.",
+          "keyPoints": [
+            "Inherit a tag from the resource group if missing",
+            "Effect modify untuk resource baru atau diubah",
+            "Resource lama: remediation task"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/policy/tutorials/create-and-manage",
+          "teaches": [
+            "az104-f-u03-tag-policy"
+          ]
+        },
+        {
+          "id": "az104-u03-l3-e10",
+          "type": "fix",
+          "concept": "tag-inheritance-policy",
+          "prompt": "You added the tag costCenter=sales to rg-sales, but the VMs (virtual machines) in rg-sales still have no tags. Every resource must get the tag of its resource group. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "rg-sales · Tags",
+            "message": "costCenter: sales. vm-sales-01 · Tags: none"
+          },
+          "options": [
+            "Wait up to 24 hours for the tags to be inherited",
+            "Add a Read-only lock to rg-sales",
+            "Assign the policy Inherit a tag from the resource group if missing, then remediate the existing resources",
+            "Assign the Tag Contributor role to the VMs"
+          ],
+          "answer": 2,
+          "explanation": "Tag tidak diwariskan, jadi menunggu tidak membantu. Policy Inherit a tag from the resource group if missing menambahkan tag ke resource baru atau yang diubah, dan remediation task memperbaiki resource yang sudah ada.",
+          "requires": [
+            "az104-f-u03-tags-not-inherited",
+            "az104-f-u03-tag-policy",
+            "az104-f-u03-remediation",
+            "az104-f-u03-lock-types",
+            "az104-f-u03-tag-access"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u03-l4",
       "title": "Resource group, subscription, management group",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u03-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "management-groups"
+          ],
+          "title": "Hierarki management group",
+          "body": "Management group mengelompokkan subscription supaya policy dan role bisa diterapkan sekali untuk banyak subscription. Puncaknya root management group bernama Tenant root group, tempat subscription dan management group baru masuk secara default. Root tidak bisa dipindah atau dihapus. Pohonnya maksimal 6 level di bawah root, dan setiap management group atau subscription hanya punya satu induk.",
+          "keyPoints": [
+            "Tenant root group di puncak",
+            "Maksimal 6 level di bawah root",
+            "Satu induk per subscription"
+          ],
+          "visual": "ResourceHierarchy",
+          "link": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview",
+          "teaches": [
+            "az104-f-u03-mg-limits",
+            "az104-f-u03-root-mg"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e1",
+          "type": "truefalse",
+          "concept": "management-groups",
+          "prompt": "A subscription can belong to two management groups at the same time.",
+          "answer": false,
+          "explanation": "Salah. Setiap subscription dan management group hanya punya satu induk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-mg-limits"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e2",
+          "type": "choice",
+          "concept": "management-groups",
+          "prompt": "A new subscription is created in the tenant. Where does it appear in the management group hierarchy by default?",
+          "options": [
+            "Outside every management group",
+            "Under the management group of the user who created it",
+            "In a new management group named after it",
+            "Under the Tenant root group"
+          ],
+          "answer": 3,
+          "explanation": "Subscription dan management group baru otomatis masuk ke root management group (Tenant root group).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-root-mg",
+            "az104-f-u03-mg-limits"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e3",
+          "type": "order",
+          "concept": "management-groups",
+          "prompt": "Put these scopes in order, from the top of the hierarchy down.",
+          "items": [
+            "Tenant root group",
+            "Management group Contoso",
+            "Subscription Production",
+            "Resource group rg-web",
+            "Resource web-01"
+          ],
+          "explanation": "Root management group di puncak, lalu management group, subscription, resource group, dan resource.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-root-mg",
+            "az104-f-u02-scope-levels"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e4",
+          "type": "choice",
+          "concept": "management-groups",
+          "prompt": "The same Allowed locations policy must apply to 40 subscriptions, with the least administrative effort. Where should you assign it?",
+          "options": [
+            "On each of the 40 subscriptions",
+            "On each resource group in the 40 subscriptions",
+            "On a management group that contains the 40 subscriptions",
+            "On a resource group in one subscription"
+          ],
+          "answer": 2,
+          "explanation": "Assignment di management group berlaku untuk semua subscription di bawahnya, jadi cukup satu assignment.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-assignment",
+            "az104-f-u03-mg-limits",
+            "az104-f-u02-mg-scope"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "move-resources"
+          ],
+          "title": "Memindahkan resource",
+          "body": "Resource bisa dipindah ke resource group atau subscription lain. Region fisiknya tidak berubah, tapi resource ID (identifier)-nya berubah, jadi perbarui skrip atau dashboard yang memakainya. Role assignment yang dipasang langsung di resource tidak ikut pindah, jadi buat ulang setelah dipindah. Untuk pindah region, pakai Azure Resource Mover, bukan move biasa.",
+          "keyPoints": [
+            "Region tidak berubah, resource ID berubah",
+            "Role assignment di resource tidak ikut pindah",
+            "Pindah region: Azure Resource Mover"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription",
+          "teaches": [
+            "az104-f-u03-move-basics",
+            "az104-f-u03-move-roles"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e5",
+          "type": "yesno",
+          "concept": "move-resources",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You move vm1, which runs in West Europe, from rg-a to rg-b in the same subscription. Ani has the Virtual Machine Contributor role assigned directly on vm1.",
+          "statements": [
+            {
+              "text": "vm1 stays in West Europe.",
+              "answer": true
+            },
+            {
+              "text": "The resource ID (identifier) of vm1 changes.",
+              "answer": true
+            },
+            {
+              "text": "Ani keeps her role assignment on vm1 after the move.",
+              "answer": false
+            }
+          ],
+          "explanation": "Move tidak mengubah region, tapi resource ID (identifier) berubah. Role assignment yang dipasang langsung di vm1 tidak ikut pindah, jadi harus dibuat ulang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-move-basics",
+            "az104-f-u03-move-roles"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e6",
+          "type": "choice",
+          "concept": "move-resources",
+          "prompt": "A VM (virtual machine) must run in East US instead of West Europe. What should you use?",
+          "options": [
+            "Move to another resource group",
+            "Azure Resource Mover",
+            "Move to another subscription",
+            "A tag named location"
+          ],
+          "answer": 1,
+          "explanation": "Move ke resource group atau subscription lain tidak mengubah region. Untuk pindah region, pakai Azure Resource Mover.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-move-basics"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "move-rules"
+          ],
+          "title": "Syarat dan saat pemindahan",
+          "body": "Untuk pindah subscription, kedua subscription harus aktif dan berada di tenant Microsoft Entra yang sama. Subscription tujuan juga harus terdaftar untuk resource provider-nya, dan resource beserta resource yang bergantung padanya dipindah bersama. Resource tidak bisa dipindah kalau ada Read-only lock di resource group sumber, tujuan, atau subscription. Selama pemindahan, kedua resource group dikunci sampai 4 jam, tapi resource yang ada tetap berjalan.",
+          "keyPoints": [
+            "Satu tenant yang sama",
+            "Read-only lock memblokir move",
+            "Resource tetap berjalan selama move"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription#checklist-before-moving-resources",
+          "teaches": [
+            "az104-f-u03-move-rules",
+            "az104-f-u03-move-readonly",
+            "az104-f-u03-move-locked"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e7",
+          "type": "rules",
+          "concept": "move-rules",
+          "prompt": "Based on the table, why does the move fail?",
+          "tables": [
+            {
+              "title": "Move request",
+              "columns": [
+                "Setting",
+                "Value"
+              ],
+              "rows": [
+                [
+                  "Source",
+                  "rg-a in Sub1 (tenant Contoso)"
+                ],
+                [
+                  "Target",
+                  "rg-b in Sub2 (tenant Fabrikam)"
+                ],
+                [
+                  "Resources",
+                  "vm1 with its disks and network interface"
+                ],
+                [
+                  "Locks",
+                  "None"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "The VM (virtual machine) is moved together with its disks",
+            "No lock protects the source resource group",
+            "The VM is running during the move",
+            "The subscriptions are in different Microsoft Entra tenants"
+          ],
+          "answer": 3,
+          "explanation": "Pindah subscription butuh kedua subscription di tenant Microsoft Entra yang sama. Memindahkan VM (virtual machine) bersama disk-nya justru wajib, dan resource boleh tetap berjalan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-move-rules",
+            "az104-f-u03-move-locked",
+            "az104-f-u03-move-readonly"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e8",
+          "type": "fix",
+          "concept": "move-rules",
+          "prompt": "You try to move vm2 to rg-b and get this error. What should you do?",
+          "scene": {
+            "kind": "error",
+            "title": "ScopeLocked",
+            "message": "The scope 'rg-b' cannot perform write operation because the following scope(s) are locked: rg-b (ReadOnly)."
+          },
+          "options": [
+            "Remove the Read-only lock from rg-b, move vm2, then add the lock again",
+            "Move vm2 to another region first",
+            "Assign yourself the Contributor role on rg-b",
+            "Stop vm2 before the move"
+          ],
+          "answer": 0,
+          "explanation": "Read-only lock di resource group tujuan memblokir pemindahan, dan lock berlaku untuk semua role. Lepas lock-nya sementara, pindahkan, lalu pasang lagi.",
+          "requires": [
+            "az104-f-u03-move-readonly",
+            "az104-f-u03-lock-types",
+            "az104-f-u03-lock-all"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e9",
+          "type": "truefalse",
+          "concept": "move-rules",
+          "prompt": "While a move is in progress, the VMs (virtual machines) in the source resource group stop running.",
+          "answer": false,
+          "explanation": "Salah. Resource group sumber dan tujuan dikunci dari perubahan, tapi resource yang ada tetap berjalan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-move-locked"
+          ]
+        },
+        {
+          "id": "az104-u03-l4-e10",
+          "type": "multi",
+          "concept": "move-rules",
+          "prompt": "Which two conditions must be true to move resources to another subscription? Choose two.",
+          "options": [
+            "The resources are stopped first",
+            "The target subscription is registered for the resource provider",
+            "The target resource group is in a different region",
+            "Both subscriptions are in the same Microsoft Entra tenant"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Syaratnya satu tenant dan resource provider terdaftar di subscription tujuan. Resource tidak perlu dihentikan, dan region tidak berubah saat move.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-move-rules",
+            "az104-f-u03-move-locked",
+            "az104-f-u03-move-basics"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u03-l5",
       "title": "Kontrol biaya",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u03-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "budgets"
+          ],
+          "title": "Budget",
+          "body": "Budget di Cost Management memberi peringatan saat biaya melewati batas tertentu. Budget tidak menghentikan resource atau pemakaian. Reset period-nya bulanan, kuartalan, atau tahunan, dan setiap periode baru biaya mulai dari nol. Contributor dan Cost Management Contributor bisa membuat dan mengubah budget, sedangkan Reader dan Cost Management Reader hanya bisa melihat.",
+          "keyPoints": [
+            "Budget memberi peringatan, tidak menghentikan",
+            "Reset bulanan, kuartalan, tahunan",
+            "Cost Management Contributor bisa membuat budget"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets",
+          "teaches": [
+            "az104-f-u03-budget-def",
+            "az104-f-u03-budget-reset",
+            "az104-f-u03-budget-roles"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e1",
+          "type": "truefalse",
+          "concept": "budgets",
+          "prompt": "When spending reaches 100% of a budget, Azure stops the resources in the budget scope.",
+          "answer": false,
+          "explanation": "Salah. Budget hanya memberi peringatan. Resource tidak terpengaruh dan pemakaian tidak dihentikan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-budget-def"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e2",
+          "type": "choice",
+          "concept": "budgets",
+          "prompt": "Diego must create and edit budgets for a subscription. He must not change any resources. Which role should you assign?",
+          "options": [
+            "Cost Management Contributor",
+            "Contributor",
+            "Reader",
+            "Cost Management Reader"
+          ],
+          "answer": 0,
+          "explanation": "Cost Management Contributor bisa membuat dan mengubah budget tanpa izin mengubah resource. Contributor bisa juga, tapi bisa mengubah resource. Reader dan Cost Management Reader hanya melihat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-budget-roles",
+            "az104-f-u02-contributor"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e3",
+          "type": "choice",
+          "concept": "budgets",
+          "prompt": "You create a monthly budget of $1,000. On the first day of the next month, which costs does the budget start counting?",
+          "options": [
+            "The new month plus the cost of the previous month",
+            "Only the new month, starting again from zero",
+            "None, because the budget stops after one month",
+            "The costs of the whole year"
+          ],
+          "answer": 1,
+          "explanation": "Setiap reset period baru, biaya yang dievaluasi budget mulai lagi dari nol.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-budget-reset"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "cost-alerts"
+          ],
+          "title": "Alert budget",
+          "body": "Satu budget butuh minimal satu threshold (% dari budget) dengan email, dan bisa sampai lima threshold dan lima email. Threshold bisa untuk actual cost (biaya yang sudah terjadi) atau forecasted cost (perkiraan). Budget dievaluasi setiap 24 jam, dan email biasanya terkirim dalam satu jam setelahnya. Untuk scope subscription dan resource group, budget juga bisa memicu action group untuk notifikasi atau otomatisasi.",
+          "keyPoints": [
+            "Sampai 5 threshold dan 5 email",
+            "Actual atau forecasted",
+            "Action group untuk otomatisasi"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets#configure-actual-costs-budget-alerts",
+          "teaches": [
+            "az104-f-u03-budget-alerts",
+            "az104-f-u03-budget-timing",
+            "az104-f-u03-budget-action-group"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e4",
+          "type": "choice",
+          "concept": "cost-alerts",
+          "prompt": "You need an email when actual costs reach 80% of a monthly budget, and another email at 100%. What should you configure?",
+          "options": [
+            "Two budgets, one for each percentage",
+            "One forecasted cost threshold at 90%",
+            "One budget with two actual cost thresholds: 80% and 100%",
+            "An Azure Policy assignment with the audit effect"
+          ],
+          "answer": 2,
+          "explanation": "Satu budget bisa punya sampai lima threshold, jadi 80% dan 100% cukup di satu budget. Azure Policy tidak memantau biaya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-budget-alerts",
+            "az104-f-u03-audit"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e5",
+          "type": "config",
+          "concept": "cost-alerts",
+          "prompt": "Create a monthly budget of $500 for the Production subscription. Send an email when the forecasted cost reaches 100% of the budget.",
+          "blade": "Create budget",
+          "fields": [
+            {
+              "label": "Scope",
+              "kind": "text",
+              "value": "Subscription Production",
+              "readOnly": true
+            },
+            {
+              "label": "Reset period",
+              "kind": "select",
+              "choices": [
+                "Monthly",
+                "Quarterly",
+                "Annually"
+              ],
+              "value": "Quarterly"
+            },
+            {
+              "label": "Amount ($)",
+              "kind": "number",
+              "value": 1000,
+              "min": 100,
+              "max": 5000,
+              "step": 100
+            },
+            {
+              "label": "Alert type",
+              "kind": "select",
+              "choices": [
+                "Actual",
+                "Forecasted"
+              ],
+              "value": "Actual"
+            },
+            {
+              "label": "% of budget",
+              "kind": "number",
+              "value": 80,
+              "min": 10,
+              "max": 200,
+              "step": 10
+            },
+            {
+              "label": "Alert recipients",
+              "kind": "text",
+              "value": "finops@contoso.com",
+              "readOnly": true
+            }
+          ],
+          "answer": {
+            "Reset period": "Monthly",
+            "Amount ($)": 500,
+            "Alert type": "Forecasted",
+            "% of budget": 100
+          },
+          "explanation": "Reset period Monthly, jumlah 500, dan alert Forecasted di 100%. Alert forecasted memberi peringatan lebih awal, saat perkiraan biaya akan melewati budget.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-budget-reset",
+            "az104-f-u03-budget-alerts"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e6",
+          "type": "truefalse",
+          "concept": "cost-alerts",
+          "prompt": "Budgets are evaluated against your costs every 24 hours.",
+          "answer": true,
+          "explanation": "Benar. Data biaya biasanya tersedia dalam 8 sampai 24 jam, lalu budget dievaluasi setiap 24 jam.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-budget-timing"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e7",
+          "type": "multi",
+          "concept": "cost-alerts",
+          "prompt": "Which two can a budget do when a threshold is reached? Choose two.",
+          "options": [
+            "Trigger an action group for a subscription or resource group scope",
+            "Delete the resources that caused the cost",
+            "Send email to up to five addresses",
+            "Block new deployments in the subscription"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Budget mengirim email dan bisa memicu action group. Budget sendiri tidak menghapus resource atau memblokir deployment.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-budget-alerts",
+            "az104-f-u03-budget-action-group",
+            "az104-f-u03-budget-def"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "advisor-cost"
+          ],
+          "title": "Azure Advisor untuk biaya",
+          "body": "Azure Advisor memberi rekomendasi dalam lima kategori: reliability, security, performance, cost, dan operational excellence. Rekomendasi cost antara lain mematikan atau mengecilkan VM (virtual machine) yang jarang dipakai, lengkap dengan perkiraan penghematannya. Budget memberi tahu saat biaya naik, sedangkan Advisor memberi tahu cara menurunkannya.",
+          "keyPoints": [
+            "Lima kategori rekomendasi",
+            "Cost: matikan atau kecilkan VM yang jarang dipakai",
+            "Menampilkan perkiraan penghematan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/advisor/advisor-cost-recommendations",
+          "teaches": [
+            "az104-f-u03-advisor-categories",
+            "az104-f-u03-advisor-cost"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e8",
+          "type": "choice",
+          "concept": "advisor-cost",
+          "prompt": "Which service recommends shutting down or resizing underused VMs (virtual machines) and shows the estimated savings?",
+          "options": [
+            "Azure Policy",
+            "Resource locks",
+            "Cost Management budgets",
+            "Azure Advisor"
+          ],
+          "answer": 3,
+          "explanation": "Azure Advisor memberi rekomendasi cost beserta perkiraan penghematan. Budget hanya memberi peringatan, Azure Policy mengatur aturan resource, dan lock mencegah perubahan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-advisor-cost",
+            "az104-f-u03-budget-def",
+            "az104-f-u03-policy-def",
+            "az104-f-u03-lock-types"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e9",
+          "type": "multi",
+          "concept": "advisor-cost",
+          "prompt": "Which two are Azure Advisor recommendation categories? Choose two.",
+          "options": [
+            "Reliability",
+            "Cost",
+            "Licensing",
+            "Identity governance"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Lima kategori Advisor: reliability, security, performance, cost, dan operational excellence.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-advisor-categories"
+          ]
+        },
+        {
+          "id": "az104-u03-l5-e10",
+          "type": "fill",
+          "concept": "budgets",
+          "prompt": "Complete the sentence.",
+          "sentence": "A budget alerts you when ___ or forecasted costs reach a threshold, but it does not ___ your resources.",
+          "bank": [
+            "actual",
+            "stop",
+            "reserved",
+            "tag"
+          ],
+          "answers": [
+            "actual",
+            "stop"
+          ],
+          "explanation": "Budget memberi peringatan untuk biaya actual atau forecasted, dan tidak menghentikan resource.",
+          "requires": [
+            "az104-f-u03-budget-alerts",
+            "az104-f-u03-budget-def"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u03-policy-def",
+      "statement": "Azure Policy mengevaluasi resource dengan membandingkan propertinya dengan aturan bisnis yang ditulis dalam JSON (JavaScript Object Notation), yang disebut policy definition.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+    },
+    {
+      "id": "az104-f-u03-initiative",
+      "statement": "Beberapa policy definition bisa digabung menjadi initiative (policySet) supaya dikelola dan di-assign bersama. Microsoft menyarankan memakai initiative walau baru berisi satu definition.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+    },
+    {
+      "id": "az104-f-u03-assignment",
+      "statement": "Policy definition atau initiative di-assign ke sebuah scope: management group, subscription, resource group, atau resource. Assignment berlaku untuk semua resource di scope itu, dan subscope bisa dikecualikan.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+    },
+    {
+      "id": "az104-f-u03-evaluation",
+      "statement": "Resource dievaluasi saat dibuat atau diubah, saat ada assignment baru atau yang diubah di scope-nya, dan dalam siklus evaluasi standar setiap 24 jam.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+    },
+    {
+      "id": "az104-f-u03-policy-vs-rbac",
+      "statement": "Azure Policy memeriksa kondisi resource tanpa peduli siapa yang mengubahnya, sedangkan Azure RBAC (Role-Based Access Control) mengatur aksi user. Walau user punya izin, Azure Policy tetap memblokir create atau update yang hasilnya non-compliant.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/overview#azure-policy-and-azure-rbac"
+    },
+    {
+      "id": "az104-f-u03-policy-roles",
+      "statement": "Resource Policy Contributor punya sebagian besar operasi Azure Policy, dan Owner punya semuanya. Contributor dan Reader hanya bisa membaca policy; Contributor bisa memicu remediation tapi tidak bisa membuat atau mengubah definition dan assignment.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/overview#azure-rbac-permissions-in-azure-policy"
+    },
+    {
+      "id": "az104-f-u03-exclusion-exemption",
+      "statement": "Exclusion (notScopes) membuat scope tidak dievaluasi sama sekali, cocok untuk pengecualian permanen yang luas seperti lingkungan test. Exemption tetap mencatat resource sebagai Exempted, cocok untuk alasan tertentu yang terbatas waktu, dan bisa kedaluwarsa lewat expiresOn.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/scope"
+    },
+    {
+      "id": "az104-f-u03-exclusions-lower",
+      "statement": "Di portal, Exclusions dimulai satu level di bawah Scope assignment, misalnya resource group atau resource di dalam subscription yang dipilih.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/tutorials/create-and-manage"
+    },
+    {
+      "id": "az104-f-u03-definition-location",
+      "statement": "Policy definition yang disimpan di management group bisa di-assign ke subscription dan resource di bawahnya. Yang disimpan di subscription hanya bisa di-assign di subscription itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/scope#definition-location"
+    },
+    {
+      "id": "az104-f-u03-enforcement",
+      "statement": "Policy enforcement Disabled (enforcementMode DoNotEnforce) membuat effect tidak dijalankan saat resource dibuat atau diubah, jadi dampak policy bisa diuji tanpa memblokir siapa pun.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/assignment-structure#enforcement-mode"
+    },
+    {
+      "id": "az104-f-u03-start-audit",
+      "statement": "Microsoft menyarankan mulai dengan effect audit atau auditIfNotExists sebelum effect yang memaksa seperti deny, modify, atau deployIfNotExists.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/overview#recommendations-for-managing-policies"
+    },
+    {
+      "id": "az104-f-u03-deny",
+      "statement": "Effect deny menolak request create atau update yang tidak sesuai aturan policy.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-deny"
+    },
+    {
+      "id": "az104-f-u03-audit",
+      "statement": "Effect audit membuat event peringatan di activity log untuk resource non-compliant, tapi tidak menghentikan request.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-audit"
+    },
+    {
+      "id": "az104-f-u03-deny-action",
+      "statement": "Effect denyAction memblokir aksi tertentu pada resource; saat ini satu-satunya aksi yang didukung adalah DELETE, untuk mencegah penghapusan resource penting.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-deny-action"
+    },
+    {
+      "id": "az104-f-u03-disabled",
+      "statement": "Effect disabled mematikan satu assignment tanpa mematikan assignment lain dari policy yang sama, berguna untuk pengujian.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-disabled"
+    },
+    {
+      "id": "az104-f-u03-append",
+      "statement": "Effect append menambahkan field ke resource saat dibuat atau diubah, misalnya daftar IP (Internet Protocol) yang diizinkan di storage.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-append"
+    },
+    {
+      "id": "az104-f-u03-modify",
+      "statement": "Effect modify menambah, mengubah, atau menghapus properti atau tag saat resource dibuat atau diubah, misalnya tag costCenter. Resource lama yang non-compliant bisa diperbaiki lewat remediation task.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-modify"
+    },
+    {
+      "id": "az104-f-u03-aine",
+      "statement": "Effect auditIfNotExists mengaudit resource yang tidak punya resource terkait sesuai kondisi di policy, misalnya extension atau pengaturan tertentu.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-audit-if-not-exists"
+    },
+    {
+      "id": "az104-f-u03-dine",
+      "statement": "Effect deployIfNotExists menjalankan template deployment kalau resource terkait tidak ada, dan butuh managed identity untuk remediation.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-deploy-if-not-exists"
+    },
+    {
+      "id": "az104-f-u03-order",
+      "statement": "Urutan evaluasi effect: disabled, lalu append dan modify, deny, audit, manual, auditIfNotExists, dan denyAction. Deny dievaluasi sebelum audit supaya resource yang ditolak tidak ikut tercatat dua kali.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-basics#order-of-evaluation"
+    },
+    {
+      "id": "az104-f-u03-layering",
+      "statement": "Kalau beberapa assignment berlaku ke resource yang sama, setiap assignment dievaluasi sendiri-sendiri dan hasilnya cumulative most restrictive: satu deny sudah cukup untuk memblokir request.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-basics#layering-policy-definitions"
+    },
+    {
+      "id": "az104-f-u03-remediation",
+      "statement": "Resource lama yang non-compliant pada policy deployIfNotExists atau modify diperbaiki dengan remediation task. Effect itu sendiri bekerja saat resource dibuat atau diubah.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/how-to/remediate-resources"
+    },
+    {
+      "id": "az104-f-u03-managed-identity",
+      "statement": "Remediation berjalan dengan managed identity milik policy assignment (system-assigned atau user-assigned), yang butuh role Azure RBAC (Role-Based Access Control) secukupnya. Lewat portal, role itu diberikan otomatis saat assignment dibuat.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/how-to/remediate-resources"
+    },
+    {
+      "id": "az104-f-u03-uaa-for-mi",
+      "statement": "Memberi role ke managed identity assignment deployIfNotExists atau modify butuh izin memberi role, seperti User Access Administrator.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/overview#azure-rbac-permissions-in-azure-policy"
+    },
+    {
+      "id": "az104-f-u03-lock-types",
+      "statement": "Ada dua jenis lock: Delete (di command line CanNotDelete) mengizinkan baca dan ubah tapi memblokir hapus; Read-only (ReadOnly) hanya mengizinkan baca, mirip membatasi semua user ke izin Reader.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources"
+    },
+    {
+      "id": "az104-f-u03-lock-all",
+      "statement": "Lock berlaku untuk semua user dan role, termasuk Owner, dan mengalahkan izin user.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources"
+    },
+    {
+      "id": "az104-f-u03-lock-inherit",
+      "statement": "Lock di scope induk diwariskan ke semua resource di dalamnya, termasuk yang ditambahkan kemudian. Lock paling ketat yang berlaku.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources#lock-inheritance"
+    },
+    {
+      "id": "az104-f-u03-lock-rg-delete",
+      "statement": "Kalau satu resource punya Delete lock, menghapus resource group-nya gagal seluruhnya; tidak ada penghapusan sebagian.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources#lock-inheritance"
+    },
+    {
+      "id": "az104-f-u03-lock-control-plane",
+      "statement": "Lock hanya berlaku untuk operasi control plane, bukan data plane. Lock di storage account tidak melindungi data blob, queue, table, atau file di dalamnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources#understand-scope-of-locks"
+    },
+    {
+      "id": "az104-f-u03-lock-post",
+      "statement": "Read-only lock juga memblokir operasi POST. Contohnya, lock itu mencegah list keys di storage account, dan mencegah start atau restart VM (virtual machine) di resource group yang dikunci.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources#considerations-before-applying-your-locks"
+    },
+    {
+      "id": "az104-f-u03-lock-who",
+      "statement": "Membuat atau menghapus lock butuh akses Microsoft.Authorization/* atau Microsoft.Authorization/locks/*, yang dimiliki Owner dan User Access Administrator.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources"
+    },
+    {
+      "id": "az104-f-u03-tags-not-inherited",
+      "statement": "Resource tidak mewarisi tag dari resource group atau subscription-nya. Untuk menerapkannya, pakai Azure Policy.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources#inherit-tags"
+    },
+    {
+      "id": "az104-f-u03-tag-limits",
+      "statement": "Setiap resource, resource group, dan subscription bisa punya maksimal 50 pasangan tag. Nama tag tidak case-sensitive untuk operasi, sedangkan nilai tag case-sensitive.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources"
+    },
+    {
+      "id": "az104-f-u03-tag-access",
+      "statement": "Memberi tag butuh akses write ke resource itu (misalnya Contributor), atau role Tag Contributor yang bisa memberi tag tanpa akses ke resource-nya. Di portal, Tag Contributor hanya bisa memberi tag ke subscription; untuk resource dan resource group, pakai Azure PowerShell atau REST (Representational State Transfer) API (Application Programming Interface).",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources#required-access"
+    },
+    {
+      "id": "az104-f-u03-tag-policy",
+      "statement": "Policy bawaan Inherit a tag from the resource group if missing menambahkan tag dari resource group ke resource baru atau yang diubah yang belum punya tag itu. Resource lama diperbaiki dengan remediation task.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/policy/tutorials/create-and-manage"
+    },
+    {
+      "id": "az104-f-u03-mg-limits",
+      "statement": "Satu direktori mendukung 10.000 management group, pohonnya maksimal 6 level (tidak termasuk root dan subscription), dan setiap management group serta subscription hanya punya satu induk.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview"
+    },
+    {
+      "id": "az104-f-u03-root-mg",
+      "statement": "Root management group bernama Tenant root group. Subscription dan management group baru otomatis masuk ke sana, dan root tidak bisa dipindah atau dihapus.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview#important-facts-about-the-root-management-group"
+    },
+    {
+      "id": "az104-f-u03-move-basics",
+      "statement": "Resource bisa dipindah ke resource group atau subscription lain. Region fisiknya tidak berubah, tapi resource ID (identifier)-nya berubah. Untuk pindah region, pakai Azure Resource Mover.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription"
+    },
+    {
+      "id": "az104-f-u03-move-roles",
+      "statement": "Role assignment yang dipasang langsung di resource tidak ikut pindah; buat ulang setelah pemindahan.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription#checklist-before-moving-resources"
+    },
+    {
+      "id": "az104-f-u03-move-rules",
+      "statement": "Untuk pindah ke subscription lain, kedua subscription harus aktif dan berada di tenant Microsoft Entra yang sama, subscription tujuan harus terdaftar untuk resource provider-nya, dan resource beserta resource yang bergantung padanya dipindah bersama.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription#checklist-before-moving-resources"
+    },
+    {
+      "id": "az104-f-u03-move-readonly",
+      "statement": "Resource tidak bisa dipindah kalau ada Read-only lock di resource group sumber, resource group tujuan, atau subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription"
+    },
+    {
+      "id": "az104-f-u03-move-locked",
+      "statement": "Selama pemindahan (maksimal 4 jam), resource group sumber dan tujuan dikunci: tidak bisa membuat, mengubah, atau menghapus resource di sana, tapi resource yang ada tetap berjalan.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/move-resource-group-and-subscription"
+    },
+    {
+      "id": "az104-f-u03-budget-def",
+      "statement": "Budget di Cost Management memberi peringatan saat biaya actual atau forecast melewati threshold. Resource tidak terpengaruh dan pemakaian tidak dihentikan.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets"
+    },
+    {
+      "id": "az104-f-u03-budget-reset",
+      "statement": "Budget punya reset period bulanan, kuartalan, atau tahunan serta tanggal kedaluwarsa. Setiap periode baru, biaya yang dievaluasi mulai dari nol.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets"
+    },
+    {
+      "id": "az104-f-u03-budget-roles",
+      "statement": "Contributor dan Cost Management Contributor bisa membuat, mengubah, dan menghapus budget. Reader dan Cost Management Reader hanya bisa melihatnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets"
+    },
+    {
+      "id": "az104-f-u03-budget-alerts",
+      "statement": "Satu budget butuh minimal satu threshold (% dari budget) dengan alamat email, dan bisa sampai lima threshold dan lima email. Threshold bisa untuk actual cost atau forecasted cost.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets#configure-actual-costs-budget-alerts"
+    },
+    {
+      "id": "az104-f-u03-budget-timing",
+      "statement": "Data biaya biasanya tersedia dalam 8 sampai 24 jam, budget dievaluasi setiap 24 jam, dan email biasanya terkirim dalam satu jam setelah evaluasi.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets"
+    },
+    {
+      "id": "az104-f-u03-budget-action-group",
+      "statement": "Untuk scope subscription dan resource group, budget bisa memicu action group, misalnya untuk notifikasi push atau otomatisasi.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets#trigger-an-action-group"
+    },
+    {
+      "id": "az104-f-u03-advisor-categories",
+      "statement": "Rekomendasi Azure Advisor terbagi dalam lima kategori: reliability, security, performance, cost, dan operational excellence.",
+      "source": "https://learn.microsoft.com/en-us/azure/advisor/advisor-overview"
+    },
+    {
+      "id": "az104-f-u03-advisor-cost",
+      "statement": "Rekomendasi cost di Azure Advisor antara lain mematikan atau mengecilkan VM (virtual machine) yang jarang dipakai, lengkap dengan perkiraan penghematannya.",
+      "source": "https://learn.microsoft.com/en-us/azure/advisor/advisor-cost-recommendations"
     }
   ]
 }
