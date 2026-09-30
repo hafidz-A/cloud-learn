@@ -95,6 +95,9 @@ export const VISUAL_CATALOG = {
   // Unit 14 (the metrics card reuses MonitorPipeline)
   KqlPipe: ['kql-basics'],
   AlertFlow: ['alert-processing-rules'],
+  // Unit 15
+  VaultTypes: ['vault-types'],
+  SiteRecoveryFlow: ['failover-commit-reprotect'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

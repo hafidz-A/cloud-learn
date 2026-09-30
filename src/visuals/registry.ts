@@ -50,6 +50,7 @@ import { ServiceHealthScopes } from './ServiceHealthScopes'
 import { ServiceModelsStack } from './ServiceModelsStack'
 import { ServiceVsPrivateEndpoint } from './ServiceVsPrivateEndpoint'
 import { SharedResponsibility } from './SharedResponsibility'
+import { SiteRecoveryFlow } from './SiteRecoveryFlow'
 import { SlotSwap } from './SlotSwap'
 import { SoftDeleteVsVersioning } from './SoftDeleteVsVersioning'
 import { SsprLicensing } from './SsprLicensing'
@@ -57,6 +58,7 @@ import { StorageRedundancy } from './StorageRedundancy'
 import { StorageServices } from './StorageServices'
 import { StoredAccessPolicy } from './StoredAccessPolicy'
 import { UdrNextHop } from './UdrNextHop'
+import { VaultTypes } from './VaultTypes'
 import { VmResizeFlow } from './VmResizeFlow'
 import { VNetAddressPlan } from './VNetAddressPlan'
 import { VnetIntegrationVsPrivateEndpoint } from './VnetIntegrationVsPrivateEndpoint'
@@ -115,6 +117,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   ServiceModelsStack,
   ServiceVsPrivateEndpoint,
   SharedResponsibility,
+  SiteRecoveryFlow,
   SlotSwap,
   SoftDeleteVsVersioning,
   SsprLicensing,
@@ -122,6 +125,7 @@ export const VISUALS: Partial<Record<VisualName, FC>> = {
   StorageServices,
   StoredAccessPolicy,
   UdrNextHop,
+  VaultTypes,
   VmResizeFlow,
   VNetAddressPlan,
   VnetIntegrationVsPrivateEndpoint,

@@ -110,6 +110,11 @@
     "description": "Sistem yang menerjemahkan nama domain, misalnya contoh.com, menjadi alamat IP (Internet Protocol)."
   },
   {
+    "term": "DPM",
+    "expansion": "Data Protection Manager",
+    "description": "System Center Data Protection Manager, server backup on-premises yang bisa meneruskan backup ke Recovery Services vault."
+  },
+  {
     "term": "FIDO2",
     "expansion": "Fast IDentity Online 2",
     "description": "Standar kunci keamanan fisik (security key) untuk login passwordless."
@@ -215,6 +220,16 @@
     "description": "Menyimpan 3 salinan data di satu datacenter. Paling murah, durability 11 nines."
   },
   {
+    "term": "MABS",
+    "expansion": "Microsoft Azure Backup Server",
+    "description": "Server backup on-premises yang menyimpan backup secara lokal lalu mengirimnya ke Recovery Services vault."
+  },
+  {
+    "term": "MARS",
+    "expansion": "Microsoft Azure Recovery Services",
+    "description": "Agen Azure Backup yang dipasang di mesin Windows untuk mem-backup file, folder, dan system state langsung ke Recovery Services vault."
+  },
+  {
     "term": "MFA",
     "expansion": "Multi-Factor Authentication",
     "description": "Login dengan dua faktor atau lebih, misalnya password ditambah kode di aplikasi HP."
@@ -303,6 +318,16 @@
     "term": "REST",
     "expansion": "Representational State Transfer",
     "description": "Gaya membangun API (Application Programming Interface) di web lewat HTTP (Hypertext Transfer Protocol)."
+  },
+  {
+    "term": "RPO",
+    "expansion": "Recovery Point Objective",
+    "description": "Batas data yang boleh hilang, diukur sebagai jarak waktu ke recovery point terakhir."
+  },
+  {
+    "term": "RTO",
+    "expansion": "Recovery Time Objective",
+    "description": "Batas waktu sampai layanan pulih kembali setelah gangguan."
   },
   {
     "term": "SaaS",

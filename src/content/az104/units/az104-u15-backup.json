@@ -6,27 +6,1734 @@
     {
       "id": "az104-u15-l1",
       "title": "Jenis vault",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u15-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "vault-types",
+            "recovery-services-vault",
+            "backup-vault"
+          ],
+          "title": "Dua jenis vault",
+          "body": "Azure Backup menyimpan data di vault, dan jenisnya ada dua. Recovery Services vault melindungi VM (virtual machine) Azure, SQL (Structured Query Language) Server dan SAP HANA di VM, Azure Files, dan server on-premises lewat agen MARS (Microsoft Azure Recovery Services), MABS (Microsoft Azure Backup Server), atau DPM (Data Protection Manager). Vault ini juga dipakai Azure Site Recovery. Backup vault melindungi Azure Disks, Azure Blobs, Azure Database for PostgreSQL, dan Kubernetes. Jenis resource yang dilindungi menentukan vault-nya.",
+          "keyPoints": [
+            "Recovery Services vault: VM, Files, on-premises, Site Recovery",
+            "Backup vault: Disks, Blobs, PostgreSQL, Kubernetes",
+            "Resource menentukan vault"
+          ],
+          "visual": "VaultTypes",
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-backup-faq#what-are-the-various-vaults-supported-for-backup-and-restore-",
+          "teaches": [
+            "az104-f-u15-rsv-workloads",
+            "az104-f-u15-bv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e1",
+          "type": "sort",
+          "concept": "vault-types",
+          "prompt": "Sort each workload to the vault that protects it.",
+          "buckets": [
+            "Recovery Services vault",
+            "Backup vault"
+          ],
+          "items": [
+            {
+              "text": "An Azure VM (virtual machine)",
+              "bucket": 0
+            },
+            {
+              "text": "An Azure file share",
+              "bucket": 0
+            },
+            {
+              "text": "SQL (Structured Query Language) Server in an Azure VM",
+              "bucket": 0
+            },
+            {
+              "text": "An Azure managed disk",
+              "bucket": 1
+            },
+            {
+              "text": "Azure Blob storage",
+              "bucket": 1
+            },
+            {
+              "text": "Azure Database for PostgreSQL",
+              "bucket": 1
+            }
+          ],
+          "explanation": "VM (virtual machine), file share, dan SQL (Structured Query Language) Server di VM memakai Recovery Services vault. Managed disk, blob, dan PostgreSQL memakai Backup vault.",
+          "requires": [
+            "az104-f-u15-rsv-workloads",
+            "az104-f-u15-bv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e2",
+          "type": "choice",
+          "concept": "backup-vault",
+          "prompt": "You must back up Azure managed disks with Azure Backup. Which vault should you create?",
+          "options": [
+            "A Recovery Services vault",
+            "A Backup vault",
+            "A key vault",
+            "A storage account with GRS (geo-redundant storage)"
+          ],
+          "answer": 1,
+          "explanation": "Azure Disks dilindungi Backup vault. Recovery Services vault dipakai untuk VM (virtual machine), Azure Files, dan workload on-premises.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-bv-workloads",
+            "az104-f-u15-rsv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e3",
+          "type": "choice",
+          "concept": "recovery-services-vault",
+          "prompt": "You must back up the folders of an on-premises Windows server with the MARS (Microsoft Azure Recovery Services) agent. Where are the backups stored?",
+          "options": [
+            "In a Recovery Services vault",
+            "In a Backup vault",
+            "In a Log Analytics workspace",
+            "In an Azure file share"
+          ],
+          "answer": 0,
+          "explanation": "Agen MARS (Microsoft Azure Recovery Services) mengirim backup ke Recovery Services vault.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-rsv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e4",
+          "type": "truefalse",
+          "concept": "recovery-services-vault",
+          "prompt": "Azure Site Recovery replicates VMs (virtual machines) by using a Backup vault.",
+          "answer": false,
+          "explanation": "Salah. Site Recovery memakai Recovery Services vault, sama seperti backup VM (virtual machine).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-rsv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "vault-region"
+          ],
+          "title": "Region dan replikasi vault",
+          "body": "Untuk backup VM (virtual machine), vault harus berada di region yang sama dengan VM, jadi setiap region yang punya VM butuh vault sendiri. VM dan vault boleh beda subscription selama satu tenant. Vault bisa dipindah ke resource group atau subscription lain, tapi tidak ke region lain. Replikasi storage vault default adalah GRS (geo-redundant storage), dan hanya bisa diganti ke LRS (locally redundant storage) atau ZRS (zone-redundant storage) sebelum backup dikonfigurasi.",
+          "keyPoints": [
+            "Satu region, satu vault",
+            "Vault tidak bisa pindah region",
+            "Ganti replikasi sebelum backup pertama"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-support-matrix#vault-support",
+          "teaches": [
+            "az104-f-u15-vault-region",
+            "az104-f-u15-vault-move",
+            "az104-f-u15-vault-redundancy"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e5",
+          "type": "choice",
+          "concept": "vault-region",
+          "prompt": "You have VMs (virtual machines) in East US and in West Europe, and you want to back them all up. What is the minimum number of Recovery Services vaults?",
+          "options": [
+            "Two",
+            "One",
+            "Three",
+            "Four"
+          ],
+          "answer": 0,
+          "explanation": "Vault harus satu region dengan VM (virtual machine) yang di-backup, jadi butuh satu vault di East US dan satu di West Europe.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-vault-region"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e6",
+          "type": "yesno",
+          "concept": "vault-region",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Vault rsv-eus is in East US, uses geo-redundant storage, and already stores backups of 20 VMs (virtual machines).",
+          "statements": [
+            {
+              "text": "You can move rsv-eus to another resource group.",
+              "answer": true
+            },
+            {
+              "text": "You can move rsv-eus to West US.",
+              "answer": false
+            },
+            {
+              "text": "You can change the storage replication of rsv-eus to locally redundant storage now.",
+              "answer": false
+            }
+          ],
+          "explanation": "Vault bisa pindah resource group atau subscription, tapi tidak pindah region. Replikasi storage hanya bisa diubah sebelum backup dikonfigurasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-vault-move",
+            "az104-f-u15-vault-redundancy"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e7",
+          "type": "truefalse",
+          "concept": "vault-region",
+          "prompt": "A VM (virtual machine) and the Recovery Services vault that backs it up can be in different subscriptions of the same tenant.",
+          "answer": true,
+          "explanation": "Benar. VM (virtual machine) dan vault boleh beda subscription dalam satu tenant, tapi harus di region yang sama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-vault-region"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "soft-delete"
+          ],
+          "title": "Soft delete",
+          "body": "Kalau data backup dihapus, misalnya lewat Stop backup dengan Delete Backup Data, datanya masuk status soft delete. Data itu disimpan 14 hari tambahan tanpa biaya, dan item bisa di-undelete lalu di-restore. Masa simpannya bisa diatur dari 14 sampai 180 hari. Vault tidak bisa dihapus selama masih ada item yang dilindungi, data backup, atau data dalam status soft delete.",
+          "keyPoints": [
+            "Data terhapus disimpan 14 hari, gratis",
+            "Bisa diatur 14 sampai 180 hari",
+            "Vault dengan data soft delete tidak bisa dihapus"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-enhanced-soft-delete-configure-manage",
+          "teaches": [
+            "az104-f-u15-soft-delete",
+            "az104-f-u15-vault-delete"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e8",
+          "type": "choice",
+          "concept": "soft-delete",
+          "prompt": "Five days ago, an admin stopped backup of vm1 and deleted its backup data by mistake. Soft delete uses the default settings. What can you do?",
+          "options": [
+            "Nothing, the backup data is gone",
+            "Undelete the backup item, then restore from it",
+            "Restore vm1 from the activity log",
+            "Wait 30 days for the data to return"
+          ],
+          "answer": 1,
+          "explanation": "Data yang dihapus masuk soft delete dan disimpan 14 hari. Lima hari masih di dalam masa itu, jadi item bisa di-undelete.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-soft-delete"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e9",
+          "type": "fix",
+          "concept": "soft-delete",
+          "prompt": "You stopped protection of every item in rsv-old and deleted the backup data. Deleting the vault now fails. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "rsv-old > Delete",
+            "message": "Recovery Services vault cannot be deleted as there are backup items in soft deleted state in the vault."
+          },
+          "options": [
+            "Move the vault to another region first",
+            "Change the storage replication to locally redundant storage",
+            "Wait until the soft-deleted items are permanently deleted, then delete the vault",
+            "Delete the backup policies of the vault"
+          ],
+          "answer": 2,
+          "explanation": "Vault tidak bisa dihapus selama masih ada data dalam status soft delete. Setelah masa soft delete lewat, data dihapus permanen dan vault bisa dihapus.",
+          "requires": [
+            "az104-f-u15-vault-delete",
+            "az104-f-u15-soft-delete"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "immutable-vault"
+          ],
+          "title": "Immutable vault",
+          "body": "Immutable vault memblokir operasi yang bisa menghilangkan recovery point: menghapus data backup sebelum kedaluwarsa dan mengurangi retensi backup policy. Menambah retensi tetap boleh, begitu juga stop protection sambil menyimpan datanya. Immutability bisa dimatikan lagi, kecuali sudah dikunci (locked). Kunci ini melindungi backup walaupun penyerang, misalnya ransomware, mendapat akses admin.",
+          "keyPoints": [
+            "Blokir hapus data dan kurangi retensi",
+            "Tambah retensi tetap boleh",
+            "Locked: tidak bisa dibatalkan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-immutable-vault-concept",
+          "teaches": [
+            "az104-f-u15-immutable"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e10",
+          "type": "choice",
+          "concept": "immutable-vault",
+          "prompt": "Attackers with admin access might try to delete backups or shorten retention. Which vault setting blocks these operations and can be made irreversible?",
+          "options": [
+            "Locked immutability",
+            "Cross Region Restore",
+            "Geo-redundant storage",
+            "A Backup Reader role assignment"
+          ],
+          "answer": 0,
+          "explanation": "Immutable vault memblokir penghapusan data dan pengurangan retensi. Kalau dikunci, pengaturannya tidak bisa dibatalkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-immutable"
+          ]
+        },
+        {
+          "id": "az104-u15-l1-e11",
+          "type": "multi",
+          "concept": "immutable-vault",
+          "prompt": "Immutability is enabled on vault rsv1. Which two operations are still allowed? Choose two.",
+          "options": [
+            "Stop protection and delete the backup data",
+            "Stop protection and retain the backup data",
+            "Increase the retention in a backup policy",
+            "Reduce the retention in a backup policy"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Immutability hanya memblokir operasi yang bisa menghilangkan recovery point. Menambah retensi dan stop protection sambil menyimpan data tetap boleh.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-immutable"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u15-l2",
       "title": "Backup policy",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u15-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "backup-policy",
+            "retention"
+          ],
+          "title": "Backup policy",
+          "body": "Backup policy menentukan kapan backup berjalan dan berapa lama hasilnya disimpan. Policy default untuk VM (virtual machine) membuat backup sekali sehari, menyimpan backup harian 30 hari, dan menyimpan snapshot instant restore 2 hari. Di policy Standard buatan sendiri, jadwalnya harian atau mingguan, lalu retensi diatur untuk titik harian atau mingguan, ditambah titik bulanan dan tahunan kalau perlu. Satu policy melindungi paling banyak 100 VM.",
+          "keyPoints": [
+            "Default: harian, simpan 30 hari",
+            "Retensi harian, mingguan, bulanan, tahunan",
+            "Satu policy: maks. 100 VM"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-vms-prepare#create-a-custom-policy",
+          "teaches": [
+            "az104-f-u15-default-policy",
+            "az104-f-u15-policy-retention",
+            "az104-f-u15-policy-limit"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e1",
+          "type": "choice",
+          "concept": "backup-policy",
+          "prompt": "You enable backup for vm1 with the default VM (virtual machine) backup policy. How long are the daily backups kept?",
+          "options": [
+            "7 days",
+            "30 days",
+            "2 days",
+            "180 days"
+          ],
+          "answer": 1,
+          "explanation": "Policy default menyimpan backup harian 30 hari. Dua hari adalah retensi snapshot instant restore.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-default-policy"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e2",
+          "type": "config",
+          "concept": "retention",
+          "prompt": "Create a policy that backs up every day, keeps each daily backup for 30 days, and also keeps the Sunday backup for 12 weeks.",
+          "blade": "rsv-prod > Backup policies > Add > Azure Virtual Machine > Create policy",
+          "fields": [
+            {
+              "label": "Policy subtype",
+              "kind": "select",
+              "choices": [
+                "Standard",
+                "Enhanced"
+              ],
+              "value": "Standard",
+              "readOnly": true
+            },
+            {
+              "label": "Frequency",
+              "kind": "select",
+              "choices": [
+                "Daily",
+                "Weekly"
+              ],
+              "value": "Weekly"
+            },
+            {
+              "label": "Retention of daily backup point (days)",
+              "kind": "number",
+              "value": 7,
+              "min": 1,
+              "step": 1
+            },
+            {
+              "label": "Retention of weekly backup point",
+              "kind": "toggle",
+              "value": false
+            },
+            {
+              "label": "Weekly backup point day",
+              "kind": "select",
+              "choices": [
+                "Sunday",
+                "Monday",
+                "Saturday"
+              ],
+              "value": "Monday"
+            },
+            {
+              "label": "Weekly retention (weeks)",
+              "kind": "number",
+              "value": 1,
+              "min": 1,
+              "step": 1
+            },
+            {
+              "label": "Retention of monthly backup point",
+              "kind": "toggle",
+              "value": false
+            }
+          ],
+          "answer": {
+            "Frequency": "Daily",
+            "Retention of daily backup point (days)": 30,
+            "Retention of weekly backup point": true,
+            "Weekly backup point day": "Sunday",
+            "Weekly retention (weeks)": 12,
+            "Retention of monthly backup point": false
+          },
+          "explanation": "Jadwal harian dengan retensi harian 30 hari, ditambah titik mingguan hari Minggu yang disimpan 12 minggu. Titik bulanan tidak diminta.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-policy-retention"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e3",
+          "type": "truefalse",
+          "concept": "backup-policy",
+          "prompt": "One backup policy can protect up to 100 VMs (virtual machines).",
+          "answer": true,
+          "explanation": "Benar. Satu policy bisa melindungi paling banyak 100 VM (virtual machine), dan satu vault paling banyak 1.000 VM Azure.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-policy-limit"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "instant-restore"
+          ],
+          "title": "Instant restore",
+          "body": "Backup VM (virtual machine) berjalan dalam dua fase: snapshot disk, lalu transfer data ke vault. Begitu snapshot selesai, recovery point sudah bisa dipakai untuk restore tanpa menunggu transfer ke vault. Snapshot ini disimpan bersama disk selama 1 sampai 5 hari untuk Standard policy, dengan default 2 hari. Snapshot menambah biaya storage, jadi retensi panjang tetap disimpan di vault.",
+          "keyPoints": [
+            "Fase 1: snapshot, fase 2: ke vault",
+            "Restore bisa dari snapshot",
+            "Standard: 1 sampai 5 hari, default 2"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-instant-restore-capability",
+          "teaches": [
+            "az104-f-u15-instant-restore"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e4",
+          "type": "truefalse",
+          "concept": "instant-restore",
+          "prompt": "You must wait for the transfer to the vault to finish before you can restore from a new backup.",
+          "answer": false,
+          "explanation": "Salah. Recovery point sudah bisa dipakai begitu fase snapshot selesai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-instant-restore"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e5",
+          "type": "choice",
+          "concept": "instant-restore",
+          "prompt": "With the Standard policy, how long can you keep the instant restore snapshots?",
+          "options": [
+            "1 to 30 days",
+            "7 to 30 days",
+            "1 to 5 days",
+            "Exactly 2 days"
+          ],
+          "answer": 2,
+          "explanation": "Standard policy menyimpan snapshot 1 sampai 5 hari, default 2. Rentang 1 sampai 30 hari milik Enhanced policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-instant-restore"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "enhanced-policy"
+          ],
+          "title": "Enhanced policy",
+          "body": "Enhanced policy bisa membuat backup beberapa kali sehari: setiap 4, 6, 8, 12, atau 24 jam. Policy ini mendukung Trusted Launch VM (virtual machine), Premium SSD (solid-state drive) v2, dan Ultra Disk; Standard policy tidak mendukung Premium SSD v2 dan Ultra Disk. Snapshot instant restore bisa disimpan 1 sampai 30 hari, dengan default 7. Setelah VM dilindungi Enhanced policy, VM itu tidak bisa dikembalikan ke Standard policy.",
+          "keyPoints": [
+            "Backup sampai tiap 4 jam",
+            "Wajib untuk Ultra Disk dan Premium SSD v2",
+            "Tidak bisa kembali ke Standard"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-vms-enhanced-policy",
+          "teaches": [
+            "az104-f-u15-enhanced-policy"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e6",
+          "type": "choice",
+          "concept": "enhanced-policy",
+          "prompt": "vm-db must have a recovery point at least every 4 hours. What should you do?",
+          "options": [
+            "Create a Standard policy with a weekly schedule",
+            "Increase the instant restore retention to 5 days",
+            "Enable Cross Region Restore",
+            "Protect it with an Enhanced policy that runs every 4 hours"
+          ],
+          "answer": 3,
+          "explanation": "Hanya Enhanced policy yang bisa backup beberapa kali sehari, paling sering setiap 4 jam.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-enhanced-policy"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e7",
+          "type": "truefalse",
+          "concept": "enhanced-policy",
+          "prompt": "After a VM (virtual machine) is protected with the Enhanced policy, you can move it back to the Standard policy.",
+          "answer": false,
+          "explanation": "Salah. VM (virtual machine) yang sudah memakai Enhanced policy tidak bisa dikembalikan ke Standard.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-enhanced-policy"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e8",
+          "type": "yesno",
+          "concept": "enhanced-policy",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "vm-ultra has an Ultra Disk. You are planning its backup.",
+          "statements": [
+            {
+              "text": "The Standard policy can protect vm-ultra.",
+              "answer": false
+            },
+            {
+              "text": "The Enhanced policy can protect vm-ultra.",
+              "answer": true
+            },
+            {
+              "text": "The Enhanced policy can keep instant restore snapshots for 14 days.",
+              "answer": true
+            }
+          ],
+          "explanation": "Ultra Disk hanya didukung Enhanced policy, dan Enhanced policy menyimpan snapshot 1 sampai 30 hari.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-enhanced-policy",
+            "az104-f-u15-instant-restore"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e9",
+          "type": "match",
+          "concept": "backup-policy",
+          "prompt": "Match each policy setting to what it controls.",
+          "pairs": [
+            [
+              "Backup schedule",
+              "When and how often backups run"
+            ],
+            [
+              "Instant restore",
+              "How many days snapshots stay with the disks"
+            ],
+            [
+              "Retention range",
+              "How long recovery points stay in the vault"
+            ],
+            [
+              "Policy subtype",
+              "Whether the policy is Standard or Enhanced"
+            ]
+          ],
+          "explanation": "Jadwal menentukan kapan backup berjalan, instant restore mengatur snapshot di samping disk, retention range mengatur recovery point di vault, dan subtype memilih Standard atau Enhanced.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-policy-retention",
+            "az104-f-u15-instant-restore",
+            "az104-f-u15-enhanced-policy"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-m4",
+          "type": "learn",
+          "concepts": [
+            "on-premises-backup"
+          ],
+          "title": "Backup on-premises",
+          "body": "Agen MARS (Microsoft Azure Recovery Services) dipasang di mesin Windows untuk mem-backup file, folder, dan system state langsung ke Recovery Services vault, sampai tiga kali sehari. Backup langsung mesin Linux dengan agen MARS tidak didukung. Untuk data aplikasi, misalnya database, pakai MABS (Microsoft Azure Backup Server) atau DPM (Data Protection Manager). Keduanya menyimpan backup di storage lokal dulu, lalu meneruskannya ke vault.",
+          "keyPoints": [
+            "MARS: file, folder, system state Windows",
+            "MARS tidak untuk Linux",
+            "Aplikasi: MABS atau DPM"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-support-matrix#on-premises-backup-support",
+          "teaches": [
+            "az104-f-u15-mars-agent",
+            "az104-f-u15-mabs"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e10",
+          "type": "choice",
+          "concept": "on-premises-backup",
+          "prompt": "The folders of an on-premises Windows file server must be backed up to Azure three times a day. There is no backup server. What should you install on the file server?",
+          "options": [
+            "The MARS (Microsoft Azure Recovery Services) agent",
+            "Azure Monitor Agent",
+            "The Site Recovery Mobility service",
+            "The backup extension for Azure VMs (virtual machines)"
+          ],
+          "answer": 0,
+          "explanation": "Agen MARS (Microsoft Azure Recovery Services) mem-backup file dan folder mesin Windows langsung ke vault, sampai tiga kali sehari.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-mars-agent"
+          ]
+        },
+        {
+          "id": "az104-u15-l2-e11",
+          "type": "truefalse",
+          "concept": "on-premises-backup",
+          "prompt": "The MARS (Microsoft Azure Recovery Services) agent can back up an on-premises Linux server directly to Azure.",
+          "answer": false,
+          "explanation": "Salah. Backup langsung mesin Linux dengan agen MARS (Microsoft Azure Recovery Services) tidak didukung.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-mars-agent"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u15-l3",
       "title": "Backup dan restore",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u15-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "vm-backup"
+          ],
+          "title": "Mengaktifkan backup VM",
+          "body": "Saat backup VM (virtual machine) diaktifkan, pilih vault dan policy, lalu pilih VM; hanya VM di region yang sama dengan vault yang muncul. Azure Backup lalu memasang backup extension di VM. Backup pertama berjalan sesuai jadwal, atau langsung dengan Backup Now, yang menanyakan sampai kapan recovery point itu disimpan. VM yang mati tetap di-backup, tapi recovery point-nya crash-consistent.",
+          "keyPoints": [
+            "Hanya VM satu region dengan vault",
+            "Backup Now: backup di luar jadwal",
+            "VM mati: crash-consistent"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-vms-prepare",
+          "teaches": [
+            "az104-f-u15-enable-backup",
+            "az104-f-u15-backup-now"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e1",
+          "type": "choice",
+          "concept": "vm-backup",
+          "prompt": "You configure backup in vault rsv-weu in West Europe. vm-eus in East US does not appear in the list of VMs (virtual machines). Why?",
+          "options": [
+            "Only VMs in the same region as the vault can be selected",
+            "vm-eus is turned off",
+            "vm-eus has no public IP (Internet Protocol) address",
+            "The vault uses geo-redundant storage"
+          ],
+          "answer": 0,
+          "explanation": "Hanya VM (virtual machine) di region yang sama dengan vault yang bisa dipilih. VM yang mati tetap bisa di-backup.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-enable-backup"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e2",
+          "type": "truefalse",
+          "concept": "vm-backup",
+          "prompt": "Azure Backup cannot back up a VM (virtual machine) that is turned off.",
+          "answer": false,
+          "explanation": "Salah. VM (virtual machine) yang mati tetap di-backup, dengan recovery point crash-consistent.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-enable-backup"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e3",
+          "type": "choice",
+          "concept": "vm-backup",
+          "prompt": "You enabled backup for vm1 today. You need a recovery point before a risky update in one hour. What should you do?",
+          "options": [
+            "Wait for the next scheduled backup",
+            "Run Backup Now",
+            "Create a second backup policy",
+            "Enable Cross Region Restore"
+          ],
+          "answer": 1,
+          "explanation": "Backup Now menjalankan backup on-demand di luar jadwal.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-backup-now"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "restore-options"
+          ],
+          "title": "Pilihan restore VM",
+          "body": "Create a new VM (virtual machine) membuat VM (virtual machine) baru dari recovery point, di region yang sama dengan VM sumber. Restore disk memulihkan disk saja dan memberi template untuk membuat VM dengan pengaturan sendiri; disk itu juga bisa dipasang ke VM lain. Replace existing mengganti disk VM yang masih ada, setelah Azure Backup mengambil snapshot VM itu. Kalau VM sudah dihapus, Replace existing tidak bisa dipakai.",
+          "keyPoints": [
+            "Create a new VM: VM baru, region sama",
+            "Restore disk: disk plus template",
+            "Replace existing: VM harus masih ada"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-restore-vms#restore-options",
+          "teaches": [
+            "az104-f-u15-restore-create-vm",
+            "az104-f-u15-restore-disk",
+            "az104-f-u15-replace-existing"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e4",
+          "type": "match",
+          "concept": "restore-options",
+          "prompt": "Match each restore option to what it does.",
+          "pairs": [
+            [
+              "Create a new VM (virtual machine)",
+              "Builds a new VM from the recovery point"
+            ],
+            [
+              "Restore disk",
+              "Restores the disks and gives a template to build a VM"
+            ],
+            [
+              "Replace existing",
+              "Swaps the disks of a VM that still exists"
+            ]
+          ],
+          "explanation": "Create a new VM (virtual machine) membuat VM (virtual machine) baru, Restore disk memberi disk dan template, dan Replace existing mengganti disk VM yang masih ada.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-restore-create-vm",
+            "az104-f-u15-restore-disk",
+            "az104-f-u15-replace-existing"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e5",
+          "type": "choice",
+          "concept": "restore-options",
+          "prompt": "An update corrupted the disks of vm-app, but the VM (virtual machine) still exists. You want to keep vm-app and put back the disks from yesterday. Which restore option should you use?",
+          "options": [
+            "Create a new VM",
+            "Restore disk",
+            "Replace existing",
+            "Backup Now"
+          ],
+          "answer": 2,
+          "explanation": "Replace existing mengganti disk VM (virtual machine) yang masih ada dengan disk dari recovery point.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-replace-existing"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e6",
+          "type": "truefalse",
+          "concept": "restore-options",
+          "prompt": "You can use Replace existing after the original VM (virtual machine) has been deleted.",
+          "answer": false,
+          "explanation": "Salah. Replace existing butuh VM (virtual machine) yang masih ada. Kalau VM sudah dihapus, pakai Create a new VM atau Restore disk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-replace-existing"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "cross-region-restore"
+          ],
+          "title": "Cross Region Restore",
+          "body": "Dengan GRS (geo-redundant storage), data vault disalin ke paired region. Cross Region Restore memakai salinan itu untuk memulihkan VM (virtual machine) di paired region kapan saja, misalnya untuk drill audit, tanpa menunggu Azure menyatakan bencana. Fitur ini hanya ada di Recovery Services vault dengan GRS. Pilihan restore-nya Create a VM dan Restore disk; Replace existing tidak didukung.",
+          "keyPoints": [
+            "Restore ke paired region kapan saja",
+            "Butuh vault dengan GRS",
+            "Tanpa Replace existing"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-create-recovery-services-vault#set-cross-region-restore",
+          "teaches": [
+            "az104-f-u15-crr"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e7",
+          "type": "choice",
+          "concept": "cross-region-restore",
+          "prompt": "The primary region has an outage. You want to restore vm1 in the paired region now, without waiting for Microsoft to declare a disaster. What must already be in place?",
+          "options": [
+            "A Recovery Services vault with geo-redundant storage and Cross Region Restore enabled",
+            "A vault with locally redundant storage",
+            "A Backup vault with zone-redundant storage",
+            "An Enhanced backup policy"
+          ],
+          "answer": 0,
+          "explanation": "Cross Region Restore hanya ada di Recovery Services vault dengan GRS (geo-redundant storage).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-crr"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e8",
+          "type": "yesno",
+          "concept": "cross-region-restore",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Vault rsv1 uses locally redundant storage and already protects 20 VMs (virtual machines).",
+          "statements": [
+            {
+              "text": "You can enable Cross Region Restore on rsv1 now.",
+              "answer": false
+            },
+            {
+              "text": "A restore to the paired region needs a vault with geo-redundant storage.",
+              "answer": true
+            },
+            {
+              "text": "Cross Region Restore can replace the disks of an existing VM.",
+              "answer": false
+            }
+          ],
+          "explanation": "Cross Region Restore butuh GRS (geo-redundant storage), dan replikasi rsv1 tidak bisa diubah lagi karena backup sudah ada. Replace existing tidak didukung di Cross Region Restore.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-crr",
+            "az104-f-u15-vault-redundancy"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-m4",
+          "type": "learn",
+          "concepts": [
+            "file-recovery"
+          ],
+          "title": "Memulihkan file dari backup VM",
+          "body": "Untuk memulihkan beberapa file tanpa me-restore seluruh VM (virtual machine), buka VM > Backup > File Recovery. Pilih recovery point, unduh script (executable untuk Windows, Python untuk Linux), lalu jalankan dengan password yang diberikan. Volume dari recovery point di-mount sebagai drive, file disalin, lalu pilih Unmount disks. Script berlaku 12 jam, dan File Recovery tidak mendukung VM terenkripsi.",
+          "keyPoints": [
+            "Satu file: File Recovery, bukan restore VM",
+            "Script mount volume, berlaku 12 jam",
+            "Selesai: Unmount disks"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-restore-files-from-vm",
+          "teaches": [
+            "az104-f-u15-file-recovery"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e9",
+          "type": "choice",
+          "concept": "file-recovery",
+          "prompt": "A user deleted one folder on vm-files. The rest of the VM (virtual machine) is fine. How do you get the folder back with the least effort?",
+          "options": [
+            "Restore the whole VM with Create a new VM",
+            "Replace the existing disks",
+            "Fail over the VM with Site Recovery",
+            "Use File Recovery to mount the recovery point and copy the folder"
+          ],
+          "answer": 3,
+          "explanation": "File Recovery me-mount volume recovery point sebagai drive, jadi folder bisa disalin tanpa me-restore VM (virtual machine).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-file-recovery"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e10",
+          "type": "truefalse",
+          "concept": "file-recovery",
+          "prompt": "The File Recovery script stays valid for 12 hours.",
+          "answer": true,
+          "explanation": "Benar. Script berlaku 12 jam. Pilih Unmount disks untuk mencabut aksesnya lebih cepat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-file-recovery"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e11",
+          "type": "order",
+          "concept": "file-recovery",
+          "prompt": "Recover a file from a VM (virtual machine) backup. Put the steps in order.",
+          "items": [
+            "Select a recovery point in File Recovery",
+            "Download the script and copy its password",
+            "Run the script to mount the recovery volumes",
+            "Copy the files you need",
+            "Select Unmount disks"
+          ],
+          "explanation": "Pilih recovery point, unduh script, jalankan untuk me-mount volume, salin file, lalu Unmount disks.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-file-recovery"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-m5",
+          "type": "learn",
+          "concepts": [
+            "files-backup"
+          ],
+          "title": "Backup Azure Files",
+          "body": "Azure Files di-backup lewat Recovery Services vault dengan dua tier. Snapshot tier memakai snapshot file share yang tersimpan di storage account yang sama, jadi file tertentu bisa di-restore dengan cepat. Vaulted tier menyalin data ke vault, sehingga backup tetap ada walaupun storage account-nya hilang. Replikasi storage vault hanya berlaku untuk vaulted backup.",
+          "keyPoints": [
+            "Snapshot: di storage account yang sama",
+            "Vaulted: salinan di vault",
+            "Replikasi vault hanya untuk vaulted"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/azure-file-share-backup-overview",
+          "teaches": [
+            "az104-f-u15-files-backup"
+          ]
+        },
+        {
+          "id": "az104-u15-l3-e12",
+          "type": "choice",
+          "concept": "files-backup",
+          "prompt": "Backups of the file share share1 must survive even if its storage account is deleted. Which Azure Files backup tier should you use?",
+          "options": [
+            "Vaulted",
+            "Snapshot",
+            "Instant restore",
+            "Hot"
+          ],
+          "answer": 0,
+          "explanation": "Snapshot tersimpan di storage account yang sama dengan file share. Vaulted menyalin data ke vault, jadi tetap aman kalau storage account hilang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-files-backup"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u15-l4",
       "title": "Site Recovery",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u15-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "site-recovery"
+          ],
+          "title": "Azure Site Recovery",
+          "body": "Azure Site Recovery mereplikasi VM (virtual machine) Azure secara terus-menerus ke region lain. Saat replikasi diaktifkan, Mobility service extension dipasang di VM, dan perubahan disk ditulis dulu ke cache storage account di region sumber sebelum dikirim ke region target. VM butuh koneksi keluar, bukan masuk. Vault untuk Site Recovery dibuat di region mana pun kecuali region sumber, kebalikan dari backup yang vault-nya harus satu region dengan VM.",
+          "keyPoints": [
+            "Replikasi terus-menerus ke region lain",
+            "Cache storage account di region sumber",
+            "Vault: bukan di region sumber"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-architecture",
+          "teaches": [
+            "az104-f-u15-asr-replication",
+            "az104-f-u15-asr-vault-region",
+            "az104-f-u15-asr-connectivity"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e1",
+          "type": "choice",
+          "concept": "site-recovery",
+          "prompt": "VMs (virtual machines) in Southeast Asia must be replicated to East Asia with Site Recovery. Where can you create the Recovery Services vault?",
+          "options": [
+            "In Southeast Asia",
+            "Only in the region of the VMs",
+            "Nowhere; Site Recovery uses a Backup vault",
+            "In East Asia"
+          ],
+          "answer": 3,
+          "explanation": "Vault Site Recovery boleh di region mana pun kecuali region sumber (Southeast Asia). Region target seperti East Asia bisa dipakai.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-asr-vault-region"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e2",
+          "type": "truefalse",
+          "concept": "site-recovery",
+          "prompt": "Site Recovery needs inbound connectivity to the replicated VMs (virtual machines).",
+          "answer": false,
+          "explanation": "Salah. VM (virtual machine) butuh koneksi keluar; Site Recovery tidak pernah butuh koneksi masuk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-asr-connectivity"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e3",
+          "type": "choice",
+          "concept": "site-recovery",
+          "prompt": "During replication, where are the disk writes of a VM (virtual machine) sent first?",
+          "options": [
+            "The Recovery Services vault",
+            "A cache storage account in the source region",
+            "A storage account in the target region",
+            "A Log Analytics workspace"
+          ],
+          "answer": 1,
+          "explanation": "Perubahan disk ditulis dulu ke cache storage account di region sumber, lalu dikirim ke region target.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-asr-replication"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "asr-recovery-points"
+          ],
+          "title": "Recovery point replikasi",
+          "body": "Site Recovery membuat recovery point crash-consistent setiap 5 menit, dan interval ini tidak bisa diubah. Recovery point app-consistent juga menangkap data yang masih di memori aplikasi, tapi hanya dibuat kalau frekuensinya diatur di replication policy. Secara default, fitur itu mati dan recovery point disimpan satu hari. Retensi yang lebih panjang menambah biaya storage.",
+          "keyPoints": [
+            "Crash-consistent: tiap 5 menit, tetap",
+            "App-consistent: harus diatur",
+            "Retensi default: 1 hari"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-architecture#snapshots-and-recovery-points",
+          "teaches": [
+            "az104-f-u15-asr-recovery-points"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e4",
+          "type": "choice",
+          "concept": "asr-recovery-points",
+          "prompt": "How often does Site Recovery create crash-consistent recovery points for Azure VMs (virtual machines)?",
+          "options": [
+            "Every hour",
+            "Every 5 minutes",
+            "Once a day",
+            "Every 4 hours"
+          ],
+          "answer": 1,
+          "explanation": "Recovery point crash-consistent dibuat setiap 5 menit, dan interval ini tidak bisa diubah.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-asr-recovery-points"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e5",
+          "type": "yesno",
+          "concept": "asr-recovery-points",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "You enable replication for vm1 with the default replication policy.",
+          "statements": [
+            {
+              "text": "A crash-consistent recovery point is created every 5 minutes.",
+              "answer": true
+            },
+            {
+              "text": "App-consistent recovery points are created every hour.",
+              "answer": false
+            },
+            {
+              "text": "Recovery points are kept for one day.",
+              "answer": true
+            }
+          ],
+          "explanation": "Default replication policy: crash-consistent tiap 5 menit, app-consistent mati, dan retensi satu hari.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-asr-recovery-points"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "test-failover"
+          ],
+          "title": "Test failover",
+          "body": "Test failover membuat VM (virtual machine) di region target dari recovery point tanpa mengganggu produksi. Pilih VNet (virtual network) non-produksi supaya alamat IP (Internet Protocol) tidak bentrok, lalu jalankan Cleanup test failover untuk menghapus VM uji. Pilihan recovery point: Latest processed untuk RTO (recovery time objective) rendah, Latest untuk RPO (recovery point objective) terendah, Latest app-consistent, atau Custom.",
+          "keyPoints": [
+            "Uji tanpa mengganggu produksi",
+            "Pakai VNet non-produksi, lalu cleanup",
+            "Latest: RPO terendah; Latest processed: RTO rendah"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-tutorial-dr-drill",
+          "teaches": [
+            "az104-f-u15-test-failover",
+            "az104-f-u15-recovery-point-options"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e6",
+          "type": "choice",
+          "concept": "test-failover",
+          "prompt": "Every quarter you must prove that failover to the secondary region works, without any impact on production. What should you run?",
+          "options": [
+            "A failover followed by commit",
+            "A test failover into a non-production virtual network",
+            "Re-protect",
+            "Cross Region Restore"
+          ],
+          "answer": 1,
+          "explanation": "Test failover membuat VM (virtual machine) uji di region target tanpa mengganggu produksi, lalu dibersihkan dengan Cleanup test failover.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-test-failover"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e7",
+          "type": "choice",
+          "concept": "test-failover",
+          "prompt": "During a failover you want the lowest possible data loss, even if the failover takes longer. Which recovery point should you choose?",
+          "options": [
+            "Latest processed",
+            "Latest app-consistent",
+            "Latest",
+            "The oldest recovery point"
+          ],
+          "answer": 2,
+          "explanation": "Latest memproses semua data yang sudah terkirim dulu, jadi RPO (recovery point objective) terendah. Latest processed lebih cepat dan memberi RTO (recovery time objective) rendah, tapi datanya sedikit lebih lama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-recovery-point-options"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-m4",
+          "type": "learn",
+          "concepts": [
+            "failover-commit-reprotect"
+          ],
+          "title": "Failover, commit, dan re-protect",
+          "body": "Saat region primer bermasalah, Failover membuat VM (virtual machine) di region target dari recovery point pilihan. Kalau hasilnya sudah benar, Commit menyelesaikan failover dan menghapus recovery point lain, jadi recovery point tidak bisa diganti lagi. Re-protect lalu membuat VM di region target mereplikasi balik ke region primer. Setelah region primer pulih, failback adalah failover lagi ke arah primer.",
+          "keyPoints": [
+            "Failover, lalu Commit",
+            "Commit: recovery point tidak bisa diganti",
+            "Re-protect sebelum failback"
+          ],
+          "visual": "SiteRecoveryFlow",
+          "link": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-tutorial-failover-failback",
+          "teaches": [
+            "az104-f-u15-commit",
+            "az104-f-u15-reprotect"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e8",
+          "type": "truefalse",
+          "concept": "failover-commit-reprotect",
+          "prompt": "After you commit a failover, you can still change the recovery point.",
+          "answer": false,
+          "explanation": "Salah. Commit menghapus recovery point lain, jadi recovery point tidak bisa diganti lagi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-commit"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e9",
+          "type": "choice",
+          "concept": "failover-commit-reprotect",
+          "prompt": "vm1 has failed over to West US 2 and the failover is committed. What makes vm1 replicate back to the original region?",
+          "options": [
+            "Re-protect",
+            "Test failover",
+            "Cleanup test failover",
+            "Change recovery point"
+          ],
+          "answer": 0,
+          "explanation": "Re-protect membuat VM (virtual machine) di region target mereplikasi balik ke region primer.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-reprotect"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e10",
+          "type": "order",
+          "concept": "failover-commit-reprotect",
+          "prompt": "Put the Site Recovery steps in order, from the first drill to failback.",
+          "items": [
+            "Run a test failover and clean it up",
+            "Fail over to the target region",
+            "Commit the failover",
+            "Re-protect the VM (virtual machine)",
+            "Fail back to the primary region"
+          ],
+          "explanation": "Drill dengan test failover, failover, commit, re-protect agar VM (virtual machine) mereplikasi balik, lalu failback.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-test-failover",
+            "az104-f-u15-commit",
+            "az104-f-u15-reprotect"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-m5",
+          "type": "learn",
+          "concepts": [
+            "recovery-plan"
+          ],
+          "title": "Recovery plan",
+          "body": "Recovery plan mengelompokkan VM (virtual machine) supaya di-failover bersama dengan urutan start tertentu. Contoh aplikasi tiga tier: database dulu, lalu middleware, lalu web. Satu plan bisa berisi sampai 100 instance, ditambah skrip atau langkah manual, dan bisa diuji dengan test failover. Recovery point Custom hanya tersedia saat failover satu VM tanpa recovery plan.",
+          "keyPoints": [
+            "Failover bersama, urutan start",
+            "Maks. 100 instance per plan",
+            "Bisa diuji dengan test failover"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/site-recovery/recovery-plan-overview",
+          "teaches": [
+            "az104-f-u15-recovery-plan"
+          ]
+        },
+        {
+          "id": "az104-u15-l4-e11",
+          "type": "choice",
+          "concept": "recovery-plan",
+          "prompt": "After failover, the database VM (virtual machine) must start before the web VMs. What should you configure?",
+          "options": [
+            "An availability set",
+            "Two separate vaults",
+            "A recovery plan with groups in that order",
+            "An Enhanced backup policy"
+          ],
+          "answer": 2,
+          "explanation": "Recovery plan mengatur VM (virtual machine) yang di-failover bersama dan urutan start-nya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-recovery-plan"
+          ]
+        }
+      ]
     },
     {
       "id": "az104-u15-l5",
       "title": "Laporan dan alert backup",
-      "items": []
+      "items": [
+        {
+          "id": "az104-u15-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "backup-jobs"
+          ],
+          "title": "Memantau job backup",
+          "body": "Setiap backup dan restore tercatat sebagai job. Di Recovery Services vault, buka Backup Jobs lalu filter status Failed untuk melihat job yang gagal. Untuk melihat job dari banyak vault, subscription, dan region dalam satu tampilan, pakai Resiliency, penerus Backup center dan Azure Business Continuity Center. Activity log vault mencatat operasi pengguna, misalnya mengubah backup policy atau memulai restore.",
+          "keyPoints": [
+            "Satu vault: Backup Jobs",
+            "Banyak vault: Resiliency",
+            "Siapa mengubah policy: activity log"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/monitoring-and-alerts-overview",
+          "teaches": [
+            "az104-f-u15-backup-jobs",
+            "az104-f-u15-resiliency"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e1",
+          "type": "choice",
+          "concept": "backup-jobs",
+          "prompt": "You must see every failed backup job from this week across 12 vaults in 3 subscriptions, in one view. What should you use?",
+          "options": [
+            "The jobs view in Resiliency, filtered to Failed",
+            "The Backup Jobs page of one vault",
+            "Metrics explorer",
+            "Azure Advisor"
+          ],
+          "answer": 0,
+          "explanation": "Resiliency, penerus Backup center, menampilkan job dari banyak vault, subscription, dan region sekaligus. Backup Jobs di vault hanya melihat satu vault.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-resiliency",
+            "az104-f-u15-backup-jobs"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e2",
+          "type": "truefalse",
+          "concept": "backup-jobs",
+          "prompt": "The activity log of a vault shows who changed a backup policy.",
+          "answer": true,
+          "explanation": "Benar. Activity log mencatat operasi pengguna seperti mengubah backup policy atau memulai restore.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-backup-jobs"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "backup-alerts"
+          ],
+          "title": "Alert bawaan backup",
+          "body": "Azure Backup memakai alert Azure Monitor. Security alert, misalnya saat data backup dihapus atau soft delete dimatikan, selalu dibuat dan tidak bisa dimatikan. Alert kegagalan job backup atau restore aktif secara default, tapi bisa dimatikan. Untuk mengirim email, buat alert processing rule yang menambahkan action group. Classic alerts Azure Backup dihentikan pada 31 Maret 2026.",
+          "keyPoints": [
+            "Security alert: selalu aktif",
+            "Alert job gagal: default aktif",
+            "Email: alert processing rule dan action group"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/monitoring-and-alerts-overview#azure-monitor-alerts-for-azure-backup",
+          "teaches": [
+            "az104-f-u15-builtin-alerts",
+            "az104-f-u15-backup-alert-notify"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e3",
+          "type": "choice",
+          "concept": "backup-alerts",
+          "prompt": "You want an email whenever any backup job fails. The built-in alerts are on. What should you add?",
+          "options": [
+            "A second Recovery Services vault",
+            "Classic alerts in the vault",
+            "An alert processing rule that adds an action group with an email action",
+            "A Backup Reader role assignment"
+          ],
+          "answer": 2,
+          "explanation": "Alert bawaan sudah dibuat, tapi notifikasinya dikirim lewat alert processing rule yang menambahkan action group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-backup-alert-notify",
+            "az104-f-u14-apr",
+            "az104-f-u14-action-group"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e4",
+          "type": "truefalse",
+          "concept": "backup-alerts",
+          "prompt": "You can turn off the built-in security alert that fires when backup data is deleted.",
+          "answer": false,
+          "explanation": "Salah. Security alert selalu dibuat dan tidak bisa dimatikan. Yang bisa diatur hanya notifikasinya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-builtin-alerts"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e5",
+          "type": "multi",
+          "concept": "backup-alerts",
+          "prompt": "Which two events fire built-in security alerts in Azure Backup? Choose two.",
+          "options": [
+            "Backup data is deleted",
+            "Soft delete is disabled for a vault",
+            "A backup job fails",
+            "A restore job fails"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Penghapusan data backup dan mematikan soft delete adalah security alert. Kegagalan job backup dan restore termasuk alert job failure.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-builtin-alerts"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "backup-reports"
+          ],
+          "title": "Backup Reports",
+          "body": "Backup Reports menampilkan tren jangka panjang: job yang berhasil dan gagal, pemakaian storage, dan kepatuhan policy. Datanya dikirim vault lewat diagnostic setting ke Log Analytics workspace, lalu ditampilkan dengan Azure workbooks. Workspace boleh di region dan subscription berbeda dari vault. Data pertama bisa butuh sampai 24 jam, dan retensi workspace default 30 hari, jadi perpanjang retensinya untuk laporan tahunan.",
+          "keyPoints": [
+            "Tren jangka panjang, bukan real time",
+            "Butuh diagnostic setting ke workspace",
+            "Data pertama sampai 24 jam"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/configure-reports",
+          "teaches": [
+            "az104-f-u15-backup-reports",
+            "az104-f-u15-reports-retention"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e6",
+          "type": "choice",
+          "concept": "backup-reports",
+          "prompt": "Management wants a report of backup storage usage and job success for the past 12 months. What must you configure first?",
+          "options": [
+            "Diagnostic settings on the vaults that send data to a Log Analytics workspace with long enough retention",
+            "Cross Region Restore",
+            "An Enhanced backup policy",
+            "A metric alert on each vault"
+          ],
+          "answer": 0,
+          "explanation": "Backup Reports membaca data dari Log Analytics workspace yang diisi lewat diagnostic setting vault. Retensi workspace harus cukup panjang untuk 12 bulan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-backup-reports",
+            "az104-f-u15-reports-retention"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e7",
+          "type": "fix",
+          "concept": "backup-reports",
+          "prompt": "You created diagnostic settings for all vaults one hour ago, but Backup Reports still shows no data. What should you do?",
+          "scene": {
+            "kind": "portal",
+            "title": "Backup Reports > Summary",
+            "message": "No data to display for the selected workspace and time range."
+          },
+          "options": [
+            "Delete and recreate the vaults",
+            "Change the vaults to geo-redundant storage",
+            "Turn on soft delete",
+            "Wait, because the first data can take up to 24 hours to arrive"
+          ],
+          "answer": 3,
+          "explanation": "Setelah diagnostic setting dibuat, data pertama bisa butuh sampai 24 jam untuk masuk ke workspace.",
+          "requires": [
+            "az104-f-u15-backup-reports"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e8",
+          "type": "yesno",
+          "concept": "backup-reports",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Vault rsv1 is in East US. Workspace law-bkp is in West Europe, in another subscription.",
+          "statements": [
+            {
+              "text": "rsv1 can send its data to law-bkp for Backup Reports.",
+              "answer": true
+            },
+            {
+              "text": "law-bkp keeps the data for 30 days unless you change its retention.",
+              "answer": true
+            },
+            {
+              "text": "Backup Reports work without any diagnostic setting.",
+              "answer": false
+            }
+          ],
+          "explanation": "Workspace boleh beda region dan subscription dari vault, retensinya default 30 hari, dan data hanya masuk lewat diagnostic setting.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-reports-retention",
+            "az104-f-u15-backup-reports"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-m4",
+          "type": "learn",
+          "concepts": [
+            "backup-roles"
+          ],
+          "title": "Role Azure Backup",
+          "body": "Azure Backup punya tiga role bawaan. Backup Contributor bisa melakukan semua operasi backup, kecuali menghapus vault dan memberi akses ke orang lain. Backup Operator sama seperti Contributor, tapi tidak bisa menghapus backup atau mengelola backup policy. Backup Reader hanya bisa melihat, cocok untuk tim pemantauan.",
+          "keyPoints": [
+            "Contributor: kelola semua kecuali hapus vault",
+            "Operator: tanpa hapus backup dan policy",
+            "Reader: hanya melihat"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/backup-rbac-rs-vault",
+          "teaches": [
+            "az104-f-u15-backup-roles"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e9",
+          "type": "choice",
+          "concept": "backup-roles",
+          "prompt": "An operator must enable backups and run restores, but must never delete backup data or change backup policies. Which role should you assign?",
+          "options": [
+            "Backup Operator",
+            "Backup Contributor",
+            "Backup Reader",
+            "Owner"
+          ],
+          "answer": 0,
+          "explanation": "Backup Operator bisa semua yang dilakukan Contributor, kecuali menghapus backup dan mengelola backup policy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-backup-roles"
+          ]
+        },
+        {
+          "id": "az104-u15-l5-e10",
+          "type": "match",
+          "concept": "backup-roles",
+          "prompt": "Match each role to what it allows.",
+          "pairs": [
+            [
+              "Backup Contributor",
+              "Manage backups and policies, but not delete the vault"
+            ],
+            [
+              "Backup Operator",
+              "Run backups and restores, but not delete backups or manage policies"
+            ],
+            [
+              "Backup Reader",
+              "View backup operations only"
+            ]
+          ],
+          "explanation": "Contributor mengelola semua kecuali menghapus vault dan memberi akses, Operator tanpa menghapus backup dan mengelola policy, dan Reader hanya melihat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-backup-roles"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "az104-f-u15-rsv-workloads",
+      "statement": "Recovery Services vault melindungi VM (virtual machine) Azure, SQL (Structured Query Language) Server di VM Azure, SAP HANA di VM Azure, Azure Files, dan workload on-premises lewat agen MARS (Microsoft Azure Recovery Services), MABS (Microsoft Azure Backup Server), dan DPM (Data Protection Manager). Vault ini juga dipakai Azure Site Recovery.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-backup-faq#what-are-the-various-vaults-supported-for-backup-and-restore-"
+    },
+    {
+      "id": "az104-f-u15-bv-workloads",
+      "statement": "Backup vault melindungi Azure Disks, Azure Blobs, Azure Database for PostgreSQL, dan Kubernetes. Pilih jenis vault menurut jenis resource yang dilindungi.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-backup-faq#what-are-the-various-vaults-supported-for-backup-and-restore-"
+    },
+    {
+      "id": "az104-f-u15-vault-region",
+      "statement": "Backup berlaku dalam satu region: vault harus di region yang sama dengan VM (virtual machine) yang di-backup, jadi setiap region yang punya VM butuh vault sendiri. VM dan vault boleh berada di subscription berbeda dalam tenant yang sama.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-support-matrix#vault-support"
+    },
+    {
+      "id": "az104-f-u15-vault-move",
+      "statement": "Vault bisa dipindah ke resource group atau subscription lain, tapi tidak ke region lain. Data backup juga tidak bisa dipindah antar vault.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-support-matrix#vault-support"
+    },
+    {
+      "id": "az104-f-u15-vault-redundancy",
+      "statement": "Replikasi storage Recovery Services vault default adalah GRS (geo-redundant storage); pilihan lainnya LRS (locally redundant storage) dan ZRS (zone-redundant storage). Replikasinya hanya bisa diubah sebelum backup dikonfigurasi di vault.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-create-recovery-services-vault#set-storage-redundancy"
+    },
+    {
+      "id": "az104-f-u15-soft-delete",
+      "statement": "Data backup yang dihapus masuk status soft delete dan disimpan 14 hari tambahan tanpa biaya, jadi item itu masih bisa di-undelete. Masa simpan soft delete bisa diatur dari 14 sampai 180 hari.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-enhanced-soft-delete-configure-manage"
+    },
+    {
+      "id": "az104-f-u15-vault-delete",
+      "statement": "Recovery Services vault tidak bisa dihapus selama masih berisi item yang dilindungi, data backup, atau data backup dalam status soft delete.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-delete-vault#before-you-start"
+    },
+    {
+      "id": "az104-f-u15-immutable",
+      "statement": "Immutable vault memblokir operasi yang bisa menghilangkan recovery point, seperti menghapus data backup sebelum kedaluwarsa atau mengurangi retensi policy. Menambah retensi dan stop protection sambil menyimpan data tetap boleh. Kalau immutability dikunci (locked), pengaturannya tidak bisa dibatalkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-immutable-vault-concept"
+    },
+    {
+      "id": "az104-f-u15-default-policy",
+      "statement": "Policy default untuk backup VM (virtual machine) membuat backup sekali sehari, menyimpan backup harian 30 hari, dan menyimpan snapshot instant restore 2 hari.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-vms-prepare"
+    },
+    {
+      "id": "az104-f-u15-policy-retention",
+      "statement": "Di policy VM (virtual machine) Standard, jadwal backup harian atau mingguan. Retensi diatur untuk titik backup harian atau mingguan, dan bisa ditambah retensi titik bulanan dan tahunan.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-vms-prepare#create-a-custom-policy"
+    },
+    {
+      "id": "az104-f-u15-policy-limit",
+      "statement": "Satu backup policy bisa melindungi paling banyak 100 VM (virtual machine), dan satu vault paling banyak 1.000 VM Azure.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-support-matrix#vault-support"
+    },
+    {
+      "id": "az104-f-u15-instant-restore",
+      "statement": "Backup VM (virtual machine) punya dua fase: snapshot, lalu transfer data ke vault. Recovery point sudah bisa dipakai untuk restore begitu snapshot selesai. Snapshot disimpan 1 sampai 5 hari untuk Standard policy (default 2) dan 1 sampai 30 hari untuk Enhanced policy (default 7).",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-instant-restore-capability"
+    },
+    {
+      "id": "az104-f-u15-enhanced-policy",
+      "statement": "Enhanced policy bisa membuat backup setiap 4, 6, 8, 12, atau 24 jam, dan mendukung Trusted Launch VM (virtual machine), Premium SSD (solid-state drive) v2, dan Ultra Disk. Standard policy tidak mendukung Premium SSD v2 dan Ultra Disk. Setelah VM memakai Enhanced policy, VM itu tidak bisa dikembalikan ke Standard policy.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-vms-enhanced-policy"
+    },
+    {
+      "id": "az104-f-u15-mars-agent",
+      "statement": "Agen MARS (Microsoft Azure Recovery Services) mem-backup file, folder, dan system state mesin Windows langsung ke Recovery Services vault, sampai tiga kali sehari. Backup langsung mesin Linux dengan agen MARS tidak didukung.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-support-matrix#on-premises-backup-support"
+    },
+    {
+      "id": "az104-f-u15-mabs",
+      "statement": "MABS (Microsoft Azure Backup Server) dan DPM (Data Protection Manager) mem-backup file, volume, system state, dan data aplikasi dengan snapshot yang sadar aplikasi ke storage lokal, lalu meneruskannya ke vault.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-support-matrix#on-premises-backup-support"
+    },
+    {
+      "id": "az104-f-u15-enable-backup",
+      "statement": "Saat backup VM (virtual machine) diaktifkan, hanya VM di region yang sama dengan vault yang bisa dipilih, dan Azure Backup memasang backup extension di VM. VM yang mati tetap di-backup, tapi recovery point-nya crash-consistent.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-vms-prepare"
+    },
+    {
+      "id": "az104-f-u15-backup-now",
+      "statement": "Backup Now menjalankan backup on-demand di luar jadwal, dan retensinya ditentukan saat itu dengan memilih hari terakhir recovery point disimpan.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-vms-prepare#trigger-the-initial-backup"
+    },
+    {
+      "id": "az104-f-u15-restore-create-vm",
+      "statement": "Opsi Create a new VM membuat VM (virtual machine) baru dari recovery point, di region yang sama dengan VM sumber.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-restore-vms#restore-options"
+    },
+    {
+      "id": "az104-f-u15-restore-disk",
+      "statement": "Opsi Restore disk memulihkan disk VM (virtual machine) dan menyediakan template untuk membuat VM dengan pengaturan kustom. Disk itu juga bisa dipasang ke VM yang sudah ada.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-restore-vms#restore-options"
+    },
+    {
+      "id": "az104-f-u15-replace-existing",
+      "statement": "Opsi Replace existing mengganti disk VM (virtual machine) yang masih ada dengan disk dari recovery point, setelah Azure Backup mengambil snapshot VM itu. Opsi ini tidak bisa dipakai kalau VM sudah dihapus.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-arm-restore-vms#restore-options"
+    },
+    {
+      "id": "az104-f-u15-crr",
+      "statement": "Cross Region Restore memulihkan VM (virtual machine) di paired region kapan saja, tanpa menunggu Azure menyatakan bencana. Fitur ini hanya untuk Recovery Services vault dengan GRS (geo-redundant storage), dan mendukung Create a VM dan Restore disk, tapi tidak Replace existing.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-create-recovery-services-vault#set-cross-region-restore"
+    },
+    {
+      "id": "az104-f-u15-file-recovery",
+      "statement": "File Recovery memulihkan file atau folder tanpa me-restore seluruh VM (virtual machine): pilih recovery point, unduh script, jalankan untuk me-mount volume recovery point, salin file, lalu Unmount disks. Script berlaku 12 jam, dan VM terenkripsi tidak didukung.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-restore-files-from-vm"
+    },
+    {
+      "id": "az104-f-u15-files-backup",
+      "statement": "Azure Files di-backup lewat Recovery Services vault dengan dua tier: snapshot, yang disimpan di storage account yang sama dengan file share, dan vaulted, yang menyalin data ke vault. Replikasi storage vault hanya berlaku untuk vaulted backup.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/azure-file-share-backup-overview"
+    },
+    {
+      "id": "az104-f-u15-asr-replication",
+      "statement": "Azure Site Recovery mereplikasi VM (virtual machine) Azure secara terus-menerus ke region lain. Mobility service extension dipasang di VM, dan perubahan disk ditulis dulu ke cache storage account di region sumber sebelum dikirim ke region target.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-architecture#replication-process"
+    },
+    {
+      "id": "az104-f-u15-asr-vault-region",
+      "statement": "Recovery Services vault untuk Site Recovery dibuat di region mana pun kecuali region sumber VM (virtual machine) yang direplikasi.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-tutorial-enable-replication#create-a-recovery-services-vault"
+    },
+    {
+      "id": "az104-f-u15-asr-connectivity",
+      "statement": "VM (virtual machine) yang direplikasi Site Recovery butuh koneksi keluar. Site Recovery tidak pernah butuh koneksi masuk ke VM.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-architecture#connectivity-requirements"
+    },
+    {
+      "id": "az104-f-u15-asr-recovery-points",
+      "statement": "Site Recovery membuat recovery point crash-consistent setiap 5 menit, dan interval ini tidak bisa diubah. Recovery point app-consistent hanya dibuat kalau frekuensinya diatur, dan retensi recovery point default adalah satu hari.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-architecture"
+    },
+    {
+      "id": "az104-f-u15-test-failover",
+      "statement": "Test failover membuat VM (virtual machine) di region target dari recovery point tanpa mengganggu produksi. Pilih VNet (virtual network) non-produksi, lalu jalankan Cleanup test failover untuk menghapus VM uji.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-tutorial-dr-drill"
+    },
+    {
+      "id": "az104-f-u15-recovery-point-options",
+      "statement": "Pilihan recovery point saat failover: Latest processed memberi RTO (recovery time objective) rendah, Latest memberi RPO (recovery point objective) terendah, Latest app-consistent memakai titik app-consistent terakhir, dan Custom memilih titik tertentu untuk satu VM (virtual machine) tanpa recovery plan.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-tutorial-dr-drill#run-a-test-failover"
+    },
+    {
+      "id": "az104-f-u15-commit",
+      "statement": "Setelah failover, Commit menyelesaikannya dan menghapus recovery point lain, sehingga recovery point tidak bisa diganti lagi.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-tutorial-failover-failback#run-a-failover"
+    },
+    {
+      "id": "az104-f-u15-reprotect",
+      "statement": "Re-protect membuat VM (virtual machine) di region target mereplikasi balik ke region primer. Failback adalah failover lagi dari region target ke region primer.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-tutorial-failover-failback#reprotect-the-vm"
+    },
+    {
+      "id": "az104-f-u15-recovery-plan",
+      "statement": "Recovery plan mengelompokkan VM (virtual machine) supaya di-failover bersama dengan urutan start tertentu, misalnya database, lalu middleware, lalu web. Satu plan bisa berisi sampai 100 instance dan bisa diuji dengan test failover.",
+      "source": "https://learn.microsoft.com/en-us/azure/site-recovery/recovery-plan-overview"
+    },
+    {
+      "id": "az104-f-u15-backup-jobs",
+      "statement": "Setiap backup dan restore tercatat sebagai job. Di vault, menu Backup Jobs bisa difilter menurut status, misalnya Failed. Activity log vault mencatat operasi pengguna, seperti mengubah backup policy atau memulai restore.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/monitoring-and-alerts-overview"
+    },
+    {
+      "id": "az104-f-u15-resiliency",
+      "statement": "Resiliency, penerus Backup center dan Azure Business Continuity Center, menampilkan job, item, dan alert backup dari banyak vault, subscription, dan region dalam satu tampilan.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-center-overview"
+    },
+    {
+      "id": "az104-f-u15-builtin-alerts",
+      "statement": "Azure Backup punya alert bawaan di Azure Monitor. Security alert, misalnya saat data backup dihapus atau soft delete dimatikan, selalu dibuat dan tidak bisa dimatikan. Alert kegagalan job backup dan restore aktif secara default dan bisa dimatikan.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/monitoring-and-alerts-overview#azure-monitor-alerts-for-azure-backup"
+    },
+    {
+      "id": "az104-f-u15-backup-alert-notify",
+      "statement": "Untuk mengirim notifikasi seperti email dari alert backup, pakai alert processing rule dan action group Azure Monitor. Classic alerts Azure Backup dihentikan pada 31 Maret 2026.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/monitoring-and-alerts-overview"
+    },
+    {
+      "id": "az104-f-u15-backup-reports",
+      "statement": "Backup Reports memakai Log Analytics workspace dan Azure workbooks untuk tren jangka panjang: job, pemakaian storage, dan kepatuhan policy. Vault mengirim datanya lewat diagnostic setting, dan data pertama bisa butuh sampai 24 jam.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/configure-reports"
+    },
+    {
+      "id": "az104-f-u15-reports-retention",
+      "statement": "Log Analytics workspace untuk Backup Reports boleh berada di region dan subscription berbeda dari vault. Datanya disimpan 30 hari secara default, jadi perpanjang retensinya untuk laporan jangka panjang.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/configure-reports#1-create-a-log-analytics-workspace-or-use-an-existing-one"
+    },
+    {
+      "id": "az104-f-u15-backup-roles",
+      "statement": "Role bawaan Azure Backup: Backup Contributor bisa semua operasi backup kecuali menghapus vault dan memberi akses; Backup Operator sama tapi tidak bisa menghapus backup atau mengelola backup policy; Backup Reader hanya melihat.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-rbac-rs-vault"
     }
   ]
 }

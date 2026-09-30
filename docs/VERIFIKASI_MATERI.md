@@ -417,3 +417,31 @@ berikut. Sumber: `azure-monitor-docs/articles/azure-monitor`, `azure-docs/articl
 | NSG flow logs pensiun 30 September 2027, tidak bisa dibuat baru; ganti ke virtual network flow logs | Fakta rencana terkonfirmasi | include `network-watcher-nsg-flow-logs-retirement.md`, `vnet-flow-logs-overview.md` |
 
 Tidak ada fakta bertanda `verify`.
+
+### Unit 15: Backup dan pemulihan (30 September 2026)
+
+39 fakta, 22 kartu learn, 55 soal (52 examReady), 2 visual baru (`VaultTypes`, `SiteRecoveryFlow`). Fakta wajib
+dari rencana (daftar workload tiap vault) terkonfirmasi. Sumber: `azure-docs/articles/backup` dan
+`azure-docs/articles/site-recovery`.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Recovery Services vault: VM Azure, SQL di VM, Azure Files, SAP HANA di VM, agen MARS, MABS, DPM; juga dipakai Site Recovery. Backup vault: Azure Disks, Azure Blobs, PostgreSQL, Kubernetes | Fakta rencana terkonfirmasi; soal sort rencana | `backup-azure-backup-faq.yml` (17 Maret 2026), `backup-azure-recovery-services-vault-overview.md` |
+| FAQ masih menulis Kubernetes "(preview)", sementara halaman immutable vault (9 September 2026) mendaftar AKS sebagai workload Backup vault yang didukung | Materi hanya menyebut "Kubernetes", tanpa status preview | `backup-azure-backup-faq.yml`, `backup-azure-immutable-vault-concept.md` |
+| Backup dalam satu region: vault harus satu region dengan VM; VM dan vault boleh beda subscription dalam satu tenant; vault bisa pindah resource group atau subscription, tidak pindah region; data tidak bisa dipindah antar vault; maks. 100 VM per policy, 1.000 VM per vault | Diajarkan, termasuk kontras dengan Site Recovery | `backup-support-matrix.md` (25 Maret 2026), `backup-azure-arm-vms-prepare.md` |
+| Replikasi vault default GRS, pilihan LRS dan ZRS, hanya bisa diubah sebelum backup dikonfigurasi. Cross Region Restore hanya untuk vault GRS, restore ke paired region tanpa menunggu bencana dinyatakan, mendukung Create a VM dan Restore disk, tidak Replace existing | Diajarkan | `backup-create-recovery-services-vault.md` (10 Desember 2025), `backup-azure-arm-restore-vms.md` (27 Mei 2026) |
+| Soft delete: 14 hari tambahan tanpa biaya, bisa diatur 14–180 hari; vault dengan item soft delete tidak bisa dihapus | Soal fix (vault gagal dihapus) | `backup-azure-recovery-services-vault-overview.md` (10 November 2025), `backup-azure-enhanced-soft-delete-configure-manage.md`, `backup-azure-delete-vault.md` |
+| Immutable vault memblokir hapus data sebelum kedaluwarsa dan pengurangan retensi; tambah retensi dan stop protection sambil menyimpan data tetap boleh; locked tidak bisa dibatalkan | Diajarkan | `backup-azure-immutable-vault-concept.md` (9 September 2026) |
+| Policy default VM: sekali sehari, simpan 30 hari, snapshot instant restore 2 hari. Standard: jadwal harian atau mingguan, snapshot 1–5 hari. Enhanced: tiap 4/6/8/12/24 jam, snapshot 1–30 hari (default 7), Ultra Disk dan Premium SSD v2 hanya di Enhanced, tidak bisa kembali ke Standard | Soal config rencana (harian 30 hari + mingguan 12 minggu) | `backup-azure-arm-vms-prepare.md`, `backup-instant-restore-capability.md` (1 April 2026), `backup-azure-vms-enhanced-policy.md` (27 Februari 2026) |
+| Agen MARS: file, folder, system state Windows, sampai tiga kali sehari, Linux tidak didukung; MABS dan DPM menyimpan lokal lalu ke vault | Diajarkan | `backup-support-matrix.md` |
+| Pilihan restore: Create a new VM (region sama), Restore disk (plus template), Replace existing (VM harus masih ada, snapshot dulu). File Recovery: script (executable Windows, Python Linux), mount volume, Unmount disks, berlaku 12 jam, VM terenkripsi tidak didukung | Soal rencana (restore satu file tanpa restore VM) | `backup-azure-arm-restore-vms.md`, `backup-azure-restore-files-from-vm.md` (17 Maret 2026) |
+| Azure Files backup: tier snapshot dan vaulted; replikasi vault hanya berlaku untuk vaulted | Diajarkan | `azure-file-share-backup-overview.md` (17 Februari 2026) |
+| Site Recovery: vault di region mana pun kecuali region sumber; Mobility service extension; cache storage account di region sumber; hanya koneksi keluar; crash-consistent tiap 5 menit (tetap); app-consistent default mati; retensi default satu hari | Diajarkan | `azure-to-azure-architecture.md` (11 September 2026), `azure-to-azure-tutorial-enable-replication.md` (17 September 2026) |
+| Test failover ke VNet non-produksi lalu Cleanup; Latest processed (RTO rendah), Latest (RPO terendah), Latest app-consistent, Custom; Commit menghapus recovery point lain; Re-protect lalu failback; recovery plan maks. 100 instance | Soal order rencana (test failover, failover, commit, re-protect, failback) | `azure-to-azure-tutorial-dr-drill.md`, `azure-to-azure-tutorial-failover-failback.md` (11 September 2026), `recovery-plan-overview.md` |
+| Backup center kini hanya legacy: penggantinya Azure Business Continuity Center, yang di dokumentasi 2026 disebut **Resiliency** | Materi memakai "Resiliency" dan menyebut dua nama lamanya, karena soal ujian bisa memakai nama lama | `backup-center-overview.md` (25 Agustus 2026), include `backup-center-deprecation.md`, `monitoring-and-alerts-overview.md` |
+| Alert bawaan Azure Monitor: security alert (hapus data, soft delete dimatikan) tidak bisa dimatikan; alert job gagal aktif default dan bisa dimatikan; notifikasi lewat alert processing rule dan action group; classic alerts dihentikan 31 Maret 2026 | Soal rencana (email saat job gagal) | `monitoring-and-alerts-overview.md` (30 Januari 2026) |
+| Backup Reports: Log Analytics dan workbooks, diagnostic setting vault, data pertama sampai 24 jam, workspace boleh beda region dan subscription, retensi default 30 hari | Soal rencana (lihat semua job gagal minggu ini) memakai tampilan jobs di Resiliency; Backup Reports untuk tren jangka panjang | `configure-reports.md` (26 November 2025) |
+| Role Backup Contributor, Backup Operator (tanpa hapus backup dan kelola policy, tetap bisa restore), Backup Reader | Diajarkan | `backup-rbac-rs-vault.md` (30 April 2026) |
+
+Tidak ada fakta bertanda `verify`. `SAP` dan `HANA` ditambahkan ke daftar nama merek yang bukan singkatan; MARS,
+MABS, DPM, RPO, dan RTO ditambahkan ke glosarium.
