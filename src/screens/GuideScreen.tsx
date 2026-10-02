@@ -1,5 +1,7 @@
 import { BookOpen, ChevronLeft } from 'lucide-react'
+import { MissionCard, TipBox } from '../components/PracticeBlocks'
 import { cardsByLesson, findUnit, unitNumber } from '../content/course'
+import { missionFor, tipFor } from '../content/practice'
 import { TeachingCardContent } from '../lesson/TeachingCardContent'
 import { Unavailable } from '../lesson/LessonScreen'
 import { leaveFlow } from '../lib/router'
@@ -14,6 +16,7 @@ export function GuideScreen({ unitId }: { unitId: string }) {
   if (!unit) return <Unavailable title="Unit ini tidak ditemukan" body="Buka panduan dari kartu unit di home." />
   const sections = cardsByLesson(unit)
   const cardCount = sections.reduce((n, s) => n + s.cards.length, 0)
+  const mission = missionFor(unit.id)
 
   return (
     <div className="min-h-dvh">
@@ -42,6 +45,7 @@ export function GuideScreen({ unitId }: { unitId: string }) {
           {cardCount > 0
             ? `Ringkasan materi dari semua lesson di unit ini (${cardCount} kartu), urut sesuai lesson. Materinya sama dengan kartu di dalam lesson.`
             : 'Materi unit ini sedang disiapkan.'}
+          {mission && ' Setiap lesson punya tips "Coba di Azure", dan misi unit ada di akhir panduan.'}
         </p>
         {sections.map(({ lesson, cards }, i) =>
           cards.length === 0 ? null : (
@@ -55,10 +59,12 @@ export function GuideScreen({ unitId }: { unitId: string }) {
                     <TeachingCardContent card={card} titleId={`guide-${card.id}`} heading="h3" />
                   </article>
                 ))}
+                {tipFor(lesson.id) && <TipBox tip={tipFor(lesson.id)!} />}
               </div>
             </section>
           ),
         )}
+        {mission && <MissionCard mission={mission} titleId={`mission-${unit.id}`} />}
       </main>
     </div>
   )

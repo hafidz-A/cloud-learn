@@ -121,6 +121,9 @@ Setiap fakta di file unit punya `source`. Kalimatnya dicocokkan dengan file Mark
 dialihkan). Soal dan jawabannya dibaca ulang satu per satu: jawaban benar harus didukung fakta, dan setiap pengecoh harus
 bisa disingkirkan dengan fakta yang sudah diajarkan sebelumnya.
 
+**Total (30 September 2026):** 15 unit, 548 fakta, 245 kartu materi, 662 soal (597 examReady), ditambah 6 studi kasus
+(30 soal) dan 72 tips serta 15 misi unit. Satu fakta masih bertanda `verify` (lisensi group-based licensing di Unit 1, lihat catatan Unit 1). Rincian per unit ada di bawah.
+
 ### Unit 1: User dan group di Microsoft Entra ID (30 September 2026)
 
 48 fakta, 22 kartu learn, 53 soal (44 examReady), 4 visual (`EntraObjects`, `GroupTypes`, `LicenseFlow`, `SsprLicensing`).

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button } from '../components/Button'
 import { Mascot } from '../components/Mascot'
 import { courseOf, findLesson, hasContent, type LessonRef } from '../content/course'
+import { tipFor } from '../content/practice'
 import { formatDuration } from '../lib/date'
 import { leaveFlow } from '../lib/router'
 import { summarizeLesson, XP_FLAWLESS_BONUS } from '../lib/scoring'
@@ -51,6 +52,7 @@ function LessonRun({ lessonRef }: { lessonRef: LessonRef }) {
             ? `Tanpa kesalahan! Termasuk bonus +${XP_FLAWLESS_BONUS} XP.`
             : `${s.correct} dari ${s.total} soal benar di percobaan pertama.`,
           primary: { label: 'Lanjut', onClick: () => leaveFlow() },
+          tip: tipFor(lesson.id),
         }
       }}
     />

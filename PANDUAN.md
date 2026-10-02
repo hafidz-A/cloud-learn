@@ -133,6 +133,13 @@ dalam 100 menit yang ditutup satu studi kasus. Indikator **Siap ujian** memakai 
   (Overview, Existing environment, Requirements), soalnya lewat tab **Soal**. Seperti ujian asli, setelah
   kamu lanjut ke studi kasus, soal di bagian sebelumnya terkunci, jadi periksa dulu soal yang ditandai.
   Soal studi kasus yang salah juga masuk Latihan, lengkap dengan skenarionya.
+- **Placement test AZ-104 (opsional)**: 30 soal, 2 dari setiap unit, ditawarkan di home sebelum lesson AZ-104
+  pertama. Unit yang skornya minimal 80% boleh ditandai selesai. Jawabannya tidak masuk statistik maupun Latihan.
+- **Coba di Azure dan misi unit (AZ-104)**: setiap lesson AZ-104 punya satu tips praktik di layar selesai lesson
+  dan di Panduan unit. Di akhir Panduan unit ada misi 20–40 menit yang menggabungkan semua lesson unit itu.
+  Label **Hati-hati biaya** menandai yang bisa memakan biaya (Bastion selain SKU Developer, Standard Load
+  Balancer, Site Recovery, tier App Service berbayar, lisensi Microsoft Entra ID P1/P2). Buat resource misi di
+  satu resource group dan hapus setelah selesai.
 - **Statistik**: XP 7 hari terakhir, penguasaan per unit, dan per konsep (yang paling lemah di atas).
 - **Keyboard di PC**: **Enter** untuk Lanjut dan Periksa, angka **1–4** untuk memilih jawaban,
   panah **→** (Benar) dan **←** (Salah) di kartu benar/salah, **Esc** untuk menutup panel di lesson. Di Ujian, panah

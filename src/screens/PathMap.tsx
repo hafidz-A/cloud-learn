@@ -275,6 +275,8 @@ export function PathMap({ course }: { course: CourseId }) {
 
   useEffect(() => {
     // Open on the next lesson, or on the last finished one when nothing is next.
+    // The AZ-104 placement card above the map stays in view while it asks for a choice.
+    if (document.querySelector('[data-placement]')) return
     const target =
       document.querySelector('[data-node-state="active"]') ??
       [...document.querySelectorAll('[data-node-state="done"]')].at(-1)

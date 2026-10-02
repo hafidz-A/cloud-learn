@@ -3,6 +3,8 @@ import { animate, motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useState, type ReactNode } from 'react'
 import { Button } from '../components/Button'
 import { Mascot, type Mood } from '../components/Mascot'
+import { TipBox } from '../components/PracticeBlocks'
+import type { PracticeTip } from '../content/practice'
 import { LessonFooter } from './LessonFooter'
 
 const CONFETTI_COLORS = ['var(--color-matahari)', 'var(--color-biru)', 'var(--color-mint)', 'var(--color-koral)']
@@ -50,10 +52,12 @@ export type RunCompleteProps = {
   note: string
   primary: { label: string; onClick: () => void }
   secondary?: { label: string; onClick: () => void }
+  /** AZ-104 lessons: what to try in a real subscription (LANGIT_AZ104_PLAN.md section 8). */
+  tip?: PracticeTip
 }
 
 /** Finish screen for lessons, practice, and checkpoints. */
-export function RunComplete({ heading, subtitle, mood, celebrate, xp, stats, note, primary, secondary }: RunCompleteProps) {
+export function RunComplete({ heading, subtitle, mood, celebrate, xp, stats, note, primary, secondary, tip }: RunCompleteProps) {
   const reduceMotion = useReducedMotion()
   const [xpShown, setXpShown] = useState(reduceMotion || !celebrate ? xp : 0)
 
@@ -101,6 +105,7 @@ export function RunComplete({ heading, subtitle, mood, celebrate, xp, stats, not
       </div>
 
       <p className="mt-6 text-15 text-tinta-lembut">{note}</p>
+      {tip && <TipBox tip={tip} className="mt-5 w-full max-w-[440px]" />}
 
       <LessonFooter>
         <Button block autoFocus onClick={primary.onClick}>

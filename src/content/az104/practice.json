@@ -1,0 +1,504 @@
+{
+  "units": {
+    "az104-u01-identity": {
+      "mission": {
+        "title": "Tim Sales dan tamu partner",
+        "minutes": 30,
+        "goal": "Siapkan user, group, dan akses tamu untuk tim Sales, lalu buktikan keanggotaan group berubah otomatis.",
+        "steps": [
+          "Buat tiga user uji; isi Department dua di antaranya dengan Sales dan isi usage location.",
+          "Buat security group Dynamic user dengan aturan user.department -eq \"Sales\".",
+          "Ubah Department user ketiga menjadi Sales, lalu tunggu keanggotaan group ikut berubah.",
+          "Undang akun email pribadimu sebagai guest, lalu atur Guest user access ke limited access.",
+          "Aktifkan SSPR (Self-Service Password Reset) untuk group Sales saja."
+        ],
+        "check": "Group Sales berisi tiga user tanpa ditambah manual, dan akun guest tidak bisa melihat daftar user.",
+        "cleanup": "Hapus user uji dan akun guest. Dynamic group dan SSPR butuh lisensi Microsoft Entra ID P1; hentikan trial kalau tidak dipakai.",
+        "careful": true
+      },
+      "tips": {
+        "az104-u01-l1": {
+          "text": "Di Microsoft Entra admin center, buat user baru dengan Account enabled tidak dicentang. Hapus user itu, lalu restore dari Deleted users dan cek semua propertinya kembali."
+        },
+        "az104-u01-l2": {
+          "text": "Buat security group Assigned berisi dua user, lalu coba buat group Dynamic user dengan aturan user.department -eq \"Sales\". Dynamic group butuh lisensi Microsoft Entra ID P1; tanpa lisensi, cukup lihat pilihannya.",
+          "careful": true
+        },
+        "az104-u01-l3": {
+          "text": "Buka Microsoft 365 admin center > Billing > Licenses dan lihat usage location seorang user. Assign lisensi hanya kalau kamu punya langganan atau trial.",
+          "careful": true
+        },
+        "az104-u01-l4": {
+          "text": "Undang akun email pribadimu lewat New user > Invite external user. Sebelum undangan diterima, lihat User type Guest dan Invitation state Pending acceptance."
+        },
+        "az104-u01-l5": {
+          "text": "Set Self service password reset enabled ke Selected untuk satu group uji, lalu login sebagai anggotanya dan daftarkan metode autentikasi. Reset untuk user cloud-only butuh Microsoft Entra ID P1 atau P2.",
+          "careful": true
+        }
+      }
+    },
+    "az104-u02-rbac": {
+      "mission": {
+        "title": "Akses bertingkat untuk tim proyek",
+        "minutes": 25,
+        "goal": "Beri akses secukupnya di scope tersempit, lalu buktikan izin setiap orang lewat Check access.",
+        "steps": [
+          "Buat resource group rg-proyek dan satu storage account kosong di dalamnya.",
+          "Buat security group tim-vm dan beri role Virtual Machine Contributor di rg-proyek.",
+          "Beri akun uji role Reader di subscription lewat az role assignment create.",
+          "Masukkan akun uji ke tim-vm.",
+          "Pakai Check access untuk melihat role akun uji di rg-proyek."
+        ],
+        "check": "Check access menampilkan Reader (inherited dari subscription) dan Virtual Machine Contributor lewat group, dan akun uji tidak bisa mengubah virtual network.",
+        "cleanup": "Hapus role assignment dan group uji, lalu hapus rg-proyek."
+      },
+      "tips": {
+        "az104-u02-l1": {
+          "text": "Beri akun uji role Reader di satu resource group, lalu login dengan akun itu dan coba buat storage account di sana: portal menolaknya."
+        },
+        "az104-u02-l2": {
+          "text": "Beri role di resource group, lalu buka satu resource di dalamnya. Di tab Role assignments, kolom Scope menunjukkan (Inherited). Ulangi dengan az role assignment create --assignee --role --scope."
+        },
+        "az104-u02-l3": {
+          "text": "Pakai Access control (IAM) > Check access untuk akun uji, dan bandingkan dengan role yang kamu berikan di scope induk."
+        },
+        "az104-u02-l4": {
+          "text": "Bandingkan daftar role di Microsoft Entra ID > Roles and administrators dengan daftar role di Access control (IAM) sebuah subscription."
+        }
+      }
+    },
+    "az104-u03-governance": {
+      "mission": {
+        "title": "Pagar untuk lingkungan uji",
+        "minutes": 35,
+        "goal": "Pasang aturan region, tag, dan lock di resource group uji, lalu perbaiki resource lama dengan remediation.",
+        "steps": [
+          "Buat resource group rg-gov dengan tag CostCenter, dan satu storage account tanpa tag.",
+          "Assign Allowed locations ke rg-gov dengan enforcement Disabled, cek compliance, lalu aktifkan enforcement.",
+          "Assign policy Inherit a tag from the resource group if missing, lalu buat remediation task untuk storage account lama.",
+          "Pasang Delete lock di rg-gov dan coba hapus storage account-nya.",
+          "Buat budget bulanan dengan alert forecast untuk subscription latihan."
+        ],
+        "check": "Resource di region lain ditolak, storage account lama mendapat tag CostCenter, dan penghapusan diblokir lock.",
+        "cleanup": "Hapus lock, policy assignment, dan budget uji, lalu hapus rg-gov."
+      },
+      "tips": {
+        "az104-u03-l1": {
+          "text": "Assign policy bawaan Allowed locations ke resource group uji dengan Policy enforcement Disabled, lalu lihat hasil compliance-nya tanpa memblokir siapa pun."
+        },
+        "az104-u03-l2": {
+          "text": "Assign policy bawaan yang mewajibkan tag dengan effect deny, lalu coba buat resource tanpa tag itu: request-nya ditolak."
+        },
+        "az104-u03-l3": {
+          "text": "Pasang Delete lock di resource group uji, lalu coba hapus resource group itu: penghapusan gagal. Lepas lock sebelum membersihkan."
+        },
+        "az104-u03-l4": {
+          "text": "Pindahkan storage account kosong ke resource group lain, lalu bandingkan resource ID (identifier) sebelum dan sesudahnya."
+        },
+        "az104-u03-l5": {
+          "text": "Buat budget kecil di Cost Management untuk subscription latihanmu dengan threshold forecast, supaya kamu diberi tahu kalau biaya latihan membengkak."
+        }
+      }
+    },
+    "az104-u04-virtual-networks": {
+      "mission": {
+        "title": "Hub-and-spoke mini",
+        "minutes": 35,
+        "goal": "Hubungkan dua VNet (virtual network), belokkan rute, lalu buktikan jalurnya dengan Network Watcher.",
+        "steps": [
+          "Buat vnet-hub 10.0.0.0/16 dan vnet-spoke 10.1.0.0/16, masing-masing dengan satu subnet.",
+          "Buat peering dari kedua arah dan tunggu statusnya Connected.",
+          "Buat satu VM (virtual machine) kecil di vnet-spoke tanpa public IP (Internet Protocol).",
+          "Buat route table dengan route 0.0.0.0/0 ke next hop None dan associate ke subnet VM.",
+          "Jalankan Next hop dari VM ke 8.8.8.8, lalu hapus route itu dan jalankan lagi."
+        ],
+        "check": "Next hop menunjukkan None saat route aktif, lalu Internet setelah route dihapus.",
+        "cleanup": "Hapus resource group misi. VM ditagih selama berjalan, jadi hentikan atau hapus segera."
+      },
+      "tips": {
+        "az104-u04-l1": {
+          "text": "Buat VNet (virtual network) 10.10.0.0/16 dengan satu subnet /24 dan satu /27, lalu lihat jumlah alamat yang tersedia di setiap subnet: 251 dan 27."
+        },
+        "az104-u04-l2": {
+          "text": "Buat public IP (Internet Protocol) Standard dan perhatikan alokasinya selalu Static. Hapus setelah selesai, karena public IP ditagih selama ada."
+        },
+        "az104-u04-l3": {
+          "text": "Buat dua VNet (virtual network) dengan address space berbeda, lalu buat peering dari satu sisi saja: statusnya Initiated sampai link sisi lain dibuat."
+        },
+        "az104-u04-l4": {
+          "text": "Buat route table dengan route 0.0.0.0/0 ke next hop None, associate ke subnet VM (virtual machine) uji, lalu cek dengan Next hop di Network Watcher."
+        },
+        "az104-u04-l5": {
+          "text": "Dengan satu VM (virtual machine) uji, jalankan IP (Internet Protocol) flow verify untuk port 3389 dari internet, lalu Next hop ke alamat internet seperti 8.8.8.8."
+        }
+      }
+    },
+    "az104-u05-secure-access": {
+      "mission": {
+        "title": "Web tier dan database tier",
+        "minutes": 40,
+        "goal": "Buat VNet (virtual network) dengan dua subnet, pasang NSG (network security group) dan ASG (application security group), lalu buktikan web tier bisa menjangkau database tier sedangkan internet tidak.",
+        "steps": [
+          "Buat VNet dengan subnet web dan subnet db, lalu satu VM (virtual machine) kecil di masing-masing, tanpa public IP (Internet Protocol).",
+          "Buat asg-web dan asg-db, lalu masukkan network interface setiap VM ke ASG-nya.",
+          "Di NSG subnet db, izinkan port database dari asg-web ke asg-db dengan prioritas 100, lalu tolak semua sumber lain ke asg-db dengan prioritas 200.",
+          "Masuk ke VM web lewat Bastion SKU (stock-keeping unit) Developer.",
+          "Jalankan IP flow verify dari internet dan dari VM web ke VM db."
+        ],
+        "check": "IP flow verify: dari VM web ke port database Access allowed, dari internet Access denied oleh aturan yang kamu buat.",
+        "cleanup": "Hapus resource group misi. Kalau Bastion Developer tidak tersedia di region-mu, SKU lain ditagih per jam, jadi kerjakan cepat lalu hapus."
+      },
+      "tips": {
+        "az104-u05-l1": {
+          "text": "Buat NSG (network security group), tambahkan aturan allow TCP (Transmission Control Protocol) 443 dengan prioritas 200, lalu lihat aturan default 65000 sampai 65500 yang tidak bisa dihapus."
+        },
+        "az104-u05-l2": {
+          "text": "Pasang NSG (network security group) di subnet dan satu lagi di network interface VM (virtual machine) uji, lalu buka Effective security rules untuk melihat gabungan aturannya."
+        },
+        "az104-u05-l3": {
+          "text": "Buat dua ASG (application security group), masukkan network interface VM (virtual machine) ke masing-masing, lalu tulis aturan NSG (network security group) yang memakai nama ASG sebagai sumber dan tujuan."
+        },
+        "az104-u05-l4": {
+          "text": "Pakai Bastion SKU (stock-keeping unit) Developer (gratis, di region yang mendukung) untuk masuk ke VM (virtual machine) tanpa public IP (Internet Protocol). SKU Basic ke atas ditagih per jam; hapus segera setelah mencoba.",
+          "careful": true
+        },
+        "az104-u05-l5": {
+          "text": "Buat private endpoint untuk blob storage account uji dengan private DNS (Domain Name System) zone, lalu jalankan nslookup nama akunnya dari VM (virtual machine) di VNet (virtual network) itu: hasilnya IP (Internet Protocol) privat."
+        }
+      }
+    },
+    "az104-u06-dns-load-balancing": {
+      "mission": {
+        "title": "Web server yang seimbang",
+        "minutes": 40,
+        "goal": "Sebar trafik ke dua VM (virtual machine) di balik load balancer, lalu cari tahu kenapa probe gagal.",
+        "steps": [
+          "Buat private DNS (Domain Name System) zone dengan auto registration untuk VNet (virtual network) misi.",
+          "Buat dua VM web kecil dengan web server di port 80, tanpa public IP (Internet Protocol).",
+          "Buat Standard Load Balancer publik: backend pool berisi dua VM, health probe HTTP (Hypertext Transfer Protocol), dan rule port 80.",
+          "Buka alamat public IP load balancer beberapa kali.",
+          "Tambahkan aturan NSG (network security group) deny dari AzureLoadBalancer ke port 80 dengan prioritas 100, lihat Health Probe Status, lalu hapus aturannya."
+        ],
+        "check": "Kedua VM tercatat di private DNS zone, app terbuka lewat load balancer, dan Health Probe Status turun selama aturan deny ada.",
+        "cleanup": "Hapus resource group misi segera setelah selesai: Standard Load Balancer dan VM ditagih per jam.",
+        "careful": true
+      },
+      "tips": {
+        "az104-u06-l1": {
+          "text": "Buat DNS (Domain Name System) zone publik (tidak perlu membeli domain untuk mencoba), tambahkan record A dan CNAME (canonical name), lalu perhatikan record NS (name server) dan SOA (start of authority) yang dibuat otomatis."
+        },
+        "az104-u06-l2": {
+          "text": "Buat private DNS (Domain Name System) zone, link ke VNet (virtual network) dengan auto registration, lalu buat VM (virtual machine) di VNet itu: record A-nya muncul sendiri."
+        },
+        "az104-u06-l3": {
+          "text": "Buat Standard Load Balancer publik dengan dua VM (virtual machine) di backend pool, health probe HTTP (Hypertext Transfer Protocol), dan load-balancing rule port 80.",
+          "careful": true
+        },
+        "az104-u06-l4": {
+          "text": "Tambahkan aturan NSG (network security group) deny dengan prioritas 100 ke port probe, lalu lihat metrik Health Probe Status turun. Hapus aturan dan load balancer setelah selesai.",
+          "careful": true
+        }
+      }
+    },
+    "az104-u07-storage-accounts": {
+      "mission": {
+        "title": "Arsip media dua region",
+        "minutes": 35,
+        "goal": "Siapkan storage account yang tahan bencana region dan salin datanya ke akun lain secara otomatis.",
+        "steps": [
+          "Buat dua storage account general-purpose v2; ubah akun sumber ke RA-GRS (read-access geo-redundant storage).",
+          "Aktifkan versioning di kedua akun dan change feed di akun sumber.",
+          "Buat container sumber dan tujuan, lalu rule object replication di antara keduanya.",
+          "Upload folder berisi beberapa file ke container sumber dengan AzCopy.",
+          "Buka endpoint -secondary akun sumber untuk membaca data dari region kedua."
+        ],
+        "check": "File muncul di container tujuan tanpa disalin manual, dan endpoint -secondary bisa dibaca.",
+        "cleanup": "Hapus rule object replication, lalu hapus resource group misi."
+      },
+      "tips": {
+        "az104-u07-l1": {
+          "text": "Buat storage account Standard general-purpose v2 dengan nama unik huruf kecil, lalu lihat endpoint blob dan file-nya."
+        },
+        "az104-u07-l2": {
+          "text": "Ubah redundancy storage account uji dari LRS (locally redundant storage) ke GRS (geo-redundant storage), lalu lihat region kedua yang ditentukan otomatis."
+        },
+        "az104-u07-l3": {
+          "text": "Buat dua storage account, aktifkan versioning di keduanya dan change feed di akun sumber, lalu buat rule object replication dan upload blob uji."
+        },
+        "az104-u07-l4": {
+          "text": "Buka pengaturan enkripsi storage account: Microsoft-managed keys aktif secara default. Untuk mencoba customer-managed key, siapkan key vault dengan soft delete dan purge protection."
+        },
+        "az104-u07-l5": {
+          "text": "Pasang Storage Explorer dan login dengan Microsoft Entra ID. Beri dirimu Storage Blob Data Contributor, lalu upload folder dengan azcopy login dan azcopy copy --recursive."
+        }
+      }
+    },
+    "az104-u08-storage-access": {
+      "mission": {
+        "title": "Mengunci storage account",
+        "minutes": 35,
+        "goal": "Batasi siapa yang bisa masuk, dari mana, dan sampai kapan, lalu cabut akses yang bocor.",
+        "steps": [
+          "Buat storage account dan container data, lalu upload satu file.",
+          "Set Public network access ke Enabled from selected networks dan izinkan subnet VNet (virtual network) misi.",
+          "Buat stored access policy dan service SAS (shared access signature) yang merujuknya, lalu buka file lewat SAS dari jaringan yang diizinkan.",
+          "Hapus stored access policy dan buka URL (Uniform Resource Locator) itu lagi.",
+          "Set Allow storage account key access ke Disabled dan coba lagi dengan account key."
+        ],
+        "check": "SAS berhenti bekerja setelah policy dihapus, dan request dengan account key ditolak.",
+        "cleanup": "Hapus resource group misi."
+      },
+      "tips": {
+        "az104-u08-l1": {
+          "text": "Set Public network access ke Enabled from selected networks tanpa menambah IP (Internet Protocol)-mu, lalu coba buka container di portal: aksesnya ditolak. Tambahkan IP publikmu untuk membukanya lagi."
+        },
+        "az104-u08-l2": {
+          "text": "Buat user delegation SAS (shared access signature) untuk satu blob dengan izin read selama satu jam, lalu buka URL (Uniform Resource Locator)-nya di browser."
+        },
+        "az104-u08-l3": {
+          "text": "Buat stored access policy di container, buat service SAS (shared access signature) yang merujuk policy itu, lalu hapus policy-nya: URL (Uniform Resource Locator) SAS tidak berlaku lagi."
+        },
+        "az104-u08-l4": {
+          "text": "Rotasi access key sesuai urutannya: buat ulang key2, lalu key1, dan lihat SAS (shared access signature) yang ditandatangani key lama berhenti bekerja."
+        },
+        "az104-u08-l5": {
+          "text": "Buka file share di storage account uji dan lihat pengaturan akses berbasis identitasnya, lalu beri dirimu role Storage File Data SMB (Server Message Block) Share Reader."
+        }
+      }
+    },
+    "az104-u09-files-blobs": {
+      "mission": {
+        "title": "Siklus hidup data",
+        "minutes": 30,
+        "goal": "Atur tier, perlindungan, dan pemulihan untuk blob dan file share.",
+        "steps": [
+          "Buat container private, aktifkan blob soft delete 7 hari dan versioning.",
+          "Upload file, timpa isinya, lalu pulihkan versi lama.",
+          "Tambahkan lifecycle rule tierToCool dan delete berbasis hari sejak terakhir diubah.",
+          "Buat file share, ambil snapshot, hapus satu file, lalu pulihkan dari snapshot.",
+          "Ubah satu blob ke Archive, lalu salin ke blob baru di tier Hot untuk membacanya."
+        ],
+        "check": "Versi lama kembali, file share pulih dari snapshot, dan blob Archive terbaca lewat salinan Hot.",
+        "cleanup": "Hapus resource group misi. Blob Archive yang dihapus sebelum 180 hari kena biaya early deletion yang kecil."
+      },
+      "tips": {
+        "az104-u09-l1": {
+          "text": "Aktifkan Allow Blob anonymous access di storage account uji, set container ke level Blob, lalu buka URL (Uniform Resource Locator) sebuah blob tanpa login. Matikan lagi pengaturan akun itu: URL yang sama ditolak, apa pun level container-nya."
+        },
+        "az104-u09-l2": {
+          "text": "Upload blob kecil, ubah tier-nya ke Archive, lalu rehydrate ke Hot dengan priority Standard dan pantau statusnya."
+        },
+        "az104-u09-l3": {
+          "text": "Tambahkan lifecycle rule: pindah ke Cool 30 hari setelah terakhir diubah, hapus setelah 365 hari. Lihat JSON (JavaScript Object Notation)-nya di Code view."
+        },
+        "az104-u09-l4": {
+          "text": "Aktifkan blob soft delete dan versioning, timpa sebuah blob, lalu jadikan versi sebelumnya sebagai versi saat ini."
+        },
+        "az104-u09-l5": {
+          "text": "Buat share snapshot, hapus satu file di share, lalu pulihkan dari Snapshots dengan Restore dan Overwrite original file."
+        }
+      }
+    },
+    "az104-u10-arm-bicep": {
+      "mission": {
+        "title": "Infrastruktur sebagai kode",
+        "minutes": 35,
+        "goal": "Deploy lingkungan kecil dari Bicep, ubah dengan aman, lalu bandingkan dengan hasil export.",
+        "steps": [
+          "Tulis main.bicep berisi VNet (virtual network) dan storage account, dengan param untuk lokasi dan nama.",
+          "Pindahkan storage account ke module storage.bicep dan panggil dari main.bicep.",
+          "Buat main.dev.bicepparam, lalu deploy dengan az deployment group create.",
+          "Ubah satu properti, jalankan what-if, lalu deploy lagi.",
+          "Export resource group sebagai Bicep dan bandingkan dengan file buatanmu."
+        ],
+        "check": "What-if hanya menunjukkan Modify untuk properti yang kamu ubah, dan deployment kedua sukses.",
+        "cleanup": "Hapus resource group misi."
+      },
+      "tips": {
+        "az104-u10-l1": {
+          "text": "Deploy ARM (Azure Resource Manager) template storage account lewat Deploy a custom template di portal, lalu buka riwayat deployment resource group-nya."
+        },
+        "az104-u10-l2": {
+          "text": "Tulis main.bicep berisi satu storage account dengan param untuk nama, lalu deploy dengan az deployment group create --template-file main.bicep."
+        },
+        "az104-u10-l3": {
+          "text": "Ubah template yang sudah di-deploy, lalu jalankan az deployment group what-if dan baca daftar Create, Modify, dan NoChange."
+        },
+        "az104-u10-l4": {
+          "text": "Export template dari resource group uji, lalu ubah JSON (JavaScript Object Notation)-nya ke Bicep dengan az bicep decompile."
+        }
+      }
+    },
+    "az104-u11-virtual-machines": {
+      "mission": {
+        "title": "VM yang tahan gangguan",
+        "minutes": 40,
+        "goal": "Jalankan VM (virtual machine) yang tersebar di zone, terenkripsi di host, dan bisa bertambah sendiri.",
+        "steps": [
+          "Daftarkan fitur EncryptionAtHost di subscription.",
+          "Buat dua VM kecil di zone 1 dan zone 2 dengan encryption at host aktif.",
+          "Tambahkan data disk Standard SSD (solid-state drive) ke salah satu VM.",
+          "Resize satu VM, lalu perhatikan restart-nya.",
+          "Buat scale set Flexible dengan autoscale: minimum 1, maksimum 3, tambah satu instance kalau CPU (central processing unit) di atas 70% selama 10 menit."
+        ],
+        "check": "Kedua VM berjalan di zone berbeda, disk terenkripsi di host, dan scale set punya aturan autoscale.",
+        "cleanup": "Hapus resource group misi. VM dan scale set ditagih selama berjalan."
+      },
+      "tips": {
+        "az104-u11-l1": {
+          "text": "Buat VM (virtual machine) kecil, misalnya seri B, lalu lihat disk-nya: OS (operating system) disk, data disk yang kamu tambahkan, dan temporary disk di dalam OS (operating system). Stop VM saat tidak dipakai supaya deallocated."
+        },
+        "az104-u11-l2": {
+          "text": "Resize VM (virtual machine) uji lewat Availability + scale > Size, lalu perhatikan VM restart."
+        },
+        "az104-u11-l3": {
+          "text": "Daftarkan fitur EncryptionAtHost di subscription, lalu aktifkan encryption at host di VM (virtual machine) yang sudah di-deallocate."
+        },
+        "az104-u11-l4": {
+          "text": "Saat membuat VM (virtual machine), lihat pilihan availability zone dan availability set, lalu buat dua VM di zone yang berbeda."
+        },
+        "az104-u11-l5": {
+          "text": "Pindahkan VM (virtual machine) uji ke resource group lain bersama disk dan network interface-nya, lalu cek resource ID (identifier) barunya."
+        },
+        "az104-u11-l6": {
+          "text": "Buat scale set Flexible dengan dua instance dan aturan autoscale Percentage CPU (central processing unit), lalu lihat jumlah instance berubah."
+        }
+      }
+    },
+    "az104-u12-containers": {
+      "mission": {
+        "title": "Container dari build sampai jalan",
+        "minutes": 35,
+        "goal": "Bangun image di registry, jalankan sebagai job sekali jalan, lalu sebagai app yang scale sendiri.",
+        "steps": [
+          "Buat registry Basic dan jalankan az acr build untuk image aplikasi kecil.",
+          "Jalankan image itu di ACI (Azure Container Instances) dengan restart policy OnFailure.",
+          "Deploy image yang sama ke Container Apps dengan ingress external.",
+          "Tambahkan scale rule HTTP (Hypertext Transfer Protocol) dengan replica minimal 0 dan maksimal 3.",
+          "Kirim beberapa request dan lihat replica bertambah."
+        ],
+        "check": "Container ACI berjalan dan app Container Apps naik dari 0 replica saat ada trafik.",
+        "cleanup": "Hapus resource group misi, termasuk registry-nya."
+      },
+      "tips": {
+        "az104-u12-l1": {
+          "text": "Buat registry Basic, lalu jalankan az acr build dari folder berisi Dockerfile tanpa Docker di komputermu."
+        },
+        "az104-u12-l2": {
+          "text": "Jalankan image contoh dengan az container create --restart-policy OnFailure dan DNS (Domain Name System) name label, lalu buka alamatnya."
+        },
+        "az104-u12-l3": {
+          "text": "Deploy container app dengan ingress external dan replica minimal 0, lalu lihat jumlah replica turun ke 0 saat tidak ada trafik."
+        },
+        "az104-u12-l4": {
+          "text": "Jalankan image yang sama di ACI (Azure Container Instances) dan Container Apps, lalu catat mana yang bisa scale sendiri dan mana yang ditagih per detik."
+        }
+      }
+    },
+    "az104-u13-app-service": {
+      "mission": {
+        "title": "Rilis tanpa downtime",
+        "minutes": 35,
+        "goal": "Deploy web app ke slot staging, swap tanpa downtime, dan atur scale out otomatis.",
+        "steps": [
+          "Buat App Service plan Standard dan web app di dalamnya.",
+          "Buat slot staging dan app setting DB_NAME yang berbeda di setiap slot, ditandai sebagai deployment slot setting.",
+          "Deploy versi baru ke staging dan buka host name slot itu.",
+          "Swap staging ke production.",
+          "Tambahkan autoscale berbasis jadwal untuk jam kerja."
+        ],
+        "check": "Production menjalankan versi baru, DB_NAME di setiap slot tidak ikut tertukar, dan aturan autoscale aktif.",
+        "cleanup": "Hapus resource group misi segera: tier Standard ditagih per instance selama plan ada.",
+        "careful": true
+      },
+      "tips": {
+        "az104-u13-l1": {
+          "text": "Buat App Service plan Free (F1), lalu lihat fitur yang tidak tersedia di tier itu, misalnya scale out dan deployment slot."
+        },
+        "az104-u13-l2": {
+          "text": "Di plan Basic, scale out manual ke dua instance. Autoscale berbasis aturan baru tersedia di Standard.",
+          "careful": true
+        },
+        "az104-u13-l3": {
+          "text": "Kalau punya domain, tambahkan custom domain dengan CNAME (canonical name) dan TXT (text) asuid ke app di tier Basic ke atas, lalu buat App Service Managed Certificate.",
+          "careful": true
+        },
+        "az104-u13-l4": {
+          "text": "Tambahkan access restriction yang hanya mengizinkan IP (Internet Protocol) publikmu, lalu buka app dari jaringan lain, misalnya data seluler: hasilnya 403."
+        },
+        "az104-u13-l5": {
+          "text": "Di plan Standard, buat slot staging, tandai satu app setting sebagai deployment slot setting, lalu swap dan lihat setting itu tetap di slot-nya.",
+          "careful": true
+        }
+      }
+    },
+    "az104-u14-monitor": {
+      "mission": {
+        "title": "Pantau dan beri tahu",
+        "minutes": 40,
+        "goal": "Kumpulkan data dari VM (virtual machine), query dengan KQL (Kusto Query Language), dan dapat email saat ada masalah, kecuali saat maintenance.",
+        "steps": [
+          "Buat Log Analytics workspace dan diagnostic setting untuk activity log subscription.",
+          "Aktifkan monitoring VM uji dengan Azure Monitor Agent dan data collection rule yang mengirim ke workspace.",
+          "Tulis query KQL yang menghitung event per jam dengan bin(TimeGenerated, 1h).",
+          "Buat metric alert CPU (central processing unit) dengan action group email.",
+          "Buat alert processing rule berulang yang menekan notifikasi untuk jadwal maintenance."
+        ],
+        "check": "Query mengembalikan hitungan per jam, dan alert yang fired saat maintenance tetap tercatat tanpa mengirim email.",
+        "cleanup": "Hapus alert rule, action group, dan resource group misi. Data di workspace ditagih menurut jumlah yang masuk."
+      },
+      "tips": {
+        "az104-u14-l1": {
+          "text": "Buka Metrics untuk VM (virtual machine) uji, bandingkan agregasi Average dan Max untuk Percentage CPU (central processing unit), lalu ubah time granularity."
+        },
+        "az104-u14-l2": {
+          "text": "Buat diagnostic setting yang mengirim activity log subscription ke Log Analytics workspace, lalu buka tabel AzureActivity."
+        },
+        "az104-u14-l3": {
+          "text": "Di Log Analytics, jalankan AzureActivity | where TimeGenerated > ago(1d) | summarize count() by OperationNameValue."
+        },
+        "az104-u14-l4": {
+          "text": "Buat metric alert CPU (central processing unit) di atas 80% dengan action group email, lalu buat alert processing rule yang menekan notifikasinya pada jam tertentu."
+        },
+        "az104-u14-l5": {
+          "text": "Jalankan Connection troubleshoot dari VM (virtual machine) uji ke storage account-mu, lalu IP (Internet Protocol) flow verify untuk port 22."
+        }
+      }
+    },
+    "az104-u15-backup": {
+      "mission": {
+        "title": "Backup dan DR drill",
+        "minutes": 40,
+        "goal": "Lindungi VM (virtual machine) dengan backup dan replikasi, lalu buktikan keduanya bisa dipulihkan.",
+        "steps": [
+          "Buat Recovery Services vault di region VM uji dan aktifkan backup dengan policy default.",
+          "Jalankan Backup Now, lalu pulihkan satu file dengan File Recovery.",
+          "Buat vault kedua di region lain, lalu aktifkan replikasi VM dengan Site Recovery.",
+          "Jalankan Test failover ke VNet (virtual network) non-produksi, periksa VM uji, lalu Cleanup test failover.",
+          "Lihat Backup Jobs dan alert backup di Resiliency."
+        ],
+        "check": "File kembali dari recovery point, dan test failover membuat VM di region lain tanpa mengganggu VM asli.",
+        "cleanup": "Matikan replikasi, stop backup dengan delete data, lalu hapus resource group misi. Vault berisi data soft delete baru bisa dihapus setelah masa soft delete lewat.",
+        "careful": true
+      },
+      "tips": {
+        "az104-u15-l1": {
+          "text": "Buat Recovery Services vault di region yang sama dengan VM (virtual machine) uji, dan lihat pengaturan replikasi storage-nya di Properties sebelum backup pertama."
+        },
+        "az104-u15-l2": {
+          "text": "Buat backup policy VM (virtual machine) Standard harian, lalu bandingkan pilihannya dengan Enhanced policy yang bisa berjalan setiap beberapa jam."
+        },
+        "az104-u15-l3": {
+          "text": "Aktifkan backup VM (virtual machine) uji, jalankan Backup Now, lalu ambil satu file dengan File Recovery. Setelah data backup dihapus, vault baru bisa dihapus setelah masa soft delete lewat."
+        },
+        "az104-u15-l4": {
+          "text": "Aktifkan replikasi VM (virtual machine) uji ke region lain dengan Site Recovery, jalankan Test failover, lalu Cleanup test failover. Matikan replikasi setelah selesai.",
+          "careful": true
+        },
+        "az104-u15-l5": {
+          "text": "Buka Backup Jobs di vault dan filter status Failed, lalu lihat alert backup di Resiliency."
+        }
+      }
+    }
+  }
+}

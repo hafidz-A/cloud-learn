@@ -27,7 +27,7 @@ export function PlacementCard() {
 
   if (!placement) {
     return (
-      <section aria-labelledby="placement-title" className="mx-4 mt-4 rounded-2xl border-2 border-kabut bg-white p-4">
+      <section aria-labelledby="placement-title" className="mx-4 mt-4 rounded-2xl border-2 border-kabut bg-white p-4" data-placement>
         <h2 id="placement-title" className="flex items-center gap-2 font-display text-17 font-bold">
           <ClipboardList size={20} aria-hidden="true" />
           Placement test (opsional)
@@ -49,7 +49,7 @@ export function PlacementCard() {
 
   const toggle = (id: string) => setChosen((list) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]))
   return (
-    <section aria-labelledby="placement-title" className="mx-4 mt-4 rounded-2xl border-2 border-kabut bg-white p-4">
+    <section aria-labelledby="placement-title" className="mx-4 mt-4 rounded-2xl border-2 border-kabut bg-white p-4" data-placement>
       <h2 id="placement-title" className="font-display text-17 font-bold">
         Hasil placement test
       </h2>
