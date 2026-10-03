@@ -6,17 +6,480 @@
     {
       "id": "ccna-u21-l1",
       "title": "Cara kerja DNS",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u21-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "dns-purpose"
+          ],
+          "title": "Untuk apa DNS",
+          "body": "Manusia mengingat nama seperti www.contoh.id, sedangkan paket butuh alamat IP (Internet Protocol). DNS (Domain Name System) menerjemahkan nama ke alamat. Ruang namanya berbentuk pohon: root di puncak, lalu TLD (top-level domain) seperti .com dan .id, lalu domain di bawahnya. Setiap zona dilayani server authoritative yang memegang record aslinya.",
+          "keyPoints": [
+            "DNS: nama ke alamat IP",
+            "Pohon: root, TLD, domain",
+            "Server authoritative pegang record asli"
+          ],
+          "teaches": [
+            "ccna-f-u21-purpose",
+            "ccna-f-u21-hierarchy"
+          ]
+        },
+        {
+          "id": "ccna-u21-l1-e1",
+          "type": "choice",
+          "concept": "dns-purpose",
+          "prompt": "A user types www.contoh.id in a browser. What does the PC need DNS (Domain Name System) for?",
+          "options": [
+            "To learn the IP (Internet Protocol) address of www.contoh.id",
+            "To get its own IP (Internet Protocol) address",
+            "To find the MAC (Media Access Control) address of the gateway",
+            "To encrypt the web page"
+          ],
+          "answer": 0,
+          "explanation": "DNS (Domain Name System) menerjemahkan nama ke alamat IP (Internet Protocol). Alamat PC sendiri dari DHCP (Dynamic Host Configuration Protocol), dan MAC (Media Access Control) gateway dari ARP (Address Resolution Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-purpose"
+          ]
+        },
+        {
+          "id": "ccna-u21-l1-e2",
+          "type": "order",
+          "concept": "dns-purpose",
+          "prompt": "Order the parts of the name www.contoh.id from the top of the DNS (Domain Name System) tree down.",
+          "items": [
+            "Root (.)",
+            "id",
+            "contoh",
+            "www"
+          ],
+          "explanation": "Pohon DNS (Domain Name System) dibaca dari kanan: root, lalu TLD (top-level domain) id, domain contoh, dan nama host www.",
+          "requires": [
+            "ccna-f-u21-hierarchy"
+          ]
+        },
+        {
+          "id": "ccna-u21-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "dns-resolution"
+          ],
+          "title": "Resolver dan cache",
+          "body": "PC tidak bertanya ke semua server sendiri. PC mengirim query rekursif ke resolver, misalnya server DNS (Domain Name System) kantor atau ISP (Internet Service Provider). Resolver bertanya ke root, yang memberi rujukan ke server TLD (top-level domain), lalu ke server authoritative yang menjawab alamatnya. Resolver menyimpan jawaban di cache selama TTL (time to live), jadi query berikutnya lebih cepat.",
+          "keyPoints": [
+            "PC: query rekursif ke resolver",
+            "Resolver: root, TLD, authoritative",
+            "Cache selama TTL"
+          ],
+          "visual": "DnsResolve",
+          "teaches": [
+            "ccna-f-u21-recursive",
+            "ccna-f-u21-cache"
+          ]
+        },
+        {
+          "id": "ccna-u21-l1-e3",
+          "type": "choice",
+          "concept": "dns-resolution",
+          "prompt": "Which server finally provides the address record for www.contoh.id?",
+          "options": [
+            "The authoritative server for contoh.id",
+            "The root server",
+            "The TLD (top-level domain) server for .id",
+            "The default gateway"
+          ],
+          "answer": 0,
+          "explanation": "Root dan TLD (top-level domain) hanya memberi rujukan; record aslinya ada di server authoritative contoh.id.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-recursive",
+            "ccna-f-u21-hierarchy"
+          ]
+        },
+        {
+          "id": "ccna-u21-l1-e4",
+          "type": "truefalse",
+          "concept": "dns-resolution",
+          "prompt": "After a resolver caches an answer, it can answer the same name again without asking other servers until the TTL (time to live) expires.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Cache berlaku selama TTL (time to live) record itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-cache"
+          ]
+        },
+        {
+          "id": "ccna-u21-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "dns-transport"
+          ],
+          "title": "UDP atau TCP",
+          "body": "Query dan jawaban biasa memakai UDP (User Datagram Protocol) port 53 karena ringan. TCP (Transmission Control Protocol) port 53 dipakai untuk zone transfer antar server dan untuk jawaban yang terlalu besar untuk UDP. Jadi firewall yang hanya membuka UDP 53 bisa merusak sebagian layanan DNS (Domain Name System).",
+          "keyPoints": [
+            "Query biasa: UDP 53",
+            "Zone transfer: TCP 53",
+            "Jawaban besar: TCP 53"
+          ],
+          "teaches": [
+            "ccna-f-u21-tcp",
+            "ccna-f-u01-ports-udp"
+          ]
+        },
+        {
+          "id": "ccna-u21-l1-e5",
+          "type": "multi",
+          "concept": "dns-transport",
+          "prompt": "Which two statements about DNS (Domain Name System) transport are true? (Choose two.)",
+          "options": [
+            "Normal queries use UDP (User Datagram Protocol) port 53",
+            "Zone transfers use TCP (Transmission Control Protocol) port 53",
+            "DNS uses only TCP (Transmission Control Protocol) port 53",
+            "DNS uses UDP (User Datagram Protocol) port 67"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Query biasa memakai UDP (User Datagram Protocol) 53, zone transfer TCP (Transmission Control Protocol) 53. Port 67 milik DHCP (Dynamic Host Configuration Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-tcp",
+            "ccna-f-u01-ports-udp"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u21-l2",
       "title": "Jenis record",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u21-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "dns-records"
+          ],
+          "title": "Record alamat dan alias",
+          "body": "Record A memetakan nama ke alamat IPv4, dan record AAAA ke alamat IPv6. Record CNAME (canonical name) membuat alias: www.contoh.id bisa menjadi alias untuk web1.contoh.id, nama kanonisnya. Saat alamat server berubah, cukup ubah record A milik nama kanonis.",
+          "keyPoints": [
+            "A: IPv4",
+            "AAAA: IPv6",
+            "CNAME: alias"
+          ],
+          "visual": "DnsRecords",
+          "teaches": [
+            "ccna-f-u21-a",
+            "ccna-f-u21-aaaa",
+            "ccna-f-u21-cname"
+          ]
+        },
+        {
+          "id": "ccna-u21-l2-e1",
+          "type": "choice",
+          "concept": "dns-records",
+          "prompt": "Which record type maps a name to an IPv6 address?",
+          "options": [
+            "AAAA",
+            "A",
+            "PTR (pointer)",
+            "MX (mail exchange)"
+          ],
+          "answer": 0,
+          "explanation": "AAAA untuk IPv6, A untuk IPv4. PTR (pointer) untuk reverse lookup, dan MX (mail exchange) untuk mail.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-aaaa",
+            "ccna-f-u21-a"
+          ]
+        },
+        {
+          "id": "ccna-u21-l2-e2",
+          "type": "truefalse",
+          "concept": "dns-records",
+          "prompt": "A CNAME (canonical name) record maps a name directly to an IPv4 address.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. CNAME (canonical name) menunjuk ke nama lain; record A yang memetakan ke IPv4.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-cname",
+            "ccna-f-u21-a"
+          ]
+        },
+        {
+          "id": "ccna-u21-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "dns-records-2"
+          ],
+          "title": "Mail, server, dan reverse",
+          "body": "Record MX (mail exchange) menunjuk server mail untuk sebuah domain, dengan angka preference; angka lebih kecil lebih diutamakan. Record NS (name server) menunjuk name server authoritative untuk zona. Record PTR (pointer) dipakai untuk reverse lookup, dari alamat ke nama, dengan oktet dibalik di bawah in-addr.arpa. Record SOA (start of authority) ada di awal setiap zona dan berisi data pengelolaannya.",
+          "keyPoints": [
+            "MX: server mail",
+            "NS: name server zona",
+            "PTR: alamat ke nama"
+          ],
+          "teaches": [
+            "ccna-f-u21-mx",
+            "ccna-f-u21-ns",
+            "ccna-f-u21-ptr",
+            "ccna-f-u21-soa"
+          ]
+        },
+        {
+          "id": "ccna-u21-l2-e3",
+          "type": "match",
+          "concept": "dns-records-2",
+          "prompt": "Match each record type to its job.",
+          "pairs": [
+            [
+              "MX (mail exchange)",
+              "Mail server for the domain"
+            ],
+            [
+              "NS (name server)",
+              "Authoritative name server for the zone"
+            ],
+            [
+              "PTR (pointer)",
+              "Address back to a name"
+            ],
+            [
+              "CNAME (canonical name)",
+              "Alias for another name"
+            ],
+            [
+              "SOA (start of authority)",
+              "Start of a zone, with its serial number"
+            ]
+          ],
+          "explanation": "MX (mail exchange) untuk mail, NS (name server) untuk name server, PTR (pointer) untuk reverse lookup, CNAME (canonical name) untuk alias, dan SOA (start of authority) di awal zona.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-mx",
+            "ccna-f-u21-ns",
+            "ccna-f-u21-ptr",
+            "ccna-f-u21-cname",
+            "ccna-f-u21-soa"
+          ]
+        },
+        {
+          "id": "ccna-u21-l2-e4",
+          "type": "choice",
+          "concept": "dns-records-2",
+          "prompt": "contoh.id has two MX (mail exchange) records: preference 10 for mail1 and preference 20 for mail2. Which server do senders try first?",
+          "options": [
+            "mail1, because 10 is lower",
+            "mail2, because 20 is higher",
+            "Both at random every time",
+            "Neither, MX records only list backups"
+          ],
+          "answer": 0,
+          "explanation": "Angka preference lebih kecil lebih diutamakan, jadi mail1 dicoba dulu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-mx"
+          ]
+        },
+        {
+          "id": "ccna-u21-l2-e5",
+          "type": "choice",
+          "concept": "dns-records-2",
+          "prompt": "An administrator wants to know the name for 198.51.100.7. Which name does the reverse lookup query?",
+          "options": [
+            "7.100.51.198.in-addr.arpa",
+            "198.51.100.7.in-addr.arpa",
+            "in-addr.arpa.198.51.100.7",
+            "198-51-100-7.arpa"
+          ],
+          "answer": 0,
+          "explanation": "Untuk IPv4, oktet dibalik dan ditambah in-addr.arpa, lalu record PTR (pointer)-nya dicari.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-ptr"
+          ]
+        },
+        {
+          "id": "ccna-u21-l2-e6",
+          "type": "sort",
+          "concept": "dns-records",
+          "prompt": "Sort each record by what it maps a name to.",
+          "buckets": [
+            "An address",
+            "Another name"
+          ],
+          "items": [
+            {
+              "text": "A",
+              "bucket": 0
+            },
+            {
+              "text": "AAAA",
+              "bucket": 0
+            },
+            {
+              "text": "CNAME (canonical name)",
+              "bucket": 1
+            },
+            {
+              "text": "MX (mail exchange)",
+              "bucket": 1
+            },
+            {
+              "text": "NS (name server)",
+              "bucket": 1
+            }
+          ],
+          "explanation": "A dan AAAA berisi alamat. CNAME (canonical name), MX (mail exchange), dan NS (name server) berisi nama lain, yang lalu dicari alamatnya lewat record A atau AAAA.",
+          "requires": [
+            "ccna-f-u21-a",
+            "ccna-f-u21-aaaa",
+            "ccna-f-u21-cname",
+            "ccna-f-u21-mx",
+            "ccna-f-u21-ns"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u21-l3",
       "title": "Diagnosis masalah DNS",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u21-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "dns-diag"
+          ],
+          "title": "Jaringan atau DNS?",
+          "body": "Pengguna bilang situs tidak bisa dibuka. Ping dulu alamat IP (Internet Protocol)-nya. Kalau ping ke alamat berhasil tetapi ping ke nama gagal, jaringannya jalan dan masalahnya di resolusi nama. Lalu nslookup diikuti nama menunjukkan server DNS (Domain Name System) mana yang dipakai dan jawabannya.",
+          "keyPoints": [
+            "Ping alamat dulu, lalu nama",
+            "Alamat berhasil, nama gagal: DNS",
+            "nslookup menguji DNS langsung"
+          ],
+          "teaches": [
+            "ccna-f-u21-ip-not-name",
+            "ccna-f-u08-nslookup"
+          ]
+        },
+        {
+          "id": "ccna-u21-l3-e1",
+          "type": "choice",
+          "concept": "dns-diag",
+          "prompt": "From a PC, ping 198.51.100.7 succeeds but ping www.contoh.id fails with a message that the host cannot be found. Where is the problem most likely?",
+          "options": [
+            "Name resolution",
+            "The default gateway",
+            "The cable to the switch",
+            "The web server application"
+          ],
+          "answer": 0,
+          "explanation": "Alamat bisa dicapai, jadi jaringan dan gateway jalan; yang gagal adalah menerjemahkan nama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-ip-not-name"
+          ]
+        },
+        {
+          "id": "ccna-u21-l3-e2",
+          "type": "truefalse",
+          "concept": "dns-diag",
+          "prompt": "nslookup can show which DNS (Domain Name System) server answered and which address it returned.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Itulah gunanya nslookup untuk memisahkan masalah DNS (Domain Name System) dari masalah jaringan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-nslookup"
+          ]
+        },
+        {
+          "id": "ccna-u21-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "dns-client"
+          ],
+          "title": "Memeriksa sisi klien",
+          "body": "ipconfig /all di Windows menampilkan server DNS (Domain Name System) yang dipakai PC; server yang salah atau tidak bisa dihubungi sering jadi penyebab. Klien juga menyimpan jawaban di cache. ipconfig /displaydns menampilkan cache itu, dan ipconfig /flushdns mengosongkannya, misalnya setelah alamat server berubah.",
+          "keyPoints": [
+            "ipconfig /all: server DNS",
+            "ipconfig /displaydns: lihat cache",
+            "ipconfig /flushdns: kosongkan cache"
+          ],
+          "teaches": [
+            "ccna-f-u08-ipconfig-all",
+            "ccna-f-u21-flushdns",
+            "ccna-f-u21-cache"
+          ]
+        },
+        {
+          "id": "ccna-u21-l3-e3",
+          "type": "choice",
+          "concept": "dns-client",
+          "prompt": "A web server moved to a new address, and the DNS (Domain Name System) record is updated, but one Windows PC still connects to the old address. What should you try first on that PC?",
+          "options": [
+            "ipconfig /flushdns",
+            "ipconfig /release",
+            "arp -d",
+            "tracert to the old address"
+          ],
+          "answer": 0,
+          "explanation": "PC masih memakai jawaban lama dari cache; /flushdns mengosongkannya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-flushdns",
+            "ccna-f-u21-cache"
+          ]
+        },
+        {
+          "id": "ccna-u21-l3-e4",
+          "type": "exhibit",
+          "concept": "dns-client",
+          "prompt": "Refer to the exhibit. Users on this PC cannot open any website by name, but pinging addresses works. What is the most likely cause?",
+          "outputs": [
+            {
+              "title": "C:\\> ipconfig /all",
+              "text": "   IPv4 Address. . . . . . . . . . . : 192.168.1.10(Preferred)\n   Subnet Mask . . . . . . . . . . . : 255.255.255.0\n   Default Gateway . . . . . . . . . : 192.168.1.1\n   DHCP Enabled. . . . . . . . . . . : No\n   DNS Servers . . . . . . . . . . . : 192.168.1.10"
+            }
+          ],
+          "options": [
+            "The DNS (Domain Name System) server is set to the address of the PC itself",
+            "The default gateway is wrong",
+            "DHCP (Dynamic Host Configuration Protocol) is disabled",
+            "The subnet mask is wrong"
+          ],
+          "answer": 0,
+          "explanation": "Gateway dan mask wajar, dan ping ke alamat berhasil. Server DNS (Domain Name System) diisi 192.168.1.10, alamat PC itu sendiri, yang tidak menjalankan layanan DNS.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-ipconfig-all",
+            "ccna-f-u21-ip-not-name"
+          ]
+        },
+        {
+          "id": "ccna-u21-l3-e5",
+          "type": "multi",
+          "concept": "dns-client",
+          "prompt": "Which two commands help check name resolution on a Windows PC? (Choose two.)",
+          "options": [
+            "nslookup www.contoh.id",
+            "ipconfig /displaydns",
+            "arp -a",
+            "netstat -r"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "nslookup menguji server DNS (Domain Name System) langsung, dan /displaydns menampilkan cache DNS. arp -a dan netstat -r tidak menyangkut nama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-nslookup",
+            "ccna-f-u21-flushdns"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u21-l4",
@@ -25,8 +488,281 @@
         "kind": "support",
         "from": "ccna-u21-l3"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u21-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "ios-dns"
+          ],
+          "title": "DNS di IOS",
+          "body": "Router dan switch juga bisa memakai DNS (Domain Name System), misalnya untuk ping ke nama. ip domain lookup aktif secara bawaan. ip name-server diikuti alamat menentukan server DNS-nya, sampai enam server. ip host diikuti nama dan alamat membuat pemetaan statis di perangkat itu sendiri. ip domain name menentukan domain bawaan untuk nama yang tidak lengkap.",
+          "keyPoints": [
+            "ip domain lookup: aktif bawaan",
+            "ip name-server <alamat>",
+            "ip host <nama> <alamat>"
+          ],
+          "teaches": [
+            "ccna-f-u21-domain-lookup",
+            "ccna-f-u21-name-server",
+            "ccna-f-u21-ip-host",
+            "ccna-f-u21-domain-name"
+          ]
+        },
+        {
+          "id": "ccna-u21-l4-e1",
+          "type": "ios",
+          "concept": "ios-dns",
+          "prompt": "On R1, use 192.0.2.53 as the DNS (Domain Name System) server, set the default domain to kantor.local, and map the name srv1 to 192.168.1.20 locally.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "ip name-server 192.0.2.53"
+              },
+              {
+                "line": "ip domain name kantor.local"
+              },
+              {
+                "line": "ip host srv1 192.168.1.20"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip name-server 192.0.2.53",
+            "ip domain name kantor.local",
+            "ip host srv1 192.168.1.20",
+            "end"
+          ],
+          "explanation": "ip name-server menunjuk server DNS (Domain Name System), ip domain name menentukan domain bawaan, dan ip host membuat pemetaan statis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-name-server",
+            "ccna-f-u21-domain-name",
+            "ccna-f-u21-ip-host"
+          ]
+        },
+        {
+          "id": "ccna-u21-l4-e2",
+          "type": "choice",
+          "concept": "ios-dns",
+          "prompt": "Which command lets R1 resolve the name srv1 without any DNS (Domain Name System) server?",
+          "options": [
+            "ip host srv1 192.168.1.20",
+            "ip name-server 192.168.1.20",
+            "ip domain name srv1",
+            "ip domain lookup"
+          ],
+          "answer": 0,
+          "explanation": "ip host menyimpan pemetaan di router itu sendiri. Perintah lain bergantung pada server DNS (Domain Name System) atau hanya mengatur domain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-ip-host",
+            "ccna-f-u21-name-server"
+          ]
+        },
+        {
+          "id": "ccna-u21-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "ios-lookup"
+          ],
+          "title": "Salah ketik dan Translating",
+          "body": "Di EXEC, kata yang tidak dikenal dianggap nama host untuk Telnet. Karena ip domain lookup aktif, perangkat mencoba menerjemahkannya. Tanpa ip name-server, perangkat mengirim broadcast ke 255.255.255.255 dan menampilkan Translating sampai waktunya habis. Di lab, no ip domain lookup mematikannya supaya salah ketik tidak membuat menunggu.",
+          "keyPoints": [
+            "Salah ketik dianggap nama host",
+            "Tanpa server: broadcast 255.255.255.255",
+            "no ip domain lookup"
+          ],
+          "teaches": [
+            "ccna-f-u21-translating",
+            "ccna-f-u21-no-lookup",
+            "ccna-f-u21-domain-lookup"
+          ]
+        },
+        {
+          "id": "ccna-u21-l4-e3",
+          "type": "exhibit",
+          "concept": "ios-lookup",
+          "prompt": "Refer to the exhibit. Why does the router wait after this typing mistake?",
+          "outputs": [
+            {
+              "title": "R1# shwo",
+              "text": "Translating \"shwo\"...domain server (255.255.255.255)\n% Unknown command or computer name, or unable to find computer address"
+            }
+          ],
+          "options": [
+            "It treats the word as a host name and tries to resolve it with DNS (Domain Name System)",
+            "It is downloading a new IOS image",
+            "The console cable is faulty",
+            "It is generating RSA (Rivest-Shamir-Adleman) keys"
+          ],
+          "answer": 0,
+          "explanation": "Kata yang tidak dikenal dianggap nama host, dan tanpa ip name-server perangkat mengirim broadcast DNS (Domain Name System) sampai waktunya habis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-translating"
+          ]
+        },
+        {
+          "id": "ccna-u21-l4-e4",
+          "type": "ios",
+          "concept": "ios-lookup",
+          "prompt": "Stop R1 from trying to resolve mistyped commands as host names.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "no ip domain lookup"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "no ip domain lookup",
+            "end"
+          ],
+          "explanation": "no ip domain lookup mematikan resolusi DNS (Domain Name System) di perangkat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-no-lookup"
+          ]
+        },
+        {
+          "id": "ccna-u21-l4-e5",
+          "type": "truefalse",
+          "concept": "ios-lookup",
+          "prompt": "ip domain lookup is disabled by default on Cisco IOS.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. ip domain lookup aktif secara bawaan; karena itu salah ketik memicu Translating.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-domain-lookup"
+          ]
+        },
+        {
+          "id": "ccna-u21-l4-e6",
+          "type": "truefalse",
+          "concept": "ios-dns",
+          "prompt": "A router can use up to six DNS (Domain Name System) servers configured with ip name-server.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar menurut panduan konfigurasi DNS (Domain Name System) Cisco.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u21-name-server"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u21-purpose",
+      "statement": "DNS menerjemahkan nama domain seperti www.contoh.id menjadi alamat IP, sehingga pengguna tidak perlu menghafal alamat.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1034.html"
+    },
+    {
+      "id": "ccna-f-u21-hierarchy",
+      "statement": "Ruang nama DNS berbentuk pohon: root di puncak, lalu top-level domain seperti .com dan .id, lalu domain di bawahnya; setiap zona dilayani server authoritative.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1034.html"
+    },
+    {
+      "id": "ccna-f-u21-recursive",
+      "statement": "Klien biasanya mengirim query rekursif ke resolver, dan resolver mencari jawabannya sampai selesai dengan bertanya ke server root, TLD, lalu authoritative.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1034.html"
+    },
+    {
+      "id": "ccna-f-u21-cache",
+      "statement": "Resolver menyimpan jawaban di cache selama TTL (time to live) record itu, jadi query berikutnya untuk nama yang sama dijawab tanpa bertanya lagi.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1035.html"
+    },
+    {
+      "id": "ccna-f-u21-tcp",
+      "statement": "DNS biasa memakai UDP 53; TCP 53 dipakai untuk zone transfer dan jawaban yang terlalu besar untuk UDP.",
+      "source": "https://www.rfc-editor.org/rfc/rfc7766.html"
+    },
+    {
+      "id": "ccna-f-u21-a",
+      "statement": "Record A memetakan nama ke alamat IPv4.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1035.html"
+    },
+    {
+      "id": "ccna-f-u21-aaaa",
+      "statement": "Record AAAA memetakan nama ke alamat IPv6.",
+      "source": "https://www.rfc-editor.org/rfc/rfc3596.html"
+    },
+    {
+      "id": "ccna-f-u21-cname",
+      "statement": "Record CNAME menjadikan sebuah nama alias untuk nama lain, yaitu nama kanonisnya.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1035.html"
+    },
+    {
+      "id": "ccna-f-u21-mx",
+      "statement": "Record MX menunjuk server mail untuk sebuah domain, dengan angka preference; angka lebih kecil lebih diutamakan.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1035.html"
+    },
+    {
+      "id": "ccna-f-u21-ns",
+      "statement": "Record NS menunjuk name server authoritative untuk sebuah zona.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1035.html"
+    },
+    {
+      "id": "ccna-f-u21-ptr",
+      "statement": "Record PTR dipakai untuk reverse lookup, dari alamat ke nama; untuk IPv4, oktet alamat dibalik di bawah in-addr.arpa.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1035.html"
+    },
+    {
+      "id": "ccna-f-u21-soa",
+      "statement": "Record SOA ada di awal setiap zona dan berisi data pengelolaan zona, misalnya nomor serial.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1035.html"
+    },
+    {
+      "id": "ccna-f-u21-ip-not-name",
+      "statement": "Kalau ping ke alamat IP berhasil tetapi ping ke nama gagal, jaringannya jalan dan masalahnya ada di resolusi nama.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/domain-name-system-dns/24182-reversedns.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u21-flushdns",
+      "statement": "Di Windows, ipconfig /displaydns menampilkan cache DNS klien dan ipconfig /flushdns mengosongkannya.",
+      "source": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"
+    },
+    {
+      "id": "ccna-f-u21-domain-lookup",
+      "statement": "Di IOS, ip domain lookup aktif secara bawaan, jadi perangkat mencoba menerjemahkan nama dengan DNS.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_configuring_dns.html"
+    },
+    {
+      "id": "ccna-f-u21-name-server",
+      "statement": "ip name-server <alamat> menentukan server DNS yang dipakai perangkat; bisa sampai enam server.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_configuring_dns.html"
+    },
+    {
+      "id": "ccna-f-u21-ip-host",
+      "statement": "ip host <nama> <alamat> membuat pemetaan nama ke alamat secara statis di perangkat itu sendiri.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_configuring_dns.html"
+    },
+    {
+      "id": "ccna-f-u21-domain-name",
+      "statement": "ip domain name <domain> menentukan domain bawaan yang ditambahkan ke nama yang tidak lengkap.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_configuring_dns.html"
+    },
+    {
+      "id": "ccna-f-u21-translating",
+      "statement": "Perintah yang salah ketik di EXEC dianggap nama host untuk Telnet; tanpa ip name-server, perangkat mengirim broadcast ke 255.255.255.255 dan menampilkan Translating sampai waktunya habis.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/routers/10000-series-routers/46253-ipdomain-lookup.html"
+    },
+    {
+      "id": "ccna-f-u21-no-lookup",
+      "statement": "no ip domain lookup mematikan resolusi DNS di perangkat, sehingga salah ketik tidak lagi membuat perangkat menunggu.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/routers/10000-series-routers/46253-ipdomain-lookup.html"
+    }
+  ]
 }

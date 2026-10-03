@@ -186,6 +186,9 @@ export const VISUAL_CATALOG = {
   NatTerms: ['nat-terms'],
   NatTypes: ['nat-types'],
   PatPorts: ['pat'],
+  // Unit 21
+  DnsResolve: ['dns-resolution'],
+  DnsRecords: ['dns-records'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

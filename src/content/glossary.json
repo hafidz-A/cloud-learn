@@ -86,8 +86,8 @@
   },
   {
     "term": "CNAME",
-    "expansion": "Canonical Name",
-    "description": "Record DNS yang membuat satu nama menjadi alias untuk nama lain. Tidak bisa dipakai di apex zone."
+    "expansion": "canonical name",
+    "description": "Record DNS yang menjadikan nama alias untuk nama lain."
   },
   {
     "term": "CPU",
@@ -236,8 +236,8 @@
   },
   {
     "term": "MX",
-    "expansion": "Mail Exchange",
-    "description": "Record DNS yang menunjuk server email untuk sebuah domain."
+    "expansion": "mail exchange",
+    "description": "Record DNS yang menunjuk server mail sebuah domain."
   },
   {
     "term": "NAT",
@@ -256,8 +256,8 @@
   },
   {
     "term": "NS",
-    "expansion": "Name Server",
-    "description": "Record DNS berisi name server yang berwenang untuk sebuah zone. Dipakai untuk delegasi domain ke Azure DNS."
+    "expansion": "name server",
+    "description": "Record DNS yang menunjuk name server authoritative sebuah zona."
   },
   {
     "term": "NSG",
@@ -291,8 +291,8 @@
   },
   {
     "term": "PTR",
-    "expansion": "Pointer",
-    "description": "Record DNS untuk reverse lookup, dari alamat IP ke nama."
+    "expansion": "pointer",
+    "description": "Record DNS untuk reverse lookup, dari alamat ke nama."
   },
   {
     "term": "RA-GRS",
@@ -361,8 +361,8 @@
   },
   {
     "term": "SOA",
-    "expansion": "Start of Authority",
-    "description": "Record DNS di apex zone yang berisi informasi dasar zone. Di Azure DNS dibuat otomatis."
+    "expansion": "start of authority",
+    "description": "Record DNS di awal zona dengan data pengelolaannya."
   },
   {
     "term": "SOC",
@@ -411,8 +411,8 @@
   },
   {
     "term": "TTL",
-    "expansion": "Time to Live",
-    "description": "Berapa lama sebuah record DNS boleh disimpan di cache sebelum ditanyakan ulang."
+    "expansion": "time to live",
+    "description": "Di DNS: berapa lama jawaban boleh disimpan di cache. Di header IP: batas hop paket."
   },
   {
     "term": "TXT",
@@ -1106,5 +1106,15 @@
     "term": "PAT",
     "expansion": "Port Address Translation",
     "description": "NAT banyak ke satu yang membedakan sesi lewat nomor port; di IOS disebut overload."
+  },
+  {
+    "term": "TLD",
+    "expansion": "top-level domain",
+    "description": "Bagian paling kanan nama domain di bawah root, misalnya .com atau .id."
+  },
+  {
+    "term": "AAAA",
+    "expansion": "IPv6 address record",
+    "description": "Record DNS yang memetakan nama ke alamat IPv6."
   }
 ]
