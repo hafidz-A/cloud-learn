@@ -733,18 +733,18 @@
           "type": "fill",
           "concept": "rbac",
           "prompt": "Complete the sentence.",
-          "sentence": "RBAC (Role-Based Access Control) permissions assigned at a subscription are ___ by the resource groups and ___ inside it.",
+          "sentence": "A role assigned at a subscription is ___ by every resource group and resource in that subscription, because RBAC (Role-Based Access Control) permissions flow ___ through the scopes.",
           "bank": [
             "inherited",
-            "resources",
+            "down",
             "ignored",
-            "regions"
+            "up"
           ],
           "answers": [
             "inherited",
-            "resources"
+            "down"
           ],
-          "explanation": "Izin mengalir ke bawah: subscription, resource group, lalu resource.",
+          "explanation": "Role yang diberikan di subscription berlaku juga di semua resource group dan resource di dalamnya. Izin RBAC (Role-Based Access Control) mengalir ke bawah: management group, subscription, resource group, lalu resource.",
           "requires": [
             "f-u08-rbac-def"
           ]
