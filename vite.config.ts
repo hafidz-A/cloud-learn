@@ -45,7 +45,10 @@ export default defineConfig({
         codeSplitting: {
           groups: [
             { name: 'vendor', test: /node_modules/ },
+            // One file per course: each stays under the 2 MiB precache limit of the service worker.
             { name: 'content', test: /src[\\/]content[\\/](units|glossary)/ },
+            { name: 'content-az104', test: /src[\\/]content[\\/]az104[\\/]/ },
+            { name: 'content-ccna', test: /src[\\/]content[\\/]ccna[\\/]/ },
           ],
         },
       },
