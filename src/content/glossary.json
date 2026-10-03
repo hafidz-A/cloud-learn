@@ -458,5 +458,142 @@
     "term": "ZRS",
     "expansion": "Zone-Redundant Storage",
     "description": "Menyimpan 3 salinan data di 3 availability zone dalam satu region. Durability 12 nines."
+  },
+  {
+    "term": "LAN",
+    "expansion": "Local Area Network",
+    "description": "Jaringan di satu lokasi terbatas, misalnya satu gedung atau kantor."
+  },
+  {
+    "term": "WAN",
+    "expansion": "Wide Area Network",
+    "description": "Jaringan yang menghubungkan beberapa LAN yang berjauhan. Internet adalah WAN terbesar."
+  },
+  {
+    "term": "AP",
+    "expansion": "Access Point",
+    "description": "Perangkat yang memberi perangkat wireless akses ke jaringan."
+  },
+  {
+    "term": "WLC",
+    "expansion": "Wireless LAN Controller",
+    "description": "Controller yang mengatur konfigurasi dan firmware banyak access point lightweight sekaligus."
+  },
+  {
+    "term": "OSI",
+    "expansion": "Open Systems Interconnection",
+    "description": "Model jaringan tujuh layer, dari physical sampai application."
+  },
+  {
+    "term": "RFC",
+    "expansion": "Request for Comments",
+    "description": "Dokumen standar internet yang diterbitkan IETF, misalnya RFC 1918 untuk alamat privat."
+  },
+  {
+    "term": "MAC",
+    "expansion": "Media Access Control",
+    "description": "Alamat 48 bit milik setiap interface Ethernet, dipakai di layer 2."
+  },
+  {
+    "term": "OUI",
+    "expansion": "Organizationally Unique Identifier",
+    "description": "24 bit pertama MAC address, nomor yang diberikan IEEE kepada vendor."
+  },
+  {
+    "term": "IEEE",
+    "expansion": "Institute of Electrical and Electronics Engineers",
+    "description": "Organisasi yang membuat standar Ethernet (802.3) dan Wi-Fi (802.11)."
+  },
+  {
+    "term": "FCS",
+    "expansion": "Frame Check Sequence",
+    "description": "Empat byte di akhir frame Ethernet untuk mendeteksi frame yang rusak."
+  },
+  {
+    "term": "VLAN",
+    "expansion": "Virtual LAN",
+    "description": "Pembagian satu switch menjadi beberapa broadcast domain yang terpisah."
+  },
+  {
+    "term": "ARP",
+    "expansion": "Address Resolution Protocol",
+    "description": "Protokol yang mencari MAC address dari sebuah alamat IPv4 di jaringan lokal."
+  },
+  {
+    "term": "SYN",
+    "expansion": "Synchronize",
+    "description": "Pesan pertama three-way handshake TCP."
+  },
+  {
+    "term": "ACK",
+    "expansion": "Acknowledgment",
+    "description": "Tanda terima di TCP, juga pesan terakhir three-way handshake."
+  },
+  {
+    "term": "SYN-ACK",
+    "expansion": "Synchronize-Acknowledgment",
+    "description": "Pesan kedua three-way handshake TCP, dari server ke klien."
+  },
+  {
+    "term": "VoIP",
+    "expansion": "Voice over IP",
+    "description": "Percakapan suara yang dikirim lewat jaringan IP."
+  },
+  {
+    "term": "RTP",
+    "expansion": "Real-time Transport Protocol",
+    "description": "Protokol yang membawa suara dan video real-time di atas UDP."
+  },
+  {
+    "term": "FTP",
+    "expansion": "File Transfer Protocol",
+    "description": "Protokol transfer file lama di TCP port 20 dan 21, tanpa enkripsi."
+  },
+  {
+    "term": "TFTP",
+    "expansion": "Trivial File Transfer Protocol",
+    "description": "Transfer file sederhana di UDP port 69, tanpa autentikasi."
+  },
+  {
+    "term": "SMTP",
+    "expansion": "Simple Mail Transfer Protocol",
+    "description": "Protokol pengiriman email di TCP port 25."
+  },
+  {
+    "term": "NTP",
+    "expansion": "Network Time Protocol",
+    "description": "Protokol sinkronisasi jam di UDP port 123."
+  },
+  {
+    "term": "SNMP",
+    "expansion": "Simple Network Management Protocol",
+    "description": "Protokol untuk memantau dan mengelola perangkat jaringan, di UDP port 161 dan 162."
+  },
+  {
+    "term": "DHCP",
+    "expansion": "Dynamic Host Configuration Protocol",
+    "description": "Protokol yang memberi alamat IP, gateway, dan DNS ke host secara otomatis."
+  },
+  {
+    "term": "PDU",
+    "expansion": "Protocol Data Unit",
+    "description": "Nama unit data di setiap layer: segmen, paket, frame, bit."
+  },
+  {
+    "term": "IANA",
+    "expansion": "Internet Assigned Numbers Authority",
+    "description": "Lembaga yang mengelola nomor port, blok alamat IP, dan nomor protokol."
+  },
+  {
+    "term": "UDP",
+    "expansion": "User Datagram Protocol",
+    "description": "Protokol transport tanpa koneksi dan tanpa jaminan sampai. Dipakai DNS, DHCP, TFTP, SNMP, syslog, dan suara VoIP.",
+    "course": "ccna"
+  },
+  {
+    "term": "TCP",
+    "expansion": "Transmission Control Protocol",
+    "description": "Protokol transport berorientasi koneksi: three-way handshake, nomor urut, dan pengiriman ulang.",
+    "course": "ccna"
   }
 ]

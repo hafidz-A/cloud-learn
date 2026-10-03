@@ -98,6 +98,14 @@ export const VISUAL_CATALOG = {
   // Unit 15
   VaultTypes: ['vault-types'],
   SiteRecoveryFlow: ['failover-commit-reprotect'],
+
+  // CCNA (LANGIT_CCNA_PLAN.md section 6)
+  // Unit 1
+  OsiTcpIp: ['osi-model', 'tcpip-model'],
+  Encapsulation: ['encapsulation'],
+  SwitchLearning: ['mac-learning'],
+  ArpExchange: ['arp'],
+  TcpHandshake: ['tcp-handshake'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

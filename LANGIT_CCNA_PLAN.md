@@ -157,8 +157,8 @@ Di bawah node cabang ada label jenisnya, dan di atas peta ada legenda ikon.
 - Satu lesson batang berisi 2–4 kartu `learn` dan 6–10 soal. Lesson hands-on berisi 1–2 kartu `learn`, lalu
   3–6 soal (minimal 2 soal `ios`).
 - Setiap fakta punya `source` berupa URL dokumentasi resmi: `cisco.com`, `developer.cisco.com`,
-  `learningnetwork.cisco.com`, `netacad.com`, `rfc-editor.org`, `datatracker.ietf.org`, `ieee.org`,
-  `docs.ansible.com`, atau repo resmi Ansible di GitHub. Validator menolak fakta tanpa sumber seperti itu kecuali
+  `learningnetwork.cisco.com`, `netacad.com`, `rfc-editor.org`, `datatracker.ietf.org`, `iana.org` (nomor port),
+  `ieee.org`, `docs.ansible.com`, atau repo resmi Ansible di GitHub. Validator menolak fakta tanpa sumber seperti itu kecuali
   bertanda `verify: true`.
 - `verify: true` berarti fakta itu belum bisa dicocokkan ke sumbernya. Lihat bagian 10 untuk cara pengecekan yang
   dipakai dan batasannya.

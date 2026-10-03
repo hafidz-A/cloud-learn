@@ -57,7 +57,13 @@ const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet
  * names (AZ, P1, E3, the App Service Free plan F1), region names (East US), HTTP
  * methods (DELETE, POST), and the DNS record type AAAA.
  */
-const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA'])
+const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA', 'PC', 'IOS', 'XE', 'CCNA'])
+
+/**
+ * CCNA device and interface names (R1, SW2, PC1, SRV1, the "G0" of G0/0/0) are
+ * labels, not abbreviations. PC and Cisco IOS (XE) are product words used as names.
+ */
+const DEVICE_NAME = /^(R|SW|PC|SRV|S|G|F|E)\d+$/
 
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')
@@ -80,6 +86,13 @@ function initials(text: string): string {
  * Accepted forms: "NSG (Network Security Group)" or "Network Security Group (NSG)".
  * `expandedBy` lets a match pair like ["NSG", "Network Security Group"] count as expanded.
  */
+/** True when `at` is inside the parentheses that directly follow an abbreviation, which is its expansion. */
+function insideExpansion(text: string, at: number): boolean {
+  const open = text.lastIndexOf('(', at)
+  if (open < 0 || text.lastIndexOf(')', at) > open) return false
+  return /(^|[\s/])[A-Z][A-Za-z0-9]*[A-Z0-9](?:-[A-Z][A-Z0-9]+)*s?(\/[A-Z][A-Za-z0-9]*)*\s*$/.test(text.slice(0, open))
+}
+
 export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string> = new Set()): string[] {
   const seen = new Set<string>()
   const missing: string[] = []
@@ -88,12 +101,15 @@ export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string>
       const abbr = m[1]
       const start = m.index
       const end = start + m[0].length
-      if (seen.has(abbr) || NOT_ABBREVIATIONS.has(abbr) || expandedBy.has(abbr)) continue
+      if (seen.has(abbr) || NOT_ABBREVIATIONS.has(abbr) || DEVICE_NAME.test(abbr) || expandedBy.has(abbr)) continue
       // "Entra ID" is the product name, not an abbreviation to expand.
       if (abbr === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
-      seen.add(abbr)
-      const after = /^\s*\(/.test(text.slice(end))
+      // "TCP/IP (Transmission Control Protocol/Internet Protocol)" expands both parts at once.
+      const after = /^(\/[A-Z][A-Za-z0-9]*)*\s*\(/.test(text.slice(end))
       const inside = text[start - 1] === '(' && text[end] === ')'
+      // A bare word inside an expansion is part of an official name: "WLC (Wireless LAN Controller)".
+      if (!after && !inside && insideExpansion(text, start)) continue
+      seen.add(abbr)
       if (!after && !inside) missing.push(abbr)
     }
   }
@@ -551,7 +567,7 @@ export function abbreviationsIn(texts: string[]): Set<string> {
   for (const text of texts) {
     for (const m of text.matchAll(ABBREVIATION)) {
       const start = m.index
-      if (NOT_ABBREVIATIONS.has(m[1])) continue
+      if (NOT_ABBREVIATIONS.has(m[1]) || DEVICE_NAME.test(m[1])) continue
       if (m[1] === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
       found.add(m[1])
     }
@@ -582,11 +598,15 @@ function longRuns(lesson: Lesson): number {
   return longest > MAX_EXERCISE_RUN ? longest : 0
 }
 
-/** Per-course shape rules: AZ-104 (LANGIT_AZ104_PLAN.md sections 3-5) has 5 paths, 4-6 lessons, and 3-5 learn cards per lesson. */
-const COURSE_RULES: Record<CourseId, { prefix: string; paths: number; lessons: [number, number]; learnCards: [number, number] }> = {
-  az900: { prefix: '', paths: 3, lessons: [3, 5], learnCards: [2, 4] },
-  az104: { prefix: 'az104-', paths: 5, lessons: [4, 6], learnCards: [3, 5] },
-  ccna: { prefix: 'ccna-', paths: 5, lessons: [3, 9], learnCards: [1, 4] },
+/**
+ * Per-course shape rules: AZ-104 (LANGIT_AZ104_PLAN.md sections 3-5) has 5 paths, 4-6 lessons, and 3-5 learn
+ * cards per lesson. CCNA (LANGIT_CCNA_PLAN.md section 5) has shorter branch lessons: a hands-on lesson is a
+ * few long simulator tasks.
+ */
+const COURSE_RULES: Record<CourseId, { prefix: string; paths: number; lessons: [number, number]; learnCards: [number, number]; exercises: [number, number] }> = {
+  az900: { prefix: '', paths: 3, lessons: [3, 5], learnCards: [2, 4], exercises: [8, 12] },
+  az104: { prefix: 'az104-', paths: 5, lessons: [4, 6], learnCards: [3, 5], exercises: [8, 12] },
+  ccna: { prefix: 'ccna-', paths: 5, lessons: [3, 9], learnCards: [1, 4], exercises: [6, 12] },
 }
 
 export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[] {
@@ -638,12 +658,15 @@ export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[
       const exercises = lesson.items.filter((i): i is Exercise => i.type !== 'intro' && i.type !== 'learn' && !i.retired)
       const learnCards = lesson.items.filter((i) => i.type === 'learn').length
       const intros = lesson.items.filter((i) => i.type === 'intro').length
-      if (exercises.length < 8 || exercises.length > 12) warn(`lessons should have 8-12 exercises, found ${exercises.length}`)
+      const handson = lesson.branch?.kind === 'handson'
+      const [minEx, maxEx] = handson ? [3, 8] : rules.exercises
+      if (exercises.length < minEx || exercises.length > maxEx) warn(`lessons should have ${minEx}-${maxEx} exercises, found ${exercises.length}`)
       const [minCards, maxCards] = rules.learnCards
       if (reworked && (learnCards < minCards || learnCards > maxCards)) warn(`lessons should have ${minCards}-${maxCards} learn cards, found ${learnCards}`)
       if (!reworked && intros > 3) warn(`a lesson introduces at most 3 new concepts, found ${intros} intro cards`)
       const types = new Set(exercises.map((e) => e.type))
-      if (types.size < 4) warn(`lessons should use at least 4 exercise types, found ${types.size}`)
+      if (types.size < (handson ? 2 : 4)) warn(`lessons should use at least ${handson ? 2 : 4} exercise types, found ${types.size}`)
+      if (handson && exercises.filter((e) => e.type === 'ios').length < 2) warn('a hands-on lesson should have at least 2 ios exercises')
       const run = longRuns(lesson)
       if (run) warn(`${run} exercises in a row without a learn card between them`)
 

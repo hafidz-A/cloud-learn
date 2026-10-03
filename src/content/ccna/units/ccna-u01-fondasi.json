@@ -6,12 +6,477 @@
     {
       "id": "ccna-u01-l1",
       "title": "Komponen jaringan",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u01-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "network-devices"
+          ],
+          "title": "Switch, router, dan access point",
+          "body": "Jaringan kecil sekalipun punya tiga perangkat inti. Switch menghubungkan komputer, printer, dan server di satu jaringan lokal supaya bisa saling bertukar data. Router menghubungkan jaringan itu ke jaringan lain, termasuk internet, dan memilih jalur untuk trafiknya. Access point memberi laptop dan ponsel akses wireless ke jaringan yang sama.",
+          "keyPoints": [
+            "Switch: perangkat di satu jaringan lokal",
+            "Router: antar-jaringan dan ke internet",
+            "Access point: akses wireless"
+          ],
+          "example": "Di kantor cabang, PC dan printer masuk ke switch, switch tersambung ke router, dan router tersambung ke internet.",
+          "teaches": [
+            "ccna-f-u01-switch",
+            "ccna-f-u01-router",
+            "ccna-f-u01-ap"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-e1",
+          "type": "truefalse",
+          "concept": "network-devices",
+          "prompt": "A switch is the device that connects a local network to other networks, such as the internet.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Itu tugas router: menghubungkan beberapa jaringan dan memilih jalur trafik, termasuk ke internet. Switch menghubungkan perangkat di jaringan lokal yang sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-router",
+            "ccna-f-u01-switch"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "firewall",
+            "wlc"
+          ],
+          "title": "Firewall dan wireless LAN controller",
+          "body": "Firewall memantau trafik yang masuk dan keluar, lalu mengizinkan atau memblokirnya berdasarkan aturan keamanan. Di jaringan dengan banyak access point, AP (access point) lightweight tidak bisa bekerja sendiri. Konfigurasi dan firmware semua AP itu diatur terpusat oleh WLC (Wireless LAN Controller).",
+          "keyPoints": [
+            "Firewall: izinkan atau blokir trafik sesuai aturan",
+            "AP lightweight butuh WLC",
+            "WLC mengatur konfigurasi dan firmware AP"
+          ],
+          "trap": "Router juga bisa menyaring trafik, tapi perangkat yang tugas utamanya memutuskan trafik boleh lewat atau tidak adalah firewall.",
+          "teaches": [
+            "ccna-f-u01-firewall",
+            "ccna-f-u01-wlc"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-e2",
+          "type": "choice",
+          "concept": "network-devices",
+          "prompt": "Which device connects the PCs and printers of one office floor so that they can exchange data on the same local network?",
+          "options": [
+            "Switch",
+            "Router",
+            "Firewall",
+            "WLC (Wireless LAN Controller)"
+          ],
+          "answer": 0,
+          "explanation": "Switch menghubungkan perangkat di satu jaringan lokal. Router menghubungkan jaringan yang berbeda, firewall menyaring trafik, dan WLC (Wireless LAN Controller) mengelola access point.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-switch",
+            "ccna-f-u01-router",
+            "ccna-f-u01-firewall",
+            "ccna-f-u01-wlc"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-e3",
+          "type": "choice",
+          "concept": "firewall",
+          "prompt": "Which device decides whether to allow or block traffic based on a defined set of security rules?",
+          "options": [
+            "Firewall",
+            "Access point",
+            "Switch",
+            "WLC (Wireless LAN Controller)"
+          ],
+          "answer": 0,
+          "explanation": "Firewall memantau trafik masuk dan keluar lalu mengizinkan atau memblokirnya sesuai aturan keamanan. Access point memberi akses wireless, switch menghubungkan perangkat lokal, dan WLC (Wireless LAN Controller) mengelola AP (access point).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-firewall",
+            "ccna-f-u01-ap",
+            "ccna-f-u01-switch",
+            "ccna-f-u01-wlc"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-e4",
+          "type": "truefalse",
+          "concept": "wlc",
+          "prompt": "A lightweight access point can be configured on its own and keeps working without a WLC (Wireless LAN Controller).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. AP (access point) lightweight dirancang bergantung pada WLC (Wireless LAN Controller): konfigurasi dan firmware-nya diatur controller.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-wlc"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "lan-wan"
+          ],
+          "title": "LAN dan WAN",
+          "body": "LAN (Local Area Network) menghubungkan perangkat di satu lokasi terbatas, misalnya satu gedung, kantor, atau rumah. WAN (Wide Area Network) menghubungkan beberapa LAN yang berjauhan, misalnya kantor pusat di Jakarta dengan cabang di Surabaya. Internet adalah WAN terbesar di dunia.",
+          "keyPoints": [
+            "LAN: satu lokasi",
+            "WAN: menghubungkan LAN yang berjauhan",
+            "Internet adalah WAN terbesar"
+          ],
+          "teaches": [
+            "ccna-f-u01-lan",
+            "ccna-f-u01-wan"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-e5",
+          "type": "truefalse",
+          "concept": "lan-wan",
+          "prompt": "The internet is an example of a WAN (Wide Area Network).",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Internet adalah WAN (Wide Area Network) terbesar: jaringan dari banyak jaringan di seluruh dunia.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-wan"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-e6",
+          "type": "choice",
+          "concept": "lan-wan",
+          "prompt": "A company links its head office in Jakarta with a branch office in Surabaya. What kind of network connects the two sites?",
+          "options": [
+            "A WAN (Wide Area Network)",
+            "A LAN (Local Area Network)",
+            "A VLAN (Virtual LAN)",
+            "A wireless LAN"
+          ],
+          "answer": 0,
+          "explanation": "WAN (Wide Area Network) menghubungkan beberapa LAN (Local Area Network) yang berjauhan secara geografis. LAN hanya mencakup satu lokasi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-wan",
+            "ccna-f-u01-lan"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-e7",
+          "type": "match",
+          "concept": "lan-wan",
+          "prompt": "Match each device or network to what it does.",
+          "pairs": [
+            [
+              "Switch",
+              "Connects devices on one local network"
+            ],
+            [
+              "Router",
+              "Connects different networks"
+            ],
+            [
+              "Access point",
+              "Gives wireless devices network access"
+            ],
+            [
+              "Firewall",
+              "Allows or blocks traffic by security rules"
+            ],
+            [
+              "WAN (Wide Area Network)",
+              "Connects local networks that are far apart"
+            ]
+          ],
+          "explanation": "Switch untuk satu jaringan lokal, router antar-jaringan, access point untuk wireless, firewall untuk aturan keamanan, dan WAN (Wide Area Network) menghubungkan LAN (Local Area Network) yang berjauhan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-switch",
+            "ccna-f-u01-router",
+            "ccna-f-u01-ap",
+            "ccna-f-u01-firewall",
+            "ccna-f-u01-wan",
+            "ccna-f-u01-lan"
+          ]
+        },
+        {
+          "id": "ccna-u01-l1-e8",
+          "type": "multi",
+          "concept": "network-devices",
+          "prompt": "A small office needs wired PCs on one network, wireless laptops, and a connection to the internet. Which two devices are needed besides the access point? (Choose two.)",
+          "options": [
+            "A switch",
+            "A router",
+            "A WLC (Wireless LAN Controller)",
+            "A second access point"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "PC kabel butuh switch, dan koneksi ke internet butuh router. WLC (Wireless LAN Controller) baru dibutuhkan untuk mengelola banyak AP (access point) lightweight.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-switch",
+            "ccna-f-u01-router",
+            "ccna-f-u01-ap",
+            "ccna-f-u01-wlc"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u01-l2",
       "title": "Model TCP/IP dan OSI",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u01-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "osi-model",
+            "tcpip-model"
+          ],
+          "title": "Model OSI dan TCP/IP",
+          "body": "Model berlapis membagi kerja jaringan menjadi beberapa tugas. Model OSI (Open Systems Interconnection) punya tujuh layer, dari physical di bawah sampai application di atas. Model TCP/IP (Transmission Control Protocol/Internet Protocol) di RFC (Request for Comments) 1122 lebih ringkas, hanya empat layer: link, internet, transport, dan application. Di ujian, nomor layer OSI dipakai untuk menyebut perangkat dan protokol, misalnya switch layer 2.",
+          "keyPoints": [
+            "OSI: 7 layer",
+            "TCP/IP: 4 layer",
+            "Nomor layer biasa disebut dengan nomor OSI"
+          ],
+          "visual": "OsiTcpIp",
+          "teaches": [
+            "ccna-f-u01-osi-layers",
+            "ccna-f-u01-tcpip-layers",
+            "ccna-f-u01-layer-map"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e1",
+          "type": "truefalse",
+          "concept": "osi-model",
+          "prompt": "The OSI (Open Systems Interconnection) model has four layers.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. OSI (Open Systems Interconnection) punya tujuh layer; yang punya empat layer adalah model TCP/IP (Transmission Control Protocol/Internet Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-osi-layers",
+            "ccna-f-u01-tcpip-layers"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e2",
+          "type": "choice",
+          "concept": "osi-model",
+          "prompt": "Which OSI (Open Systems Interconnection) layer is layer 4?",
+          "options": [
+            "Transport",
+            "Network",
+            "Session",
+            "Data link"
+          ],
+          "answer": 0,
+          "explanation": "Layer 4 adalah transport. Network layer 3, session layer 5, dan data link layer 2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-osi-layers"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e3",
+          "type": "choice",
+          "concept": "tcpip-model",
+          "prompt": "Which OSI (Open Systems Interconnection) layers does the application layer of the TCP/IP (Transmission Control Protocol/Internet Protocol) model cover?",
+          "options": [
+            "Layers 5, 6, and 7",
+            "Layer 7 only",
+            "Layers 4 and 7",
+            "Layers 1 and 2"
+          ],
+          "answer": 0,
+          "explanation": "Application TCP/IP (Transmission Control Protocol/Internet Protocol) mencakup session (5), presentation (6), dan application (7) OSI (Open Systems Interconnection). Layer 1 dan 2 sepadan dengan link.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-layer-map"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e4",
+          "type": "order",
+          "concept": "osi-model",
+          "prompt": "Put the OSI (Open Systems Interconnection) layers in order, from layer 7 at the top to layer 1 at the bottom.",
+          "items": [
+            "Application",
+            "Presentation",
+            "Session",
+            "Transport",
+            "Network",
+            "Data link",
+            "Physical"
+          ],
+          "explanation": "Urutan OSI (Open Systems Interconnection) dari atas: application, presentation, session, transport, network, data link, physical.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-osi-layers"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "layer-devices"
+          ],
+          "title": "Switch layer 2, router layer 3",
+          "body": "Nomor layer menjelaskan apa yang dibaca perangkat. Switch meneruskan frame berdasarkan MAC (Media Access Control) address, yang ada di layer 2 (data link). Router meneruskan paket antar-jaringan berdasarkan alamat IP (Internet Protocol), yang ada di layer 3 (network). Port TCP (Transmission Control Protocol) dan UDP (User Datagram Protocol) ada di layer 4 (transport).",
+          "keyPoints": [
+            "Layer 2: MAC address, switch",
+            "Layer 3: alamat IP, router",
+            "Layer 4: TCP, UDP, nomor port"
+          ],
+          "teaches": [
+            "ccna-f-u01-device-layers"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e5",
+          "type": "choice",
+          "concept": "layer-devices",
+          "prompt": "At which OSI (Open Systems Interconnection) layer does a router make its forwarding decision?",
+          "options": [
+            "Layer 3, using the destination IP (Internet Protocol) address",
+            "Layer 2, using the destination MAC (Media Access Control) address",
+            "Layer 4, using the destination port",
+            "Layer 1, using the signal on the cable"
+          ],
+          "answer": 0,
+          "explanation": "Router memutuskan berdasarkan alamat IP (Internet Protocol) tujuan, di layer 3. Switch yang memutuskan berdasarkan MAC (Media Access Control) address di layer 2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-device-layers"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e6",
+          "type": "match",
+          "concept": "layer-devices",
+          "prompt": "Match each item to the OSI (Open Systems Interconnection) layer where it works.",
+          "pairs": [
+            [
+              "MAC (Media Access Control) address",
+              "Layer 2, data link"
+            ],
+            [
+              "IP (Internet Protocol) address",
+              "Layer 3, network"
+            ],
+            [
+              "TCP (Transmission Control Protocol) port",
+              "Layer 4, transport"
+            ],
+            [
+              "Cable and signal",
+              "Layer 1, physical"
+            ]
+          ],
+          "explanation": "MAC (Media Access Control) di layer 2, IP (Internet Protocol) di layer 3, port TCP (Transmission Control Protocol) di layer 4, dan kabel serta sinyal di layer 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-device-layers",
+            "ccna-f-u01-osi-layers"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "encapsulation"
+          ],
+          "title": "Enkapsulasi",
+          "body": "Saat data dikirim, setiap layer menambahkan header miliknya. Layer transport menambahkan header TCP (Transmission Control Protocol) sehingga data menjadi segmen. Layer network menambahkan header IP (Internet Protocol) menjadi paket. Layer data link menambahkan header Ethernet dan trailer FCS (Frame Check Sequence) menjadi frame, lalu dikirim sebagai bit. Penerima melepas lapisan itu dari bawah ke atas.",
+          "keyPoints": [
+            "Segmen, paket, frame, bit",
+            "Pengirim membungkus dari atas ke bawah",
+            "Penerima membuka dari bawah ke atas"
+          ],
+          "visual": "Encapsulation",
+          "teaches": [
+            "ccna-f-u01-pdu",
+            "ccna-f-u01-encap"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e7",
+          "type": "truefalse",
+          "concept": "encapsulation",
+          "prompt": "When a frame arrives, the receiving host removes the headers starting from the application layer and working down.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. De-enkapsulasi berjalan dari bawah ke atas: header Ethernet dilepas dulu, lalu header IP (Internet Protocol), lalu header transport.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-encap"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e8",
+          "type": "choice",
+          "concept": "encapsulation",
+          "prompt": "Which layer adds a trailer, not only a header, to the data it receives from the layer above?",
+          "options": [
+            "Data link",
+            "Network",
+            "Transport",
+            "Application"
+          ],
+          "answer": 0,
+          "explanation": "Layer data link menambahkan header Ethernet dan trailer FCS (Frame Check Sequence) di akhir frame. Layer lain hanya menambahkan header.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-encap",
+            "ccna-f-u01-pdu"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e9",
+          "type": "order",
+          "concept": "encapsulation",
+          "prompt": "Put the names of the data unit in the order they are created when a host sends data with TCP (Transmission Control Protocol).",
+          "items": [
+            "Data",
+            "Segment",
+            "Packet",
+            "Frame",
+            "Bits"
+          ],
+          "explanation": "Data diberi header TCP (Transmission Control Protocol) menjadi segmen, header IP (Internet Protocol) menjadi paket, header dan trailer Ethernet menjadi frame, lalu dikirim sebagai bit.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-pdu",
+            "ccna-f-u01-encap"
+          ]
+        },
+        {
+          "id": "ccna-u01-l2-e10",
+          "type": "fill",
+          "concept": "encapsulation",
+          "prompt": "Complete the sentence.",
+          "sentence": "At the network layer the data unit is called a ___, and at the data link layer it is called a ___.",
+          "bank": [
+            "packet",
+            "frame",
+            "segment",
+            "bit"
+          ],
+          "answers": [
+            "packet",
+            "frame"
+          ],
+          "explanation": "Di layer network namanya paket, di layer data link namanya frame. Segmen ada di transport, bit di physical.",
+          "requires": [
+            "ccna-f-u01-pdu"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u01-l3",
@@ -20,23 +485,1088 @@
         "kind": "prereq",
         "from": "ccna-u01-l2"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u01-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "hex-basics"
+          ],
+          "title": "Bilangan heksadesimal",
+          "body": "MAC (Media Access Control) address dan alamat IPv6 ditulis dalam heksadesimal, jadi kamu perlu lancar membacanya. Heksadesimal adalah bilangan basis 16: digitnya 0 sampai 9 lalu a sampai f, dengan a = 10 dan f = 15. Nilai sebuah bilangan dihitung dari posisi digitnya, sama seperti desimal. Contohnya 2f = 2 x 16 + 15 = 47.",
+          "keyPoints": [
+            "Digit: 0-9 lalu a-f",
+            "a = 10, f = 15",
+            "Posisi kedua dari kanan bernilai 16"
+          ],
+          "example": "ff = 15 x 16 + 15 = 255, nilai terbesar dua digit heksadesimal.",
+          "teaches": [
+            "ccna-f-u01-hex-base",
+            "ccna-f-u01-hex-value"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-e1",
+          "type": "choice",
+          "concept": "hex-basics",
+          "prompt": "What is the decimal value of the hexadecimal number 1a?",
+          "options": [
+            "26",
+            "20",
+            "17",
+            "110"
+          ],
+          "answer": 0,
+          "explanation": "1a = 1 x 16 + 10 = 26. Digit a bernilai 10.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-hex-value",
+            "ccna-f-u01-hex-base"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-e2",
+          "type": "truefalse",
+          "concept": "hex-basics",
+          "prompt": "The hexadecimal digit f has the decimal value 15.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Digit heksadesimal a sampai f bernilai 10 sampai 15.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-hex-base"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "hex-binary"
+          ],
+          "title": "Heksadesimal dan biner",
+          "body": "Satu digit heksadesimal mewakili tepat 4 bit, jadi konversinya bisa per digit. Contohnya a = 1010, 5 = 0101, dan f = 1111. Karena itu 1 byte (8 bit) selalu ditulis dengan 2 digit heksadesimal.",
+          "keyPoints": [
+            "1 digit heksadesimal = 4 bit",
+            "1 byte = 2 digit",
+            "Konversi digit demi digit"
+          ],
+          "teaches": [
+            "ccna-f-u01-hex-binary"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-e3",
+          "type": "choice",
+          "concept": "hex-binary",
+          "prompt": "What is the binary value of the hexadecimal number c5?",
+          "options": [
+            "11000101",
+            "11000110",
+            "10100101",
+            "11010101"
+          ],
+          "answer": 0,
+          "explanation": "c = 1100 dan 5 = 0101, jadi c5 = 1100 0101.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-hex-binary",
+            "ccna-f-u01-hex-base"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-e4",
+          "type": "match",
+          "concept": "hex-binary",
+          "prompt": "Match each hexadecimal digit to its 4-bit binary value.",
+          "pairs": [
+            [
+              "3",
+              "0011"
+            ],
+            [
+              "9",
+              "1001"
+            ],
+            [
+              "b",
+              "1011"
+            ],
+            [
+              "e",
+              "1110"
+            ]
+          ],
+          "explanation": "Setiap digit heksadesimal ditulis sebagai 4 bit: 3 = 0011, 9 = 1001, b = 1011, e = 1110.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-hex-binary"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "hex-mac"
+          ],
+          "title": "MAC address dalam heksadesimal",
+          "body": "MAC (Media Access Control) address panjangnya 48 bit. Karena satu digit heksadesimal mewakili 4 bit, MAC address ditulis dengan 12 digit. Cisco IOS menulisnya dalam tiga kelompok empat digit yang dipisah titik, misalnya 0050.7966.6800. Sistem lain sering memakai enam pasang digit yang dipisah titik dua atau tanda hubung.",
+          "keyPoints": [
+            "48 bit = 12 digit heksadesimal",
+            "Format Cisco IOS: xxxx.xxxx.xxxx",
+            "Format lain: enam pasang digit"
+          ],
+          "teaches": [
+            "ccna-f-u01-hex-mac",
+            "ccna-f-u01-hex-binary"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-e5",
+          "type": "choice",
+          "concept": "hex-mac",
+          "prompt": "How many hexadecimal digits are needed to write a 48-bit MAC (Media Access Control) address?",
+          "options": [
+            "12",
+            "6",
+            "16",
+            "24"
+          ],
+          "answer": 0,
+          "explanation": "Satu digit heksadesimal mewakili 4 bit, jadi 48 bit butuh 48 / 4 = 12 digit.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-hex-mac",
+            "ccna-f-u01-hex-binary"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-e6",
+          "type": "truefalse",
+          "concept": "hex-mac",
+          "prompt": "In Cisco IOS output, a MAC (Media Access Control) address is written as three groups of four hexadecimal digits, such as 0050.7966.6800.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Itu format MAC (Media Access Control) address di output Cisco IOS, misalnya di show ip arp.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-hex-mac"
+          ]
+        },
+        {
+          "id": "ccna-u01-l3-e7",
+          "type": "fill",
+          "concept": "hex-binary",
+          "prompt": "Complete the sentence.",
+          "sentence": "One hexadecimal digit stands for ___ bits, so one byte is written with ___ hexadecimal digits.",
+          "bank": [
+            "4",
+            "2",
+            "8",
+            "16"
+          ],
+          "answers": [
+            "4",
+            "2"
+          ],
+          "explanation": "Satu digit heksadesimal = 4 bit, jadi 1 byte (8 bit) = 2 digit.",
+          "requires": [
+            "ccna-f-u01-hex-binary"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u01-l4",
       "title": "Ethernet dan MAC address",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u01-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "mac-address"
+          ],
+          "title": "MAC address",
+          "body": "Setiap interface Ethernet punya MAC (Media Access Control) address 48 bit yang unik. 24 bit pertamanya adalah OUI (Organizationally Unique Identifier), nomor yang diberikan IEEE (Institute of Electrical and Electronics Engineers) kepada vendor. Sisa 24 bit diatur vendor itu sendiri. MAC address dipakai untuk mengirim frame di satu jaringan lokal.",
+          "keyPoints": [
+            "48 bit, unik per interface",
+            "24 bit pertama: OUI vendor",
+            "Dipakai di layer 2"
+          ],
+          "teaches": [
+            "ccna-f-u01-mac-48",
+            "ccna-f-u01-oui"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e1",
+          "type": "truefalse",
+          "concept": "mac-address",
+          "prompt": "The first 24 bits of a MAC (Media Access Control) address identify the vendor that made the interface.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. 24 bit pertama adalah OUI (Organizationally Unique Identifier) yang diberikan IEEE (Institute of Electrical and Electronics Engineers) kepada vendor.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-oui"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e2",
+          "type": "choice",
+          "concept": "mac-address",
+          "prompt": "How long is an Ethernet MAC (Media Access Control) address?",
+          "options": [
+            "48 bits",
+            "32 bits",
+            "64 bits",
+            "128 bits"
+          ],
+          "answer": 0,
+          "explanation": "MAC (Media Access Control) address Ethernet panjangnya 48 bit. 32 bit adalah panjang IPv4, dan 128 bit panjang IPv6.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-mac-48"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "ethernet-frame"
+          ],
+          "title": "Frame Ethernet",
+          "body": "Frame Ethernet membawa paket di layer 2. Isinya berurutan: MAC (Media Access Control) tujuan, MAC sumber, field type yang menyebut isi frame (misalnya IPv4), data, lalu FCS (Frame Check Sequence) 4 byte di akhir. Penerima menghitung ulang FCS; kalau hasilnya tidak cocok, frame itu rusak dan dibuang. MAC broadcast ffff.ffff.ffff berarti frame untuk semua perangkat di VLAN (Virtual LAN) yang sama.",
+          "keyPoints": [
+            "MAC tujuan muncul sebelum MAC sumber",
+            "FCS di akhir mendeteksi frame rusak",
+            "ffff.ffff.ffff = broadcast"
+          ],
+          "teaches": [
+            "ccna-f-u01-frame-fields",
+            "ccna-f-u01-broadcast-mac"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e3",
+          "type": "choice",
+          "concept": "ethernet-frame",
+          "prompt": "Which field of an Ethernet frame lets the receiver detect that the frame was damaged on the way?",
+          "options": [
+            "FCS (Frame Check Sequence)",
+            "Type",
+            "Source MAC (Media Access Control) address",
+            "Destination MAC address"
+          ],
+          "answer": 0,
+          "explanation": "FCS (Frame Check Sequence) dihitung ulang oleh penerima. Kalau tidak cocok, frame dibuang karena rusak.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-frame-fields"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e4",
+          "type": "truefalse",
+          "concept": "ethernet-frame",
+          "prompt": "In an Ethernet frame, the source MAC (Media Access Control) address comes before the destination MAC address.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. MAC (Media Access Control) tujuan ada paling depan, baru MAC sumber, supaya penerima langsung tahu frame itu untuknya atau bukan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-frame-fields"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e5",
+          "type": "order",
+          "concept": "ethernet-frame",
+          "prompt": "Put the fields of an Ethernet frame in the order they are sent.",
+          "items": [
+            "Destination MAC (Media Access Control) address",
+            "Source MAC address",
+            "Type",
+            "Data",
+            "FCS (Frame Check Sequence)"
+          ],
+          "explanation": "Urutannya MAC (Media Access Control) tujuan, MAC sumber, type, data, lalu FCS (Frame Check Sequence) di akhir.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-frame-fields"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "mac-learning"
+          ],
+          "title": "Cara switch belajar",
+          "body": "Switch mencatat MAC (Media Access Control) sumber setiap frame yang masuk, beserta port dan VLAN (Virtual LAN)-nya, di tabel MAC address. Kalau MAC tujuan sudah ada di tabel, frame hanya dikirim ke port itu. Kalau belum ada, atau tujuannya broadcast, frame di-flood ke semua port di VLAN yang sama kecuali port asalnya. Entri yang tidak dipakai dihapus setelah aging time, bawaannya 300 detik.",
+          "keyPoints": [
+            "Belajar dari MAC sumber",
+            "Tujuan dikenal: kirim ke satu port",
+            "Tujuan belum dikenal atau broadcast: flood"
+          ],
+          "visual": "SwitchLearning",
+          "trap": "Switch belajar dari MAC sumber, bukan MAC tujuan.",
+          "teaches": [
+            "ccna-f-u01-mac-learn",
+            "ccna-f-u01-mac-forward",
+            "ccna-f-u01-mac-flood",
+            "ccna-f-u01-mac-aging"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e6",
+          "type": "choice",
+          "concept": "mac-learning",
+          "prompt": "A switch receives a frame on port Fa0/1. Which address does the switch add to its MAC (Media Access Control) address table?",
+          "options": [
+            "The source MAC address, with port Fa0/1",
+            "The destination MAC address, with port Fa0/1",
+            "The source IP (Internet Protocol) address, with port Fa0/1",
+            "The destination MAC address, with every port"
+          ],
+          "answer": 0,
+          "explanation": "Switch belajar dari MAC (Media Access Control) sumber dan mencatat port tempat frame masuk. Switch layer 2 tidak mencatat alamat IP (Internet Protocol) di tabel ini.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-mac-learn",
+            "ccna-f-u01-device-layers"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e7",
+          "type": "choice",
+          "concept": "mac-learning",
+          "prompt": "A switch receives a unicast frame whose destination MAC (Media Access Control) address is not in its MAC address table. What does it do?",
+          "options": [
+            "It floods the frame out of every port in the same VLAN (Virtual LAN) except the one it came in on",
+            "It drops the frame",
+            "It sends the frame back out of the port it came in on",
+            "It forwards the frame out of the port it learned most recently"
+          ],
+          "answer": 0,
+          "explanation": "Tujuan yang belum dikenal di-flood ke semua port di VLAN (Virtual LAN) yang sama kecuali port asal. Switch tidak membuang frame itu, dan tidak pernah mengirim balik ke port asalnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-mac-flood",
+            "ccna-f-u01-mac-forward"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e8",
+          "type": "truefalse",
+          "concept": "mac-learning",
+          "prompt": "Dynamic entries stay in the MAC (Media Access Control) address table of a Catalyst switch forever, until the switch reloads.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Entri dinamis dihapus kalau tidak dipakai selama aging time, bawaannya 300 detik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-mac-aging"
+          ]
+        },
+        {
+          "id": "ccna-u01-l4-e9",
+          "type": "exhibit",
+          "concept": "mac-learning",
+          "prompt": "Refer to the exhibit. PC A sends a frame to PC C. The switch has just been powered on. Out of which ports does SW1 send the frame?",
+          "diagram": {
+            "devices": [
+              {
+                "id": "sw",
+                "kind": "switch",
+                "label": "SW1",
+                "x": 2,
+                "y": 0
+              },
+              {
+                "id": "a",
+                "kind": "pc",
+                "label": "PC A",
+                "x": 0,
+                "y": 1
+              },
+              {
+                "id": "b",
+                "kind": "pc",
+                "label": "PC B",
+                "x": 2,
+                "y": 1
+              },
+              {
+                "id": "c",
+                "kind": "pc",
+                "label": "PC C",
+                "x": 4,
+                "y": 1
+              }
+            ],
+            "links": [
+              {
+                "from": "sw",
+                "to": "a",
+                "fromPort": "Fa0/1"
+              },
+              {
+                "from": "sw",
+                "to": "b",
+                "fromPort": "Fa0/2"
+              },
+              {
+                "from": "sw",
+                "to": "c",
+                "fromPort": "Fa0/3"
+              }
+            ]
+          },
+          "options": [
+            "Fa0/2 and Fa0/3",
+            "Fa0/3 only",
+            "Fa0/1, Fa0/2, and Fa0/3",
+            "None, because the table is empty"
+          ],
+          "answer": 0,
+          "explanation": "Tabel masih kosong, jadi MAC (Media Access Control) PC C belum dikenal. Switch mem-flood frame ke semua port lain di VLAN (Virtual LAN) yang sama, yaitu Fa0/2 dan Fa0/3, tapi tidak ke Fa0/1 tempat frame masuk.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-mac-flood",
+            "ccna-f-u01-mac-learn"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u01-l5",
       "title": "ARP dan perjalanan paket",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u01-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "arp"
+          ],
+          "title": "ARP",
+          "body": "Untuk mengirim frame ke perangkat lain di jaringan lokal, host butuh MAC (Media Access Control) address tujuannya. ARP (Address Resolution Protocol) mencarinya dari alamat IPv4. Host mengirim ARP request sebagai broadcast: siapa pemilik alamat ini? Pemilik alamat menjawab dengan ARP reply langsung ke penanya. Hasilnya disimpan di cache ARP, yang di Cisco IOS dilihat dengan show ip arp.",
+          "keyPoints": [
+            "ARP: alamat IPv4 ke MAC address",
+            "Request broadcast, reply unicast",
+            "Hasil disimpan di cache ARP"
+          ],
+          "visual": "ArpExchange",
+          "teaches": [
+            "ccna-f-u01-arp-purpose",
+            "ccna-f-u01-arp-messages",
+            "ccna-f-u01-arp-cache"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-e1",
+          "type": "truefalse",
+          "concept": "arp",
+          "prompt": "An ARP (Address Resolution Protocol) reply is sent as a broadcast to every host in the VLAN (Virtual LAN).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. ARP (Address Resolution Protocol) request yang broadcast; reply dikirim langsung (unicast) ke perangkat yang bertanya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-arp-messages"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-e2",
+          "type": "choice",
+          "concept": "arp",
+          "prompt": "What does a host learn from ARP (Address Resolution Protocol)?",
+          "options": [
+            "The MAC (Media Access Control) address that belongs to an IPv4 address",
+            "The IPv4 address that belongs to a host name",
+            "The best route to a remote network",
+            "The port number of an application"
+          ],
+          "answer": 0,
+          "explanation": "ARP (Address Resolution Protocol) mencari MAC (Media Access Control) address dari alamat IPv4. Nama ke alamat adalah tugas DNS (Domain Name System), dan route urusan router.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-arp-purpose"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "default-gateway"
+          ],
+          "title": "Ke jaringan lain lewat gateway",
+          "body": "Kalau tujuan ada di jaringan lain, host tidak bertanya ARP (Address Resolution Protocol) untuk alamat tujuan akhir. Host mengirim paketnya ke router, yaitu default gateway, jadi yang dicari lewat ARP adalah MAC (Media Access Control) address gateway. Router yang meneruskan paket itu ke jaringan berikutnya.",
+          "keyPoints": [
+            "Tujuan di jaringan lain: kirim ke default gateway",
+            "ARP mencari MAC gateway",
+            "Router yang meneruskan ke jaringan berikutnya"
+          ],
+          "trap": "Untuk tujuan di jaringan lain, MAC tujuan di frame pertama adalah MAC router, bukan MAC server tujuan.",
+          "teaches": [
+            "ccna-f-u01-gateway"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-e3",
+          "type": "choice",
+          "concept": "default-gateway",
+          "prompt": "PC1 (192.168.1.10/24) sends a packet to a server at 10.5.5.5. PC1 has no ARP (Address Resolution Protocol) entries yet. Which address does PC1 resolve with ARP?",
+          "options": [
+            "The IPv4 address of its default gateway",
+            "The IPv4 address 10.5.5.5",
+            "The broadcast address 192.168.1.255",
+            "The IPv4 address of the DNS (Domain Name System) server"
+          ],
+          "answer": 0,
+          "explanation": "10.5.5.5 ada di jaringan lain, jadi PC1 mengirim paket ke default gateway dan perlu MAC (Media Access Control) address gateway itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-gateway",
+            "ccna-f-u01-arp-purpose"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "packet-rewrite"
+          ],
+          "title": "Yang berubah di setiap router",
+          "body": "Saat paket melewati router, frame lamanya dibuang dan dibuat frame baru untuk link berikutnya. MAC (Media Access Control) sumber menjadi MAC router, dan MAC tujuan menjadi MAC next hop. Alamat IP (Internet Protocol) sumber dan tujuan tetap sama dari awal sampai akhir, kecuali ada NAT (Network Address Translation) di tengah jalan.",
+          "keyPoints": [
+            "MAC berganti di setiap hop",
+            "Alamat IP tetap sama",
+            "Pengecualian: NAT"
+          ],
+          "teaches": [
+            "ccna-f-u01-rewrite"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-e4",
+          "type": "multi",
+          "concept": "packet-rewrite",
+          "prompt": "A packet travels from PC1 through R1 and R2 to a server. Which two values are the same in the frame PC1 sends and in the frame that arrives at the server? (Choose two.) There is no NAT (Network Address Translation).",
+          "options": [
+            "The source IP (Internet Protocol) address",
+            "The destination IP address",
+            "The source MAC (Media Access Control) address",
+            "The destination MAC address"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Alamat IP (Internet Protocol) sumber dan tujuan tidak berubah sepanjang jalan. MAC (Media Access Control) sumber dan tujuan berganti di setiap router.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-rewrite"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-e5",
+          "type": "truefalse",
+          "concept": "packet-rewrite",
+          "prompt": "When R1 forwards a packet to R2, R1 puts its own MAC (Media Access Control) address in the source MAC field of the new frame.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Router membuat frame baru dengan MAC (Media Access Control) interface keluarnya sebagai sumber dan MAC next hop sebagai tujuan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-rewrite"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-e6",
+          "type": "exhibit",
+          "concept": "arp",
+          "prompt": "Refer to the exhibit. Which MAC (Media Access Control) address does R1 use to send frames to the host 192.168.1.20?",
+          "outputs": [
+            {
+              "title": "R1# show ip arp",
+              "text": "Protocol  Address          Age (min)  Hardware Addr   Type   Interface\nInternet  192.168.1.1             -   0050.7966.6800  ARPA   GigabitEthernet0/0/0\nInternet  192.168.1.20            4   0050.7966.6801  ARPA   GigabitEthernet0/0/0"
+            }
+          ],
+          "options": [
+            "0050.7966.6801",
+            "0050.7966.6800",
+            "ffff.ffff.ffff",
+            "The MAC address of GigabitEthernet0/0/0 on R1"
+          ],
+          "answer": 0,
+          "explanation": "Baris 192.168.1.20 di cache ARP (Address Resolution Protocol) menunjuk ke MAC (Media Access Control) 0050.7966.6801. Baris dengan Age \"-\" adalah alamat R1 sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-arp-cache",
+            "ccna-f-u01-arp-purpose"
+          ]
+        },
+        {
+          "id": "ccna-u01-l5-e7",
+          "type": "fill",
+          "concept": "arp",
+          "prompt": "Complete the sentence.",
+          "sentence": "An ARP (Address Resolution Protocol) request is sent as a ___, and the reply is sent as a ___.",
+          "bank": [
+            "broadcast",
+            "unicast",
+            "multicast",
+            "anycast"
+          ],
+          "answers": [
+            "broadcast",
+            "unicast"
+          ],
+          "explanation": "Request ARP (Address Resolution Protocol) dikirim ke semua (broadcast) karena penanya belum tahu MAC (Media Access Control) tujuan; reply dikirim langsung (unicast).",
+          "requires": [
+            "ccna-f-u01-arp-messages"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u01-l6",
       "title": "TCP, UDP, dan port",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u01-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "tcp"
+          ],
+          "title": "TCP",
+          "body": "TCP (Transmission Control Protocol) berorientasi koneksi. Sebelum data dikirim, kedua pihak membuka koneksi dengan three-way handshake: SYN (synchronize), SYN-ACK (synchronize-acknowledgment), lalu ACK (acknowledgment). Selama koneksi, TCP memakai nomor urut, acknowledgment, dan pengiriman ulang supaya data sampai lengkap dan berurutan. Ukuran window mengatur berapa banyak data yang boleh dikirim sebelum harus menunggu acknowledgment.",
+          "keyPoints": [
+            "Three-way handshake membuka koneksi",
+            "Nomor urut dan pengiriman ulang",
+            "Window untuk flow control"
+          ],
+          "visual": "TcpHandshake",
+          "teaches": [
+            "ccna-f-u01-tcp-handshake",
+            "ccna-f-u01-tcp-reliable"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e1",
+          "type": "truefalse",
+          "concept": "tcp",
+          "prompt": "TCP (Transmission Control Protocol) resends data that the receiver did not acknowledge.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. TCP (Transmission Control Protocol) memakai acknowledgment dan pengiriman ulang supaya data sampai lengkap.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-tcp-reliable"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e2",
+          "type": "choice",
+          "concept": "tcp",
+          "prompt": "Which TCP (Transmission Control Protocol) mechanism controls how much data a sender may send before it must wait for an acknowledgment?",
+          "options": [
+            "Windowing",
+            "The three-way handshake",
+            "Port numbers",
+            "The checksum"
+          ],
+          "answer": 0,
+          "explanation": "Window mengatur jumlah data yang boleh dikirim sebelum menunggu acknowledgment (flow control). Handshake membuka koneksi, dan port memilih aplikasi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-tcp-reliable",
+            "ccna-f-u01-tcp-handshake"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e3",
+          "type": "order",
+          "concept": "tcp",
+          "prompt": "Put the messages of the TCP (Transmission Control Protocol) three-way handshake in order.",
+          "items": [
+            "SYN (synchronize) from the client",
+            "SYN-ACK (synchronize-acknowledgment) from the server",
+            "ACK (acknowledgment) from the client"
+          ],
+          "explanation": "Klien mengirim SYN (synchronize), server membalas SYN-ACK (synchronize-acknowledgment), dan klien menutup dengan ACK (acknowledgment).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-tcp-handshake"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "udp"
+          ],
+          "title": "UDP",
+          "body": "UDP (User Datagram Protocol) jauh lebih sederhana. Tidak ada handshake, dan tidak ada jaminan data sampai, berurutan, atau bebas duplikat. Karena ringan, UDP cocok untuk trafik real-time. Suara VoIP (Voice over IP) dibawa RTP (Real-time Transport Protocol) di atas UDP, karena paket suara yang terlambat lebih baik dilewati daripada dikirim ulang.",
+          "keyPoints": [
+            "Tanpa handshake, tanpa jaminan",
+            "Ringan, cocok untuk real-time",
+            "Suara VoIP: RTP di atas UDP"
+          ],
+          "trap": "UDP tetap punya nomor port dan checksum; yang tidak ada adalah koneksi dan pengiriman ulang.",
+          "teaches": [
+            "ccna-f-u01-udp",
+            "ccna-f-u01-voice-udp"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e4",
+          "type": "truefalse",
+          "concept": "udp",
+          "prompt": "UDP (User Datagram Protocol) uses a three-way handshake before it sends data.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. UDP (User Datagram Protocol) tidak membuka koneksi; three-way handshake milik TCP (Transmission Control Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-udp",
+            "ccna-f-u01-tcp-handshake"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e5",
+          "type": "sort",
+          "concept": "udp",
+          "prompt": "Sort each statement under the protocol it describes.",
+          "buckets": [
+            "TCP (Transmission Control Protocol)",
+            "UDP (User Datagram Protocol)"
+          ],
+          "items": [
+            {
+              "text": "Opens a connection with a three-way handshake",
+              "bucket": 0
+            },
+            {
+              "text": "Resends data that was lost",
+              "bucket": 0
+            },
+            {
+              "text": "Uses windowing for flow control",
+              "bucket": 0
+            },
+            {
+              "text": "Sends without setting up a connection",
+              "bucket": 1
+            },
+            {
+              "text": "Carries RTP (Real-time Transport Protocol) voice",
+              "bucket": 1
+            }
+          ],
+          "explanation": "TCP (Transmission Control Protocol) membuka koneksi, mengirim ulang, dan memakai window. UDP (User Datagram Protocol) mengirim tanpa koneksi dan membawa RTP (Real-time Transport Protocol) untuk suara.",
+          "requires": [
+            "ccna-f-u01-tcp-handshake",
+            "ccna-f-u01-tcp-reliable",
+            "ccna-f-u01-udp",
+            "ccna-f-u01-voice-udp"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-m3",
+          "type": "learn",
+          "concepts": [
+            "ports"
+          ],
+          "title": "Nomor port",
+          "body": "Nomor port memilih aplikasi di dalam sebuah host; port 0 sampai 1023 adalah system atau well-known. Port TCP (Transmission Control Protocol) yang wajib dihafal: FTP (File Transfer Protocol) 20 dan 21, SSH (Secure Shell) 22, Telnet 23, SMTP (Simple Mail Transfer Protocol) 25, HTTP (Hypertext Transfer Protocol) 80, dan HTTPS (HTTP Secure) 443. Port UDP (User Datagram Protocol): DHCP (Dynamic Host Configuration Protocol) 67 dan 68, TFTP (Trivial FTP) 69, NTP (Network Time Protocol) 123, SNMP (Simple Network Management Protocol) 161 dan 162, dan syslog 514. DNS (Domain Name System) memakai port 53 di UDP dan TCP.",
+          "keyPoints": [
+            "Well-known: 0-1023",
+            "TCP: 20/21, 22, 23, 25, 80, 443",
+            "UDP: 67/68, 69, 123, 161/162, 514; DNS 53 keduanya"
+          ],
+          "teaches": [
+            "ccna-f-u01-port-ranges",
+            "ccna-f-u01-ports-tcp",
+            "ccna-f-u01-ports-udp",
+            "ccna-f-u01-socket"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e6",
+          "type": "truefalse",
+          "concept": "ports",
+          "prompt": "Port numbers 0 through 1023 are the system, or well-known, ports.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Rentangnya: system 0-1023, user 1024-49151, dan dynamic atau private 49152-65535.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-port-ranges"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e7",
+          "type": "match",
+          "concept": "ports",
+          "prompt": "Match each protocol to its well-known port.",
+          "pairs": [
+            [
+              "SSH (Secure Shell)",
+              "22"
+            ],
+            [
+              "Telnet",
+              "23"
+            ],
+            [
+              "DNS (Domain Name System)",
+              "53"
+            ],
+            [
+              "HTTPS (Hypertext Transfer Protocol Secure)",
+              "443"
+            ],
+            [
+              "NTP (Network Time Protocol)",
+              "123"
+            ]
+          ],
+          "explanation": "SSH (Secure Shell) 22, Telnet 23, DNS (Domain Name System) 53, HTTPS (Hypertext Transfer Protocol Secure) 443, dan NTP (Network Time Protocol) 123.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-ports-tcp",
+            "ccna-f-u01-ports-udp"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e8",
+          "type": "choice",
+          "concept": "ports",
+          "prompt": "Which transport protocol and port does a DHCP (Dynamic Host Configuration Protocol) server listen on?",
+          "options": [
+            "UDP (User Datagram Protocol) 67",
+            "UDP 68",
+            "TCP (Transmission Control Protocol) 67",
+            "TCP 53"
+          ],
+          "answer": 0,
+          "explanation": "Server DHCP (Dynamic Host Configuration Protocol) memakai UDP (User Datagram Protocol) port 67, klien memakai port 68.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-ports-udp"
+          ]
+        },
+        {
+          "id": "ccna-u01-l6-e9",
+          "type": "multi",
+          "concept": "ports",
+          "prompt": "Which two protocols use UDP (User Datagram Protocol)? (Choose two.)",
+          "options": [
+            "TFTP (Trivial File Transfer Protocol)",
+            "SNMP (Simple Network Management Protocol)",
+            "SSH (Secure Shell)",
+            "HTTP (Hypertext Transfer Protocol)"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "TFTP (Trivial File Transfer Protocol) memakai UDP (User Datagram Protocol) 69 dan SNMP (Simple Network Management Protocol) memakai UDP 161 dan 162. SSH (Secure Shell) dan HTTP (Hypertext Transfer Protocol) memakai TCP (Transmission Control Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-ports-udp",
+            "ccna-f-u01-ports-tcp"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u01-switch",
+      "statement": "Switch menghubungkan perangkat seperti komputer, printer, dan server di satu jaringan lokal supaya bisa saling bertukar data.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/small-business/network-switch-vs-router.html"
+    },
+    {
+      "id": "ccna-f-u01-router",
+      "statement": "Router menghubungkan beberapa jaringan, memilih jalur untuk trafik, dan menghubungkan jaringan lokal ke internet.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/small-business/network-switch-vs-router.html"
+    },
+    {
+      "id": "ccna-f-u01-ap",
+      "statement": "Access point memberi perangkat wireless akses ke jaringan dan memperluas jangkauannya.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/small-business/networking-basics.html"
+    },
+    {
+      "id": "ccna-f-u01-firewall",
+      "statement": "Firewall memantau trafik masuk dan keluar, lalu mengizinkan atau memblokirnya berdasarkan aturan keamanan.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/security/what-is-a-firewall.html"
+    },
+    {
+      "id": "ccna-f-u01-wlc",
+      "statement": "Access point lightweight tidak bisa bekerja sendiri: konfigurasi dan firmware-nya diatur oleh WLC (Wireless LAN Controller).",
+      "source": "https://www.cisco.com/c/en/us/support/docs/wireless/aironet-1200-series/70278-lap-faq.html"
+    },
+    {
+      "id": "ccna-f-u01-lan",
+      "statement": "LAN (Local Area Network) menghubungkan perangkat di satu lokasi terbatas, misalnya gedung, kantor, atau rumah.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-a-lan-local-area-network.html"
+    },
+    {
+      "id": "ccna-f-u01-wan",
+      "statement": "WAN (Wide Area Network) menghubungkan beberapa LAN yang berjauhan secara geografis; internet adalah WAN terbesar.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-a-wan-wide-area-network.html"
+    },
+    {
+      "id": "ccna-f-u01-osi-layers",
+      "statement": "Model OSI (Open Systems Interconnection) punya tujuh layer: physical, data link, network, transport, session, presentation, dan application.",
+      "source": "https://learningnetwork.cisco.com/s/article/osi-model-reference-chart"
+    },
+    {
+      "id": "ccna-f-u01-tcpip-layers",
+      "statement": "Model TCP/IP di RFC 1122 memakai empat layer: link, internet, transport, dan application.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc1122"
+    },
+    {
+      "id": "ccna-f-u01-layer-map",
+      "statement": "Layer application TCP/IP sepadan dengan layer 5 sampai 7 OSI, transport dengan layer 4, internet dengan layer 3, dan link dengan layer 1 dan 2.",
+      "source": "https://learningnetwork.cisco.com/s/article/osi-model-reference-chart",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u01-device-layers",
+      "statement": "Switch meneruskan frame berdasarkan MAC address (layer 2), sedangkan router meneruskan paket antar-jaringan berdasarkan alamat IP (layer 3).",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/express-forwarding-cef/13706-20.html"
+    },
+    {
+      "id": "ccna-f-u01-pdu",
+      "statement": "Unit data per layer disebut segmen di transport (TCP), paket di network, frame di data link, dan bit di physical.",
+      "source": "https://learningnetwork.cisco.com/s/article/osi-model-reference-chart",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u01-encap",
+      "statement": "Saat mengirim, setiap layer menambahkan header miliknya ke data dari layer di atasnya (enkapsulasi); penerima melepasnya dari bawah ke atas (de-enkapsulasi).",
+      "source": "https://learningnetwork.cisco.com/s/article/osi-model-reference-chart",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u01-hex-base",
+      "statement": "Heksadesimal adalah bilangan basis 16 dengan digit 0 sampai 9 dan a sampai f; satu digit heksadesimal mewakili tepat 4 bit.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u01-hex-value",
+      "statement": "Nilai bilangan heksadesimal dihitung dengan mengalikan setiap digit dengan pangkat 16 sesuai posisinya, misalnya 2f = 2 x 16 + 15 = 47.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u01-hex-binary",
+      "statement": "Setiap digit heksadesimal bisa langsung ditulis sebagai 4 bit biner, misalnya a = 1010 dan f = 1111, sehingga 1 byte (8 bit) selalu 2 digit heksadesimal.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u01-hex-mac",
+      "statement": "MAC address 48 bit ditulis sebagai 12 digit heksadesimal; Cisco IOS menulisnya dalam tiga kelompok empat digit, misalnya 0050.7966.6800.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr/command/ipaddr-cr-book/ipaddr-r1.html"
+    },
+    {
+      "id": "ccna-f-u01-mac-48",
+      "statement": "MAC address Ethernet adalah angka 48 bit (EUI-48) yang unik untuk satu interface Ethernet.",
+      "source": "https://standards.ieee.org/faqs/regauth/"
+    },
+    {
+      "id": "ccna-f-u01-oui",
+      "statement": "24 bit pertama MAC address adalah OUI (Organizationally Unique Identifier) yang diberikan IEEE kepada vendor; sisa bitnya diatur vendor itu.",
+      "source": "https://standards.ieee.org/products-programs/regauth/oui/"
+    },
+    {
+      "id": "ccna-f-u01-frame-fields",
+      "statement": "Frame Ethernet berisi MAC tujuan, MAC sumber, field type/length, data, dan FCS (Frame Check Sequence) 4 byte di akhir untuk mendeteksi frame yang rusak.",
+      "source": "https://learningnetwork.cisco.com/s/article/ethernet-standards",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u01-broadcast-mac",
+      "statement": "MAC broadcast adalah ffff.ffff.ffff (semua bit 1); frame broadcast di-flood ke semua port di VLAN yang sama kecuali port asalnya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-mac.html"
+    },
+    {
+      "id": "ccna-f-u01-mac-learn",
+      "statement": "Switch mencatat MAC sumber setiap frame yang masuk beserta port dan VLAN-nya di tabel MAC address.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-mac.html"
+    },
+    {
+      "id": "ccna-f-u01-mac-forward",
+      "statement": "Kalau MAC tujuan sudah ada di tabel, switch meneruskan frame hanya ke port yang tercatat untuk MAC itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-mac.html"
+    },
+    {
+      "id": "ccna-f-u01-mac-flood",
+      "statement": "Kalau MAC tujuan belum ada di tabel, switch mem-flood frame ke semua port di VLAN yang sama kecuali port asalnya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-mac.html"
+    },
+    {
+      "id": "ccna-f-u01-mac-aging",
+      "statement": "Entri dinamis di tabel MAC dihapus kalau tidak dipakai selama aging time; bawaannya 300 detik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-mac.html"
+    },
+    {
+      "id": "ccna-f-u01-arp-purpose",
+      "statement": "ARP (Address Resolution Protocol) mencari MAC address milik sebuah alamat IPv4 di jaringan lokal.",
+      "source": "https://www.rfc-editor.org/info/rfc826/"
+    },
+    {
+      "id": "ccna-f-u01-arp-messages",
+      "statement": "ARP request dikirim sebagai broadcast, sedangkan ARP reply dikirim langsung (unicast) ke perangkat yang bertanya.",
+      "source": "https://www.rfc-editor.org/info/rfc826/"
+    },
+    {
+      "id": "ccna-f-u01-arp-cache",
+      "statement": "Hasil ARP disimpan di cache ARP, jadi perangkat tidak perlu bertanya lagi untuk setiap paket; di Cisco IOS isinya dilihat dengan show ip arp.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr/command/ipaddr-cr-book/ipaddr-r1.html"
+    },
+    {
+      "id": "ccna-f-u01-gateway",
+      "statement": "Kalau tujuan ada di jaringan lain, host mengirim paket ke router (default gateway), jadi host melakukan ARP untuk alamat gateway, bukan alamat tujuan akhir.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc1122"
+    },
+    {
+      "id": "ccna-f-u01-rewrite",
+      "statement": "Di setiap router, frame dibuat ulang dengan MAC sumber dan tujuan yang baru, sedangkan alamat IP sumber dan tujuan tetap sama (kecuali ada NAT).",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/express-forwarding-cef/13706-20.html"
+    },
+    {
+      "id": "ccna-f-u01-tcp-handshake",
+      "statement": "TCP (Transmission Control Protocol) membuka koneksi dengan three-way handshake: SYN, SYN-ACK, lalu ACK.",
+      "source": "https://www.rfc-editor.org/rfc/rfc9293.html"
+    },
+    {
+      "id": "ccna-f-u01-tcp-reliable",
+      "statement": "TCP memakai nomor urut, acknowledgment, dan pengiriman ulang supaya data sampai lengkap dan berurutan; ukuran window mengatur flow control.",
+      "source": "https://www.rfc-editor.org/rfc/rfc9293.html"
+    },
+    {
+      "id": "ccna-f-u01-udp",
+      "statement": "UDP (User Datagram Protocol) tidak memakai handshake dan tidak menjamin data sampai, berurutan, atau bebas duplikat.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc768"
+    },
+    {
+      "id": "ccna-f-u01-voice-udp",
+      "statement": "Suara VoIP dibawa RTP (Real-time Transport Protocol) di atas UDP, karena untuk suara real-time paket yang terlambat lebih baik dilewati daripada dikirim ulang.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/voice/voice-quality/23442-tos-cos.html"
+    },
+    {
+      "id": "ccna-f-u01-port-ranges",
+      "statement": "Nomor port dibagi tiga: system atau well-known 0-1023, user 1024-49151, dan dynamic atau private 49152-65535.",
+      "source": "https://www.rfc-editor.org/rfc/rfc6335.html"
+    },
+    {
+      "id": "ccna-f-u01-ports-tcp",
+      "statement": "Port TCP yang wajib dihafal: FTP 20 dan 21, SSH 22, Telnet 23, SMTP 25, HTTP 80, dan HTTPS 443.",
+      "source": "https://www.iana.org/assignments/service-names-port-numbers"
+    },
+    {
+      "id": "ccna-f-u01-ports-udp",
+      "statement": "Port UDP yang wajib dihafal: DHCP 67 (server) dan 68 (klien), TFTP 69, NTP 123, SNMP 161 dan 162, serta syslog 514; DNS memakai port 53 di UDP dan TCP.",
+      "source": "https://www.iana.org/assignments/service-names-port-numbers"
+    },
+    {
+      "id": "ccna-f-u01-socket",
+      "statement": "Satu koneksi dikenali dari alamat IP dan port sumber serta alamat IP dan port tujuan; klien memakai port sumber acak dari rentang dynamic.",
+      "source": "https://www.rfc-editor.org/rfc/rfc6335.html",
+      "verify": true
+    }
+  ]
 }

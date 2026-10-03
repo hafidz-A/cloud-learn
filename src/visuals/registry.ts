@@ -1,5 +1,10 @@
 import type { FC } from 'react'
 import type { VisualName } from '../content/visuals'
+import { OsiTcpIp } from './OsiTcpIp'
+import { Encapsulation } from './Encapsulation'
+import { SwitchLearning } from './SwitchLearning'
+import { ArpExchange } from './ArpExchange'
+import { TcpHandshake } from './TcpHandshake'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -67,6 +72,11 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  TcpHandshake,
+  ArpExchange,
+  SwitchLearning,
+  Encapsulation,
+  OsiTcpIp,
   AccountFailover,
   AciRestartPolicy,
   AlertFlow,

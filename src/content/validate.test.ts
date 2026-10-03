@@ -324,3 +324,19 @@ describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
     expect(shapeErrors(kql)).toEqual(expect.arrayContaining(['answer token "| take" is not available in tokens', 'type "kql" cannot be examReady']))
   })
 })
+
+describe('CCNA abbreviation patterns (LANGIT_CCNA_PLAN.md section 2)', () => {
+  it('treats words inside an expansion as part of the name', () => {
+    expect(unexpandedAbbreviations(['A WLC (Wireless LAN Controller) manages access points.'])).toEqual([])
+    expect(unexpandedAbbreviations(['A WLC (Wireless LAN Controller) on the LAN.'])).toEqual(['LAN'])
+  })
+
+  it('accepts one expansion for slash-joined abbreviations', () => {
+    expect(unexpandedAbbreviations(['The TCP/IP (Transmission Control Protocol/Internet Protocol) model.'])).toEqual([])
+    expect(unexpandedAbbreviations(['The TCP/IP model.'])).toEqual(['TCP', 'IP'])
+  })
+
+  it('does not flag device and interface names', () => {
+    expect(unexpandedAbbreviations(['R1 sends the packet to SW1 on G0/0/0, then PC2 answers.'])).toEqual([])
+  })
+})

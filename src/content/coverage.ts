@@ -36,9 +36,10 @@ export function isMicrosoftLearnUrl(url: string | undefined): boolean {
 
 /**
  * Official sources for CCNA facts (LANGIT_CCNA_PLAN.md section 5): Cisco, the
- * IETF and RFC Editor, IEEE, and Ansible's documentation and official repositories.
+ * IETF and RFC Editor, IANA (port numbers), IEEE, and Ansible's documentation and
+ * official repositories.
  */
-const CCNA_SOURCE = /^https:\/\/(([a-z0-9-]+\.)*cisco\.com|www\.netacad\.com|(www\.)?rfc-editor\.org|datatracker\.ietf\.org|([a-z0-9-]+\.)*ieee\.org|docs\.ansible\.com|github\.com\/ansible-collections)\/\S*$/
+const CCNA_SOURCE = /^https:\/\/(([a-z0-9-]+\.)*cisco\.com|www\.netacad\.com|(www\.)?rfc-editor\.org|datatracker\.ietf\.org|(www\.)?iana\.org|([a-z0-9-]+\.)*ieee\.org|docs\.ansible\.com|github\.com\/ansible-collections)\/\S*$/
 
 export function isCiscoCourseSource(url: string | undefined): boolean {
   return !!url && CCNA_SOURCE.test(url)
