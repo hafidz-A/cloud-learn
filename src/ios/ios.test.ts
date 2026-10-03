@@ -399,3 +399,20 @@ describe('show ip ssh', () => {
     expect(judgeSession(run.state, { rsaKeys: true }).correct).toBe(true)
   })
 })
+
+describe('show ip nat translations', () => {
+  it('lists static entries, and notes that dynamic ones need traffic', () => {
+    const run = runSession({ hostname: 'R1', model: 'isr4331' }, [
+      'configure terminal',
+      'ip nat inside source static 192.168.1.10 203.0.113.10',
+      'access-list 1 permit 192.168.1.0 0.0.0.255',
+      'ip nat inside source list 1 interface GigabitEthernet0/0/1 overload',
+      'end',
+      'show ip nat translations',
+    ])
+    const text = run.transcript.map((l) => l.text).join('\n')
+    expect(text).toContain('Pro Inside global      Inside local       Outside local      Outside global')
+    expect(text).toMatch(/--- 203\.0\.113\.10 +192\.168\.1\.10 +--- +---/)
+    expect(text).toContain('Langit: entri dinamis')
+  })
+})

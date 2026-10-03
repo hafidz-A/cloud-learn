@@ -909,6 +909,7 @@ function generated(st: DeviceState, command: string): string | undefined {
   if (command === 'show ip route' || command === 'show ip route static' || command === 'show ip route connected') return ipRouteTable(st, command.split(' ')[3])
   if (command === 'show ipv6 route' || command === 'show ipv6 route static' || command === 'show ipv6 route connected') return ipv6RouteTable(st, command.split(' ')[3])
   if (command === 'show vlan brief') return vlanBrief(st)
+  if (command === 'show ip nat translations') return natTranslations(st)
   return undefined
 }
 
@@ -958,6 +959,22 @@ function display(line: string): string {
     .replace(/^(key) \S+$/, '$1 <tersembunyi>')
     // IOS shows IPv6 addresses in upper case: "ipv6 address 2001:DB8:1::1/64".
     .replace(/^ipv6 (address|route) .*/, (l) => l.replace(/\S*:\S*/g, (w) => w.toUpperCase()))
+}
+
+/**
+ * Static entries sit in the NAT table without traffic; dynamic ones need packets,
+ * which the simulator does not send, so those get a Langit note instead.
+ */
+function natTranslations(st: DeviceState): string {
+  const pad = (s: string, n: number) => (s.length >= n ? `${s} ` : s.padEnd(n))
+  const global = [...(st.config.get('')?.values() ?? [])]
+  const rows = global.flatMap((l) => {
+    const m = /^ip nat inside source static (\S+) (\S+)$/.exec(l)
+    return m ? [`${pad('---', 4)}${pad(m[2], 19)}${pad(m[1], 19)}${pad('---', 19)}---`] : []
+  })
+  const lines = [`${pad('Pro', 4)}${pad('Inside global', 19)}${pad('Inside local', 19)}${pad('Outside local', 19)}Outside global`, ...rows]
+  if (global.some((l) => /^ip nat inside source list /.test(l))) lines.push('(Langit: entri dinamis baru muncul setelah ada lalu lintas; simulator tidak mengirim paket.)')
+  return lines.join('\n')
 }
 
 function ipSsh(st: DeviceState): string {

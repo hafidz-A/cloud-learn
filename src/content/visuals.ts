@@ -182,6 +182,10 @@ export const VISUAL_CATALOG = {
   SshSetup: ['ssh'],
   AaaFlow: ['aaa'],
   TacacsRadius: ['tacacs-radius'],
+  // Unit 20
+  NatTerms: ['nat-terms'],
+  NatTypes: ['nat-types'],
+  PatPorts: ['pat'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

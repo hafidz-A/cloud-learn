@@ -63,6 +63,9 @@ import { CryptoBasics } from './CryptoBasics'
 import { SshSetup } from './SshSetup'
 import { AaaFlow } from './AaaFlow'
 import { TacacsRadius } from './TacacsRadius'
+import { NatTerms } from './NatTerms'
+import { NatTypes } from './NatTypes'
+import { PatPorts } from './PatPorts'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -130,6 +133,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  PatPorts,
+  NatTypes,
+  NatTerms,
   TacacsRadius,
   AaaFlow,
   SshSetup,

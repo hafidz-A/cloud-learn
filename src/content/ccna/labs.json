@@ -2512,6 +2512,199 @@
         "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html",
         "https://www.cisco.com/c/en/us/about/trust-center/resilient-infrastructure/protecting-secrets.html"
       ]
+    },
+    {
+      "lesson": "ccna-u20-l6",
+      "title": "NAT dan PAT",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Membuat semua PC di LAN (local area network) keluar dengan PAT (Port Address Translation) dan menerbitkan satu server dengan static NAT (Network Address Translation), lalu membuktikannya dari tabel terjemahan.",
+      "topology": {
+        "devices": [
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "Server",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 1,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 1,
+            "note": "ISR4331"
+          },
+          {
+            "id": "isp",
+            "kind": "router",
+            "label": "ISP",
+            "x": 4,
+            "y": 1,
+            "note": "ISR4331"
+          }
+        ],
+        "links": [
+          {
+            "from": "pc1",
+            "to": "sw1",
+            "toPort": "Fa0/1"
+          },
+          {
+            "from": "srv",
+            "to": "sw1",
+            "toPort": "Fa0/2"
+          },
+          {
+            "from": "sw1",
+            "to": "r1",
+            "fromPort": "G0/1",
+            "toPort": "G0/0/0"
+          },
+          {
+            "from": "r1",
+            "to": "isp",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/0/0"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.10/24, gateway 192.168.1.1"
+        },
+        {
+          "device": "Server",
+          "port": "NIC",
+          "address": "192.168.1.20/24, gateway 192.168.1.1"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.1.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "203.0.113.1/29"
+        },
+        {
+          "device": "ISP",
+          "port": "G0/0/0",
+          "address": "203.0.113.2/29"
+        },
+        {
+          "device": "ISP",
+          "port": "Loopback0",
+          "address": "198.51.100.1/32"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pasang perangkat, sambungkan kabel, dan isi alamat PC1 dan Server."
+        },
+        {
+          "text": "Alamat router ISP. ISP tidak diberi route ke 192.168.1.0/24, jadi balasan hanya sampai kalau NAT bekerja.",
+          "device": "ISP",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname ISP",
+            "interface g0/0/0",
+            "ip address 203.0.113.2 255.255.255.248",
+            "no shutdown",
+            "interface loopback 0",
+            "ip address 198.51.100.1 255.255.255.255",
+            "end"
+          ]
+        },
+        {
+          "text": "Alamat R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R1",
+            "interface g0/0/0",
+            "ip address 192.168.1.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 203.0.113.1 255.255.255.248",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "NAT, PAT, dan default route.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip nat inside",
+            "interface g0/0/1",
+            "ip nat outside",
+            "exit",
+            "ip nat inside source static 192.168.1.20 203.0.113.5",
+            "access-list 1 permit 192.168.1.0 0.0.0.255",
+            "ip nat inside source list 1 interface g0/0/1 overload",
+            "ip route 0.0.0.0 0.0.0.0 203.0.113.2",
+            "end",
+            "show ip nat translations",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Sebelum ada lalu lintas.",
+          "device": "R1",
+          "command": "show ip nat translations",
+          "expect": "Hanya satu baris static: inside global 203.0.113.5, inside local 192.168.1.20."
+        },
+        {
+          "text": "Dari PC1, ping 198.51.100.1, lalu ulangi perintah di R1.",
+          "device": "R1",
+          "command": "show ip nat translations",
+          "expect": "Ping berhasil, dan muncul entri icmp dengan inside global 203.0.113.1 dan inside local 192.168.1.10."
+        },
+        {
+          "text": "Dari ISP, ping alamat global server.",
+          "device": "ISP",
+          "command": "ping 203.0.113.5",
+          "expect": "Berhasil, karena static NAT membolehkan koneksi dimulai dari luar."
+        },
+        {
+          "text": "Ringkasan NAT.",
+          "device": "R1",
+          "command": "show ip nat statistics",
+          "expect": "GigabitEthernet0/0/0 tercatat sebagai inside dan GigabitEthernet0/0/1 sebagai outside."
+        }
+      ],
+      "notes": [
+        "Entri icmp hilang sendiri setelah timeout pendek; kalau tabel kosong, ping lagi lalu segera periksa."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/221481-8605-13.html"
+      ]
     }
   ]
 }

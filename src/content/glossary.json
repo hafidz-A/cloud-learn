@@ -1101,5 +1101,10 @@
     "term": "SHA",
     "expansion": "Secure Hash Algorithm",
     "description": "Keluarga algoritma hash, misalnya SHA-256."
+  },
+  {
+    "term": "PAT",
+    "expansion": "Port Address Translation",
+    "description": "NAT banyak ke satu yang membedakan sesi lewat nomor port; di IOS disebut overload."
   }
 ]
