@@ -50,6 +50,8 @@ import { TracerouteTtl } from './TracerouteTtl'
 import { RouteEntry } from './RouteEntry'
 import { LongestPrefix } from './LongestPrefix'
 import { AdLadder } from './AdLadder'
+import { StaticBothWays } from './StaticBothWays'
+import { FloatingStatic } from './FloatingStatic'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -117,6 +119,8 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  FloatingStatic,
+  StaticBothWays,
   AdLadder,
   LongestPrefix,
   RouteEntry,

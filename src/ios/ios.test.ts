@@ -351,3 +351,41 @@ describe('spanning-tree priority', () => {
     expect(text.slice(text.indexOf('Building configuration'))).not.toContain('spanning-tree vlan 20 priority 1000')
   })
 })
+
+describe('show ip route and show ipv6 route', () => {
+  const cabled = ['GigabitEthernet0/0/0', 'GigabitEthernet0/0/1']
+  const base = ['configure terminal', 'interface g0/0/0', 'ip address 192.168.1.1 255.255.255.0', 'no shutdown', 'interface g0/0/1', 'ip address 10.0.12.1 255.255.255.252', 'ipv6 address 2001:db8:acad:12::1/64', 'no shutdown', 'exit']
+  const table = (extra: string[], cmd = 'show ip route') =>
+    runSession({ hostname: 'R1', model: 'isr4331', cabled }, [...base, ...extra, 'end', cmd]).transcript.map((l) => l.text).join('\n')
+
+  it('lists connected and local routes, and static routes whose next hop is reachable', () => {
+    const text = table(['ip route 10.2.0.0 255.255.0.0 10.0.12.2', 'ip route 10.3.0.0 255.255.0.0 10.0.99.2'])
+    expect(text).toContain('C        10.0.12.0/30 is directly connected, GigabitEthernet0/0/1')
+    expect(text).toContain('L        10.0.12.1/32 is directly connected, GigabitEthernet0/0/1')
+    expect(text).toContain('S        10.2.0.0/16 [1/0] via 10.0.12.2')
+    expect(text).not.toContain('10.3.0.0/16')
+    expect(text).toContain('Gateway of last resort is not set')
+  })
+
+  it('keeps a floating static route out of the table while the better route exists', () => {
+    const text = table(['ip route 0.0.0.0 0.0.0.0 10.0.12.2', 'ip route 0.0.0.0 0.0.0.0 192.168.1.254 200'])
+    expect(text).toContain('S*    0.0.0.0/0 [1/0] via 10.0.12.2')
+    expect(text).not.toContain('[200/0]')
+    expect(text).toContain('Gateway of last resort is 10.0.12.2 to network 0.0.0.0')
+  })
+
+  it('shows IPv6 connected, local, and static routes', () => {
+    const text = table(['ipv6 route ::/0 2001:db8:acad:12::2'], 'show ipv6 route')
+    expect(text).toContain('C   2001:DB8:ACAD:12::/64 [0/0]\n     via GigabitEthernet0/0/1, directly connected')
+    expect(text).toContain('S   ::/0 [1/0]\n     via 2001:DB8:ACAD:12::2')
+  })
+})
+
+describe('IPv6 static routes', () => {
+  it('asks for the exit interface when the next hop is link-local', () => {
+    const run = runSession({ hostname: 'R1', model: 'isr4331' }, ['configure terminal', 'ipv6 route ::/0 fe80::2', 'ipv6 route ::/0 g0/0/1 fe80::2'])
+    const text = run.transcript.map((l) => l.text).join('\n')
+    expect(text).toContain('% Interface has to be specified for a link-local nexthop')
+    expect(run.transcript.filter((l) => l.text.startsWith('%')).length).toBe(1)
+  })
+})

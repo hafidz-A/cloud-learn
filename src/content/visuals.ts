@@ -165,6 +165,9 @@ export const VISUAL_CATALOG = {
   RouteEntry: ['routing-table'],
   LongestPrefix: ['longest-prefix'],
   AdLadder: ['admin-distance'],
+  // Unit 16
+  StaticBothWays: ['static-route'],
+  FloatingStatic: ['floating-static'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

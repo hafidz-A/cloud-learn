@@ -735,6 +735,10 @@ function apply(st: DeviceState, def: CmdDef, words: string[], negate: boolean): 
       lines.set(slot, `switchport trunk allowed vlan ${allowedVlans(lines.get(slot), words.slice(4))}`)
       continue
     }
+    // A link-local next hop is only unique on its link, so IOS wants the exit interface too.
+    if (!negate && words[0] === 'ipv6' && words[1] === 'route' && words.length === 4 && /^fe[89ab]/i.test(words[3])) {
+      return [out('% Interface has to be specified for a link-local nexthop')]
+    }
     if (!negate && def.slot === 'spanning-tree vlan $2 priority' && Number(line.split(' ')[4]) % 4096 !== 0) {
       return [
         out('% Bridge Priority must be in increments of 4096.'),
@@ -901,6 +905,8 @@ function generated(st: DeviceState, command: string): string | undefined {
   if (command === 'show startup-config') return st.saved ?? 'startup-config is not present'
   if (command === 'show ip interface brief') return ipInterfaceBrief(st)
   if (command === 'show ipv6 interface brief') return ipv6InterfaceBrief(st)
+  if (command === 'show ip route' || command === 'show ip route static' || command === 'show ip route connected') return ipRouteTable(st, command.split(' ')[3])
+  if (command === 'show ipv6 route' || command === 'show ipv6 route static' || command === 'show ipv6 route connected') return ipv6RouteTable(st, command.split(' ')[3])
   if (command === 'show vlan brief') return vlanBrief(st)
   return undefined
 }
@@ -987,6 +993,184 @@ function eui64Groups(st: DeviceState, name: string): number[] {
   const mac = [0x00, 0x50, 0x79, 0x66, 0x68, index]
   const id = [mac[0] ^ 0x02, mac[1], mac[2], 0xff, 0xfe, mac[3], mac[4], mac[5]]
   return [0, 2, 4, 6].map((i) => (id[i] << 8) | id[i + 1])
+}
+
+// ---------------------------------------------------------------- routing tables (connected, local, and static routes)
+
+type V4Route = { code: string; net: number; len: number; ad: number; via?: string; iface?: string }
+
+const v4 = (n: number) => [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.')
+const v4mask = (len: number) => (len === 0 ? 0 : ~((2 ** (32 - len)) - 1) >>> 0)
+const inNet = (ip: number, net: number, len: number) => ((ip & v4mask(len)) >>> 0) === net
+
+function v4Connected(st: DeviceState): { name: string; ip: number; net: number; len: number }[] {
+  const out: { name: string; ip: number; net: number; len: number }[] = []
+  for (const [context, lines] of st.config) {
+    if (!context.startsWith('interface ') || ifStatus(st, context) !== 'up') continue
+    const m = /^ip address (\S+) (\S+)$/.exec(lines.get('ip address') ?? '')
+    if (!m) continue
+    const len = maskLength(m[2])
+    const ip = ipToInt(parseIpv4(m[1])!)
+    out.push({ name: ifName(context), ip, net: (ip & v4mask(len)) >>> 0, len })
+  }
+  return out
+}
+
+/** Connected, local, and usable static IPv4 routes, best administrative distance per prefix. */
+function ipv4Routes(st: DeviceState): V4Route[] {
+  const conn = v4Connected(st)
+  const routes: V4Route[] = conn.flatMap((c) => [
+    { code: 'C', net: c.net, len: c.len, ad: 0, iface: c.name },
+    { code: 'L', net: c.ip, len: 32, ad: 0, iface: c.name },
+  ])
+  const statics: V4Route[] = []
+  for (const line of st.config.get('')?.keys() ?? []) {
+    const w = line.split(' ')
+    if (w[0] !== 'ip' || w[1] !== 'route') continue
+    const rest = w.slice(4)
+    let ad = 1
+    if (rest.length > 1 && /^\d+$/.test(rest[rest.length - 1])) ad = Number(rest.pop())
+    const via = rest.find((x) => parseIpv4(x))
+    const iface = rest.find((x) => !parseIpv4(x))
+    const len = maskLength(w[3])
+    statics.push({ code: 'S', net: (ipToInt(parseIpv4(w[2])!) & v4mask(len)) >>> 0, len, ad, via, iface })
+  }
+  // A static route is usable when its exit interface is up, or its next hop resolves through another usable route.
+  let usable: V4Route[] = []
+  for (let round = 0; round < 6; round++) {
+    const table = [...routes, ...usable]
+    const next = statics.filter((r) => {
+      if (r.iface && ifStatus(st, `interface ${r.iface}`) !== 'up') return false
+      if (r.iface && !r.via) return true
+      const nh = ipToInt(parseIpv4(r.via!)!)
+      return table.some((t) => t !== r && t.code !== 'L' && t.len > 0 && inNet(nh, t.net, t.len) && !(t.net === r.net && t.len === r.len))
+    })
+    if (next.length === usable.length) break
+    usable = next
+  }
+  const all = [...routes, ...usable]
+  return all.filter((r) => {
+    const best = Math.min(...all.filter((o) => o.net === r.net && o.len === r.len).map((o) => o.ad))
+    return r.ad === best
+  })
+}
+
+function v4Line(r: V4Route): string {
+  if (r.code === 'C' || r.code === 'L' || (r.iface && !r.via)) return `${v4(r.net)}/${r.len} is directly connected, ${r.iface}`
+  return `${v4(r.net)}/${r.len} [${r.ad}/0] via ${r.via}${r.iface ? `, ${r.iface}` : ''}`
+}
+
+const classLen = (net: number) => (net >>> 24 < 128 ? 8 : net >>> 24 < 192 ? 16 : 24)
+
+function ipRouteTable(st: DeviceState, only?: string): string {
+  const all = ipv4Routes(st)
+  const def = all.filter((r) => r.len === 0)
+  const lines = [
+    'Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP',
+    '       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area',
+    '       * - candidate default',
+    '       (Langit: daftar kode dipersingkat)',
+    '',
+    def.length ? `Gateway of last resort is ${def[0].via ?? '0.0.0.0'} to network 0.0.0.0` : 'Gateway of last resort is not set',
+    '',
+  ]
+  const shown = all.filter((r) => !only || (only === 'static' ? r.code === 'S' : r.code === 'C' || r.code === 'L'))
+  const sorted = shown.slice().sort((a, b) => a.net - b.net || a.len - b.len)
+  const groups = new Map<string, V4Route[]>()
+  for (const r of sorted) {
+    const key = r.len === 0 ? 'default' : `${(r.net & v4mask(classLen(r.net))) >>> 0}`
+    groups.set(key, [...(groups.get(key) ?? []), r])
+  }
+  for (const [key, rs] of groups) {
+    const code = (r: V4Route) => (r.len === 0 ? `${r.code}*` : r.code)
+    const entries = (pad: number) => {
+      const done = new Set<string>()
+      for (const r of rs) {
+        const id = `${r.net}/${r.len}`
+        if (done.has(id)) {
+          lines.push(`${' '.repeat(pad + v4(r.net).length + String(r.len).length + 2)}[${r.ad}/0] via ${r.via}`)
+          continue
+        }
+        done.add(id)
+        lines.push(`${code(r).padEnd(pad)}${v4Line(r)}`)
+      }
+    }
+    const cl = classLen(rs[0].net)
+    if (key === 'default' || (rs.length === 1 && rs[0].len === cl)) {
+      entries(6)
+      continue
+    }
+    const masks = new Set(rs.map((r) => r.len))
+    const subnets = new Set(rs.map((r) => `${r.net}/${r.len}`)).size
+    lines.push(
+      masks.size === 1
+        ? `      ${v4((rs[0].net & v4mask(cl)) >>> 0)}/${rs[0].len} is subnetted, ${subnets} subnet${subnets > 1 ? 's' : ''}`
+        : `      ${v4((rs[0].net & v4mask(cl)) >>> 0)}/${cl} is variably subnetted, ${subnets} subnets, ${masks.size} masks`,
+    )
+    entries(9)
+  }
+  if ([...st.config.keys()].some((c) => c.startsWith('router ') || c.startsWith('ipv6 router')))
+    lines.push('! Langit: route dari protokol routing dinamis tidak disimulasikan di latihan ini.')
+  return lines.join('\n')
+}
+
+type V6Route = { code: string; groups: number[]; len: number; ad: number; via: string }
+
+function v6MaskEq(a: number[], b: number[], len: number): boolean {
+  for (let i = 0; i < 8; i++) {
+    const bits = Math.max(0, Math.min(16, len - i * 16))
+    const m = bits === 0 ? 0 : (0xffff << (16 - bits)) & 0xffff
+    if ((a[i] & m) !== (b[i] & m)) return false
+  }
+  return true
+}
+
+function ipv6RouteTable(st: DeviceState, only?: string): string {
+  const routes: V6Route[] = []
+  for (const [context, lines] of st.config) {
+    if (!context.startsWith('interface ') || ifStatus(st, context) !== 'up') continue
+    const name = ifName(context)
+    for (const l of lines.values()) {
+      const m = /^ipv6 address (\S+)\/(\d+)( eui-64)?$/.exec(l)
+      if (!m) continue
+      const g = parseIpv6(m[1])!
+      const addr = m[3] ? [...g.slice(0, 4), ...eui64Groups(st, name)] : g
+      const len = Number(m[2])
+      const net = addr.map((x, i) => {
+        const bits = Math.max(0, Math.min(16, len - i * 16))
+        return bits === 0 ? 0 : x & ((0xffff << (16 - bits)) & 0xffff)
+      })
+      routes.push({ code: 'C', groups: net, len, ad: 0, via: `${name}, directly connected` })
+      routes.push({ code: 'L', groups: addr, len: 128, ad: 0, via: `${name}, receive` })
+    }
+  }
+  for (const line of st.config.get('')?.keys() ?? []) {
+    const m = /^ipv6 route (\S+)\/(\d+) (.+)$/.exec(line)
+    if (!m) continue
+    const rest = m[3].split(' ')
+    let ad = 1
+    if (rest.length > 1 && /^\d+$/.test(rest[rest.length - 1])) ad = Number(rest.pop())
+    const via = rest.find((x) => x.includes(':'))
+    const iface = rest.find((x) => !x.includes(':'))
+    if (iface && ifStatus(st, `interface ${iface}`) !== 'up') continue
+    if (!iface && via && !routes.some((r) => r.code === 'C' && v6MaskEq(parseIpv6(via)!, r.groups, r.len))) continue
+    routes.push({ code: 'S', groups: parseIpv6(m[1])!, len: Number(m[2]), ad, via: via ? `${formatIpv6(parseIpv6(via)!).toUpperCase()}${iface ? `, ${iface}` : ''}` : `${iface}, directly connected` })
+  }
+  const best = routes.filter((r) => r.ad === Math.min(...routes.filter((o) => o.len === r.len && v6MaskEq(o.groups, r.groups, r.len)).map((o) => o.ad)))
+  const shown = best.filter((r) => !only || (only === 'static' ? r.code === 'S' : r.code === 'C' || r.code === 'L'))
+  const lines = [
+    `IPv6 Routing Table - default - ${shown.length + (only ? 0 : 1)} entries`,
+    'Codes: C - Connected, L - Local, S - Static, U - Per-user Static route',
+    '       B - BGP, R - RIP, O - OSPF Intra, OI - OSPF Inter, OE1 - OSPF ext 1',
+    '       OE2 - OSPF ext 2, ON1 - OSPF NSSA ext 1, ON2 - OSPF NSSA ext 2',
+    '       (Langit: daftar kode dipersingkat)',
+  ]
+  for (const r of shown) {
+    lines.push(`${r.code.padEnd(4)}${formatIpv6(r.groups).toUpperCase()}/${r.len} [${r.ad}/0]`)
+    lines.push(`     via ${r.via}`)
+  }
+  if (!only) lines.push('L   FF00::/8 [0/0]', '     via Null0, receive')
+  return lines.join('\n')
 }
 
 function ipv6InterfaceBrief(st: DeviceState): string {
@@ -1157,7 +1341,7 @@ export function judgeSession(state: DeviceState, goal: IosGoal): { correct: bool
 /** Lines that mean a typed command went wrong: IOS errors and Langit notes (not the routine % log messages). */
 export function errorLines(transcript: TermLine[]): string[] {
   return transcript
-    .filter((l) => l.kind === 'langit' || (l.kind === 'out' && /^(% (Invalid input|Incomplete command|Please define|Bad secrets|Duplicate)|Bad mask|% .* overlaps with|% Bridge Priority)/.test(l.text)))
+    .filter((l) => l.kind === 'langit' || (l.kind === 'out' && /^(% (Invalid input|Incomplete command|Please define|Bad secrets|Duplicate)|Bad mask|% .* overlaps with|% Bridge Priority|% Interface has to be specified)/.test(l.text)))
     .map((l) => ('text' in l ? l.text : ''))
 }
 

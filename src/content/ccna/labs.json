@@ -1882,6 +1882,186 @@
         "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-software-releases-121-mainline/12778-ping-traceroute.html",
         "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13730-ext-ping-trace.html"
       ]
+    },
+    {
+      "lesson": "ccna-u16-l6",
+      "title": "Static routing dua arah",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Menghubungkan dua LAN (Local Area Network) lewat dua router hanya dengan static route, melihat kegagalan karena route balik belum ada, lalu menambahkan floating default route.",
+      "topology": {
+        "devices": [
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 1,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "r2",
+            "kind": "router",
+            "label": "R2",
+            "x": 3,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 0
+          }
+        ],
+        "links": [
+          {
+            "from": "pc1",
+            "to": "r1",
+            "toPort": "G0/0/0"
+          },
+          {
+            "from": "r1",
+            "to": "r2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/0/1",
+            "label": "10.0.12.0/30"
+          },
+          {
+            "from": "r2",
+            "to": "pc2",
+            "fromPort": "G0/0/0"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.1.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "10.0.12.1/30"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/0",
+          "address": "192.168.2.1/24"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/1",
+          "address": "10.0.12.2/30"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.10/24, gateway .1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.2.10/24, gateway .1"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat (PC ke router dengan Copper Cross-Over, router ke router dengan Copper Cross-Over atau Straight-Through), lalu isi alamat PC."
+        },
+        {
+          "text": "Pasang alamat R1 dan route ke LAN R2.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.1.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 10.0.12.1 255.255.255.252",
+            "no shutdown",
+            "exit",
+            "ip route 192.168.2.0 255.255.255.0 10.0.12.2",
+            "end"
+          ]
+        },
+        {
+          "text": "Pasang alamat R2 saja, tanpa route dulu.",
+          "device": "R2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.2.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 10.0.12.2 255.255.255.252",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.2.10. Catat hasilnya, lalu tambahkan route balik di R2.",
+          "device": "R2",
+          "commands": [
+            "configure terminal",
+            "ip route 192.168.1.0 255.255.255.0 10.0.12.1",
+            "end",
+            "show ip route"
+          ]
+        },
+        {
+          "text": "Tambahkan floating default route di R1 dan simpan.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "ip route 0.0.0.0 0.0.0.0 10.0.12.2 250",
+            "end",
+            "show ip route",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Ping pertama dari PC1 ke PC2 (sebelum route balik).",
+          "expect": "Gagal (timeout). Paket sampai ke PC2, tapi R2 tidak tahu jalan pulang ke 192.168.1.0/24."
+        },
+        {
+          "text": "Tabel routing R2 setelah route balik.",
+          "device": "R2",
+          "command": "show ip route",
+          "expect": "S 192.168.1.0/24 [1/0] via 10.0.12.1."
+        },
+        {
+          "text": "Ping kedua dari PC1 ke PC2.",
+          "expect": "Berhasil."
+        },
+        {
+          "text": "Tabel routing R1.",
+          "device": "R1",
+          "command": "show ip route",
+          "expect": "S* 0.0.0.0/0 [250/0] via 10.0.12.2, karena tidak ada default route lain dengan AD lebih rendah."
+        }
+      ],
+      "notes": [
+        "Di Packet Tracer, kode di show ip route bisa lebih sedikit dari IOS XE asli; yang penting baris S dan S* sama."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/dial-access/floating-static-route/118263-technote-nexthop-00.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-3e/iri-xe-3e-book/iri_iprouting.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/15986-admin-distance.html"
+      ]
     }
   ]
 }
