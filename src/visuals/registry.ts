@@ -26,6 +26,9 @@ import { HypervisorTypes } from './HypervisorTypes'
 import { VmVsContainer } from './VmVsContainer'
 import { VirtualSwitch } from './VirtualSwitch'
 import { VrfTables } from './VrfTables'
+import { ClientIpCommands } from './ClientIpCommands'
+import { DhcpDora } from './DhcpDora'
+import { DhcpRelay } from './DhcpRelay'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -93,6 +96,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  DhcpRelay,
+  DhcpDora,
+  ClientIpCommands,
   VrfTables,
   VirtualSwitch,
   VmVsContainer,

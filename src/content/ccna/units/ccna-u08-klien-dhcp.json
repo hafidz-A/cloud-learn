@@ -6,27 +6,985 @@
     {
       "id": "ccna-u08-l1",
       "title": "Cek IP di Windows, macOS, dan Linux",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u08-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "client-ip-settings"
+          ],
+          "title": "Windows: ipconfig",
+          "body": "Di Windows, buka Command Prompt dan ketik ipconfig /all. Hasilnya menampilkan setiap adapter: alamat fisik (MAC (Media Access Control)), apakah DHCP (Dynamic Host Configuration Protocol) aktif, alamat IPv4, subnet mask, default gateway, server DHCP, dan server DNS (Domain Name System). Kalau alamat dari DHCP bermasalah, ipconfig /release melepasnya dan ipconfig /renew meminta yang baru.",
+          "keyPoints": [
+            "ipconfig /all: setelan lengkap",
+            "/release: lepas alamat DHCP",
+            "/renew: minta alamat baru"
+          ],
+          "visual": "ClientIpCommands",
+          "teaches": [
+            "ccna-f-u08-ipconfig-all",
+            "ccna-f-u08-ipconfig-renew"
+          ]
+        },
+        {
+          "id": "ccna-u08-l1-e1",
+          "type": "exhibit",
+          "concept": "client-ip-settings",
+          "prompt": "Refer to the exhibit. Which device does this PC send traffic to when the destination is on another network?",
+          "outputs": [
+            {
+              "title": "C:\\> ipconfig /all",
+              "text": "Ethernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . : kantor.local\n   Physical Address. . . . . . . . . : 00-50-79-66-68-0A\n   DHCP Enabled. . . . . . . . . . . : Yes\n   IPv4 Address. . . . . . . . . . . : 192.168.10.11(Preferred)\n   Subnet Mask . . . . . . . . . . . : 255.255.255.0\n   Default Gateway . . . . . . . . . : 192.168.10.1\n   DHCP Server . . . . . . . . . . . : 192.168.10.1\n   DNS Servers . . . . . . . . . . . : 192.168.10.5"
+            }
+          ],
+          "options": [
+            "192.168.10.1",
+            "192.168.10.5",
+            "192.168.10.11",
+            "255.255.255.0"
+          ],
+          "answer": 0,
+          "explanation": "Default gateway-nya 192.168.10.1. 192.168.10.5 adalah server DNS (Domain Name System), 192.168.10.11 alamat PC itu sendiri, dan 255.255.255.0 adalah mask.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-ipconfig-all",
+            "ccna-f-u01-gateway"
+          ]
+        },
+        {
+          "id": "ccna-u08-l1-e2",
+          "type": "choice",
+          "concept": "client-ip-settings",
+          "prompt": "A Windows PC got a wrong address from DHCP (Dynamic Host Configuration Protocol). Which two commands, in order, ask for a new address?",
+          "options": [
+            "ipconfig /release, then ipconfig /renew",
+            "ipconfig /renew, then ipconfig /all",
+            "ipconfig /all, then ipconfig /flushdns",
+            "ping 127.0.0.1, then ipconfig /all"
+          ],
+          "answer": 0,
+          "explanation": "/release melepas alamat lama, lalu /renew meminta konfigurasi DHCP (Dynamic Host Configuration Protocol) baru. /all hanya menampilkan setelan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-ipconfig-renew",
+            "ccna-f-u08-ipconfig-all"
+          ]
+        },
+        {
+          "id": "ccna-u08-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "client-ip-mac-linux"
+          ],
+          "title": "macOS dan Linux",
+          "body": "Di Mac, setelan IP (Internet Protocol) ada di System Settings > Network > pilih layanan > Details > TCP (Transmission Control Protocol)/IP: alamat IPv4, subnet mask, dan router (default gateway). Configure IPv4 bisa Using DHCP (Dynamic Host Configuration Protocol) atau Manually. Di Linux, ip address show menampilkan alamat setiap interface, dan ip route show menampilkan routing; baris default via menunjukkan gateway. ifconfig sudah usang dan digantikan perintah ip.",
+          "keyPoints": [
+            "Mac: Network > Details > TCP/IP",
+            "Linux: ip address show",
+            "Linux gateway: ip route, default via"
+          ],
+          "teaches": [
+            "ccna-f-u08-mac-tcpip",
+            "ccna-f-u08-mac-configure",
+            "ccna-f-u08-linux-addr",
+            "ccna-f-u08-linux-route",
+            "ccna-f-u08-ifconfig-old"
+          ]
+        },
+        {
+          "id": "ccna-u08-l1-e3",
+          "type": "exhibit",
+          "concept": "client-ip-mac-linux",
+          "prompt": "Refer to the exhibit. What is the default gateway of this Linux host?",
+          "outputs": [
+            {
+              "title": "$ ip address show eth0",
+              "text": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP\n    link/ether 00:50:79:66:68:0b brd ff:ff:ff:ff:ff:ff\n    inet 192.168.20.23/24 brd 192.168.20.255 scope global dynamic eth0"
+            },
+            {
+              "title": "$ ip route show",
+              "text": "default via 192.168.20.1 dev eth0 proto dhcp metric 100\n192.168.20.0/24 dev eth0 proto kernel scope link src 192.168.20.23"
+            }
+          ],
+          "options": [
+            "192.168.20.1",
+            "192.168.20.23",
+            "192.168.20.255",
+            "192.168.20.0"
+          ],
+          "answer": 0,
+          "explanation": "Baris default via menunjukkan gateway: 192.168.20.1. .23 adalah alamat host, .255 broadcast, dan .0 alamat network.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-linux-route",
+            "ccna-f-u08-linux-addr",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u08-l1-e4",
+          "type": "match",
+          "concept": "client-ip-mac-linux",
+          "prompt": "Match each task to where you do it.",
+          "pairs": [
+            [
+              "Show all address settings on Windows",
+              "ipconfig /all"
+            ],
+            [
+              "Show interface addresses on Linux",
+              "ip address show"
+            ],
+            [
+              "Show the default gateway on Linux",
+              "ip route show"
+            ],
+            [
+              "See the router address on a Mac",
+              "Network > Details > TCP (Transmission Control Protocol)/IP (Internet Protocol)"
+            ]
+          ],
+          "explanation": "Windows memakai ipconfig /all, Linux memakai ip address dan ip route, dan Mac menampilkan setelan di Network > Details > TCP (Transmission Control Protocol)/IP (Internet Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-ipconfig-all",
+            "ccna-f-u08-linux-addr",
+            "ccna-f-u08-linux-route",
+            "ccna-f-u08-mac-tcpip"
+          ]
+        },
+        {
+          "id": "ccna-u08-l1-e5",
+          "type": "truefalse",
+          "concept": "client-ip-mac-linux",
+          "prompt": "On current Linux systems, the man page recommends ip addr and ip link instead of the obsolete ifconfig.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Man page ifconfig menyebutnya usang dan menyarankan perintah ip.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-ifconfig-old"
+          ]
+        },
+        {
+          "id": "ccna-u08-l1-e6",
+          "type": "choice",
+          "concept": "client-ip-mac-linux",
+          "prompt": "A Mac user must set a fixed address, subnet mask, and router. Which Configure IPv4 option do they choose?",
+          "options": [
+            "Manually",
+            "Using DHCP (Dynamic Host Configuration Protocol)",
+            "Using BootP",
+            "Off"
+          ],
+          "answer": 0,
+          "explanation": "Manually dipakai untuk alamat, mask, dan router yang diisi sendiri. Using DHCP (Dynamic Host Configuration Protocol) mengambil semuanya dari server.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-mac-configure"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u08-l2",
       "title": "Troubleshoot klien kabel dan wireless",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u08-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "client-troubleshoot"
+          ],
+          "title": "Langkah troubleshoot dari bawah",
+          "body": "Mulai dari bawah. Pastikan kabel tersambung atau Wi-Fi terhubung ke SSID (Service Set Identifier) yang benar. Lalu cek alamat, mask, gateway, dan DNS (Domain Name System) dengan ipconfig atau ip address. Setelah itu ping gateway, lalu ping alamat di jaringan lain. Kalau ping ke alamat berhasil tapi nama situs gagal, masalahnya di DNS.",
+          "keyPoints": [
+            "Fisik dan Wi-Fi dulu",
+            "Lalu setelan IP (Internet Protocol)",
+            "Ping gateway, lalu jaringan lain",
+            "Alamat jalan, nama gagal: DNS"
+          ],
+          "teaches": [
+            "ccna-f-u08-ping",
+            "ccna-f-u08-ipconfig-all",
+            "ccna-f-u06-ssid"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e1",
+          "type": "truefalse",
+          "concept": "client-troubleshoot",
+          "prompt": "If a PC can ping its default gateway, the cable and the address settings for its local network are working.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Ping ke gateway membuktikan link fisik dan alamat di subnet lokal sudah benar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-ping",
+            "ccna-f-u04-gateway-subnet"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e2",
+          "type": "choice",
+          "concept": "client-troubleshoot",
+          "prompt": "A PC has correct address settings. Which single test proves that its cable and local subnet settings work?",
+          "options": [
+            "Ping the default gateway",
+            "Ping 127.0.0.1",
+            "Run nslookup for a website",
+            "Open the Network settings window"
+          ],
+          "answer": 0,
+          "explanation": "Ping ke gateway berhasil berarti link fisik dan alamat di subnet lokal sudah benar. Ping 127.0.0.1 hanya menguji host itu sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-ping",
+            "ccna-f-u04-loopback",
+            "ccna-f-u04-gateway-subnet"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e3",
+          "type": "order",
+          "concept": "client-troubleshoot",
+          "prompt": "Put the client troubleshooting steps in order, from the bottom up.",
+          "items": [
+            "Check the cable or Wi-Fi connection",
+            "Check the address, mask, gateway, and DNS (Domain Name System) settings",
+            "Ping the default gateway",
+            "Ping an address on another network"
+          ],
+          "explanation": "Mulai dari fisik, lalu setelan IP (Internet Protocol), lalu gateway, lalu jaringan lain.",
+          "requires": [
+            "ccna-f-u08-ping",
+            "ccna-f-u08-ipconfig-all"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "client-symptoms"
+          ],
+          "title": "Membaca gejala",
+          "body": "Alamat 169.254.x.x berarti klien tidak mendapat jawaban DHCP (Dynamic Host Configuration Protocol); periksa kabel, VLAN (Virtual LAN), atau server DHCP. Bisa ping alamat di internet tapi tidak bisa membuka nama situs berarti DNS (Domain Name System) bermasalah; nslookup menguji DNS secara langsung. tracert menunjukkan router mana saja yang dilewati, jadi kelihatan di mana paket berhenti.",
+          "keyPoints": [
+            "169.254: DHCP tidak menjawab",
+            "Alamat jalan, nama gagal: nslookup",
+            "tracert: di mana paket berhenti"
+          ],
+          "teaches": [
+            "ccna-f-u04-link-local",
+            "ccna-f-u08-nslookup",
+            "ccna-f-u08-tracert"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e4",
+          "type": "choice",
+          "concept": "client-symptoms",
+          "prompt": "A user can ping 8.8.8.8 but cannot open any website by name. Which command tests the most likely cause?",
+          "options": [
+            "nslookup",
+            "ipconfig /renew",
+            "tracert 8.8.8.8",
+            "ping 127.0.0.1"
+          ],
+          "answer": 0,
+          "explanation": "Ping ke alamat berhasil, jadi jaringan berjalan; yang gagal adalah nama. nslookup menguji DNS (Domain Name System) secara langsung.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-nslookup",
+            "ccna-f-u08-ping",
+            "ccna-f-u08-tracert",
+            "ccna-f-u04-loopback"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e5",
+          "type": "exhibit",
+          "concept": "client-symptoms",
+          "prompt": "Refer to the exhibit. What is the most likely problem?",
+          "outputs": [
+            {
+              "title": "C:\\> ipconfig /all",
+              "text": "Ethernet adapter Ethernet:\n\n   Physical Address. . . . . . . . . : 00-50-79-66-68-0C\n   DHCP Enabled. . . . . . . . . . . : Yes\n   Autoconfiguration IPv4 Address. . : 169.254.37.112(Preferred)\n   Subnet Mask . . . . . . . . . . . : 255.255.0.0\n   Default Gateway . . . . . . . . . :\n   DNS Servers . . . . . . . . . . . :"
+            }
+          ],
+          "options": [
+            "The PC got no answer from a DHCP (Dynamic Host Configuration Protocol) server",
+            "The PC has the wrong DNS (Domain Name System) server",
+            "The default gateway is in another subnet",
+            "The PC is using a static public address"
+          ],
+          "answer": 0,
+          "explanation": "169.254.x.x adalah alamat link-local, tanda klien tidak mendapat jawaban DHCP (Dynamic Host Configuration Protocol). Gateway dan DNS (Domain Name System) bahkan kosong.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-link-local",
+            "ccna-f-u08-ipconfig-all"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e6",
+          "type": "choice",
+          "concept": "client-symptoms",
+          "prompt": "Which command shows the routers along the path to a remote host, so you can see where packets stop?",
+          "options": [
+            "tracert",
+            "nslookup",
+            "ipconfig /all",
+            "ping 127.0.0.1"
+          ],
+          "answer": 0,
+          "explanation": "tracert menampilkan setiap router di jalur. nslookup untuk DNS (Domain Name System), dan ipconfig untuk setelan lokal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-tracert",
+            "ccna-f-u08-nslookup",
+            "ccna-f-u08-ipconfig-all"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "wireless-client"
+          ],
+          "title": "Klien wireless",
+          "body": "Untuk klien Wi-Fi, periksa dulu SSID (Service Set Identifier): klien sering tersambung ke jaringan tamu atau jaringan tetangga. Password atau mode keamanan yang tidak cocok membuat klien gagal tersambung sama sekali. Sinyal lemah, misalnya sekitar -80 dBm, membuat koneksi lambat dan sering putus. Setelah tersambung, alurnya sama seperti klien kabel: cek alamat, gateway, lalu DNS (Domain Name System).",
+          "keyPoints": [
+            "Cek SSID dulu",
+            "Keamanan salah: gagal tersambung",
+            "Sinyal lemah: lambat dan putus"
+          ],
+          "teaches": [
+            "ccna-f-u06-ssid",
+            "ccna-f-u06-dbm",
+            "ccna-f-u06-personal-ent"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e7",
+          "type": "choice",
+          "concept": "wireless-client",
+          "prompt": "A laptop is connected to Wi-Fi and has an address, but it cannot reach company servers. Coworkers on the same floor can. What should you check first?",
+          "options": [
+            "Whether the laptop joined the guest SSID (Service Set Identifier)",
+            "Whether the laptop cable is longer than 100 meters",
+            "Whether the switch port runs half duplex",
+            "Whether the laptop uses IPv6 only"
+          ],
+          "answer": 0,
+          "explanation": "Laptop sudah tersambung dan punya alamat, jadi kemungkinan besar ia masuk ke SSID (Service Set Identifier) lain, misalnya jaringan tamu. Kabel dan duplex tidak berlaku untuk koneksi Wi-Fi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-ssid",
+            "ccna-f-u03-utp-cat"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e8",
+          "type": "multi",
+          "concept": "wireless-client",
+          "prompt": "Which two problems stop a Wi-Fi client from connecting at all? (Choose two.)",
+          "options": [
+            "A wrong pre-shared key",
+            "A security mode the client does not support",
+            "A slow DNS (Domain Name System) server",
+            "An outdated printer driver"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Password atau mode keamanan yang tidak cocok membuat klien gagal tersambung. DNS (Domain Name System) baru berperan setelah tersambung, dan driver printer tidak terkait Wi-Fi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-personal-ent",
+            "ccna-f-u08-nslookup"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u08-l3",
       "title": "Cara kerja DHCPv4",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u08-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "dhcp-dora"
+          ],
+          "title": "Empat pesan DHCP",
+          "body": "Klien yang baru menyala belum punya alamat, jadi ia mengirim Discover sebagai broadcast ke 255.255.255.255 dengan sumber 0.0.0.0. Server membalas Offer berisi alamat yang ditawarkan. Klien mengirim Request untuk alamat itu, dan server menutup dengan Ack. Urutan ini sering disingkat DORA (Discover, Offer, Request, Acknowledge). Klien memakai UDP (User Datagram Protocol) port 68 dan server port 67.",
+          "keyPoints": [
+            "Discover, Offer, Request, Ack",
+            "Discover: broadcast dari 0.0.0.0",
+            "Klien UDP 68, server UDP 67"
+          ],
+          "visual": "DhcpDora",
+          "teaches": [
+            "ccna-f-u08-dora",
+            "ccna-f-u08-discover-bcast",
+            "ccna-f-u01-ports-udp"
+          ]
+        },
+        {
+          "id": "ccna-u08-l3-e1",
+          "type": "choice",
+          "concept": "dhcp-dora",
+          "prompt": "Which DHCP (Dynamic Host Configuration Protocol) message does a client send first?",
+          "options": [
+            "Discover",
+            "Offer",
+            "Request",
+            "Ack"
+          ],
+          "answer": 0,
+          "explanation": "Klien memulai dengan Discover. Offer dan Ack datang dari server, dan Request dikirim setelah klien menerima Offer.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-dora"
+          ]
+        },
+        {
+          "id": "ccna-u08-l3-e2",
+          "type": "truefalse",
+          "concept": "dhcp-dora",
+          "prompt": "A client sends its first DHCP (Dynamic Host Configuration Protocol) Discover as a unicast to the address of the server.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Klien belum tahu alamat server dan belum punya alamat sendiri, jadi Discover dikirim sebagai broadcast dari 0.0.0.0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-discover-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u08-l3-e3",
+          "type": "choice",
+          "concept": "dhcp-dora",
+          "prompt": "What are the source and destination addresses of the first DHCP (Dynamic Host Configuration Protocol) Discover?",
+          "options": [
+            "0.0.0.0 to 255.255.255.255",
+            "169.254.1.1 to 255.255.255.255",
+            "0.0.0.0 to the server address",
+            "127.0.0.1 to 224.0.0.1"
+          ],
+          "answer": 0,
+          "explanation": "Klien belum punya alamat, jadi sumbernya 0.0.0.0, dan ia mengirim broadcast ke 255.255.255.255.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-discover-bcast",
+            "ccna-f-u04-link-local"
+          ]
+        },
+        {
+          "id": "ccna-u08-l3-e4",
+          "type": "order",
+          "concept": "dhcp-dora",
+          "prompt": "Put the DHCP (Dynamic Host Configuration Protocol) messages in order.",
+          "items": [
+            "Discover",
+            "Offer",
+            "Request",
+            "Ack"
+          ],
+          "explanation": "Discover, Offer, Request, lalu Ack.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-dora"
+          ]
+        },
+        {
+          "id": "ccna-u08-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "dhcp-lease"
+          ],
+          "title": "Lease dan opsi",
+          "body": "Alamat dari DHCP (Dynamic Host Configuration Protocol) hanya dipinjamkan untuk masa tertentu, disebut lease. Saat setengah masa lease berlalu, klien mulai memperpanjangnya. Selain alamat dan mask, DHCP membawa opsi seperti default gateway (opsi router), server DNS (Domain Name System), dan nama domain. Kalau klien meminta alamat yang sudah tidak valid, misalnya setelah pindah jaringan, server membalas Nak dan klien mulai lagi dari Discover.",
+          "keyPoints": [
+            "Alamat dipinjam selama lease",
+            "Perpanjang di setengah lease",
+            "Opsi: gateway, DNS, domain",
+            "Nak: mulai lagi"
+          ],
+          "teaches": [
+            "ccna-f-u08-lease",
+            "ccna-f-u08-options",
+            "ccna-f-u08-nak"
+          ]
+        },
+        {
+          "id": "ccna-u08-l3-e5",
+          "type": "multi",
+          "concept": "dhcp-lease",
+          "prompt": "Besides the address and mask, which two settings does a DHCP (Dynamic Host Configuration Protocol) server commonly give a client? (Choose two.)",
+          "options": [
+            "The default gateway",
+            "The DNS (Domain Name System) server",
+            "The MAC (Media Access Control) address of the client",
+            "The switch port VLAN (Virtual LAN)"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Opsi router (default gateway) dan DNS (Domain Name System) sering diberikan DHCP (Dynamic Host Configuration Protocol). MAC (Media Access Control) adalah milik klien sendiri, dan VLAN (Virtual LAN) diatur di switch.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-options"
+          ]
+        },
+        {
+          "id": "ccna-u08-l3-e6",
+          "type": "choice",
+          "concept": "dhcp-lease",
+          "prompt": "A client has an 8-day lease. When does it normally start trying to renew it?",
+          "options": [
+            "After 4 days",
+            "After 8 days",
+            "After 1 day",
+            "Only when the user runs ipconfig /renew"
+          ],
+          "answer": 0,
+          "explanation": "Klien mulai memperpanjang lease saat setengah masanya berlalu: 4 dari 8 hari.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-lease",
+            "ccna-f-u08-ipconfig-renew"
+          ]
+        },
+        {
+          "id": "ccna-u08-l3-e7",
+          "type": "truefalse",
+          "concept": "dhcp-lease",
+          "prompt": "When a server answers a Request with Nak, the client must start again with Discover.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Nak berarti alamat yang diminta tidak berlaku, jadi klien memulai proses dari awal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-nak"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u08-l4",
       "title": "Server DHCP di IOS",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u08-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "dhcp-server"
+          ],
+          "title": "Membuat pool DHCP",
+          "body": "Router Cisco bisa menjadi server DHCP (Dynamic Host Configuration Protocol). Buat pool dengan ip dhcp pool diikuti nama, lalu di dalamnya isi network dengan alamat dan mask subnet klien, default-router dengan gateway (harus di subnet klien), dan dns-server. lease mengatur masa pinjam; bawaannya 1 hari.",
+          "keyPoints": [
+            "ip dhcp pool <nama>",
+            "network, default-router, dns-server",
+            "lease: bawaan 1 hari"
+          ],
+          "teaches": [
+            "ccna-f-u08-pool",
+            "ccna-f-u08-gw-subnet",
+            "ccna-f-u08-lease-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u08-l4-e1",
+          "type": "ios",
+          "concept": "dhcp-server",
+          "prompt": "Make R1 the DHCP (Dynamic Host Configuration Protocol) server for its LAN (Local Area Network) 192.168.10.0/24. Create a pool named Kantor, with gateway 192.168.10.1 and DNS (Domain Name System) server 192.168.10.5.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.10.1 255.255.255.0",
+                "no shutdown"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "ip dhcp pool Kantor",
+                "line": "network 192.168.10.0 255.255.255.0"
+              },
+              {
+                "context": "ip dhcp pool Kantor",
+                "line": "default-router 192.168.10.1"
+              },
+              {
+                "context": "ip dhcp pool Kantor",
+                "line": "dns-server 192.168.10.5"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip dhcp pool Kantor",
+            "network 192.168.10.0 255.255.255.0",
+            "default-router 192.168.10.1",
+            "dns-server 192.168.10.5",
+            "end"
+          ],
+          "explanation": "Pool berisi network subnet klien, default-router sebagai gateway, dan dns-server.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-pool"
+          ]
+        },
+        {
+          "id": "ccna-u08-l4-e2",
+          "type": "choice",
+          "concept": "dhcp-server",
+          "prompt": "A pool for 10.1.20.0/24 has default-router 10.1.10.1. What happens to the clients?",
+          "options": [
+            "They get a gateway outside their subnet and cannot reach other networks",
+            "They get no address at all from the pool",
+            "They work, because the gateway can be in any subnet",
+            "The router changes the gateway to 10.1.20.1 itself"
+          ],
+          "answer": 0,
+          "explanation": "Default-router harus berada di subnet klien. Gateway 10.1.10.1 berada di luar 10.1.20.0/24, jadi klien tidak bisa keluar dari subnet-nya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-gw-subnet",
+            "ccna-f-u04-gateway-subnet"
+          ]
+        },
+        {
+          "id": "ccna-u08-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "dhcp-excluded"
+          ],
+          "title": "Alamat yang dikecualikan",
+          "body": "Pool membagikan seluruh alamat di network, termasuk alamat yang sudah dipakai router, server, atau printer. Untuk mencegah bentrok, keluarkan alamat itu dengan ip dhcp excluded-address di global configuration, diikuti satu alamat atau rentang awal dan akhir. Contoh: ip dhcp excluded-address 192.168.10.1 192.168.10.10.",
+          "keyPoints": [
+            "Di global configuration, bukan di pool",
+            "Satu alamat atau rentang",
+            "Untuk router, server, printer"
+          ],
+          "teaches": [
+            "ccna-f-u08-excluded"
+          ]
+        },
+        {
+          "id": "ccna-u08-l4-e3",
+          "type": "ios",
+          "concept": "dhcp-excluded",
+          "prompt": "Addresses 192.168.10.1 to 192.168.10.10 are used by R1, servers, and printers. Stop the DHCP (Dynamic Host Configuration Protocol) server on R1 from handing them out.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "ip dhcp pool Kantor",
+              "lines": [
+                "network 192.168.10.0 255.255.255.0",
+                "default-router 192.168.10.1"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip dhcp excluded-address 192.168.10.1 192.168.10.10"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip dhcp excluded-address 192.168.10.1 192.168.10.10",
+            "end"
+          ],
+          "explanation": "ip dhcp excluded-address dipasang di global configuration dengan alamat awal dan akhir rentang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-excluded"
+          ]
+        },
+        {
+          "id": "ccna-u08-l4-e4",
+          "type": "truefalse",
+          "concept": "dhcp-excluded",
+          "prompt": "The ip dhcp excluded-address command is entered inside the DHCP (Dynamic Host Configuration Protocol) pool configuration mode.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. ip dhcp excluded-address adalah perintah global configuration.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-excluded"
+          ]
+        },
+        {
+          "id": "ccna-u08-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "dhcp-verify"
+          ],
+          "title": "Memeriksa server DHCP",
+          "body": "show ip dhcp binding menampilkan alamat yang sudah dipinjamkan, hardware address atau client ID (identifier) klien, dan kapan lease-nya habis. Sebelum memberikan alamat, server IOS memeriksanya dengan ping. Kalau ternyata ada yang menjawab, alamat itu dicatat di show ip dhcp conflict dan tidak dibagikan.",
+          "keyPoints": [
+            "binding: siapa dapat alamat apa",
+            "Server ping dulu sebelum memberi",
+            "conflict: alamat yang ternyata dipakai"
+          ],
+          "teaches": [
+            "ccna-f-u08-binding",
+            "ccna-f-u08-conflict"
+          ]
+        },
+        {
+          "id": "ccna-u08-l4-e5",
+          "type": "exhibit",
+          "concept": "dhcp-verify",
+          "prompt": "Refer to the exhibit. Which address did the client with hardware address 0100.5079.6668.0a receive?",
+          "outputs": [
+            {
+              "title": "R1# show ip dhcp binding",
+              "text": "Bindings from all pools not associated with VRF:\nIP address      Client-ID/              Lease expiration        Type       State      Interface\n                Hardware address/\n                User name\n192.168.10.11   0100.5079.6668.0a       Oct 04 2026 09:12 AM    Automatic  Active     GigabitEthernet0/0/0\n192.168.10.12   0100.5079.6668.0c       Oct 04 2026 09:40 AM    Automatic  Active     GigabitEthernet0/0/0"
+            }
+          ],
+          "options": [
+            "192.168.10.11",
+            "192.168.10.12",
+            "192.168.10.1",
+            "192.168.10.5"
+          ],
+          "answer": 0,
+          "explanation": "Baris dengan client ID (identifier) 0100.5079.6668.0a menunjukkan alamat 192.168.10.11.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-binding"
+          ]
+        },
+        {
+          "id": "ccna-u08-l4-e6",
+          "type": "choice",
+          "concept": "dhcp-verify",
+          "prompt": "A printer was set by hand to 192.168.10.20, which is inside the pool. How does the IOS DHCP (Dynamic Host Configuration Protocol) server usually avoid giving that address to a PC?",
+          "options": [
+            "It pings the address first and logs it as a conflict",
+            "It reads the printer settings over SNMP (Simple Network Management Protocol)",
+            "It waits until the printer lease expires",
+            "It cannot avoid it at all"
+          ],
+          "answer": 0,
+          "explanation": "Server memeriksa alamat dengan ping sebelum memberikannya. Kalau ada yang menjawab, alamat itu dicatat sebagai conflict. Cara yang lebih rapi tetap ip dhcp excluded-address.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-conflict",
+            "ccna-f-u08-excluded"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u08-l5",
       "title": "DHCP relay dan klien DHCP",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u08-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "dhcp-relay"
+          ],
+          "title": "DHCP relay",
+          "body": "Discover dikirim sebagai broadcast, dan router tidak meneruskan broadcast. Jadi kalau server DHCP (Dynamic Host Configuration Protocol) ada di subnet lain, router di subnet klien harus menjadi relay: pasang ip helper-address dengan alamat server di interface yang menerima broadcast klien. Router meneruskan pesan itu ke server sebagai unicast dan mengisi field giaddr dengan alamat interface tersebut, supaya server memilih pool yang cocok.",
+          "keyPoints": [
+            "Router tidak meneruskan broadcast",
+            "ip helper-address di sisi klien",
+            "giaddr: server memilih pool"
+          ],
+          "visual": "DhcpRelay",
+          "teaches": [
+            "ccna-f-u08-relay-why",
+            "ccna-f-u08-helper",
+            "ccna-f-u08-giaddr"
+          ]
+        },
+        {
+          "id": "ccna-u08-l5-e1",
+          "type": "ios",
+          "concept": "dhcp-relay",
+          "prompt": "Clients on GigabitEthernet0/0/1 of R1 (192.168.20.0/24) must get addresses from the DHCP (Dynamic Host Configuration Protocol) server 192.168.10.5 on another subnet. Configure R1 as the relay.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 192.168.20.1 255.255.255.0",
+                "no shutdown"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip helper-address 192.168.10.5"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "ip helper-address 192.168.10.5",
+            "end"
+          ],
+          "explanation": "ip helper-address dipasang di interface yang menerima broadcast klien, yaitu G0/0/1, dengan alamat server.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-helper"
+          ]
+        },
+        {
+          "id": "ccna-u08-l5-e2",
+          "type": "choice",
+          "concept": "dhcp-relay",
+          "prompt": "On which interface do you configure ip helper-address?",
+          "options": [
+            "The interface that receives the client broadcasts",
+            "The interface that faces the DHCP (Dynamic Host Configuration Protocol) server",
+            "Every interface of the router",
+            "Only the loopback interface"
+          ],
+          "answer": 0,
+          "explanation": "Relay menangkap broadcast klien, jadi helper-address dipasang di interface sisi klien.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-helper"
+          ]
+        },
+        {
+          "id": "ccna-u08-l5-e3",
+          "type": "truefalse",
+          "concept": "dhcp-relay",
+          "prompt": "Without a relay, a DHCP (Dynamic Host Configuration Protocol) server must be on the same subnet as its clients.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Discover adalah broadcast, dan router tidak meneruskan broadcast tanpa relay.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-relay-why"
+          ]
+        },
+        {
+          "id": "ccna-u08-l5-e4",
+          "type": "choice",
+          "concept": "dhcp-relay",
+          "prompt": "One DHCP (Dynamic Host Configuration Protocol) server has pools for 192.168.20.0/24 and 192.168.30.0/24. How does it know which pool to use for a relayed request?",
+          "options": [
+            "From the giaddr field that the relay fills in",
+            "From the MAC (Media Access Control) address of the client",
+            "From the source address 0.0.0.0",
+            "It picks a pool at random"
+          ],
+          "answer": 0,
+          "explanation": "Relay mengisi giaddr dengan alamat interface sisi klien, sehingga server tahu subnet klien. Sumber 0.0.0.0 tidak memberi petunjuk subnet.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-giaddr",
+            "ccna-f-u08-discover-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u08-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "dhcp-client"
+          ],
+          "title": "Router sebagai klien DHCP",
+          "body": "Router juga bisa meminta alamat lewat DHCP (Dynamic Host Configuration Protocol). ip address dhcp di interface membuat interface itu menjadi klien, misalnya di interface yang menghadap ISP (Internet Service Provider) yang membagikan alamat secara dinamis. show ip interface brief lalu menampilkan DHCP di kolom Method.",
+          "keyPoints": [
+            "ip address dhcp",
+            "Biasanya ke arah ISP",
+            "Method: DHCP"
+          ],
+          "teaches": [
+            "ccna-f-u08-dhcp-client",
+            "ccna-f-u04-sh-ip-int-br"
+          ]
+        },
+        {
+          "id": "ccna-u08-l5-e5",
+          "type": "ios",
+          "concept": "dhcp-client",
+          "prompt": "The ISP (Internet Service Provider) assigns the address of R1 on GigabitEthernet0/0/2 by DHCP (Dynamic Host Configuration Protocol). Configure the interface as a DHCP client and enable it.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/2",
+                "line": "ip address dhcp"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/2",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/2",
+            "ip address dhcp",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "ip address dhcp membuat interface meminta alamat lewat DHCP (Dynamic Host Configuration Protocol), dan no shutdown menyalakannya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-dhcp-client",
+            "ccna-f-u03-if-states"
+          ]
+        },
+        {
+          "id": "ccna-u08-l5-e6",
+          "type": "match",
+          "concept": "dhcp-client",
+          "prompt": "Match each command to what it does.",
+          "pairs": [
+            [
+              "ip dhcp pool Kantor",
+              "Creates a DHCP (Dynamic Host Configuration Protocol) pool"
+            ],
+            [
+              "ip dhcp excluded-address 10.1.1.1",
+              "Keeps an address out of every pool"
+            ],
+            [
+              "ip helper-address 10.1.1.5",
+              "Relays client broadcasts to a server"
+            ],
+            [
+              "ip address dhcp",
+              "Makes an interface a DHCP client"
+            ]
+          ],
+          "explanation": "Pool membuat server, excluded-address mengecualikan alamat, helper-address untuk relay, dan ip address dhcp untuk klien.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-pool",
+            "ccna-f-u08-excluded",
+            "ccna-f-u08-helper",
+            "ccna-f-u08-dhcp-client"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u08-l6",
@@ -35,8 +993,295 @@
         "kind": "handson",
         "from": "ccna-u08-l5"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u08-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "dhcp-lab"
+          ],
+          "title": "Alur kerja DHCP di router",
+          "body": "Untuk LAN (Local Area Network) yang dilayani router sendiri: keluarkan alamat statis dengan ip dhcp excluded-address, lalu buat pool dengan network, default-router, dan dns-server. Untuk LAN yang dilayani server di subnet lain: pasang ip helper-address di interface sisi klien. Cek hasilnya dengan show ip dhcp binding dan ipconfig di PC.",
+          "keyPoints": [
+            "Exclude dulu, lalu pool",
+            "Server di subnet lain: helper-address",
+            "Cek binding dan ipconfig"
+          ],
+          "teaches": [
+            "ccna-f-u08-excluded",
+            "ccna-f-u08-pool",
+            "ccna-f-u08-helper",
+            "ccna-f-u08-binding"
+          ]
+        },
+        {
+          "id": "ccna-u08-l6-e1",
+          "type": "ios",
+          "concept": "dhcp-lab",
+          "prompt": "On R1, keep 192.168.10.1 to 192.168.10.9 out of DHCP (Dynamic Host Configuration Protocol), then create pool Kantor for 192.168.10.0/24 with gateway 192.168.10.1, DNS (Domain Name System) server 192.168.10.5, and a 7-day lease.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.10.1 255.255.255.0",
+                "no shutdown"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip dhcp excluded-address 192.168.10.1 192.168.10.9"
+              },
+              {
+                "context": "ip dhcp pool Kantor",
+                "line": "network 192.168.10.0 255.255.255.0"
+              },
+              {
+                "context": "ip dhcp pool Kantor",
+                "line": "default-router 192.168.10.1"
+              },
+              {
+                "context": "ip dhcp pool Kantor",
+                "line": "dns-server 192.168.10.5"
+              },
+              {
+                "context": "ip dhcp pool Kantor",
+                "line": "lease 7"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip dhcp excluded-address 192.168.10.1 192.168.10.9",
+            "ip dhcp pool Kantor",
+            "network 192.168.10.0 255.255.255.0",
+            "default-router 192.168.10.1",
+            "dns-server 192.168.10.5",
+            "lease 7",
+            "end"
+          ],
+          "explanation": "Exclusion di global configuration, lalu pool dengan network, default-router, dns-server, dan lease 7.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-excluded",
+            "ccna-f-u08-pool",
+            "ccna-f-u08-lease-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u08-l6-e2",
+          "type": "ios",
+          "concept": "dhcp-lab",
+          "prompt": "LAN (Local Area Network) 192.168.20.0/24 on GigabitEthernet0/0/1 of R1 gets its addresses from the server 192.168.10.5. Configure the relay and save the configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 192.168.20.1 255.255.255.0",
+                "no shutdown"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip helper-address 192.168.10.5"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "ip helper-address 192.168.10.5",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Relay dipasang di G0/0/1, sisi klien, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-helper",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u08-l6-e3",
+          "type": "exhibit",
+          "concept": "dhcp-lab",
+          "prompt": "Refer to the exhibit. PCs on G0/0/1 get no address, while PCs on G0/0/0 work. What is wrong?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | section interface",
+              "text": "interface GigabitEthernet0/0/0\n ip address 192.168.10.1 255.255.255.0\n ip helper-address 192.168.10.5\ninterface GigabitEthernet0/0/1\n ip address 192.168.20.1 255.255.255.0"
+            }
+          ],
+          "options": [
+            "The helper address is on G0/0/0 instead of G0/0/1",
+            "Pool Kantor is missing its network command",
+            "The server address 192.168.10.5 is a broadcast address",
+            "G0/0/1 needs ip address dhcp"
+          ],
+          "answer": 0,
+          "explanation": "helper-address harus ada di interface yang menerima broadcast klien, yaitu G0/0/1. Di G0/0/0 ia tidak berguna untuk LAN (Local Area Network) G0/0/1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-helper",
+            "ccna-f-u08-pool"
+          ]
+        },
+        {
+          "id": "ccna-u08-l6-e4",
+          "type": "truefalse",
+          "concept": "dhcp-lab",
+          "prompt": "In this lab, PC addresses from pool Kantor can include 192.168.10.5, the DNS (Domain Name System) server.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. 192.168.10.1 sampai .9 dikecualikan, jadi .5 tidak pernah dibagikan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-excluded"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u08-ipconfig-all",
+      "statement": "Di Windows, ipconfig /all menampilkan konfigurasi lengkap setiap adapter, misalnya alamat fisik, status DHCP, alamat IPv4, subnet mask, default gateway, dan server DNS.",
+      "source": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"
+    },
+    {
+      "id": "ccna-f-u08-ipconfig-renew",
+      "statement": "ipconfig /release mengirim pesan release ke server DHCP dan melepas alamat adapter, sedangkan ipconfig /renew meminta konfigurasi DHCP baru.",
+      "source": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"
+    },
+    {
+      "id": "ccna-f-u08-mac-tcpip",
+      "statement": "Di Mac, alamat IPv4, subnet mask, dan router (default gateway) dilihat di System Settings > Network > layanan jaringan > Details > TCP/IP.",
+      "source": "https://support.apple.com/guide/mac-help/change-tcpip-settings-on-mac-mh14129/mac"
+    },
+    {
+      "id": "ccna-f-u08-mac-configure",
+      "statement": "Pilihan Configure IPv4 di Mac antara lain Using DHCP, Using DHCP with manual address, dan Manually.",
+      "source": "https://support.apple.com/guide/mac-help/use-dhcp-or-a-manual-ip-address-on-mac-mchlp2718/mac"
+    },
+    {
+      "id": "ccna-f-u08-linux-addr",
+      "statement": "Di Linux, ip address show menampilkan alamat setiap interface.",
+      "source": "https://man7.org/linux/man-pages/man8/ip-address.8.html"
+    },
+    {
+      "id": "ccna-f-u08-linux-route",
+      "statement": "Di Linux, ip route show menampilkan tabel routing; baris default via menunjukkan default gateway.",
+      "source": "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+    },
+    {
+      "id": "ccna-f-u08-ifconfig-old",
+      "statement": "Man page Linux menyebut ifconfig sudah usang dan menyarankan ip addr serta ip link sebagai penggantinya.",
+      "source": "https://man7.org/linux/man-pages/man8/ifconfig.8.html"
+    },
+    {
+      "id": "ccna-f-u08-ping",
+      "statement": "ping mengirim pesan ICMP Echo Request dan menunggu Echo Reply untuk menguji apakah tujuan bisa dijangkau.",
+      "source": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ping"
+    },
+    {
+      "id": "ccna-f-u08-tracert",
+      "statement": "tracert (traceroute di Linux dan macOS) menampilkan router yang dilewati paket menuju tujuan.",
+      "source": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tracert"
+    },
+    {
+      "id": "ccna-f-u08-nslookup",
+      "statement": "nslookup menanyakan nama ke server DNS dan menampilkan alamat yang didapat, sehingga masalah DNS bisa dipisahkan dari masalah jaringan.",
+      "source": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup"
+    },
+    {
+      "id": "ccna-f-u08-dora",
+      "statement": "DHCP memakai empat pesan: Discover dari klien, Offer dari server, Request dari klien, lalu Ack dari server.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc2131"
+    },
+    {
+      "id": "ccna-f-u08-discover-bcast",
+      "statement": "Klien yang belum punya alamat mengirim Discover sebagai broadcast ke 255.255.255.255 dengan alamat sumber 0.0.0.0.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc2131"
+    },
+    {
+      "id": "ccna-f-u08-lease",
+      "statement": "Alamat dari DHCP dipinjamkan untuk masa tertentu (lease); klien mulai memperpanjangnya saat setengah masa lease berlalu (T1).",
+      "source": "https://datatracker.ietf.org/doc/html/rfc2131"
+    },
+    {
+      "id": "ccna-f-u08-nak",
+      "statement": "Kalau alamat yang diminta klien tidak valid, server membalas Nak dan klien harus mulai lagi dari Discover.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc2131"
+    },
+    {
+      "id": "ccna-f-u08-options",
+      "statement": "Selain alamat dan mask, DHCP membawa opsi seperti router (default gateway), server DNS, dan nama domain.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc2132"
+    },
+    {
+      "id": "ccna-f-u08-pool",
+      "statement": "Server DHCP di IOS dibuat dengan ip dhcp pool <nama>, lalu network <alamat> <mask>, default-router, dan dns-server di dalam pool.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html"
+    },
+    {
+      "id": "ccna-f-u08-excluded",
+      "statement": "ip dhcp excluded-address <awal> [akhir] di global configuration mencegah server DHCP membagikan alamat itu, misalnya alamat router dan server.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html"
+    },
+    {
+      "id": "ccna-f-u08-gw-subnet",
+      "statement": "Alamat default-router di pool harus berada di subnet klien.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html"
+    },
+    {
+      "id": "ccna-f-u08-lease-cmd",
+      "statement": "Perintah lease <hari> [jam] di pool mengatur masa lease; bawaannya 1 hari.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html"
+    },
+    {
+      "id": "ccna-f-u08-binding",
+      "statement": "show ip dhcp binding menampilkan alamat yang sudah dipinjamkan, hardware address atau client ID klien, dan kapan lease-nya habis.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html"
+    },
+    {
+      "id": "ccna-f-u08-conflict",
+      "statement": "Server DHCP IOS memeriksa alamat dengan ping sebelum memberikannya; alamat yang ternyata dipakai dicatat di show ip dhcp conflict dan tidak dibagikan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u08-relay-why",
+      "statement": "Discover dikirim sebagai broadcast, dan router tidak meneruskan broadcast, jadi tanpa relay server DHCP harus berada di subnet yang sama dengan klien.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_dhcp/configuration/xe-16-6/dhcp-xe-16-6-book/dhcp-relay-agent-xe.html"
+    },
+    {
+      "id": "ccna-f-u08-helper",
+      "statement": "ip helper-address <alamat server> dipasang di interface router yang menerima broadcast klien; router meneruskan pesan DHCP itu ke server sebagai unicast.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_dhcp/configuration/xe-16-6/dhcp-xe-16-6-book/dhcp-relay-agent-xe.html"
+    },
+    {
+      "id": "ccna-f-u08-giaddr",
+      "statement": "Relay mengisi field giaddr dengan alamat interface yang punya ip helper-address, sehingga server tahu subnet klien dan memilih pool yang cocok.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_dhcp/configuration/xe-16-6/dhcp-xe-16-6-book/dhcp-relay-agent-xe.html"
+    },
+    {
+      "id": "ccna-f-u08-dhcp-client",
+      "statement": "ip address dhcp membuat interface router menjadi klien DHCP, misalnya di interface yang menghadap ISP.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html",
+      "verify": true
+    }
+  ]
 }

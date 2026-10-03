@@ -158,7 +158,9 @@ Di bawah node cabang ada label jenisnya, dan di atas peta ada legenda ikon.
   3–6 soal (minimal 2 soal `ios`).
 - Setiap fakta punya `source` berupa URL dokumentasi resmi: `cisco.com`, `developer.cisco.com`,
   `learningnetwork.cisco.com`, `netacad.com`, `rfc-editor.org`, `datatracker.ietf.org`, `iana.org` (nomor port),
-  `ieee.org`, `docs.ansible.com`, atau repo resmi Ansible di GitHub. Validator menolak fakta tanpa sumber seperti itu kecuali
+  `ieee.org`, `docs.ansible.com`, atau repo resmi Ansible di GitHub. Untuk perintah di OS klien (topik 1.6) dipakai
+  dokumentasi vendornya sendiri: Windows commands di `learn.microsoft.com`, Mac User Guide di `support.apple.com`, dan
+  Linux man-pages di `man7.org`. Validator menolak fakta tanpa sumber seperti itu kecuali
   bertanda `verify: true`.
 - `verify: true` berarti fakta itu belum bisa dicocokkan ke sumbernya. Lihat bagian 10 untuk cara pengecekan yang
   dipakai dan batasannya.

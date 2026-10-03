@@ -823,5 +823,10 @@
     "term": "MPLS",
     "expansion": "Multiprotocol Label Switching",
     "description": "Teknik penerusan paket berdasarkan label, sering dipakai penyedia layanan untuk VPN."
+  },
+  {
+    "term": "DORA",
+    "expansion": "Discover, Offer, Request, Acknowledge",
+    "description": "Urutan empat pesan DHCP saat klien meminta alamat."
   }
 ]

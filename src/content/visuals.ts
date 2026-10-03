@@ -133,6 +133,10 @@ export const VISUAL_CATALOG = {
   VmVsContainer: ['vm-vs-container'],
   VirtualSwitch: ['virtual-switch'],
   VrfTables: ['vrf'],
+  // Unit 8
+  ClientIpCommands: ['client-ip-settings'],
+  DhcpDora: ['dhcp-dora'],
+  DhcpRelay: ['dhcp-relay'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG
