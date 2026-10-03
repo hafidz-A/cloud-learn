@@ -168,6 +168,12 @@ export const VISUAL_CATALOG = {
   // Unit 16
   StaticBothWays: ['static-route'],
   FloatingStatic: ['floating-static'],
+  // Unit 17
+  OspfAreas: ['ospf-areas'],
+  WildcardMask: ['wildcard-mask'],
+  OspfStates: ['ospf-states'],
+  DrElection: ['ospf-dr'],
+  OspfCost: ['ospf-cost'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

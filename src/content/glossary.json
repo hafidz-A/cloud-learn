@@ -7,7 +7,7 @@
   {
     "term": "ACL",
     "expansion": "Access Control List",
-    "description": "Daftar izin di folder atau file. Azure Files memakai Windows ACL untuk izin folder dan file."
+    "description": "Daftar aturan permit dan deny untuk memfilter trafik."
   },
   {
     "term": "ACR",
@@ -975,5 +975,51 @@
     "term": "AD",
     "expansion": "Administrative Distance",
     "description": "Tingkat kepercayaan sumber route. Untuk prefix yang sama, AD terendah yang dipakai."
+  },
+  {
+    "term": "LSA",
+    "expansion": "Link-State Advertisement",
+    "description": "Informasi topologi yang dikirim router OSPF ke router lain di area yang sama."
+  },
+  {
+    "term": "SPF",
+    "expansion": "Shortest Path First",
+    "description": "Algoritma Dijkstra yang dipakai OSPF untuk menghitung jalur terbaik."
+  },
+  {
+    "term": "ABR",
+    "expansion": "Area Border Router",
+    "description": "Router OSPF yang punya interface di area 0 dan area lain."
+  },
+  {
+    "term": "DR",
+    "expansion": "Designated Router",
+    "description": "Router OSPF pilihan di jaringan broadcast; router lain membentuk adjacency penuh dengannya."
+  },
+  {
+    "term": "BDR",
+    "expansion": "Backup Designated Router",
+    "description": "Cadangan DR di jaringan broadcast OSPF."
+  },
+  {
+    "term": "DROTHER",
+    "expansion": "DR Other",
+    "description": "Router OSPF di jaringan broadcast yang bukan DR atau BDR."
+  },
+  {
+    "term": "MTU",
+    "expansion": "Maximum Transmission Unit",
+    "description": "Ukuran paket terbesar yang boleh lewat sebuah interface, biasanya 1500 byte di Ethernet."
+  },
+  {
+    "term": "DBD",
+    "expansion": "Database Description",
+    "description": "Paket OSPF yang berisi ringkasan database saat state ExStart dan Exchange."
+  },
+  {
+    "term": "FULL",
+    "expansion": "Full adjacency",
+    "description": "State tetangga OSPF ketika database kedua router sudah sama.",
+    "course": "ccna"
   }
 ]

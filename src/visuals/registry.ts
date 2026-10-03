@@ -52,6 +52,11 @@ import { LongestPrefix } from './LongestPrefix'
 import { AdLadder } from './AdLadder'
 import { StaticBothWays } from './StaticBothWays'
 import { FloatingStatic } from './FloatingStatic'
+import { OspfAreas } from './OspfAreas'
+import { WildcardMask } from './WildcardMask'
+import { OspfStates } from './OspfStates'
+import { DrElection } from './DrElection'
+import { OspfCost } from './OspfCost'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -119,6 +124,11 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  OspfCost,
+  DrElection,
+  OspfStates,
+  WildcardMask,
+  OspfAreas,
   FloatingStatic,
   StaticBothWays,
   AdLadder,
