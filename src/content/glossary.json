@@ -920,5 +920,20 @@
     "term": "LLDP",
     "expansion": "Link Layer Discovery Protocol",
     "description": "Protokol standar IEEE 802.1AB untuk mengenali tetangga langsung, dipahami banyak vendor."
+  },
+  {
+    "term": "BPDU",
+    "expansion": "Bridge Protocol Data Unit",
+    "description": "Pesan spanning tree yang dikirim antar switch."
+  },
+  {
+    "term": "RSTP",
+    "expansion": "Rapid Spanning Tree Protocol",
+    "description": "Spanning tree yang lebih cepat (802.1w) dengan state discarding, learning, dan forwarding."
+  },
+  {
+    "term": "PVST",
+    "expansion": "Per-VLAN Spanning Tree",
+    "description": "Spanning tree versi Cisco dengan satu instance per VLAN. PVST+ dan Rapid PVST+ adalah versinya."
   }
 ]

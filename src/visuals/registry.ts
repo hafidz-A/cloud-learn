@@ -40,6 +40,10 @@ import { EtherChannelBundle } from './EtherChannelBundle'
 import { LacpModes } from './LacpModes'
 import { CdpVsLldp } from './CdpVsLldp'
 import { NeighborScope } from './NeighborScope'
+import { StpLoop } from './StpLoop'
+import { StpRoles } from './StpRoles'
+import { StpStates } from './StpStates'
+import { StpGuards } from './StpGuards'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -107,6 +111,10 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  StpGuards,
+  StpStates,
+  StpRoles,
+  StpLoop,
   NeighborScope,
   CdpVsLldp,
   LacpModes,

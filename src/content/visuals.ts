@@ -152,6 +152,11 @@ export const VISUAL_CATALOG = {
   // Unit 12
   CdpVsLldp: ['cdp-vs-lldp'],
   NeighborScope: ['neighbor-scope'],
+  // Unit 13
+  StpLoop: ['stp-loop'],
+  StpRoles: ['stp-roles'],
+  StpStates: ['stp-states'],
+  StpGuards: ['stp-guards'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

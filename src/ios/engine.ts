@@ -735,6 +735,14 @@ function apply(st: DeviceState, def: CmdDef, words: string[], negate: boolean): 
       lines.set(slot, `switchport trunk allowed vlan ${allowedVlans(lines.get(slot), words.slice(4))}`)
       continue
     }
+    if (!negate && def.slot === 'spanning-tree vlan $2 priority' && Number(line.split(' ')[4]) % 4096 !== 0) {
+      return [
+        out('% Bridge Priority must be in increments of 4096.'),
+        out('% Allowed values are:'),
+        out('  0     4096  8192  12288 16384 20480 24576 28672'),
+        out('  32768 36864 40960 45056 49152 53248 57344 61440'),
+      ]
+    }
     if (!negate && def.slot === 'ip address' && words[2] !== 'dhcp') {
       const ip = parseIpv4(words[2])!
       const len = maskLength(words[3])
@@ -1149,7 +1157,7 @@ export function judgeSession(state: DeviceState, goal: IosGoal): { correct: bool
 /** Lines that mean a typed command went wrong: IOS errors and Langit notes (not the routine % log messages). */
 export function errorLines(transcript: TermLine[]): string[] {
   return transcript
-    .filter((l) => l.kind === 'langit' || (l.kind === 'out' && /^(% (Invalid input|Incomplete command|Please define|Bad secrets|Duplicate)|Bad mask|% .* overlaps with)/.test(l.text)))
+    .filter((l) => l.kind === 'langit' || (l.kind === 'out' && /^(% (Invalid input|Incomplete command|Please define|Bad secrets|Duplicate)|Bad mask|% .* overlaps with|% Bridge Priority)/.test(l.text)))
     .map((l) => ('text' in l ? l.text : ''))
 }
 

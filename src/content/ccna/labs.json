@@ -1579,6 +1579,156 @@
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html",
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
       ]
+    },
+    {
+      "lesson": "ccna-u13-l8",
+      "title": "Rapid PVST+, root bridge, dan pelindung port",
+      "minutes": 35,
+      "tool": "packet-tracer",
+      "goal": "Memilih root bridge dengan sengaja di segitiga tiga switch, melihat port mana yang diblokir, lalu melindungi port akses dengan PortFast dan BPDU guard.",
+      "topology": {
+        "devices": [
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 0,
+            "note": "2960-24TT, inti"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw3",
+            "kind": "switch",
+            "label": "SW3",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT, akses"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "sw1",
+            "to": "sw2",
+            "fromPort": "G0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "sw3",
+            "fromPort": "G0/2",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw2",
+            "to": "sw3",
+            "fromPort": "G0/2",
+            "toPort": "G0/2"
+          },
+          {
+            "from": "sw3",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.11/24 (VLAN 1)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan tiga switch membentuk segitiga dengan kabel Copper Cross-Over, lalu sambungkan PC1. Tunggu sampai semua lampu link hijau atau oranye stabil."
+        },
+        {
+          "text": "Sebelum konfigurasi, lihat siapa root di setiap switch dan catat port yang BLK.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "show spanning-tree"
+          ]
+        },
+        {
+          "text": "Jadikan SW1 root dan aktifkan Rapid PVST+.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "spanning-tree vlan 1 root primary",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Jadikan SW2 cadangan root.",
+          "device": "SW2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "spanning-tree vlan 1 root secondary",
+            "end"
+          ]
+        },
+        {
+          "text": "Lindungi port PC di SW3.",
+          "device": "SW3",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "interface range fa0/1 - 10",
+            "spanning-tree portfast",
+            "spanning-tree bpduguard enable",
+            "end"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Root bridge setelah konfigurasi.",
+          "device": "SW3",
+          "command": "show spanning-tree",
+          "expect": "Root ID menunjukkan MAC SW1 dengan priority 24577 (24576 + VLAN 1). Satu port SW3 berperan Altn dan BLK."
+        },
+        {
+          "text": "Cabut kabel SW1-SW3, lalu lihat lagi SW3.",
+          "device": "SW3",
+          "command": "show spanning-tree",
+          "expect": "Port yang tadinya Altn menjadi Root dan FWD dalam beberapa detik."
+        },
+        {
+          "text": "Ganti PC1 dengan sebuah switch (sambungkan switch keempat ke Fa0/1).",
+          "device": "SW3",
+          "command": "show interfaces status",
+          "expect": "Fa0/1 berstatus err-disabled karena BPDU guard. Pulihkan dengan shutdown lalu no shutdown setelah switch itu dicabut."
+        }
+      ],
+      "notes": [
+        "Packet Tracer menampilkan nilai root priority dan MAC yang berbeda di setiap file. Yang penting: setelah root primary, SW1 harus menjadi root."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html",
+        "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html",
+        "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
+      ]
     }
   ]
 }

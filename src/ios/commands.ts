@@ -189,7 +189,13 @@ cfg(G, 'access-list <num:2000-2699> { permit | deny } { ip | tcp | udp | icmp | 
 enter(G, 'ip access-list standard <word>', 'stdacl')
 enter(G, 'ip access-list extended <word>', 'extacl')
 cfg(G, 'spanning-tree mode { rapid-pvst | pvst | mst }', { slot: 'spanning-tree mode', only: SWITCHES })
-cfg(G, 'spanning-tree vlan <vlans> root { primary | secondary }', { slot: 'spanning-tree vlan $2 priority', only: SWITCHES })
+// root primary and secondary are macros: IOS stores the priority they pick, 24576 or 28672
+// when the other switches keep the default 32768.
+cfg(G, 'spanning-tree vlan <vlans> root { primary | secondary }', {
+  slot: 'spanning-tree vlan $2 priority',
+  only: SWITCHES,
+  rewrite: (w) => ['spanning-tree', 'vlan', w[2], 'priority', w[4] === 'primary' ? '24576' : '28672'],
+})
 cfg(G, 'spanning-tree vlan <vlans> priority <num:0-61440>', { slot: 'spanning-tree vlan $2 priority', only: SWITCHES })
 cfg(G, 'spanning-tree portfast default', { slot: 'spanning-tree portfast default', only: SWITCHES })
 cfg(G, 'spanning-tree portfast bpduguard default', { slot: 'spanning-tree portfast bpduguard default', only: SWITCHES })

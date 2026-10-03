@@ -341,3 +341,13 @@ describe('show lldp', () => {
     expect(text).toContain('Total entries displayed: 0')
   })
 })
+
+describe('spanning-tree priority', () => {
+  it('stores root primary as priority 24576 and rejects priorities that are not multiples of 4096', () => {
+    const run = runSession({ hostname: 'SW1', model: 'c2960' }, ['configure terminal', 'spanning-tree vlan 10 root primary', 'spanning-tree vlan 20 priority 1000', 'end', 'show running-config'])
+    const text = run.transcript.map((l) => l.text).join('\n')
+    expect(text).toContain('spanning-tree vlan 10 priority 24576')
+    expect(text).toContain('% Bridge Priority must be in increments of 4096.')
+    expect(text.slice(text.indexOf('Building configuration'))).not.toContain('spanning-tree vlan 20 priority 1000')
+  })
+})
