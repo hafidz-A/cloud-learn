@@ -109,6 +109,10 @@ export const VISUAL_CATALOG = {
   // Unit 2
   CliModes: ['ios-modes'],
   RunVsStartup: ['running-vs-startup'],
+  // Unit 3
+  StraightVsCrossover: ['straight-vs-crossover'],
+  FiberTypes: ['smf-vs-mmf'],
+  DuplexMismatch: ['duplex-mismatch'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

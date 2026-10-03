@@ -91,6 +91,8 @@ function defaultLine(st: Pick<DeviceState, 'model'>, context: string, slot: stri
     if (slot === 'lldp transmit') return 'lldp transmit'
     if (slot === 'lldp receive') return 'lldp receive'
     if (slot === 'mdix auto' && isSwitch(st.model)) return 'mdix auto'
+    if (slot === 'speed' && PHYSICAL[st.model].includes(name)) return 'speed auto'
+    if (slot === 'duplex' && PHYSICAL[st.model].includes(name)) return 'duplex auto'
     return undefined
   }
   if (context) return undefined

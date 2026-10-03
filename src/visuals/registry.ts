@@ -7,6 +7,9 @@ import { ArpExchange } from './ArpExchange'
 import { TcpHandshake } from './TcpHandshake'
 import { CliModes } from './CliModes'
 import { RunVsStartup } from './RunVsStartup'
+import { StraightVsCrossover } from './StraightVsCrossover'
+import { FiberTypes } from './FiberTypes'
+import { DuplexMismatch } from './DuplexMismatch'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -74,6 +77,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  DuplexMismatch,
+  FiberTypes,
+  StraightVsCrossover,
   RunVsStartup,
   CliModes,
   TcpHandshake,

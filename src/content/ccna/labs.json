@@ -137,6 +137,159 @@
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3850/software/release/16-9/configuration_guide/sys_mgmt/b_169_sys_mgmt_3850_cg/m-169-fm-config-cg.html",
         "https://www.cisco.com/c/en/us/support/docs/storage-networking/management/217970-troubleshoot-and-apply-correct-terminal.html"
       ]
+    },
+    {
+      "lesson": "ccna-u03-l5",
+      "title": "Menemukan dan memperbaiki masalah interface",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Menyalakan interface router yang mati, lalu membuat dan memperbaiki speed dan duplex yang tidak cocok antara switch dan PC.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 0,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "Fa0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24, gateway .1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.10.12/24, gateway .1"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through sesuai topologi, lalu isi alamat IP (Internet Protocol) PC1 dan PC2 lewat Desktop > IP Configuration."
+        },
+        {
+          "text": "Beri alamat ke interface router. Perhatikan status port sebelum dan sesudah no shutdown.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.10.1 255.255.255.0",
+            "no shutdown",
+            "end",
+            "show ip interface brief"
+          ]
+        },
+        {
+          "text": "Buat masalah dengan sengaja: set Fa0/1 manual ke 100 dan full, lalu di PC1 buka Config > FastEthernet0 dan biarkan Auto.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface fa0/1",
+            "speed 100",
+            "duplex full",
+            "end"
+          ]
+        },
+        {
+          "text": "Lihat status dan setelan semua port.",
+          "device": "SW1",
+          "commands": [
+            "show interfaces status"
+          ]
+        },
+        {
+          "text": "Perbaiki dengan mengembalikan port ke autonegotiation, lalu simpan.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "interface fa0/1",
+            "speed auto",
+            "duplex auto",
+            "end",
+            "write memory"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Status interface router.",
+          "device": "R1",
+          "command": "show ip interface brief",
+          "expect": "GigabitEthernet0/0/0 berstatus up dan protocol up dengan alamat 192.168.10.1."
+        },
+        {
+          "text": "Setelah perbaikan, setelan port switch.",
+          "device": "SW1",
+          "command": "show interfaces status",
+          "expect": "Fa0/1 connected dengan a-full dan a-100, tanda bahwa nilainya hasil autonegotiation."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.10.1 di Command Prompt.",
+          "expect": "Ping berhasil tanpa timeout."
+        }
+      ],
+      "notes": [
+        "Packet Tracer tidak meniru counter error fisik seperti CRC (cyclic redundancy check) dan late collision secara lengkap, jadi gejala duplex mismatch mungkin tidak terlihat. Yang bisa dipelajari di sini: setelan speed dan duplex serta cara membacanya di show interfaces status.",
+        "Di Packet Tracer, kabel salah jenis (crossover antara switch dan PC) bisa membuat link mati kalau auto-MDIX (automatic medium-dependent interface crossover) tidak berlaku pada port itu. Coba ganti jenis kabel dan lihat hasilnya."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html",
+        "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/17053-46.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3650/hardware/installation/guide/Cat3650hig_book/HIGCABLE.html"
+      ]
     }
   ]
 }

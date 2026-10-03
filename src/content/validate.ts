@@ -60,10 +60,10 @@ const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet
 const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA', 'PC', 'IOS', 'XE', 'CCNA', 'EXEC'])
 
 /**
- * CCNA device and interface names (R1, SW2, HQ-R1, PC1, SRV1, the "G0" of G0/0/0)
- * are labels, not abbreviations. PC and Cisco IOS (XE) are product words used as names.
+ * CCNA device, interface, and model names (R1, SW2, HQ-R1, PC1, SRV1, the "G0" of
+ * G0/0/0, ISR4331) are labels, not abbreviations. PC and Cisco IOS (XE) are product words used as names.
  */
-const DEVICE_NAME = /^([A-Z]{2,4}-)?(R|SW|PC|SRV|S|G|F|E)\d+$/
+const DEVICE_NAME = /^(([A-Z]{2,4}-)?(R|SW|PC|SRV|S|G|F|E)\d+|ISR\d{4})$/
 
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')
@@ -102,6 +102,8 @@ export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string>
       const start = m.index
       const end = start + m[0].length
       if (seen.has(abbr) || NOT_ABBREVIATIONS.has(abbr) || DEVICE_NAME.test(abbr) || expandedBy.has(abbr)) continue
+      // IEEE physical layer names such as 1000BASE-SX and 1000BASE-LX/LH are names.
+      if (/\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start))) continue
       // "Entra ID" is the product name, not an abbreviation to expand.
       if (abbr === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
       // "TCP/IP (Transmission Control Protocol/Internet Protocol)" expands both parts at once.
@@ -476,7 +478,8 @@ export function validateLabs(labs: Lab[], units: Unit[]): Issue[] {
     for (const [device, commands] of sessions) {
       const model = LAB_MODEL[kindOf.get(device)!] as 'isr4331'
       const run = runSession({ hostname: device, model }, commands)
-      const errors = errorLines(run.transcript)
+      // In a lab the output comes from Packet Tracer, so an exec command without prepared output is fine.
+      const errors = errorLines(run.transcript).filter((e) => !e.startsWith('Langit: output "'))
       if (errors.length) push(`commands on ${device} get errors in the simulator: ${errors.join(' | ')}`)
     }
     for (const c of lab.checks ?? []) {
@@ -567,7 +570,7 @@ export function abbreviationsIn(texts: string[]): Set<string> {
   for (const text of texts) {
     for (const m of text.matchAll(ABBREVIATION)) {
       const start = m.index
-      if (NOT_ABBREVIATIONS.has(m[1]) || DEVICE_NAME.test(m[1])) continue
+      if (NOT_ABBREVIATIONS.has(m[1]) || DEVICE_NAME.test(m[1]) || /\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start))) continue
       if (m[1] === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
       found.add(m[1])
     }

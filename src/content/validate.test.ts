@@ -339,5 +339,6 @@ describe('CCNA abbreviation patterns (LANGIT_CCNA_PLAN.md section 2)', () => {
   it('does not flag device and interface names', () => {
     expect(unexpandedAbbreviations(['R1 sends the packet to SW1 on G0/0/0, then PC2 answers.'])).toEqual([])
     expect(unexpandedAbbreviations(['HQ-R1 and BDG-SW1 are branch devices.'])).toEqual([])
+    expect(unexpandedAbbreviations(['Use a 1000BASE-SX or 1000BASE-LX/LH module.'])).toEqual([])
   })
 })

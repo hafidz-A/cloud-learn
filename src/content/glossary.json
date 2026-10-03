@@ -622,5 +622,56 @@
     "expansion": "Secure Shell",
     "description": "Protokol remote terenkripsi di TCP port 22, dipakai untuk mengelola router dan switch lewat line vty.",
     "course": "ccna"
+  },
+  {
+    "term": "UTP",
+    "expansion": "Unshielded Twisted Pair",
+    "description": "Kabel tembaga Ethernet berpasangan terpilin tanpa pelindung, misalnya Category 5e atau 6."
+  },
+  {
+    "term": "MDIX",
+    "expansion": "Medium-Dependent Interface Crossover",
+    "description": "Fitur auto-MDIX menyesuaikan port dengan jenis kabel, jadi straight-through atau crossover sama-sama bisa dipakai."
+  },
+  {
+    "term": "SFP",
+    "expansion": "Small Form-factor Pluggable",
+    "description": "Modul transceiver yang dicolok ke slot switch atau router untuk memilih media fiber atau tembaga."
+  },
+  {
+    "term": "SMF",
+    "expansion": "Single-Mode Fiber",
+    "description": "Fiber berinti tipis untuk jarak jauh, misalnya 10 km dengan 1000BASE-LX/LH."
+  },
+  {
+    "term": "MMF",
+    "expansion": "Multimode Fiber",
+    "description": "Fiber berinti lebar untuk jarak pendek, misalnya 550 m dengan 1000BASE-SX."
+  },
+  {
+    "term": "LC",
+    "expansion": "Lucent Connector",
+    "description": "Konektor fiber kecil yang dipakai port SFP Gigabit, biasanya dupleks."
+  },
+  {
+    "term": "CRC",
+    "expansion": "Cyclic Redundancy Check",
+    "description": "Pemeriksaan checksum frame. Counter CRC yang naik menunjuk kabel rusak atau duplex mismatch."
+  },
+  {
+    "term": "NIC",
+    "expansion": "Network Interface Card",
+    "description": "Kartu jaringan di PC atau server.",
+    "course": "ccna"
+  },
+  {
+    "term": "ISP",
+    "expansion": "Internet Service Provider",
+    "description": "Penyedia akses internet."
+  },
+  {
+    "term": "RJ45",
+    "expansion": "Registered Jack 45",
+    "description": "Konektor modular delapan pin di ujung kabel Ethernet tembaga."
   }
 ]

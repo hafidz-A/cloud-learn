@@ -6,22 +6,804 @@
     {
       "id": "ccna-u03-l1",
       "title": "Kabel tembaga",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u03-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "copper-cabling"
+          ],
+          "title": "Kabel UTP",
+          "body": "Port Ethernet tembaga memakai kabel UTP (unshielded twisted pair) dengan konektor modular delapan pin (RJ45). Untuk 10/100/1000 Mbps dipakai Category 5, 5e, atau 6. Panjang maksimal dari switch ke perangkat adalah 100 meter; lebih dari itu sinyal melemah dan error mulai muncul.",
+          "keyPoints": [
+            "UTP Cat5, 5e, atau 6",
+            "Maksimal 100 meter",
+            "Lebih panjang: sinyal lemah, error naik"
+          ],
+          "teaches": [
+            "ccna-f-u03-utp-cat"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-e1",
+          "type": "truefalse",
+          "concept": "copper-cabling",
+          "prompt": "A Category 6 UTP (unshielded twisted pair) cable from a switch to a PC can be up to 150 meters long.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Batasnya 100 meter untuk port Ethernet tembaga, berapa pun kategori kabelnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-utp-cat"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-e2",
+          "type": "fill",
+          "concept": "copper-cabling",
+          "prompt": "Complete the sentence.",
+          "sentence": "A copper Ethernet run from the switch to the device may be at most ___ meters, on Category 5, 5e, or ___ UTP (unshielded twisted pair).",
+          "bank": [
+            "100",
+            "6",
+            "150",
+            "3"
+          ],
+          "answers": [
+            "100",
+            "6"
+          ],
+          "explanation": "Batasnya 100 meter, dengan kabel Category 5, 5e, atau 6.",
+          "requires": [
+            "ccna-f-u03-utp-cat"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-e3",
+          "type": "choice",
+          "concept": "copper-cabling",
+          "prompt": "A user at the far end of a warehouse sees many errors. The UTP (unshielded twisted pair) cable to the switch runs about 130 meters. What is the most likely cause?",
+          "options": [
+            "The cable is longer than the 100-meter limit",
+            "The cable is Category 6 instead of Category 5e",
+            "The switch port needs a fiber module",
+            "The PC needs a crossover cable"
+          ],
+          "answer": 0,
+          "explanation": "Kabel tembaga Ethernet maksimal 100 meter. Category 6 justru lebih baik dari 5e, dan jenis kabel tidak menyebabkan error karena jarak.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-utp-cat"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "straight-vs-crossover"
+          ],
+          "title": "Straight-through dan crossover",
+          "body": "Ethernet 10 dan 100 Mbps hanya memakai pasangan pin 1-2 dan 3-6; 1000BASE-T memakai keempat pasang. Kabel straight-through menyambung pin ke pin yang sama. Kabel crossover menukar 1-2 dengan 3-6, dan secara klasik dipakai antar perangkat sejenis, misalnya switch ke switch.",
+          "keyPoints": [
+            "10/100: pin 1-2 dan 3-6",
+            "Straight: pin sama",
+            "Crossover: 1-2 ditukar 3-6"
+          ],
+          "visual": "StraightVsCrossover",
+          "teaches": [
+            "ccna-f-u03-pins",
+            "ccna-f-u03-straight-cross"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-e4",
+          "type": "choice",
+          "concept": "straight-vs-crossover",
+          "prompt": "In a crossover cable for 10/100 Ethernet, pin 1 on one end connects to which pin on the other end?",
+          "options": [
+            "3",
+            "1",
+            "2",
+            "6"
+          ],
+          "answer": 0,
+          "explanation": "Crossover menukar pasangan 1-2 dengan 3-6, jadi pin 1 ke pin 3 dan pin 2 ke pin 6.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-straight-cross",
+            "ccna-f-u03-pins"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-e5",
+          "type": "truefalse",
+          "concept": "straight-vs-crossover",
+          "prompt": "Gigabit Ethernet over copper (1000BASE-T) uses all four wire pairs.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. 10 dan 100 Mbps hanya memakai dua pasang, sedangkan 1000BASE-T memakai keempat pasang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-pins"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "auto-mdix"
+          ],
+          "title": "Auto-MDIX",
+          "body": "Dengan auto-MDIX (automatic medium-dependent interface crossover), port mendeteksi jenis kabel yang dibutuhkan dan menyesuaikan sendiri. Jadi kabel straight-through maupun crossover bisa dipakai. Di Catalyst 2960 fitur ini aktif secara bawaan, tapi hanya bekerja dengan benar kalau speed dan duplex port itu di-set auto.",
+          "keyPoints": [
+            "Kedua jenis kabel bisa dipakai",
+            "Aktif secara bawaan di Catalyst 2960",
+            "Butuh speed dan duplex auto"
+          ],
+          "trap": "Kalau speed atau duplex di-set manual, auto-MDIX bisa tidak bekerja, dan jenis kabel kembali penting.",
+          "teaches": [
+            "ccna-f-u03-mdix",
+            "ccna-f-u03-mdix-auto"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-e6",
+          "type": "choice",
+          "concept": "auto-mdix",
+          "prompt": "Two Catalyst 2960 switches are connected with a straight-through cable, and the link comes up. Why?",
+          "options": [
+            "The ports detect the cable type and adjust",
+            "Switches never need a crossover cable",
+            "The ports negotiated half duplex instead",
+            "Straight-through cables cross pins 1 and 3 inside"
+          ],
+          "answer": 0,
+          "explanation": "Auto-MDIX (automatic medium-dependent interface crossover), aktif secara bawaan di Catalyst 2960, membuat port mendeteksi jenis kabel dan menyesuaikan diri. Tanpa itu, switch ke switch secara klasik butuh crossover.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-mdix",
+            "ccna-f-u03-straight-cross"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-e7",
+          "type": "truefalse",
+          "concept": "auto-mdix",
+          "prompt": "Auto-MDIX (automatic medium-dependent interface crossover) keeps working when the port speed is set manually to 100.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Auto-MDIX (automatic medium-dependent interface crossover) butuh speed dan duplex di-set auto supaya bekerja dengan benar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-mdix-auto"
+          ]
+        },
+        {
+          "id": "ccna-u03-l1-e8",
+          "type": "multi",
+          "concept": "auto-mdix",
+          "prompt": "Which two settings are needed on a Catalyst 2960 port for auto-MDIX (automatic medium-dependent interface crossover) to work correctly? (Choose two.)",
+          "options": [
+            "speed auto",
+            "duplex auto",
+            "duplex full",
+            "speed 100"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Auto-MDIX (automatic medium-dependent interface crossover) butuh speed dan duplex auto. Nilai manual seperti duplex full atau speed 100 bisa membuatnya tidak bekerja.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-mdix-auto"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u03-l2",
       "title": "Fiber optik",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u03-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "fiber"
+          ],
+          "title": "Single-mode dan multimode",
+          "body": "Fiber membawa cahaya, jadi tidak terganggu interferensi elektromagnetik seperti kabel tembaga dan bisa menjangkau lebih jauh. Single-mode fiber (SMF) punya inti sangat tipis dan menjangkau jauh, misalnya 10 km dengan SFP (small form-factor pluggable) 1000BASE-LX/LH. Multimode fiber (MMF) punya inti lebar dan lebih pendek, misalnya 550 m dengan 1000BASE-SX.",
+          "keyPoints": [
+            "Fiber kebal interferensi elektromagnetik",
+            "SMF: jauh, 1000BASE-LX/LH 10 km",
+            "MMF: pendek, 1000BASE-SX 550 m"
+          ],
+          "visual": "FiberTypes",
+          "teaches": [
+            "ccna-f-u03-emi",
+            "ccna-f-u03-smf-mmf"
+          ]
+        },
+        {
+          "id": "ccna-u03-l2-e1",
+          "type": "truefalse",
+          "concept": "fiber",
+          "prompt": "Multimode fiber reaches farther than single-mode fiber.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Single-mode fiber yang menjangkau jauh, misalnya 10 km dengan 1000BASE-LX/LH. Multimode lebih pendek, misalnya 550 m dengan 1000BASE-SX.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-smf-mmf"
+          ]
+        },
+        {
+          "id": "ccna-u03-l2-e2",
+          "type": "choice",
+          "concept": "fiber",
+          "prompt": "Two buildings are 6 km apart. Which link meets the distance with standard Cisco Gigabit SFP (small form-factor pluggable) modules?",
+          "options": [
+            "1000BASE-LX/LH over single-mode fiber",
+            "1000BASE-SX over multimode fiber",
+            "1000BASE-T over Category 6 copper cable",
+            "1000BASE-SX over single-mode fiber"
+          ],
+          "answer": 0,
+          "explanation": "1000BASE-LX/LH di single-mode menjangkau 10 km. 1000BASE-SX di multimode hanya sekitar 550 m, dan tembaga hanya 100 m.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-smf-mmf",
+            "ccna-f-u03-utp-cat"
+          ]
+        },
+        {
+          "id": "ccna-u03-l2-e3",
+          "type": "choice",
+          "concept": "fiber",
+          "prompt": "Why is fiber a good choice for a link that runs past large electric motors in a factory?",
+          "options": [
+            "Light is not affected by electromagnetic interference",
+            "Multimode fiber has no distance limit at all",
+            "Fiber reaches only 100 meters, the same as copper",
+            "Single-mode fiber needs no light source at either end"
+          ],
+          "answer": 0,
+          "explanation": "Fiber membawa cahaya, jadi tidak terganggu interferensi elektromagnetik dari motor listrik. Multimode tetap punya batas jarak, dan fiber menjangkau jauh lebih dari 100 meter.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-emi",
+            "ccna-f-u03-smf-mmf",
+            "ccna-f-u03-utp-cat"
+          ]
+        },
+        {
+          "id": "ccna-u03-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "sfp"
+          ],
+          "title": "Modul SFP dan konektor LC",
+          "body": "Banyak switch punya slot SFP (small form-factor pluggable). Modul yang dicolok menentukan medianya: single-mode, multimode, atau tembaga. SFP 1000BASE-SX memakai cahaya 850 nm di multimode, sedangkan 1000BASE-LX/LH memakai 1310 nm. Port SFP Gigabit memakai konektor LC (Lucent Connector) dupleks: satu serat untuk kirim dan satu untuk terima.",
+          "keyPoints": [
+            "SFP menentukan media",
+            "1000BASE-SX 850 nm, 1000BASE-LX/LH 1310 nm",
+            "Konektor LC dupleks"
+          ],
+          "teaches": [
+            "ccna-f-u03-sfp",
+            "ccna-f-u03-wavelength",
+            "ccna-f-u03-lc"
+          ]
+        },
+        {
+          "id": "ccna-u03-l2-e4",
+          "type": "match",
+          "concept": "sfp",
+          "prompt": "Match each SFP (small form-factor pluggable) module to its description.",
+          "pairs": [
+            [
+              "1000BASE-SX",
+              "Multimode fiber, 850 nm, about 550 m"
+            ],
+            [
+              "1000BASE-LX/LH",
+              "Single-mode fiber, 1310 nm, about 10 km"
+            ],
+            [
+              "1000BASE-T",
+              "Copper, up to 100 m"
+            ],
+            [
+              "LC (Lucent Connector)",
+              "Duplex fiber connector on SFP ports"
+            ]
+          ],
+          "explanation": "1000BASE-SX untuk multimode jarak pendek, 1000BASE-LX/LH untuk single-mode jarak jauh, 1000BASE-T untuk tembaga, dan LC (Lucent Connector) adalah konektor fiber port SFP (small form-factor pluggable).",
+          "requires": [
+            "ccna-f-u03-smf-mmf",
+            "ccna-f-u03-wavelength",
+            "ccna-f-u03-utp-cat",
+            "ccna-f-u03-sfp",
+            "ccna-f-u03-lc"
+          ]
+        },
+        {
+          "id": "ccna-u03-l2-e5",
+          "type": "truefalse",
+          "concept": "sfp",
+          "prompt": "A Gigabit SFP (small form-factor pluggable) fiber port uses a duplex LC (Lucent Connector): one fiber transmits and one receives.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Konektor LC (Lucent Connector) dupleks memakai dua serat, satu untuk kirim dan satu untuk terima.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-lc"
+          ]
+        },
+        {
+          "id": "ccna-u03-l2-e6",
+          "type": "choice",
+          "concept": "sfp",
+          "prompt": "A switch has an empty SFP (small form-factor pluggable) slot. What decides whether that port uses single-mode fiber, multimode fiber, or copper?",
+          "options": [
+            "The module plugged into the slot",
+            "The interface speed command",
+            "The cable category",
+            "The VLAN (Virtual LAN) of the port"
+          ],
+          "answer": 0,
+          "explanation": "Modul SFP (small form-factor pluggable) yang dicolok menentukan medianya. Perintah speed dan VLAN (Virtual LAN) tidak mengubah media.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-sfp"
+          ]
+        },
+        {
+          "id": "ccna-u03-l2-e7",
+          "type": "fill",
+          "concept": "fiber",
+          "prompt": "Complete the sentence.",
+          "sentence": "For long distances use ___ fiber, and for short runs inside a building ___ fiber is enough.",
+          "bank": [
+            "single-mode",
+            "multimode",
+            "copper",
+            "shielded"
+          ],
+          "answers": [
+            "single-mode",
+            "multimode"
+          ],
+          "explanation": "Single-mode untuk jarak jauh, multimode cukup untuk jarak pendek di dalam gedung.",
+          "requires": [
+            "ccna-f-u03-smf-mmf"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u03-l3",
       "title": "Speed dan duplex",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u03-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "autonegotiation"
+          ],
+          "title": "Autonegotiation",
+          "body": "Kedua sisi link harus sepakat soal speed dan duplex. Cisco menyarankan dua pilihan: kedua sisi auto, atau kedua sisi di-set manual dengan nilai yang sama. Kalau satu sisi manual dan sisi lain auto, sisi auto masih bisa mendeteksi speed tapi tidak duplex. Di 10 atau 100 Mbps ia lalu memakai half duplex.",
+          "keyPoints": [
+            "Kedua sisi auto, atau kedua sisi manual sama",
+            "Satu manual, satu auto: sisi auto jadi half",
+            "Speed terdeteksi, duplex tidak"
+          ],
+          "teaches": [
+            "ccna-f-u03-autoneg",
+            "ccna-f-u03-autoneg-fallback"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-e1",
+          "type": "truefalse",
+          "concept": "autonegotiation",
+          "prompt": "If a switch port is set to speed 100 and duplex full, and the PC is left on auto, the PC also runs full duplex.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Sisi auto tidak mendapat jawaban negosiasi, jadi hanya mendeteksi speed dan memakai half duplex. Hasilnya duplex mismatch.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-autoneg-fallback"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-e2",
+          "type": "choice",
+          "concept": "autonegotiation",
+          "prompt": "Which setting does Cisco recommend for both ends of a link?",
+          "options": [
+            "Both auto, or both set manually to the same speed and duplex",
+            "One end auto and the other end set manually to full",
+            "Both ends set manually to half duplex and 100 Mbps",
+            "Duplex left on auto and speed set manually on both ends of it"
+          ],
+          "answer": 0,
+          "explanation": "Cisco menyarankan kedua sisi auto, atau kedua sisi manual dengan nilai sama. Campuran auto dan manual menyebabkan duplex mismatch.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-autoneg",
+            "ccna-f-u03-autoneg-fallback"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "duplex-mismatch"
+          ],
+          "title": "Gejala duplex mismatch",
+          "body": "Duplex mismatch jarang memutus link; link tetap up tapi lambat dan penuh error. Sisi half duplex mencatat late collision, karena sisi seberang mengirim kapan saja tanpa menunggu. Sisi full duplex mencatat error CRC (cyclic redundancy check) dan runt, karena frame-nya terpotong tabrakan.",
+          "keyPoints": [
+            "Link up tapi lambat",
+            "Sisi half: late collision",
+            "Sisi full: CRC dan runt"
+          ],
+          "visual": "DuplexMismatch",
+          "teaches": [
+            "ccna-f-u03-mismatch-symptoms"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-e3",
+          "type": "choice",
+          "concept": "duplex-mismatch",
+          "prompt": "Users say a server is slow. The switch port to the server shows a rising late collision counter. Which problem is most likely?",
+          "options": [
+            "A duplex mismatch, with this port running half duplex",
+            "A missing enable secret on the switch that serves it",
+            "A multimode fiber module in the server port",
+            "The wrong VLAN (Virtual LAN) on the server port"
+          ],
+          "answer": 0,
+          "explanation": "Late collision muncul di sisi half duplex saat terjadi duplex mismatch. Password, jenis fiber, dan VLAN (Virtual LAN) tidak menghasilkan collision.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-mismatch-symptoms",
+            "ccna-f-u02-secret",
+            "ccna-f-u03-smf-mmf"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-e4",
+          "type": "truefalse",
+          "concept": "duplex-mismatch",
+          "prompt": "During a duplex mismatch, CRC (cyclic redundancy check) errors and runts appear on the full-duplex side.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Sisi full duplex mencatat CRC (cyclic redundancy check) dan runt; sisi half duplex mencatat late collision.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-mismatch-symptoms"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "speed-duplex-config"
+          ],
+          "title": "Mengatur speed dan duplex",
+          "body": "Speed dan duplex di-set di interface configuration: speed 10, 100, 1000, atau auto, dan duplex full, half, atau auto. Kalau perangkat di seberang di-set manual dan tidak bisa diubah, set port switch ke nilai yang persis sama. speed auto dan duplex auto mengembalikan port ke autonegotiation.",
+          "keyPoints": [
+            "speed dan duplex per interface",
+            "Sisi manual harus dicocokkan persis",
+            "auto kembali ke autonegotiation"
+          ],
+          "teaches": [
+            "ccna-f-u03-speed-duplex-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-e5",
+          "type": "ios",
+          "concept": "speed-duplex-config",
+          "prompt": "A server NIC (network interface card) is hard-coded to 100 Mbps full duplex and cannot be changed. Configure FastEthernet0/24 on SW1 to match it.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/24",
+                "line": "speed 100"
+              },
+              {
+                "context": "interface FastEthernet0/24",
+                "line": "duplex full"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/24",
+            "speed 100",
+            "duplex full",
+            "end"
+          ],
+          "explanation": "Kalau satu sisi manual, sisi lain harus di-set manual dengan nilai yang sama: speed 100 dan duplex full.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-speed-duplex-cmd",
+            "ccna-f-u03-autoneg"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-e6",
+          "type": "ios",
+          "concept": "speed-duplex-config",
+          "prompt": "The server was replaced and now uses autonegotiation. Return FastEthernet0/24 on SW1 to autonegotiation.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface FastEthernet0/24",
+              "lines": [
+                "speed 100",
+                "duplex full"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/24",
+                "line": "speed auto"
+              },
+              {
+                "context": "interface FastEthernet0/24",
+                "line": "duplex auto"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/24",
+            "speed auto",
+            "duplex auto",
+            "end"
+          ],
+          "explanation": "speed auto dan duplex auto (atau no speed dan no duplex) mengembalikan port ke autonegotiation, sehingga kedua sisi auto.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-speed-duplex-cmd",
+            "ccna-f-u03-autoneg"
+          ]
+        },
+        {
+          "id": "ccna-u03-l3-e7",
+          "type": "order",
+          "concept": "autonegotiation",
+          "prompt": "A PC on FastEthernet0/7 is set to auto, but the switch port is set to 100 and full. Put the events in order.",
+          "items": [
+            "The PC hears no negotiation from the switch",
+            "The PC detects the speed, 100 Mbps",
+            "The PC falls back to half duplex",
+            "Late collisions rise on the PC side"
+          ],
+          "explanation": "Tanpa negosiasi, PC mendeteksi speed tapi tidak duplex, lalu memakai half duplex. Karena switch full duplex, late collision muncul di sisi PC yang half.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-autoneg-fallback",
+            "ccna-f-u03-mismatch-symptoms"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u03-l4",
       "title": "Membaca status dan error interface",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u03-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "interface-status"
+          ],
+          "title": "Membaca status interface",
+          "body": "Baris pertama show interfaces menyebut dua status: interface (layer 1) dan line protocol (layer 2). \"administratively down\" berarti interface dimatikan dengan shutdown. \"down, line protocol is down\" biasanya masalah fisik, misalnya kabel lepas atau perangkat seberang mati. \"up, line protocol is down\" menunjukkan masalah layer 2. Status err-disabled berarti switch sendiri yang mematikan port karena mendeteksi error.",
+          "keyPoints": [
+            "administratively down: kena shutdown",
+            "down/down: masalah fisik",
+            "err-disabled: dimatikan switch karena error"
+          ],
+          "teaches": [
+            "ccna-f-u03-if-states",
+            "ccna-f-u03-err-disabled"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-e1",
+          "type": "match",
+          "concept": "interface-status",
+          "prompt": "Match each interface status to its most likely cause.",
+          "pairs": [
+            [
+              "administratively down, line protocol is down",
+              "The shutdown command is on the interface"
+            ],
+            [
+              "down, line protocol is down",
+              "The cable is unplugged or the far end is off"
+            ],
+            [
+              "err-disabled",
+              "The switch disabled the port after an error"
+            ],
+            [
+              "up, line protocol is up",
+              "The link works at layers 1 and 2"
+            ]
+          ],
+          "explanation": "administratively down karena shutdown, down/down karena masalah fisik, err-disabled karena switch mendeteksi error, dan up/up berarti normal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-if-states",
+            "ccna-f-u03-err-disabled"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-e2",
+          "type": "choice",
+          "concept": "interface-status",
+          "prompt": "A port shows err-disabled after a port security violation. The cause has been removed. How do you bring the port back?",
+          "options": [
+            "Enter shutdown and then no shutdown on the interface",
+            "Enter no shutdown only, because the port is administratively down",
+            "Reload the switch",
+            "Replace the cable"
+          ],
+          "answer": 0,
+          "explanation": "Port err-disabled dipulihkan dengan shutdown lalu no shutdown setelah penyebabnya diperbaiki. Port itu tidak administratively down, dan reload tidak diperlukan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-err-disabled"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "interface-errors"
+          ],
+          "title": "Counter error di show interfaces",
+          "body": "Bagian bawah show interfaces berisi counter. Runt adalah frame kurang dari 64 byte, dan giant lebih besar dari ukuran maksimum. CRC (cyclic redundancy check) berarti checksum frame tidak cocok; biasanya karena kabel rusak, kabel terlalu panjang, atau duplex mismatch. Late collision terjadi setelah 64 byte pertama terkirim, dan menunjuk ke duplex mismatch.",
+          "keyPoints": [
+            "Runt kurang dari 64 byte, giant terlalu besar",
+            "CRC: kabel atau duplex",
+            "Late collision: duplex mismatch"
+          ],
+          "teaches": [
+            "ccna-f-u03-counters",
+            "ccna-f-u03-crc-cause"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-e3",
+          "type": "truefalse",
+          "concept": "interface-errors",
+          "prompt": "A runt is a frame that is larger than the maximum frame size.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Runt adalah frame kurang dari 64 byte; frame yang lebih besar dari ukuran maksimum disebut giant.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-counters"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-e4",
+          "type": "exhibit",
+          "concept": "interface-errors",
+          "prompt": "Refer to the exhibit. The link runs at full duplex on both ends. What is the most likely cause of the errors?",
+          "outputs": [
+            {
+              "title": "SW1# show interfaces GigabitEthernet0/1",
+              "text": "GigabitEthernet0/1 is up, line protocol is up (connected)\n  <output omitted>\n  Full-duplex, 1000Mb/s, media type is 10/100/1000BaseTX\n  <output omitted>\n     0 runts, 0 giants, 0 throttles\n     4120 input errors, 4087 CRC, 33 frame, 0 overrun, 0 ignored\n  <output omitted>\n     0 output errors, 0 collisions, 0 interface resets\n     0 babbles, 0 late collision, 0 deferred"
+            }
+          ],
+          "options": [
+            "A damaged cable or connector",
+            "A duplex mismatch",
+            "An interface that is administratively down",
+            "Too many devices in the VLAN (Virtual LAN)"
+          ],
+          "answer": 0,
+          "explanation": "CRC (cyclic redundancy check) naik terus tanpa collision di link yang kedua sisinya full duplex, jadi duplex mismatch bisa dicoret. Penyebab yang tersisa adalah masalah fisik seperti kabel atau konektor rusak.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-crc-cause",
+            "ccna-f-u03-counters",
+            "ccna-f-u03-mismatch-symptoms"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "show-interfaces-status"
+          ],
+          "title": "show interfaces status dan transceiver",
+          "body": "Di switch, show interfaces status merangkum semua port dalam satu tabel: status (connected, notconnect, err-disabled, atau disabled), VLAN (Virtual LAN), duplex, speed, dan jenis port. Awalan a-, seperti a-full atau a-100, berarti nilai itu hasil autonegotiation. Untuk fiber, show interfaces transceiver menampilkan daya Tx dan Rx dalam dBm; Rx yang terlalu rendah biasanya karena konektor kotor, fiber rusak, atau jarak terlalu jauh.",
+          "keyPoints": [
+            "Status ringkas semua port",
+            "a-full: hasil autonegotiation",
+            "Rx terlalu rendah: periksa konektor dan fiber"
+          ],
+          "teaches": [
+            "ccna-f-u03-status-cmd",
+            "ccna-f-u03-transceiver"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-e5",
+          "type": "exhibit",
+          "concept": "show-interfaces-status",
+          "prompt": "Refer to the exhibit. Which port has its duplex set manually instead of negotiated?",
+          "outputs": [
+            {
+              "title": "SW1# show interfaces status",
+              "text": "Port      Name               Status       Vlan       Duplex  Speed Type\nFa0/1     PC lantai 1        connected    10         a-full  a-100 10/100BaseTX\nFa0/2                        notconnect   10           auto   auto 10/100BaseTX\nFa0/3     Server lama        connected    20           full    100 10/100BaseTX\nGi0/1     Uplink             connected    trunk      a-full a-1000 10/100/1000BaseTX"
+            }
+          ],
+          "options": [
+            "Fa0/3",
+            "Fa0/1",
+            "Fa0/2",
+            "Gi0/1"
+          ],
+          "answer": 0,
+          "explanation": "Fa0/3 menampilkan full tanpa awalan a-, jadi di-set manual. a-full dan a-100 berarti hasil autonegotiation. Fa0/2 notconnect sehingga nilainya auto.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-status-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-e6",
+          "type": "choice",
+          "concept": "show-interfaces-status",
+          "prompt": "A fiber uplink keeps dropping. show interfaces transceiver shows a very low Rx power on the local switch. What should you check first?",
+          "options": [
+            "The fiber connectors and cable between the two switches",
+            "The duplex setting on the local port and the remote port",
+            "The VLAN (Virtual LAN) of the uplink on both switches",
+            "The enable secret on the remote switch"
+          ],
+          "answer": 0,
+          "explanation": "Daya Rx yang rendah berarti cahaya yang sampai terlalu lemah: periksa konektor kotor, fiber rusak, atau jarak. Duplex dan VLAN (Virtual LAN) tidak memengaruhi daya cahaya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-transceiver"
+          ]
+        },
+        {
+          "id": "ccna-u03-l4-e7",
+          "type": "multi",
+          "concept": "interface-errors",
+          "prompt": "Which two problems commonly make the CRC (cyclic redundancy check) counter rise? (Choose two.)",
+          "options": [
+            "A damaged or too long cable",
+            "A duplex mismatch",
+            "An interface that is administratively down",
+            "A missing enable secret"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "CRC (cyclic redundancy check) naik karena masalah fisik atau duplex mismatch. Interface yang administratively down tidak menerima frame sama sekali.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-crc-cause",
+            "ccna-f-u03-if-states"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u03-l5",
@@ -30,8 +812,291 @@
         "kind": "handson",
         "from": "ccna-u03-l4"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u03-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "interface-lab"
+          ],
+          "title": "Alur diagnosis interface",
+          "body": "Mulai dari status: show ip interface brief atau show interfaces status. Kalau administratively down, beri no shutdown. Kalau up tapi lambat, buka show interfaces dan lihat duplex serta counter: late collision dan CRC (cyclic redundancy check) menunjuk duplex mismatch atau kabel. Perbaiki speed dan duplex supaya kedua sisi sama, lalu cek lagi.",
+          "keyPoints": [
+            "Status dulu, baru counter",
+            "Late collision dan CRC: duplex atau kabel",
+            "Cek lagi setelah memperbaiki"
+          ],
+          "teaches": [
+            "ccna-f-u03-if-states",
+            "ccna-f-u03-mismatch-symptoms",
+            "ccna-f-u03-speed-duplex-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u03-l5-e1",
+          "type": "ios",
+          "concept": "interface-lab",
+          "prompt": "GigabitEthernet0/0/1 on R1 is cabled to the ISP (Internet Service Provider) router but shows administratively down. Bring it up, then check the interface summary.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 203.0.113.2 255.255.255.252"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no shutdown"
+              }
+            ],
+            "run": [
+              "show ip interface brief"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "no shutdown",
+            "end",
+            "show ip interface brief"
+          ],
+          "explanation": "administratively down berarti ada shutdown. no shutdown menyalakan interface, lalu show ip interface brief menunjukkan status up/up karena kabelnya tersambung.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-if-states"
+          ]
+        },
+        {
+          "id": "ccna-u03-l5-e2",
+          "type": "exhibit",
+          "concept": "interface-lab",
+          "prompt": "Refer to the exhibit. FastEthernet0/10 on SW1 connects to a printer that is set to auto. Users report slow printing. What should you configure on Fa0/10?",
+          "outputs": [
+            {
+              "title": "SW1# show running-config interface fa0/10",
+              "text": "interface FastEthernet0/10\n speed 100\n duplex full"
+            },
+            {
+              "title": "SW1# show interfaces fa0/10 | include duplex|CRC",
+              "text": "  Full-duplex, 100Mb/s, media type is 10/100BaseTX\n     2391 input errors, 2391 CRC, 0 frame, 0 overrun, 0 ignored"
+            }
+          ],
+          "options": [
+            "speed auto and duplex auto",
+            "speed 100 and duplex half",
+            "shutdown and then no shutdown",
+            "mdix auto only"
+          ],
+          "answer": 0,
+          "explanation": "Port switch di-set manual 100/full, sementara printer auto sehingga jatuh ke half duplex. Itu sebabnya CRC (cyclic redundancy check) naik di port switch yang full duplex. Kembalikan port ke auto supaya kedua sisi sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-autoneg-fallback",
+            "ccna-f-u03-mismatch-symptoms",
+            "ccna-f-u03-autoneg",
+            "ccna-f-u03-speed-duplex-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u03-l5-e3",
+          "type": "ios",
+          "concept": "interface-lab",
+          "prompt": "Fix the slow printer on SW1: FastEthernet0/10 is set to 100 Mbps full duplex, while the printer uses autonegotiation. Make both ends negotiate.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface FastEthernet0/10",
+              "lines": [
+                "speed 100",
+                "duplex full"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/10",
+                "line": "speed auto"
+              },
+              {
+                "context": "interface FastEthernet0/10",
+                "line": "duplex auto"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/10",
+            "speed auto",
+            "duplex auto",
+            "end"
+          ],
+          "explanation": "Printer auto, jadi port switch juga harus auto. Setelah itu kedua sisi bernegosiasi dan sepakat full duplex.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-autoneg",
+            "ccna-f-u03-speed-duplex-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u03-l5-e4",
+          "type": "ios",
+          "concept": "interface-lab",
+          "prompt": "The core switch GigabitEthernet0/1 link to SW2 has its speed and duplex set by hand on SW2 to 1000 and full, and the SW2 team will not change it. Match it on SW1 and save the configuration.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "speed 1000"
+              },
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "duplex full"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/1",
+            "speed 1000",
+            "duplex full",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Kalau satu sisi manual, sisi lain diset ke nilai yang sama persis, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-speed-duplex-cmd",
+            "ccna-f-u03-autoneg",
+            "ccna-f-u02-save"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u03-utp-cat",
+      "statement": "Port Ethernet 10/100/1000 memakai kabel UTP (unshielded twisted pair) Category 5, 5e, atau 6 dengan panjang maksimal 100 meter.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3650/hardware/installation/guide/Cat3650hig_book/HIGCABLE.html"
+    },
+    {
+      "id": "ccna-f-u03-pins",
+      "statement": "Ethernet 10 dan 100 Mbps memakai dua pasang kabel di pin 1-2 dan 3-6; 1000BASE-T memakai keempat pasang.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3650/hardware/installation/guide/Cat3650hig_book/HIGCABLE.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u03-straight-cross",
+      "statement": "Kabel straight-through menyambung pin ke pin yang sama, sedangkan kabel crossover menukar pasangan 1-2 dengan 3-6; secara klasik crossover dipakai antar perangkat sejenis, misalnya switch ke switch.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3650/hardware/installation/guide/Cat3650hig_book/HIGCABLE.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u03-mdix",
+      "statement": "Auto-MDIX (automatic medium-dependent interface crossover) mendeteksi jenis kabel yang dibutuhkan, jadi straight-through atau crossover sama-sama bisa dipakai; di Catalyst 2960 fitur ini aktif secara bawaan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html"
+    },
+    {
+      "id": "ccna-f-u03-mdix-auto",
+      "statement": "Auto-MDIX hanya bekerja dengan benar kalau speed dan duplex interface di-set auto.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html"
+    },
+    {
+      "id": "ccna-f-u03-smf-mmf",
+      "statement": "Fiber single-mode (SMF) menjangkau jauh, misalnya 10 km dengan SFP (small form-factor pluggable) 1000BASE-LX/LH, sedangkan multimode (MMF) lebih pendek, misalnya 550 m dengan 1000BASE-SX di fiber 50 mikron.",
+      "source": "https://www.cisco.com/c/en/us/products/collateral/interfaces-modules/gigabit-ethernet-gbic-sfp-modules/datasheet-c78-366584.html"
+    },
+    {
+      "id": "ccna-f-u03-wavelength",
+      "statement": "SFP 1000BASE-SX memakai cahaya 850 nm di multimode fiber, sedangkan 1000BASE-LX/LH memakai 1310 nm.",
+      "source": "https://www.cisco.com/c/en/us/products/collateral/interfaces-modules/gigabit-ethernet-gbic-sfp-modules/datasheet-c78-366584.html"
+    },
+    {
+      "id": "ccna-f-u03-lc",
+      "statement": "Port SFP Gigabit Ethernet memakai konektor LC (Lucent Connector) dupleks: satu serat untuk kirim, satu untuk terima.",
+      "source": "https://www.cisco.com/c/en/us/products/collateral/interfaces-modules/gigabit-ethernet-gbic-sfp-modules/datasheet-c78-366584.html"
+    },
+    {
+      "id": "ccna-f-u03-sfp",
+      "statement": "SFP adalah modul transceiver yang dicolok ke slot SFP, sehingga satu slot bisa dipakai untuk fiber single-mode, multimode, atau tembaga sesuai modulnya.",
+      "source": "https://www.cisco.com/c/en/us/products/collateral/interfaces-modules/gigabit-ethernet-gbic-sfp-modules/datasheet-c78-366584.html"
+    },
+    {
+      "id": "ccna-f-u03-emi",
+      "statement": "Fiber membawa sinyal cahaya, jadi tidak terganggu interferensi elektromagnetik yang bisa merusak sinyal di kabel tembaga.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-9200-switch-stack/222738-troubleshoot-fiber-links-on-catalyst-900.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u03-autoneg",
+      "statement": "Cisco menyarankan kedua sisi link sama-sama auto, atau sama-sama di-set manual dengan speed dan duplex yang sama.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html"
+    },
+    {
+      "id": "ccna-f-u03-autoneg-fallback",
+      "statement": "Kalau satu sisi di-set manual dan sisi lain auto, sisi auto masih bisa mendeteksi speed tapi tidak duplex, lalu memakai half duplex di 10 atau 100 Mbps; hasilnya duplex mismatch.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/17053-46.html"
+    },
+    {
+      "id": "ccna-f-u03-mismatch-symptoms",
+      "statement": "Saat duplex mismatch, sisi half duplex mencatat late collision, sedangkan sisi full duplex mencatat error CRC (cyclic redundancy check), FCS (Frame Check Sequence), dan runt.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html"
+    },
+    {
+      "id": "ccna-f-u03-speed-duplex-cmd",
+      "statement": "Speed dan duplex di-set per interface dengan perintah speed (misalnya speed 100) dan duplex (misalnya duplex full); speed auto dan duplex auto kembali ke autonegotiation.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html"
+    },
+    {
+      "id": "ccna-f-u03-if-states",
+      "statement": "Status \"administratively down\" berarti interface dimatikan dengan shutdown; \"down/down\" biasanya masalah layer 1 seperti kabel atau perangkat di seberang; \"up/down\" menunjukkan masalah layer 2.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html"
+    },
+    {
+      "id": "ccna-f-u03-err-disabled",
+      "statement": "Status err-disabled berarti switch mematikan port karena mendeteksi error, misalnya pelanggaran port security atau BPDU guard; setelah penyebabnya diperbaiki, port dipulihkan dengan shutdown lalu no shutdown.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/69980-errdisable-recovery.html"
+    },
+    {
+      "id": "ccna-f-u03-counters",
+      "statement": "Di show interfaces, runt adalah frame kurang dari 64 byte, giant adalah frame lebih besar dari ukuran maksimum, CRC berarti checksum frame tidak cocok, dan late collision terjadi setelah 64 byte pertama terkirim.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html"
+    },
+    {
+      "id": "ccna-f-u03-crc-cause",
+      "statement": "Error CRC yang terus naik biasanya disebabkan masalah fisik seperti kabel rusak atau terlalu panjang, atau duplex mismatch.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html"
+    },
+    {
+      "id": "ccna-f-u03-status-cmd",
+      "statement": "show interfaces status di switch menampilkan status (connected, notconnect, err-disabled, disabled), VLAN, duplex, speed, dan jenis port; awalan a- seperti a-full berarti hasil autonegotiation.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u03-transceiver",
+      "statement": "show interfaces transceiver menampilkan daya Tx dan Rx modul optik dalam dBm; daya Rx di bawah batas biasanya karena konektor kotor, fiber rusak, atau jarak terlalu jauh.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-9200-switch-stack/222738-troubleshoot-fiber-links-on-catalyst-900.html"
+    }
+  ]
 }
