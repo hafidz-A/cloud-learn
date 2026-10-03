@@ -128,6 +128,11 @@ export const VISUAL_CATALOG = {
   RfBehaviors: ['rf-behavior'],
   WifiSecurity: ['wifi-security'],
   BssEss: ['bss-ess'],
+  // Unit 7
+  HypervisorTypes: ['hypervisor-types'],
+  VmVsContainer: ['vm-vs-container'],
+  VirtualSwitch: ['virtual-switch'],
+  VrfTables: ['vrf'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

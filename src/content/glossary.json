@@ -813,5 +813,15 @@
     "term": "WLAN",
     "expansion": "Wireless LAN",
     "description": "Jaringan lokal tanpa kabel, misalnya Wi-Fi kantor dengan satu SSID."
+  },
+  {
+    "term": "VRF",
+    "expansion": "Virtual Routing and Forwarding",
+    "description": "Tabel routing terpisah di satu router, sehingga alamat yang sama boleh dipakai di VRF berbeda."
+  },
+  {
+    "term": "MPLS",
+    "expansion": "Multiprotocol Label Switching",
+    "description": "Teknik penerusan paket berdasarkan label, sering dipakai penyedia layanan untuk VPN."
   }
 ]

@@ -22,6 +22,10 @@ import { Channels24 } from './Channels24'
 import { RfBehaviors } from './RfBehaviors'
 import { WifiSecurity } from './WifiSecurity'
 import { BssEss } from './BssEss'
+import { HypervisorTypes } from './HypervisorTypes'
+import { VmVsContainer } from './VmVsContainer'
+import { VirtualSwitch } from './VirtualSwitch'
+import { VrfTables } from './VrfTables'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -89,6 +93,10 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  VrfTables,
+  VirtualSwitch,
+  VmVsContainer,
+  HypervisorTypes,
   BssEss,
   WifiSecurity,
   RfBehaviors,
