@@ -62,7 +62,7 @@
   {
     "term": "BGP",
     "expansion": "Border Gateway Protocol",
-    "description": "Protokol untuk bertukar route antarjaringan, misalnya antara Azure dan jaringan on-premises lewat VPN gateway atau ExpressRoute."
+    "description": "Protokol routing antar-sistem otonom di internet. eBGP AD 20, iBGP AD 200."
   },
   {
     "term": "CapEx",
@@ -960,5 +960,20 @@
     "term": "OSPF",
     "expansion": "Open Shortest Path First",
     "description": "Protokol routing link-state yang dibahas di Jalur 3."
+  },
+  {
+    "term": "EIGRP",
+    "expansion": "Enhanced Interior Gateway Routing Protocol",
+    "description": "Protokol routing Cisco dengan AD bawaan 90."
+  },
+  {
+    "term": "RIP",
+    "expansion": "Routing Information Protocol",
+    "description": "Protokol routing lama yang memakai jumlah hop sebagai metric, dengan AD 120."
+  },
+  {
+    "term": "AD",
+    "expansion": "Administrative Distance",
+    "description": "Tingkat kepercayaan sumber route. Untuk prefix yang sama, AD terendah yang dipakai."
   }
 ]

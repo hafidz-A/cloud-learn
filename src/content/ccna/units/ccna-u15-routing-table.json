@@ -6,22 +6,698 @@
     {
       "id": "ccna-u15-l1",
       "title": "Isi tabel routing",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u15-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "routing-table"
+          ],
+          "title": "Membaca satu baris route",
+          "body": "show ip route menampilkan semua route yang dipakai router. Setiap baris berisi sumber route (huruf di depan), prefix tujuan, lalu angka di kurung siku: administrative distance dan metric. Setelah itu next hop (via) dan interface keluar. Contoh: O 10.1.1.0/24 [110/30] via 10.0.13.3 berarti route OSPF (Open Shortest Path First) dengan AD (administrative distance) 110 dan metric 30.",
+          "keyPoints": [
+            "Sumber, prefix, [AD/metric]",
+            "via: next hop",
+            "Lalu interface keluar"
+          ],
+          "visual": "RouteEntry",
+          "teaches": [
+            "ccna-f-u15-rt-parts",
+            "ccna-f-u15-rt-bracket"
+          ]
+        },
+        {
+          "id": "ccna-u15-l1-e1",
+          "type": "exhibit",
+          "concept": "routing-table",
+          "prompt": "Refer to the exhibit. What is the next hop for the route 10.1.0.0/16?",
+          "outputs": [
+            {
+              "title": "R1# show ip route",
+              "text": "Codes: L - local, C - connected, S - static, R - RIP, B - BGP\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area\n       * - candidate default\n\nGateway of last resort is 203.0.113.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 203.0.113.1\n      10.0.0.0/8 is variably subnetted, 7 subnets, 5 masks\nO        10.1.0.0/16 [110/20] via 10.0.12.2, 00:12:31, GigabitEthernet0/0/1\nO        10.1.1.0/24 [110/30] via 10.0.13.3, 00:12:31, GigabitEthernet0/0/2\nS        10.1.1.128/25 [1/0] via 10.0.12.2\nC        10.0.12.0/30 is directly connected, GigabitEthernet0/0/1\nL        10.0.12.1/32 is directly connected, GigabitEthernet0/0/1\nC        10.0.13.0/30 is directly connected, GigabitEthernet0/0/2\nL        10.0.13.1/32 is directly connected, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "10.0.12.2",
+            "10.0.13.3",
+            "203.0.113.1",
+            "10.1.0.1"
+          ],
+          "answer": 0,
+          "explanation": "Baris O 10.1.0.0/16 menyebut via 10.0.12.2. 10.0.13.3 adalah next hop route /24, dan 203.0.113.1 next hop default route.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-rt-parts"
+          ]
+        },
+        {
+          "id": "ccna-u15-l1-e2",
+          "type": "exhibit",
+          "concept": "routing-table",
+          "prompt": "Refer to the exhibit. In [110/20] for 10.1.0.0/16, what does 20 mean?",
+          "outputs": [
+            {
+              "title": "R1# show ip route",
+              "text": "Codes: L - local, C - connected, S - static, R - RIP, B - BGP\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area\n       * - candidate default\n\nGateway of last resort is 203.0.113.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 203.0.113.1\n      10.0.0.0/8 is variably subnetted, 7 subnets, 5 masks\nO        10.1.0.0/16 [110/20] via 10.0.12.2, 00:12:31, GigabitEthernet0/0/1\nO        10.1.1.0/24 [110/30] via 10.0.13.3, 00:12:31, GigabitEthernet0/0/2\nS        10.1.1.128/25 [1/0] via 10.0.12.2\nC        10.0.12.0/30 is directly connected, GigabitEthernet0/0/1\nL        10.0.12.1/32 is directly connected, GigabitEthernet0/0/1\nC        10.0.13.0/30 is directly connected, GigabitEthernet0/0/2\nL        10.0.13.1/32 is directly connected, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "The metric",
+            "The administrative distance",
+            "The prefix length",
+            "The number of hops left"
+          ],
+          "answer": 0,
+          "explanation": "Angka pertama adalah AD (110 untuk OSPF), dan angka kedua adalah metric.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-rt-bracket"
+          ]
+        },
+        {
+          "id": "ccna-u15-l1-e3",
+          "type": "exhibit",
+          "concept": "routing-table",
+          "prompt": "Refer to the exhibit. Out of which interface does R1 send traffic for 10.1.1.0/24?",
+          "outputs": [
+            {
+              "title": "R1# show ip route",
+              "text": "Codes: L - local, C - connected, S - static, R - RIP, B - BGP\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area\n       * - candidate default\n\nGateway of last resort is 203.0.113.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 203.0.113.1\n      10.0.0.0/8 is variably subnetted, 7 subnets, 5 masks\nO        10.1.0.0/16 [110/20] via 10.0.12.2, 00:12:31, GigabitEthernet0/0/1\nO        10.1.1.0/24 [110/30] via 10.0.13.3, 00:12:31, GigabitEthernet0/0/2\nS        10.1.1.128/25 [1/0] via 10.0.12.2\nC        10.0.12.0/30 is directly connected, GigabitEthernet0/0/1\nL        10.0.12.1/32 is directly connected, GigabitEthernet0/0/1\nC        10.0.13.0/30 is directly connected, GigabitEthernet0/0/2\nL        10.0.13.1/32 is directly connected, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "GigabitEthernet0/0/2",
+            "GigabitEthernet0/0/1",
+            "The interface toward 203.0.113.1",
+            "All interfaces at once"
+          ],
+          "answer": 0,
+          "explanation": "Baris 10.1.1.0/24 diakhiri GigabitEthernet0/0/2, interface keluarnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-rt-parts"
+          ]
+        },
+        {
+          "id": "ccna-u15-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "route-codes"
+          ],
+          "title": "Kode sumber route",
+          "body": "Huruf di depan menunjukkan dari mana route itu datang: C connected (subnet interface yang menyala), L local (alamat /32 interface router itu sendiri), S static, O OSPF (Open Shortest Path First), D EIGRP (Enhanced Interior Gateway Routing Protocol), dan R RIP (Routing Information Protocol). Tanda * menandai candidate default, misalnya S* untuk default route statis.",
+          "keyPoints": [
+            "C: subnet interface",
+            "L: alamat /32 router",
+            "S, O, D, R; * = default"
+          ],
+          "teaches": [
+            "ccna-f-u15-rt-codes",
+            "ccna-f-u15-rt-local"
+          ]
+        },
+        {
+          "id": "ccna-u15-l1-e4",
+          "type": "match",
+          "concept": "route-codes",
+          "prompt": "Match each route code to its source.",
+          "pairs": [
+            [
+              "C",
+              "A subnet on an interface that is up"
+            ],
+            [
+              "L",
+              "The /32 address of the router interface itself"
+            ],
+            [
+              "S",
+              "A static route"
+            ],
+            [
+              "O",
+              "A route learned by OSPF (Open Shortest Path First)"
+            ],
+            [
+              "S*",
+              "A static default route"
+            ]
+          ],
+          "explanation": "C connected, L local, S static, O OSPF (Open Shortest Path First), dan S* default route statis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-rt-codes",
+            "ccna-f-u15-rt-local"
+          ]
+        },
+        {
+          "id": "ccna-u15-l1-e5",
+          "type": "truefalse",
+          "concept": "route-codes",
+          "prompt": "The L route 10.0.12.1/32 in the exhibit-style table is the address of R1 on that interface.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Route L adalah alamat /32 interface router itu sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-rt-local"
+          ]
+        },
+        {
+          "id": "ccna-u15-l1-e6",
+          "type": "choice",
+          "concept": "route-codes",
+          "prompt": "An interface of R1 has 192.168.5.1/24 and is up. Which two entries appear in the routing table for it?",
+          "options": [
+            "C 192.168.5.0/24 and L 192.168.5.1/32",
+            "S 192.168.5.0/24 and L 192.168.5.0/32",
+            "C 192.168.5.1/32 only",
+            "O 192.168.5.0/24 and C 192.168.5.1/24"
+          ],
+          "answer": 0,
+          "explanation": "Interface yang menyala menghasilkan route C untuk subnet-nya dan route L /32 untuk alamatnya sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-rt-local",
+            "ccna-f-u15-rt-codes"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u15-l2",
       "title": "Longest prefix match",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u15-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "longest-prefix"
+          ],
+          "title": "Longest prefix match",
+          "body": "Satu alamat tujuan bisa cocok dengan beberapa route sekaligus. Untuk 10.1.1.200, route 0.0.0.0/0, 10.1.0.0/16, 10.1.1.0/24, dan 10.1.1.128/25 semuanya cocok. Router selalu memilih prefix terpanjang, yang paling spesifik: /25. Aturan ini diperiksa lebih dulu, sebelum AD (administrative distance) atau metric.",
+          "keyPoints": [
+            "Kumpulkan semua route yang cocok",
+            "Pilih prefix terpanjang",
+            "Baru AD dan metric kalau prefix sama"
+          ],
+          "visual": "LongestPrefix",
+          "teaches": [
+            "ccna-f-u15-lpm"
+          ]
+        },
+        {
+          "id": "ccna-u15-l2-e1",
+          "type": "exhibit",
+          "concept": "longest-prefix",
+          "prompt": "Refer to the exhibit. R1 receives a packet for 10.1.1.200. Which next hop does it use?",
+          "outputs": [
+            {
+              "title": "R1# show ip route",
+              "text": "Codes: L - local, C - connected, S - static, R - RIP, B - BGP\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area\n       * - candidate default\n\nGateway of last resort is 203.0.113.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 203.0.113.1\n      10.0.0.0/8 is variably subnetted, 7 subnets, 5 masks\nO        10.1.0.0/16 [110/20] via 10.0.12.2, 00:12:31, GigabitEthernet0/0/1\nO        10.1.1.0/24 [110/30] via 10.0.13.3, 00:12:31, GigabitEthernet0/0/2\nS        10.1.1.128/25 [1/0] via 10.0.12.2\nC        10.0.12.0/30 is directly connected, GigabitEthernet0/0/1\nL        10.0.12.1/32 is directly connected, GigabitEthernet0/0/1\nC        10.0.13.0/30 is directly connected, GigabitEthernet0/0/2\nL        10.0.13.1/32 is directly connected, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "10.0.12.2, by the static /25 route",
+            "10.0.13.3, by the OSPF (Open Shortest Path First) /24 route",
+            "10.0.12.2, by the OSPF (Open Shortest Path First) /16 route",
+            "203.0.113.1, by the default route"
+          ],
+          "answer": 0,
+          "explanation": "10.1.1.200 cocok dengan /0, /16, /24, dan /25. Prefix terpanjang, 10.1.1.128/25, menang, jadi next hop-nya 10.0.12.2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-rt-parts"
+          ]
+        },
+        {
+          "id": "ccna-u15-l2-e2",
+          "type": "exhibit",
+          "concept": "longest-prefix",
+          "prompt": "Refer to the exhibit. R1 receives a packet for 10.1.1.5. Which next hop does it use?",
+          "outputs": [
+            {
+              "title": "R1# show ip route",
+              "text": "Codes: L - local, C - connected, S - static, R - RIP, B - BGP\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area\n       * - candidate default\n\nGateway of last resort is 203.0.113.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 203.0.113.1\n      10.0.0.0/8 is variably subnetted, 7 subnets, 5 masks\nO        10.1.0.0/16 [110/20] via 10.0.12.2, 00:12:31, GigabitEthernet0/0/1\nO        10.1.1.0/24 [110/30] via 10.0.13.3, 00:12:31, GigabitEthernet0/0/2\nS        10.1.1.128/25 [1/0] via 10.0.12.2\nC        10.0.12.0/30 is directly connected, GigabitEthernet0/0/1\nL        10.0.12.1/32 is directly connected, GigabitEthernet0/0/1\nC        10.0.13.0/30 is directly connected, GigabitEthernet0/0/2\nL        10.0.13.1/32 is directly connected, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "10.0.13.3",
+            "10.0.12.2",
+            "203.0.113.1",
+            "It drops the packet"
+          ],
+          "answer": 0,
+          "explanation": "10.1.1.5 tidak masuk 10.1.1.128/25 (.128 sampai .255). Prefix terpanjang yang cocok adalah 10.1.1.0/24 via 10.0.13.3.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u15-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "lpm-default"
+          ],
+          "title": "Default route ikut dicocokkan",
+          "body": "Default route 0.0.0.0/0 cocok dengan semua tujuan, tapi /0 adalah prefix terpendek. Jadi ia selalu kalah dari route lain yang cocok, dan hanya dipakai kalau tidak ada yang lebih spesifik. Di show ip route, default route tampil sebagai gateway of last resort.",
+          "keyPoints": [
+            "/0 cocok dengan semua",
+            "Selalu kalah dari yang lebih spesifik",
+            "Gateway of last resort"
+          ],
+          "teaches": [
+            "ccna-f-u15-default",
+            "ccna-f-u15-lpm"
+          ]
+        },
+        {
+          "id": "ccna-u15-l2-e3",
+          "type": "exhibit",
+          "concept": "lpm-default",
+          "prompt": "Refer to the exhibit. R1 receives a packet for 10.2.0.1. Which route does it use?",
+          "outputs": [
+            {
+              "title": "R1# show ip route",
+              "text": "Codes: L - local, C - connected, S - static, R - RIP, B - BGP\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area\n       * - candidate default\n\nGateway of last resort is 203.0.113.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 203.0.113.1\n      10.0.0.0/8 is variably subnetted, 7 subnets, 5 masks\nO        10.1.0.0/16 [110/20] via 10.0.12.2, 00:12:31, GigabitEthernet0/0/1\nO        10.1.1.0/24 [110/30] via 10.0.13.3, 00:12:31, GigabitEthernet0/0/2\nS        10.1.1.128/25 [1/0] via 10.0.12.2\nC        10.0.12.0/30 is directly connected, GigabitEthernet0/0/1\nL        10.0.12.1/32 is directly connected, GigabitEthernet0/0/1\nC        10.0.13.0/30 is directly connected, GigabitEthernet0/0/2\nL        10.0.13.1/32 is directly connected, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "The default route via 203.0.113.1",
+            "The /16 route via 10.0.12.2",
+            "The connected route on Gi0/0/1",
+            "None, so it drops the packet"
+          ],
+          "answer": 0,
+          "explanation": "Tidak ada route 10.2.x.x, dan 10.1.0.0/16 tidak mencakup 10.2.0.1. Satu-satunya yang cocok adalah default route.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-default"
+          ]
+        },
+        {
+          "id": "ccna-u15-l2-e4",
+          "type": "truefalse",
+          "concept": "lpm-default",
+          "prompt": "For the destination 10.1.1.130, a matching /25 route is preferred over a matching /24 route.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. /25 lebih panjang, jadi lebih spesifik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm"
+          ]
+        },
+        {
+          "id": "ccna-u15-l2-e5",
+          "type": "multi",
+          "concept": "lpm-default",
+          "prompt": "A router has routes to 172.16.0.0/16, 172.16.8.0/21, and 172.16.8.0/24. Which two destinations use the /21 route? (Choose two.)",
+          "options": [
+            "172.16.12.1",
+            "172.16.15.254",
+            "172.16.8.10",
+            "172.16.16.1"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "/21 mencakup 172.16.8.0 sampai 172.16.15.255. 172.16.8.10 lebih cocok dengan /24, dan 172.16.16.1 hanya cocok dengan /16.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u15-l2-e6",
+          "type": "order",
+          "concept": "lpm-default",
+          "prompt": "For the destination 10.1.1.200, order these matching routes from most preferred to least preferred.",
+          "items": [
+            "10.1.1.128/25",
+            "10.1.1.0/24",
+            "10.1.0.0/16",
+            "0.0.0.0/0"
+          ],
+          "explanation": "Makin panjang prefix, makin diutamakan: /25, /24, /16, lalu default /0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-default"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u15-l3",
       "title": "Administrative distance",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u15-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "admin-distance"
+          ],
+          "title": "Administrative distance",
+          "body": "Kalau dua sumber menawarkan prefix yang persis sama, misalnya OSPF (Open Shortest Path First) dan static sama-sama punya 10.5.0.0/16, router harus memilih satu. Ia memakai administrative distance (AD), tingkat kepercayaan sumber: makin rendah, makin dipercaya. Connected 0, static 1, eBGP 20, EIGRP (Enhanced Interior Gateway Routing Protocol) 90, OSPF 110, RIP (Routing Information Protocol) 120, iBGP 200. AD (administrative distance) 255 berarti tidak dipercaya sama sekali.",
+          "keyPoints": [
+            "Prefix sama: AD terendah",
+            "Connected 0, static 1",
+            "EIGRP 90, OSPF 110, RIP 120"
+          ],
+          "visual": "AdLadder",
+          "teaches": [
+            "ccna-f-u15-ad",
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u15-l3-e1",
+          "type": "match",
+          "concept": "admin-distance",
+          "prompt": "Match each route source to its default administrative distance.",
+          "pairs": [
+            [
+              "Connected",
+              "0"
+            ],
+            [
+              "Static",
+              "1"
+            ],
+            [
+              "EIGRP (Enhanced Interior Gateway Routing Protocol) internal",
+              "90"
+            ],
+            [
+              "OSPF (Open Shortest Path First)",
+              "110"
+            ],
+            [
+              "RIP (Routing Information Protocol)",
+              "120"
+            ]
+          ],
+          "explanation": "Connected 0, static 1, EIGRP (Enhanced Interior Gateway Routing Protocol) 90, OSPF (Open Shortest Path First) 110, dan RIP (Routing Information Protocol) 120.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u15-l3-e2",
+          "type": "choice",
+          "concept": "admin-distance",
+          "prompt": "A router learns 10.5.0.0/16 from OSPF (Open Shortest Path First) and from EIGRP (Enhanced Interior Gateway Routing Protocol). Which route is installed?",
+          "options": [
+            "The EIGRP route, AD (administrative distance) 90",
+            "The OSPF route, AD (administrative distance) 110",
+            "Both routes, sharing the load",
+            "The one with the lower metric"
+          ],
+          "answer": 0,
+          "explanation": "Prefix-nya sama, jadi AD (administrative distance) menentukan: EIGRP (Enhanced Interior Gateway Routing Protocol) 90 lebih rendah dari OSPF (Open Shortest Path First) 110. Metric antarprotokol tidak dibandingkan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-ad",
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u15-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "ad-compare"
+          ],
+          "title": "AD hanya untuk prefix yang sama",
+          "body": "AD (administrative distance) hanya dipakai kalau prefix dan panjangnya persis sama. Kalau prefix berbeda panjang, longest prefix match yang menentukan, berapa pun AD-nya. Nilai 255 berarti sumber tidak dipercaya, jadi route itu tidak pernah dipasang.",
+          "keyPoints": [
+            "Prefix sama persis: AD",
+            "Prefix beda: longest match",
+            "AD 255: tidak dipasang"
+          ],
+          "teaches": [
+            "ccna-f-u15-ad",
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u15-l3-e3",
+          "type": "truefalse",
+          "concept": "ad-compare",
+          "prompt": "A route with administrative distance 255 is never installed in the routing table.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. AD (administrative distance) 255 berarti sumber itu tidak dipercaya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u15-l3-e4",
+          "type": "truefalse",
+          "concept": "ad-compare",
+          "prompt": "A static route to 10.1.1.0/24 beats an OSPF (Open Shortest Path First) route to 10.1.1.0/25 for the destination 10.1.1.10, because static has a lower AD (administrative distance).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Prefix terpanjang diperiksa lebih dulu: /25 lebih spesifik, jadi route OSPF (Open Shortest Path First) yang dipakai.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-ad"
+          ]
+        },
+        {
+          "id": "ccna-u15-l3-e5",
+          "type": "choice",
+          "concept": "ad-compare",
+          "prompt": "A router has a static route and an OSPF (Open Shortest Path First) route for 192.168.50.0/24. Which does it use?",
+          "options": [
+            "The static route, AD (administrative distance) 1",
+            "The OSPF route, AD (administrative distance) 110",
+            "The route that was learned first",
+            "The route with more hops"
+          ],
+          "answer": 0,
+          "explanation": "Prefix sama, jadi AD (administrative distance) terendah menang: static 1 mengalahkan OSPF (Open Shortest Path First) 110.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-ad",
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u15-l3-e6",
+          "type": "sort",
+          "concept": "ad-compare",
+          "prompt": "Sort each route source by trust compared with OSPF (Open Shortest Path First).",
+          "buckets": [
+            "More trusted than OSPF",
+            "Less trusted than OSPF"
+          ],
+          "items": [
+            {
+              "text": "Connected",
+              "bucket": 0
+            },
+            {
+              "text": "Static",
+              "bucket": 0
+            },
+            {
+              "text": "EIGRP (Enhanced Interior Gateway Routing Protocol) internal",
+              "bucket": 0
+            },
+            {
+              "text": "RIP (Routing Information Protocol)",
+              "bucket": 1
+            },
+            {
+              "text": "iBGP (internal Border Gateway Protocol)",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Connected 0, static 1, dan EIGRP (Enhanced Interior Gateway Routing Protocol) 90 lebih rendah dari OSPF (Open Shortest Path First) 110. RIP (Routing Information Protocol) 120 dan iBGP 200 lebih tinggi.",
+          "requires": [
+            "ccna-f-u15-ad-values"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u15-l4",
       "title": "Metric dan default route",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u15-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "metric"
+          ],
+          "title": "Metric",
+          "body": "Kalau prefix sama dan sumbernya protokol yang sama, protokol itu memilih jalur dengan metric terendah. Setiap protokol menghitung metric dengan caranya sendiri: OSPF (Open Shortest Path First) memakai cost yang bergantung pada bandwidth, sedangkan RIP (Routing Information Protocol) memakai jumlah hop. Kalau metric-nya sama, router bisa memasang beberapa route dan membagi beban.",
+          "keyPoints": [
+            "Protokol sama: metric terendah",
+            "OSPF: cost, RIP: hop",
+            "Metric sama: bagi beban"
+          ],
+          "teaches": [
+            "ccna-f-u15-metric",
+            "ccna-f-u15-ecmp"
+          ]
+        },
+        {
+          "id": "ccna-u15-l4-e1",
+          "type": "choice",
+          "concept": "metric",
+          "prompt": "OSPF (Open Shortest Path First) offers two paths to 10.9.0.0/16, one with cost 30 and one with cost 20. Which does the router install?",
+          "options": [
+            "The path with cost 20",
+            "The path with cost 30",
+            "Both, because the prefix is the same",
+            "Neither, until an engineer picks one"
+          ],
+          "answer": 0,
+          "explanation": "Protokol sama dan prefix sama, jadi metric terendah yang dipasang: cost 20.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-metric"
+          ]
+        },
+        {
+          "id": "ccna-u15-l4-e2",
+          "type": "truefalse",
+          "concept": "metric",
+          "prompt": "A router compares the OSPF (Open Shortest Path First) cost with the RIP (Routing Information Protocol) hop count to choose between the two protocols.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Metric antarprotokol tidak bisa dibandingkan; router memakai AD (administrative distance) untuk memilih antarprotokol.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-metric",
+            "ccna-f-u15-ad"
+          ]
+        },
+        {
+          "id": "ccna-u15-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "default-route"
+          ],
+          "title": "Default route",
+          "body": "Default route 0.0.0.0/0 cocok dengan semua tujuan, tapi prefix /0 adalah yang terpendek, jadi ia hanya dipakai kalau tidak ada route lain yang cocok. Di show ip route, default route tampil sebagai gateway of last resort. Kalau tidak ada route yang cocok sama sekali dan tidak ada default route, router membuang paket dan bisa mengirim ICMP (Internet Control Message Protocol) destination unreachable.",
+          "keyPoints": [
+            "0.0.0.0/0 cocok dengan semua",
+            "Dipakai paling akhir",
+            "Tanpa route: paket dibuang"
+          ],
+          "teaches": [
+            "ccna-f-u15-default",
+            "ccna-f-u15-no-route"
+          ]
+        },
+        {
+          "id": "ccna-u15-l4-e3",
+          "type": "exhibit",
+          "concept": "default-route",
+          "prompt": "Refer to the exhibit. What is the gateway of last resort of R1?",
+          "outputs": [
+            {
+              "title": "R1# show ip route",
+              "text": "Codes: L - local, C - connected, S - static, R - RIP, B - BGP\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area\n       * - candidate default\n\nGateway of last resort is 203.0.113.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 203.0.113.1\n      10.0.0.0/8 is variably subnetted, 7 subnets, 5 masks\nO        10.1.0.0/16 [110/20] via 10.0.12.2, 00:12:31, GigabitEthernet0/0/1\nO        10.1.1.0/24 [110/30] via 10.0.13.3, 00:12:31, GigabitEthernet0/0/2\nS        10.1.1.128/25 [1/0] via 10.0.12.2\nC        10.0.12.0/30 is directly connected, GigabitEthernet0/0/1\nL        10.0.12.1/32 is directly connected, GigabitEthernet0/0/1\nC        10.0.13.0/30 is directly connected, GigabitEthernet0/0/2\nL        10.0.13.1/32 is directly connected, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "203.0.113.1",
+            "10.0.12.2",
+            "10.0.13.3",
+            "0.0.0.0"
+          ],
+          "answer": 0,
+          "explanation": "Baris Gateway of last resort menyebut 203.0.113.1, next hop default route S*.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-default",
+            "ccna-f-u15-rt-codes"
+          ]
+        },
+        {
+          "id": "ccna-u15-l4-e4",
+          "type": "choice",
+          "concept": "default-route",
+          "prompt": "R1 has no default route and no route to 172.20.1.1. What happens to a packet for 172.20.1.1?",
+          "options": [
+            "R1 drops it and may send ICMP (Internet Control Message Protocol) destination unreachable",
+            "R1 floods it out of every interface",
+            "R1 sends it back to the source unchanged",
+            "R1 holds it until a route appears"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa route yang cocok, router membuang paket dan bisa memberi tahu pengirim dengan ICMP (Internet Control Message Protocol) unreachable.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-no-route"
+          ]
+        },
+        {
+          "id": "ccna-u15-l4-e5",
+          "type": "match",
+          "concept": "default-route",
+          "prompt": "Match each tie-breaker to when it is used.",
+          "pairs": [
+            [
+              "Longest prefix",
+              "Always first, among all matching routes"
+            ],
+            [
+              "Administrative distance",
+              "Same prefix offered by different sources"
+            ],
+            [
+              "Metric",
+              "Same prefix from the same routing protocol"
+            ],
+            [
+              "Default route",
+              "Only when nothing more specific matches"
+            ]
+          ],
+          "explanation": "Prefix terpanjang selalu dulu, AD (administrative distance) untuk prefix sama dari sumber berbeda, metric untuk protokol yang sama, dan default route paling akhir.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-ad",
+            "ccna-f-u15-metric",
+            "ccna-f-u15-default"
+          ]
+        },
+        {
+          "id": "ccna-u15-l4-e6",
+          "type": "multi",
+          "concept": "default-route",
+          "prompt": "Which two statements about the default route 0.0.0.0/0 are true? (Choose two.)",
+          "options": [
+            "It matches every destination",
+            "It is used only when no more specific route matches",
+            "It always has administrative distance 0",
+            "It wins over any route with a higher metric"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "/0 cocok dengan semua tujuan tapi paling pendek, jadi dipakai paling akhir. AD (administrative distance)-nya bergantung pada sumbernya, misalnya 1 untuk static.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-default",
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-ad-values"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u15-l5",
@@ -30,8 +706,259 @@
         "kind": "support",
         "from": "ccna-u15-l4"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u15-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "next-hop-drill"
+          ],
+          "title": "Tiga langkah memilih route",
+          "body": "Satu: tulis semua route yang cocok dengan tujuan. Dua: ambil prefix terpanjang. Tiga: kalau ada beberapa route dengan prefix yang sama dari sumber berbeda, ambil AD (administrative distance) terendah; dari protokol yang sama, ambil metric terendah. Kalau tidak ada yang cocok, pakai default route.",
+          "keyPoints": [
+            "Cocokkan semua",
+            "Prefix terpanjang",
+            "Lalu AD, lalu metric"
+          ],
+          "teaches": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-ad",
+            "ccna-f-u15-metric",
+            "ccna-f-u15-default"
+          ]
+        },
+        {
+          "id": "ccna-u15-l5-e1",
+          "type": "exhibit",
+          "concept": "next-hop-drill",
+          "prompt": "Refer to the exhibit. Which next hop does R2 use for 172.16.5.9?",
+          "outputs": [
+            {
+              "title": "R2# show ip route",
+              "text": "Gateway of last resort is 10.0.0.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 10.0.0.1\nD     172.16.0.0/16 [90/3072] via 10.0.1.2, 00:05:10, GigabitEthernet0/0/1\nO     172.16.4.0/22 [110/2] via 10.0.2.2, 00:04:02, GigabitEthernet0/0/2\nS     172.16.5.0/24 [1/0] via 10.0.3.2\nO     192.168.10.0/24 [110/3] via 10.0.2.2, 00:04:02, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "10.0.3.2",
+            "10.0.2.2",
+            "10.0.1.2",
+            "10.0.0.1"
+          ],
+          "answer": 0,
+          "explanation": "172.16.5.9 cocok dengan /16, /22 (172.16.4.0 sampai .7.255), dan /24. Prefix terpanjang adalah 172.16.5.0/24 via 10.0.3.2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm"
+          ]
+        },
+        {
+          "id": "ccna-u15-l5-e2",
+          "type": "exhibit",
+          "concept": "next-hop-drill",
+          "prompt": "Refer to the exhibit. Which next hop does R2 use for 172.16.6.1?",
+          "outputs": [
+            {
+              "title": "R2# show ip route",
+              "text": "Gateway of last resort is 10.0.0.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 10.0.0.1\nD     172.16.0.0/16 [90/3072] via 10.0.1.2, 00:05:10, GigabitEthernet0/0/1\nO     172.16.4.0/22 [110/2] via 10.0.2.2, 00:04:02, GigabitEthernet0/0/2\nS     172.16.5.0/24 [1/0] via 10.0.3.2\nO     192.168.10.0/24 [110/3] via 10.0.2.2, 00:04:02, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "10.0.2.2",
+            "10.0.3.2",
+            "10.0.1.2",
+            "10.0.0.1"
+          ],
+          "answer": 0,
+          "explanation": "172.16.6.1 cocok dengan /16 dan /22, tidak dengan 172.16.5.0/24. Prefix terpanjang adalah /22 via 10.0.2.2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u15-l5-e3",
+          "type": "exhibit",
+          "concept": "next-hop-drill",
+          "prompt": "Refer to the exhibit. Which next hop does R2 use for 172.16.200.1?",
+          "outputs": [
+            {
+              "title": "R2# show ip route",
+              "text": "Gateway of last resort is 10.0.0.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 10.0.0.1\nD     172.16.0.0/16 [90/3072] via 10.0.1.2, 00:05:10, GigabitEthernet0/0/1\nO     172.16.4.0/22 [110/2] via 10.0.2.2, 00:04:02, GigabitEthernet0/0/2\nS     172.16.5.0/24 [1/0] via 10.0.3.2\nO     192.168.10.0/24 [110/3] via 10.0.2.2, 00:04:02, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "10.0.1.2",
+            "10.0.2.2",
+            "10.0.3.2",
+            "10.0.0.1"
+          ],
+          "answer": 0,
+          "explanation": "Hanya 172.16.0.0/16 dan default route yang cocok. /16 lebih spesifik, jadi next hop-nya 10.0.1.2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-default"
+          ]
+        },
+        {
+          "id": "ccna-u15-l5-e4",
+          "type": "exhibit",
+          "concept": "next-hop-drill",
+          "prompt": "Refer to the exhibit. Which next hop does R2 use for 192.168.20.1?",
+          "outputs": [
+            {
+              "title": "R2# show ip route",
+              "text": "Gateway of last resort is 10.0.0.1 to network 0.0.0.0\n\nS*    0.0.0.0/0 [1/0] via 10.0.0.1\nD     172.16.0.0/16 [90/3072] via 10.0.1.2, 00:05:10, GigabitEthernet0/0/1\nO     172.16.4.0/22 [110/2] via 10.0.2.2, 00:04:02, GigabitEthernet0/0/2\nS     172.16.5.0/24 [1/0] via 10.0.3.2\nO     192.168.10.0/24 [110/3] via 10.0.2.2, 00:04:02, GigabitEthernet0/0/2"
+            }
+          ],
+          "options": [
+            "10.0.0.1",
+            "10.0.2.2",
+            "10.0.1.2",
+            "It drops the packet"
+          ],
+          "answer": 0,
+          "explanation": "Tidak ada route yang cocok selain default route, jadi paket dikirim ke 10.0.0.1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-default",
+            "ccna-f-u15-lpm"
+          ]
+        },
+        {
+          "id": "ccna-u15-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "next-hop-ad"
+          ],
+          "title": "Saat prefix sama",
+          "body": "Kalau OSPF (Open Shortest Path First) dan static sama-sama menawarkan prefix yang sama, hanya satu yang masuk tabel: AD (administrative distance) terendah. Itu sebabnya tabel routing hanya menampilkan satu route per prefix, kecuali beberapa route dari protokol yang sama punya metric yang sama.",
+          "keyPoints": [
+            "Satu prefix, satu pemenang",
+            "AD terendah masuk tabel",
+            "Kecuali metric sama: bagi beban"
+          ],
+          "teaches": [
+            "ccna-f-u15-ad",
+            "ccna-f-u15-ecmp"
+          ]
+        },
+        {
+          "id": "ccna-u15-l5-e5",
+          "type": "choice",
+          "concept": "next-hop-ad",
+          "prompt": "R2 learns 192.168.10.0/24 from OSPF (Open Shortest Path First) with AD (administrative distance) 110, and an engineer adds a static route to the same prefix. What shows in the routing table?",
+          "options": [
+            "Only the static route",
+            "Only the OSPF route",
+            "Both routes",
+            "Neither route"
+          ],
+          "answer": 0,
+          "explanation": "Prefix sama, jadi hanya route dengan AD (administrative distance) terendah yang dipasang: static 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-ad",
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u15-l5-e6",
+          "type": "truefalse",
+          "concept": "next-hop-ad",
+          "prompt": "If two OSPF (Open Shortest Path First) routes to the same prefix have the same cost, the router can install both.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Metric yang sama dari protokol yang sama memungkinkan pembagian beban.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-ecmp"
+          ]
+        },
+        {
+          "id": "ccna-u15-l5-e7",
+          "type": "fill",
+          "concept": "next-hop-drill",
+          "prompt": "Complete the rule.",
+          "sentence": "A router first picks the ___ prefix that matches, then the lowest ___ distance if the prefixes are equal.",
+          "bank": [
+            "longest",
+            "administrative",
+            "shortest",
+            "metric"
+          ],
+          "answers": [
+            "longest",
+            "administrative"
+          ],
+          "explanation": "Prefix terpanjang dulu, baru administrative distance untuk prefix yang sama.",
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u15-ad"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u15-rt-parts",
+      "statement": "Setiap route di tabel routing berisi sumbernya, prefix tujuan dan panjangnya, administrative distance dan metric, next hop, dan interface keluar.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/enhanced-interior-gateway-routing-protocol-eigrp/8651-21.html"
+    },
+    {
+      "id": "ccna-f-u15-rt-codes",
+      "statement": "Kode di awal baris show ip route menunjukkan sumber route, misalnya C connected, L local, S static, O OSPF, D EIGRP, R RIP, dan B BGP; tanda * menandai candidate default.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-3e/iri-xe-3e-book/iri_iprouting.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u15-rt-local",
+      "statement": "Route L (local) adalah route /32 untuk alamat interface router itu sendiri, sedangkan C (connected) adalah subnet tempat interface itu berada.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-3e/iri-xe-3e-book/iri_iprouting.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u15-rt-bracket",
+      "statement": "Angka di dalam kurung siku, misalnya [110/20], adalah administrative distance lalu metric route itu.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/enhanced-interior-gateway-routing-protocol-eigrp/8651-21.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u15-lpm",
+      "statement": "Untuk meneruskan paket, router memilih route dengan prefix terpanjang (paling spesifik) yang cocok dengan alamat tujuan, sebelum mempertimbangkan AD atau metric.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/enhanced-interior-gateway-routing-protocol-eigrp/8651-21.html"
+    },
+    {
+      "id": "ccna-f-u15-ad",
+      "statement": "Kalau beberapa sumber routing menawarkan prefix yang sama dengan panjang yang sama, router memasang route dengan administrative distance terendah.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/15986-admin-distance.html"
+    },
+    {
+      "id": "ccna-f-u15-ad-values",
+      "statement": "AD bawaan: connected 0, static 1, eBGP 20, EIGRP internal 90, OSPF 110, RIP 120, EIGRP external 170, dan iBGP 200; nilai 255 berarti route tidak dipercaya dan tidak dipasang.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/15986-admin-distance.html"
+    },
+    {
+      "id": "ccna-f-u15-metric",
+      "statement": "Kalau prefix sama dan sumbernya protokol yang sama, router memilih metric terendah; OSPF memakai cost, sedangkan RIP memakai jumlah hop.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/enhanced-interior-gateway-routing-protocol-eigrp/8651-21.html"
+    },
+    {
+      "id": "ccna-f-u15-ecmp",
+      "statement": "Kalau beberapa route ke prefix yang sama punya AD dan metric yang sama, router bisa memasang semuanya dan membagi beban di antaranya.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/enhanced-interior-gateway-routing-protocol-eigrp/8651-21.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u15-default",
+      "statement": "Default route 0.0.0.0/0 cocok dengan semua tujuan, jadi dipakai hanya kalau tidak ada route yang lebih spesifik; di show ip route ia tampil sebagai gateway of last resort.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-3e/iri-xe-3e-book/iri_iprouting.html"
+    },
+    {
+      "id": "ccna-f-u15-no-route",
+      "statement": "Kalau tidak ada route yang cocok, termasuk default route, router membuang paket dan bisa mengirim ICMP destination unreachable ke pengirim.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1812.html"
+    }
+  ]
 }

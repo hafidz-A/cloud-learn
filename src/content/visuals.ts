@@ -161,6 +161,10 @@ export const VISUAL_CATALOG = {
   TroubleshootLadder: ['troubleshoot-flow'],
   PingSymbols: ['ping-output'],
   TracerouteTtl: ['traceroute'],
+  // Unit 15
+  RouteEntry: ['routing-table'],
+  LongestPrefix: ['longest-prefix'],
+  AdLadder: ['admin-distance'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG
