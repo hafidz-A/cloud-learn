@@ -502,7 +502,7 @@
   {
     "term": "IEEE",
     "expansion": "Institute of Electrical and Electronics Engineers",
-    "description": "Organisasi yang membuat standar Ethernet (802.3) dan Wi-Fi (802.11)."
+    "description": "Organisasi yang menyusun standar seperti Ethernet (802.3) dan Wi-Fi (802.11)."
   },
   {
     "term": "FCS",
@@ -888,5 +888,32 @@
     "term": "CFI",
     "expansion": "Canonical Format Indicator",
     "description": "Satu bit di tag 802.1Q, di antara priority dan VLAN ID."
+  },
+  {
+    "term": "LACP",
+    "expansion": "Link Aggregation Control Protocol",
+    "description": "Protokol standar IEEE 802.3ad untuk negosiasi EtherChannel, dengan mode active dan passive."
+  },
+  {
+    "term": "PAgP",
+    "expansion": "Port Aggregation Protocol",
+    "description": "Protokol Cisco untuk negosiasi EtherChannel, dengan mode desirable dan auto."
+  },
+  {
+    "term": "STP",
+    "expansion": "Spanning Tree Protocol",
+    "description": "Protokol yang mencegah loop layer 2 dengan memblokir sebagian port."
+  },
+  {
+    "term": "SU",
+    "expansion": "Layer2, in Use",
+    "description": "Flag port-channel di show etherchannel summary: S berarti layer 2 dan U berarti sedang dipakai.",
+    "course": "ccna"
+  },
+  {
+    "term": "RU",
+    "expansion": "Layer3, in Use",
+    "description": "Flag port-channel di show etherchannel summary: R berarti layer 3 dan U berarti sedang dipakai.",
+    "course": "ccna"
   }
 ]

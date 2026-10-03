@@ -196,6 +196,7 @@ cfg(G, 'spanning-tree portfast bpduguard default', { slot: 'spanning-tree portfa
 cfg(G, 'spanning-tree loopguard default', { slot: 'spanning-tree loopguard default', only: SWITCHES })
 cfg(G, 'cdp run', { slot: 'cdp run', noStore: true })
 cfg(G, 'lldp run', { slot: 'lldp run', noStore: true })
+cfg(G, 'port-channel load-balance { src-mac | dst-mac | src-dst-mac | src-ip | dst-ip | src-dst-ip }', { slot: 'port-channel load-balance', only: SWITCHES })
 cfg(G, 'aaa new-model', { slot: 'aaa new-model' })
 cfg(G, 'aaa authentication login default { local | group { tacacs+ | radius | <word> } ?( local ) }', { slot: 'aaa authentication login default' })
 cfg(G, 'aaa authorization exec default { local | group { tacacs+ | radius | <word> } ?( local ) }', { slot: 'aaa authorization exec default' })

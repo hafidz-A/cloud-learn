@@ -146,6 +146,9 @@ export const VISUAL_CATALOG = {
   TrunkNative: ['native-vlan'],
   RouterOnAStick: ['router-on-a-stick'],
   SviRouting: ['svi'],
+  // Unit 11
+  EtherChannelBundle: ['etherchannel'],
+  LacpModes: ['lacp-modes'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

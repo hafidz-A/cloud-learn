@@ -1302,6 +1302,145 @@
         "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html",
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
       ]
+    },
+    {
+      "lesson": "ccna-u11-l5",
+      "title": "EtherChannel LACP antar switch",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Menggabungkan dua link antar switch menjadi satu EtherChannel LACP (Link Aggregation Control Protocol) yang menjadi trunk, lalu membuktikan link tetap jalan saat satu kabel dicabut.",
+      "topology": {
+        "devices": [
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 0,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 0,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 1
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 1
+          }
+        ],
+        "links": [
+          {
+            "from": "sw1",
+            "to": "sw2",
+            "fromPort": "Fa0/23",
+            "toPort": "Fa0/23"
+          },
+          {
+            "from": "sw1",
+            "to": "sw2",
+            "fromPort": "Fa0/24",
+            "toPort": "Fa0/24"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw2",
+            "to": "pc2",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.10.12/24"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan dua kabel Copper Crossover (atau Straight-Through kalau auto-MDIX aktif) antara Fa0/23 dan Fa0/24 kedua switch, lalu sambungkan PC dan isi alamatnya."
+        },
+        {
+          "text": "Konfigurasi SW1.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface range fa0/23 - 24",
+            "channel-group 1 mode active",
+            "interface port-channel 1",
+            "switchport mode trunk",
+            "end"
+          ]
+        },
+        {
+          "text": "Konfigurasi SW2.",
+          "device": "SW2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface range fa0/23 - 24",
+            "channel-group 1 mode passive",
+            "interface port-channel 1",
+            "switchport mode trunk",
+            "end"
+          ]
+        },
+        {
+          "text": "Periksa EtherChannel dan simpan.",
+          "device": "SW1",
+          "commands": [
+            "show etherchannel summary",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Ringkasan EtherChannel.",
+          "device": "SW1",
+          "command": "show etherchannel summary",
+          "expect": "Po1(SU) dengan protokol LACP dan anggota Fa0/23(P) serta Fa0/24(P)."
+        },
+        {
+          "text": "Jalankan ping -t 192.168.10.12 dari PC1, lalu hapus satu kabel antar switch.",
+          "expect": "Ping tetap berjalan; paling banyak satu atau dua yang hilang."
+        },
+        {
+          "text": "Ganti mode SW2 menjadi passive juga di SW1 (channel-group 1 mode passive), lalu lihat summary.",
+          "expect": "Port tidak lagi (P), karena tidak ada sisi yang memulai negosiasi. Kembalikan SW1 ke active."
+        }
+      ],
+      "notes": [
+        "Packet Tracer butuh beberapa detik untuk menegosiasikan LACP. Tunggu sebentar sebelum membaca show etherchannel summary."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9500/software/release/16-6/configuration_guide/b_166_lyr2_lyr3_9500_cg/b_166_lyr2_lyr3_9500_cg_chapter_011.html"
+      ]
     }
   ]
 }
