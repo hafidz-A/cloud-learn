@@ -6,7 +6,283 @@
     {
       "id": "ccna-u04-l1",
       "title": "Alamat IPv4, publik dan privat",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u04-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "ipv4-address"
+          ],
+          "title": "Alamat IPv4",
+          "body": "Alamat IPv4 panjangnya 32 bit. Supaya mudah dibaca, 32 bit itu dibagi menjadi empat oktet 8 bit, masing-masing ditulis sebagai angka desimal 0 sampai 255 dan dipisah titik, misalnya 192.168.10.5. Alamat punya dua bagian: bagian network menunjukkan jaringannya, dan bagian host menunjukkan perangkat di jaringan itu. Perangkat di satu jaringan punya bagian network yang sama.",
+          "keyPoints": [
+            "32 bit, empat oktet",
+            "Tiap oktet 0 sampai 255",
+            "Bagian network dan bagian host"
+          ],
+          "teaches": [
+            "ccna-f-u04-ipv4-format",
+            "ccna-f-u04-net-host"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e1",
+          "type": "truefalse",
+          "concept": "ipv4-address",
+          "prompt": "An IPv4 address is 32 bits long and is written as four decimal octets separated by dots.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. 32 bit dibagi menjadi empat oktet 8 bit, misalnya 192.168.10.5.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-ipv4-format"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e2",
+          "type": "choice",
+          "concept": "ipv4-address",
+          "prompt": "Which of these is a valid IPv4 host address?",
+          "options": [
+            "10.20.30.40",
+            "192.168.1.256",
+            "172.16.1",
+            "10.1.1.1.1"
+          ],
+          "answer": 0,
+          "explanation": "10.20.30.40 punya empat oktet yang semuanya 0 sampai 255. 192.168.1.256 melebihi 255, 172.16.1 hanya tiga oktet, dan 10.1.1.1.1 lima oktet.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-ipv4-format"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "address-classes"
+          ],
+          "title": "Kelas alamat",
+          "body": "Dulu alamat IPv4 dibagi menjadi kelas menurut oktet pertama. Kelas A (1 sampai 126) memakai mask bawaan 255.0.0.0, kelas B (128 sampai 191) memakai 255.255.0.0, dan kelas C (192 sampai 223) memakai 255.255.255.0. Rentang 224 sampai 239 dipakai untuk multicast, bukan host. Jaringan modern tidak lagi terikat kelas, tapi istilah ini masih sering muncul.",
+          "keyPoints": [
+            "A: 1-126, 255.0.0.0",
+            "B: 128-191, 255.255.0.0",
+            "C: 192-223, 255.255.255.0",
+            "224-239: multicast"
+          ],
+          "teaches": [
+            "ccna-f-u04-classes",
+            "ccna-f-u04-multicast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e3",
+          "type": "match",
+          "concept": "address-classes",
+          "prompt": "Match each address to its classful range.",
+          "pairs": [
+            [
+              "10.1.1.1",
+              "Class A, default mask 255.0.0.0"
+            ],
+            [
+              "172.20.5.9",
+              "Class B, default mask 255.255.0.0"
+            ],
+            [
+              "200.1.2.3",
+              "Class C, default mask 255.255.255.0"
+            ],
+            [
+              "230.0.0.5",
+              "Multicast range, 224 to 239"
+            ]
+          ],
+          "explanation": "Oktet pertama 10 masuk kelas A, 172 kelas B, 200 kelas C, dan 230 berada di rentang multicast 224 sampai 239.",
+          "requires": [
+            "ccna-f-u04-classes",
+            "ccna-f-u04-multicast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e4",
+          "type": "choice",
+          "concept": "address-classes",
+          "prompt": "An address starts with 150. Which class is it, and what is its default mask?",
+          "options": [
+            "Class B, 255.255.0.0",
+            "Class A, 255.0.0.0",
+            "Class C, 255.255.255.0",
+            "Class B, 255.255.255.0"
+          ],
+          "answer": 0,
+          "explanation": "Oktet pertama 128 sampai 191 adalah kelas B, dengan mask bawaan 255.255.0.0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-classes"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "private-addresses"
+          ],
+          "title": "Alamat privat",
+          "body": "RFC (Request for Comments) 1918 menyisihkan tiga rentang alamat privat: 10.0.0.0 sampai 10.255.255.255, 172.16.0.0 sampai 172.31.255.255, dan 192.168.0.0 sampai 192.168.255.255. Rentang ini boleh dipakai ulang di jaringan internal banyak organisasi, sehingga alamat publik yang terbatas jadi hemat. Alamat privat tidak dirutekan di internet; untuk keluar, alamatnya diterjemahkan ke alamat publik dengan NAT (Network Address Translation).",
+          "keyPoints": [
+            "10.x.x.x",
+            "172.16.x.x sampai 172.31.x.x",
+            "192.168.x.x",
+            "Ke internet lewat NAT"
+          ],
+          "trap": "172.32.0.1 bukan alamat privat. Rentang 172 yang privat berhenti di 172.31.255.255.",
+          "teaches": [
+            "ccna-f-u04-private",
+            "ccna-f-u04-conserve",
+            "ccna-f-u04-private-nat"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e5",
+          "type": "multi",
+          "concept": "private-addresses",
+          "prompt": "Which two addresses are private addresses? (Choose two.)",
+          "options": [
+            "172.31.200.1",
+            "10.255.0.9",
+            "172.32.1.1",
+            "192.169.1.1"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "172.31.200.1 masih di rentang 172.16 sampai 172.31, dan 10.255.0.9 di rentang 10. 172.32.1.1 dan 192.169.1.1 berada di luar rentang privat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-private"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e6",
+          "type": "truefalse",
+          "concept": "private-addresses",
+          "prompt": "A PC with the address 192.168.1.20 can browse the internet without any address translation, because its address is unique.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. 192.168.1.20 adalah alamat privat yang dipakai ulang di banyak jaringan dan tidak dirutekan di internet. Alamatnya harus diterjemahkan dengan NAT (Network Address Translation).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-private",
+            "ccna-f-u04-private-nat",
+            "ccna-f-u04-conserve"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e7",
+          "type": "choice",
+          "concept": "private-addresses",
+          "prompt": "How do private addresses help with the shortage of IPv4 addresses?",
+          "options": [
+            "Many organizations reuse the same ranges internally",
+            "Private addresses hold more than 32 bits in each address",
+            "Internet routers forward private ranges with a higher priority",
+            "Each private address is unique around the world"
+          ],
+          "answer": 0,
+          "explanation": "Rentang privat boleh dipakai ulang oleh siapa saja di jaringan internal, jadi alamat publik hanya dibutuhkan di sisi internet.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-conserve",
+            "ccna-f-u04-ipv4-format",
+            "ccna-f-u04-private-nat"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "special-addresses"
+          ],
+          "title": "Alamat khusus",
+          "body": "Beberapa rentang punya tugas khusus. Alamat yang diawali 127 adalah loopback: paket ke 127.0.0.1 tidak pernah keluar dari host itu. Alamat yang diawali 169.254 adalah link-local: host memberi dirinya alamat dari sini kalau tidak ada konfigurasi lain, misalnya saat server DHCP (Dynamic Host Configuration Protocol) tidak menjawab. Kalau PC tiba-tiba punya alamat 169.254, periksa DHCP-nya.",
+          "keyPoints": [
+            "127.x.x.x: loopback",
+            "169.254.x.x: link-local",
+            "PC dapat 169.254: periksa DHCP"
+          ],
+          "teaches": [
+            "ccna-f-u04-loopback",
+            "ccna-f-u04-link-local"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e8",
+          "type": "choice",
+          "concept": "special-addresses",
+          "prompt": "A PC shows the address 169.254.17.3. What is the most likely cause?",
+          "options": [
+            "No DHCP (Dynamic Host Configuration Protocol) server answered the PC",
+            "The PC received a public address directly from the internet provider",
+            "The PC is sending all of its traffic to its own loopback address",
+            "The PC was given a private address from the 172.16.0.0 range"
+          ],
+          "answer": 0,
+          "explanation": "169.254.x.x adalah alamat link-local yang dipakai host saat tidak ada konfigurasi lain, misalnya DHCP (Dynamic Host Configuration Protocol) tidak menjawab. Itu bukan alamat publik, loopback, atau rentang 172.16.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-link-local",
+            "ccna-f-u04-loopback",
+            "ccna-f-u04-private"
+          ]
+        },
+        {
+          "id": "ccna-u04-l1-e9",
+          "type": "sort",
+          "concept": "special-addresses",
+          "prompt": "Sort each address.",
+          "buckets": [
+            "Private",
+            "Public",
+            "Special use"
+          ],
+          "items": [
+            {
+              "text": "10.8.8.8",
+              "bucket": 0
+            },
+            {
+              "text": "172.20.1.1",
+              "bucket": 0
+            },
+            {
+              "text": "192.168.50.5",
+              "bucket": 0
+            },
+            {
+              "text": "8.8.8.8",
+              "bucket": 1
+            },
+            {
+              "text": "172.32.0.1",
+              "bucket": 1
+            },
+            {
+              "text": "127.0.0.1",
+              "bucket": 2
+            },
+            {
+              "text": "169.254.10.10",
+              "bucket": 2
+            }
+          ],
+          "explanation": "10.x, 172.16 sampai 172.31, dan 192.168 adalah privat. 172.32.0.1 berada di luar rentang privat, jadi publik. 127.0.0.1 adalah loopback dan 169.254.10.10 link-local.",
+          "requires": [
+            "ccna-f-u04-private",
+            "ccna-f-u04-loopback",
+            "ccna-f-u04-link-local"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u04-l2",
@@ -15,17 +291,704 @@
         "kind": "prereq",
         "from": "ccna-u04-l1"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u04-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "binary-octet"
+          ],
+          "title": "Nilai posisi biner",
+          "body": "Perangkat jaringan melihat alamat IPv4 sebagai 32 bit. Setiap oktet berisi 8 bit dengan nilai posisi dari kiri: 128, 64, 32, 16, 8, 4, 2, dan 1. Nilai desimal oktet adalah jumlah nilai posisi yang bit-nya 1. Contohnya 11000000 = 128 + 64 = 192, dan 00001010 = 8 + 2 = 10. Semua bit 0 bernilai 0, dan semua bit 1 bernilai 255.",
+          "keyPoints": [
+            "128 64 32 16 8 4 2 1",
+            "Jumlahkan posisi yang bernilai 1",
+            "0 sampai 255"
+          ],
+          "visual": "OctetBits",
+          "teaches": [
+            "ccna-f-u04-bin-place",
+            "ccna-f-u04-bin-range"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e1",
+          "type": "choice",
+          "concept": "binary-octet",
+          "prompt": "What is the decimal value of the binary octet 10100000?",
+          "options": [
+            "160",
+            "10",
+            "128",
+            "192"
+          ],
+          "answer": 0,
+          "explanation": "10100000 berarti bit 128 dan 32 bernilai 1: 128 + 32 = 160.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e2",
+          "type": "choice",
+          "concept": "binary-octet",
+          "prompt": "Which binary octet equals 224?",
+          "options": [
+            "11100000",
+            "11000000",
+            "11110000",
+            "00000111"
+          ],
+          "answer": 0,
+          "explanation": "224 = 128 + 64 + 32, jadi tiga bit pertama bernilai 1: 11100000.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e3",
+          "type": "truefalse",
+          "concept": "binary-octet",
+          "prompt": "The binary octet 11111111 equals 256.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255, nilai tertinggi satu oktet.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-bin-range",
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "decimal-to-binary"
+          ],
+          "title": "Desimal ke biner",
+          "body": "Untuk mengubah desimal ke biner, mulai dari nilai posisi terbesar. Kalau angkanya masih cukup, tulis 1 lalu kurangi; kalau tidak, tulis 0. Contoh 172: 128 muat (sisa 44), 64 tidak, 32 muat (sisa 12), 16 tidak, 8 muat (sisa 4), 4 muat (sisa 0), lalu 2 dan 1 tidak. Hasilnya 10101100.",
+          "keyPoints": [
+            "Mulai dari 128",
+            "Muat: tulis 1 dan kurangi",
+            "Tidak muat: tulis 0"
+          ],
+          "teaches": [
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e4",
+          "type": "choice",
+          "concept": "decimal-to-binary",
+          "prompt": "What is 172 in binary?",
+          "options": [
+            "10101100",
+            "10101010",
+            "11001010",
+            "10110100"
+          ],
+          "answer": 0,
+          "explanation": "172 = 128 + 32 + 8 + 4, jadi bit 128, 32, 8, dan 4 bernilai 1: 10101100.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e5",
+          "type": "match",
+          "concept": "decimal-to-binary",
+          "prompt": "Match each decimal value to its binary octet.",
+          "pairs": [
+            [
+              "10",
+              "00001010"
+            ],
+            [
+              "64",
+              "01000000"
+            ],
+            [
+              "200",
+              "11001000"
+            ],
+            [
+              "255",
+              "11111111"
+            ]
+          ],
+          "explanation": "10 = 8 + 2, 64 hanya bit 64, 200 = 128 + 64 + 8, dan 255 adalah semua bit 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-bin-place",
+            "ccna-f-u04-bin-range"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e6",
+          "type": "fill",
+          "concept": "decimal-to-binary",
+          "prompt": "Complete the conversion.",
+          "sentence": "172 = 128 + ___ + 8 + ___, so 172 in binary is 10101100.",
+          "bank": [
+            "32",
+            "4",
+            "64",
+            "16"
+          ],
+          "answers": [
+            "32",
+            "4"
+          ],
+          "explanation": "128 + 32 + 8 + 4 = 172, sesuai bit yang bernilai 1 di 10101100.",
+          "requires": [
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "powers-of-two"
+          ],
+          "title": "Pangkat dua",
+          "body": "Dengan n bit ada 2 pangkat n kombinasi: 1 bit memberi 2, 2 bit memberi 4, 3 bit memberi 8, dan 8 bit memberi 256 (0 sampai 255). Angka ini dipakai terus saat subnetting: banyak bit host menentukan banyak alamat, dan banyak bit yang dipinjam menentukan banyak subnet.",
+          "keyPoints": [
+            "n bit: 2 pangkat n",
+            "3 bit: 8, 8 bit: 256",
+            "Dasar hitungan subnet dan host"
+          ],
+          "teaches": [
+            "ccna-f-u04-power2"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e7",
+          "type": "choice",
+          "concept": "powers-of-two",
+          "prompt": "How many different values can 5 bits hold?",
+          "options": [
+            "32",
+            "25",
+            "10",
+            "16"
+          ],
+          "answer": 0,
+          "explanation": "2 pangkat 5 = 32. Hitungannya pangkat dua, bukan perkalian 5 x 5 atau 5 x 2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-power2"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e8",
+          "type": "truefalse",
+          "concept": "powers-of-two",
+          "prompt": "Six bits can hold 64 different values.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. 2 pangkat 6 = 64.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-power2"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-m4",
+          "type": "learn",
+          "concepts": [
+            "bitwise-and"
+          ],
+          "title": "Operasi AND",
+          "body": "Router mencari alamat network dengan operasi AND bit per bit antara alamat dan subnet mask. Hasilnya 1 hanya kalau kedua bit bernilai 1; selain itu 0. Karena mask berisi 1 di bagian network dan 0 di bagian host, AND menyalin bagian network dan mengenolkan bagian host. Contoh: 10.1.1.77 AND 255.255.255.0 = 10.1.1.0.",
+          "keyPoints": [
+            "1 AND 1 = 1, selain itu 0",
+            "Bagian network tersalin",
+            "Bagian host jadi 0"
+          ],
+          "teaches": [
+            "ccna-f-u04-and"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e9",
+          "type": "choice",
+          "concept": "bitwise-and",
+          "prompt": "What is 11001100 AND 11110000?",
+          "options": [
+            "11000000",
+            "11111100",
+            "00111100",
+            "11001100"
+          ],
+          "answer": 0,
+          "explanation": "Hasil AND 1 hanya di posisi yang kedua bit-nya 1, yaitu dua bit pertama: 11000000.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-and"
+          ]
+        },
+        {
+          "id": "ccna-u04-l2-e10",
+          "type": "truefalse",
+          "concept": "bitwise-and",
+          "prompt": "0 AND 1 equals 0.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. AND hanya menghasilkan 1 kalau kedua bit bernilai 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-and"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u04-l3",
       "title": "Subnet mask dan prefix",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u04-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "subnet-mask"
+          ],
+          "title": "Subnet mask",
+          "body": "Subnet mask juga 32 bit. Bit mask yang bernilai 1 menandai bagian network, dan yang bernilai 0 menandai bagian host. Bit 1 selalu berurutan dari kiri lalu disusul bit 0, jadi tiap oktet mask hanya bisa bernilai 255, 254, 252, 248, 240, 224, 192, 128, atau 0. Contohnya 255.255.255.192 berarti 26 bit network dan 6 bit host.",
+          "keyPoints": [
+            "Mask 1: network, mask 0: host",
+            "Bit 1 berurutan dari kiri",
+            "Nilai oktet: 255, 254, 252, 248, 240, 224, 192, 128, 0"
+          ],
+          "visual": "SubnetMaskBits",
+          "teaches": [
+            "ccna-f-u04-mask-bits",
+            "ccna-f-u04-mask-contig"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-e1",
+          "type": "truefalse",
+          "concept": "subnet-mask",
+          "prompt": "255.255.255.160 is a valid subnet mask.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. 160 adalah 10100000: bit 1-nya tidak berurutan, jadi bukan nilai oktet mask yang sah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-mask-contig",
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-e2",
+          "type": "multi",
+          "concept": "subnet-mask",
+          "prompt": "Which two values are valid subnet masks? (Choose two.)",
+          "options": [
+            "255.255.255.248",
+            "255.255.240.0",
+            "255.255.255.100",
+            "255.0.255.0"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "248 dan 240 berisi bit 1 berurutan dari kiri. 100 bukan nilai oktet mask, dan 255.0.255.0 punya bit 0 di tengah deretan bit 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-mask-contig"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "prefix-length"
+          ],
+          "title": "Panjang prefix",
+          "body": "Menulis mask lengkap itu panjang, jadi sering dipakai panjang prefix: garis miring diikuti jumlah bit 1 di mask. /24 sama dengan 255.255.255.0, /26 sama dengan 255.255.255.192, dan /30 sama dengan 255.255.255.252. Penulisan ini berasal dari CIDR (Classless Inter-Domain Routing), yang membuat panjang prefix bebas, tidak hanya /8, /16, atau /24 seperti zaman kelas.",
+          "keyPoints": [
+            "/n: n bit 1 di mask",
+            "/24 = 255.255.255.0",
+            "CIDR: prefix bebas"
+          ],
+          "teaches": [
+            "ccna-f-u04-prefix",
+            "ccna-f-u04-classless"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-e3",
+          "type": "match",
+          "concept": "prefix-length",
+          "prompt": "Match each prefix length to its subnet mask.",
+          "pairs": [
+            [
+              "/16",
+              "255.255.0.0"
+            ],
+            [
+              "/20",
+              "255.255.240.0"
+            ],
+            [
+              "/27",
+              "255.255.255.224"
+            ],
+            [
+              "/30",
+              "255.255.255.252"
+            ]
+          ],
+          "explanation": "/16 berarti dua oktet penuh. /20 menambah 4 bit (240) di oktet ketiga, /27 menambah 3 bit (224) di oktet keempat, dan /30 menambah 6 bit (252).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-prefix",
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-e4",
+          "type": "choice",
+          "concept": "prefix-length",
+          "prompt": "Which prefix length matches the mask 255.255.255.240?",
+          "options": [
+            "/28",
+            "/27",
+            "/29",
+            "/24"
+          ],
+          "answer": 0,
+          "explanation": "240 adalah 11110000, jadi 24 + 4 = 28 bit bernilai 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-prefix",
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-e5",
+          "type": "truefalse",
+          "concept": "prefix-length",
+          "prompt": "With CIDR (Classless Inter-Domain Routing), a network that starts with 10 can use a /22 prefix.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. CIDR (Classless Inter-Domain Routing) tidak terikat kelas, jadi alamat yang dulu kelas A pun boleh memakai /22.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-classless"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "ip-address-cmd"
+          ],
+          "title": "Memasang alamat di interface",
+          "body": "Di router Cisco, alamat dipasang di interface configuration dengan ip address, diikuti alamat dan subnet mask bertitik, misalnya ip address 172.16.5.1 255.255.255.192. Jadi prefix /26 harus diubah dulu menjadi mask. Interface router dalam keadaan shutdown secara bawaan, jadi tambahkan no shutdown.",
+          "keyPoints": [
+            "ip address <alamat> <mask>",
+            "Mask ditulis bertitik",
+            "Jangan lupa no shutdown"
+          ],
+          "teaches": [
+            "ccna-f-u04-ip-cmd",
+            "ccna-f-u03-if-states"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-e6",
+          "type": "ios",
+          "concept": "ip-address-cmd",
+          "prompt": "Configure GigabitEthernet0/0/0 on R1 with 172.16.5.1/26 and enable the interface.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip address 172.16.5.1 255.255.255.192"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 172.16.5.1 255.255.255.192",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "/26 berarti mask 255.255.255.192. Alamat dan mask ditulis di ip address, lalu no shutdown menyalakan interface.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-ip-cmd",
+            "ccna-f-u04-prefix",
+            "ccna-f-u03-if-states"
+          ]
+        },
+        {
+          "id": "ccna-u04-l3-e7",
+          "type": "choice",
+          "concept": "ip-address-cmd",
+          "prompt": "Which command assigns 10.10.10.1/30 to a router interface?",
+          "options": [
+            "ip address 10.10.10.1 255.255.255.252",
+            "ip address 10.10.10.1 /30",
+            "ip address 10.10.10.1 255.255.255.248",
+            "ipv4 address 10.10.10.1 255.255.255.252"
+          ],
+          "answer": 0,
+          "explanation": "Perintahnya ip address dengan mask bertitik. /30 adalah 255.255.255.252; 255.255.255.248 adalah /29.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-ip-cmd",
+            "ccna-f-u04-prefix"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u04-l4",
       "title": "Menghitung subnet",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u04-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "host-count"
+          ],
+          "title": "Network, broadcast, dan host",
+          "body": "Di setiap subnet, alamat dengan semua bit host 0 adalah alamat network, dan alamat dengan semua bit host 1 adalah alamat broadcast. Keduanya tidak dipakai host. Dengan h bit host, subnet berisi 2 pangkat h alamat, dan 2 pangkat h dikurangi 2 bisa dipakai host. Contoh /26: 6 bit host, 64 alamat, 62 host.",
+          "keyPoints": [
+            "Semua bit host 0: network",
+            "Semua bit host 1: broadcast",
+            "Host = 2 pangkat h dikurangi 2"
+          ],
+          "teaches": [
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-hosts"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e1",
+          "type": "choice",
+          "concept": "host-count",
+          "prompt": "How many usable host addresses does a /27 subnet have?",
+          "options": [
+            "30",
+            "32",
+            "27",
+            "62"
+          ],
+          "answer": 0,
+          "explanation": "/27 menyisakan 5 bit host: 2 pangkat 5 = 32 alamat, dikurangi network dan broadcast menjadi 30.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-hosts",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e2",
+          "type": "choice",
+          "concept": "host-count",
+          "prompt": "An office LAN (Local Area Network) needs 50 hosts. Which prefix gives the smallest subnet that still fits?",
+          "options": [
+            "/26",
+            "/27",
+            "/25",
+            "/28"
+          ],
+          "answer": 0,
+          "explanation": "/26 memberi 62 host, cukup untuk 50. /27 hanya 30 host, /28 hanya 14, dan /25 (126 host) lebih besar dari yang perlu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-hosts"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e3",
+          "type": "truefalse",
+          "concept": "host-count",
+          "prompt": "In a /24 subnet, the address whose host bits are all 1 can be assigned to a PC.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Semua bit host 1 adalah alamat broadcast subnet, jadi tidak dipakai host.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "subnet-calculation"
+          ],
+          "title": "Membagi network",
+          "body": "Subnetting meminjam bit dari bagian host untuk membuat subnet. Meminjam s bit menghasilkan 2 pangkat s subnet. Subnet yang ukurannya sama dimulai di kelipatan ukuran bloknya. Contoh: 192.168.1.0/24 dibagi /26 (meminjam 2 bit) menjadi 4 subnet berisi 64 alamat: .0, .64, .128, dan .192. Cara cepat: ukuran blok = 256 dikurangi nilai mask di oktet yang dibagi.",
+          "keyPoints": [
+            "s bit dipinjam: 2 pangkat s subnet",
+            "Subnet mulai di kelipatan blok",
+            "Blok = 256 dikurangi nilai mask"
+          ],
+          "visual": "SubnetBlocks",
+          "teaches": [
+            "ccna-f-u04-subnets",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e4",
+          "type": "choice",
+          "concept": "subnet-calculation",
+          "prompt": "How many /27 subnets fit in 192.168.10.0/24?",
+          "options": [
+            "8",
+            "4",
+            "16",
+            "27"
+          ],
+          "answer": 0,
+          "explanation": "Dari /24 ke /27 meminjam 3 bit: 2 pangkat 3 = 8 subnet.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-subnets"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e5",
+          "type": "choice",
+          "concept": "subnet-calculation",
+          "prompt": "What is the broadcast address of 192.168.1.64/26?",
+          "options": [
+            "192.168.1.127",
+            "192.168.1.255",
+            "192.168.1.128",
+            "192.168.1.63"
+          ],
+          "answer": 0,
+          "explanation": "/26 punya blok 64, jadi subnet ini .64 sampai .127. Broadcast-nya alamat terakhir, .127; .128 sudah subnet berikutnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e6",
+          "type": "choice",
+          "concept": "subnet-calculation",
+          "prompt": "Which subnet does the host 10.4.4.100/27 belong to?",
+          "options": [
+            "10.4.4.96/27",
+            "10.4.4.64/27",
+            "10.4.4.100/27",
+            "10.4.4.128/27"
+          ],
+          "answer": 0,
+          "explanation": "/27 punya blok 32: .64, .96, .128, dan seterusnya. 100 berada di antara .96 dan .127.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "host-range"
+          ],
+          "title": "Rentang host dan subnet zero",
+          "body": "Untuk satu subnet, cari empat hal: alamat network (awal blok), host pertama (network + 1), host terakhir (broadcast - 1), dan broadcast (awal blok berikutnya - 1). Untuk 172.16.0.32/27: network .32, host .33 sampai .62, broadcast .63. Sejak Cisco IOS 12.0, ip subnet-zero aktif secara bawaan, jadi subnet pertama (subnet zero) boleh dipakai, begitu juga subnet terakhir.",
+          "keyPoints": [
+            "Network, host pertama, host terakhir, broadcast",
+            "Broadcast = blok berikutnya - 1",
+            "Subnet zero boleh dipakai"
+          ],
+          "teaches": [
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-block",
+            "ccna-f-u04-subnet-zero"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e7",
+          "type": "fill",
+          "concept": "subnet-calculation",
+          "prompt": "Complete the address plan for 172.16.0.32/27.",
+          "sentence": "The first usable host is 172.16.0.___ and the broadcast address is 172.16.0.___.",
+          "bank": [
+            "33",
+            "63",
+            "32",
+            "64"
+          ],
+          "answers": [
+            "33",
+            "63"
+          ],
+          "explanation": "Network .32, jadi host pertama .33. Blok berikutnya mulai di .64, jadi broadcast .63.",
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e8",
+          "type": "ios",
+          "concept": "host-range",
+          "prompt": "R1 is the first usable host of 192.168.20.64/27 on GigabitEthernet0/0/1. Configure the address and enable the interface.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip address 192.168.20.65 255.255.255.224"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "ip address 192.168.20.65 255.255.255.224",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "Network .64, jadi host pertama .65. /27 adalah mask 255.255.255.224.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-block",
+            "ccna-f-u04-prefix",
+            "ccna-f-u04-ip-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u04-l4-e9",
+          "type": "truefalse",
+          "concept": "host-range",
+          "prompt": "On Cisco IOS 12.0 and later, an address from subnet zero, the first subnet of a network, can be used on an interface.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Sejak Cisco IOS 12.0, ip subnet-zero aktif secara bawaan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-subnet-zero"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u04-l5",
@@ -34,17 +997,844 @@
         "kind": "support",
         "from": "ccna-u04-l4"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u04-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "subnet-drill"
+          ],
+          "title": "Cara cepat lima langkah",
+          "body": "Satu: lihat prefix dan cari oktet yang dibagi. Dua: ukuran blok = 256 dikurangi nilai mask di oktet itu. Tiga: network = kelipatan blok terdekat di bawah alamat. Empat: broadcast = network berikutnya dikurangi 1. Lima: host berada di antara keduanya. Contoh 10.1.1.200/28: mask .240, blok 16, network .192, broadcast .207, host .193 sampai .206.",
+          "keyPoints": [
+            "Blok = 256 dikurangi mask",
+            "Network: kelipatan blok di bawah",
+            "Broadcast: network berikutnya - 1"
+          ],
+          "teaches": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e1",
+          "type": "choice",
+          "concept": "subnet-drill",
+          "prompt": "What is the network address of 172.16.9.77/29?",
+          "options": [
+            "172.16.9.72",
+            "172.16.9.64",
+            "172.16.9.76",
+            "172.16.9.80"
+          ],
+          "answer": 0,
+          "explanation": "/29 punya blok 8. Kelipatan 8 terdekat di bawah 77 adalah 72.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e2",
+          "type": "choice",
+          "concept": "subnet-drill",
+          "prompt": "What is the broadcast address of 192.168.5.130/25?",
+          "options": [
+            "192.168.5.255",
+            "192.168.5.127",
+            "192.168.5.131",
+            "192.168.5.254"
+          ],
+          "answer": 0,
+          "explanation": "/25 punya blok 128, jadi 130 ada di subnet .128 sampai .255. Broadcast-nya .255.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e3",
+          "type": "choice",
+          "concept": "subnet-drill",
+          "prompt": "What is the last usable host address of 10.20.30.0/30?",
+          "options": [
+            "10.20.30.2",
+            "10.20.30.3",
+            "10.20.30.1",
+            "10.20.30.4"
+          ],
+          "answer": 0,
+          "explanation": "/30 punya blok 4: network .0, host .1 dan .2, broadcast .3.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e4",
+          "type": "truefalse",
+          "concept": "subnet-drill",
+          "prompt": "192.168.3.62 is the last usable host address in 192.168.3.32/27.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Blok 32: network .32, broadcast .63, jadi host terakhir .62.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "subnet-drill-third"
+          ],
+          "title": "Saat oktet ketiga yang dibagi",
+          "body": "Kalau prefix di antara /17 dan /23, oktet yang dibagi adalah oktet ketiga, dan seluruh oktet keempat ikut menjadi bagian host. Contoh 172.16.37.10/20: mask oktet ketiga 240, blok 16, jadi network 172.16.32.0 dan broadcast 172.16.47.255. Host berada di antara 172.16.32.1 dan 172.16.47.254.",
+          "keyPoints": [
+            "/17 sampai /23: oktet ketiga",
+            "Oktet keempat ikut bagian host",
+            "Broadcast berakhir .255"
+          ],
+          "teaches": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-hosts"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e5",
+          "type": "choice",
+          "concept": "subnet-drill-third",
+          "prompt": "Which subnet contains 10.50.77.3/22?",
+          "options": [
+            "10.50.76.0/22",
+            "10.50.72.0/22",
+            "10.50.77.0/22",
+            "10.50.64.0/22"
+          ],
+          "answer": 0,
+          "explanation": "/22 berarti mask 252 di oktet ketiga, jadi blok 4: 72, 76, 80. 77 berada di blok 76 sampai 79.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e6",
+          "type": "choice",
+          "concept": "subnet-drill-third",
+          "prompt": "How many usable host addresses are in a /23 subnet?",
+          "options": [
+            "510",
+            "254",
+            "512",
+            "1022"
+          ],
+          "answer": 0,
+          "explanation": "/23 menyisakan 9 bit host: 2 pangkat 9 = 512, dikurangi 2 menjadi 510.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-hosts"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e7",
+          "type": "fill",
+          "concept": "subnet-drill-third",
+          "prompt": "Complete the plan for 172.16.37.10/20.",
+          "sentence": "The network is 172.16.___.0 and the broadcast address is 172.16.___.255.",
+          "bank": [
+            "32",
+            "47",
+            "37",
+            "48"
+          ],
+          "answers": [
+            "32",
+            "47"
+          ],
+          "explanation": "Blok 16 di oktet ketiga: 32 sampai 47. Network 172.16.32.0 dan broadcast 172.16.47.255.",
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "subnet-drill-check"
+          ],
+          "title": "Cek host yang sah",
+          "body": "Alamat yang berakhir .0 atau .255 belum tentu tidak sah. Di /21 atau /20, alamat network dan broadcast hanya ada di awal dan akhir blok yang lebar, jadi 10.0.12.0/21 adalah alamat host biasa. Selalu hitung bloknya dulu, baru putuskan.",
+          "keyPoints": [
+            ".0 atau .255 belum tentu terlarang",
+            "Hitung blok dulu",
+            "Network dan broadcast: awal dan akhir blok"
+          ],
+          "teaches": [
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e8",
+          "type": "match",
+          "concept": "subnet-drill-check",
+          "prompt": "Match each subnet to its broadcast address.",
+          "pairs": [
+            [
+              "192.168.1.0/26",
+              "192.168.1.63"
+            ],
+            [
+              "192.168.1.64/27",
+              "192.168.1.95"
+            ],
+            [
+              "192.168.1.96/28",
+              "192.168.1.111"
+            ],
+            [
+              "192.168.1.112/30",
+              "192.168.1.115"
+            ]
+          ],
+          "explanation": "Broadcast = network + ukuran blok - 1: 0 + 64 - 1, 64 + 32 - 1, 96 + 16 - 1, dan 112 + 4 - 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l5-e9",
+          "type": "multi",
+          "concept": "subnet-drill-check",
+          "prompt": "Which two addresses can be assigned to hosts in 10.0.8.0/21? (Choose two.)",
+          "options": [
+            "10.0.12.0",
+            "10.0.15.254",
+            "10.0.16.1",
+            "10.0.8.0"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "/21 punya blok 8 di oktet ketiga, jadi subnet ini 10.0.8.0 sampai 10.0.15.255. 10.0.12.0 dan 10.0.15.254 berada di tengah. 10.0.8.0 adalah network, dan 10.0.16.1 di subnet berikutnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u04-l6",
       "title": "VLSM dan perencanaan alamat",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u04-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "vlsm"
+          ],
+          "title": "VLSM",
+          "body": "Kalau semua subnet memakai mask yang sama, link antar dua router mendapat jatah sebesar LAN (Local Area Network) 100 host, dan sisanya terbuang. VLSM (Variable Length Subnet Mask) memakai mask berbeda untuk tiap subnet, sesuai jumlah host yang dibutuhkan, jadi ruang alamat lebih hemat. Contoh: LAN 100 host mendapat /25, sedangkan link antar-router cukup /30.",
+          "keyPoints": [
+            "Mask berbeda tiap subnet",
+            "Ukuran sesuai kebutuhan",
+            "Ruang alamat lebih hemat"
+          ],
+          "visual": "VlsmPlan",
+          "teaches": [
+            "ccna-f-u04-vlsm",
+            "ccna-f-u04-p2p-30"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e1",
+          "type": "truefalse",
+          "concept": "vlsm",
+          "prompt": "With VLSM (Variable Length Subnet Mask), every subnet in the network must use the same mask.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. VLSM (Variable Length Subnet Mask) justru memakai mask berbeda untuk tiap subnet.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-vlsm"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e2",
+          "type": "choice",
+          "concept": "vlsm",
+          "prompt": "Which prefix gives a router-to-router link exactly two usable host addresses?",
+          "options": [
+            "/30",
+            "/29",
+            "/28",
+            "/24"
+          ],
+          "answer": 0,
+          "explanation": "/30 punya 4 alamat: network, dua host, dan broadcast. /29 memberi 6 host, /28 memberi 14, dan /24 memberi 254.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-p2p-30",
+            "ccna-f-u04-hosts"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "vlsm-plan"
+          ],
+          "title": "Merencanakan VLSM",
+          "body": "Urutkan kebutuhan dari yang terbesar. Untuk tiap kebutuhan, pilih prefix terkecil yang cukup (host = 2 pangkat h dikurangi 2), lalu ambil blok berikutnya yang masih bebas. Mulai dari yang terbesar menjaga setiap blok jatuh di kelipatan ukurannya, sehingga tidak ada yang tumpang tindih.",
+          "keyPoints": [
+            "Terbesar dulu",
+            "Pilih prefix terkecil yang cukup",
+            "Ambil blok bebas berikutnya"
+          ],
+          "teaches": [
+            "ccna-f-u04-vlsm-order",
+            "ccna-f-u04-hosts",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e3",
+          "type": "choice",
+          "concept": "vlsm-plan",
+          "prompt": "You are planning subnets for 60, 25, and 10 hosts from 192.168.4.0/24. Which subnet should the 60-host LAN (Local Area Network) get?",
+          "options": [
+            "192.168.4.0/26",
+            "192.168.4.0/25",
+            "192.168.4.64/27",
+            "192.168.4.0/27"
+          ],
+          "answer": 0,
+          "explanation": "Yang terbesar dulu, di blok pertama. 60 host butuh /26 (62 host). /25 terlalu besar, dan /27 hanya 30 host.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-vlsm-order",
+            "ccna-f-u04-hosts"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e4",
+          "type": "exhibit",
+          "concept": "vlsm-plan",
+          "prompt": "Refer to the exhibit. From 10.10.0.0/24, the Sales LAN (Local Area Network) got 10.10.0.0/25 and the Ops LAN got 10.10.0.128/26. Which subnet should the R1 to R2 link use?",
+          "diagram": {
+            "devices": [
+              {
+                "id": "lana",
+                "kind": "pc",
+                "label": "Sales",
+                "x": 0,
+                "y": 0,
+                "note": "100 host, 10.10.0.0/25"
+              },
+              {
+                "id": "r1",
+                "kind": "router",
+                "label": "R1",
+                "x": 1,
+                "y": 0
+              },
+              {
+                "id": "r2",
+                "kind": "router",
+                "label": "R2",
+                "x": 3,
+                "y": 0
+              },
+              {
+                "id": "lanb",
+                "kind": "pc",
+                "label": "Ops",
+                "x": 4,
+                "y": 0,
+                "note": "50 host, 10.10.0.128/26"
+              }
+            ],
+            "links": [
+              {
+                "from": "lana",
+                "to": "r1"
+              },
+              {
+                "from": "r1",
+                "to": "r2",
+                "fromPort": "G0/0/1",
+                "toPort": "G0/0/1",
+                "label": "?"
+              },
+              {
+                "from": "r2",
+                "to": "lanb"
+              }
+            ]
+          },
+          "options": [
+            "10.10.0.192/30",
+            "10.10.0.128/30",
+            "10.10.0.190/30",
+            "10.10.0.0/30"
+          ],
+          "answer": 0,
+          "explanation": "Blok bebas berikutnya dimulai di .192, setelah LAN (Local Area Network) Ops (.128 sampai .191). .128/30 dan .0/30 tumpang tindih dengan LAN yang sudah ada, dan .190 bukan kelipatan 4.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-vlsm-order",
+            "ccna-f-u04-block",
+            "ccna-f-u04-p2p-30"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e5",
+          "type": "order",
+          "concept": "vlsm-plan",
+          "prompt": "Put the VLSM (Variable Length Subnet Mask) planning steps in order.",
+          "items": [
+            "List the subnets from the most hosts to the fewest",
+            "Pick the smallest prefix that fits the largest subnet",
+            "Assign it at the first free block",
+            "Repeat with the next subnet on the list"
+          ],
+          "explanation": "Urutkan dari yang terbesar, pilih prefix yang cukup, tempatkan di blok bebas pertama, lalu ulangi untuk subnet berikutnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-vlsm-order",
+            "ccna-f-u04-hosts"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-m3",
+          "type": "learn",
+          "concepts": [
+            "p2p-31"
+          ],
+          "title": "Link /31",
+          "body": "RFC (Request for Comments) 3021 mengizinkan /31 di link point-to-point. Subnet /31 hanya punya dua alamat, dan keduanya dipakai sebagai alamat interface, karena link yang hanya punya dua ujung tidak butuh alamat network dan broadcast. Hasilnya lebih hemat dari /30.",
+          "keyPoints": [
+            "/31: dua alamat, keduanya terpakai",
+            "Hanya untuk point-to-point",
+            "Lebih hemat dari /30"
+          ],
+          "trap": "Rumus \"2 pangkat h dikurangi 2\" tidak berlaku untuk /31; di link point-to-point kedua alamatnya dipakai.",
+          "teaches": [
+            "ccna-f-u04-p2p-31"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e6",
+          "type": "truefalse",
+          "concept": "p2p-31",
+          "prompt": "On a point-to-point link with a /31 prefix, both addresses can be assigned to the router interfaces.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Untuk link point-to-point, /31 tidak memakai alamat network dan broadcast, jadi kedua alamat dipakai.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-p2p-31"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e7",
+          "type": "choice",
+          "concept": "p2p-31",
+          "prompt": "Why can a /31 prefix be used on a point-to-point link?",
+          "options": [
+            "The link needs no network or broadcast address",
+            "A /31 subnet has four usable host addresses",
+            "Cisco IOS adds a hidden third address to the link",
+            "Point-to-point links do not carry IPv4 addresses at all"
+          ],
+          "answer": 0,
+          "explanation": "Link point-to-point hanya punya dua ujung, jadi tidak perlu alamat network dan broadcast. /31 hanya punya dua alamat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-p2p-31"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-m4",
+          "type": "learn",
+          "concepts": [
+            "subnet-overlap"
+          ],
+          "title": "Subnet tidak boleh tumpang tindih",
+          "body": "Dua interface di router yang sama tidak boleh berada di subnet yang tumpang tindih. Kalau dicoba, IOS menolak dengan pesan seperti % 10.10.0.0 overlaps with GigabitEthernet0/0/0. Ini sering terjadi kalau perencanaan VLSM (Variable Length Subnet Mask) tidak dimulai dari subnet terbesar, atau blok tidak jatuh di kelipatannya.",
+          "keyPoints": [
+            "Satu router: subnet tidak boleh tumpang tindih",
+            "Pesan: overlaps with",
+            "Cek rencana VLSM"
+          ],
+          "teaches": [
+            "ccna-f-u04-overlap",
+            "ccna-f-u04-vlsm-order"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e8",
+          "type": "ios",
+          "concept": "subnet-overlap",
+          "prompt": "R1 uses 10.10.0.1/25 on GigabitEthernet0/0/0. Configure GigabitEthernet0/0/1 with the first usable address of the next free /26 block, then enable it.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 10.10.0.1 255.255.255.128",
+                "no shutdown"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip address 10.10.0.129 255.255.255.192"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "ip address 10.10.0.129 255.255.255.192",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "10.10.0.0/25 memakai .0 sampai .127, jadi blok /26 bebas berikutnya adalah 10.10.0.128/26. Host pertamanya .129, dengan mask 255.255.255.192.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-overlap",
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-prefix",
+            "ccna-f-u04-ip-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u04-l6-e9",
+          "type": "choice",
+          "concept": "subnet-overlap",
+          "prompt": "R1 uses 172.16.1.1/24 on G0/0/0. Which address on G0/0/1 makes Cisco IOS report an overlap?",
+          "options": [
+            "172.16.1.200 255.255.255.192",
+            "172.16.2.1 255.255.255.0",
+            "172.16.0.1 255.255.255.0",
+            "10.172.16.1 255.255.255.0"
+          ],
+          "answer": 0,
+          "explanation": "172.16.1.200/26 berada di dalam 172.16.1.0/24 milik G0/0/0, jadi tumpang tindih. 172.16.2.0/24 dan 172.16.0.0/24 adalah subnet lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-overlap",
+            "ccna-f-u04-block"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u04-l7",
       "title": "Troubleshoot konfigurasi IPv4",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u04-l7-m1",
+          "type": "learn",
+          "concepts": [
+            "show-ip-brief"
+          ],
+          "title": "Memeriksa alamat interface",
+          "body": "show ip interface brief menampilkan alamat IPv4 primary setiap interface, cara alamat itu didapat (kolom Method, misalnya manual), serta Status dan Protocol. Tabel ringkas ini tidak menampilkan subnet mask. Untuk melihat mask, pakai show ip interface atau show running-config.",
+          "keyPoints": [
+            "Alamat, Method, Status, Protocol",
+            "Tidak ada mask",
+            "Mask: show ip interface atau running-config"
+          ],
+          "teaches": [
+            "ccna-f-u04-sh-ip-int-br"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-e1",
+          "type": "exhibit",
+          "concept": "show-ip-brief",
+          "prompt": "Refer to the exhibit. Hosts on the 10.0.0.4/30 link cannot reach R1. What should you do on R1?",
+          "outputs": [
+            {
+              "title": "R1# show ip interface brief",
+              "text": "Interface              IP-Address      OK? Method Status                Protocol\nGigabitEthernet0/0/0   192.168.10.1    YES manual up                    up\nGigabitEthernet0/0/1   10.0.0.5        YES manual administratively down down\nGigabitEthernet0/0/2   unassigned      YES unset  down                  down"
+            }
+          ],
+          "options": [
+            "Enter no shutdown on GigabitEthernet0/0/1",
+            "Assign an address to GigabitEthernet0/0/2",
+            "Change the mask on GigabitEthernet0/0/0",
+            "Replace the cable on GigabitEthernet0/0/0"
+          ],
+          "answer": 0,
+          "explanation": "G0/0/1 punya alamat 10.0.0.5 dari subnet itu, tapi statusnya administratively down. no shutdown menyalakannya. G0/0/0 sudah up/up, dan G0/0/2 tidak dipakai link itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-sh-ip-int-br",
+            "ccna-f-u03-if-states",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-e2",
+          "type": "truefalse",
+          "concept": "show-ip-brief",
+          "prompt": "show ip interface brief shows the subnet mask of every interface.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Tabel ringkas itu hanya menampilkan alamat, Method, Status, dan Protocol. Mask dilihat dengan show ip interface atau show running-config.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-sh-ip-int-br"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-m2",
+          "type": "learn",
+          "concepts": [
+            "wrong-mask"
+          ],
+          "title": "Mask dan gateway yang salah",
+          "body": "Host hanya bisa memakai default gateway yang berada di subnet yang sama dengannya. Kalau mask di host berbeda dari mask di router, keduanya punya pandangan berbeda soal siapa yang satu subnet. Contoh: host 192.168.1.130/25 dengan gateway 192.168.1.1. Menurut host, subnet-nya .128 sampai .255, jadi .1 berada di luar subnet dan tidak bisa dipakai sebagai gateway.",
+          "keyPoints": [
+            "Gateway harus di subnet host",
+            "Mask beda: pandangan subnet beda",
+            "Hitung subnet host dulu"
+          ],
+          "teaches": [
+            "ccna-f-u04-gateway-subnet",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-e3",
+          "type": "exhibit",
+          "concept": "wrong-mask",
+          "prompt": "Refer to the exhibit. PC1 cannot reach any other network. What is the problem?",
+          "diagram": {
+            "devices": [
+              {
+                "id": "pc1",
+                "kind": "pc",
+                "label": "PC1",
+                "x": 0,
+                "y": 0,
+                "note": "192.168.1.130/25, gateway 192.168.1.1"
+              },
+              {
+                "id": "sw1",
+                "kind": "switch",
+                "label": "SW1",
+                "x": 2,
+                "y": 0
+              },
+              {
+                "id": "r1",
+                "kind": "router",
+                "label": "R1",
+                "x": 4,
+                "y": 0,
+                "note": "G0/0/0 192.168.1.1/24"
+              }
+            ],
+            "links": [
+              {
+                "from": "pc1",
+                "to": "sw1",
+                "toPort": "Fa0/1"
+              },
+              {
+                "from": "sw1",
+                "to": "r1",
+                "fromPort": "G0/1",
+                "toPort": "G0/0/0"
+              }
+            ]
+          },
+          "options": [
+            "With its /25 mask, PC1 sees its gateway in another subnet",
+            "The gateway must be the last usable host of the subnet",
+            "R1 must use the broadcast address of the PC1 subnet",
+            "PC1 needs a public address before it can reach R1"
+          ],
+          "answer": 0,
+          "explanation": "Dengan /25, PC1 berada di subnet 192.168.1.128 sampai .255, sedangkan gateway .1 ada di subnet .0 sampai .127. Gateway harus satu subnet dengan host. Gateway tidak harus host terakhir, dan alamat broadcast tidak boleh dipakai interface.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-gateway-subnet",
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-e4",
+          "type": "choice",
+          "concept": "wrong-mask",
+          "prompt": "PC2 uses 10.1.1.70/26 with the default gateway 10.1.1.1. Why can it not reach other networks?",
+          "options": [
+            "The gateway is outside the 10.1.1.64/26 subnet",
+            "The address 10.1.1.70 is the broadcast address",
+            "A /26 mask cannot be used on a PC at all",
+            "The gateway 10.1.1.1 is not a private address"
+          ],
+          "answer": 0,
+          "explanation": "10.1.1.70/26 berada di subnet .64 sampai .127, sedangkan gateway .1 di subnet .0 sampai .63. 10.1.1.70 bukan broadcast, dan 10.1.1.1 adalah alamat privat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-gateway-subnet",
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-private"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-m3",
+          "type": "learn",
+          "concepts": [
+            "ip-config-errors"
+          ],
+          "title": "Pesan IOS saat memasang alamat",
+          "body": "IOS menolak alamat network atau broadcast di interface dengan pesan Bad mask, misalnya Bad mask /24 for address 192.168.1.0. Alamat yang subnet-nya tumpang tindih dengan interface lain ditolak dengan pesan overlaps with. Tanpa kata kunci secondary, ip address yang baru menggantikan alamat primary yang lama; secondary menambah alamat kedua.",
+          "keyPoints": [
+            "Bad mask: alamat network atau broadcast",
+            "overlaps with: subnet bentrok",
+            "Tanpa secondary: alamat lama diganti"
+          ],
+          "teaches": [
+            "ccna-f-u04-bad-mask",
+            "ccna-f-u04-overlap",
+            "ccna-f-u04-secondary"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-e5",
+          "type": "ios",
+          "concept": "ip-config-errors",
+          "prompt": "An engineer typed ip address 192.168.30.0 255.255.255.0 on GigabitEthernet0/0/0 of R1 and got \"Bad mask\". Assign the first usable host of that subnet instead, and enable the interface.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip address 192.168.30.1 255.255.255.0"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.30.1 255.255.255.0",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "192.168.30.0 adalah alamat network /24, jadi ditolak. Host pertamanya 192.168.30.1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-bad-mask",
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-ip-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-e6",
+          "type": "ios",
+          "concept": "ip-config-errors",
+          "prompt": "The LAN (Local Area Network) on GigabitEthernet0/0/0 of R1 is 192.168.40.0/26, but the interface uses the mask 255.255.255.0. Fix the mask and keep the address 192.168.40.1.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.40.1 255.255.255.0",
+                "no shutdown"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip address 192.168.40.1 255.255.255.192"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.40.1 255.255.255.192",
+            "end"
+          ],
+          "explanation": "Tanpa secondary, ip address yang baru menggantikan yang lama. /26 adalah 255.255.255.192.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-secondary",
+            "ccna-f-u04-prefix",
+            "ccna-f-u04-ip-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-e7",
+          "type": "truefalse",
+          "concept": "ip-config-errors",
+          "prompt": "Without the secondary keyword, a new ip address command replaces the primary address on the interface.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Interface hanya punya satu alamat primary; secondary dipakai untuk menambah alamat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-secondary"
+          ]
+        },
+        {
+          "id": "ccna-u04-l7-e8",
+          "type": "choice",
+          "concept": "ip-config-errors",
+          "prompt": "What happens when you enter ip address 172.16.4.255 255.255.255.0 on a router interface?",
+          "options": [
+            "Cisco IOS rejects it with a Bad mask message",
+            "Cisco IOS accepts it as a normal host address",
+            "Cisco IOS asks you to add the secondary keyword",
+            "Cisco IOS changes the mask to 255.255.254.0 itself"
+          ],
+          "answer": 0,
+          "explanation": "172.16.4.255 adalah alamat broadcast subnet 172.16.4.0/24, jadi IOS menolaknya dengan pesan Bad mask.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-bad-mask",
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-secondary"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u04-l8",
@@ -53,8 +1843,362 @@
         "kind": "handson",
         "from": "ccna-u04-l7"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u04-l8-m1",
+          "type": "learn",
+          "concepts": [
+            "ipv4-lab"
+          ],
+          "title": "Alur kerja memberi alamat",
+          "body": "Mulai dari rencana: bagi blok sesuai kebutuhan host, lalu tentukan alamat router (biasanya host pertama) dan rentang untuk PC. Pasang alamat dengan ip address dan no shutdown, cek dengan show ip interface brief, lalu pastikan setiap PC memakai gateway di subnet-nya sendiri.",
+          "keyPoints": [
+            "Rencana dulu",
+            "Router: host pertama",
+            "Cek dan uji"
+          ],
+          "teaches": [
+            "ccna-f-u04-ip-cmd",
+            "ccna-f-u04-sh-ip-int-br",
+            "ccna-f-u04-gateway-subnet"
+          ]
+        },
+        {
+          "id": "ccna-u04-l8-e1",
+          "type": "ios",
+          "concept": "ipv4-lab",
+          "prompt": "Branch router R1 splits 192.168.50.0/24 into /26 subnets. Give GigabitEthernet0/0/0 the first usable host of the first subnet and GigabitEthernet0/0/1 the first usable host of the second subnet. Enable both, then check the interface summary.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip address 192.168.50.1 255.255.255.192"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "no shutdown"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip address 192.168.50.65 255.255.255.192"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no shutdown"
+              }
+            ],
+            "run": [
+              "show ip interface brief"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.50.1 255.255.255.192",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 192.168.50.65 255.255.255.192",
+            "no shutdown",
+            "end",
+            "show ip interface brief"
+          ],
+          "explanation": "Subnet /26 pertama adalah .0 sampai .63 dan yang kedua .64 sampai .127, jadi host pertamanya .1 dan .65 dengan mask 255.255.255.192.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-prefix",
+            "ccna-f-u04-ip-cmd",
+            "ccna-f-u04-sh-ip-int-br"
+          ]
+        },
+        {
+          "id": "ccna-u04-l8-e2",
+          "type": "exhibit",
+          "concept": "ipv4-lab",
+          "prompt": "Refer to the exhibit. R1 uses 192.168.50.1/26 on G0/0/0 and 192.168.50.65/26 on G0/0/1. Which PC has a wrong default gateway?",
+          "diagram": {
+            "devices": [
+              {
+                "id": "pc1",
+                "kind": "pc",
+                "label": "PC1",
+                "x": 0,
+                "y": 0,
+                "note": "192.168.50.10/26, gateway .1"
+              },
+              {
+                "id": "r1",
+                "kind": "router",
+                "label": "R1",
+                "x": 2,
+                "y": 1
+              },
+              {
+                "id": "pc2",
+                "kind": "pc",
+                "label": "PC2",
+                "x": 4,
+                "y": 0,
+                "note": "192.168.50.70/26, gateway .1"
+              }
+            ],
+            "links": [
+              {
+                "from": "pc1",
+                "to": "r1",
+                "toPort": "G0/0/0"
+              },
+              {
+                "from": "r1",
+                "to": "pc2",
+                "fromPort": "G0/0/1"
+              }
+            ]
+          },
+          "options": [
+            "PC2",
+            "PC1",
+            "Both PCs",
+            "Neither PC"
+          ],
+          "answer": 0,
+          "explanation": "PC2 berada di subnet .64 sampai .127, jadi gateway-nya harus .65, bukan .1. PC1 di subnet .0 sampai .63 dengan gateway .1 sudah benar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-gateway-subnet",
+            "ccna-f-u04-block"
+          ]
+        },
+        {
+          "id": "ccna-u04-l8-e3",
+          "type": "ios",
+          "concept": "ipv4-lab",
+          "prompt": "GigabitEthernet0/0/2 on R1 connects to R2 on 10.0.0.0/30. R2 already uses 10.0.0.2. Configure R1 with the other usable address, enable the interface, and save the configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/2",
+                "line": "ip address 10.0.0.1 255.255.255.252"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/2",
+                "line": "no shutdown"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/2",
+            "ip address 10.0.0.1 255.255.255.252",
+            "no shutdown",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "10.0.0.0/30 punya dua host, .1 dan .2. R2 sudah memakai .2, jadi R1 memakai .1 dengan mask 255.255.255.252, lalu konfigurasinya disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-p2p-30",
+            "ccna-f-u04-net-bcast",
+            "ccna-f-u04-ip-cmd",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u04-l8-e4",
+          "type": "truefalse",
+          "concept": "ipv4-lab",
+          "prompt": "In the branch plan, a PC can use 192.168.50.127/26 as its address in the second subnet.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Subnet kedua adalah .64 sampai .127, jadi .127 adalah alamat broadcast-nya. Host terakhir .126.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-block",
+            "ccna-f-u04-net-bcast"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u04-ipv4-format",
+      "statement": "Alamat IPv4 panjangnya 32 bit, dibagi menjadi empat oktet 8 bit yang masing-masing ditulis desimal 0 sampai 255 dan dipisah titik, misalnya 192.168.10.5.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-net-host",
+      "statement": "Alamat IPv4 terdiri dari bagian network dan bagian host; perangkat di jaringan yang sama punya bagian network yang sama dan bagian host yang berbeda.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-classes",
+      "statement": "Secara classful, oktet pertama menentukan kelas: kelas A 1-126 dengan mask bawaan 255.0.0.0, kelas B 128-191 dengan 255.255.0.0, dan kelas C 192-223 dengan 255.255.255.0.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-multicast",
+      "statement": "Rentang 224.0.0.0 sampai 239.255.255.255 (224.0.0.0/4) dipakai untuk alamat multicast, bukan alamat host biasa.",
+      "source": "https://www.iana.org/assignments/multicast-addresses"
+    },
+    {
+      "id": "ccna-f-u04-private",
+      "statement": "Rentang alamat privat RFC 1918 adalah 10.0.0.0/8, 172.16.0.0/12 (172.16.0.0 sampai 172.31.255.255), dan 192.168.0.0/16.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1918.html"
+    },
+    {
+      "id": "ccna-f-u04-conserve",
+      "statement": "Alamat privat bisa dipakai ulang di jaringan internal banyak organisasi, sehingga menghemat alamat IPv4 publik yang jumlahnya terbatas.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1918.html"
+    },
+    {
+      "id": "ccna-f-u04-private-nat",
+      "statement": "Alamat privat tidak dirutekan di internet; supaya host beralamat privat bisa ke internet, alamatnya diterjemahkan ke alamat publik dengan NAT (Network Address Translation).",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/26704-nat-faq-00.html"
+    },
+    {
+      "id": "ccna-f-u04-loopback",
+      "statement": "127.0.0.0/8 dipakai untuk loopback: paket ke alamat ini, misalnya 127.0.0.1, tetap di dalam host itu dan tidak dikirim ke jaringan.",
+      "source": "https://www.rfc-editor.org/rfc/rfc6890.html"
+    },
+    {
+      "id": "ccna-f-u04-link-local",
+      "statement": "169.254.0.0/16 adalah alamat link-local; host bisa memberi dirinya alamat dari rentang ini ketika tidak ada konfigurasi lain, misalnya saat server DHCP (Dynamic Host Configuration Protocol) tidak menjawab.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc3927"
+    },
+    {
+      "id": "ccna-f-u04-bin-place",
+      "statement": "Satu oktet berisi 8 bit dengan nilai posisi 128, 64, 32, 16, 8, 4, 2, dan 1; nilai desimalnya adalah jumlah nilai posisi yang bit-nya 1.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-bin-range",
+      "statement": "Satu oktet bernilai 0 (00000000) sampai 255 (11111111).",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-power2",
+      "statement": "Dengan n bit ada 2 pangkat n kombinasi; inilah dasar perhitungan jumlah subnet dan jumlah host.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13790-8.html"
+    },
+    {
+      "id": "ccna-f-u04-and",
+      "statement": "Alamat network didapat dari operasi AND per bit antara alamat dan subnet mask: hasilnya 1 hanya kalau kedua bit bernilai 1.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u04-mask-bits",
+      "statement": "Bit alamat yang pasangan bit mask-nya 1 adalah bagian network, dan bit yang pasangan bit mask-nya 0 adalah bagian host.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-mask-contig",
+      "statement": "Subnet mask berisi bit 1 berurutan dari kiri lalu bit 0, jadi tiap oktet mask hanya bisa bernilai 255, 254, 252, 248, 240, 224, 192, 128, atau 0.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-prefix",
+      "statement": "Panjang prefix seperti /24 menyebut jumlah bit 1 di subnet mask: /24 sama dengan 255.255.255.0, /26 sama dengan 255.255.255.192, dan /30 sama dengan 255.255.255.252.",
+      "source": "https://www.rfc-editor.org/rfc/rfc4632.html"
+    },
+    {
+      "id": "ccna-f-u04-classless",
+      "statement": "CIDR (Classless Inter-Domain Routing) tidak terikat kelas: panjang prefix bisa berapa saja, tidak hanya /8, /16, atau /24.",
+      "source": "https://www.rfc-editor.org/rfc/rfc4632.html"
+    },
+    {
+      "id": "ccna-f-u04-ip-cmd",
+      "statement": "Alamat interface diset di interface configuration dengan ip address diikuti alamat dan subnet mask bertitik, misalnya ip address 10.1.1.1 255.255.255.0.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_ipv4/configuration/xe-16-7/ipv4-xe-16-7-book/configuring_ipv4_addresses.html"
+    },
+    {
+      "id": "ccna-f-u04-net-bcast",
+      "statement": "Di setiap subnet, alamat dengan semua bit host 0 adalah alamat network, dan alamat dengan semua bit host 1 adalah alamat broadcast; keduanya tidak dipakai host.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-hosts",
+      "statement": "Dengan h bit host, satu subnet berisi 2 pangkat h alamat, dan 2 pangkat h dikurangi 2 di antaranya bisa dipakai host.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13790-8.html"
+    },
+    {
+      "id": "ccna-f-u04-subnets",
+      "statement": "Meminjam s bit dari bagian host untuk subnet menghasilkan 2 pangkat s subnet.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13790-8.html"
+    },
+    {
+      "id": "ccna-f-u04-block",
+      "statement": "Subnet yang ukurannya sama dimulai di kelipatan ukuran bloknya (jumlah alamat per subnet); contohnya 204.17.5.0/27 terbagi menjadi .0, .32, .64, dan seterusnya.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-subnet-zero",
+      "statement": "Sejak Cisco IOS 12.0, ip subnet-zero aktif secara bawaan, jadi subnet zero (subnet pertama) boleh dipakai; subnet all-ones (terakhir) juga boleh dipakai.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/dynamic-address-allocation-resolution/13711-40.html"
+    },
+    {
+      "id": "ccna-f-u04-vlsm",
+      "statement": "VLSM (Variable Length Subnet Mask) memakai mask berbeda untuk tiap subnet, sehingga ruang alamat dipakai lebih efisien.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html"
+    },
+    {
+      "id": "ccna-f-u04-vlsm-order",
+      "statement": "Saat merencanakan VLSM, subnet dialokasikan dari kebutuhan host terbesar ke terkecil supaya setiap blok jatuh di kelipatan ukurannya dan tidak tumpang tindih.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u04-p2p-30",
+      "statement": "Prefix /30 punya 4 alamat dan 2 alamat host, cukup untuk link point-to-point antar dua router.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u04-p2p-31",
+      "statement": "RFC 3021 mengizinkan prefix /31 di link point-to-point: kedua alamatnya dipakai sebagai alamat interface, tanpa alamat network dan broadcast.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc3021"
+    },
+    {
+      "id": "ccna-f-u04-overlap",
+      "statement": "IOS menolak alamat interface yang subnet-nya tumpang tindih dengan interface lain di router yang sama, dengan pesan seperti \"% 10.1.1.0 overlaps with GigabitEthernet0/0/0\".",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_ipv4/configuration/xe-16-7/ipv4-xe-16-7-book/configuring_ipv4_addresses.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u04-bad-mask",
+      "statement": "IOS menolak alamat network atau broadcast sebagai alamat interface dengan pesan seperti \"Bad mask /24 for address 192.168.1.0\".",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_ipv4/configuration/xe-16-7/ipv4-xe-16-7-book/configuring_ipv4_addresses.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u04-secondary",
+      "statement": "Satu interface punya satu alamat primary; alamat tambahan diberi kata kunci secondary. Tanpa secondary, ip address baru menjadi primary dan menggantikan primary sebelumnya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_ipv4/configuration/xe-16-7/ipv4-xe-16-7-book/configuring_ipv4_addresses.html"
+    },
+    {
+      "id": "ccna-f-u04-sh-ip-int-br",
+      "statement": "show ip interface brief menampilkan alamat IPv4 primary, cara alamat didapat (Method), Status, dan Protocol tiap interface, tanpa subnet mask.",
+      "source": "https://www.cisco.com/E-Learning/bulk/public/tac/cim/cib/using_cisco_ios_software/cmdrefs/show_ip_interface.htm"
+    },
+    {
+      "id": "ccna-f-u04-gateway-subnet",
+      "statement": "Host mengirim paket ke jaringan lain lewat gateway yang berada di jaringan yang terhubung langsung dengannya, jadi default gateway harus berada di subnet host itu.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc1122"
+    }
+  ]
 }

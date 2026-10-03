@@ -290,6 +290,164 @@
         "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/17053-46.html",
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3650/hardware/installation/guide/Cat3650hig_book/HIGCABLE.html"
       ]
+    },
+    {
+      "lesson": "ccna-u04-l8",
+      "title": "Merencanakan dan memasang alamat IPv4",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Membagi 192.168.50.0/24 menjadi subnet /26, memasang alamat di dua interface router, mengisi alamat PC, lalu membuktikan setiap PC bisa ping gateway-nya.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "r1",
+            "to": "sw2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw2",
+            "to": "pc2",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.50.1/26"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "192.168.50.65/26"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.50.10/26, gateway 192.168.50.1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.50.70/26, gateway 192.168.50.65"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Di kertas, bagi 192.168.50.0/24 menjadi empat subnet /26 dan tulis network, host pertama, host terakhir, dan broadcast tiap subnet. Pakai subnet pertama untuk LAN (Local Area Network) SW1 dan subnet kedua untuk LAN SW2."
+        },
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through sesuai topologi."
+        },
+        {
+          "text": "Pasang alamat di kedua interface router dan nyalakan.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.50.1 255.255.255.192",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 192.168.50.65 255.255.255.192",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Coba kesalahan yang umum: di G0/0/1, ketik ip address 192.168.50.64 255.255.255.192 (alamat network) dan baca pesan yang muncul. Setelah itu pasang lagi alamat yang benar, 192.168.50.65."
+        },
+        {
+          "text": "Isi alamat IP (Internet Protocol), mask 255.255.255.192, dan default gateway PC1 dan PC2 lewat Desktop > IP Configuration sesuai tabel alamat."
+        },
+        {
+          "text": "Periksa dan simpan.",
+          "device": "R1",
+          "commands": [
+            "show ip interface brief",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Ringkasan interface router.",
+          "device": "R1",
+          "command": "show ip interface brief",
+          "expect": "G0/0/0 192.168.50.1 dan G0/0/1 192.168.50.65, keduanya up dan protocol up."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.50.1, lalu ping 192.168.50.70.",
+          "expect": "Kedua ping berhasil. Ping ke PC2 lewat router, jadi itu juga membuktikan gateway kedua PC benar."
+        },
+        {
+          "text": "Ubah gateway PC2 menjadi 192.168.50.1, lalu ping 192.168.50.10 dari PC2.",
+          "expect": "Ping gagal, karena gateway berada di luar subnet PC2. Kembalikan gateway ke 192.168.50.65."
+        }
+      ],
+      "notes": [
+        "Pesan Bad mask pada langkah 4 dicatat dari perangkat IOS asli. Pesan di Packet Tracer bisa berbeda; catat apa yang kamu lihat.",
+        "Di beberapa versi Packet Tracer, PC mungkin menolak gateway yang berada di luar subnet-nya saat diisi. Kalau begitu, catat pesannya; pelajarannya tetap sama."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_ipv4/configuration/xe-16-7/ipv4-xe-16-7-book/configuring_ipv4_addresses.html",
+        "https://www.cisco.com/E-Learning/bulk/public/tac/cim/cib/using_cisco_ios_software/cmdrefs/show_ip_interface.htm",
+        "https://datatracker.ietf.org/doc/html/rfc1122"
+      ]
     }
   ]
 }

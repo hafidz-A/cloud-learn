@@ -673,5 +673,10 @@
     "term": "RJ45",
     "expansion": "Registered Jack 45",
     "description": "Konektor modular delapan pin di ujung kabel Ethernet tembaga."
+  },
+  {
+    "term": "VLSM",
+    "expansion": "Variable Length Subnet Mask",
+    "description": "Memakai subnet mask berbeda untuk tiap subnet supaya ukurannya sesuai kebutuhan host."
   }
 ]

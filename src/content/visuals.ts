@@ -113,6 +113,11 @@ export const VISUAL_CATALOG = {
   StraightVsCrossover: ['straight-vs-crossover'],
   FiberTypes: ['smf-vs-mmf'],
   DuplexMismatch: ['duplex-mismatch'],
+  // Unit 4
+  OctetBits: ['binary-octet'],
+  SubnetMaskBits: ['subnet-mask'],
+  SubnetBlocks: ['subnet-calculation'],
+  VlsmPlan: ['vlsm'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG
