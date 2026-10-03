@@ -961,6 +961,347 @@
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/m_1522e_vlan_voice_2960s_cg.html",
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html"
       ]
+    },
+    {
+      "lesson": "ccna-u10-l6",
+      "title": "Trunk dan router-on-a-stick",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Merutekan VLAN 10 dan 20 lewat satu kabel trunk ke R1, lalu membuktikan PC di VLAN berbeda bisa saling ping.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1",
+            "label": "trunk"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "Fa0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/1.10",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1.20",
+          "address": "192.168.20.1/24"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24, gateway .1 (VLAN 10)"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.20.12/24, gateway .1 (VLAN 20)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through dan isi alamat PC."
+        },
+        {
+          "text": "Buat VLAN, port akses, dan trunk ke router.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "vlan 10",
+            "name Staf",
+            "vlan 20",
+            "name Tamu",
+            "interface fa0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "interface fa0/2",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "interface g0/1",
+            "switchport mode trunk",
+            "switchport trunk allowed vlan 10,20",
+            "end"
+          ]
+        },
+        {
+          "text": "Buat subinterface di router.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/1",
+            "no shutdown",
+            "interface g0/0/1.10",
+            "encapsulation dot1Q 10",
+            "ip address 192.168.10.1 255.255.255.0",
+            "interface g0/0/1.20",
+            "encapsulation dot1Q 20",
+            "ip address 192.168.20.1 255.255.255.0",
+            "end"
+          ]
+        },
+        {
+          "text": "Periksa trunk dan simpan kedua perangkat.",
+          "device": "SW1",
+          "commands": [
+            "show interfaces trunk",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Simpan konfigurasi router.",
+          "device": "R1",
+          "commands": [
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Status trunk.",
+          "device": "SW1",
+          "command": "show interfaces trunk",
+          "expect": "Gi0/1 trunking dengan encapsulation 802.1q, native VLAN 1, dan VLAN yang diizinkan 10,20."
+        },
+        {
+          "text": "Ringkasan interface router.",
+          "device": "R1",
+          "command": "show ip interface brief",
+          "expect": "G0/0/1.10 dan G0/0/1.20 up/up dengan alamat gateway masing-masing."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.20.12.",
+          "expect": "Ping berhasil: paket naik ke R1 lewat VLAN 10 dan turun lagi lewat VLAN 20."
+        },
+        {
+          "text": "Hapus VLAN 20 dari daftar allowed di trunk (switchport trunk allowed vlan remove 20), lalu ulangi ping.",
+          "expect": "Ping gagal. Kembalikan dengan switchport trunk allowed vlan add 20."
+        }
+      ],
+      "notes": [
+        "Di beberapa versi Packet Tracer, perubahan trunk butuh beberapa detik sebelum ping berhasil. Ulangi ping kalau yang pertama timeout."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html",
+        "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/14976-50.html",
+        "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/lan-wan/b-lan-wan/m_lnsw-conf-vlan-ieee.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u10-l7",
+      "title": "Routing antar-VLAN dengan SVI",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Memindahkan routing antar-VLAN dari router ke switch layer 3 dengan SVI, lalu menyambungkan switch ke router lewat routed port.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "l3switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "3650-24PS"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G1/0/24",
+            "label": "10.0.0.0/30"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "G1/0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "G1/0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "SW1",
+          "port": "Vlan10",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "SW1",
+          "port": "Vlan20",
+          "address": "192.168.20.1/24"
+        },
+        {
+          "device": "SW1",
+          "port": "G1/0/24",
+          "address": "10.0.0.1/30"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "10.0.0.2/30"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24, gateway .1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.20.12/24, gateway .1"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pakai switch 3650-24PS. Di Packet Tracer, 3650 baru butuh power supply: buka tab Physical dan pasang AC-POWER-SUPPLY ke slot kosong. Sambungkan perangkat dan isi alamat PC."
+        },
+        {
+          "text": "Buat VLAN dan port akses.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "vlan 10",
+            "name Staf",
+            "vlan 20",
+            "name Tamu",
+            "interface g1/0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "interface g1/0/2",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "end"
+          ]
+        },
+        {
+          "text": "Aktifkan routing, buat SVI, dan routed port ke R1.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "ip routing",
+            "interface vlan 10",
+            "ip address 192.168.10.1 255.255.255.0",
+            "no shutdown",
+            "interface vlan 20",
+            "ip address 192.168.20.1 255.255.255.0",
+            "no shutdown",
+            "interface g1/0/24",
+            "no switchport",
+            "ip address 10.0.0.1 255.255.255.252",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Pasang alamat R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 10.0.0.2 255.255.255.252",
+            "no shutdown",
+            "end"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Interface layer 3 di switch.",
+          "device": "SW1",
+          "command": "show ip interface brief",
+          "expect": "Vlan10, Vlan20, dan GigabitEthernet1/0/24 up/up dengan alamatnya."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.20.12.",
+          "expect": "Ping berhasil; kali ini paket dirutekan di dalam SW1, tidak lewat R1."
+        },
+        {
+          "text": "Uji dari SW1: ping 10.0.0.2.",
+          "expect": "Ping berhasil lewat routed port. PC belum bisa ping R1 sampai routing ke R1 diatur (Unit 16)."
+        }
+      ],
+      "notes": [
+        "Di switch yang hanya mendukung 802.1Q, perintah switchport trunk encapsulation dot1q tidak dibutuhkan. Lab ini tidak memakai trunk, jadi perintah itu tidak muncul."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+      ]
     }
   ]
 }

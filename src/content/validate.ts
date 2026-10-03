@@ -90,7 +90,7 @@ function initials(text: string): string {
 function insideExpansion(text: string, at: number): boolean {
   const open = text.lastIndexOf('(', at)
   if (open < 0 || text.lastIndexOf(')', at) > open) return false
-  return /(^|[\s/])[A-Z][A-Za-z0-9]*[A-Z0-9](?:-[A-Z][A-Z0-9]+)*s?(\/[A-Z][A-Za-z0-9]*)*\s*$/.test(text.slice(0, open))
+  return /(^|[\s/-])[A-Z][A-Za-z0-9]*[A-Z0-9](?:-[A-Z][A-Z0-9]+)*s?(\/[A-Z][A-Za-z0-9]*)*\s*$/.test(text.slice(0, open))
 }
 
 export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string> = new Set()): string[] {

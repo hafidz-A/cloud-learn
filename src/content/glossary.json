@@ -868,5 +868,25 @@
     "term": "CDP",
     "expansion": "Cisco Discovery Protocol",
     "description": "Protokol Cisco untuk mengenali perangkat tetangga yang tersambung langsung. Juga dipakai switch untuk memberi tahu IP phone nomor voice VLAN."
+  },
+  {
+    "term": "DTP",
+    "expansion": "Dynamic Trunking Protocol",
+    "description": "Protokol Cisco untuk negosiasi trunk otomatis, dengan mode dynamic auto dan dynamic desirable."
+  },
+  {
+    "term": "SVI",
+    "expansion": "Switched Virtual Interface",
+    "description": "Interface virtual untuk satu VLAN, misalnya interface vlan 10; menjadi gateway di switch layer 3."
+  },
+  {
+    "term": "TPID",
+    "expansion": "Tag Protocol Identifier",
+    "description": "Field 16 bit bernilai 0x8100 di awal tag 802.1Q."
+  },
+  {
+    "term": "CFI",
+    "expansion": "Canonical Format Indicator",
+    "description": "Satu bit di tag 802.1Q, di antara priority dan VLAN ID."
   }
 ]

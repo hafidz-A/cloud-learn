@@ -141,6 +141,11 @@ export const VISUAL_CATALOG = {
   VlanDomains: ['vlan-concept'],
   VoiceVlan: ['voice-vlan'],
   PoeClasses: ['poe'],
+  // Unit 10
+  Dot1qTag: ['dot1q-tag'],
+  TrunkNative: ['native-vlan'],
+  RouterOnAStick: ['router-on-a-stick'],
+  SviRouting: ['svi'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

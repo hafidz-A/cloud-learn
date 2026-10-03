@@ -32,6 +32,10 @@ import { DhcpRelay } from './DhcpRelay'
 import { VlanDomains } from './VlanDomains'
 import { VoiceVlan } from './VoiceVlan'
 import { PoeClasses } from './PoeClasses'
+import { Dot1qTag } from './Dot1qTag'
+import { TrunkNative } from './TrunkNative'
+import { RouterOnAStick } from './RouterOnAStick'
+import { SviRouting } from './SviRouting'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -99,6 +103,10 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  SviRouting,
+  RouterOnAStick,
+  TrunkNative,
+  Dot1qTag,
   PoeClasses,
   VoiceVlan,
   VlanDomains,
