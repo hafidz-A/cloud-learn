@@ -2835,6 +2835,151 @@
         "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html",
         "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_data_acl/configuration/15-e/sec-data-acl-15-e-book/sec-acl-seq-num.html"
       ]
+    },
+    {
+      "lesson": "ccna-u24-l6",
+      "title": "Keamanan Layer 2",
+      "minutes": 35,
+      "tool": "packet-tracer",
+      "goal": "Mengamankan port pengguna dengan port security, menyaring DHCP (Dynamic Host Configuration Protocol) dan ARP (Address Resolution Protocol) palsu dengan DHCP snooping dan DAI (Dynamic ARP Inspection), lalu memicu dan memulihkan pelanggaran port security.",
+      "topology": {
+        "devices": [
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "DHCP",
+            "x": 2,
+            "y": 0
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 1,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC asing",
+            "x": 3,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "srv",
+            "to": "sw1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "pc1",
+            "to": "sw1",
+            "toPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "DHCP",
+          "port": "NIC",
+          "address": "192.168.10.2/24, layanan DHCP pool 192.168.10.100 sampai .150, gateway 192.168.10.1"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "DHCP"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pasang perangkat. Sambungkan server DHCP ke G0/1 dan PC1 ke Fa0/1. PC asing belum disambungkan. Di server, nyalakan layanan DHCP sesuai tabel alamat."
+        },
+        {
+          "text": "VLAN dan uplink.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname SW1",
+            "vlan 10",
+            "name Pengguna",
+            "exit",
+            "interface g0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "end"
+          ]
+        },
+        {
+          "text": "Port security, DHCP snooping, dan DAI.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "interface fa0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "switchport port-security",
+            "switchport port-security mac-address sticky",
+            "exit",
+            "ip dhcp snooping",
+            "ip dhcp snooping vlan 10",
+            "no ip dhcp snooping information option",
+            "ip arp inspection vlan 10",
+            "interface g0/1",
+            "ip dhcp snooping trust",
+            "ip arp inspection trust",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Di PC1, pilih DHCP di IP Configuration, lalu ping 192.168.10.2."
+        }
+      ],
+      "checks": [
+        {
+          "text": "Tabel binding.",
+          "device": "SW1",
+          "command": "show ip dhcp snooping binding",
+          "expect": "Satu baris untuk MAC PC1 dengan alamat dari pool, VLAN 10, di FastEthernet0/1."
+        },
+        {
+          "text": "Alamat sticky.",
+          "device": "SW1",
+          "command": "show port-security interface fa0/1",
+          "expect": "Port Status Secure-up, Sticky MAC Addresses 1."
+        },
+        {
+          "text": "Lepas kabel PC1 dari Fa0/1, sambungkan PC asing ke Fa0/1, lalu ping 192.168.10.2 dari PC asing.",
+          "device": "SW1",
+          "command": "show port-security interface fa0/1",
+          "expect": "Port Status Secure-shutdown dan Security Violation Count 1; ping gagal."
+        },
+        {
+          "text": "Kembalikan PC1 ke Fa0/1, lalu pulihkan port dengan shutdown dan no shutdown di Fa0/1.",
+          "device": "SW1",
+          "command": "show ip interface brief",
+          "expect": "FastEthernet0/1 kembali up/up."
+        }
+      ],
+      "notes": [
+        "no ip dhcp snooping information option dipakai karena server DHCP di lab tidak menerima option 82 yang disisipkan switch; tanpa itu klien bisa gagal mendapat alamat.",
+        "Dukungan DAI dan DHCP snooping di Packet Tracer bergantung versinya; kalau perintah ditolak, catat versinya dan lanjutkan bagian port security."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-4SY/config_guide/sup6T/15_3_sy_swcg_6T/dhcp_snooping.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750x_3560x/software/release/15-0_1_se/configuration/guide/3750xcg/swdynarp.html"
+      ]
     }
   ]
 }

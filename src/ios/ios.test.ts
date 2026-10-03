@@ -434,3 +434,19 @@ describe('show access-lists', () => {
     expect(text).toContain('Extended IP access list WEB\n    10 permit tcp 192.168.1.0 0.0.0.255 any eq www\n    15 deny ip any host 10.0.0.1')
   })
 })
+
+describe('port security', () => {
+  it('rejects port security on a dynamic port, and accepts it on an access port', () => {
+    const run = runSession({ hostname: 'SW1', model: 'c2960' }, [
+      'configure terminal',
+      'interface fa0/1',
+      'switchport port-security',
+      'switchport mode access',
+      'switchport port-security',
+      'end',
+    ])
+    const text = run.transcript.map((l) => l.text).join('\n')
+    expect(text.match(/Command rejected: FastEthernet0\/1 is a dynamic port\./g)).toHaveLength(1)
+    expect(judgeSession(run.state, { config: [{ context: 'interface FastEthernet0/1', line: 'switchport port-security' }] }).correct).toBe(true)
+  })
+})

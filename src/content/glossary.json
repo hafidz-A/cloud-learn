@@ -567,7 +567,7 @@
   {
     "term": "SNMP",
     "expansion": "Simple Network Management Protocol",
-    "description": "Protokol untuk memantau dan mengelola perangkat jaringan, di UDP port 161 dan 162."
+    "description": "Protokol untuk memantau dan mengelola perangkat jaringan."
   },
   {
     "term": "DHCP",
@@ -702,7 +702,7 @@
   {
     "term": "RA",
     "expansion": "Router Advertisement",
-    "description": "Pesan NDP dari router yang membawa prefix dan informasi gateway untuk host IPv6."
+    "description": "Pesan IPv6 dari router yang mengumumkan gateway dan prefix."
   },
   {
     "term": "RS",
@@ -1166,5 +1166,10 @@
     "term": "GRE",
     "expansion": "Generic Routing Encapsulation",
     "description": "Protokol terowongan tanpa enkripsi yang bisa membawa multicast."
+  },
+  {
+    "term": "DAI",
+    "expansion": "Dynamic ARP Inspection",
+    "description": "Fitur switch yang memeriksa paket ARP terhadap tabel binding DHCP snooping."
   }
 ]

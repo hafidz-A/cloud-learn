@@ -764,6 +764,14 @@ function apply(st: DeviceState, def: CmdDef, words: string[], negate: boolean): 
         return [out(`% ${shown} overlaps with ${clash.name}`)]
       }
     }
+    // A secure port must be a static access or trunk port (Catalyst port security guide).
+    if (def.slot === 'switchport port-security' && !negate) {
+      const mode = effective(st, context, 'switchport mode')
+      if (mode !== 'switchport mode access' && mode !== 'switchport mode trunk') {
+        messages.push(out(`Command rejected: ${ifName(context)} is a dynamic port.`))
+        continue
+      }
+    }
     if (def.special === 'acl-entry' && negate && /^access-list \d+$/.test(line)) {
       for (const key of [...lines.keys()]) if (key.startsWith(`${line} `)) lines.delete(key)
       continue
@@ -1402,7 +1410,7 @@ export function judgeSession(state: DeviceState, goal: IosGoal): { correct: bool
 /** Lines that mean a typed command went wrong: IOS errors and Langit notes (not the routine % log messages). */
 export function errorLines(transcript: TermLine[]): string[] {
   return transcript
-    .filter((l) => l.kind === 'langit' || (l.kind === 'out' && /^(% (Invalid input|Incomplete command|Please define|Bad secrets|Duplicate)|Bad mask|% .* overlaps with|% Bridge Priority|% Interface has to be specified)/.test(l.text)))
+    .filter((l) => l.kind === 'langit' || (l.kind === 'out' && /^(% (Invalid input|Incomplete command|Please define|Bad secrets|Duplicate)|Bad mask|% .* overlaps with|% Bridge Priority|% Interface has to be specified|Command rejected)/.test(l.text)))
     .map((l) => ('text' in l ? l.text : ''))
 }
 

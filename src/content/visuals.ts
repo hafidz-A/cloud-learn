@@ -196,6 +196,10 @@ export const VISUAL_CATALOG = {
   // Unit 23
   AclFlow: ['acl-basics'],
   AclPlacement: ['acl-placement'],
+  // Unit 24
+  PsecModes: ['psec-violation'],
+  SnoopTrust: ['dhcp-snooping'],
+  L2Defenses: ['l2-threats'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

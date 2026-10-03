@@ -73,6 +73,9 @@ import { EspAh } from './EspAh'
 import { TunnelTransport } from './TunnelTransport'
 import { AclFlow } from './AclFlow'
 import { AclPlacement } from './AclPlacement'
+import { PsecModes } from './PsecModes'
+import { SnoopTrust } from './SnoopTrust'
+import { L2Defenses } from './L2Defenses'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -140,6 +143,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  L2Defenses,
+  SnoopTrust,
+  PsecModes,
   AclPlacement,
   AclFlow,
   TunnelTransport,
