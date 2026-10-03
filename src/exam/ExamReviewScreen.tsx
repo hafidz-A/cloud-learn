@@ -8,7 +8,7 @@ import { correctAnswerText, type Response } from '../exercises/logic'
 import { MaterialSheet } from '../lesson/MaterialSheet'
 import type { TeachingCard } from '../lib/types'
 import { navigate } from '../lib/router'
-import { useProgress } from '../store/progress'
+import { allExamHistory, useProgress } from '../store/progress'
 import { CaseScenarioPanel } from './CaseScenario'
 import { scoreAttempt } from './examLogic'
 import { examQuestion } from './pool'
@@ -17,7 +17,7 @@ type Filter = 'all' | 'wrong' | 'flagged'
 
 /** Every question with the player's answer, the right answer, and the explanation (plan section 12.5). */
 export function ExamReviewScreen({ attemptId }: { attemptId: string }) {
-  const attempt = useProgress((s) => [...s.examHistory, ...(s.courses.az104?.examHistory ?? [])].find((a) => a.id === attemptId))
+  const attempt = useProgress((s) => allExamHistory(s).find((a) => a.id === attemptId))
   const [filter, setFilter] = useState<Filter>('all')
   const [material, setMaterial] = useState<TeachingCard[] | null>(null)
   if (!attempt) return null

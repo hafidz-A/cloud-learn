@@ -3,14 +3,14 @@ import { Meter } from '../charts/Meter'
 import { Button } from '../components/Button'
 import { CASE_STUDIES, COURSES } from '../content/course'
 import { leaveFlow, navigate } from '../lib/router'
-import { useProgress } from '../store/progress'
+import { allExamHistory, useProgress } from '../store/progress'
 import { PASS_SCORE, formatClock, scoreAttempt } from './examLogic'
 import { CERTIFICATION_PAGES, formatDate, modeLabel } from './format'
 import { examQuestion } from './pool'
 
 /** Score, pass or fail, per-domain bars, and time used (plan section 12.5). No mascot, no celebration. */
 export function ExamResultScreen({ attemptId }: { attemptId: string }) {
-  const attempt = useProgress((s) => [...s.examHistory, ...(s.courses.az104?.examHistory ?? [])].find((a) => a.id === attemptId))
+  const attempt = useProgress((s) => allExamHistory(s).find((a) => a.id === attemptId))
 
   if (!attempt || attempt.score === undefined) {
     return (

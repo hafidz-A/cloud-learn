@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useEffectEvent, useState } from 'react'
 import { findTerm, type GlossaryEntry } from '../content/glossary'
+import { useCourse } from '../store/course'
 import { Button } from './Button'
 
 const HOLD_MS = 450
@@ -29,7 +30,7 @@ export function GlossaryPressLayer() {
       start = { x: e.clientX, y: e.clientY }
       const term = abbr.getAttribute('data-term')!
       timer = setTimeout(() => {
-        const found = findTerm(term)
+        const found = findTerm(term, useCourse.getState().active)
         if (found) {
           swallowClick = true
           setEntry(found)

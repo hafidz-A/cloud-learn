@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { COURSES } from '../content/course'
 import { GLOSSARY } from '../content/glossary'
 
 export function GlossaryScreen() {
@@ -35,9 +36,12 @@ export function GlossaryScreen() {
       </p>
       <ul className="mt-2 space-y-3">
         {results.map((e) => (
-          <li key={e.term} className="rounded-2xl border-2 border-kabut bg-white p-4">
+          <li key={`${e.term}-${e.course ?? ''}`} className="rounded-2xl border-2 border-kabut bg-white p-4">
             <p className="flex flex-wrap items-baseline gap-x-2">
               <span className="font-display text-20 font-bold">{e.term}</span>
+              {e.course && (
+                <span className="rounded-lg bg-biru-muda px-2 py-0.5 font-display text-13 font-semibold">di {COURSES[e.course].name}</span>
+              )}
               <span lang="en" className="text-15 font-bold">
                 {e.expansion}
               </span>

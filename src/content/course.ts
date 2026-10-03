@@ -1,7 +1,8 @@
 import type { CaseStudy, CourseId, Exercise, Fact, LearnCard, Lesson, LessonItem, PathId, TeachingCard, Unit } from '../lib/types'
 
 // Every unit lives in its own JSON file: AZ-900 under ./units, AZ-104 under
-// ./az104/units. New files are picked up automatically and sorted by id.
+// ./az104/units, CCNA under ./ccna/units. New files are picked up automatically
+// and sorted by id.
 const byId = (modules: Record<string, Unit>) => Object.values(modules).sort((a, b) => a.id.localeCompare(b.id))
 
 /** AZ-900 units. */
@@ -10,8 +11,11 @@ export const UNITS: Unit[] = byId(import.meta.glob<Unit>('./units/*.json', { eag
 /** AZ-104 units (LANGIT_AZ104_PLAN.md section 5). Every id starts with "az104-". */
 export const AZ104_UNITS: Unit[] = byId(import.meta.glob<Unit>('./az104/units/*.json', { eager: true, import: 'default' }))
 
-/** The units of both courses. Their ids never collide, because every AZ-104 id starts with "az104-". */
-export const ALL_UNITS: Unit[] = [...UNITS, ...AZ104_UNITS]
+/** CCNA units (LANGIT_CCNA_PLAN.md section 6). Every id starts with "ccna-". */
+export const CCNA_UNITS: Unit[] = byId(import.meta.glob<Unit>('./ccna/units/*.json', { eager: true, import: 'default' }))
+
+/** The units of every course. Their ids never collide, because AZ-104 and CCNA ids carry a prefix. */
+export const ALL_UNITS: Unit[] = [...UNITS, ...AZ104_UNITS, ...CCNA_UNITS]
 
 /** AZ-104 case studies (LANGIT_AZ104_PLAN.md section 9), one JSON file each under ./az104/casestudies. */
 export const CASE_STUDIES: CaseStudy[] = Object.values(
@@ -43,6 +47,15 @@ export const AZ104_PATHS: PathInfo[] = [
   { id: 5, title: 'Monitoring dan pemeliharaan', short: 'Monitoring', domain: 'Monitor and maintain Azure resources', weight: [10, 15] },
 ]
 
+/** The five CCNA paths, one per exam domain, in the domains' own order (LANGIT_CCNA_PLAN.md section 1). */
+export const CCNA_PATHS: PathInfo[] = [
+  { id: 1, title: 'Infrastruktur dan konektivitas', short: 'Infrastruktur', domain: 'Network Infrastructure and Connectivity', weight: [25, 25] },
+  { id: 2, title: 'Switching dan akses jaringan', short: 'Switching', domain: 'Switching and Network Access', weight: [25, 25] },
+  { id: 3, title: 'IP routing', short: 'Routing', domain: 'IP Routing', weight: [20, 20] },
+  { id: 4, title: 'Layanan dan keamanan jaringan', short: 'Layanan', domain: 'Network Services and Security', weight: [20, 20] },
+  { id: 5, title: 'AI, operasi, dan manajemen', short: 'Operasi', domain: 'AI, and Network Operations and Management', weight: [10, 10] },
+]
+
 /** One checkpoint (boss lesson) closes every path. */
 export type Checkpoint = { id: string; path: PathId; title: string; questionCount: number }
 
@@ -51,6 +64,7 @@ const checkpointsFor = (paths: PathInfo[], prefix: string): Checkpoint[] =>
 
 export const CHECKPOINTS: Checkpoint[] = checkpointsFor(PATHS, '')
 export const AZ104_CHECKPOINTS: Checkpoint[] = checkpointsFor(AZ104_PATHS, 'az104-')
+export const CCNA_CHECKPOINTS: Checkpoint[] = checkpointsFor(CCNA_PATHS, 'ccna-')
 
 export type Course = {
   id: CourseId
@@ -65,13 +79,24 @@ export type Course = {
 export const COURSES: Record<CourseId, Course> = {
   az900: { id: 'az900', name: 'AZ-900', title: 'Azure Fundamentals', units: UNITS, paths: PATHS, checkpoints: CHECKPOINTS },
   az104: { id: 'az104', name: 'AZ-104', title: 'Azure Administrator', units: AZ104_UNITS, paths: AZ104_PATHS, checkpoints: AZ104_CHECKPOINTS },
+  ccna: { id: 'ccna', name: 'CCNA', title: 'Cisco Network Associate', units: CCNA_UNITS, paths: CCNA_PATHS, checkpoints: CCNA_CHECKPOINTS },
 }
 
-export const COURSE_IDS: CourseId[] = ['az900', 'az104']
+export const COURSE_IDS: CourseId[] = ['az900', 'az104', 'ccna']
 
 /** The course an id (unit, lesson, exercise, checkpoint, or fact) belongs to. */
 export function courseOf(id: string): CourseId {
-  return id.startsWith('az104-') ? 'az104' : 'az900'
+  if (id.startsWith('az104-')) return 'az104'
+  if (id.startsWith('ccna-')) return 'ccna'
+  return 'az900'
+}
+
+/**
+ * Trunk and prerequisite lessons must be played; hands-on and support branches
+ * may be skipped (LANGIT_CCNA_PLAN.md section 4). Every AZ lesson is required.
+ */
+export function isRequiredLesson(lesson: Lesson): boolean {
+  return !lesson.branch || lesson.branch.kind === 'prereq'
 }
 
 export function isTeachingCard(item: LessonItem): item is TeachingCard {
@@ -156,7 +181,7 @@ export const FACTS: ReadonlyMap<string, { fact: Fact; unit: Unit }> = new Map(
 
 type PlacedCard = { card: TeachingCard; unit: Unit; lesson: Lesson; order: number }
 
-/** Every learn and intro card in course order (AZ-900 first, then unit, lesson, and item order). */
+/** Every learn and intro card in course order (AZ-900, AZ-104, CCNA, then unit, lesson, and item order). */
 export const TEACHING_CARDS: PlacedCard[] = (() => {
   const out: PlacedCard[] = []
   for (const unit of ALL_UNITS)
@@ -211,10 +236,10 @@ export function lessonsInOrder(course: CourseId): { unit: Unit; lesson: Lesson }
   return COURSES[course].units.flatMap((unit) => unit.lessons.map((lesson) => ({ unit, lesson })))
 }
 
-/** Active exercises of one path of a course, for its checkpoint. */
+/** Active exercises of the required lessons of one path, for its checkpoint. */
 export function exercisesInPath(course: CourseId, path: PathId): Exercise[] {
   return [...EXERCISES.values()]
-    .filter((r) => courseOf(r.unit.id) === course && r.path === path && isActive(r.exercise) && !caseStudyOf(r.exercise.id))
+    .filter((r) => courseOf(r.unit.id) === course && r.path === path && isActive(r.exercise) && !caseStudyOf(r.exercise.id) && isRequiredLesson(r.lesson))
     .map((r) => r.exercise)
 }
 
@@ -227,7 +252,7 @@ export function findCheckpoint(id: string): Checkpoint | undefined {
  * that concept. Per course, because both courses may use the same tag (rbac).
  */
 const CONCEPT_TITLES: Record<CourseId, ReadonlyMap<string, string>> = (() => {
-  const maps: Record<CourseId, Map<string, string>> = { az900: new Map(), az104: new Map() }
+  const maps: Record<CourseId, Map<string, string>> = { az900: new Map(), az104: new Map(), ccna: new Map() }
   for (const { card, unit } of TEACHING_CARDS) {
     const concepts = cardConcepts(card)
     const map = maps[courseOf(unit.id)]
@@ -246,7 +271,7 @@ export function conceptName(concept: string, course: CourseId = 'az900'): string
 
 /** Per course, the unit where a concept is first tested. */
 export const UNIT_BY_CONCEPT: Record<CourseId, ReadonlyMap<string, Unit>> = (() => {
-  const maps: Record<CourseId, Map<string, Unit>> = { az900: new Map(), az104: new Map() }
+  const maps: Record<CourseId, Map<string, Unit>> = { az900: new Map(), az104: new Map(), ccna: new Map() }
   for (const r of EXERCISES.values()) {
     const map = maps[courseOf(r.unit.id)]
     if (!map.has(r.exercise.concept)) map.set(r.exercise.concept, r.unit)

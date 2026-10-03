@@ -25,6 +25,12 @@ export const EXAM_MODES: Record<CourseId, Record<ExamMode, ModeInfo>> = {
     domain: { title: 'Mini ujian per domain', count: 15, minutes: 30, blurb: 'Satu domain pilihanmu, tanpa studi kasus.' },
     weak: { title: 'Ujian titik lemah', count: 20, minutes: 40, blurb: 'Konsep dengan akurasi terendah dari latihanmu.' },
   },
+  // CCNA (LANGIT_CCNA_PLAN.md section 9): 120 minutes like the real exam. Cisco does not publish the question count.
+  ccna: {
+    full: { title: 'Simulasi penuh', count: 100, minutes: 120, blurb: 'Semua domain sesuai bobot ujian asli, termasuk soal simulasi CLI.' },
+    domain: { title: 'Mini ujian per domain', count: 25, minutes: 30, blurb: 'Satu domain pilihanmu.' },
+    weak: { title: 'Ujian titik lemah', count: 30, minutes: 36, blurb: 'Konsep dengan akurasi terendah dari latihanmu.' },
+  },
 }
 
 /**
@@ -34,6 +40,7 @@ export const EXAM_MODES: Record<CourseId, Record<ExamMode, ModeInfo>> = {
 export const FULL_SPLIT: Record<CourseId, Record<PathId, number>> = {
   az900: { 1: 14, 2: 19, 3: 17 },
   az104: { 1: 12, 2: 10, 3: 9, 4: 12, 5: 7 },
+  ccna: { 1: 25, 2: 25, 3: 20, 4: 20, 5: 10 },
 }
 
 /**
@@ -41,7 +48,7 @@ export const FULL_SPLIT: Record<CourseId, Record<PathId, number>> = {
  * few single statements, and a third of the AZ-104 bank is true/false, so without
  * a cap a simulation would be easier than the real thing. AZ-900 has no cap.
  */
-const TRUEFALSE_SHARE: Record<CourseId, number | null> = { az900: null, az104: 0.2 }
+const TRUEFALSE_SHARE: Record<CourseId, number | null> = { az900: null, az104: 0.2, ccna: 0.2 }
 
 export const PASS_SCORE = 700
 export const READY_SCORE = 800

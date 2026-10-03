@@ -427,6 +427,7 @@ function longRuns(lesson: Lesson): number {
 const COURSE_RULES: Record<CourseId, { prefix: string; paths: number; lessons: [number, number]; learnCards: [number, number] }> = {
   az900: { prefix: '', paths: 3, lessons: [3, 5], learnCards: [2, 4] },
   az104: { prefix: 'az104-', paths: 5, lessons: [4, 6], learnCards: [3, 5] },
+  ccna: { prefix: 'ccna-', paths: 5, lessons: [3, 9], learnCards: [1, 4] },
 }
 
 export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[] {

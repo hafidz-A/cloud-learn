@@ -1,10 +1,13 @@
 // Data model from LANGIT_AZ900_PLAN.md section 8 ("Model data"), with the
 // intro cards and lesson items from section 11.
 
-/** The two courses in one app (LANGIT_AZ104_PLAN.md section 3). Every AZ-104 id starts with "az104-". */
-export type CourseId = 'az900' | 'az104'
+/**
+ * The courses in one app (LANGIT_AZ104_PLAN.md and LANGIT_CCNA_PLAN.md section 3).
+ * Every AZ-104 id starts with "az104-", every CCNA id with "ccna-".
+ */
+export type CourseId = 'az900' | 'az104' | 'ccna'
 
-/** A learning path, which is also an exam domain: 1-3 in AZ-900, 1-5 in AZ-104. */
+/** A learning path, which is also an exam domain: 1-3 in AZ-900, 1-5 in AZ-104 and CCNA. */
 export type PathId = number
 
 export type Unit = {
@@ -23,6 +26,23 @@ export type Lesson = {
   id: string // "u04-l1"
   title: string
   items: LessonItem[] // learn cards and exercises, easiest first (section 11.2)
+  /** A branch of the CCNA lesson tree (LANGIT_CCNA_PLAN.md section 4). Lessons without one are the trunk. */
+  branch?: LessonBranch
+}
+
+/**
+ * prereq:  required; the next trunk lesson waits for it. Can be skipped with a short test.
+ * handson: optional; IOS simulator exercises, then a Packet Tracer lab.
+ * support: optional; extra material or practice.
+ */
+export type BranchKind = 'prereq' | 'handson' | 'support'
+
+export type LessonBranch = {
+  kind: BranchKind
+  /** The earlier lesson of the same unit this branch grows from. It opens once that lesson is done. */
+  from: string
+  /** Trunk branches only: which side of the trunk it grows on. The first one goes right by default. */
+  side?: 'left' | 'right'
 }
 
 /** One checked fact that an exercise may need. Learn cards teach facts; exercises require them. */
@@ -317,4 +337,11 @@ export type Progress = {
    * level, where they were before AZ-104 existed, so older data needs no change.
    */
   courses: { az104?: CourseProgress }
+  /**
+   * CCNA progress. A top-level key, not inside `courses`: an older app version
+   * rebuilds and sends `courses` without CCNA, but never sends a key it does not
+   * know, and the server keeps the keys a push leaves out (LANGIT_CCNA_PLAN.md section 3).
+   * `null` until the first CCNA progress, and after a reset, so the reset reaches the server.
+   */
+  ccna?: CourseProgress | null
 }
