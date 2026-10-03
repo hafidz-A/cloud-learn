@@ -31,8 +31,8 @@
   },
   {
     "term": "API",
-    "expansion": "Application Programming Interface",
-    "description": "Pintu yang dipakai program untuk berbicara dengan program lain."
+    "expansion": "application programming interface",
+    "description": "Antarmuka yang dipakai program untuk berbicara dengan program lain."
   },
   {
     "term": "ARM",
@@ -157,7 +157,7 @@
   {
     "term": "HTTP",
     "expansion": "Hypertext Transfer Protocol",
-    "description": "Protokol dasar web untuk mengirim halaman dan data."
+    "description": "Protokol permintaan dan jawaban untuk web dan REST API."
   },
   {
     "term": "HTTPS",
@@ -171,8 +171,8 @@
   },
   {
     "term": "IaC",
-    "expansion": "Infrastructure as Code",
-    "description": "Menulis infrastruktur sebagai kode, misalnya ARM template atau Bicep, supaya deployment bisa diulang dengan hasil sama."
+    "expansion": "infrastructure as code",
+    "description": "Mengelola infrastruktur lewat file definisi yang diterapkan alat otomasi."
   },
   {
     "term": "IAM",
@@ -202,7 +202,7 @@
   {
     "term": "JSON",
     "expansion": "JavaScript Object Notation",
-    "description": "Format teks untuk data terstruktur. ARM template ditulis dalam JSON."
+    "description": "Format data teks berisi objek dan array, umum di REST API."
   },
   {
     "term": "KQL",
@@ -317,7 +317,7 @@
   {
     "term": "REST",
     "expansion": "Representational State Transfer",
-    "description": "Gaya membangun API (Application Programming Interface) di web lewat HTTP (Hypertext Transfer Protocol)."
+    "description": "Gaya API di atas HTTP dengan metode seperti GET dan POST."
   },
   {
     "term": "RPO",
@@ -1171,5 +1171,55 @@
     "term": "DAI",
     "expansion": "Dynamic ARP Inspection",
     "description": "Fitur switch yang memeriksa paket ARP terhadap tabel binding DHCP snooping."
+  },
+  {
+    "term": "SDN",
+    "expansion": "software-defined networking",
+    "description": "Arsitektur yang memusatkan control plane di controller yang bisa diprogram."
+  },
+  {
+    "term": "CRUD",
+    "expansion": "create, read, update, delete",
+    "description": "Empat operasi dasar terhadap data."
+  },
+  {
+    "term": "GET",
+    "expansion": "metode HTTP GET",
+    "description": "Metode HTTP untuk membaca data."
+  },
+  {
+    "term": "POST",
+    "expansion": "metode HTTP POST",
+    "description": "Metode HTTP yang biasa dipakai untuk membuat data baru."
+  },
+  {
+    "term": "PUT",
+    "expansion": "metode HTTP PUT",
+    "description": "Metode HTTP untuk mengganti atau memperbarui data."
+  },
+  {
+    "term": "PATCH",
+    "expansion": "metode HTTP PATCH",
+    "description": "Metode HTTP untuk mengubah sebagian data."
+  },
+  {
+    "term": "DELETE",
+    "expansion": "metode HTTP DELETE",
+    "description": "Metode HTTP untuk menghapus data."
+  },
+  {
+    "term": "BIOS",
+    "expansion": "basic input/output system",
+    "description": "Firmware dasar komputer yang berjalan sebelum sistem operasi."
+  },
+  {
+    "term": "DNA",
+    "expansion": "Digital Network Architecture",
+    "description": "Nama lama arsitektur Cisco; Cisco DNA Center kini bernama Catalyst Center."
+  },
+  {
+    "term": "IT",
+    "expansion": "information technology",
+    "description": "Teknologi informasi, termasuk tim yang mengelola jaringan."
   }
 ]

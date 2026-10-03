@@ -76,6 +76,9 @@ import { AclPlacement } from './AclPlacement'
 import { PsecModes } from './PsecModes'
 import { SnoopTrust } from './SnoopTrust'
 import { L2Defenses } from './L2Defenses'
+import { MgmtModels } from './MgmtModels'
+import { SdnLayers } from './SdnLayers'
+import { RestCrud } from './RestCrud'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -143,6 +146,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  RestCrud,
+  SdnLayers,
+  MgmtModels,
   L2Defenses,
   SnoopTrust,
   PsecModes,

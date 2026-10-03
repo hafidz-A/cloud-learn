@@ -57,7 +57,7 @@ const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet
  * names (AZ, P1, E3, the App Service Free plan F1), region names (East US), HTTP
  * methods (DELETE, POST), and the DNS record type AAAA.
  */
-const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA', 'PC', 'IOS', 'XE', 'CCNA', 'EXEC', 'AND'])
+const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA', 'PC', 'IOS', 'XE', 'CCNA', 'EXEC', 'AND', 'OK'])
 
 /**
  * CCNA device, interface, and model names (R1, SW2, HQ-R1, PC1, SRV1, the "G0" of

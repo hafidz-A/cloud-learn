@@ -200,6 +200,10 @@ export const VISUAL_CATALOG = {
   PsecModes: ['psec-violation'],
   SnoopTrust: ['dhcp-snooping'],
   L2Defenses: ['l2-threats'],
+  // Unit 25
+  MgmtModels: ['mgmt-models'],
+  SdnLayers: ['sdn'],
+  RestCrud: ['rest-api'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG
