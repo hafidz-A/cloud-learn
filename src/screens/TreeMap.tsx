@@ -120,7 +120,7 @@ function LessonDetails({ unit, cell, state, states, pathOpen }: { unit: Unit; ce
       {lab && state !== 'soon' && (
         <Button variant="putih" block className="mt-3 flex items-center justify-center gap-2" onClick={() => navigate({ name: 'lab', lessonId: lesson.id })}>
           <FlaskConical size={18} aria-hidden="true" />
-          Buka lab Packet Tracer
+          {lab.tool === 'cml-free' ? 'Buka lab CML' : 'Buka lab Packet Tracer'}
         </Button>
       )}
     </>

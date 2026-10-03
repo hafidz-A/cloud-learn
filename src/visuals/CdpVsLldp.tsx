@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import { label, quiet } from './styles'
 
 const ROWS = [
-  ['Pemilik', 'Cisco', 'Standar IEEE 802.1AB'],
+  ['Pemilik', 'Cisco', 'IEEE 802.1AB'],
   ['Bawaan Catalyst', 'Aktif', 'Mati (lldp run)'],
   ['Kirim tiap', '60 detik', '30 detik'],
   ['Holdtime', '180 detik', '120 detik'],

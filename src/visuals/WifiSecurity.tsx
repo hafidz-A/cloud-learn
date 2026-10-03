@@ -4,8 +4,8 @@ import { label, quiet } from './styles'
 const ROWS = [
   { name: 'WEP', text: 'kunci statis, sudah tidak aman', fill: 'var(--color-koral-muda)' },
   { name: 'WPA', text: 'TKIP, pengganti sementara WEP', fill: 'var(--color-matahari-muda)' },
-  { name: 'WPA2', text: 'AES-CCMP; Personal (PSK) atau Enterprise (802.1X)', fill: 'var(--color-biru-muda)' },
-  { name: 'WPA3', text: 'Personal: SAE; Enterprise: 802.1X; PMF wajib', fill: 'var(--color-mint-muda)' },
+  { name: 'WPA2', text: 'AES-CCMP; PSK atau 802.1X', fill: 'var(--color-biru-muda)' },
+  { name: 'WPA3', text: 'SAE atau 802.1X; PMF wajib', fill: 'var(--color-mint-muda)' },
 ]
 
 /** Wi-Fi security from weakest to strongest. */

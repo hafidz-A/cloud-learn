@@ -16,6 +16,7 @@ const readUnits = (dir: string): Unit[] =>
 
 export const UNITS: Unit[] = readUnits('src/content/units')
 export const AZ104_UNITS: Unit[] = readUnits('src/content/az104/units')
+export const CCNA_UNITS: Unit[] = readUnits('src/content/ccna/units')
 
 type CaseStudy = { id: string; title: string; tabs: { title: string; paragraphs: string[] }[]; questions: Item[] }
 export const CASE_STUDIES: CaseStudy[] = readdirSync('src/content/az104/casestudies')
@@ -24,7 +25,7 @@ export const CASE_STUDIES: CaseStudy[] = readdirSync('src/content/az104/casestud
   .map((f) => JSON.parse(readFileSync(`src/content/az104/casestudies/${f}`, 'utf8')))
 
 export const ITEMS = new Map<string, Item>([
-  ...[...UNITS, ...AZ104_UNITS].flatMap((u) => u.lessons.flatMap((l) => l.items.map((i) => [i.id, i] as const))),
+  ...[...UNITS, ...AZ104_UNITS, ...CCNA_UNITS].flatMap((u) => u.lessons.flatMap((l) => l.items.map((i) => [i.id, i] as const))),
   ...CASE_STUDIES.flatMap((cs) => cs.questions.map((q) => [q.id, q] as const)),
 ])
 
@@ -35,7 +36,7 @@ export const isCard = (item: Item) => item.type === 'learn' || item.type === 'in
 export const exercisesOf = (l: Lesson) => l.items.filter((i) => !isCard(i) && !i.retired)
 
 export function lesson(id: string): Lesson {
-  for (const u of [...UNITS, ...AZ104_UNITS]) for (const l of u.lessons) if (l.id === id) return l
+  for (const u of [...UNITS, ...AZ104_UNITS, ...CCNA_UNITS]) for (const l of u.lessons) if (l.id === id) return l
   throw new Error(`no lesson ${id}`)
 }
 
@@ -57,6 +58,7 @@ export async function answer(page: Page, item: Item, { wrong = false, submit = t
       return
     }
     case 'choice':
+    case 'exhibit':
     case 'fix':
     case 'rules':
     case 'template':
@@ -134,6 +136,16 @@ export async function answer(page: Page, item: Item, { wrong = false, submit = t
       const bank = page.getByLabel(item.type === 'shell' ? 'Potongan perintah' : 'Potongan query')
       // The same word can appear twice (for example two "|"): take the first one still free.
       for (const t of tokens) await bank.getByRole('button', { name: t, exact: true }).and(page.locator(':enabled')).first().click()
+      break
+    }
+    case 'ios': {
+      // Types each line of the stored solution into the terminal (wrong: one harmless show command).
+      const lines = wrong ? ['show clock'] : (e.solution as string[])
+      const input = page.locator(`#ios-${item.id}`)
+      for (const line of lines) {
+        await input.fill(line)
+        await input.press('Enter')
+      }
       break
     }
     case 'config': {

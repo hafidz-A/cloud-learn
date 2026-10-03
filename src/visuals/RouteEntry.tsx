@@ -22,7 +22,7 @@ export const RouteEntry: FC = () => (
         <text x={p.x + p.w / 2} y={50} fontSize={12} textAnchor="middle" fontFamily="monospace" {...label}>
           {p.text}
         </text>
-        <text x={p.x + p.w / 2} y={78} fontSize={12} textAnchor="middle" {...quiet}>
+        <text x={i === 0 ? p.x : p.x + p.w / 2} y={78} fontSize={12} textAnchor={i === 0 ? 'start' : 'middle'} {...quiet}>
           {p.note}
         </text>
       </g>

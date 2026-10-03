@@ -3,9 +3,9 @@ import { label, quiet } from './styles'
 
 const ROWS = [
   ['', 'Diatur dari', 'Contoh'],
-  ['Per perangkat', 'CLI tiap perangkat', 'SSH ke R1, R2'],
-  ['Controller', 'Server di jaringan', 'Catalyst Center'],
-  ['Cloud', 'Dashboard internet', 'Meraki'],
+  ['Per perangkat', 'CLI satu-satu', 'SSH ke R1, R2'],
+  ['Controller', 'Server lokal', 'Catalyst Center'],
+  ['Cloud', 'Dashboard web', 'Meraki'],
 ]
 
 /** Three ways to manage a network. */
@@ -20,7 +20,7 @@ export const MgmtModels: FC = () => (
       <g key={r[0] || 'head'}>
         <rect x={4} y={4 + i * 34} width={292} height={30} rx={6} fill={i === 0 ? 'var(--color-biru-muda)' : i % 2 ? 'var(--color-kabut)' : '#ffffff00'} />
         {r.map((c, j) => (
-          <text key={j} x={[10, 104, 216][j]} y={24 + i * 34} fontSize={12} {...(i === 0 || j === 0 ? label : quiet)}>
+          <text key={j} x={[10, 100, 196][j]} y={24 + i * 34} fontSize={12} {...(i === 0 || j === 0 ? label : quiet)}>
             {c}
           </text>
         ))}

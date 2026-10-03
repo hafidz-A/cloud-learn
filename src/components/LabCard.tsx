@@ -155,7 +155,7 @@ export function LabCard({ lab }: { lab: Lab }) {
         <ul className="mt-1 space-y-1 text-15">
           {lab.sources.map((url) => (
             <li key={url}>
-              <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-biru-dalam underline underline-offset-4 wrap-anywhere">
+              <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-tinta underline underline-offset-4 wrap-anywhere">
                 {hostOf(url)}
                 <ExternalLink size={14} aria-hidden="true" />
                 <span className="sr-only">(membuka tab baru)</span>

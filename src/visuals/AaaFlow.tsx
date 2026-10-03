@@ -19,7 +19,7 @@ export const AaaFlow: FC = () => (
     <text x={150} y={70} fontSize={12} textAnchor="middle" {...label}>
       R1 (klien AAA)
     </text>
-    <text x={270} y={70} fontSize={12} textAnchor="middle" {...label}>
+    <text x={264} y={70} fontSize={12} textAnchor="middle" {...label}>
       Server AAA
     </text>
     <line x1={52} y1={40} x2={128} y2={40} stroke="var(--color-tinta-lembut)" strokeWidth={1.5} />

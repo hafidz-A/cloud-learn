@@ -14,7 +14,7 @@ const STATES = [
 /** OSPF neighbor states from Down to Full. */
 export const OspfStates: FC = () => (
   <svg
-    viewBox="0 0 300 220"
+    viewBox="0 0 300 226"
     role="img"
     aria-label="State tetangga OSPF. Down: belum ada hello. Init: hello diterima tapi router ID saya belum tercantum. 2-Way: saling melihat, dan DR serta BDR dipilih di jaringan broadcast. ExStart: menentukan siapa yang memulai pertukaran DBD. Exchange: bertukar ringkasan database. Loading: meminta LSA yang kurang. Full: database sama, adjacency penuh."
     className="w-full font-display"

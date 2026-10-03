@@ -54,8 +54,8 @@ function LessonRun({ lessonRef }: { lessonRef: LessonRef }) {
             ? `Tanpa kesalahan! Termasuk bonus +${XP_FLAWLESS_BONUS} XP.`
             : `${s.correct} dari ${s.total} soal benar di percobaan pertama.`,
           primary: { label: 'Lanjut', onClick: () => leaveFlow() },
-          // A hands-on lesson goes on in Packet Tracer (LANGIT_CCNA_PLAN.md section 8).
-          secondary: labFor(lesson.id) ? { label: 'Buka lab Packet Tracer', onClick: () => navigate({ name: 'lab', lessonId: lesson.id }, { replace: true }) } : undefined,
+          // A hands-on lesson goes on in Packet Tracer, or CML for the Ansible lab (LANGIT_CCNA_PLAN.md section 8).
+          secondary: labFor(lesson.id) ? { label: labFor(lesson.id)!.tool === 'cml-free' ? 'Buka lab CML' : 'Buka lab Packet Tracer', onClick: () => navigate({ name: 'lab', lessonId: lesson.id }, { replace: true }) } : undefined,
           tip: tipFor(lesson.id),
         }
       }}

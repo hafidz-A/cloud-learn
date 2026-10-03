@@ -10,7 +10,7 @@ Pengecekan cepat yang menjalankan hampir semua "cara mengecek" di bawah:
 npm run lint && npx tsc -b      # kode
 npm test                        # unit test, termasuk aturan konten
 npm run validate:content        # aturan konten dan cakupan materi
-npm run test:e2e                # Playwright di lebar HP, termasuk axe (aksesibilitas)
+npm run test:e2e                # Playwright di lebar HP, termasuk axe (aksesibilitas) dan luapan teks diagram
 ```
 
 ## 1. Dari commit perbaikan
@@ -67,6 +67,8 @@ catatan sesi pengembangan.
 | Kartu lab Ansible (CML Free) bertuliskan "Belum dicoba langsung di Packet Tracer" | Teks status lab ditulis tetap untuk Packet Tracer | Teks memakai nama alat lab (`LAB_TOOLS`) | Teks yang menyebut alat selalu diambil dari data lab | Buka lab Unit 27 lesson 5 |
 | oxlint: `Dot1qTag` mengubah variabel `x` di dalam `map` saat render | Posisi kotak dihitung dengan variabel yang ditambah setiap iterasi | Posisi dihitung sekali di data `FIELDS` | Hitung posisi di luar render | `npx oxlint src` tanpa peringatan |
 | Commit Unit 17 CCNA terkirim sebelum sebaran jawaban dicek, jadi butuh commit perbaikan kedua | Urutan kerja: commit lebih dulu dari cek sebaran | Commit lanjutan "balance true/false answers and option lengths" | Jalankan cek sebaran dan panjang pilihan sebelum commit setiap unit | Riwayat git |
+| Tautan sumber di kartu lab CCNA kontrasnya di bawah 4,5:1 | Warna Biru dalam dipakai untuk teks tautan di atas latar Langit di halaman lab | Tautan memakai warna Tinta, seperti perbaikan serupa sebelumnya | Biru dalam hanya untuk teks di atas putih | `tests/e2e/a11y.spec.ts` ("the CCNA screens have no accessibility violations") |
+| Teks di 7 diagram CCNA (WifiSecurity, CdpVsLldp, RouteEntry, OspfStates, AaaFlow, MgmtModels) dan 4 diagram AZ-104 (SsprLicensing, BlobLifecycleTimeline, IncrementalVsComplete, HealthProbeBlocked) keluar 1–46px dari viewBox | Teks terlalu panjang, label tengah di dekat tepi, atau baris terakhir menyentuh batas bawah. Tidak terlihat di screenshot karena SVG tidak memotong teks di luar viewBox di semua browser | Teks dipendekkan, posisi digeser, atau viewBox ditinggikan | Tes otomatis mengukur `getBBox()` setiap teks diagram di Panduan unit semua course | `tests/e2e/visuals.spec.ts` |
 
 ## 4. Lingkungan pengembangan
 
