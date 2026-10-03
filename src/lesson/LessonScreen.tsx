@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Button } from '../components/Button'
 import { Mascot } from '../components/Mascot'
-import { courseOf, findLesson, hasContent, type LessonRef } from '../content/course'
+import { courseOf, findLesson, hasContent, isRequiredLesson, type LessonRef } from '../content/course'
+import { labFor } from '../content/labs'
 import { tipFor } from '../content/practice'
 import { formatDuration } from '../lib/date'
-import { leaveFlow } from '../lib/router'
+import { leaveFlow, navigate } from '../lib/router'
 import { summarizeLesson, XP_FLAWLESS_BONUS } from '../lib/scoring'
 import { useFollowCourse } from '../store/course'
 import { courseProgress, useProgress } from '../store/progress'
@@ -35,7 +36,8 @@ function LessonRun({ lessonRef }: { lessonRef: LessonRef }) {
       plan={plan}
       onFinish={(results, durationMs) => {
         const s = summarizeLesson(lesson.id, results, durationMs)
-        completeLesson(lesson.id, s.accuracy, s.xp, unit.id, unit.lessons.map((l) => l.id))
+        // The crown counts required lessons only: optional branches may be skipped (LANGIT_CCNA_PLAN.md section 4.2).
+        completeLesson(lesson.id, s.accuracy, s.xp, unit.id, unit.lessons.filter(isRequiredLesson).map((l) => l.id))
         const flawless = s.correct === s.total
         return {
           heading: 'Lesson selesai!',
@@ -52,6 +54,8 @@ function LessonRun({ lessonRef }: { lessonRef: LessonRef }) {
             ? `Tanpa kesalahan! Termasuk bonus +${XP_FLAWLESS_BONUS} XP.`
             : `${s.correct} dari ${s.total} soal benar di percobaan pertama.`,
           primary: { label: 'Lanjut', onClick: () => leaveFlow() },
+          // A hands-on lesson goes on in Packet Tracer (LANGIT_CCNA_PLAN.md section 8).
+          secondary: labFor(lesson.id) ? { label: 'Buka lab Packet Tracer', onClick: () => navigate({ name: 'lab', lessonId: lesson.id }, { replace: true }) } : undefined,
           tip: tipFor(lesson.id),
         }
       }}

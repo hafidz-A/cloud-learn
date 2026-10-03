@@ -1,0 +1,65 @@
+{
+  "id": "ccna-u17-ospf",
+  "path": 3,
+  "title": "OSPF",
+  "lessons": [
+    {
+      "id": "ccna-u17-l1",
+      "title": "Konsep OSPF",
+      "items": []
+    },
+    {
+      "id": "ccna-u17-l2",
+      "title": "Wildcard mask",
+      "branch": {
+        "kind": "prereq",
+        "from": "ccna-u17-l1"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u17-l3",
+      "title": "Router ID dan konfigurasi dasar",
+      "items": []
+    },
+    {
+      "id": "ccna-u17-l4",
+      "title": "Neighbor dan adjacency",
+      "items": []
+    },
+    {
+      "id": "ccna-u17-l5",
+      "title": "Network broadcast dan point-to-point",
+      "items": []
+    },
+    {
+      "id": "ccna-u17-l6",
+      "title": "OSPFv3 untuk IPv6",
+      "items": []
+    },
+    {
+      "id": "ccna-u17-l7",
+      "title": "Verifikasi dan troubleshoot OSPF",
+      "items": []
+    },
+    {
+      "id": "ccna-u17-l8",
+      "title": "Lab: OSPFv2 single area",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u17-l7"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u17-l9",
+      "title": "Lab: OSPFv3",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u17-l8"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

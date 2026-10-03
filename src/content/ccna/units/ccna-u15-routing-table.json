@@ -1,0 +1,37 @@
+{
+  "id": "ccna-u15-routing-table",
+  "path": 3,
+  "title": "Tabel routing",
+  "lessons": [
+    {
+      "id": "ccna-u15-l1",
+      "title": "Isi tabel routing",
+      "items": []
+    },
+    {
+      "id": "ccna-u15-l2",
+      "title": "Longest prefix match",
+      "items": []
+    },
+    {
+      "id": "ccna-u15-l3",
+      "title": "Administrative distance",
+      "items": []
+    },
+    {
+      "id": "ccna-u15-l4",
+      "title": "Metric dan default route",
+      "items": []
+    },
+    {
+      "id": "ccna-u15-l5",
+      "title": "Latihan menentukan next hop",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u15-l4"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

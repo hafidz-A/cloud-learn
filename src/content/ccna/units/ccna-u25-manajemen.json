@@ -1,0 +1,37 @@
+{
+  "id": "ccna-u25-manajemen",
+  "path": 5,
+  "title": "Pendekatan manajemen jaringan",
+  "lessons": [
+    {
+      "id": "ccna-u25-l1",
+      "title": "Manajemen per perangkat",
+      "items": []
+    },
+    {
+      "id": "ccna-u25-l2",
+      "title": "Manajemen berbasis controller",
+      "items": []
+    },
+    {
+      "id": "ccna-u25-l3",
+      "title": "Manajemen berbasis cloud",
+      "items": []
+    },
+    {
+      "id": "ccna-u25-l4",
+      "title": "Otomasi dan infrastructure as code",
+      "items": []
+    },
+    {
+      "id": "ccna-u25-l5",
+      "title": "REST API dan JSON",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u25-l4"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

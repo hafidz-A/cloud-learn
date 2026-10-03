@@ -1,0 +1,23 @@
+{
+  "id": "ccna-u07-virtualisasi",
+  "path": 1,
+  "title": "Virtualisasi",
+  "lessons": [
+    {
+      "id": "ccna-u07-l1",
+      "title": "Hypervisor dan VM",
+      "items": []
+    },
+    {
+      "id": "ccna-u07-l2",
+      "title": "Container",
+      "items": []
+    },
+    {
+      "id": "ccna-u07-l3",
+      "title": "Jaringan virtual",
+      "items": []
+    }
+  ],
+  "facts": []
+}

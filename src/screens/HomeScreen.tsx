@@ -9,6 +9,7 @@ import { useActiveCourse } from '../store/course'
 import { useCourseProgress, useLiveStreak, useProgress, useXpToday } from '../store/progress'
 import { PathMap } from './PathMap'
 import { PlacementCard } from './PlacementCard'
+import { TreeMap } from './TreeMap'
 
 function DailyCard() {
   const goal = useProgress((s) => s.dailyGoal)
@@ -57,7 +58,7 @@ export function HomeScreen() {
       <CoursePicker />
       <DailyCard />
       {course === 'az104' && <PlacementCard />}
-      <PathMap key={course} course={course} />
+      {course === 'ccna' ? <TreeMap key={course} course={course} /> : <PathMap key={course} course={course} />}
     </main>
   )
 }

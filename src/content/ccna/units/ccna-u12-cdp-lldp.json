@@ -1,0 +1,32 @@
+{
+  "id": "ccna-u12-cdp-lldp",
+  "path": 2,
+  "title": "CDP dan LLDP",
+  "lessons": [
+    {
+      "id": "ccna-u12-l1",
+      "title": "CDP",
+      "items": []
+    },
+    {
+      "id": "ccna-u12-l2",
+      "title": "LLDP",
+      "items": []
+    },
+    {
+      "id": "ccna-u12-l3",
+      "title": "Validasi dokumentasi jaringan",
+      "items": []
+    },
+    {
+      "id": "ccna-u12-l4",
+      "title": "Lab: memetakan tetangga",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u12-l3"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

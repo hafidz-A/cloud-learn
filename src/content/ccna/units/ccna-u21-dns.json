@@ -1,0 +1,32 @@
+{
+  "id": "ccna-u21-dns",
+  "path": 4,
+  "title": "DNS",
+  "lessons": [
+    {
+      "id": "ccna-u21-l1",
+      "title": "Cara kerja DNS",
+      "items": []
+    },
+    {
+      "id": "ccna-u21-l2",
+      "title": "Jenis record",
+      "items": []
+    },
+    {
+      "id": "ccna-u21-l3",
+      "title": "Diagnosis masalah DNS",
+      "items": []
+    },
+    {
+      "id": "ccna-u21-l4",
+      "title": "DNS di perangkat Cisco",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u21-l3"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

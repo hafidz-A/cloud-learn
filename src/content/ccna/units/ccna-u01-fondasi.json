@@ -1,0 +1,42 @@
+{
+  "id": "ccna-u01-fondasi",
+  "path": 1,
+  "title": "Fondasi jaringan",
+  "lessons": [
+    {
+      "id": "ccna-u01-l1",
+      "title": "Komponen jaringan",
+      "items": []
+    },
+    {
+      "id": "ccna-u01-l2",
+      "title": "Model TCP/IP dan OSI",
+      "items": []
+    },
+    {
+      "id": "ccna-u01-l3",
+      "title": "Bilangan heksadesimal",
+      "branch": {
+        "kind": "prereq",
+        "from": "ccna-u01-l2"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u01-l4",
+      "title": "Ethernet dan MAC address",
+      "items": []
+    },
+    {
+      "id": "ccna-u01-l5",
+      "title": "ARP dan perjalanan paket",
+      "items": []
+    },
+    {
+      "id": "ccna-u01-l6",
+      "title": "TCP, UDP, dan port",
+      "items": []
+    }
+  ],
+  "facts": []
+}

@@ -1,0 +1,32 @@
+{
+  "id": "ccna-u26-snmp-syslog",
+  "path": 5,
+  "title": "SNMP dan syslog",
+  "lessons": [
+    {
+      "id": "ccna-u26-l1",
+      "title": "SNMP",
+      "items": []
+    },
+    {
+      "id": "ccna-u26-l2",
+      "title": "Severity syslog",
+      "items": []
+    },
+    {
+      "id": "ccna-u26-l3",
+      "title": "Format pesan dan facility syslog",
+      "items": []
+    },
+    {
+      "id": "ccna-u26-l4",
+      "title": "Lab: SNMP dan syslog",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u26-l3"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

@@ -1,0 +1,60 @@
+{
+  "id": "ccna-u04-ipv4",
+  "path": 1,
+  "title": "IPv4 dan subnetting",
+  "lessons": [
+    {
+      "id": "ccna-u04-l1",
+      "title": "Alamat IPv4, publik dan privat",
+      "items": []
+    },
+    {
+      "id": "ccna-u04-l2",
+      "title": "Bilangan biner",
+      "branch": {
+        "kind": "prereq",
+        "from": "ccna-u04-l1"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u04-l3",
+      "title": "Subnet mask dan prefix",
+      "items": []
+    },
+    {
+      "id": "ccna-u04-l4",
+      "title": "Menghitung subnet",
+      "items": []
+    },
+    {
+      "id": "ccna-u04-l5",
+      "title": "Latihan subnetting cepat",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u04-l4"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u04-l6",
+      "title": "VLSM dan perencanaan alamat",
+      "items": []
+    },
+    {
+      "id": "ccna-u04-l7",
+      "title": "Troubleshoot konfigurasi IPv4",
+      "items": []
+    },
+    {
+      "id": "ccna-u04-l8",
+      "title": "Lab: alamat IPv4 di router",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u04-l7"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

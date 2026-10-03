@@ -2,7 +2,7 @@ import { COURSES, EXERCISES, activeExercise, caseStudyOf, courseOf, exercisesInP
 import { dayKey } from '../lib/date'
 import { dueIds } from '../lib/review'
 import { shuffle } from '../lib/shuffle'
-import type { CourseId, CourseProgress } from '../lib/types'
+import type { CourseId, CourseProgress, Lesson } from '../lib/types'
 import type { RunPlan } from './Player'
 import type { SessionItem } from './session'
 
@@ -79,4 +79,24 @@ export function placementPlan(random = Math.random): RunPlan {
 export function checkpointPlan(cp: Checkpoint, random = Math.random): RunPlan {
   const pool = shuffle(exercisesInPath(courseOf(cp.id), cp.path), random).slice(0, cp.questionCount)
   return { kind: 'checkpoint', title: cp.title, items: pool.map((item) => ({ item })) }
+}
+
+/** Questions in a prerequisite skip test (LANGIT_CCNA_PLAN.md section 4.4), spread over the branch's lessons. */
+export const SKIP_MAX = 8
+/** Share to answer right before the branch is marked done. */
+export const SKIP_PASS = 0.8
+
+/**
+ * A skip test for a prerequisite branch: up to 8 questions, spread evenly over its
+ * lessons, true/false only when a lesson has too few other questions.
+ */
+export function skipPlan(lessons: Lesson[], title: string, random = Math.random): RunPlan {
+  const per = Math.max(2, Math.floor(SKIP_MAX / Math.max(1, lessons.length)))
+  const items: SessionItem[] = []
+  for (const lesson of lessons) {
+    const pool = lesson.items.filter(isExercise).filter(isActive)
+    const ordered = [...shuffle(pool.filter((e) => e.type !== 'truefalse'), random), ...shuffle(pool.filter((e) => e.type === 'truefalse'), random)]
+    for (const item of ordered.slice(0, per)) items.push({ item })
+  }
+  return { kind: 'placement', title, items: items.slice(0, SKIP_MAX) }
 }

@@ -1,0 +1,33 @@
+{
+  "id": "ccna-u28-ai",
+  "path": 5,
+  "title": "AI dalam operasi jaringan",
+  "lessons": [
+    {
+      "id": "ccna-u28-l1",
+      "title": "Generative AI dan agentic AI",
+      "items": []
+    },
+    {
+      "id": "ccna-u28-l2",
+      "title": "Peran agentic AI di operasi jaringan",
+      "items": []
+    },
+    {
+      "id": "ccna-u28-l3",
+      "title": "Komponen prompt",
+      "items": []
+    },
+    {
+      "id": "ccna-u28-l4",
+      "title": "Klasifikasi data dan keamanan prompt",
+      "items": []
+    },
+    {
+      "id": "ccna-u28-l5",
+      "title": "Menilai output dan rekomendasi AI",
+      "items": []
+    }
+  ],
+  "facts": []
+}

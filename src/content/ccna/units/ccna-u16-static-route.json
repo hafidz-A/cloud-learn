@@ -1,0 +1,42 @@
+{
+  "id": "ccna-u16-static-route",
+  "path": 3,
+  "title": "Static route",
+  "lessons": [
+    {
+      "id": "ccna-u16-l1",
+      "title": "Static route IPv4",
+      "items": []
+    },
+    {
+      "id": "ccna-u16-l2",
+      "title": "Default route dan host route",
+      "items": []
+    },
+    {
+      "id": "ccna-u16-l3",
+      "title": "Floating static route",
+      "items": []
+    },
+    {
+      "id": "ccna-u16-l4",
+      "title": "Static route IPv6",
+      "items": []
+    },
+    {
+      "id": "ccna-u16-l5",
+      "title": "Troubleshoot static route",
+      "items": []
+    },
+    {
+      "id": "ccna-u16-l6",
+      "title": "Lab: static routing",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u16-l5"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

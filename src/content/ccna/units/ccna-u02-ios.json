@@ -1,0 +1,41 @@
+{
+  "id": "ccna-u02-ios",
+  "path": 1,
+  "title": "Mengenal Cisco IOS",
+  "lessons": [
+    {
+      "id": "ccna-u02-l1",
+      "title": "Akses dan mode CLI",
+      "items": []
+    },
+    {
+      "id": "ccna-u02-l2",
+      "title": "Konfigurasi dasar perangkat",
+      "items": []
+    },
+    {
+      "id": "ccna-u02-l3",
+      "title": "Menyimpan dan membaca konfigurasi",
+      "items": []
+    },
+    {
+      "id": "ccna-u02-l4",
+      "title": "Bantuan CLI dan pesan error",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u02-l3"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u02-l5",
+      "title": "Lab: konfigurasi awal",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u02-l3"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

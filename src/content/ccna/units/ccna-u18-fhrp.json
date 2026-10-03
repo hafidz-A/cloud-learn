@@ -1,0 +1,37 @@
+{
+  "id": "ccna-u18-fhrp",
+  "path": 3,
+  "title": "First Hop Redundancy Protocol",
+  "lessons": [
+    {
+      "id": "ccna-u18-l1",
+      "title": "Kenapa butuh FHRP",
+      "items": []
+    },
+    {
+      "id": "ccna-u18-l2",
+      "title": "HSRP",
+      "items": []
+    },
+    {
+      "id": "ccna-u18-l3",
+      "title": "Konfigurasi HSRP dasar",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u18-l2"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u18-l4",
+      "title": "VRRP",
+      "items": []
+    },
+    {
+      "id": "ccna-u18-l5",
+      "title": "Membaca status HSRP dan VRRP",
+      "items": []
+    }
+  ],
+  "facts": []
+}

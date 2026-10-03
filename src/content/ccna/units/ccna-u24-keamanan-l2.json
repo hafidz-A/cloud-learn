@@ -1,0 +1,42 @@
+{
+  "id": "ccna-u24-keamanan-l2",
+  "path": 4,
+  "title": "Keamanan Layer 2",
+  "lessons": [
+    {
+      "id": "ccna-u24-l1",
+      "title": "Port security",
+      "items": []
+    },
+    {
+      "id": "ccna-u24-l2",
+      "title": "DHCP snooping",
+      "items": []
+    },
+    {
+      "id": "ccna-u24-l3",
+      "title": "Dynamic ARP Inspection",
+      "items": []
+    },
+    {
+      "id": "ccna-u24-l4",
+      "title": "Storm control",
+      "items": []
+    },
+    {
+      "id": "ccna-u24-l5",
+      "title": "RA guard",
+      "items": []
+    },
+    {
+      "id": "ccna-u24-l6",
+      "title": "Lab: keamanan Layer 2",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u24-l5"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

@@ -1,0 +1,51 @@
+{
+  "id": "ccna-u10-trunk",
+  "path": 2,
+  "title": "Trunk dan routing antar-VLAN",
+  "lessons": [
+    {
+      "id": "ccna-u10-l1",
+      "title": "Trunk 802.1Q",
+      "items": []
+    },
+    {
+      "id": "ccna-u10-l2",
+      "title": "Allowed VLAN dan native VLAN",
+      "items": []
+    },
+    {
+      "id": "ccna-u10-l3",
+      "title": "Interface Layer 2 dan Layer 3",
+      "items": []
+    },
+    {
+      "id": "ccna-u10-l4",
+      "title": "SVI",
+      "items": []
+    },
+    {
+      "id": "ccna-u10-l5",
+      "title": "Router-on-a-stick",
+      "items": []
+    },
+    {
+      "id": "ccna-u10-l6",
+      "title": "Lab: trunk dan router-on-a-stick",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u10-l5"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u10-l7",
+      "title": "Lab: SVI di switch Layer 3",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u10-l6"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

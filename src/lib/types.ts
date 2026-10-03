@@ -1,3 +1,5 @@
+import type { IosGoal, Model } from '../ios/engine'
+
 // Data model from LANGIT_AZ900_PLAN.md section 8 ("Model data"), with the
 // intro cards and lesson items from section 11.
 
@@ -180,12 +182,12 @@ export type ConfigExercise = ExerciseBase & {
   answer: Record<string, ConfigValue>
 }
 
-/** An ARM template (JSON) or Bicep file to read, then a question about it. */
+/** An ARM template (JSON), Bicep file, or (CCNA) an Ansible YAML file to read, then a question about it. */
 export type TemplateExercise = ExerciseBase & {
   type: 'template'
-  language: 'json' | 'bicep'
+  language: 'json' | 'bicep' | 'yaml'
   code: string
-  /** The file name in the code header. Defaults to azuredeploy.json (ARM template) or main.bicep. */
+  /** The file name in the code header. Defaults to azuredeploy.json (ARM template) or main.bicep; YAML needs one. */
   fileName?: string
   options: string[]
   answer: number
@@ -210,7 +212,35 @@ export type KqlExercise = ExerciseBase & {
   sampleResult: string[][] // first row is the header
 }
 
+/**
+ * The IOS simulator (LANGIT_CCNA_PLAN.md section 7): type commands, then the
+ * end state is checked against `goal`, like a lab grader. `solution` is one way
+ * to reach it; the validator replays it to check the answer key.
+ */
+export type IosExercise = ExerciseBase & {
+  type: 'ios'
+  device: { hostname: string; model: Model }
+  start?: 'user' | 'priv' | 'config'
+  given?: { context?: string; lines: string[] }[]
+  outputs?: Record<string, string>
+  cabled?: string[]
+  goal: IosGoal
+  solution: string[]
+}
+
+/** "Refer to the exhibit": a network diagram and/or device output, then pick one answer. */
+export type ExhibitExercise = ExerciseBase & {
+  type: 'exhibit'
+  diagram?: NetDiagram
+  /** Device output, each with a title such as "R1# show ip route". */
+  outputs?: { title: string; text: string }[]
+  options: string[]
+  answer: number
+}
+
 export type Exercise =
+  | IosExercise
+  | ExhibitExercise
   | ChoiceExercise
   | TrueFalseExercise
   | MatchExercise
@@ -344,4 +374,53 @@ export type Progress = {
    * `null` until the first CCNA progress, and after a reset, so the reset reaches the server.
    */
   ccna?: CourseProgress | null
+}
+
+// CCNA network diagrams and Packet Tracer labs (LANGIT_CCNA_PLAN.md sections 7 and 8).
+
+export type NetDeviceKind = 'router' | 'switch' | 'l3switch' | 'pc' | 'laptop' | 'server' | 'ap' | 'wlc' | 'phone' | 'printer' | 'cloud' | 'firewall'
+
+/** A device on a small grid: `x` is 0-4 (columns), `y` counts rows from the top. */
+export type NetDevice = { id: string; kind: NetDeviceKind; label: string; x: number; y: number; note?: string }
+
+/**
+ * A cable or radio link. `fromPort`/`toPort` label the interface at each end;
+ * `label` sits in the middle (a subnet, "trunk"). `state` marks a link that is down
+ * or blocked by spanning tree.
+ */
+export type NetLink = {
+  from: string
+  to: string
+  fromPort?: string
+  toPort?: string
+  label?: string
+  style?: 'solid' | 'dashed' | 'wireless'
+  state?: 'up' | 'down' | 'blocked'
+}
+
+export type NetDiagram = { devices: NetDevice[]; links: NetLink[] }
+
+export type LabTool = 'packet-tracer' | 'cml-free' | 'linux' | 'any'
+
+/** One Packet Tracer (or other tool) lab, attached to a hands-on lesson. */
+export type Lab = {
+  /** The hands-on lesson the lab belongs to. */
+  lesson: string
+  title: string
+  minutes: number
+  tool: LabTool
+  goal: string
+  topology: NetDiagram
+  /** The addressing table: device, interface, address. */
+  addressing?: { device: string; port: string; address: string }[]
+  /** Steps in order. `commands` are typed on `device`, and must all be known to the simulator. */
+  steps: { text: string; device?: string; commands?: string[] }[]
+  /** How to prove the lab works: the command to run and what its output must show. */
+  checks: { text: string; device?: string; command?: string; expect: string }[]
+  /** Differences between the tool and real IOS XE that matter here, and tool tips. */
+  notes?: string[]
+  /** Official pages for the commands and features used. */
+  sources: string[]
+  /** Tool versions the lab was tried in directly. Empty: checked against the documentation only. */
+  testedIn?: string[]
 }

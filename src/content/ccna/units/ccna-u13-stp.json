@@ -1,0 +1,56 @@
+{
+  "id": "ccna-u13-stp",
+  "path": 2,
+  "title": "Rapid PVST+",
+  "lessons": [
+    {
+      "id": "ccna-u13-l1",
+      "title": "Kenapa loop Layer 2 berbahaya",
+      "items": []
+    },
+    {
+      "id": "ccna-u13-l2",
+      "title": "Root bridge dan bridge ID",
+      "items": []
+    },
+    {
+      "id": "ccna-u13-l3",
+      "title": "Peran dan state port",
+      "items": []
+    },
+    {
+      "id": "ccna-u13-l4",
+      "title": "STP klasik 802.1D",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u13-l3"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u13-l5",
+      "title": "Konfigurasi Rapid PVST+",
+      "items": []
+    },
+    {
+      "id": "ccna-u13-l6",
+      "title": "PortFast",
+      "items": []
+    },
+    {
+      "id": "ccna-u13-l7",
+      "title": "BPDU guard, root guard, loop guard",
+      "items": []
+    },
+    {
+      "id": "ccna-u13-l8",
+      "title": "Lab: Rapid PVST+",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u13-l7"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

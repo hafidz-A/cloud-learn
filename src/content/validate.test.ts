@@ -226,7 +226,7 @@ describe('material coverage (perbaikan materi section 4)', () => {
   it('needs a Microsoft Learn source unless the fact is marked verify', () => {
     const items = [learn('u99-l1-m1', ['f-u99-a', 'f-u99-b']), tf('u99-l1-e1', 'zones', ['f-u99-a', 'f-u99-b'])]
     const u = unitWith(items, [fact('f-u99-a', { source: 'https://example.com/blog' }), fact('f-u99-b', { source: '', verify: true })])
-    expect(errors(u)).toEqual(['fact "f-u99-a" needs a Microsoft Learn source, or verify: true'])
+    expect(errors(u)).toEqual(['fact "f-u99-a" needs an official source (Microsoft Learn; for CCNA Cisco, IETF, IEEE, or Ansible), or verify: true'])
   })
 
   it('requires a visual for concepts in the visual catalog', () => {

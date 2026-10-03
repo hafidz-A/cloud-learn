@@ -1,0 +1,42 @@
+{
+  "id": "ccna-u05-ipv6",
+  "path": 1,
+  "title": "IPv6",
+  "lessons": [
+    {
+      "id": "ccna-u05-l1",
+      "title": "Format dan penulisan IPv6",
+      "items": []
+    },
+    {
+      "id": "ccna-u05-l2",
+      "title": "Jenis alamat IPv6",
+      "items": []
+    },
+    {
+      "id": "ccna-u05-l3",
+      "title": "Prefix dan perencanaan",
+      "items": []
+    },
+    {
+      "id": "ccna-u05-l4",
+      "title": "Modified EUI-64 dan SLAAC",
+      "items": []
+    },
+    {
+      "id": "ccna-u05-l5",
+      "title": "Konfigurasi dan troubleshoot IPv6",
+      "items": []
+    },
+    {
+      "id": "ccna-u05-l6",
+      "title": "Lab: IPv6 di router",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u05-l5"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

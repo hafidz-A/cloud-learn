@@ -1,0 +1,51 @@
+{
+  "id": "ccna-u19-akses-perangkat",
+  "path": 4,
+  "title": "Akses manajemen perangkat",
+  "lessons": [
+    {
+      "id": "ccna-u19-l1",
+      "title": "User lokal dan password",
+      "items": []
+    },
+    {
+      "id": "ccna-u19-l2",
+      "title": "Dasar kriptografi",
+      "branch": {
+        "kind": "prereq",
+        "from": "ccna-u19-l1"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u19-l3",
+      "title": "SSH",
+      "items": []
+    },
+    {
+      "id": "ccna-u19-l4",
+      "title": "AAA: TACACS+ dan RADIUS",
+      "items": []
+    },
+    {
+      "id": "ccna-u19-l5",
+      "title": "Perangkat sebagai klien AAA",
+      "items": []
+    },
+    {
+      "id": "ccna-u19-l6",
+      "title": "Transfer file dengan SCP dan SFTP",
+      "items": []
+    },
+    {
+      "id": "ccna-u19-l7",
+      "title": "Lab: manajemen yang aman",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u19-l6"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

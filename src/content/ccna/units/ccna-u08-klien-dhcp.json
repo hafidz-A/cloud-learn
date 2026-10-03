@@ -1,0 +1,42 @@
+{
+  "id": "ccna-u08-klien-dhcp",
+  "path": 1,
+  "title": "Konektivitas klien dan DHCP",
+  "lessons": [
+    {
+      "id": "ccna-u08-l1",
+      "title": "Cek IP di Windows, macOS, dan Linux",
+      "items": []
+    },
+    {
+      "id": "ccna-u08-l2",
+      "title": "Troubleshoot klien kabel dan wireless",
+      "items": []
+    },
+    {
+      "id": "ccna-u08-l3",
+      "title": "Cara kerja DHCPv4",
+      "items": []
+    },
+    {
+      "id": "ccna-u08-l4",
+      "title": "Server DHCP di IOS",
+      "items": []
+    },
+    {
+      "id": "ccna-u08-l5",
+      "title": "DHCP relay dan klien DHCP",
+      "items": []
+    },
+    {
+      "id": "ccna-u08-l6",
+      "title": "Lab: DHCP server dan relay",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u08-l5"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

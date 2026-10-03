@@ -1,0 +1,28 @@
+{
+  "id": "ccna-u22-vpn",
+  "path": 4,
+  "title": "VPN IPsec",
+  "lessons": [
+    {
+      "id": "ccna-u22-l1",
+      "title": "Site-to-site dan remote access",
+      "items": []
+    },
+    {
+      "id": "ccna-u22-l2",
+      "title": "Protokol IPsec",
+      "items": []
+    },
+    {
+      "id": "ccna-u22-l3",
+      "title": "Mode tunnel dan transport",
+      "items": []
+    },
+    {
+      "id": "ccna-u22-l4",
+      "title": "Memilih solusi VPN",
+      "items": []
+    }
+  ],
+  "facts": []
+}

@@ -1,0 +1,42 @@
+{
+  "id": "ccna-u09-vlan",
+  "path": 2,
+  "title": "VLAN dan port akses",
+  "lessons": [
+    {
+      "id": "ccna-u09-l1",
+      "title": "Konsep VLAN",
+      "items": []
+    },
+    {
+      "id": "ccna-u09-l2",
+      "title": "Membuat VLAN dan port akses",
+      "items": []
+    },
+    {
+      "id": "ccna-u09-l3",
+      "title": "Voice VLAN dan IP phone",
+      "items": []
+    },
+    {
+      "id": "ccna-u09-l4",
+      "title": "Port untuk AP, IoT, host virtual, dan appliance",
+      "items": []
+    },
+    {
+      "id": "ccna-u09-l5",
+      "title": "Power over Ethernet",
+      "items": []
+    },
+    {
+      "id": "ccna-u09-l6",
+      "title": "Lab: VLAN dan port akses",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u09-l5"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

@@ -3,6 +3,7 @@ import type { Response } from './logic'
 import { ChoiceInput } from './inputs/ChoiceInput'
 import { ConfigInput } from './inputs/ConfigInput'
 import { FillInput } from './inputs/FillInput'
+import { IosInput } from './inputs/IosInput'
 import { KqlInput } from './inputs/KqlInput'
 import { MatchInput } from './inputs/MatchInput'
 import { MultiInput } from './inputs/MultiInput'
@@ -32,6 +33,7 @@ export function ExerciseInput({ exercise, response, onChange, ...rest }: Props) 
     case 'rules':
     case 'template':
     case 'topology':
+    case 'exhibit':
       return <ChoiceInput exercise={exercise} response={response as number | null} onChange={change} {...rest} />
     case 'multi':
       return <MultiInput exercise={exercise} response={response as number[]} onChange={change} {...rest} />
@@ -55,5 +57,7 @@ export function ExerciseInput({ exercise, response, onChange, ...rest }: Props) 
       return <ConfigInput exercise={exercise} response={response as (ConfigValue | null)[]} onChange={change} {...rest} />
     case 'kql':
       return <KqlInput exercise={exercise} response={response as number[]} onChange={change} {...rest} />
+    case 'ios':
+      return <IosInput exercise={exercise} response={response as string[]} onChange={change} {...rest} />
   }
 }

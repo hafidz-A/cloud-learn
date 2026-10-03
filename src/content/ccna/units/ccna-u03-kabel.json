@@ -1,0 +1,37 @@
+{
+  "id": "ccna-u03-kabel",
+  "path": 1,
+  "title": "Kabel dan interface",
+  "lessons": [
+    {
+      "id": "ccna-u03-l1",
+      "title": "Kabel tembaga",
+      "items": []
+    },
+    {
+      "id": "ccna-u03-l2",
+      "title": "Fiber optik",
+      "items": []
+    },
+    {
+      "id": "ccna-u03-l3",
+      "title": "Speed dan duplex",
+      "items": []
+    },
+    {
+      "id": "ccna-u03-l4",
+      "title": "Membaca status dan error interface",
+      "items": []
+    },
+    {
+      "id": "ccna-u03-l5",
+      "title": "Lab: diagnosis interface",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u03-l4"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

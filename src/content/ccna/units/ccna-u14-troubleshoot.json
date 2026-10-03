@@ -1,0 +1,37 @@
+{
+  "id": "ccna-u14-troubleshoot",
+  "path": 2,
+  "title": "Troubleshoot Layer 2 dan Layer 3",
+  "lessons": [
+    {
+      "id": "ccna-u14-l1",
+      "title": "Perintah show dan log",
+      "items": []
+    },
+    {
+      "id": "ccna-u14-l2",
+      "title": "Ping dan extended ping",
+      "items": []
+    },
+    {
+      "id": "ccna-u14-l3",
+      "title": "Traceroute",
+      "items": []
+    },
+    {
+      "id": "ccna-u14-l4",
+      "title": "Membaca packet capture",
+      "items": []
+    },
+    {
+      "id": "ccna-u14-l5",
+      "title": "Lab: mencari kerusakan",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u14-l4"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

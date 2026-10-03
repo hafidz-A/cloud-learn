@@ -1,28 +1,13 @@
 import { BookOpen, Check, Crown, Lock, Star, Trophy } from 'lucide-react'
 import { useEffect, useEffectEvent, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Button } from '../components/Button'
-import { COURSES, courseOf, unitNumber, type Checkpoint } from '../content/course'
+import { COURSES, courseOf, isRequiredLesson, unitNumber, type Checkpoint } from '../content/course'
 import { pathStates, type NodeState } from '../lib/path'
+import { NODE_LOOK, STATE_LABEL } from './nodeLooks'
 import { navigate } from '../lib/router'
 import { CHECKPOINT_PASS, XP_CHECKPOINT, XP_PER_LESSON } from '../lib/scoring'
 import type { CourseId, Lesson, Unit } from '../lib/types'
 import { useCourseProgress } from '../store/progress'
-
-const NODE_LOOK: Record<NodeState, { className: string; edge: string }> = {
-  done: { className: 'bg-matahari text-tinta', edge: 'var(--color-matahari-dalam)' },
-  active: { className: 'bg-biru text-white', edge: 'var(--color-biru-dalam)' },
-  open: { className: 'bg-biru text-white', edge: 'var(--color-biru-dalam)' },
-  locked: { className: 'bg-kabut text-tinta-lembut', edge: 'var(--color-kabut-dalam)' },
-  soon: { className: 'bg-kabut text-tinta-lembut', edge: 'var(--color-kabut-dalam)' },
-}
-
-const STATE_LABEL: Record<NodeState, string> = {
-  done: 'selesai',
-  active: 'lesson berikutnya',
-  open: 'bisa dimainkan',
-  locked: 'terkunci',
-  soon: 'segera hadir',
-}
 
 /** Horizontal offset in px for the winding path. Alternates direction per unit. */
 function offsetFor(lessonIndex: number, unitIndex: number): number {
@@ -30,9 +15,25 @@ function offsetFor(lessonIndex: number, unitIndex: number): number {
   return Math.round(Math.sin((lessonIndex * Math.PI) / 2.5) * 70) * direction
 }
 
-type Selected = { kind: 'lesson' | 'checkpoint'; id: string } | null
+export type Selected = { kind: 'lesson' | 'checkpoint'; id: string } | null
 
-function Popover({ offset, onClose, children }: { offset: number; onClose: () => void; children: ReactNode }) {
+/**
+ * The card under a node. `className` positions it (by default the full width
+ * under the node's row), and `arrowLeft` points its arrow at the node.
+ */
+export function Popover({
+  arrowLeft,
+  className = 'inset-x-4 top-full mt-3',
+  style,
+  onClose,
+  children,
+}: {
+  arrowLeft: string
+  className?: string
+  style?: CSSProperties
+  onClose: () => void
+  children: ReactNode
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const close = useEffectEvent(onClose)
 
@@ -55,19 +56,20 @@ function Popover({ offset, onClose, children }: { offset: number; onClose: () =>
     <div
       ref={ref}
       role="dialog"
-      className="absolute inset-x-4 top-full z-10 mt-3 scroll-mb-28 rounded-2xl border-2 border-kabut bg-white p-4 text-left shadow-[0_4px_0_var(--color-kabut)]"
+      className={`absolute z-30 scroll-mb-28 rounded-2xl border-2 border-kabut bg-white p-4 text-left shadow-[0_4px_0_var(--color-kabut)] ${className}`}
+      style={style}
     >
       <span
         aria-hidden="true"
         className="absolute -top-[9px] h-4 w-4 -translate-x-1/2 rotate-45 border-l-2 border-t-2 border-kabut bg-white"
-        style={{ left: `calc(50% + ${offset}px)` }}
+        style={{ left: arrowLeft }}
       />
       {children}
     </div>
   )
 }
 
-function StartBubble({ label }: { label: string }) {
+export function StartBubble({ label }: { label: string }) {
   return (
     <div
       aria-hidden="true"
@@ -125,7 +127,7 @@ function LessonNode({
       </div>
 
       {selected && (
-        <Popover offset={offset} onClose={() => onSelect(false)}>
+        <Popover arrowLeft={`calc(50% + ${offset}px)`} onClose={() => onSelect(false)}>
           <p className="font-display text-20 font-bold">{lesson.title}</p>
           <p className="mt-0.5 text-13 text-tinta-lembut">
             Unit {unitNumber(unit)} · Lesson {lessonIndex + 1} dari {unit.lessons.length}
@@ -159,7 +161,7 @@ function LessonNode({
   )
 }
 
-function CheckpointNode({
+export function CheckpointNode({
   checkpoint,
   state,
   lessonsLeft,
@@ -194,7 +196,7 @@ function CheckpointNode({
         </button>
       </div>
       {selected && (
-        <Popover offset={0} onClose={() => onSelect(false)}>
+        <Popover arrowLeft="50%" onClose={() => onSelect(false)}>
           <p className="font-display text-20 font-bold">{checkpoint.title}</p>
           <p className="mt-2 text-15">
             {checkpoint.questionCount} soal campuran dari seluruh jalur {checkpoint.path}. Skor minimal{' '}
@@ -223,10 +225,13 @@ function CheckpointNode({
   )
 }
 
-function UnitCard({ unit }: { unit: Unit }) {
+/** A unit's header: required lessons done, optional branches done (CCNA), crown level, and the guide button. */
+export function UnitCard({ unit }: { unit: Unit }) {
   const { lessonsDone, unitLevel } = useCourseProgress(courseOf(unit.id))
   const level = unitLevel[unit.id] ?? 0
-  const done = unit.lessons.filter((l) => lessonsDone[l.id]).length
+  const required = unit.lessons.filter(isRequiredLesson)
+  const optional = unit.lessons.filter((l) => !isRequiredLesson(l))
+  const done = required.filter((l) => lessonsDone[l.id]).length
   return (
     <div className="mx-4 mb-4 mt-6 rounded-2xl border-2 border-kabut bg-white px-4 py-3 shadow-[0_4px_0_var(--color-kabut)]">
       <div className="flex items-center justify-between gap-3">
@@ -234,7 +239,8 @@ function UnitCard({ unit }: { unit: Unit }) {
           Unit {unitNumber(unit)}
           <span className="font-normal text-tinta-lembut">
             {' '}
-            · {done}/{unit.lessons.length} lesson
+            · {done}/{required.length} lesson
+            {optional.length > 0 && ` · cabang ${optional.filter((l) => lessonsDone[l.id]).length}/${optional.length}`}
           </span>
         </p>
         <p

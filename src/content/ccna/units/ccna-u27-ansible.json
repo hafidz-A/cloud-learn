@@ -1,0 +1,41 @@
+{
+  "id": "ccna-u27-ansible",
+  "path": 5,
+  "title": "Ansible",
+  "lessons": [
+    {
+      "id": "ccna-u27-l1",
+      "title": "Konsep Ansible",
+      "items": []
+    },
+    {
+      "id": "ccna-u27-l2",
+      "title": "Dasar YAML",
+      "branch": {
+        "kind": "prereq",
+        "from": "ccna-u27-l1"
+      },
+      "items": []
+    },
+    {
+      "id": "ccna-u27-l3",
+      "title": "Inventory dan playbook",
+      "items": []
+    },
+    {
+      "id": "ccna-u27-l4",
+      "title": "Menjalankan perintah di IOS",
+      "items": []
+    },
+    {
+      "id": "ccna-u27-l5",
+      "title": "Lab: Ansible ke router",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u27-l4"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

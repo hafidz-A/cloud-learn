@@ -1,0 +1,42 @@
+{
+  "id": "ccna-u20-nat",
+  "path": 4,
+  "title": "NAT dan PAT",
+  "lessons": [
+    {
+      "id": "ccna-u20-l1",
+      "title": "Kenapa NAT dan istilahnya",
+      "items": []
+    },
+    {
+      "id": "ccna-u20-l2",
+      "title": "Static NAT",
+      "items": []
+    },
+    {
+      "id": "ccna-u20-l3",
+      "title": "Dynamic NAT",
+      "items": []
+    },
+    {
+      "id": "ccna-u20-l4",
+      "title": "PAT",
+      "items": []
+    },
+    {
+      "id": "ccna-u20-l5",
+      "title": "Verifikasi dan troubleshoot NAT",
+      "items": []
+    },
+    {
+      "id": "ccna-u20-l6",
+      "title": "Lab: NAT dan PAT",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u20-l5"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}

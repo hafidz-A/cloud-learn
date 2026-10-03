@@ -1,0 +1,42 @@
+{
+  "id": "ccna-u23-acl",
+  "path": 4,
+  "title": "Access control list",
+  "lessons": [
+    {
+      "id": "ccna-u23-l1",
+      "title": "Cara kerja ACL",
+      "items": []
+    },
+    {
+      "id": "ccna-u23-l2",
+      "title": "ACL standard",
+      "items": []
+    },
+    {
+      "id": "ccna-u23-l3",
+      "title": "ACL extended",
+      "items": []
+    },
+    {
+      "id": "ccna-u23-l4",
+      "title": "Named ACL dan nomor urut",
+      "items": []
+    },
+    {
+      "id": "ccna-u23-l5",
+      "title": "Menerapkan dan troubleshoot ACL",
+      "items": []
+    },
+    {
+      "id": "ccna-u23-l6",
+      "title": "Lab: ACL",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u23-l5"
+      },
+      "items": []
+    }
+  ],
+  "facts": []
+}
