@@ -2408,6 +2408,110 @@
         "https://www.cisco.com/c/en/us/support/docs/ip/ip-version-6-ipv6/112100-ospfv3-config-guide.html",
         "https://www.rfc-editor.org/rfc/rfc5340.html"
       ]
+    },
+    {
+      "lesson": "ccna-u19-l7",
+      "title": "Akses manajemen yang aman",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Mengganti akses Telnet dengan SSH (Secure Shell) versi 2 dan user lokal di switch, lalu membuktikan dari PC bahwa SSH berhasil dan Telnet ditolak.",
+      "topology": {
+        "devices": [
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 0,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 1
+          }
+        ],
+        "links": [
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "SW1",
+          "port": "Vlan1",
+          "address": "192.168.1.2/24"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.10/24"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan PC1 ke SW1 dan isi alamat PC1."
+        },
+        {
+          "text": "Beri switch alamat manajemen.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname SW1",
+            "interface vlan 1",
+            "ip address 192.168.1.2 255.255.255.0",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Nyalakan SSH dan user lokal.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "ip domain name kantor.local",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "username admin privilege 15 secret Kopi-2026",
+            "line vty 0 15",
+            "login local",
+            "transport input ssh",
+            "exec-timeout 10 0",
+            "end",
+            "show ip ssh",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Status SSH.",
+          "device": "SW1",
+          "command": "show ip ssh",
+          "expect": "SSH Enabled - version 2.0."
+        },
+        {
+          "text": "Dari PC1, buka Command Prompt dan ketik ssh -l admin 192.168.1.2.",
+          "expect": "Diminta password; setelah Kopi-2026, prompt SW1# muncul (privilege 15)."
+        },
+        {
+          "text": "Dari PC1, ketik telnet 192.168.1.2.",
+          "expect": "Koneksi ditolak, karena line vty hanya menerima SSH."
+        }
+      ],
+      "notes": [
+        "Packet Tracer bisa menampilkan pesan pembuatan kunci RSA yang sedikit berbeda dari IOS asli."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html",
+        "https://www.cisco.com/c/en/us/about/trust-center/resilient-infrastructure/protecting-secrets.html"
+      ]
     }
   ]
 }

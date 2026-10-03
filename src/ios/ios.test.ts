@@ -389,3 +389,13 @@ describe('IPv6 static routes', () => {
     expect(run.transcript.filter((l) => l.text.startsWith('%')).length).toBe(1)
   })
 })
+
+describe('show ip ssh', () => {
+  it('reports SSH disabled until RSA keys exist, then the version', () => {
+    const run = runSession({ hostname: 'R1', model: 'isr4331' }, ['show ip ssh', 'configure terminal', 'ip domain name kantor.local', 'crypto key generate rsa modulus 2048', 'ip ssh version 2', 'end', 'show ip ssh'])
+    const text = run.transcript.map((l) => l.text).join('\n')
+    expect(text).toContain('SSH Disabled - version 1.99')
+    expect(text).toContain('SSH Enabled - version 2.0')
+    expect(judgeSession(run.state, { rsaKeys: true }).correct).toBe(true)
+  })
+})

@@ -547,12 +547,12 @@
   {
     "term": "FTP",
     "expansion": "File Transfer Protocol",
-    "description": "Protokol transfer file lama di TCP port 20 dan 21, tanpa enkripsi."
+    "description": "Transfer file di TCP 20 dan 21 dengan password teks biasa."
   },
   {
     "term": "TFTP",
     "expansion": "Trivial File Transfer Protocol",
-    "description": "Transfer file sederhana di UDP port 69, tanpa autentikasi."
+    "description": "Transfer file sederhana di UDP 69 tanpa login dan tanpa enkripsi."
   },
   {
     "term": "SMTP",
@@ -1056,5 +1056,50 @@
     "term": "VRID",
     "expansion": "Virtual Router Identifier",
     "description": "Nomor grup VRRP, juga bagian akhir MAC virtualnya."
+  },
+  {
+    "term": "AAA",
+    "expansion": "Authentication, Authorization, and Accounting",
+    "description": "Kerangka kontrol akses: siapa pengguna, apa yang boleh, dan catatan apa yang dilakukan."
+  },
+  {
+    "term": "TACACS+",
+    "expansion": "Terminal Access Controller Access-Control System Plus",
+    "description": "Protokol AAA di TCP 49 yang mengenkripsi seluruh isi paket."
+  },
+  {
+    "term": "TACACS",
+    "expansion": "Terminal Access Controller Access-Control System",
+    "description": "Nama dasar protokol AAA; versi Cisco yang dipakai sekarang adalah TACACS+."
+  },
+  {
+    "term": "SCP",
+    "expansion": "Secure Copy",
+    "description": "Penyalinan file lewat SSH."
+  },
+  {
+    "term": "SFTP",
+    "expansion": "SSH File Transfer Protocol",
+    "description": "Transfer file lewat SSH."
+  },
+  {
+    "term": "RSA",
+    "expansion": "Rivest-Shamir-Adleman",
+    "description": "Algoritma kriptografi asimetris; kuncinya dipakai SSH di perangkat Cisco."
+  },
+  {
+    "term": "MD5",
+    "expansion": "Message Digest 5",
+    "description": "Algoritma hash lama yang sekarang dianggap lemah."
+  },
+  {
+    "term": "PBKDF2",
+    "expansion": "Password-Based Key Derivation Function 2",
+    "description": "Fungsi hash password yang dipakai type 8 di Cisco IOS."
+  },
+  {
+    "term": "SHA",
+    "expansion": "Secure Hash Algorithm",
+    "description": "Keluarga algoritma hash, misalnya SHA-256."
   }
 ]

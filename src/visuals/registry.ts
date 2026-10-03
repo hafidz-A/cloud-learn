@@ -59,6 +59,10 @@ import { DrElection } from './DrElection'
 import { OspfCost } from './OspfCost'
 import { FhrpVirtual } from './FhrpVirtual'
 import { FhrpCompare } from './FhrpCompare'
+import { CryptoBasics } from './CryptoBasics'
+import { SshSetup } from './SshSetup'
+import { AaaFlow } from './AaaFlow'
+import { TacacsRadius } from './TacacsRadius'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -126,6 +130,10 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  TacacsRadius,
+  AaaFlow,
+  SshSetup,
+  CryptoBasics,
   FhrpCompare,
   FhrpVirtual,
   OspfCost,

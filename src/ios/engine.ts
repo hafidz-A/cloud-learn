@@ -904,6 +904,7 @@ function generated(st: DeviceState, command: string): string | undefined {
   if (command === 'show running-config') return runningConfig(st)
   if (command === 'show startup-config') return st.saved ?? 'startup-config is not present'
   if (command === 'show ip interface brief') return ipInterfaceBrief(st)
+  if (command === 'show ip ssh') return ipSsh(st)
   if (command === 'show ipv6 interface brief') return ipv6InterfaceBrief(st)
   if (command === 'show ip route' || command === 'show ip route static' || command === 'show ip route connected') return ipRouteTable(st, command.split(' ')[3])
   if (command === 'show ipv6 route' || command === 'show ipv6 route static' || command === 'show ipv6 route connected') return ipv6RouteTable(st, command.split(' ')[3])
@@ -957,6 +958,15 @@ function display(line: string): string {
     .replace(/^(key) \S+$/, '$1 <tersembunyi>')
     // IOS shows IPv6 addresses in upper case: "ipv6 address 2001:DB8:1::1/64".
     .replace(/^ipv6 (address|route) .*/, (l) => l.replace(/\S*:\S*/g, (w) => w.toUpperCase()))
+}
+
+function ipSsh(st: DeviceState): string {
+  const v2 = effective(st, '', 'ip ssh version') === 'ip ssh version 2'
+  const head = st.rsa ? `SSH Enabled - version ${v2 ? '2.0' : '1.99'}` : 'SSH Disabled - version 1.99'
+  const lines = [head]
+  if (!st.rsa) lines.push('%Please create RSA keys to enable SSH (and of atleast 768 bits for SSH v2).')
+  lines.push('Authentication methods:publickey,keyboard-interactive,password', 'Authentication timeout: 120 secs; Authentication retries: 3', '(Langit: baris lain dipersingkat)')
+  return lines.join('\n')
 }
 
 function ipInterfaceBrief(st: DeviceState): string {
@@ -1253,7 +1263,7 @@ export type IosReq = IosLineReq | { anyOf: IosLineReq[][] } | { context?: string
  * config: lines that must be in the running configuration; run: exec commands that must have run;
  * absent: lines that must not be there; saved: everything must be saved to startup-config at the end.
  */
-export type IosGoal = { config?: IosReq[]; run?: string[]; absent?: IosLineReq[]; saved?: boolean }
+export type IosGoal = { config?: IosReq[]; run?: string[]; absent?: IosLineReq[]; saved?: boolean; rsaKeys?: boolean }
 
 /** What a goal line means in the simulator: its context, slot, and canonical line. Throws when the line is not a valid command there. */
 export function parseGoalLine(model: Model, req: IosLineReq): { context: string; slot: string; line: string; acl: boolean } {
@@ -1334,6 +1344,7 @@ export function judgeSession(state: DeviceState, goal: IosGoal): { correct: bool
     if (!state.ran.includes(full)) missing.push(`jalankan ${full}`)
   }
   for (const req of goal.absent ?? []) if (has(state, req)) missing.push(`hapus ${describe(req)}`)
+  if (goal.rsaKeys && !state.rsa) missing.push('buat kunci RSA dengan crypto key generate rsa modulus 2048')
   if (goal.saved && state.saved !== runningConfig(state)) missing.push('simpan konfigurasi terakhir ke startup-config (copy running-config startup-config atau write memory)')
   return { correct: missing.length === 0, missing }
 }

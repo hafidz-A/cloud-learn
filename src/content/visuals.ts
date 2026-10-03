@@ -177,6 +177,11 @@ export const VISUAL_CATALOG = {
   // Unit 18
   FhrpVirtual: ['fhrp'],
   FhrpCompare: ['fhrp-compare'],
+  // Unit 19
+  CryptoBasics: ['crypto-basics'],
+  SshSetup: ['ssh'],
+  AaaFlow: ['aaa'],
+  TacacsRadius: ['tacacs-radius'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG
