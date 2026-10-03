@@ -10,8 +10,8 @@ import { useCourseProgress, useProgress } from '../store/progress'
 import {
   EXAM_MODES,
   FULL_SPLIT,
-  PASS_SCORE,
-  READY_SCORE,
+  PASS_SCORES,
+  READY_SCORES,
   createAttempt,
   formatClock,
   isAnswered,
@@ -70,7 +70,9 @@ function CourseExamScreen({ course }: { course: CourseId }) {
     navigate({ name: 'exam' })
   }
 
-  const ready = readiness(history)
+  const ready = readiness(history, course)
+  const passScore = PASS_SCORES[course]
+  const readyScore = READY_SCORES[course]
   const weakest = weakestDomain(history.slice(-5))
   const fullRuns = history.filter((a) => a.mode === 'full' && a.score !== undefined)
   const poolByPath = (p: PathId) => pool.filter((q) => q.path === p).length
@@ -175,8 +177,8 @@ function CourseExamScreen({ course }: { course: CourseId }) {
         </h2>
         <p className="mt-1 text-15">
           {ready.fullCount < 3
-            ? `Butuh 3 simulasi penuh dengan rata-rata minimal ${READY_SCORE}. Sudah ${ready.fullCount}.`
-            : `Rata-rata 3 simulasi penuh terakhir: ${ready.average}. ${ready.ready ? 'Mantap, pertahankan!' : `Target ${READY_SCORE}.`}`}
+            ? `Butuh 3 simulasi penuh dengan rata-rata minimal ${readyScore}. Sudah ${ready.fullCount}.`
+            : `Rata-rata 3 simulasi penuh terakhir: ${ready.average}. ${ready.ready ? 'Mantap, pertahankan!' : `Target ${readyScore}.`}`}
         </p>
         {!ready.ready && weakest && (
           <p className="mt-2 text-15 text-tinta-lembut">
@@ -227,10 +229,7 @@ function CourseExamScreen({ course }: { course: CourseId }) {
               caption="Skor simulasi penuh dari waktu ke waktu"
               unit="poin"
               yMax={1000}
-              references={[
-                { value: PASS_SCORE, label: 'Lulus' },
-                { value: READY_SCORE, label: 'Siap' },
-              ]}
+              references={[...(passScore === null ? [] : [{ value: passScore, label: 'Lulus' }]), { value: readyScore, label: 'Siap' }]}
               data={fullRuns.map((a, i) => ({ key: a.id, label: `#${i + 1}`, full: `Simulasi #${i + 1}, ${formatDate(a.startedAt)}`, value: a.score! }))}
             />
           </div>
@@ -248,7 +247,7 @@ function CourseExamScreen({ course }: { course: CourseId }) {
                   </span>
                   <span className="text-right">
                     <span className="block font-display text-20 font-bold tabular-nums">{a.score}</span>
-                    <span className="block text-13 text-tinta-lembut">{(a.score ?? 0) >= PASS_SCORE ? 'Lulus' : 'Belum lulus'}</span>
+                    <span className="block text-13 text-tinta-lembut">{passScore === null ? 'dari 1.000' : (a.score ?? 0) >= passScore ? 'Lulus' : 'Belum lulus'}</span>
                   </span>
                 </a>
               </li>

@@ -4,11 +4,11 @@ import { Button } from '../components/Button'
 import { CASE_STUDIES, COURSES } from '../content/course'
 import { leaveFlow, navigate } from '../lib/router'
 import { allExamHistory, useProgress } from '../store/progress'
-import { PASS_SCORE, formatClock, scoreAttempt } from './examLogic'
+import { PASS_SCORES, formatClock, scoreAttempt } from './examLogic'
 import { CERTIFICATION_PAGES, formatDate, modeLabel } from './format'
 import { examQuestion } from './pool'
 
-/** Score, pass or fail, per-domain bars, and time used (plan section 12.5). No mascot, no celebration. */
+/** Score, pass or fail (none for CCNA), per-domain bars, and time used (plan section 12.5). No mascot, no celebration. */
 export function ExamResultScreen({ attemptId }: { attemptId: string }) {
   const attempt = useProgress((s) => allExamHistory(s).find((a) => a.id === attemptId))
 
@@ -25,7 +25,8 @@ export function ExamResultScreen({ attemptId }: { attemptId: string }) {
 
   const course = attempt.course ?? 'az900'
   const paths = COURSES[course].paths
-  const passed = attempt.score >= PASS_SCORE
+  const passScore = PASS_SCORES[course]
+  const passed = passScore !== null && attempt.score >= passScore
   const { results } = scoreAttempt(attempt, examQuestion)
   // Only answered questions go to the review queue; unanswered ones say nothing about what the player knows.
   const toReview = Object.values(results).filter((r) => r.answered && !r.correct).length
@@ -40,14 +41,20 @@ export function ExamResultScreen({ attemptId }: { attemptId: string }) {
       <section className="rounded-2xl border-2 border-kabut bg-white p-5 text-center">
         <h1 className="font-display text-17 font-bold text-tinta-lembut">Skor kamu</h1>
         <p className="font-display text-[64px] font-bold leading-none">{attempt.score}</p>
-        <p className="mt-1 text-15 text-tinta-lembut">dari 1.000 · lulus mulai {PASS_SCORE}</p>
-        <p
-          className={`mx-auto mt-3 inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-display text-17 font-bold ${passed ? 'bg-mint-muda' : 'bg-koral-muda'}`}
-        >
-          {passed ? <CircleCheck size={20} className="text-mint-dalam" aria-hidden="true" /> : <CircleX size={20} className="text-koral-dalam" aria-hidden="true" />}
-          {passed ? 'Lulus' : 'Belum lulus'}
+        <p className="mt-1 text-15 text-tinta-lembut">dari 1.000{passScore !== null && ` · lulus mulai ${passScore}`}</p>
+        {passScore !== null && (
+          <p
+            className={`mx-auto mt-3 inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-display text-17 font-bold ${passed ? 'bg-mint-muda' : 'bg-koral-muda'}`}
+          >
+            {passed ? <CircleCheck size={20} className="text-mint-dalam" aria-hidden="true" /> : <CircleX size={20} className="text-koral-dalam" aria-hidden="true" />}
+            {passed ? 'Lulus' : 'Belum lulus'}
+          </p>
+        )}
+        <p className="mt-3 text-13 text-tinta-lembut">
+          {passScore === null
+            ? 'Skor ini perkiraan. Cisco tidak memublikasikan nilai lulus CCNA, jadi tidak ada label lulus atau belum lulus.'
+            : 'Skor ini perkiraan. Microsoft memakai skala skor sendiri yang tidak dipublikasikan.'}
         </p>
-        <p className="mt-3 text-13 text-tinta-lembut">Skor ini perkiraan. Microsoft memakai skala skor sendiri yang tidak dipublikasikan.</p>
       </section>
 
       <section className="rounded-2xl border-2 border-kabut bg-white p-4">

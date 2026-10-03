@@ -50,8 +50,14 @@ export const FULL_SPLIT: Record<CourseId, Record<PathId, number>> = {
  */
 const TRUEFALSE_SHARE: Record<CourseId, number | null> = { az900: null, az104: 0.2, ccna: 0.2 }
 
-export const PASS_SCORE = 700
-export const READY_SCORE = 800
+/**
+ * Passing score per course, on the 1,000-point scale. Microsoft publishes 700. Cisco
+ * does not publish a CCNA passing score, so CCNA results show no pass or fail label
+ * (LANGIT_CCNA_PLAN.md section 9).
+ */
+export const PASS_SCORES: Record<CourseId, number | null> = { az900: 700, az104: 700, ccna: null }
+/** Average of the last 3 full simulations that counts as exam-ready; stricter for CCNA, whose pass mark is unknown. */
+export const READY_SCORES: Record<CourseId, number> = { az900: 800, az104: 800, ccna: 850 }
 /** Questions from this many recent attempts are used last. */
 const RECENT_ATTEMPTS = 3
 
@@ -247,12 +253,12 @@ export function scoreAttempt(
 }
 
 /** "Siap ujian" when the last 3 full simulations average at least 800 (plan section 12.6). */
-export function readiness(history: ExamAttempt[]): { ready: boolean; average: number | null; fullCount: number } {
+export function readiness(history: ExamAttempt[], course: CourseId = 'az900'): { ready: boolean; average: number | null; fullCount: number } {
   const full = history.filter((a) => a.mode === 'full' && a.score !== undefined)
   const last = full.slice(-3)
   if (last.length < 3) return { ready: false, average: last.length ? avg(last) : null, fullCount: full.length }
   const average = avg(last)
-  return { ready: average >= READY_SCORE, average, fullCount: full.length }
+  return { ready: average >= READY_SCORES[course], average, fullCount: full.length }
 }
 
 function avg(list: ExamAttempt[]): number {
