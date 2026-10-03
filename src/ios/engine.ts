@@ -1003,7 +1003,11 @@ export function runSession(setup: IosSetup, inputs: string[]): Session {
 
 export type IosLineReq = { context?: string; line: string }
 export type IosReq = IosLineReq | { anyOf: IosLineReq[][] } | { context?: string; sequence: string[] }
-export type IosGoal = { config?: IosReq[]; run?: string[]; absent?: IosLineReq[] }
+/**
+ * config: lines that must be in the running configuration; run: exec commands that must have run;
+ * absent: lines that must not be there; saved: everything must be saved to startup-config at the end.
+ */
+export type IosGoal = { config?: IosReq[]; run?: string[]; absent?: IosLineReq[]; saved?: boolean }
 
 /** What a goal line means in the simulator: its context, slot, and canonical line. Throws when the line is not a valid command there. */
 export function parseGoalLine(model: Model, req: IosLineReq): { context: string; slot: string; line: string; acl: boolean } {
@@ -1084,6 +1088,7 @@ export function judgeSession(state: DeviceState, goal: IosGoal): { correct: bool
     if (!state.ran.includes(full)) missing.push(`jalankan ${full}`)
   }
   for (const req of goal.absent ?? []) if (has(state, req)) missing.push(`hapus ${describe(req)}`)
+  if (goal.saved && state.saved !== runningConfig(state)) missing.push('simpan konfigurasi terakhir ke startup-config (copy running-config startup-config atau write memory)')
   return { correct: missing.length === 0, missing }
 }
 

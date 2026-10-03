@@ -595,5 +595,32 @@
     "expansion": "Transmission Control Protocol",
     "description": "Protokol transport berorientasi koneksi: three-way handshake, nomor urut, dan pengiriman ulang.",
     "course": "ccna"
+  },
+  {
+    "term": "CLI",
+    "expansion": "Command-Line Interface",
+    "description": "Antarmuka berbasis teks untuk mengetik perintah, misalnya CLI Cisco IOS lewat console atau SSH.",
+    "course": "ccna"
+  },
+  {
+    "term": "RAM",
+    "expansion": "Random-Access Memory",
+    "description": "Memori kerja yang isinya hilang saat perangkat mati. Running-config ada di RAM."
+  },
+  {
+    "term": "NVRAM",
+    "expansion": "Non-Volatile RAM",
+    "description": "Memori yang isinya bertahan saat perangkat mati. Startup-config disimpan di NVRAM."
+  },
+  {
+    "term": "VTY",
+    "expansion": "Virtual Terminal",
+    "description": "Line untuk sesi remote seperti SSH atau Telnet, misalnya line vty 0 4."
+  },
+  {
+    "term": "SSH",
+    "expansion": "Secure Shell",
+    "description": "Protokol remote terenkripsi di TCP port 22, dipakai untuk mengelola router dan switch lewat line vty.",
+    "course": "ccna"
   }
 ]

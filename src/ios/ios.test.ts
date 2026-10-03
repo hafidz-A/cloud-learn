@@ -292,3 +292,13 @@ describe('judging (goals)', () => {
     expect(() => parseGoalLine('isr4331', { context: 'interface GigabitEthernet0/0/0', line: 'no ip address' })).toThrow(/absent/)
   })
 })
+
+describe('the saved goal', () => {
+  it('needs the final configuration saved, by copy or by write memory', () => {
+    const goal = { config: [{ line: 'hostname R7' }], saved: true }
+    expect(judgeSession(runSession(R1, ['conf t', 'hostname R7', 'end', 'copy run start', '']).state, goal).correct).toBe(true)
+    expect(judgeSession(runSession(R1, ['conf t', 'hostname R7', 'end', 'wr']).state, goal).correct).toBe(true)
+    // Saved first, changed after: the change is not in startup-config.
+    expect(judgeSession(runSession(R1, ['wr', 'conf t', 'hostname R7', 'end']).state, goal).correct).toBe(false)
+  })
+})

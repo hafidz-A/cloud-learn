@@ -1,1 +1,142 @@
-{ "labs": [] }
+{
+  "labs": [
+    {
+      "lesson": "ccna-u02-l5",
+      "title": "Konfigurasi awal router dan switch",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Memberi router ISR4331 dan switch 2960 konfigurasi awal yang aman lewat kabel console, lalu menyimpannya dan membuktikan konfigurasi bertahan setelah reload.",
+      "topology": {
+        "devices": [
+          {
+            "id": "pc",
+            "kind": "pc",
+            "label": "PC0",
+            "x": 2,
+            "y": 0,
+            "note": "terminal console"
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "HQ-R1",
+            "x": 0,
+            "y": 1,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "HQ-SW1",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          }
+        ],
+        "links": [
+          {
+            "from": "pc",
+            "to": "r1",
+            "toPort": "Console",
+            "style": "dashed"
+          },
+          {
+            "from": "pc",
+            "to": "sw1",
+            "toPort": "Console",
+            "style": "dashed"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "text": "Letakkan router ISR4331, switch 2960-24TT, dan satu PC. Sambungkan kabel console (biru muda) dari PC ke port Console router. Untuk switch, pindahkan kabel yang sama setelah router selesai, atau pakai PC kedua."
+        },
+        {
+          "text": "Di PC, buka Desktop lalu Terminal, dan pastikan pengaturannya 9600 bps, 8 data bit, tanpa parity, 1 stop bit, tanpa flow control. Kalau muncul pertanyaan initial configuration dialog, jawab no."
+        },
+        {
+          "text": "Beri nama router dan enable secret.",
+          "device": "HQ-R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname HQ-R1",
+            "enable secret Cisc0Lab"
+          ]
+        },
+        {
+          "text": "Pasang password dan login di console serta lima line vty pertama.",
+          "device": "HQ-R1",
+          "commands": [
+            "line console 0",
+            "password Konsol1",
+            "login",
+            "exit",
+            "line vty 0 4",
+            "password Remote1",
+            "login",
+            "exit"
+          ]
+        },
+        {
+          "text": "Tambahkan banner, sandikan password teks biasa, lalu simpan. Tekan Enter saat ditanya nama tujuan.",
+          "device": "HQ-R1",
+          "commands": [
+            "banner motd #Akses terbatas#",
+            "service password-encryption",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ]
+        },
+        {
+          "text": "Ulangi di switch dengan nama HQ-SW1. Switch 2960 punya 16 line vty, jadi pakai line vty 0 15.",
+          "device": "HQ-SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname HQ-SW1",
+            "enable secret Cisc0Lab",
+            "line vty 0 15",
+            "password Remote1",
+            "login",
+            "end",
+            "write memory"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Lihat konfigurasi yang tersimpan di router.",
+          "device": "HQ-R1",
+          "command": "show startup-config",
+          "expect": "Ada hostname HQ-R1, enable secret dalam bentuk hash, password line yang diawali angka 7, dan banner motd."
+        },
+        {
+          "text": "Buktikan konfigurasi bertahan: jalankan reload di privileged EXEC, konfirmasi, lalu tunggu router menyala lagi.",
+          "expect": "Banner Akses terbatas muncul, console menanyakan password, dan prompt kembali menjadi HQ-R1>."
+        },
+        {
+          "text": "Coba masuk privileged EXEC.",
+          "device": "HQ-R1",
+          "command": "enable",
+          "expect": "IOS menanyakan Password, dan hanya Cisc0Lab yang diterima."
+        }
+      ],
+      "notes": [
+        "Packet Tracer dan IOS XE asli sama-sama menanyakan initial configuration dialog saat startup-config kosong. Jawab no untuk masuk CLI (Command-Line Interface) biasa.",
+        "Di IOS XE asli, enable secret biasanya tampil sebagai type 9 (scrypt). Packet Tracer bisa menampilkan tipe lain. Yang penting: tidak terbaca sebagai teks biasa.",
+        "Perintah reload tidak ada di simulator Langit, jadi langkah pembuktian ini hanya bisa dicoba di Packet Tracer atau perangkat asli."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_cfg/configuration/15-mt/sec-usr-cfg-15-mt-book/sec-cfg-sec-4cli.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-8/configuration_guide/sec/b_168_sec_9400_cg/controlling_switch_access_with_passwords_and_privilege_levels.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/command/cf_command_ref/A_through_B.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3850/software/release/16-9/configuration_guide/sys_mgmt/b_169_sys_mgmt_3850_cg/m-169-fm-config-cg.html",
+        "https://www.cisco.com/c/en/us/support/docs/storage-networking/management/217970-troubleshoot-and-apply-correct-terminal.html"
+      ]
+    }
+  ]
+}

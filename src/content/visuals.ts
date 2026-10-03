@@ -106,6 +106,9 @@ export const VISUAL_CATALOG = {
   SwitchLearning: ['mac-learning'],
   ArpExchange: ['arp'],
   TcpHandshake: ['tcp-handshake'],
+  // Unit 2
+  CliModes: ['ios-modes'],
+  RunVsStartup: ['running-vs-startup'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

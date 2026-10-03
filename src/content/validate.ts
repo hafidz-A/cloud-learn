@@ -57,13 +57,13 @@ const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet
  * names (AZ, P1, E3, the App Service Free plan F1), region names (East US), HTTP
  * methods (DELETE, POST), and the DNS record type AAAA.
  */
-const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA', 'PC', 'IOS', 'XE', 'CCNA'])
+const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA', 'PC', 'IOS', 'XE', 'CCNA', 'EXEC'])
 
 /**
- * CCNA device and interface names (R1, SW2, PC1, SRV1, the "G0" of G0/0/0) are
- * labels, not abbreviations. PC and Cisco IOS (XE) are product words used as names.
+ * CCNA device and interface names (R1, SW2, HQ-R1, PC1, SRV1, the "G0" of G0/0/0)
+ * are labels, not abbreviations. PC and Cisco IOS (XE) are product words used as names.
  */
-const DEVICE_NAME = /^(R|SW|PC|SRV|S|G|F|E)\d+$/
+const DEVICE_NAME = /^([A-Z]{2,4}-)?(R|SW|PC|SRV|S|G|F|E)\d+$/
 
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')
@@ -371,7 +371,7 @@ export function iosProblems(e: IosExercise): string[] {
   if (e.start !== undefined && !['user', 'priv', 'config'].includes(e.start)) out.push('start must be "user", "priv", or "config"')
   if (!Array.isArray(e.solution) || e.solution.length === 0) out.push('an ios question needs a solution')
   const goal = e.goal ?? {}
-  if (!goal.config?.length && !goal.run?.length) out.push('the goal needs config lines or commands to run')
+  if (!goal.config?.length && !goal.run?.length && !goal.saved) out.push('the goal needs config lines, commands to run, or saving')
   const tryLine = (req: IosLineReq) => {
     try {
       parseGoalLine(model, req)

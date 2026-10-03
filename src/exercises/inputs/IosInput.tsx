@@ -6,9 +6,9 @@ import { iosSetup, judgeIos } from '../logic'
 import type { InputProps } from '../looks'
 
 const MODEL_LABEL: Record<IosExercise['device']['model'], string> = {
-  isr4331: 'Router ISR4331',
-  c2960: 'Switch 2960',
-  c3650: 'Switch Layer 3 3650',
+  isr4331: 'ISR4331',
+  c2960: 'Catalyst 2960',
+  c3650: 'Catalyst 3650',
 }
 
 function Line({ line }: { line: TermLine }) {
