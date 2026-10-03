@@ -123,6 +123,11 @@ export const VISUAL_CATALOG = {
   Ipv6AddressTypes: ['ipv6-address-types'],
   Eui64Steps: ['eui-64'],
   SlaacFlow: ['slaac'],
+  // Unit 6
+  Channels24: ['wifi-channels'],
+  RfBehaviors: ['rf-behavior'],
+  WifiSecurity: ['wifi-security'],
+  BssEss: ['bss-ess'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

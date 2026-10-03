@@ -63,7 +63,7 @@ const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 
  * CCNA device, interface, and model names (R1, SW2, HQ-R1, PC1, SRV1, the "G0" of
  * G0/0/0, ISR4331) are labels, not abbreviations. PC and Cisco IOS (XE) are product words used as names.
  */
-const DEVICE_NAME = /^(([A-Z]{2,4}-)?(R|SW|PC|SRV|S|G|F|E)\d+|ISR\d{4})$/
+const DEVICE_NAME = /^(([A-Z]{2,4}-)?(R|SW|PC|SRV|AP|S|G|F|E)\d+|ISR\d{4})$/
 
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')

@@ -22,7 +22,7 @@
   {
     "term": "AES",
     "expansion": "Advanced Encryption Standard",
-    "description": "Algoritma enkripsi standar. Azure Storage memakai AES 256-bit untuk mengenkripsi data yang disimpan."
+    "description": "Algoritma enkripsi kuat yang dipakai WPA2 dan WPA3."
   },
   {
     "term": "AKS",
@@ -708,5 +708,110 @@
     "term": "RS",
     "expansion": "Router Solicitation",
     "description": "Pesan NDP dari host yang meminta router segera mengirim Router Advertisement."
+  },
+  {
+    "term": "SSID",
+    "expansion": "Service Set Identifier",
+    "description": "Nama WLAN yang dilihat klien saat memilih jaringan Wi-Fi, maksimal 32 karakter."
+  },
+  {
+    "term": "RF",
+    "expansion": "Radio Frequency",
+    "description": "Gelombang radio yang membawa sinyal wireless, misalnya di band 2,4, 5, dan 6 GHz."
+  },
+  {
+    "term": "WPA",
+    "expansion": "Wi-Fi Protected Access",
+    "description": "Standar keamanan Wi-Fi pengganti WEP. Generasi pertamanya memakai TKIP."
+  },
+  {
+    "term": "WPA2",
+    "expansion": "Wi-Fi Protected Access 2",
+    "description": "Keamanan Wi-Fi dengan enkripsi AES, dalam mode Personal atau Enterprise."
+  },
+  {
+    "term": "WPA3",
+    "expansion": "Wi-Fi Protected Access 3",
+    "description": "Keamanan Wi-Fi terbaru: SAE untuk Personal, 802.1X untuk Enterprise, dan PMF wajib."
+  },
+  {
+    "term": "WEP",
+    "expansion": "Wired Equivalent Privacy",
+    "description": "Keamanan Wi-Fi lama dengan kunci statis bersama. Sudah tidak aman."
+  },
+  {
+    "term": "TKIP",
+    "expansion": "Temporal Key Integrity Protocol",
+    "description": "Enkripsi WPA generasi pertama, pengganti sementara WEP."
+  },
+  {
+    "term": "SAE",
+    "expansion": "Simultaneous Authentication of Equals",
+    "description": "Pertukaran kunci WPA3-Personal yang tahan terhadap tebakan password offline."
+  },
+  {
+    "term": "PSK",
+    "expansion": "Pre-Shared Key",
+    "description": "Password Wi-Fi yang sama untuk semua pengguna di mode Personal."
+  },
+  {
+    "term": "PMF",
+    "expansion": "Protected Management Frames",
+    "description": "Perlindungan frame manajemen Wi-Fi, misalnya deauthentication, dari pemalsuan. Wajib di WPA3."
+  },
+  {
+    "term": "RADIUS",
+    "expansion": "Remote Authentication Dial-In User Service",
+    "description": "Protokol server autentikasi, misalnya untuk Wi-Fi mode Enterprise dengan 802.1X."
+  },
+  {
+    "term": "SNR",
+    "expansion": "Signal-to-Noise Ratio",
+    "description": "Selisih kekuatan sinyal dengan noise dalam dB. Makin besar, makin baik."
+  },
+  {
+    "term": "RSSI",
+    "expansion": "Received Signal Strength Indicator",
+    "description": "Kekuatan sinyal yang diterima klien, biasanya dalam dBm."
+  },
+  {
+    "term": "BSS",
+    "expansion": "Basic Service Set",
+    "description": "Satu access point beserta klien yang terhubung dengannya."
+  },
+  {
+    "term": "BSSID",
+    "expansion": "Basic Service Set Identifier",
+    "description": "Penanda BSS, yaitu MAC address radio access point."
+  },
+  {
+    "term": "ESS",
+    "expansion": "Extended Service Set",
+    "description": "Beberapa access point dengan SSID yang sama, sehingga klien bisa roaming."
+  },
+  {
+    "term": "OFDMA",
+    "expansion": "Orthogonal Frequency-Division Multiple Access",
+    "description": "Teknik Wi-Fi 6 yang membagi channel supaya beberapa klien bisa dilayani sekaligus."
+  },
+  {
+    "term": "MIMO",
+    "expansion": "Multiple-Input Multiple-Output",
+    "description": "Memakai beberapa antena sekaligus untuk menaikkan kecepatan, diperkenalkan di 802.11n."
+  },
+  {
+    "term": "RRM",
+    "expansion": "Radio Resource Management",
+    "description": "Fitur WLC Cisco yang mengatur channel dan daya AP secara otomatis."
+  },
+  {
+    "term": "OWE",
+    "expansion": "Opportunistic Wireless Encryption",
+    "description": "Enkripsi untuk WLAN terbuka tanpa password, dipakai misalnya di 6 GHz."
+  },
+  {
+    "term": "WLAN",
+    "expansion": "Wireless LAN",
+    "description": "Jaringan lokal tanpa kabel, misalnya Wi-Fi kantor dengan satu SSID."
   }
 ]

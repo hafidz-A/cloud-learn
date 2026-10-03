@@ -18,6 +18,10 @@ import { Ipv6Compression } from './Ipv6Compression'
 import { Ipv6AddressTypes } from './Ipv6AddressTypes'
 import { Eui64Steps } from './Eui64Steps'
 import { SlaacFlow } from './SlaacFlow'
+import { Channels24 } from './Channels24'
+import { RfBehaviors } from './RfBehaviors'
+import { WifiSecurity } from './WifiSecurity'
+import { BssEss } from './BssEss'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -85,6 +89,10 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  BssEss,
+  WifiSecurity,
+  RfBehaviors,
+  Channels24,
   SlaacFlow,
   Eui64Steps,
   Ipv6AddressTypes,
