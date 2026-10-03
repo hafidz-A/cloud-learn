@@ -204,6 +204,10 @@ export const VISUAL_CATALOG = {
   MgmtModels: ['mgmt-models'],
   SdnLayers: ['sdn'],
   RestCrud: ['rest-api'],
+  // Unit 26
+  SnmpRoles: ['snmp'],
+  SyslogLevels: ['syslog-levels'],
+  SyslogFormat: ['syslog-format'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

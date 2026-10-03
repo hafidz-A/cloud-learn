@@ -79,6 +79,9 @@ import { L2Defenses } from './L2Defenses'
 import { MgmtModels } from './MgmtModels'
 import { SdnLayers } from './SdnLayers'
 import { RestCrud } from './RestCrud'
+import { SnmpRoles } from './SnmpRoles'
+import { SyslogLevels } from './SyslogLevels'
+import { SyslogFormat } from './SyslogFormat'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -146,6 +149,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  SyslogFormat,
+  SyslogLevels,
+  SnmpRoles,
   RestCrud,
   SdnLayers,
   MgmtModels,

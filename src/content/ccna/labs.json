@@ -2980,6 +2980,163 @@
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-4SY/config_guide/sup6T/15_3_sy_swcg_6T/dhcp_snooping.html",
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750x_3560x/software/release/15-0_1_se/configuration/guide/3750xcg/swdynarp.html"
       ]
+    },
+    {
+      "lesson": "ccna-u26-l4",
+      "title": "SNMP dan syslog",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Mengirim log R1 ke server syslog dengan waktu dari NTP (Network Time Protocol), membuka SNMP (Simple Network Management Protocol) baca saja, lalu melihat pesan perubahan interface tiba di server.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "Server",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "r2",
+            "kind": "router",
+            "label": "R2",
+            "x": 4,
+            "y": 2,
+            "note": "ISR4331"
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "srv",
+            "to": "sw1",
+            "toPort": "Fa0/1"
+          },
+          {
+            "from": "r2",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "Fa0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R2",
+          "port": "G0/0/0",
+          "address": "192.168.1.1/24, sumber NTP"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "192.168.1.2/24"
+        },
+        {
+          "device": "Server",
+          "port": "NIC",
+          "address": "192.168.1.60/24, layanan Syslog menyala"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pasang perangkat dan kabel. Di Server, buka Services, nyalakan Syslog."
+        },
+        {
+          "text": "R2 sebagai sumber waktu.",
+          "device": "R2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R2",
+            "interface g0/0/0",
+            "ip address 192.168.1.1 255.255.255.0",
+            "no shutdown",
+            "exit",
+            "ntp master 3",
+            "end"
+          ]
+        },
+        {
+          "text": "Alamat R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R1",
+            "interface g0/0/1",
+            "ip address 192.168.1.2 255.255.255.0",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Syslog, NTP, dan SNMP di R1, lalu matikan dan nyalakan G0/0/1 untuk memicu pesan sebelum menyimpan.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "logging host 192.168.1.60",
+            "logging trap notifications",
+            "logging buffered informational",
+            "service timestamps log datetime msec",
+            "ntp server 192.168.1.1",
+            "snmp-server community Pantau ro",
+            "snmp-server host 192.168.1.60 version 2c Pantau",
+            "snmp-server enable traps",
+            "interface g0/0/1",
+            "shutdown",
+            "no shutdown",
+            "end",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Sinkronisasi waktu.",
+          "device": "R1",
+          "command": "show ntp status",
+          "expect": "Clock is synchronized, dengan reference 192.168.1.1 (bisa butuh satu sampai dua menit)."
+        },
+        {
+          "text": "Isi buffer.",
+          "device": "R1",
+          "command": "show logging",
+          "expect": "Ada pesan %LINK-3-UPDOWN dan %LINEPROTO-5-UPDOWN untuk GigabitEthernet0/0/1, dengan waktu bermilidetik."
+        },
+        {
+          "text": "Di Server, buka Services lalu Syslog.",
+          "expect": "Pesan yang sama tercatat dari 192.168.1.2."
+        }
+      ],
+      "notes": [
+        "ntp master hanya dipakai di lab untuk menjadikan R2 sumber waktu; di jaringan sungguhan, gunakan server NTP yang dikelola.",
+        "Saat G0/0/1 dimatikan, pesannya tidak bisa terkirim ke server; yang tiba di server adalah pesan saat interface menyala lagi, sedangkan buffer menyimpan keduanya."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
+      ]
     }
   ]
 }

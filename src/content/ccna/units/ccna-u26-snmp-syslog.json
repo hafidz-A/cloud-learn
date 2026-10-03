@@ -6,17 +6,596 @@
     {
       "id": "ccna-u26-l1",
       "title": "SNMP",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u26-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "snmp"
+          ],
+          "title": "Manager, agent, dan MIB",
+          "body": "SNMP (Simple Network Management Protocol) dipakai untuk memantau dan mengelola perangkat. Manager, atau NMS (network management system), adalah server pemantau. Agent berjalan di router atau switch. MIB (management information base) adalah kumpulan variabel di agent, misalnya status interface atau pemakaian CPU (central processing unit). Manager memakai get untuk membaca variabel dan set untuk mengubahnya.",
+          "keyPoints": [
+            "Manager (NMS) memantau",
+            "Agent di perangkat",
+            "MIB: variabel; get membaca, set mengubah"
+          ],
+          "visual": "SnmpRoles",
+          "teaches": [
+            "ccna-f-u26-snmp-roles",
+            "ccna-f-u26-get-set"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-e1",
+          "type": "choice",
+          "concept": "snmp",
+          "prompt": "Where are the MIB (management information base) variables of a router kept?",
+          "options": [
+            "In the agent on the router",
+            "In the NMS (network management system) only",
+            "In the syslog server",
+            "In the DHCP (Dynamic Host Configuration Protocol) server"
+          ],
+          "answer": 0,
+          "explanation": "MIB (management information base) ada di agent; manager membaca atau mengubahnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-snmp-roles"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-e2",
+          "type": "truefalse",
+          "concept": "snmp",
+          "prompt": "An SNMP (Simple Network Management Protocol) manager uses set to read the value of a MIB (management information base) variable.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. get membaca; set mengubah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-get-set"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "snmp-notify"
+          ],
+          "title": "Trap dan inform",
+          "body": "Agent juga bisa memberi tahu manager tanpa diminta, misalnya saat interface mati. Trap dikirim tanpa balasan, jadi agent tidak tahu apakah sampai. Inform dibalas manager, jadi lebih andal. Manager mendengarkan get dan set dari arah sebaliknya: agent menerima di UDP (User Datagram Protocol) 161, dan notifikasi dikirim ke manager di UDP 162.",
+          "keyPoints": [
+            "Trap: tanpa balasan",
+            "Inform: dibalas",
+            "Agent UDP 161, notifikasi UDP 162"
+          ],
+          "teaches": [
+            "ccna-f-u26-trap-inform",
+            "ccna-f-u01-ports-udp"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-e3",
+          "type": "match",
+          "concept": "snmp-notify",
+          "prompt": "Match each SNMP (Simple Network Management Protocol) message to its description.",
+          "pairs": [
+            [
+              "get",
+              "Manager reads a value"
+            ],
+            [
+              "set",
+              "Manager changes a value"
+            ],
+            [
+              "trap",
+              "Agent notifies without an acknowledgment"
+            ],
+            [
+              "inform",
+              "Agent notifies and expects an acknowledgment"
+            ]
+          ],
+          "explanation": "get dan set dari manager; trap dan inform dari agent, dengan inform yang dibalas.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-get-set",
+            "ccna-f-u26-trap-inform"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-e4",
+          "type": "choice",
+          "concept": "snmp-notify",
+          "prompt": "A router must be sure that the NMS (network management system) received its link-down notification. Which message type fits?",
+          "options": [
+            "inform",
+            "trap",
+            "get",
+            "set"
+          ],
+          "answer": 0,
+          "explanation": "Inform dibalas manager, jadi agent tahu notifikasinya sampai.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-trap-inform"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "snmp-versions"
+          ],
+          "title": "Versi SNMP",
+          "body": "SNMPv1 dan SNMPv2c memakai community string, semacam password bersama, yang dikirim tanpa enkripsi. snmp-server community diikuti string lalu ro memberi akses baca saja, dan rw memberi akses ubah. SNMPv3 memakai user dengan tiga tingkat keamanan: noAuthNoPriv, authNoPriv dengan autentikasi, dan authPriv dengan autentikasi dan enkripsi. Untuk notifikasi, snmp-server host menentukan tujuan trap dan snmp-server enable traps mengaktifkannya.",
+          "keyPoints": [
+            "v1 dan v2c: community, teks biasa",
+            "ro: baca, rw: ubah",
+            "v3 authPriv: autentikasi dan enkripsi"
+          ],
+          "teaches": [
+            "ccna-f-u26-v2c",
+            "ccna-f-u26-v3",
+            "ccna-f-u26-community-cmd",
+            "ccna-f-u26-snmp-host"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-e5",
+          "type": "choice",
+          "concept": "snmp-versions",
+          "prompt": "Which SNMP (Simple Network Management Protocol) security level provides both authentication and encryption?",
+          "options": [
+            "SNMPv3 authPriv",
+            "SNMPv3 authNoPriv",
+            "SNMPv2c with a ro community",
+            "SNMPv3 noAuthNoPriv"
+          ],
+          "answer": 0,
+          "explanation": "authPriv menambahkan enkripsi ke autentikasi. SNMPv2c tidak mengenkripsi community string.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-v3",
+            "ccna-f-u26-v2c"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-e6",
+          "type": "ios",
+          "concept": "snmp-versions",
+          "prompt": "On R1, allow read-only SNMP (Simple Network Management Protocol) polling with community Pantau, set the location to Rak-2, and send SNMPv2c traps to 192.168.1.50 with that community.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "snmp-server community Pantau ro"
+              },
+              {
+                "line": "snmp-server location Rak-2"
+              },
+              {
+                "line": "snmp-server host 192.168.1.50 version 2c Pantau"
+              },
+              {
+                "line": "snmp-server enable traps"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "snmp-server community Pantau ro",
+            "snmp-server location Rak-2",
+            "snmp-server host 192.168.1.50 version 2c Pantau",
+            "snmp-server enable traps",
+            "end"
+          ],
+          "explanation": "Community ro untuk polling, lokasi untuk keterangan, lalu tujuan trap dan pengaktifannya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-community-cmd",
+            "ccna-f-u26-snmp-host"
+          ]
+        },
+        {
+          "id": "ccna-u26-l1-e7",
+          "type": "multi",
+          "concept": "snmp-versions",
+          "prompt": "Which two statements about SNMPv2c (Simple Network Management Protocol version 2c) are true? (Choose two.)",
+          "options": [
+            "It uses community strings",
+            "Community strings travel in clear text",
+            "It encrypts every message",
+            "It requires a username and password per user"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "SNMPv2c memakai community string tanpa enkripsi. User dan enkripsi ada di SNMPv3.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-v2c",
+            "ccna-f-u26-v3"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u26-l2",
       "title": "Severity syslog",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u26-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "syslog-levels"
+          ],
+          "title": "Delapan level severity",
+          "body": "Setiap pesan log punya level severity dari 0 sampai 7. Angka kecil berarti lebih parah: 0 emergencies, 1 alerts, 2 critical, 3 errors, 4 warnings, 5 notifications, 6 informational, dan 7 debugging. Pesan perubahan status interface, misalnya, ada di level 3 dan 5.",
+          "keyPoints": [
+            "0 emergencies paling parah",
+            "4 warnings, 5 notifications",
+            "7 debugging paling rinci"
+          ],
+          "visual": "SyslogLevels",
+          "teaches": [
+            "ccna-f-u26-levels"
+          ]
+        },
+        {
+          "id": "ccna-u26-l2-e1",
+          "type": "choice",
+          "concept": "syslog-levels",
+          "prompt": "Which syslog level is the most severe?",
+          "options": [
+            "0 emergencies",
+            "7 debugging",
+            "4 warnings",
+            "3 errors"
+          ],
+          "answer": 0,
+          "explanation": "Angka lebih kecil berarti lebih parah, jadi 0 emergencies paling parah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-levels"
+          ]
+        },
+        {
+          "id": "ccna-u26-l2-e2",
+          "type": "match",
+          "concept": "syslog-levels",
+          "prompt": "Match each severity number to its keyword.",
+          "pairs": [
+            [
+              "1",
+              "alerts"
+            ],
+            [
+              "3",
+              "errors"
+            ],
+            [
+              "5",
+              "notifications"
+            ],
+            [
+              "6",
+              "informational"
+            ],
+            [
+              "7",
+              "debugging"
+            ]
+          ],
+          "explanation": "Hafalkan urutannya: emergencies, alerts, critical, errors, warnings, notifications, informational, debugging.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-levels"
+          ]
+        },
+        {
+          "id": "ccna-u26-l2-e3",
+          "type": "order",
+          "concept": "syslog-levels",
+          "prompt": "Order these syslog levels from most severe to least severe.",
+          "items": [
+            "critical",
+            "errors",
+            "warnings",
+            "notifications",
+            "informational"
+          ],
+          "explanation": "critical 2, errors 3, warnings 4, notifications 5, informational 6.",
+          "requires": [
+            "ccna-f-u26-levels"
+          ]
+        },
+        {
+          "id": "ccna-u26-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "threshold"
+          ],
+          "title": "Batas level",
+          "body": "Saat level dipilih sebagai batas, pesan pada level itu dan semua level yang angkanya lebih kecil ikut dikirim. Jadi logging trap warnings mengirim level 0 sampai 4 ke server syslog, dan level 5 sampai 7 tidak. Memilih debugging berarti mengirim semuanya, yang bisa sangat banyak.",
+          "keyPoints": [
+            "Level itu dan angka lebih kecil",
+            "warnings: 0–4",
+            "debugging: semuanya"
+          ],
+          "teaches": [
+            "ccna-f-u26-threshold",
+            "ccna-f-u26-levels"
+          ]
+        },
+        {
+          "id": "ccna-u26-l2-e4",
+          "type": "choice",
+          "concept": "threshold",
+          "prompt": "R1 has logging trap notifications. Which message reaches the syslog server?",
+          "options": [
+            "A level 3 errors message",
+            "A level 6 informational message",
+            "A level 7 debugging message",
+            "None of them"
+          ],
+          "answer": 0,
+          "explanation": "notifications adalah level 5; level 0 sampai 5 dikirim, termasuk level 3.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-threshold"
+          ]
+        },
+        {
+          "id": "ccna-u26-l2-e5",
+          "type": "ios",
+          "concept": "threshold",
+          "prompt": "On R1, send only messages from level 0 to level 4 to the syslog servers.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "logging trap warnings"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "logging trap warnings",
+            "end"
+          ],
+          "explanation": "Batas warnings, level 4, mengirim level 0 sampai 4. Angka 4 juga diterima dan disimpan sebagai warnings.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-threshold"
+          ]
+        },
+        {
+          "id": "ccna-u26-l2-e6",
+          "type": "truefalse",
+          "concept": "threshold",
+          "prompt": "logging trap informational also sends debugging messages to the syslog servers.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. informational adalah level 6; debugging level 7 tidak ikut.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-threshold"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u26-l3",
       "title": "Format pesan dan facility syslog",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u26-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "syslog-format"
+          ],
+          "title": "Format pesan",
+          "body": "Pesan sistem IOS berbentuk %FACILITY-SEVERITY-MNEMONIC diikuti titik dua dan teks pesan. Contoh %LINK-3-UPDOWN berarti facility link, severity 3 (errors), dan mnemonic updown. Facility di awal menunjukkan bagian sistem yang menghasilkan pesan, dan angka di tengah langsung memberi tahu tingkat keparahannya.",
+          "keyPoints": [
+            "%FACILITY-SEVERITY-MNEMONIC: teks",
+            "Angka tengah: severity",
+            "Facility: bagian sistem"
+          ],
+          "visual": "SyslogFormat",
+          "teaches": [
+            "ccna-f-u26-format",
+            "ccna-f-u26-levels"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-e1",
+          "type": "exhibit",
+          "concept": "syslog-format",
+          "prompt": "Refer to the exhibit. What is the severity of this message?",
+          "outputs": [
+            {
+              "title": "R1#",
+              "text": "%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up"
+            }
+          ],
+          "options": [
+            "5, notifications",
+            "3, errors",
+            "4, warnings",
+            "6, informational"
+          ],
+          "answer": 0,
+          "explanation": "Angka di antara dua tanda minus adalah severity: 5, notifications.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-format",
+            "ccna-f-u26-levels"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-e2",
+          "type": "choice",
+          "concept": "syslog-format",
+          "prompt": "In %SYS-5-CONFIG_I, what is CONFIG_I?",
+          "options": [
+            "The mnemonic",
+            "The facility",
+            "The severity",
+            "The host name"
+          ],
+          "answer": 0,
+          "explanation": "Di %SYS-5-CONFIG_I, bagian pertama setelah tanda persen adalah facility, angka 5 adalah severity, dan bagian terakhir adalah mnemonic.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-format"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "syslog-dest"
+          ],
+          "title": "Ke mana log dikirim",
+          "body": "Log bisa dikirim ke console, ke sesi terminal SSH (Secure Shell) yang memakai monitor, ke buffer di RAM (random-access memory) yang dibaca dengan show logging, dan ke server syslog di UDP (User Datagram Protocol) 514 lewat logging host. Server syslog menyimpan log dari banyak perangkat di satu tempat. Di protokol syslog, facility local0 sampai local7 disediakan untuk penggunaan lokal, dan IOS memakai local7 secara bawaan.",
+          "keyPoints": [
+            "Console, monitor, buffer, server",
+            "logging host <alamat>",
+            "Facility bawaan IOS: local7"
+          ],
+          "teaches": [
+            "ccna-f-u26-destinations",
+            "ccna-f-u26-logging-host",
+            "ccna-f-u26-buffered",
+            "ccna-f-u26-facility",
+            "ccna-f-u01-ports-udp"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-e3",
+          "type": "match",
+          "concept": "syslog-dest",
+          "prompt": "Match each command to where it sends log messages.",
+          "pairs": [
+            [
+              "logging console",
+              "The console line"
+            ],
+            [
+              "logging buffered",
+              "A buffer in RAM (random-access memory)"
+            ],
+            [
+              "logging host",
+              "A syslog server"
+            ],
+            [
+              "logging monitor",
+              "Remote terminal sessions"
+            ]
+          ],
+          "explanation": "console ke line console, buffered ke RAM (random-access memory), host ke server, dan monitor ke sesi terminal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-destinations",
+            "ccna-f-u26-logging-host",
+            "ccna-f-u26-buffered"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "log-time"
+          ],
+          "title": "Waktu yang bisa dipercaya",
+          "body": "Log dari banyak perangkat hanya berguna kalau waktunya bisa dibandingkan. service timestamps log datetime msec menambahkan tanggal dan waktu sampai milidetik ke setiap pesan. NTP (Network Time Protocol), dengan ntp server diikuti alamat, menyamakan jam semua perangkat ke sumber waktu yang sama.",
+          "keyPoints": [
+            "service timestamps log datetime msec",
+            "ntp server <alamat>",
+            "Waktu sama, log bisa dibandingkan"
+          ],
+          "teaches": [
+            "ccna-f-u26-timestamps",
+            "ccna-f-u26-ntp-logs"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-e4",
+          "type": "ios",
+          "concept": "log-time",
+          "prompt": "On R1, send logs to syslog server 192.168.1.60, add date and time with milliseconds to every message, and use 192.168.1.1 as the NTP (Network Time Protocol) server.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "logging host 192.168.1.60"
+              },
+              {
+                "line": "service timestamps log datetime msec"
+              },
+              {
+                "line": "ntp server 192.168.1.1"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "logging host 192.168.1.60",
+            "service timestamps log datetime msec",
+            "ntp server 192.168.1.1",
+            "end"
+          ],
+          "explanation": "Log dikirim ke server, diberi waktu yang rinci, dan jam disinkronkan dengan NTP (Network Time Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-logging-host",
+            "ccna-f-u26-timestamps",
+            "ccna-f-u26-ntp-logs"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-e5",
+          "type": "truefalse",
+          "concept": "log-time",
+          "prompt": "Syncing every device clock with NTP (Network Time Protocol) makes it easier to compare logs from different devices.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Waktu yang sama membuat urutan kejadian di banyak perangkat bisa dibaca.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-ntp-logs"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-e6",
+          "type": "choice",
+          "concept": "syslog-dest",
+          "prompt": "Which command shows the log messages kept in the RAM (random-access memory) buffer?",
+          "options": [
+            "show logging",
+            "show running-config",
+            "show snmp",
+            "show ip interface brief"
+          ],
+          "answer": 0,
+          "explanation": "show logging menampilkan pengaturan logging dan isi buffer.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-buffered"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u26-l4",
@@ -25,8 +604,245 @@
         "kind": "handson",
         "from": "ccna-u26-l3"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u26-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "mon-lab"
+          ],
+          "title": "Rencana lab",
+          "body": "R1 mengirim log level 0 sampai 5 ke server syslog 192.168.1.60, menyimpan log sampai informational di buffer, dan memakai waktu dari NTP (Network Time Protocol). SNMP (Simple Network Management Protocol) v2c dibuka baca saja untuk NMS (network management system), dengan trap ke server yang sama. Lalu matikan dan nyalakan sebuah interface dan lihat pesannya tiba di server.",
+          "keyPoints": [
+            "Syslog ke server, batas notifications",
+            "Buffer sampai informational",
+            "SNMP ro dan trap"
+          ],
+          "teaches": [
+            "ccna-f-u26-logging-host",
+            "ccna-f-u26-threshold",
+            "ccna-f-u26-buffered",
+            "ccna-f-u26-community-cmd",
+            "ccna-f-u26-snmp-host"
+          ]
+        },
+        {
+          "id": "ccna-u26-l4-e1",
+          "type": "ios",
+          "concept": "mon-lab",
+          "prompt": "Configure R1: syslog to 192.168.1.60 at level notifications, buffered logging at informational, timestamps with milliseconds, NTP (Network Time Protocol) server 192.168.1.1, SNMP (Simple Network Management Protocol) read-only community Pantau, and SNMPv2c traps to 192.168.1.60. Save.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "logging host 192.168.1.60"
+              },
+              {
+                "line": "logging trap notifications"
+              },
+              {
+                "line": "logging buffered informational"
+              },
+              {
+                "line": "service timestamps log datetime msec"
+              },
+              {
+                "line": "ntp server 192.168.1.1"
+              },
+              {
+                "line": "snmp-server community Pantau ro"
+              },
+              {
+                "line": "snmp-server host 192.168.1.60 version 2c Pantau"
+              },
+              {
+                "line": "snmp-server enable traps"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "logging host 192.168.1.60",
+            "logging trap notifications",
+            "logging buffered informational",
+            "service timestamps log datetime msec",
+            "ntp server 192.168.1.1",
+            "snmp-server community Pantau ro",
+            "snmp-server host 192.168.1.60 version 2c Pantau",
+            "snmp-server enable traps",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Semua bagian pemantauan dipasang lalu disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-logging-host",
+            "ccna-f-u26-threshold",
+            "ccna-f-u26-buffered",
+            "ccna-f-u26-timestamps",
+            "ccna-f-u26-ntp-logs",
+            "ccna-f-u26-community-cmd",
+            "ccna-f-u26-snmp-host",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u26-l4-e2",
+          "type": "ios",
+          "concept": "mon-lab",
+          "prompt": "On R1, give G0/0/1 the description Uji log, then shut it down and re-enable it so that link messages are generated.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 192.168.1.2 255.255.255.0"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "description Uji log"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "description Uji log",
+            "shutdown",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "Mematikan dan menyalakan interface memicu pesan %LINK-3-UPDOWN dan %LINEPROTO-5-UPDOWN, yang lalu terkirim ke server syslog di lab.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-format"
+          ]
+        },
+        {
+          "id": "ccna-u26-l4-e3",
+          "type": "exhibit",
+          "concept": "mon-lab",
+          "prompt": "Refer to the exhibit. With logging trap notifications, which of these two messages reach the syslog server?",
+          "outputs": [
+            {
+              "title": "R1#",
+              "text": "%LINK-3-UPDOWN: Interface GigabitEthernet0/0/1, changed state to down\n%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to down"
+            }
+          ],
+          "options": [
+            "Both",
+            "Only the first one, because errors is level 3",
+            "Only the second one, because it is the newest",
+            "Neither, because link messages are informational"
+          ],
+          "answer": 0,
+          "explanation": "%LINK-3-UPDOWN adalah errors dan %LINEPROTO-5-UPDOWN notifications; keduanya di level 5 atau lebih parah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-threshold",
+            "ccna-f-u26-format"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u26-snmp-roles",
+      "statement": "SNMP terdiri dari manager (NMS), agent di perangkat, dan MIB, kumpulan variabel yang bisa dibaca atau diubah manager.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
+    },
+    {
+      "id": "ccna-f-u26-get-set",
+      "statement": "Manager memakai get untuk membaca nilai variabel MIB dan set untuk mengubahnya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
+    },
+    {
+      "id": "ccna-f-u26-trap-inform",
+      "statement": "Agent mengirim notifikasi tanpa diminta ke manager: trap tidak dibalas, sedangkan inform dibalas sehingga agent tahu notifikasinya sampai.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
+    },
+    {
+      "id": "ccna-f-u26-v2c",
+      "statement": "SNMPv1 dan SNMPv2c memakai community string sebagai pengaman, dan string itu dikirim tanpa enkripsi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
+    },
+    {
+      "id": "ccna-f-u26-v3",
+      "statement": "SNMPv3 memakai user dan punya tiga tingkat keamanan: noAuthNoPriv, authNoPriv (dengan autentikasi), dan authPriv (dengan autentikasi dan enkripsi).",
+      "source": "https://www.rfc-editor.org/rfc/rfc3414.html"
+    },
+    {
+      "id": "ccna-f-u26-community-cmd",
+      "statement": "snmp-server community <string> ro memberi akses baca saja, dan rw memberi akses baca dan ubah.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
+    },
+    {
+      "id": "ccna-f-u26-snmp-host",
+      "statement": "snmp-server host <alamat> version 2c <community> menentukan tujuan notifikasi, dan snmp-server enable traps mengaktifkan pengirimannya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
+    },
+    {
+      "id": "ccna-f-u26-levels",
+      "statement": "Syslog di IOS punya delapan level severity: 0 emergencies, 1 alerts, 2 critical, 3 errors, 4 warnings, 5 notifications, 6 informational, dan 7 debugging.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html"
+    },
+    {
+      "id": "ccna-f-u26-threshold",
+      "statement": "Saat sebuah level dipilih sebagai batas, pesan pada level itu dan semua level dengan angka lebih kecil, yang lebih parah, ikut dikirim.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html"
+    },
+    {
+      "id": "ccna-f-u26-format",
+      "statement": "Pesan sistem IOS berformat %FACILITY-SEVERITY-MNEMONIC: teks pesan, misalnya %LINK-5-CHANGED.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html"
+    },
+    {
+      "id": "ccna-f-u26-destinations",
+      "statement": "Pesan log bisa dikirim ke console, ke sesi terminal (monitor), ke buffer di RAM, dan ke server syslog.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html"
+    },
+    {
+      "id": "ccna-f-u26-logging-host",
+      "statement": "logging host <alamat> mengirim log ke server syslog, dan logging trap <level> menentukan batas severity untuk server itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html"
+    },
+    {
+      "id": "ccna-f-u26-buffered",
+      "statement": "logging buffered <level> menyimpan log di buffer RAM, dan show logging menampilkannya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html"
+    },
+    {
+      "id": "ccna-f-u26-facility",
+      "statement": "Di protokol syslog, facility menandai bagian sistem yang menghasilkan pesan; local0 sampai local7 disediakan untuk penggunaan lokal, dan IOS memakai local7 secara bawaan untuk server syslog.",
+      "source": "https://www.rfc-editor.org/rfc/rfc5424.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u26-timestamps",
+      "statement": "service timestamps log datetime msec menambahkan tanggal dan waktu sampai milidetik ke setiap pesan log.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u26-ntp-logs",
+      "statement": "Jam yang disinkronkan dengan NTP (Network Time Protocol) membuat waktu log dari banyak perangkat bisa dibandingkan; ntp server <alamat> menunjuk sumber waktunya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_bsm-time-calendar-set.html"
+    }
+  ]
 }
