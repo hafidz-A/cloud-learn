@@ -211,9 +211,9 @@
           "id": "ccna-u17-l1-e7",
           "type": "truefalse",
           "concept": "ospf-cost",
-          "prompt": "With the default settings, OSPF (Open Shortest Path First) gives a 100 Mbps link and a 10 Gbps link the same cost.",
-          "answer": true,
-          "explanation": "Pernyataan ini benar. Keduanya bernilai 1, karena reference bawaannya hanya 100 Mbps.",
+          "prompt": "With the default settings, OSPF (Open Shortest Path First) gives a 10 Gbps link a lower cost than a 100 Mbps link.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Keduanya bernilai 1, karena reference bawaannya hanya 100 Mbps.",
           "examReady": true,
           "requires": [
             "ccna-f-u17-cost"
@@ -1113,9 +1113,9 @@
           "id": "ccna-u17-l5-e5",
           "type": "truefalse",
           "concept": "ospf-p2p",
-          "prompt": "On an OSPF (Open Shortest Path First) point-to-point network type, no DR (designated router) is elected.",
-          "answer": true,
-          "explanation": "Pernyataan ini benar. Hanya ada dua router, jadi DR (designated router) tidak dibutuhkan.",
+          "prompt": "On an OSPF (Open Shortest Path First) point-to-point network type, the two routers still elect a DR (designated router).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Hanya ada dua router, jadi DR (designated router) tidak dibutuhkan dan tidak dipilih.",
           "examReady": true,
           "requires": [
             "ccna-f-u17-p2p"
@@ -1419,7 +1419,7 @@
             }
           ],
           "options": [
-            "R1 itself, because its neighbors are BDR (backup designated router) and DROTHER (DR other)",
+            "R1 itself",
             "2.2.2.2",
             "3.3.3.3",
             "4.4.4.4"
@@ -1448,10 +1448,10 @@
             }
           ],
           "options": [
-            "The hello and dead timers differ from the neighbor",
-            "The cost is 1",
-            "The interface is in area 0",
-            "The network type is broadcast"
+            "Its timers differ from R2",
+            "The cost of the interface is only 1",
+            "The interface is in the backbone area 0",
+            "The network type is still broadcast"
           ],
           "answer": 0,
           "explanation": "Timer R1 adalah hello 5 dan dead 20, sedangkan tetangga memakai bawaan 10 dan 40. Timer harus sama.",
@@ -1552,7 +1552,7 @@
           "concept": "ospf-troubleshoot",
           "prompt": "R2 is a neighbor of R1, but the LAN (Local Area Network) 192.168.1.0/24 of R1 is missing from the routing table of R2. What should you check first on R1?",
           "options": [
-            "That 192.168.1.0/24 is included by a network or ip ospf area command",
+            "That 192.168.1.0/24 is in OSPF (Open Shortest Path First) at all",
             "That the process ID (identifier) matches R2",
             "That R1 has priority 0",
             "That the LAN interface is not passive"
@@ -1779,8 +1779,8 @@
             }
           ],
           "options": [
-            "R2 learned the default route from R1 through OSPF (Open Shortest Path First)",
-            "R2 has a static default route",
+            "R2 learned R1 default route by OSPF (Open Shortest Path First)",
+            "R2 has its own static default route to the ISP (Internet Service Provider)",
             "R2 is the DR (designated router)",
             "The LAN (Local Area Network) of R1 is missing"
           ],
@@ -1969,10 +1969,10 @@
             }
           ],
           "options": [
-            "OSPFv3 uses the link-local address of the neighbor as next hop",
-            "The global address of R2 is wrong",
-            "The route is static",
-            "R1 has no IPv6 routing enabled"
+            "OSPFv3 always uses link-local next hops",
+            "The global address of R2 is configured wrong",
+            "The route is a static route, not OSPF",
+            "R1 has no IPv6 routing enabled at all"
           ],
           "answer": 0,
           "explanation": "OSPFv3 memakai alamat link-local tetangga sebagai next hop. Itu normal.",
