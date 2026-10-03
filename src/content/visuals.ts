@@ -174,6 +174,9 @@ export const VISUAL_CATALOG = {
   OspfStates: ['ospf-states'],
   DrElection: ['ospf-dr'],
   OspfCost: ['ospf-cost'],
+  // Unit 18
+  FhrpVirtual: ['fhrp'],
+  FhrpCompare: ['fhrp-compare'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

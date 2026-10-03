@@ -57,6 +57,8 @@ import { WildcardMask } from './WildcardMask'
 import { OspfStates } from './OspfStates'
 import { DrElection } from './DrElection'
 import { OspfCost } from './OspfCost'
+import { FhrpVirtual } from './FhrpVirtual'
+import { FhrpCompare } from './FhrpCompare'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -124,6 +126,8 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  FhrpCompare,
+  FhrpVirtual,
   OspfCost,
   DrElection,
   OspfStates,

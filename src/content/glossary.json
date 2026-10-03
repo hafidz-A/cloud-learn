@@ -1021,5 +1021,40 @@
     "expansion": "Full adjacency",
     "description": "State tetangga OSPF ketika database kedua router sudah sama.",
     "course": "ccna"
+  },
+  {
+    "term": "FHRP",
+    "expansion": "First Hop Redundancy Protocol",
+    "description": "Kelompok protokol (HSRP, VRRP, GLBP) yang membuat beberapa router berbagi satu gateway virtual."
+  },
+  {
+    "term": "HSRP",
+    "expansion": "Hot Standby Router Protocol",
+    "description": "FHRP milik Cisco dengan satu router active dan satu standby."
+  },
+  {
+    "term": "VRRP",
+    "expansion": "Virtual Router Redundancy Protocol",
+    "description": "FHRP standar terbuka dengan router master dan backup."
+  },
+  {
+    "term": "GLBP",
+    "expansion": "Gateway Load Balancing Protocol",
+    "description": "FHRP milik Cisco yang juga membagi beban ke beberapa router."
+  },
+  {
+    "term": "AVG",
+    "expansion": "Active Virtual Gateway",
+    "description": "Router GLBP yang menjawab ARP dan membagikan MAC virtual."
+  },
+  {
+    "term": "AVF",
+    "expansion": "Active Virtual Forwarder",
+    "description": "Router GLBP yang meneruskan trafik untuk satu MAC virtual."
+  },
+  {
+    "term": "VRID",
+    "expansion": "Virtual Router Identifier",
+    "description": "Nomor grup VRRP, juga bagian akhir MAC virtualnya."
   }
 ]
