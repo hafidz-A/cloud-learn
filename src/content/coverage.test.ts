@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { VISUALS } from '../visuals/registry'
-import { AZ104_UNITS, UNITS } from './course'
+import { AZ104_UNITS, CCNA_UNITS, UNITS } from './course'
 import { answerBalance, courseCoverage, type UnitCoverage } from './coverage'
 import { isVisualName } from './visuals'
 
@@ -43,6 +43,7 @@ function report(): string {
       for (const item of lesson.items)
         if ((item.type === 'learn' || item.type === 'intro') && item.visual && (!isVisualName(item.visual) || !VISUALS[item.visual])) missingVisuals.add(item.visual)
   const b = answerBalance(UNITS)
+  const ccna = answerBalance(CCNA_UNITS)
   const pct = (a: number, total: number) => (total ? `${Math.round((a / total) * 100)}%` : '-')
   const totals = coverage.reduce(
     (t, c) => ({ facts: t.facts + c.facts, learn: t.learn + c.learnCards, exercises: t.exercises + c.exercises, green: t.green + (c.reworked && !c.withoutRequires.length && !c.gaps.length && !c.untaughtFacts.length && !c.badSources.length ? 1 : 0) }),
@@ -62,6 +63,13 @@ function report(): string {
     '',
     'Course AZ-104 (LANGIT_AZ104_PLAN.md):',
     ...courseCoverage(AZ104_UNITS).map((c) => `    ${c.unitId}: ${c.facts} fakta · ${c.learnCards} kartu learn · ${c.exercises} soal`),
+    '',
+    'Course CCNA (LANGIT_CCNA_PLAN.md, daftar verify di docs/VERIFIKASI_MATERI.md):',
+    ...courseCoverage(CCNA_UNITS).map((c) => {
+      const verify = CCNA_UNITS.find((u) => u.id === c.unitId)?.facts?.filter((f) => f.verify).length ?? 0
+      return `    ${c.unitId}: ${c.facts} fakta (${verify} verify) · ${c.learnCards} kartu learn · ${c.exercises} soal`
+    }),
+    `    sebaran jawaban: benar/salah ${ccna.truths} benar, ${ccna.falses} salah (${pct(ccna.truths, ccna.truths + ccna.falses)} benar); jawaban benar paling panjang ${ccna.longestRight} dari ${ccna.choices} (${pct(ccna.longestRight, ccna.choices)})`,
   ].join('\n')
 }
 

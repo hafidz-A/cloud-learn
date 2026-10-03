@@ -567,12 +567,15 @@ Pengecekan fakta CCNA memakai cara berikut, dan hasilnya dicatat di `docs/VERIFI
 
 ## 11. Tahapan dan status
 
-- [ ] Tahap 1: rencana ini
-- [ ] Tahap 2: course CCNA di app (pemilih course, progres, sinkron), pohon lesson, tes lompat
-- [ ] Tahap 3: simulator IOS, soal `exhibit`, lab Packet Tracer
-- [ ] Tahap 4: materi Jalur 1 (Unit 1–8)
-- [ ] Tahap 5: materi Jalur 2 (Unit 9–14)
-- [ ] Tahap 6: materi Jalur 3 (Unit 15–18)
-- [ ] Tahap 7: materi Jalur 4 (Unit 19–24)
-- [ ] Tahap 8: materi Jalur 5 (Unit 25–28)
-- [ ] Tahap 9: halaman Ujian CCNA, dokumentasi, tes e2e
+- [x] Tahap 1: rencana ini
+- [x] Tahap 2: course CCNA di app (pemilih course, progres, sinkron), pohon lesson, tes lompat
+- [x] Tahap 3: simulator IOS, soal `exhibit`, lab Packet Tracer
+- [x] Tahap 4: materi Jalur 1 (Unit 1–8)
+- [x] Tahap 5: materi Jalur 2 (Unit 9–14)
+- [x] Tahap 6: materi Jalur 3 (Unit 15–18)
+- [x] Tahap 7: materi Jalur 4 (Unit 19–24)
+- [x] Tahap 8: materi Jalur 5 (Unit 25–28)
+- [x] Tahap 9: halaman Ujian CCNA, dokumentasi, tes e2e
+
+Semua tahap selesai pada 3 Oktober 2026. Yang masih terbuka: 109 fakta bertanda `verify` dan 21 lab yang belum
+dicoba langsung di Packet Tracer atau CML (daftarnya di `docs/VERIFIKASI_MATERI.md`, bagian CCNA).

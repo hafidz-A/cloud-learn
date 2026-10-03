@@ -32,7 +32,7 @@ const hostOf = (url: string) => {
 }
 
 /**
- * One Packet Tracer lab (LANGIT_CCNA_PLAN.md section 8): tool and status, goal,
+ * One lab, usually in Packet Tracer (LANGIT_CCNA_PLAN.md section 8): tool and status, goal,
  * topology, addressing, steps, how to prove it works, notes, and sources.
  */
 export function LabCard({ lab }: { lab: Lab }) {
@@ -57,7 +57,7 @@ export function LabCard({ lab }: { lab: Lab }) {
         <span>
           {tested
             ? `Sudah dicoba langsung di ${tested.join(', ')}.`
-            : 'Belum dicoba langsung di Packet Tracer. Langkah dan perintahnya dicek ke dokumentasi Cisco. Kalau hasilmu berbeda, catat perbedaannya supaya lab ini diperbaiki.'}
+            : `Belum dicoba langsung di ${LAB_TOOLS[lab.tool]}. Langkah dan perintahnya dicek ke dokumentasi resmi. Kalau hasilmu berbeda, catat perbedaannya supaya lab ini diperbaiki.`}
         </span>
       </p>
 
