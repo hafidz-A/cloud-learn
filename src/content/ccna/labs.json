@@ -1441,6 +1441,144 @@
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html",
         "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9500/software/release/16-6/configuration_guide/b_166_lyr2_lyr3_9500_cg/b_166_lyr2_lyr3_9500_cg_chapter_011.html"
       ]
+    },
+    {
+      "lesson": "ccna-u12-l4",
+      "title": "Memetakan tetangga dengan CDP dan LLDP",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Menggambar ulang topologi hanya dari output CDP (Cisco Discovery Protocol) dan LLDP (Link Layer Discovery Protocol), lalu menemukan satu kabel yang tidak sesuai dokumentasi.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "sw2",
+            "fromPort": "G0/2",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "Dokumentasi",
+          "port": "SW1 G0/2",
+          "address": "tertulis ke SW2 G0/2 (sengaja salah, cari dengan CDP)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat sesuai topologi. Pastikan kabel SW1-SW2 memakai SW2 G0/1, bukan G0/2 seperti dokumentasi."
+        },
+        {
+          "text": "Lihat tetangga R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "show cdp neighbors"
+          ]
+        },
+        {
+          "text": "Lihat tetangga SW1, termasuk detailnya.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "show cdp neighbors",
+            "show cdp neighbors detail"
+          ]
+        },
+        {
+          "text": "Nyalakan LLDP di kedua switch dan bandingkan.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "lldp run",
+            "end",
+            "show lldp neighbors"
+          ]
+        },
+        {
+          "text": "Nyalakan LLDP di SW2.",
+          "device": "SW2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "lldp run",
+            "end",
+            "show lldp neighbors"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Tetangga R1.",
+          "device": "R1",
+          "command": "show cdp neighbors",
+          "expect": "Hanya SW1 yang tampil, di port lokal G0/0/0. SW2 tidak tampil karena bukan tetangga langsung."
+        },
+        {
+          "text": "Tetangga SW1.",
+          "device": "SW1",
+          "command": "show cdp neighbors",
+          "expect": "R1 dan SW2. Baris SW2 menunjukkan Port ID G0/1, berbeda dari dokumentasi (G0/2)."
+        },
+        {
+          "text": "Tetangga LLDP SW1.",
+          "device": "SW1",
+          "command": "show lldp neighbors",
+          "expect": "SW2 tampil setelah LLDP aktif di kedua switch. R1 baru tampil kalau LLDP juga dinyalakan di R1."
+        }
+      ],
+      "notes": [
+        "PC di Packet Tracer tidak mengirim CDP atau LLDP, jadi PC1 tidak tampil sebagai tetangga."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
+      ]
     }
   ]
 }

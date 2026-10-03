@@ -6,17 +6,605 @@
     {
       "id": "ccna-u12-l1",
       "title": "CDP",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u12-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "cdp"
+          ],
+          "title": "CDP",
+          "body": "CDP (Cisco Discovery Protocol) adalah protokol layer 2 milik Cisco. Setiap perangkat Cisco mengumumkan identitasnya ke tetangga yang tersambung langsung: nama, model, interface, dan kemampuannya. CDP aktif secara bawaan. Pesannya tidak diteruskan, jadi dari R1 kamu hanya melihat perangkat yang kabelnya langsung ke R1.",
+          "keyPoints": [
+            "Milik Cisco, layer 2",
+            "Aktif secara bawaan",
+            "Hanya tetangga langsung"
+          ],
+          "visual": "NeighborScope",
+          "teaches": [
+            "ccna-f-u12-cdp-what",
+            "ccna-f-u12-cdp-default",
+            "ccna-f-u12-direct-only"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-e1",
+          "type": "truefalse",
+          "concept": "cdp",
+          "prompt": "CDP (Cisco Discovery Protocol) is enabled by default on Cisco devices.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. CDP (Cisco Discovery Protocol) aktif secara bawaan; LLDP (Link Layer Discovery Protocol) yang harus dinyalakan dulu di switch Catalyst.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-default"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-e2",
+          "type": "truefalse",
+          "concept": "cdp",
+          "prompt": "From R1, show cdp neighbors also lists switches that are two hops away.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. CDP (Cisco Discovery Protocol) hanya mengenali tetangga yang tersambung langsung.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-direct-only"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-e3",
+          "type": "choice",
+          "concept": "cdp",
+          "prompt": "Why does CDP (Cisco Discovery Protocol) work even before any IP (Internet Protocol) address is configured?",
+          "options": [
+            "It runs at layer 2",
+            "It uses the default gateway",
+            "It is carried inside DHCP (Dynamic Host Configuration Protocol)",
+            "It needs an IPv6 address instead"
+          ],
+          "answer": 0,
+          "explanation": "CDP (Cisco Discovery Protocol) berjalan di layer 2, jadi tidak butuh alamat IP (Internet Protocol) untuk menemukan tetangga.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-what"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "cdp-show"
+          ],
+          "title": "Membaca show cdp neighbors",
+          "body": "show cdp neighbors menampilkan satu baris per tetangga: Device ID (nama tetangga), Local Intrfce (port di perangkat ini), Holdtme, Capability (misalnya R router, S switch, P phone), Platform (model), dan Port ID (port di sisi tetangga). show cdp neighbors detail menambahkan alamat IP (Internet Protocol) dan versi software tetangga.",
+          "keyPoints": [
+            "Local Intrfce: port saya",
+            "Port ID: port tetangga",
+            "detail: alamat IP dan versi"
+          ],
+          "teaches": [
+            "ccna-f-u12-cdp-neighbors",
+            "ccna-f-u12-cdp-detail"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-e4",
+          "type": "exhibit",
+          "concept": "cdp-show",
+          "prompt": "Refer to the exhibit. Which port on SW2 is connected to SW1?",
+          "outputs": [
+            {
+              "title": "SW1# show cdp neighbors",
+              "text": "Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge\n                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone\n\nDevice ID        Local Intrfce     Holdtme    Capability  Platform  Port ID\nR1               Gig 0/1           152             R B S I ISR4331   Gig 0/0/0\nSW2              Gig 0/2           131             S I     WS-C2960X Gig 0/1\nSEP0050796668AA  Fas 0/5           163             H P     IP Phone  Port 1"
+            }
+          ],
+          "options": [
+            "GigabitEthernet0/1",
+            "GigabitEthernet0/2",
+            "GigabitEthernet0/0/0",
+            "FastEthernet0/5"
+          ],
+          "answer": 0,
+          "explanation": "Port ID (identifier) adalah port di sisi tetangga: Gig 0/1 di SW2. Gig 0/2 adalah port lokal SW1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-neighbors"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-e5",
+          "type": "exhibit",
+          "concept": "cdp-show",
+          "prompt": "Refer to the exhibit. Which command shows the IP (Internet Protocol) address of R1?",
+          "outputs": [
+            {
+              "title": "SW1# show cdp neighbors",
+              "text": "Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge\n                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone\n\nDevice ID        Local Intrfce     Holdtme    Capability  Platform  Port ID\nR1               Gig 0/1           152             R B S I ISR4331   Gig 0/0/0\nSW2              Gig 0/2           131             S I     WS-C2960X Gig 0/1\nSEP0050796668AA  Fas 0/5           163             H P     IP Phone  Port 1"
+            }
+          ],
+          "options": [
+            "show cdp neighbors detail",
+            "show cdp neighbors",
+            "show ip interface brief",
+            "show interfaces status | include connected"
+          ],
+          "answer": 0,
+          "explanation": "Versi detail menambahkan alamat IP (Internet Protocol) dan versi software tetangga. show ip interface brief hanya menampilkan alamat milik SW1 sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-detail",
+            "ccna-f-u12-cdp-neighbors",
+            "ccna-f-u04-sh-ip-int-br"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-e6",
+          "type": "exhibit",
+          "concept": "cdp-show",
+          "prompt": "Refer to the exhibit. What kind of device is on Fa0/5?",
+          "outputs": [
+            {
+              "title": "SW1# show cdp neighbors",
+              "text": "Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge\n                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone\n\nDevice ID        Local Intrfce     Holdtme    Capability  Platform  Port ID\nR1               Gig 0/1           152             R B S I ISR4331   Gig 0/0/0\nSW2              Gig 0/2           131             S I     WS-C2960X Gig 0/1\nSEP0050796668AA  Fas 0/5           163             H P     IP Phone  Port 1"
+            }
+          ],
+          "options": [
+            "An IP (Internet Protocol) phone",
+            "A router running as a host",
+            "A second access switch",
+            "A wireless access point in local mode"
+          ],
+          "answer": 0,
+          "explanation": "Capability H P dan platform IP (Internet Protocol) Phone menunjukkan telepon IP.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-neighbors"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "cdp-config"
+          ],
+          "title": "Menyalakan dan mematikan CDP",
+          "body": "cdp run dan no cdp run menyalakan atau mematikan CDP (Cisco Discovery Protocol) di seluruh perangkat. cdp enable dan no cdp enable mengaturnya per interface. Bawaannya, CDP dikirim setiap 60 detik dan informasi tetangga disimpan 180 detik. CDP membocorkan model, versi, dan alamat, jadi matikan di interface yang menghadap jaringan tidak tepercaya, misalnya ke ISP (Internet Service Provider).",
+          "keyPoints": [
+            "Global: cdp run",
+            "Per interface: cdp enable",
+            "Matikan di sisi tak tepercaya"
+          ],
+          "teaches": [
+            "ccna-f-u12-cdp-default",
+            "ccna-f-u12-cdp-timers",
+            "ccna-f-u12-cdp-security"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-e7",
+          "type": "ios",
+          "concept": "cdp-config",
+          "prompt": "GigabitEthernet0/0/1 on R1 faces the ISP (Internet Service Provider). Stop CDP (Cisco Discovery Protocol) on that interface only.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no cdp enable"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "no cdp enable",
+            "end"
+          ],
+          "explanation": "no cdp enable mematikan CDP (Cisco Discovery Protocol) hanya di interface itu; no cdp run akan mematikannya di semua interface.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-default",
+            "ccna-f-u12-cdp-security"
+          ]
+        },
+        {
+          "id": "ccna-u12-l1-e8",
+          "type": "choice",
+          "concept": "cdp-config",
+          "prompt": "What is the default holdtime for CDP (Cisco Discovery Protocol) neighbor information?",
+          "options": [
+            "180 seconds",
+            "60 seconds",
+            "120 seconds",
+            "30 seconds"
+          ],
+          "answer": 0,
+          "explanation": "CDP (Cisco Discovery Protocol) dikirim tiap 60 detik dan informasinya disimpan 180 detik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-timers"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u12-l2",
       "title": "LLDP",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u12-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "lldp"
+          ],
+          "title": "LLDP",
+          "body": "LLDP (Link Layer Discovery Protocol) adalah standar IEEE (Institute of Electrical and Electronics Engineers) 802.1AB, jadi dipahami perangkat dari banyak vendor, misalnya server, IP (Internet Protocol) phone, dan AP (access point) non-Cisco. Di switch Catalyst, LLDP mati secara bawaan dan dinyalakan global dengan lldp run. Bawaannya LLDP dikirim setiap 30 detik dengan holdtime 120 detik.",
+          "keyPoints": [
+            "Standar IEEE 802.1AB",
+            "Mati bawaan: lldp run",
+            "30 detik, holdtime 120"
+          ],
+          "visual": "CdpVsLldp",
+          "teaches": [
+            "ccna-f-u12-lldp-what",
+            "ccna-f-u12-lldp-default",
+            "ccna-f-u12-lldp-timers",
+            "ccna-f-u12-lldp-mixed"
+          ]
+        },
+        {
+          "id": "ccna-u12-l2-e1",
+          "type": "ios",
+          "concept": "lldp",
+          "prompt": "SW1 connects to servers from another vendor. Turn on LLDP (Link Layer Discovery Protocol) for the whole switch.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "lldp run"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "lldp run",
+            "end"
+          ],
+          "explanation": "lldp run menyalakan LLDP (Link Layer Discovery Protocol) secara global; transmit dan receive lalu aktif di interface.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-lldp-default"
+          ]
+        },
+        {
+          "id": "ccna-u12-l2-e2",
+          "type": "sort",
+          "concept": "lldp",
+          "prompt": "Sort each statement by protocol.",
+          "buckets": [
+            "CDP (Cisco Discovery Protocol)",
+            "LLDP (Link Layer Discovery Protocol)"
+          ],
+          "items": [
+            {
+              "text": "Cisco proprietary",
+              "bucket": 0
+            },
+            {
+              "text": "On by default on Catalyst switches",
+              "bucket": 0
+            },
+            {
+              "text": "Holdtime 180 seconds by default",
+              "bucket": 0
+            },
+            {
+              "text": "IEEE (Institute of Electrical and Electronics Engineers) 802.1AB standard",
+              "bucket": 1
+            },
+            {
+              "text": "Off by default, enabled with lldp run",
+              "bucket": 1
+            },
+            {
+              "text": "Holdtime 120 seconds by default",
+              "bucket": 1
+            }
+          ],
+          "explanation": "CDP (Cisco Discovery Protocol) milik Cisco, aktif secara bawaan, dengan holdtime 180 detik. LLDP (Link Layer Discovery Protocol) standar IEEE (Institute of Electrical and Electronics Engineers) 802.1AB, dinyalakan dengan lldp run, dengan holdtime 120 detik.",
+          "requires": [
+            "ccna-f-u12-cdp-what",
+            "ccna-f-u12-cdp-default",
+            "ccna-f-u12-cdp-timers",
+            "ccna-f-u12-lldp-what",
+            "ccna-f-u12-lldp-default",
+            "ccna-f-u12-lldp-timers"
+          ]
+        },
+        {
+          "id": "ccna-u12-l2-e3",
+          "type": "choice",
+          "concept": "lldp",
+          "prompt": "An engineer needs to see a server from another vendor as a neighbor of the switch. Which protocol should they use?",
+          "options": [
+            "LLDP (Link Layer Discovery Protocol)",
+            "CDP (Cisco Discovery Protocol)",
+            "DTP (Dynamic Trunking Protocol)",
+            "PAgP (Port Aggregation Protocol)"
+          ],
+          "answer": 0,
+          "explanation": "Perangkat non-Cisco tidak memahami CDP (Cisco Discovery Protocol); LLDP (Link Layer Discovery Protocol) adalah standar yang netral vendor.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-lldp-mixed",
+            "ccna-f-u12-lldp-what"
+          ]
+        },
+        {
+          "id": "ccna-u12-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "lldp-show"
+          ],
+          "title": "LLDP per interface dan show lldp neighbors",
+          "body": "Setelah lldp run, setiap interface mengirim dan menerima LLDP (Link Layer Discovery Protocol). no lldp transmit atau no lldp receive mematikan salah satunya di satu interface. show lldp neighbors menampilkan tetangga dengan kode capability, misalnya R router, B bridge, T telephone, dan W WLAN (wireless LAN) access point.",
+          "keyPoints": [
+            "no lldp transmit / receive",
+            "show lldp neighbors",
+            "R, B, T, W"
+          ],
+          "teaches": [
+            "ccna-f-u12-lldp-int",
+            "ccna-f-u12-lldp-neighbors"
+          ]
+        },
+        {
+          "id": "ccna-u12-l2-e4",
+          "type": "exhibit",
+          "concept": "lldp-show",
+          "prompt": "Refer to the exhibit. Which neighbor is a wireless access point?",
+          "outputs": [
+            {
+              "title": "SW1# show lldp neighbors",
+              "text": "Capability codes:\n    (R) Router, (B) Bridge, (T) Telephone, (C) DOCSIS Cable Device\n    (W) WLAN Access Point, (P) Repeater, (S) Station, (O) Other\n\nDevice ID           Local Intf     Hold-time  Capability      Port ID\nSRV1            Gi1/0/10       112        S               0050.7966.68aa\nAP1              Gi1/0/11       105        B,W             Gi0\n\nTotal entries displayed: 2"
+            }
+          ],
+          "options": [
+            "AP1 on Gi1/0/11",
+            "SRV1 on Gi1/0/10",
+            "Both neighbors",
+            "Neither neighbor"
+          ],
+          "answer": 0,
+          "explanation": "Kode W berarti WLAN (wireless LAN) access point. SRV1 hanya S (station).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-lldp-neighbors"
+          ]
+        },
+        {
+          "id": "ccna-u12-l2-e5",
+          "type": "ios",
+          "concept": "lldp-show",
+          "prompt": "LLDP (Link Layer Discovery Protocol) is running on SW1. GigabitEthernet0/2 faces a guest network: stop sending LLDP there, but keep receiving it.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "lldp run"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/2",
+                "line": "no lldp transmit"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/2",
+            "no lldp transmit",
+            "end"
+          ],
+          "explanation": "no lldp transmit berhenti mengirim informasi perangkat ini, sementara receive tetap aktif.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-lldp-int"
+          ]
+        },
+        {
+          "id": "ccna-u12-l2-e6",
+          "type": "truefalse",
+          "concept": "lldp-show",
+          "prompt": "On a Catalyst switch, LLDP (Link Layer Discovery Protocol) runs by default with no configuration.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. LLDP (Link Layer Discovery Protocol) mati secara bawaan dan perlu lldp run; yang aktif bawaan adalah CDP (Cisco Discovery Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-lldp-default",
+            "ccna-f-u12-cdp-default"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u12-l3",
       "title": "Validasi dokumentasi jaringan",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u12-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "doc-validate"
+          ],
+          "title": "Mencocokkan dengan diagram",
+          "body": "Diagram jaringan sering tidak lagi sesuai kenyataan. Jalankan show cdp neighbors atau show lldp neighbors di setiap perangkat, lalu bandingkan dengan diagram: nama tetangga, port lokal, dan port di sisi tetangga. Perbedaan menunjukkan kabel yang dipindah, perangkat yang diganti, atau dokumentasi yang salah.",
+          "keyPoints": [
+            "Jalankan di setiap perangkat",
+            "Bandingkan nama dan kedua port",
+            "Beda: kabel atau dokumen salah"
+          ],
+          "teaches": [
+            "ccna-f-u12-doc-check",
+            "ccna-f-u12-cdp-neighbors"
+          ]
+        },
+        {
+          "id": "ccna-u12-l3-e1",
+          "type": "exhibit",
+          "concept": "doc-validate",
+          "prompt": "Refer to the exhibit. The diagram says SW1 Gi0/2 connects to SW2 Gi0/2. What does CDP (Cisco Discovery Protocol) show?",
+          "outputs": [
+            {
+              "title": "SW1# show cdp neighbors",
+              "text": "Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge\n                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone\n\nDevice ID        Local Intrfce     Holdtme    Capability  Platform  Port ID\nR1               Gig 0/1           152             R B S I ISR4331   Gig 0/0/0\nSW2              Gig 0/2           131             S I     WS-C2960X Gig 0/1\nSEP0050796668AA  Fas 0/5           163             H P     IP Phone  Port 1"
+            }
+          ],
+          "options": [
+            "SW1 Gi0/2 connects to SW2 Gi0/1, so the diagram is wrong",
+            "The link matches the diagram exactly as drawn",
+            "SW1 Gi0/2 connects to the router R1 instead",
+            "SW2 is not a neighbor of SW1 at all, so the cable is unplugged"
+          ],
+          "answer": 0,
+          "explanation": "Baris SW2 menunjukkan port lokal Gig 0/2 dan Port ID (identifier) Gig 0/1. Diagram harus diperbaiki, atau kabelnya dipindah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-doc-check",
+            "ccna-f-u12-cdp-neighbors"
+          ]
+        },
+        {
+          "id": "ccna-u12-l3-e2",
+          "type": "exhibit",
+          "concept": "doc-validate",
+          "prompt": "Refer to the exhibit. Which statement about the documentation is true?",
+          "outputs": [
+            {
+              "title": "SW1# show cdp neighbors",
+              "text": "Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge\n                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone\n\nDevice ID        Local Intrfce     Holdtme    Capability  Platform  Port ID\nR1               Gig 0/1           152             R B S I ISR4331   Gig 0/0/0\nSW2              Gig 0/2           131             S I     WS-C2960X Gig 0/1\nSEP0050796668AA  Fas 0/5           163             H P     IP Phone  Port 1"
+            }
+          ],
+          "options": [
+            "The router behind Gig 0/1 is an ISR4331 named R1",
+            "The router behind Gig 0/1 is a 2960X switch",
+            "The IP (Internet Protocol) phone is on Gig 0/2",
+            "SW2 connects to its Gig 0/0/0"
+          ],
+          "answer": 0,
+          "explanation": "Baris R1 menunjukkan platform ISR4331 di port lokal Gig 0/1. Phone ada di Fa0/5, dan SW2 tersambung lewat Gig 0/1 miliknya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-neighbors"
+          ]
+        },
+        {
+          "id": "ccna-u12-l3-e3",
+          "type": "choice",
+          "concept": "doc-validate",
+          "prompt": "An engineer runs show cdp neighbors on R1 but does not see SW2, which the diagram places two hops away. What does this mean?",
+          "options": [
+            "Nothing is wrong; only direct neighbors appear",
+            "SW2 is powered off",
+            "CDP (Cisco Discovery Protocol) is disabled on R1, so it hides SW2",
+            "The cable between R1 and SW1 is broken"
+          ],
+          "answer": 0,
+          "explanation": "CDP (Cisco Discovery Protocol) hanya menampilkan tetangga langsung, jadi SW2 yang dua hop jauhnya memang tidak tampil di R1. Jalankan perintah itu di SW1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-direct-only"
+          ]
+        },
+        {
+          "id": "ccna-u12-l3-e4",
+          "type": "choice",
+          "concept": "doc-validate",
+          "prompt": "Which command gives the fastest way to check which device and port sit at the other end of every cable on a Cisco switch?",
+          "options": [
+            "show cdp neighbors",
+            "show vlan brief",
+            "show ip interface brief",
+            "show running-config"
+          ],
+          "answer": 0,
+          "explanation": "show cdp neighbors menampilkan nama tetangga, port lokal, dan port di sisi tetangga untuk setiap link. Perintah lain tidak menampilkan tetangga.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-neighbors",
+            "ccna-f-u12-doc-check",
+            "ccna-f-u09-show-vlan"
+          ]
+        },
+        {
+          "id": "ccna-u12-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "doc-limits"
+          ],
+          "title": "Batas CDP dan LLDP",
+          "body": "Kalau tetangga tidak tampil, periksa dulu: apakah link-nya up, apakah CDP (Cisco Discovery Protocol) atau LLDP (Link Layer Discovery Protocol) dimatikan di salah satu sisi, dan apakah tetangga itu memang mendukung protokolnya. Perangkat non-Cisco tidak memahami CDP, dan LLDP baru jalan setelah lldp run di switch Catalyst.",
+          "keyPoints": [
+            "Link harus up",
+            "Protokol aktif di kedua sisi",
+            "Non-Cisco: LLDP"
+          ],
+          "teaches": [
+            "ccna-f-u12-cdp-default",
+            "ccna-f-u12-lldp-default",
+            "ccna-f-u12-lldp-mixed"
+          ]
+        },
+        {
+          "id": "ccna-u12-l3-e5",
+          "type": "multi",
+          "concept": "doc-limits",
+          "prompt": "A server is cabled to SW1 Gi1/0/10, but it does not appear in show lldp neighbors. Which two causes are possible? (Choose two.)",
+          "options": [
+            "lldp run was never entered on SW1",
+            "LLDP (Link Layer Discovery Protocol) transmit is disabled on the server",
+            "The server is not a Cisco device",
+            "CDP (Cisco Discovery Protocol) is enabled on SW1"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "LLDP (Link Layer Discovery Protocol) harus aktif di switch dan dikirim oleh server. Perangkat non-Cisco justru cocok dengan LLDP, dan CDP (Cisco Discovery Protocol) yang aktif tidak menghalangi LLDP.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-lldp-default",
+            "ccna-f-u12-lldp-int",
+            "ccna-f-u12-lldp-mixed"
+          ]
+        },
+        {
+          "id": "ccna-u12-l3-e6",
+          "type": "truefalse",
+          "concept": "doc-limits",
+          "prompt": "A link that is down cannot show a CDP (Cisco Discovery Protocol) neighbor.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. CDP (Cisco Discovery Protocol) dikirim lewat link itu sendiri, jadi link harus up.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-what",
+            "ccna-f-u12-direct-only"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u12-l4",
@@ -25,8 +613,196 @@
         "kind": "handson",
         "from": "ccna-u12-l3"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u12-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "neighbor-lab"
+          ],
+          "title": "Alur kerja memetakan tetangga",
+          "body": "Mulai dari satu perangkat dan jalankan show cdp neighbors. Catat setiap tetangga, port lokal, dan Port ID (identifier). Pindah ke tetangga berikutnya dan ulangi, sampai seluruh diagram tergambar. Untuk perangkat non-Cisco, nyalakan LLDP (Link Layer Discovery Protocol) dengan lldp run lalu pakai show lldp neighbors.",
+          "keyPoints": [
+            "Satu perangkat, satu langkah",
+            "Catat kedua port",
+            "Non-Cisco: LLDP"
+          ],
+          "teaches": [
+            "ccna-f-u12-cdp-neighbors",
+            "ccna-f-u12-direct-only",
+            "ccna-f-u12-lldp-default"
+          ]
+        },
+        {
+          "id": "ccna-u12-l4-e1",
+          "type": "ios",
+          "concept": "neighbor-lab",
+          "prompt": "Turn on LLDP (Link Layer Discovery Protocol) on SW1, then list its LLDP neighbors.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "outputs": {
+            "show lldp neighbors": "Capability codes:\n    (R) Router, (B) Bridge, (T) Telephone, (C) DOCSIS Cable Device\n    (W) WLAN Access Point, (P) Repeater, (S) Station, (O) Other\n\nDevice ID           Local Intf     Hold-time  Capability      Port ID\nSW2                 Gi0/2          118        B               Gi0/1\n\nTotal entries displayed: 1"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "lldp run"
+              }
+            ],
+            "run": [
+              "show lldp neighbors"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "lldp run",
+            "end",
+            "show lldp neighbors"
+          ],
+          "explanation": "lldp run menyalakan LLDP (Link Layer Discovery Protocol), lalu show lldp neighbors menampilkan tetangga yang sudah mengirim LLDP.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-lldp-default",
+            "ccna-f-u12-lldp-neighbors"
+          ]
+        },
+        {
+          "id": "ccna-u12-l4-e2",
+          "type": "ios",
+          "concept": "neighbor-lab",
+          "prompt": "R1 GigabitEthernet0/0/1 faces the internet. Keep CDP (Cisco Discovery Protocol) on the inside interfaces but stop it on that one, then save the configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no cdp enable"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "no cdp enable",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "no cdp enable hanya mematikan CDP (Cisco Discovery Protocol) di interface yang menghadap internet, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-cdp-default",
+            "ccna-f-u12-cdp-security",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u12-l4-e3",
+          "type": "exhibit",
+          "concept": "neighbor-lab",
+          "prompt": "Refer to the exhibit. Which device should you log in to next to find the switch behind SW2?",
+          "outputs": [
+            {
+              "title": "SW1# show cdp neighbors",
+              "text": "Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge\n                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone\n\nDevice ID        Local Intrfce     Holdtme    Capability  Platform  Port ID\nR1               Gig 0/1           152             R B S I ISR4331   Gig 0/0/0\nSW2              Gig 0/2           131             S I     WS-C2960X Gig 0/1\nSEP0050796668AA  Fas 0/5           163             H P     IP Phone  Port 1"
+            }
+          ],
+          "options": [
+            "SW2, then run show cdp neighbors there",
+            "R1, then run show cdp neighbors there",
+            "The IP (Internet Protocol) phone",
+            "None, because CDP (Cisco Discovery Protocol) already shows every switch"
+          ],
+          "answer": 0,
+          "explanation": "CDP (Cisco Discovery Protocol) hanya menampilkan tetangga langsung. Untuk melihat perangkat di belakang SW2, jalankan perintah yang sama di SW2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u12-direct-only",
+            "ccna-f-u12-cdp-neighbors"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u12-cdp-what",
+      "statement": "CDP (Cisco Discovery Protocol) adalah protokol layer 2 milik Cisco untuk mengumumkan identitas dan kemampuan perangkat ke tetangga yang tersambung langsung.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html"
+    },
+    {
+      "id": "ccna-f-u12-cdp-default",
+      "statement": "CDP aktif secara bawaan; cdp run dan no cdp run menyalakan atau mematikannya secara global, sedangkan cdp enable dan no cdp enable mengaturnya per interface.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html"
+    },
+    {
+      "id": "ccna-f-u12-cdp-timers",
+      "statement": "Bawaannya CDP dikirim setiap 60 detik, dan informasi tetangga disimpan selama 180 detik (holdtime).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u12-cdp-neighbors",
+      "statement": "show cdp neighbors menampilkan Device ID, interface lokal, holdtime, capability, platform, dan Port ID, yaitu interface di sisi tetangga.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html"
+    },
+    {
+      "id": "ccna-f-u12-cdp-detail",
+      "statement": "show cdp neighbors detail juga menampilkan alamat IP dan versi software tetangga.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html"
+    },
+    {
+      "id": "ccna-f-u12-direct-only",
+      "statement": "CDP dan LLDP hanya mengenali tetangga yang tersambung langsung; pesannya tidak diteruskan melewati perangkat lain.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html"
+    },
+    {
+      "id": "ccna-f-u12-cdp-security",
+      "statement": "CDP mengirim informasi seperti model, versi software, dan alamat, jadi sebaiknya dimatikan di interface yang menghadap jaringan yang tidak tepercaya, misalnya ke ISP.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u12-lldp-what",
+      "statement": "LLDP (Link Layer Discovery Protocol) adalah standar IEEE 802.1AB yang netral vendor untuk mengumumkan identitas dan kemampuan perangkat ke tetangga langsung.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
+    },
+    {
+      "id": "ccna-f-u12-lldp-default",
+      "statement": "Di switch Catalyst, LLDP mati secara bawaan dan dinyalakan global dengan lldp run; setelah itu lldp transmit dan lldp receive aktif di interface.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
+    },
+    {
+      "id": "ccna-f-u12-lldp-timers",
+      "statement": "Bawaannya LLDP dikirim setiap 30 detik dengan holdtime 120 detik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
+    },
+    {
+      "id": "ccna-f-u12-lldp-int",
+      "statement": "no lldp transmit dan no lldp receive mematikan pengiriman atau penerimaan LLDP di satu interface.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
+    },
+    {
+      "id": "ccna-f-u12-lldp-neighbors",
+      "statement": "show lldp neighbors menampilkan tetangga LLDP dengan kode capability, misalnya R (router), B (bridge), T (telephone), dan W (WLAN access point).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
+    },
+    {
+      "id": "ccna-f-u12-lldp-mixed",
+      "statement": "Perangkat non-Cisco tidak memahami CDP, jadi untuk tetangga dari vendor lain dipakai LLDP.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
+    },
+    {
+      "id": "ccna-f-u12-doc-check",
+      "statement": "Output show cdp neighbors dan show lldp neighbors bisa dicocokkan dengan diagram jaringan untuk menemukan kabel, port, atau perangkat yang tidak sesuai dokumentasi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html",
+      "verify": true
+    }
+  ]
 }

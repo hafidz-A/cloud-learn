@@ -915,5 +915,10 @@
     "expansion": "Layer3, in Use",
     "description": "Flag port-channel di show etherchannel summary: R berarti layer 3 dan U berarti sedang dipakai.",
     "course": "ccna"
+  },
+  {
+    "term": "LLDP",
+    "expansion": "Link Layer Discovery Protocol",
+    "description": "Protokol standar IEEE 802.1AB untuk mengenali tetangga langsung, dipahami banyak vendor."
   }
 ]

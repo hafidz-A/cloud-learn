@@ -332,3 +332,12 @@ describe('access and voice VLANs', () => {
     expect(text).toMatch(/30 {2,}VLAN0030 +active +Fa0\/5/)
   })
 })
+
+describe('show lldp', () => {
+  it('says LLDP is not enabled until lldp run, then shows the prepared output', () => {
+    const setup = { hostname: 'SW1', model: 'c2960' as const, outputs: { 'show lldp neighbors': 'Total entries displayed: 0' } }
+    const text = runSession(setup, ['show lldp neighbors', 'configure terminal', 'lldp run', 'end', 'show lldp neighbors']).transcript.map((l) => l.text).join('\n')
+    expect(text).toContain('% LLDP is not enabled')
+    expect(text).toContain('Total entries displayed: 0')
+  })
+})

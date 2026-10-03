@@ -865,7 +865,8 @@ function runExec(st: DeviceState, def: CmdDef, words: string[], filter: { op: st
     st.saved = runningConfig(st)
     return [out('Building configuration...'), out('[OK]')]
   }
-  const text = st.outputs[command] ?? generated(st, command)
+  // Without lldp run, IOS answers any show lldp command with this line.
+  const text = command.startsWith('show lldp') && effective(st, '', 'lldp run') !== 'lldp run' ? '% LLDP is not enabled' : (st.outputs[command] ?? generated(st, command))
   if (text === undefined) return [langit(`Langit: output "${command}" tidak disiapkan untuk latihan ini.`)]
   let lines = text.split('\n')
   if (filter) {

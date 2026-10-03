@@ -149,6 +149,9 @@ export const VISUAL_CATALOG = {
   // Unit 11
   EtherChannelBundle: ['etherchannel'],
   LacpModes: ['lacp-modes'],
+  // Unit 12
+  CdpVsLldp: ['cdp-vs-lldp'],
+  NeighborScope: ['neighbor-scope'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

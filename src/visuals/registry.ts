@@ -38,6 +38,8 @@ import { RouterOnAStick } from './RouterOnAStick'
 import { SviRouting } from './SviRouting'
 import { EtherChannelBundle } from './EtherChannelBundle'
 import { LacpModes } from './LacpModes'
+import { CdpVsLldp } from './CdpVsLldp'
+import { NeighborScope } from './NeighborScope'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -105,6 +107,8 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  NeighborScope,
+  CdpVsLldp,
   LacpModes,
   EtherChannelBundle,
   SviRouting,
