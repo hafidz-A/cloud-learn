@@ -798,6 +798,169 @@
         "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_dhcp/configuration/xe-16-6/dhcp-xe-16-6-book/dhcp-relay-agent-xe.html",
         "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"
       ]
+    },
+    {
+      "lesson": "ccna-u09-l6",
+      "title": "VLAN, port akses, dan voice VLAN",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Membuat VLAN Staf, Tamu, dan Suara, memasang port akses dan voice VLAN, lalu membuktikan PC di VLAN berbeda tidak bisa saling ping tanpa router.",
+      "topology": {
+        "devices": [
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 0,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "ph1",
+            "kind": "phone",
+            "label": "PHONE1",
+            "x": 0,
+            "y": 1,
+            "note": "IP Phone 7960"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "id": "pc3",
+            "kind": "pc",
+            "label": "PC3",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "sw1",
+            "to": "ph1",
+            "fromPort": "Fa0/1",
+            "toPort": "Switch"
+          },
+          {
+            "from": "ph1",
+            "to": "pc1",
+            "fromPort": "PC"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "Fa0/2"
+          },
+          {
+            "from": "sw1",
+            "to": "pc3",
+            "fromPort": "Fa0/11"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.10.12/24"
+        },
+        {
+          "device": "PC3",
+          "port": "NIC",
+          "address": "192.168.10.13/24 (sengaja satu subnet, tapi beda VLAN)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat sesuai topologi. Di Packet Tracer, IP Phone 7960 butuh adaptor daya: buka tab Physical pada phone dan colokkan Power Adapter ke phone, karena 2960-24TT tidak memberi PoE (Power over Ethernet)."
+        },
+        {
+          "text": "Buat VLAN dan beri nama.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "vlan 10",
+            "name Staf",
+            "vlan 20",
+            "name Tamu",
+            "vlan 150",
+            "name Suara",
+            "end"
+          ]
+        },
+        {
+          "text": "Pasang port akses dan voice VLAN.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "interface range fa0/1 - 10",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "switchport voice vlan 150",
+            "interface range fa0/11 - 20",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "end"
+          ]
+        },
+        {
+          "text": "Isi alamat statis ketiga PC sesuai tabel alamat."
+        },
+        {
+          "text": "Periksa tabel VLAN dan simpan.",
+          "device": "SW1",
+          "commands": [
+            "show vlan brief",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Tabel VLAN.",
+          "device": "SW1",
+          "command": "show vlan brief",
+          "expect": "VLAN 10 Staf berisi Fa0/1 sampai Fa0/10, VLAN 20 Tamu berisi Fa0/11 sampai Fa0/20, dan VLAN 150 Suara ada di daftar."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.10.12 (PC2).",
+          "expect": "Ping berhasil karena PC1 dan PC2 di VLAN 10."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.10.13 (PC3).",
+          "expect": "Ping gagal. PC3 ada di VLAN 20, broadcast domain lain, walaupun alamatnya satu subnet."
+        },
+        {
+          "text": "Pindahkan Fa0/11 ke VLAN 10, lalu ulangi ping ke PC3.",
+          "expect": "Ping berhasil."
+        }
+      ],
+      "notes": [
+        "Pesan \"% Access VLAN does not exist. Creating vlan\" baru muncul kalau port dimasukkan ke VLAN yang belum dibuat. Coba switchport access vlan 30 di port kosong untuk melihatnya.",
+        "Di Packet Tracer, informasi voice VLAN dari switch ke phone bisa tidak terlihat sejelas di perangkat asli."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/m_1522e_vlan_voice_2960s_cg.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html"
+      ]
     }
   ]
 }

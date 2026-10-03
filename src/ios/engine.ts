@@ -776,6 +776,14 @@ function apply(st: DeviceState, def: CmdDef, words: string[], negate: boolean): 
         messages.push(out(`Creating a port-channel interface Port-channel ${words[1]}`))
       }
     }
+    // IOS creates a missing access or voice VLAN when a port is put in it.
+    if ((def.slot === 'switchport access vlan' || def.slot === 'switchport voice vlan') && !negate) {
+      const id = words[words.length - 1]
+      if (id !== '1' && !st.config.has(`vlan ${id}`)) {
+        ensure(st, `vlan ${id}`)
+        messages.push(out(`% ${def.slot === 'switchport access vlan' ? 'Access' : 'Voice'} VLAN does not exist. Creating vlan ${id}`))
+      }
+    }
   }
   return messages
 }

@@ -6,27 +6,967 @@
     {
       "id": "ccna-u09-l1",
       "title": "Konsep VLAN",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u09-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "vlan-concept"
+          ],
+          "title": "VLAN memecah broadcast domain",
+          "body": "Tanpa VLAN (Virtual LAN), semua port switch berada di satu broadcast domain: broadcast dari satu PC sampai ke semua perangkat. VLAN membagi switch menjadi beberapa broadcast domain. Broadcast dari VLAN 10 hanya sampai ke port VLAN 10. Untuk berpindah antar-VLAN dibutuhkan router atau switch layer 3. VLAN mengelompokkan perangkat secara logis, misalnya per tim, tanpa bergantung lokasi fisik.",
+          "keyPoints": [
+            "Satu VLAN, satu broadcast domain",
+            "Antar-VLAN butuh layer 3",
+            "Kelompok logis, bukan lokasi"
+          ],
+          "visual": "VlanDomains",
+          "teaches": [
+            "ccna-f-u09-vlan-bcast",
+            "ccna-f-u09-vlan-logical"
+          ]
+        },
+        {
+          "id": "ccna-u09-l1-e1",
+          "type": "truefalse",
+          "concept": "vlan-concept",
+          "prompt": "A broadcast sent by a PC in VLAN (Virtual LAN) 10 reaches only the VLAN 10 ports of the switch.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Setiap VLAN (Virtual LAN) adalah broadcast domain sendiri, jadi broadcast VLAN 10 berhenti di VLAN 10.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-vlan-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u09-l1-e2",
+          "type": "choice",
+          "concept": "vlan-concept",
+          "prompt": "PC1 in VLAN (Virtual LAN) 10 and PC2 in VLAN 20 are on the same switch. What do they need to talk to each other?",
+          "options": [
+            "A router or a layer 3 switch",
+            "A crossover cable between them",
+            "The same switch port speed",
+            "Nothing, because they share one switch"
+          ],
+          "answer": 0,
+          "explanation": "VLAN (Virtual LAN) berbeda berarti subnet dan broadcast domain berbeda, jadi butuh perangkat layer 3. Berada di switch yang sama tidak cukup.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-vlan-bcast"
+          ]
+        },
+        {
+          "id": "ccna-u09-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "vlan-ids"
+          ],
+          "title": "Nomor VLAN",
+          "body": "Secara bawaan semua port berada di VLAN (Virtual LAN) 1, dan VLAN 1 tidak bisa dihapus. Normal range adalah VLAN 1 sampai 1005, dan extended range 1006 sampai 4094. VLAN 1002 sampai 1005 dicadangkan untuk teknologi lama (Token Ring dan FDDI (Fiber Distributed Data Interface)), jadi tidak bisa dihapus atau dipakai untuk Ethernet.",
+          "keyPoints": [
+            "Bawaan: semua port di VLAN 1",
+            "Normal 1-1005, extended 1006-4094",
+            "1002-1005 dicadangkan"
+          ],
+          "teaches": [
+            "ccna-f-u09-vlan1",
+            "ccna-f-u09-vlan-ranges"
+          ]
+        },
+        {
+          "id": "ccna-u09-l1-e3",
+          "type": "multi",
+          "concept": "vlan-ids",
+          "prompt": "Which two VLANs (Virtual LANs) can never be deleted from a Catalyst switch? (Choose two.)",
+          "options": [
+            "VLAN 1",
+            "VLAN 1003",
+            "VLAN 10",
+            "VLAN 4094"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "VLAN (Virtual LAN) 1 dan VLAN 1002 sampai 1005 dibuat otomatis dan tidak bisa dihapus. VLAN 10 dan 4094 bisa dibuat dan dihapus.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-vlan1",
+            "ccna-f-u09-vlan-ranges"
+          ]
+        },
+        {
+          "id": "ccna-u09-l1-e4",
+          "type": "match",
+          "concept": "vlan-ids",
+          "prompt": "Match each VLAN (Virtual LAN) number to its description.",
+          "pairs": [
+            [
+              "1",
+              "Default VLAN of every port"
+            ],
+            [
+              "500",
+              "Normal range VLAN you can create"
+            ],
+            [
+              "1004",
+              "Reserved for old Token Ring and FDDI (Fiber Distributed Data Interface) use"
+            ],
+            [
+              "3000",
+              "Extended range VLAN"
+            ]
+          ],
+          "explanation": "VLAN (Virtual LAN) 1 adalah bawaan, 500 di normal range, 1004 dicadangkan, dan 3000 di extended range.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-vlan1",
+            "ccna-f-u09-vlan-ranges"
+          ]
+        },
+        {
+          "id": "ccna-u09-l1-e5",
+          "type": "choice",
+          "concept": "vlan-ids",
+          "prompt": "A new switch has had no configuration yet. Which VLAN (Virtual LAN) are its ports in?",
+          "options": [
+            "VLAN 1",
+            "VLAN 0",
+            "VLAN 1002",
+            "No VLAN until one is assigned"
+          ],
+          "answer": 0,
+          "explanation": "Semua port berada di VLAN (Virtual LAN) 1 secara bawaan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-vlan1",
+            "ccna-f-u09-vlan-ranges"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u09-l2",
       "title": "Membuat VLAN dan port akses",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u09-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "vlan-config"
+          ],
+          "title": "Membuat VLAN",
+          "body": "Buat VLAN (Virtual LAN) di global configuration dengan vlan diikuti nomornya, lalu beri nama dengan name. Contoh: vlan 10, lalu name Staf. Nama membantu orang lain membaca konfigurasi. show vlan brief menampilkan setiap VLAN, nama, status, dan port akses di dalamnya; port trunk tidak tercantum di tabel ini.",
+          "keyPoints": [
+            "vlan <id>, lalu name",
+            "show vlan brief",
+            "Port trunk tidak tercantum"
+          ],
+          "teaches": [
+            "ccna-f-u09-vlan-cmd",
+            "ccna-f-u09-show-vlan"
+          ]
+        },
+        {
+          "id": "ccna-u09-l2-e1",
+          "type": "ios",
+          "concept": "vlan-config",
+          "prompt": "Create VLAN (Virtual LAN) 10 named Staf and VLAN 20 named Tamu on SW1.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "vlan 10",
+                "line": "name Staf"
+              },
+              {
+                "context": "vlan 20",
+                "line": "name Tamu"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "vlan 10",
+            "name Staf",
+            "vlan 20",
+            "name Tamu",
+            "end"
+          ],
+          "explanation": "vlan <id> membuat VLAN (Virtual LAN) dan masuk ke VLAN configuration, lalu name memberi nama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-vlan-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u09-l2-e2",
+          "type": "truefalse",
+          "concept": "vlan-config",
+          "prompt": "Trunk ports appear in the port list of show vlan brief.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. show vlan brief hanya mencantumkan port akses; port trunk dilihat dengan show interfaces trunk.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-show-vlan"
+          ]
+        },
+        {
+          "id": "ccna-u09-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "access-port"
+          ],
+          "title": "Port akses",
+          "body": "Port akses membawa satu VLAN (Virtual LAN) data tanpa tag, cocok untuk PC dan printer. Setnya dengan switchport mode access lalu switchport access vlan diikuti nomor VLAN. Kalau VLAN itu belum ada, IOS membuatnya otomatis dan menulis pesan Creating vlan. Untuk banyak port sekaligus, pakai interface range, misalnya interface range fa0/1 - 10.",
+          "keyPoints": [
+            "switchport mode access",
+            "switchport access vlan <id>",
+            "Banyak port: interface range"
+          ],
+          "teaches": [
+            "ccna-f-u09-access-cmd",
+            "ccna-f-u09-auto-create",
+            "ccna-f-u09-range"
+          ]
+        },
+        {
+          "id": "ccna-u09-l2-e3",
+          "type": "ios",
+          "concept": "access-port",
+          "prompt": "Put the PC on FastEthernet0/5 of SW1 in VLAN (Virtual LAN) 10 as an access port.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "vlan 10",
+              "lines": [
+                "name Staf"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport access vlan 10"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/5",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "end"
+          ],
+          "explanation": "switchport mode access membuat port menjadi port akses, lalu switchport access vlan 10 memasukkannya ke VLAN (Virtual LAN) 10.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-access-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u09-l2-e4",
+          "type": "ios",
+          "concept": "access-port",
+          "prompt": "Ports FastEthernet0/11 to FastEthernet0/20 of SW1 serve the guest room. Make them all access ports in VLAN (Virtual LAN) 20 with one interface range.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "vlan 20",
+              "lines": [
+                "name Tamu"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/11",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/11",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/12",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/12",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/13",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/13",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/14",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/14",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/15",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/15",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/16",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/16",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/17",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/17",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/18",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/18",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/19",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/19",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/20",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/20",
+                "line": "switchport access vlan 20"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface range fa0/11 - 20",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "end"
+          ],
+          "explanation": "interface range menerapkan kedua perintah ke kesepuluh port sekaligus.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-range",
+            "ccna-f-u09-access-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u09-l2-e5",
+          "type": "choice",
+          "concept": "access-port",
+          "prompt": "An engineer enters switchport access vlan 30, but VLAN (Virtual LAN) 30 does not exist yet. What does the switch do?",
+          "options": [
+            "It creates VLAN 30 and shows a message about it",
+            "It rejects the command with % Invalid input",
+            "It puts the port in VLAN 1 instead",
+            "It shuts the port down until VLAN 30 exists"
+          ],
+          "answer": 0,
+          "explanation": "IOS membuat VLAN (Virtual LAN) akses yang belum ada dan menulis % Access VLAN does not exist. Creating vlan 30.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-auto-create",
+            "ccna-f-u09-vlan1"
+          ]
+        },
+        {
+          "id": "ccna-u09-l2-e6",
+          "type": "exhibit",
+          "concept": "access-port",
+          "prompt": "Refer to the exhibit. A user on Fa0/3 cannot reach the Staf servers in VLAN (Virtual LAN) 10. What should you do?",
+          "outputs": [
+            {
+              "title": "SW1# show vlan brief",
+              "text": "VLAN Name                             Status    Ports\n---- -------------------------------- --------- -------------------------------\n1    default                          active    Fa0/3, Fa0/4, Fa0/6, Fa0/7\n10   Staf                             active    Fa0/1, Fa0/2, Fa0/5\n20   Tamu                             active    Fa0/11, Fa0/12\n1002 fddi-default                     act/unsup\n1003 token-ring-default               act/unsup\n1004 fddinet-default                  act/unsup\n1005 trnet-default                    act/unsup"
+            }
+          ],
+          "options": [
+            "Put Fa0/3 in VLAN 10 with switchport access vlan 10",
+            "Delete VLAN 1 so that the port falls into VLAN 10",
+            "Rename VLAN 20 to Staf",
+            "Enable a trunk on Fa0/3"
+          ],
+          "answer": 0,
+          "explanation": "Fa0/3 masih di VLAN (Virtual LAN) 1, VLAN bawaan. Masukkan ke VLAN 10. VLAN 1 tidak bisa dihapus, dan mengganti nama VLAN tidak memindahkan port.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-show-vlan",
+            "ccna-f-u09-access-cmd",
+            "ccna-f-u09-vlan1"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u09-l3",
       "title": "Voice VLAN dan IP phone",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u09-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "voice-vlan"
+          ],
+          "title": "Voice VLAN",
+          "body": "Di banyak meja, PC tersambung ke port di belakang IP (Internet Protocol) phone, dan phone tersambung ke switch. Satu port switch membawa dua jenis trafik. Voice VLAN (Virtual LAN) memisahkannya: phone mengirim suara dengan tag 802.1Q di voice VLAN, sedangkan data PC lewat tanpa tag di access VLAN. Perintahnya switchport voice vlan diikuti nomornya. Voice VLAN tidak aktif secara bawaan.",
+          "keyPoints": [
+            "Satu port, phone dan PC",
+            "Suara: tag di voice VLAN",
+            "Data PC: tanpa tag, access VLAN"
+          ],
+          "visual": "VoiceVlan",
+          "teaches": [
+            "ccna-f-u09-voice-why",
+            "ccna-f-u09-voice-cmd",
+            "ccna-f-u09-voice-off"
+          ]
+        },
+        {
+          "id": "ccna-u09-l3-e1",
+          "type": "ios",
+          "concept": "voice-vlan",
+          "prompt": "FastEthernet0/7 on SW1 connects an IP (Internet Protocol) phone with a PC behind it. Data goes in VLAN (Virtual LAN) 10 and voice in VLAN 150.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "vlan 10",
+              "lines": [
+                "name Staf"
+              ]
+            },
+            {
+              "context": "vlan 150",
+              "lines": [
+                "name Suara"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/7",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/7",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/7",
+                "line": "switchport voice vlan 150"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/7",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "switchport voice vlan 150",
+            "end"
+          ],
+          "explanation": "Port tetap port akses untuk data PC di VLAN (Virtual LAN) 10, dan switchport voice vlan 150 menambahkan VLAN suara.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-voice-cmd",
+            "ccna-f-u09-access-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u09-l3-e2",
+          "type": "truefalse",
+          "concept": "voice-vlan",
+          "prompt": "With a voice VLAN (Virtual LAN), the phone tags its voice frames with 802.1Q, while the PC data stays untagged.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Suara diberi tag 802.1Q di voice VLAN (Virtual LAN), sedangkan data PC tanpa tag di access VLAN.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-voice-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u09-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "voice-cdp"
+          ],
+          "title": "CDP dan prioritas suara",
+          "body": "Bagaimana phone tahu nomor voice VLAN (Virtual LAN)? Switch memberitahunya lewat CDP (Cisco Discovery Protocol), jadi CDP harus aktif di port itu. Phone juga memberi nilai prioritas layer 2, CoS (class of service), pada frame suara supaya bisa didahulukan di jaringan.",
+          "keyPoints": [
+            "Nomor voice VLAN dikirim lewat CDP",
+            "CDP harus aktif",
+            "CoS untuk prioritas suara"
+          ],
+          "teaches": [
+            "ccna-f-u09-voice-cdp",
+            "ccna-f-u09-voice-cos"
+          ]
+        },
+        {
+          "id": "ccna-u09-l3-e3",
+          "type": "choice",
+          "concept": "voice-cdp",
+          "prompt": "How does a Cisco IP (Internet Protocol) phone learn which voice VLAN (Virtual LAN) to use?",
+          "options": [
+            "The switch tells it through CDP (Cisco Discovery Protocol)",
+            "The PC behind the phone tells it",
+            "It always uses VLAN 1",
+            "The DHCP (Dynamic Host Configuration Protocol) server picks the VLAN"
+          ],
+          "answer": 0,
+          "explanation": "Switch mengirim informasi voice VLAN (Virtual LAN) ke phone lewat CDP (Cisco Discovery Protocol). VLAN 1 hanya bawaan port, dan DHCP (Dynamic Host Configuration Protocol) memberi alamat, bukan VLAN.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-voice-cdp",
+            "ccna-f-u09-vlan1",
+            "ccna-f-u08-options"
+          ]
+        },
+        {
+          "id": "ccna-u09-l3-e4",
+          "type": "choice",
+          "concept": "voice-cdp",
+          "prompt": "A phone on Fa0/7 stays in the data VLAN (Virtual LAN) even though switchport voice vlan 150 is set. Which setting is the most likely cause?",
+          "options": [
+            "CDP (Cisco Discovery Protocol) is disabled on Fa0/7",
+            "VLAN 150 has no name",
+            "The port is an access port",
+            "The PC behind the phone has a static address configured on it"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa CDP (Cisco Discovery Protocol), phone tidak tahu nomor voice VLAN (Virtual LAN). Nama VLAN tidak wajib, dan voice VLAN memang dipasang di port akses.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-voice-cdp",
+            "ccna-f-u09-vlan-cmd",
+            "ccna-f-u09-voice-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u09-l3-e5",
+          "type": "multi",
+          "concept": "voice-cdp",
+          "prompt": "Which two statements about a voice VLAN (Virtual LAN) are true? (Choose two.)",
+          "options": [
+            "It is off by default",
+            "Voice frames carry a layer 2 priority value",
+            "It needs a trunk port to the phone",
+            "It replaces the access VLAN of the PC"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Voice VLAN (Virtual LAN) tidak aktif secara bawaan, dan frame suara membawa CoS (class of service). Port tetap port akses, dan data PC tetap di access VLAN.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-voice-off",
+            "ccna-f-u09-voice-cos",
+            "ccna-f-u09-voice-cmd"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u09-l4",
       "title": "Port untuk AP, IoT, host virtual, dan appliance",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u09-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "access-port-uses"
+          ],
+          "title": "AP dan host virtual",
+          "body": "AP (access point) dalam mode local membawa semua trafik klien di dalam tunnel CAPWAP (Control and Provisioning of Wireless Access Points) ke WLC (Wireless LAN Controller), jadi port switch-nya cukup port akses. AP FlexConnect dengan local switching mengeluarkan trafik klien langsung di port AP, jadi port-nya sebaiknya trunk. Server yang menjalankan VM (virtual machine) di beberapa VLAN (Virtual LAN) juga memakai trunk ke virtual switch-nya.",
+          "keyPoints": [
+            "AP local: port akses",
+            "AP FlexConnect local switching: trunk",
+            "Host VM banyak VLAN: trunk"
+          ],
+          "teaches": [
+            "ccna-f-u09-ap-local",
+            "ccna-f-u09-ap-flex",
+            "ccna-f-u07-vswitch-trunk"
+          ]
+        },
+        {
+          "id": "ccna-u09-l4-e1",
+          "type": "choice",
+          "concept": "access-port-uses",
+          "prompt": "A lightweight AP (access point) in local mode serves three SSIDs (Service Set Identifiers). How should its switch port be configured?",
+          "options": [
+            "As an access port, because client traffic is tunneled to the WLC (Wireless LAN Controller)",
+            "As a trunk carrying the three client VLANs (Virtual LAN)",
+            "As a routed port with an IP (Internet Protocol) address per SSID",
+            "As a voice VLAN port"
+          ],
+          "answer": 0,
+          "explanation": "Mode local membawa semua trafik klien di tunnel CAPWAP (Control and Provisioning of Wireless Access Points) ke WLC (Wireless LAN Controller), jadi port akses sudah cukup berapa pun jumlah SSID (Service Set Identifier)-nya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-ap-local",
+            "ccna-f-u09-ap-flex"
+          ]
+        },
+        {
+          "id": "ccna-u09-l4-e2",
+          "type": "choice",
+          "concept": "access-port-uses",
+          "prompt": "A FlexConnect AP (access point) switches client traffic locally into VLANs (Virtual LANs) 20 and 30. What port type does it need?",
+          "options": [
+            "A trunk",
+            "An access port in VLAN 20",
+            "An access port in VLAN 1",
+            "A voice VLAN port"
+          ],
+          "answer": 0,
+          "explanation": "Dengan local switching, trafik klien keluar langsung di port AP (access point) dalam beberapa VLAN (Virtual LAN), jadi port-nya trunk.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-ap-flex"
+          ]
+        },
+        {
+          "id": "ccna-u09-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "iot-appliance"
+          ],
+          "title": "IoT dan appliance",
+          "body": "Perangkat IoT (Internet of Things), seperti kamera dan sensor, sebaiknya dipisahkan dari perangkat pengguna ke segmen sendiri, misalnya VLAN (Virtual LAN) khusus, supaya tidak bisa bebas menjangkau jaringan lain. Perangkat yang hanya ada di satu VLAN, seperti printer atau server biasa, memakai port akses. Perangkat yang melayani banyak VLAN memakai trunk.",
+          "keyPoints": [
+            "IoT: segmen sendiri",
+            "Satu VLAN: port akses",
+            "Banyak VLAN: trunk"
+          ],
+          "teaches": [
+            "ccna-f-u09-iot-segment",
+            "ccna-f-u09-appliance"
+          ]
+        },
+        {
+          "id": "ccna-u09-l4-e3",
+          "type": "truefalse",
+          "concept": "iot-appliance",
+          "prompt": "Security cameras should share the VLAN (Virtual LAN) of employee laptops so they are easier to manage.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Perangkat IoT (Internet of Things) sebaiknya dipisahkan ke segmen sendiri supaya tidak bebas menjangkau perangkat pengguna.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-iot-segment"
+          ]
+        },
+        {
+          "id": "ccna-u09-l4-e4",
+          "type": "sort",
+          "concept": "iot-appliance",
+          "prompt": "Sort each device by the switch port it usually needs.",
+          "buckets": [
+            "Access port",
+            "Trunk"
+          ],
+          "items": [
+            {
+              "text": "A printer in VLAN (Virtual LAN) 10",
+              "bucket": 0
+            },
+            {
+              "text": "A local mode AP (access point)",
+              "bucket": 0
+            },
+            {
+              "text": "A security camera in the IoT (Internet of Things) VLAN",
+              "bucket": 0
+            },
+            {
+              "text": "A server running VMs (virtual machines) in three VLANs",
+              "bucket": 1
+            },
+            {
+              "text": "A FlexConnect AP with local switching",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Perangkat dengan satu VLAN (Virtual LAN) memakai port akses, termasuk AP (access point) mode local. Server dengan VM (virtual machine) di banyak VLAN dan AP FlexConnect local switching memakai trunk.",
+          "requires": [
+            "ccna-f-u09-appliance",
+            "ccna-f-u09-ap-local",
+            "ccna-f-u09-ap-flex",
+            "ccna-f-u09-iot-segment",
+            "ccna-f-u07-vswitch-trunk"
+          ]
+        },
+        {
+          "id": "ccna-u09-l4-e5",
+          "type": "ios",
+          "concept": "iot-appliance",
+          "prompt": "Create VLAN (Virtual LAN) 40 named IoT (Internet of Things) on SW1, and put the camera on FastEthernet0/15 in it as an access port.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "vlan 40",
+                "line": "name IoT"
+              },
+              {
+                "context": "interface FastEthernet0/15",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/15",
+                "line": "switchport access vlan 40"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "vlan 40",
+            "name IoT",
+            "interface fa0/15",
+            "switchport mode access",
+            "switchport access vlan 40",
+            "end"
+          ],
+          "explanation": "VLAN (Virtual LAN) khusus IoT (Internet of Things) memisahkan kamera dari perangkat pengguna, dan kamera hanya butuh port akses.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-iot-segment",
+            "ccna-f-u09-vlan-cmd",
+            "ccna-f-u09-access-cmd"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u09-l5",
       "title": "Power over Ethernet",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u09-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "poe"
+          ],
+          "title": "Power over Ethernet",
+          "body": "PoE (Power over Ethernet) mengirim daya listrik lewat kabel Ethernet. Switch yang memberi daya disebut PSE (power sourcing equipment), dan perangkat yang menerimanya, seperti IP (Internet Protocol) phone, AP (access point), dan kamera, disebut PD (powered device). 802.3af memberi sampai 15,4 W per port, 802.3at (PoE+) 30 W, Cisco UPOE (Universal Power over Ethernet) 60 W, dan 802.3bt atau UPOE+ sampai 90 W.",
+          "keyPoints": [
+            "PSE memberi, PD menerima",
+            "af 15,4 W, at 30 W",
+            "UPOE 60 W, bt 90 W"
+          ],
+          "visual": "PoeClasses",
+          "teaches": [
+            "ccna-f-u09-poe-roles",
+            "ccna-f-u09-poe-af-at",
+            "ccna-f-u09-poe-upoe"
+          ]
+        },
+        {
+          "id": "ccna-u09-l5-e1",
+          "type": "choice",
+          "concept": "poe",
+          "prompt": "A new AP (access point) needs 25 W. Which is the oldest PoE (Power over Ethernet) standard that can power it?",
+          "options": [
+            "802.3at (PoE+)",
+            "802.3af",
+            "802.3bt",
+            "Cisco UPOE (Universal Power over Ethernet)"
+          ],
+          "answer": 0,
+          "explanation": "802.3af hanya 15,4 W. 802.3at memberi sampai 30 W, cukup untuk 25 W. 802.3bt dan UPOE (Universal Power over Ethernet) lebih baru dan lebih besar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-poe-af-at",
+            "ccna-f-u09-poe-upoe"
+          ]
+        },
+        {
+          "id": "ccna-u09-l5-e2",
+          "type": "match",
+          "concept": "poe",
+          "prompt": "Match each PoE (Power over Ethernet) standard to its maximum power at the switch port.",
+          "pairs": [
+            [
+              "802.3af",
+              "15.4 W"
+            ],
+            [
+              "802.3at (PoE+)",
+              "30 W"
+            ],
+            [
+              "Cisco UPOE (Universal Power over Ethernet)",
+              "60 W"
+            ],
+            [
+              "802.3bt or UPOE+",
+              "90 W"
+            ]
+          ],
+          "explanation": "802.3af 15,4 W, 802.3at 30 W, UPOE (Universal Power over Ethernet) 60 W, dan 802.3bt atau UPOE+ 90 W.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-poe-af-at",
+            "ccna-f-u09-poe-upoe"
+          ]
+        },
+        {
+          "id": "ccna-u09-l5-e3",
+          "type": "truefalse",
+          "concept": "poe",
+          "prompt": "In PoE (Power over Ethernet), an IP (Internet Protocol) phone that receives power from the switch is a PD (powered device).",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Perangkat yang menerima daya adalah PD (powered device); yang memberi daya, misalnya switch, adalah PSE (power sourcing equipment).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-poe-roles"
+          ]
+        },
+        {
+          "id": "ccna-u09-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "poe-config"
+          ],
+          "title": "Mengatur dan memeriksa PoE",
+          "body": "Setelan bawaan port PoE (Power over Ethernet) adalah power inline auto: port mendeteksi PD (powered device) dan memberi daya otomatis. power inline never mematikan PoE di port itu, misalnya untuk port yang tidak boleh memberi daya. Switch juga punya batas total daya (power budget); kalau habis, perangkat baru tidak mendapat daya. show power inline menampilkan daya yang tersedia, terpakai, dan per port.",
+          "keyPoints": [
+            "Bawaan: power inline auto",
+            "power inline never: matikan PoE",
+            "Budget habis: PD baru tidak menyala"
+          ],
+          "teaches": [
+            "ccna-f-u09-poe-cmd",
+            "ccna-f-u09-poe-budget",
+            "ccna-f-u09-poe-show"
+          ]
+        },
+        {
+          "id": "ccna-u09-l5-e4",
+          "type": "ios",
+          "concept": "poe-config",
+          "prompt": "GigabitEthernet1/0/24 on SW1 connects a PC that must never receive PoE (Power over Ethernet). Turn off PoE on that port.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c3650"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet1/0/24",
+                "line": "power inline never"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g1/0/24",
+            "power inline never",
+            "end"
+          ],
+          "explanation": "power inline never mematikan PoE (Power over Ethernet) di port itu. Setelan bawaannya auto.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-poe-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u09-l5-e5",
+          "type": "exhibit",
+          "concept": "poe-config",
+          "prompt": "Refer to the exhibit. A new camera on Gi1/0/9 does not power on. What is the most likely cause?",
+          "outputs": [
+            {
+              "title": "SW1# show power inline",
+              "text": "Module   Available     Used     Remaining\n          (Watts)     (Watts)    (Watts)\n------   ---------   --------   ---------\n1           370.0      369.6         0.4\nInterface Admin  Oper       Power   Device              Class Max\n                            (Watts)\n--------- ------ ---------- ------- ------------------- ----- ----\nGi1/0/1   auto   on         30.0    AIR-AP-Wi-Fi6       4     30.0\nGi1/0/2   auto   on         30.0    AIR-AP-Wi-Fi6       4     30.0\nGi1/0/9   auto   off        0.0     n/a                 n/a   30.0"
+            }
+          ],
+          "options": [
+            "The PoE (Power over Ethernet) budget of the switch is used up",
+            "Gi1/0/9 is set to power inline auto",
+            "The camera needs its own voice VLAN (Virtual LAN) on that port first",
+            "The cable is longer than 10 meters"
+          ],
+          "answer": 0,
+          "explanation": "Sisa daya 0,4 W dan port Gi1/0/9 berstatus off karena power budget habis. auto adalah setelan bawaan yang benar, dan kabel Ethernet boleh sampai 100 meter.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-poe-budget",
+            "ccna-f-u09-poe-show",
+            "ccna-f-u09-poe-cmd",
+            "ccna-f-u03-utp-cat"
+          ]
+        },
+        {
+          "id": "ccna-u09-l5-e6",
+          "type": "choice",
+          "concept": "poe-config",
+          "prompt": "Which command shows how much PoE (Power over Ethernet) power a switch has left?",
+          "options": [
+            "show power inline",
+            "show vlan brief",
+            "show interfaces status",
+            "show ip interface brief"
+          ],
+          "answer": 0,
+          "explanation": "show power inline menampilkan daya yang tersedia, terpakai, dan sisa.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-poe-show",
+            "ccna-f-u09-show-vlan",
+            "ccna-f-u03-status-cmd"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u09-l6",
@@ -35,8 +975,490 @@
         "kind": "handson",
         "from": "ccna-u09-l5"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u09-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "vlan-lab"
+          ],
+          "title": "Alur kerja VLAN di switch akses",
+          "body": "Buat VLAN (Virtual LAN) dan beri nama. Masukkan port PC ke VLAN data dengan switchport mode access dan switchport access vlan. Untuk meja dengan IP (Internet Protocol) phone, tambahkan switchport voice vlan. Cek dengan show vlan brief, lalu simpan.",
+          "keyPoints": [
+            "VLAN dan nama dulu",
+            "Port akses dan voice VLAN",
+            "show vlan brief, lalu simpan"
+          ],
+          "teaches": [
+            "ccna-f-u09-vlan-cmd",
+            "ccna-f-u09-access-cmd",
+            "ccna-f-u09-voice-cmd",
+            "ccna-f-u09-show-vlan"
+          ]
+        },
+        {
+          "id": "ccna-u09-l6-e1",
+          "type": "ios",
+          "concept": "vlan-lab",
+          "prompt": "On SW1, create VLAN (Virtual LAN) 10 Staf, VLAN 20 Tamu, and VLAN 150 Suara. Put FastEthernet0/1 to FastEthernet0/10 in VLAN 10 with voice VLAN 150, put FastEthernet0/11 to FastEthernet0/20 in VLAN 20, then check the VLAN table.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "vlan 10",
+                "line": "name Staf"
+              },
+              {
+                "context": "vlan 20",
+                "line": "name Tamu"
+              },
+              {
+                "context": "vlan 150",
+                "line": "name Suara"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/3",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/3",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/3",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/4",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/4",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/4",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/6",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/6",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/6",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/7",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/7",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/7",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/8",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/8",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/8",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/9",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/9",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/9",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/10",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/10",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/10",
+                "line": "switchport voice vlan 150"
+              },
+              {
+                "context": "interface FastEthernet0/11",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/11",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/12",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/12",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/13",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/13",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/14",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/14",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/15",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/15",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/16",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/16",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/17",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/17",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/18",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/18",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/19",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/19",
+                "line": "switchport access vlan 20"
+              },
+              {
+                "context": "interface FastEthernet0/20",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/20",
+                "line": "switchport access vlan 20"
+              }
+            ],
+            "run": [
+              "show vlan brief"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "vlan 10",
+            "name Staf",
+            "vlan 20",
+            "name Tamu",
+            "vlan 150",
+            "name Suara",
+            "interface range fa0/1 - 10",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "switchport voice vlan 150",
+            "interface range fa0/11 - 20",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "end",
+            "show vlan brief"
+          ],
+          "explanation": "Buat dan beri nama VLAN (Virtual LAN) dulu, lalu pakai interface range untuk tiap kelompok port.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-vlan-cmd",
+            "ccna-f-u09-range",
+            "ccna-f-u09-access-cmd",
+            "ccna-f-u09-voice-cmd",
+            "ccna-f-u09-show-vlan"
+          ]
+        },
+        {
+          "id": "ccna-u09-l6-e2",
+          "type": "exhibit",
+          "concept": "vlan-lab",
+          "prompt": "Refer to the exhibit. PC3 cannot reach PC1 and PC2. What is the problem?",
+          "outputs": [
+            {
+              "title": "SW1# show vlan brief",
+              "text": "VLAN Name                             Status    Ports\n---- -------------------------------- --------- -------------------------------\n1    default                          active    Fa0/21, Fa0/22, Fa0/23, Fa0/24\n10   Staf                             active    Fa0/1, Fa0/2\n20   Tamu                             active    Fa0/3, Fa0/11, Fa0/12"
+            }
+          ],
+          "options": [
+            "Fa0/3 is in VLAN (Virtual LAN) 20 instead of VLAN 10",
+            "VLAN 10 has the wrong name",
+            "Fa0/3 needs a voice VLAN",
+            "The switch needs VLAN 1 deleted before VLAN 10 can be used"
+          ],
+          "answer": 0,
+          "explanation": "PC1 dan PC2 di VLAN (Virtual LAN) 10, sedangkan Fa0/3 masuk VLAN 20, jadi PC3 berada di broadcast domain lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-show-vlan",
+            "ccna-f-u09-vlan-bcast",
+            "ccna-f-u09-vlan1"
+          ]
+        },
+        {
+          "id": "ccna-u09-l6-e3",
+          "type": "ios",
+          "concept": "vlan-lab",
+          "prompt": "PC3 on FastEthernet0/3 of SW1 belongs to VLAN (Virtual LAN) 10, but the port is in VLAN 20. Fix it and save the configuration.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "vlan 10",
+              "lines": [
+                "name Staf"
+              ]
+            },
+            {
+              "context": "vlan 20",
+              "lines": [
+                "name Tamu"
+              ]
+            },
+            {
+              "context": "interface FastEthernet0/3",
+              "lines": [
+                "switchport mode access",
+                "switchport access vlan 20"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/3",
+                "line": "switchport access vlan 10"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/3",
+            "switchport access vlan 10",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "switchport access vlan 10 memindahkan port, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u09-access-cmd",
+            "ccna-f-u02-save"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u09-vlan-bcast",
+      "statement": "Setiap VLAN adalah broadcast domain terpisah; perangkat di VLAN berbeda butuh router atau switch layer 3 untuk saling berkomunikasi.",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html"
+    },
+    {
+      "id": "ccna-f-u09-vlan-logical",
+      "statement": "VLAN mengelompokkan perangkat secara logis, misalnya per fungsi atau tim, tanpa bergantung pada lokasi fisiknya.",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html"
+    },
+    {
+      "id": "ccna-f-u09-vlan1",
+      "statement": "Secara bawaan semua port berada di VLAN 1, dan VLAN 1 tidak bisa dihapus.",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html"
+    },
+    {
+      "id": "ccna-f-u09-vlan-ranges",
+      "statement": "VLAN normal range adalah 1 sampai 1005 dan extended range 1006 sampai 4094; VLAN 1002 sampai 1005 dicadangkan untuk Token Ring dan FDDI dan tidak bisa dihapus.",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html"
+    },
+    {
+      "id": "ccna-f-u09-vlan-cmd",
+      "statement": "VLAN dibuat dengan vlan <id> di global configuration dan diberi nama dengan name <nama> di VLAN configuration.",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html"
+    },
+    {
+      "id": "ccna-f-u09-access-cmd",
+      "statement": "Port akses diset dengan switchport mode access dan switchport access vlan <id>; port akses membawa satu VLAN data tanpa tag.",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html"
+    },
+    {
+      "id": "ccna-f-u09-auto-create",
+      "statement": "Kalau VLAN akses belum ada, IOS membuatnya otomatis dan menampilkan \"% Access VLAN does not exist. Creating vlan <id>\".",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u09-show-vlan",
+      "statement": "show vlan brief menampilkan setiap VLAN beserta nama, status, dan port aksesnya; port trunk tidak tercantum di sana.",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u09-range",
+      "statement": "interface range, misalnya interface range fa0/1 - 10, menerapkan perintah yang sama ke beberapa port sekaligus.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html"
+    },
+    {
+      "id": "ccna-f-u09-voice-why",
+      "statement": "Voice VLAN memisahkan suara dari IP phone dan data dari PC yang tersambung di belakang phone, walaupun keduanya memakai satu port switch.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/m_1522e_vlan_voice_2960s_cg.html"
+    },
+    {
+      "id": "ccna-f-u09-voice-cmd",
+      "statement": "switchport voice vlan <id> mengatur voice VLAN; phone mengirim suara dengan tag 802.1Q di voice VLAN, sedangkan data PC dikirim tanpa tag di access VLAN.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/m_1522e_vlan_voice_2960s_cg.html"
+    },
+    {
+      "id": "ccna-f-u09-voice-cdp",
+      "statement": "Switch memberi tahu IP phone Cisco nomor voice VLAN lewat CDP (Cisco Discovery Protocol), jadi CDP harus aktif di port itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/m_1522e_vlan_voice_2960s_cg.html"
+    },
+    {
+      "id": "ccna-f-u09-voice-off",
+      "statement": "Voice VLAN tidak aktif secara bawaan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/m_1522e_vlan_voice_2960s_cg.html"
+    },
+    {
+      "id": "ccna-f-u09-voice-cos",
+      "statement": "Phone memberi nilai prioritas layer 2 (CoS, class of service) pada frame suara supaya bisa didahulukan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/m_1522e_vlan_voice_2960s_cg.html"
+    },
+    {
+      "id": "ccna-f-u09-ap-local",
+      "statement": "AP (access point) dalam mode local membawa semua trafik klien di dalam tunnel CAPWAP ke WLC, jadi port switch-nya cukup port akses.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/technotes/8-3/Flex_7500_DG.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u09-ap-flex",
+      "statement": "AP FlexConnect dengan local switching mengeluarkan trafik klien langsung di port AP, jadi port switch-nya sebaiknya trunk dengan VLAN klien terpisah dari VLAN manajemen.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/technotes/8-3/Flex_7500_DG.html"
+    },
+    {
+      "id": "ccna-f-u09-iot-segment",
+      "statement": "Perangkat IoT sebaiknya dipisahkan dari perangkat pengguna ke segmen sendiri, misalnya VLAN atau virtual network tersendiri, supaya tidak bisa bebas menjangkau jaringan lain.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/solutions/CVD/Campus/cisco-sda-design-guide.html"
+    },
+    {
+      "id": "ccna-f-u09-appliance",
+      "statement": "Perangkat yang hanya ada di satu VLAN, misalnya printer atau server biasa, memakai port akses; perangkat yang melayani banyak VLAN memakai trunk.",
+      "source": "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u09-poe-roles",
+      "statement": "Switch yang memberi daya disebut PSE (power sourcing equipment), dan perangkat yang menerima daya, seperti IP phone, AP, dan kamera, disebut PD (powered device).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-11/configuration_guide/int_hw/b_1611_int_and_hw_9400_cg/configuring_poe.html"
+    },
+    {
+      "id": "ccna-f-u09-poe-af-at",
+      "statement": "802.3af (PoE) memberi sampai 15,4 W per port, dan 802.3at (PoE+) sampai 30 W per port.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-11/configuration_guide/int_hw/b_1611_int_and_hw_9400_cg/configuring_poe.html"
+    },
+    {
+      "id": "ccna-f-u09-poe-upoe",
+      "statement": "Cisco UPOE memberi sampai 60 W, sedangkan 802.3bt atau Cisco UPOE+ sampai 90 W lewat empat pasang kabel Category 5e atau lebih baik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-11/configuration_guide/int_hw/b_1611_int_and_hw_9400_cg/configuring_poe.html"
+    },
+    {
+      "id": "ccna-f-u09-poe-cmd",
+      "statement": "power inline auto, setelan bawaan, membuat port mendeteksi PD dan memberi daya otomatis; power inline never mematikan PoE di port itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-11/configuration_guide/int_hw/b_1611_int_and_hw_9400_cg/configuring_poe.html"
+    },
+    {
+      "id": "ccna-f-u09-poe-budget",
+      "statement": "Switch punya batas total daya PoE (power budget); kalau sudah habis, perangkat baru tidak mendapat daya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-11/configuration_guide/int_hw/b_1611_int_and_hw_9400_cg/configuring_poe.html"
+    },
+    {
+      "id": "ccna-f-u09-poe-show",
+      "statement": "show power inline menampilkan daya yang tersedia, yang terpakai, dan pemakaian setiap port.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-11/configuration_guide/int_hw/b_1611_int_and_hw_9400_cg/configuring_poe.html"
+    }
+  ]
 }

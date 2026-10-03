@@ -29,6 +29,9 @@ import { VrfTables } from './VrfTables'
 import { ClientIpCommands } from './ClientIpCommands'
 import { DhcpDora } from './DhcpDora'
 import { DhcpRelay } from './DhcpRelay'
+import { VlanDomains } from './VlanDomains'
+import { VoiceVlan } from './VoiceVlan'
+import { PoeClasses } from './PoeClasses'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -96,6 +99,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  PoeClasses,
+  VoiceVlan,
+  VlanDomains,
   DhcpRelay,
   DhcpDora,
   ClientIpCommands,

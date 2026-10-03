@@ -137,6 +137,10 @@ export const VISUAL_CATALOG = {
   ClientIpCommands: ['client-ip-settings'],
   DhcpDora: ['dhcp-dora'],
   DhcpRelay: ['dhcp-relay'],
+  // Unit 9
+  VlanDomains: ['vlan-concept'],
+  VoiceVlan: ['voice-vlan'],
+  PoeClasses: ['poe'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

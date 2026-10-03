@@ -322,3 +322,13 @@ describe('show ipv6 interface brief', () => {
     expect(text).toContain(' ipv6 address 2001:DB8:ACAD:2::/64 eui-64')
   })
 })
+
+describe('access and voice VLANs', () => {
+  it('creates a missing VLAN when a port is put in it, as IOS does', () => {
+    const run = runSession({ hostname: 'SW1', model: 'c2960' }, ['configure terminal', 'interface fa0/5', 'switchport mode access', 'switchport access vlan 30', 'switchport voice vlan 150', 'end', 'show vlan brief'])
+    const text = run.transcript.map((l) => l.text).join('\n')
+    expect(text).toContain('% Access VLAN does not exist. Creating vlan 30')
+    expect(text).toContain('% Voice VLAN does not exist. Creating vlan 150')
+    expect(text).toMatch(/30 {2,}VLAN0030 +active +Fa0\/5/)
+  })
+})

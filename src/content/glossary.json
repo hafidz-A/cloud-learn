@@ -828,5 +828,45 @@
     "term": "DORA",
     "expansion": "Discover, Offer, Request, Acknowledge",
     "description": "Urutan empat pesan DHCP saat klien meminta alamat."
+  },
+  {
+    "term": "FDDI",
+    "expansion": "Fiber Distributed Data Interface",
+    "description": "Teknologi LAN lama berbasis fiber. VLAN 1002 sampai 1005 dicadangkan untuknya dan untuk Token Ring."
+  },
+  {
+    "term": "CAPWAP",
+    "expansion": "Control and Provisioning of Wireless Access Points",
+    "description": "Protokol tunnel antara access point lightweight dan WLC."
+  },
+  {
+    "term": "IoT",
+    "expansion": "Internet of Things",
+    "description": "Perangkat seperti sensor dan kamera yang tersambung ke jaringan."
+  },
+  {
+    "term": "PoE",
+    "expansion": "Power over Ethernet",
+    "description": "Pengiriman daya listrik lewat kabel Ethernet, misalnya ke IP phone dan access point."
+  },
+  {
+    "term": "PSE",
+    "expansion": "Power Sourcing Equipment",
+    "description": "Perangkat yang memberi daya PoE, biasanya switch."
+  },
+  {
+    "term": "PD",
+    "expansion": "Powered Device",
+    "description": "Perangkat yang menerima daya PoE, misalnya IP phone, access point, atau kamera."
+  },
+  {
+    "term": "UPOE",
+    "expansion": "Universal Power over Ethernet",
+    "description": "PoE versi Cisco sampai 60 W per port; UPOE+ sampai 90 W."
+  },
+  {
+    "term": "CDP",
+    "expansion": "Cisco Discovery Protocol",
+    "description": "Protokol Cisco untuk mengenali perangkat tetangga yang tersambung langsung. Juga dipakai switch untuk memberi tahu IP phone nomor voice VLAN."
   }
 ]
