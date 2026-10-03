@@ -114,7 +114,7 @@
           "concept": "ra-clients",
           "prompt": "A contractor must open one internal web application from a personal laptop, and installing software is not allowed. Which option fits?",
           "options": [
-            "A clientless SSL (Secure Sockets Layer) VPN (virtual private network)",
+            "Clientless access in a web browser",
             "Site-to-site IPsec between the laptop and the head office router",
             "Cisco Secure Client installed on the laptop with a full tunnel",
             "Telnet from the laptop to the VPN (virtual private network) gateway"
@@ -278,9 +278,9 @@
           "prompt": "What is the job of IKE (Internet Key Exchange) in an IPsec VPN (virtual private network)?",
           "options": [
             "Authenticate the peers and negotiate keys and algorithms",
-            "Encrypt the user data",
-            "Translate private addresses",
-            "Route packets between sites"
+            "Encrypt every user data packet after the tunnel is up",
+            "Translate private addresses into public addresses",
+            "Route packets between the two sites with a routing protocol"
           ],
           "answer": 0,
           "explanation": "IKE (Internet Key Exchange) menyiapkan SA (security association); enkripsi data dilakukan ESP (Encapsulating Security Payload).",
