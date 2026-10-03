@@ -883,6 +883,7 @@ function generated(st: DeviceState, command: string): string | undefined {
   if (command === 'show running-config') return runningConfig(st)
   if (command === 'show startup-config') return st.saved ?? 'startup-config is not present'
   if (command === 'show ip interface brief') return ipInterfaceBrief(st)
+  if (command === 'show ipv6 interface brief') return ipv6InterfaceBrief(st)
   if (command === 'show vlan brief') return vlanBrief(st)
   return undefined
 }
@@ -931,6 +932,8 @@ function display(line: string): string {
   return line
     .replace(/^(enable secret|username \S+ (?:privilege \d+ )?secret) \S+$/, '$1 9 <hash>')
     .replace(/^(key) \S+$/, '$1 <tersembunyi>')
+    // IOS shows IPv6 addresses in upper case: "ipv6 address 2001:DB8:1::1/64".
+    .replace(/^ipv6 (address|route) .*/, (l) => l.replace(/\S*:\S*/g, (w) => w.toUpperCase()))
 }
 
 function ipInterfaceBrief(st: DeviceState): string {
@@ -941,13 +944,53 @@ function ipInterfaceBrief(st: DeviceState): string {
     const name = ifName(context)
     const addr = /^ip address (\S+)/.exec(effective(st, context, 'ip address') ?? '')?.[1]
     const dhcp = effective(st, context, 'ip address') === 'ip address dhcp'
-    const shut = effective(st, context, 'shutdown') === 'shutdown'
-    const parent = name.includes('.') ? name.split('.')[0] : null
-    const parentShut = parent ? effective(st, `interface ${parent}`, 'shutdown') === 'shutdown' : false
-    const linkUp = st.cabled.has(parent ?? name) || /^(Loopback)/.test(name)
-    const status = shut ? 'administratively down' : parentShut ? 'down' : linkUp ? 'up' : 'down'
+    const status = ifStatus(st, context)
     const proto = status === 'up' ? 'up' : 'down'
     out.push(`${pad(name, 23)}${pad(dhcp ? 'unassigned' : (addr ?? 'unassigned'), 16)}${pad('YES', 4)}${pad(dhcp ? 'DHCP' : addr ? 'manual' : 'unset', 7)}${pad(status, 22)}${proto}`)
+  }
+  return out.join('\n')
+}
+
+/** Interface status as in show ip interface brief. */
+function ifStatus(st: DeviceState, context: string): string {
+  const name = ifName(context)
+  const shut = effective(st, context, 'shutdown') === 'shutdown'
+  const parent = name.includes('.') ? name.split('.')[0] : null
+  const parentShut = parent ? effective(st, `interface ${parent}`, 'shutdown') === 'shutdown' : false
+  const linkUp = st.cabled.has(parent ?? name) || /^(Loopback)/.test(name)
+  return shut ? 'administratively down' : parentShut ? 'down' : linkUp ? 'up' : 'down'
+}
+
+/**
+ * The modified EUI-64 interface ID (RFC 4291 appendix A) of a made-up MAC address,
+ * 0050.7966.68xx with xx the interface's position, as four 16-bit groups.
+ */
+function eui64Groups(st: DeviceState, name: string): number[] {
+  const index = Math.max(0, PHYSICAL[st.model].indexOf(name))
+  const mac = [0x00, 0x50, 0x79, 0x66, 0x68, index]
+  const id = [mac[0] ^ 0x02, mac[1], mac[2], 0xff, 0xfe, mac[3], mac[4], mac[5]]
+  return [0, 2, 4, 6].map((i) => (id[i] << 8) | id[i + 1])
+}
+
+function ipv6InterfaceBrief(st: DeviceState): string {
+  const rows = [...st.config.keys()].filter((c) => c.startsWith('interface '))
+  const out: string[] = []
+  for (const context of rows) {
+    const name = ifName(context)
+    const status = ifStatus(st, context)
+    const lines = [...(st.config.get(context)?.values() ?? [])]
+    const globals = lines.flatMap((l) => {
+      const m = /^ipv6 address (\S+)\/(\d+)( eui-64)?$/.exec(l)
+      if (!m) return []
+      const g = parseIpv6(m[1])!
+      return [formatIpv6(m[3] ? [...g.slice(0, 4), ...eui64Groups(st, name)] : g).toUpperCase()]
+    })
+    const manualLl = lines.map((l) => /^ipv6 address (\S+) link-local$/.exec(l)?.[1]).find(Boolean)
+    const enabled = globals.length > 0 || !!manualLl || lines.includes('ipv6 enable')
+    const ll = manualLl ? manualLl.toUpperCase() : enabled ? formatIpv6([0xfe80, 0, 0, 0, ...eui64Groups(st, name)]).toUpperCase() : null
+    out.push(`${name.padEnd(23)}[${status}/${status === 'up' ? 'up' : 'down'}]`)
+    if (!enabled) out.push('    unassigned')
+    else for (const a of [ll!, ...globals]) out.push(`    ${a}`)
   }
   return out.join('\n')
 }

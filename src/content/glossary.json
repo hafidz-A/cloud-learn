@@ -678,5 +678,35 @@
     "term": "VLSM",
     "expansion": "Variable Length Subnet Mask",
     "description": "Memakai subnet mask berbeda untuk tiap subnet supaya ukurannya sesuai kebutuhan host."
+  },
+  {
+    "term": "EUI",
+    "expansion": "Extended Unique Identifier",
+    "description": "Format pengenal dari IEEE. Modified EUI-64 membentuk interface ID IPv6 dari MAC address."
+  },
+  {
+    "term": "SLAAC",
+    "expansion": "Stateless Address Autoconfiguration",
+    "description": "Cara host IPv6 membuat alamatnya sendiri dari prefix di Router Advertisement, tanpa server DHCP."
+  },
+  {
+    "term": "NDP",
+    "expansion": "Neighbor Discovery Protocol",
+    "description": "Protokol IPv6 untuk menemukan tetangga dan router, pengganti ARP."
+  },
+  {
+    "term": "DAD",
+    "expansion": "Duplicate Address Detection",
+    "description": "Pemeriksaan IPv6 sebelum memakai alamat, untuk memastikan belum ada host lain yang memakainya."
+  },
+  {
+    "term": "RA",
+    "expansion": "Router Advertisement",
+    "description": "Pesan NDP dari router yang membawa prefix dan informasi gateway untuk host IPv6."
+  },
+  {
+    "term": "RS",
+    "expansion": "Router Solicitation",
+    "description": "Pesan NDP dari host yang meminta router segera mengirim Router Advertisement."
   }
 ]

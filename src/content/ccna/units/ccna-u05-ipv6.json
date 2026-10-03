@@ -6,27 +6,1032 @@
     {
       "id": "ccna-u05-l1",
       "title": "Format dan penulisan IPv6",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u05-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "ipv6-format"
+          ],
+          "title": "Menulis alamat IPv6",
+          "body": "Alamat IPv6 panjangnya 128 bit, ditulis sebagai delapan kelompok 16 bit dalam heksadesimal, dipisah titik dua. Ada dua aturan menyingkat. Satu: nol di depan setiap kelompok boleh dibuang, misalnya 0db8 menjadi db8. Dua: satu deret kelompok nol berurutan boleh diganti ::, tapi :: hanya boleh dipakai sekali, karena kalau dua kali panjang tiap deret tidak bisa ditebak.",
+          "keyPoints": [
+            "128 bit, 8 kelompok 16 bit",
+            "Buang nol di depan",
+            ":: hanya sekali"
+          ],
+          "visual": "Ipv6Compression",
+          "teaches": [
+            "ccna-f-u05-v6-128",
+            "ccna-f-u05-v6-leading",
+            "ccna-f-u05-v6-double-colon"
+          ]
+        },
+        {
+          "id": "ccna-u05-l1-e1",
+          "type": "truefalse",
+          "concept": "ipv6-format",
+          "prompt": "An IPv6 address is 128 bits long, written as eight groups of four hexadecimal digits.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Delapan kelompok 16 bit, dan 16 bit sama dengan empat digit heksadesimal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-128",
+            "ccna-f-u01-hex-binary"
+          ]
+        },
+        {
+          "id": "ccna-u05-l1-e2",
+          "type": "choice",
+          "concept": "ipv6-format",
+          "prompt": "What is the shortest valid form of 2001:0db8:0000:0000:0000:0000:0000:0001?",
+          "options": [
+            "2001:db8::1",
+            "2001:db8:::1",
+            "2001:db8:0::0:1",
+            "21:db8::1"
+          ],
+          "answer": 0,
+          "explanation": "Nol di depan 0db8 dibuang, lalu enam kelompok nol diganti ::. 2001 tidak boleh disingkat menjadi 21, karena hanya nol di depan yang boleh dibuang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-leading",
+            "ccna-f-u05-v6-double-colon"
+          ]
+        },
+        {
+          "id": "ccna-u05-l1-e3",
+          "type": "truefalse",
+          "concept": "ipv6-format",
+          "prompt": "The address 2001:db8::1::5 is a valid way to write an IPv6 address.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. :: hanya boleh muncul sekali; dengan dua ::, panjang tiap deret nol tidak bisa diketahui.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-double-colon"
+          ]
+        },
+        {
+          "id": "ccna-u05-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "ipv6-canonical"
+          ],
+          "title": "Bentuk yang disarankan",
+          "body": "Satu alamat bisa ditulis dengan banyak cara, jadi RFC (Request for Comments) 5952 menyarankan satu bentuk: huruf kecil, nol di depan dibuang, dan :: dipakai untuk deret nol terpanjang. Kalau dua deret sama panjang, pakai :: di yang paling kiri. :: tidak dipakai untuk satu kelompok nol saja. Contoh di buku dan dokumentasi memakai prefix 2001:db8::/32, yang memang disisihkan untuk dokumentasi.",
+          "keyPoints": [
+            "Huruf kecil",
+            ":: untuk deret nol terpanjang",
+            "2001:db8::/32 untuk contoh"
+          ],
+          "teaches": [
+            "ccna-f-u05-v6-canonical",
+            "ccna-f-u05-v6-doc"
+          ]
+        },
+        {
+          "id": "ccna-u05-l1-e4",
+          "type": "choice",
+          "concept": "ipv6-canonical",
+          "prompt": "Which is the recommended way to write 2001:db8:0:0:1:0:0:1?",
+          "options": [
+            "2001:db8::1:0:0:1",
+            "2001:db8:0:0:1::1",
+            "2001:db8::1::1",
+            "2001:db8:0:0:1:0:0:1"
+          ],
+          "answer": 0,
+          "explanation": "Dua deret nol sama panjang, jadi :: dipakai untuk yang paling kiri. :: dua kali tidak sah, dan bentuk tanpa :: memang sah tapi bukan bentuk yang disarankan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-canonical",
+            "ccna-f-u05-v6-double-colon"
+          ]
+        },
+        {
+          "id": "ccna-u05-l1-e5",
+          "type": "match",
+          "concept": "ipv6-canonical",
+          "prompt": "Match each full address to its shortest form.",
+          "pairs": [
+            [
+              "fe80:0000:0000:0000:0000:0000:0000:0001",
+              "fe80::1"
+            ],
+            [
+              "2001:0db8:0000:0001:0000:0000:0000:0000",
+              "2001:db8:0:1::"
+            ],
+            [
+              "0000:0000:0000:0000:0000:0000:0000:0001",
+              "::1"
+            ],
+            [
+              "ff02:0000:0000:0000:0000:0000:0000:0002",
+              "ff02::2"
+            ]
+          ],
+          "explanation": "Buang nol di depan, lalu ganti deret nol terpanjang dengan ::, termasuk di akhir atau di awal alamat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-leading",
+            "ccna-f-u05-v6-double-colon",
+            "ccna-f-u05-v6-canonical"
+          ]
+        },
+        {
+          "id": "ccna-u05-l1-e6",
+          "type": "multi",
+          "concept": "ipv6-canonical",
+          "prompt": "Which two strings are valid ways to write the same address as 2001:db8:a:0:0:0:0:1? (Choose two.)",
+          "options": [
+            "2001:db8:a::1",
+            "2001:0db8:000a:0000:0000:0000:0000:0001",
+            "2001:db8:a::0:0:1:1",
+            "2001:db8:a:1"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Bentuk penuh dan bentuk singkat sama-sama sah. 2001:db8:a::0:0:1:1 adalah alamat lain, dan 2001:db8:a:1 kurang kelompok tanpa ::.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-leading",
+            "ccna-f-u05-v6-double-colon",
+            "ccna-f-u05-v6-128"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u05-l2",
       "title": "Jenis alamat IPv6",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u05-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "ipv6-address-types"
+          ],
+          "title": "Jenis alamat unicast",
+          "body": "Global unicast address saat ini diambil dari 2000::/3 (diawali 2 atau 3) dan dirutekan di internet, seperti alamat publik IPv4. Unique local address memakai fc00::/7, dalam praktik diawali fd, dan hanya dipakai di dalam site, mirip alamat privat. Link-local memakai fe80::/10 dan hanya berlaku di satu link; router tidak meneruskannya. Alamat yang diawali ff adalah multicast, dan ::1 adalah loopback.",
+          "keyPoints": [
+            "2000::/3: global, ke internet",
+            "fd: unique local, di dalam site",
+            "fe80: link-local, satu link"
+          ],
+          "visual": "Ipv6AddressTypes",
+          "teaches": [
+            "ccna-f-u05-gua",
+            "ccna-f-u05-ula",
+            "ccna-f-u05-lla",
+            "ccna-f-u05-mcast",
+            "ccna-f-u05-loop6"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e1",
+          "type": "match",
+          "concept": "ipv6-address-types",
+          "prompt": "Match each address to its type.",
+          "pairs": [
+            [
+              "2001:db8:5::10",
+              "Global unicast"
+            ],
+            [
+              "fd12:3456:789a:1::10",
+              "Unique local"
+            ],
+            [
+              "fe80::a1b2",
+              "Link-local"
+            ],
+            [
+              "ff02::1",
+              "Multicast to all nodes on the link"
+            ],
+            [
+              "::1",
+              "Loopback"
+            ]
+          ],
+          "explanation": "2001 masuk 2000::/3 (global unicast), fd unique local, fe80 link-local, ff02::1 multicast semua node, dan ::1 loopback.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-gua",
+            "ccna-f-u05-ula",
+            "ccna-f-u05-lla",
+            "ccna-f-u05-mcast",
+            "ccna-f-u05-loop6"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e2",
+          "type": "choice",
+          "concept": "ipv6-address-types",
+          "prompt": "Which IPv6 address type is closest to an IPv4 private address?",
+          "options": [
+            "Unique local, starting with fd",
+            "Global unicast, starting with 2",
+            "Link-local, starting with fe80",
+            "Multicast, starting with ff"
+          ],
+          "answer": 0,
+          "explanation": "Unique local dipakai di dalam site dan tidak dirutekan di internet, seperti alamat privat IPv4. Link-local lebih sempit lagi: hanya satu link.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-ula",
+            "ccna-f-u05-gua",
+            "ccna-f-u05-lla",
+            "ccna-f-u05-mcast"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e3",
+          "type": "truefalse",
+          "concept": "ipv6-address-types",
+          "prompt": "A router forwards packets with a link-local destination address to other links.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Link-local hanya berlaku di satu link, dan router tidak meneruskannya ke link lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-lla"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "link-local"
+          ],
+          "title": "Link-local selalu ada",
+          "body": "Setiap interface yang menjalankan IPv6 wajib punya link-local address. Di Cisco IOS, link-local dibuat otomatis dari fe80:: ditambah interface ID (identifier) modified EUI-64 (Extended Unique Identifier) begitu IPv6 aktif, bahkan sebelum ada alamat global. Router memakai link-local untuk berbicara dengan tetangga di link yang sama.",
+          "keyPoints": [
+            "Wajib di setiap interface IPv6",
+            "Dibuat otomatis",
+            "Dipakai antar tetangga satu link"
+          ],
+          "teaches": [
+            "ccna-f-u05-lla-auto",
+            "ccna-f-u05-lla"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e4",
+          "type": "truefalse",
+          "concept": "link-local",
+          "prompt": "A router interface that runs IPv6 always has a link-local address, even without a global address.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Link-local wajib ada dan dibuat otomatis saat IPv6 aktif di interface.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-lla-auto"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e5",
+          "type": "multi",
+          "concept": "link-local",
+          "prompt": "Which two statements about IPv6 link-local addresses are true? (Choose two.)",
+          "options": [
+            "They start with fe80",
+            "Cisco IOS creates one automatically when IPv6 is enabled on an interface",
+            "Routers forward them between subnets",
+            "They must be unique across the whole internet"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Link-local diawali fe80 dan dibuat otomatis saat IPv6 aktif. Router tidak meneruskannya ke link lain, dan cukup unik di satu link.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-lla",
+            "ccna-f-u05-lla-auto"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "ipv6-multicast"
+          ],
+          "title": "Multicast dan anycast",
+          "body": "IPv6 tidak punya broadcast. Fungsinya diganti multicast, yang diawali ff: ff02::1 untuk semua node di link dan ff02::2 untuk semua router. Untuk mencari MAC (Media Access Control) tetangga, NDP (Neighbor Discovery Protocol) mengirim Neighbor Solicitation ke alamat solicited-node, ff02::1:ff ditambah 24 bit terakhir alamat yang dicari, jadi hanya sedikit host yang ikut memprosesnya. Anycast adalah satu alamat unicast di beberapa perangkat; paket sampai ke yang terdekat.",
+          "keyPoints": [
+            "Tidak ada broadcast",
+            "ff02::1 semua node, ff02::2 semua router",
+            "NDP pengganti ARP (Address Resolution Protocol)",
+            "Anycast: ke yang terdekat"
+          ],
+          "teaches": [
+            "ccna-f-u05-no-bcast",
+            "ccna-f-u05-mcast",
+            "ccna-f-u05-ndp",
+            "ccna-f-u05-solicited",
+            "ccna-f-u05-anycast"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e6",
+          "type": "choice",
+          "concept": "ipv6-multicast",
+          "prompt": "Which address does IPv6 use to reach all nodes on the local link?",
+          "options": [
+            "ff02::1",
+            "ff02::2",
+            "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+            "fe80::1"
+          ],
+          "answer": 0,
+          "explanation": "ff02::1 adalah semua node di link. ff02::2 semua router, IPv6 tidak punya alamat broadcast, dan fe80::1 adalah link-local unicast.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-mcast",
+            "ccna-f-u05-no-bcast",
+            "ccna-f-u05-lla"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e7",
+          "type": "truefalse",
+          "concept": "ipv6-multicast",
+          "prompt": "An anycast address looks different from a unicast address, so a host can tell them apart.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Anycast diambil dari ruang alamat unicast, jadi bentuknya sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-anycast"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e8",
+          "type": "choice",
+          "concept": "ipv6-multicast",
+          "prompt": "Which protocol replaces ARP (Address Resolution Protocol) for finding a neighbor MAC (Media Access Control) address in IPv6?",
+          "options": [
+            "NDP (Neighbor Discovery Protocol)",
+            "DHCPv6, the IPv6 version of DHCP (Dynamic Host Configuration Protocol)",
+            "ICMPv6 Echo Request and Reply messages",
+            "Anycast routing toward the nearest router"
+          ],
+          "answer": 0,
+          "explanation": "NDP (Neighbor Discovery Protocol) memakai Neighbor Solicitation dan Neighbor Advertisement untuk menggantikan ARP (Address Resolution Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-ndp",
+            "ccna-f-u05-anycast"
+          ]
+        },
+        {
+          "id": "ccna-u05-l2-e9",
+          "type": "choice",
+          "concept": "ipv6-multicast",
+          "prompt": "A host has the address 2001:db8::12:3456. Which solicited-node multicast address does it listen on?",
+          "options": [
+            "ff02::1:ff12:3456",
+            "ff02::1:ff00:0",
+            "ff02::12:3456",
+            "ff02::2"
+          ],
+          "answer": 0,
+          "explanation": "Solicited-node = ff02::1:ff ditambah 24 bit terakhir alamat unicast, yaitu 12:3456.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-solicited",
+            "ccna-f-u05-mcast"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u05-l3",
       "title": "Prefix dan perencanaan",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u05-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "ipv6-prefix"
+          ],
+          "title": "Prefix dan /64",
+          "body": "Prefix IPv6 ditulis seperti IPv4: alamat/panjang prefix, misalnya 2001:db8:abcd:12::/64. Global unicast terdiri dari global routing prefix yang diberikan ISP (Internet Service Provider), subnet ID (identifier) yang kita pilih, dan interface ID. Interface ID panjangnya 64 bit, jadi setiap LAN (Local Area Network) memakai /64. Di router: ipv6 address 2001:db8:acad:1::1/64.",
+          "keyPoints": [
+            "alamat/panjang prefix",
+            "Routing prefix, subnet ID, interface ID",
+            "Setiap LAN: /64"
+          ],
+          "teaches": [
+            "ccna-f-u05-v6-prefix",
+            "ccna-f-u05-gua-parts",
+            "ccna-f-u05-v6-64",
+            "ccna-f-u05-v6-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u05-l3-e1",
+          "type": "choice",
+          "concept": "ipv6-prefix",
+          "prompt": "Which prefix length should a normal IPv6 LAN (Local Area Network) subnet use?",
+          "options": [
+            "/64",
+            "/48",
+            "/24",
+            "/128"
+          ],
+          "answer": 0,
+          "explanation": "Interface ID (identifier) unicast panjangnya 64 bit, jadi subnet LAN (Local Area Network) memakai /64. /48 dan /24 menyisakan terlalu banyak bit, dan /128 hanya satu alamat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-64",
+            "ccna-f-u05-v6-prefix"
+          ]
+        },
+        {
+          "id": "ccna-u05-l3-e2",
+          "type": "truefalse",
+          "concept": "ipv6-prefix",
+          "prompt": "In 2001:db8:abcd:12::/64, the first 64 bits identify the subnet and the last 64 bits are the interface ID (identifier).",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. /64 berarti 64 bit pertama adalah prefix, dan 64 bit sisanya interface ID (identifier).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-prefix",
+            "ccna-f-u05-v6-64"
+          ]
+        },
+        {
+          "id": "ccna-u05-l3-e3",
+          "type": "ios",
+          "concept": "ipv6-prefix",
+          "prompt": "Configure GigabitEthernet0/0/0 on R1 with the IPv6 address 2001:db8:acad:1::1/64 and enable the interface.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ipv6 address 2001:db8:acad:1::1/64"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ipv6 address 2001:db8:acad:1::1/64",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "Alamat IPv6 ditulis bersama panjang prefix-nya di perintah ipv6 address, lalu no shutdown menyalakan interface.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-v6-cmd",
+            "ccna-f-u05-v6-prefix",
+            "ccna-f-u03-if-states"
+          ]
+        },
+        {
+          "id": "ccna-u05-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "ipv6-subnetting"
+          ],
+          "title": "Membagi prefix site",
+          "body": "Kalau site mendapat /48, bit 49 sampai 64 menjadi subnet ID (identifier): 16 bit, cukup untuk 65.536 subnet /64. Subnet ID adalah kelompok keempat alamat. Dari 2001:db8:acad::/48, subnet pertama 2001:db8:acad:0::/64, lalu 2001:db8:acad:1::/64, 2001:db8:acad:2::/64, dan seterusnya. Untuk link antar router, RFC (Request for Comments) 6164 menyarankan /127.",
+          "keyPoints": [
+            "/48: 16 bit subnet ID",
+            "Subnet ID: kelompok keempat",
+            "Link antar router: /127"
+          ],
+          "teaches": [
+            "ccna-f-u05-site48",
+            "ccna-f-u05-p2p127",
+            "ccna-f-u05-v6-prefix"
+          ]
+        },
+        {
+          "id": "ccna-u05-l3-e4",
+          "type": "choice",
+          "concept": "ipv6-subnetting",
+          "prompt": "A site has 2001:db8:acad::/48. How many /64 subnets can it make?",
+          "options": [
+            "65,536",
+            "256",
+            "16",
+            "4,096"
+          ],
+          "answer": 0,
+          "explanation": "Dari /48 ke /64 ada 16 bit subnet ID (identifier): 2 pangkat 16 = 65.536.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-site48",
+            "ccna-f-u04-power2"
+          ]
+        },
+        {
+          "id": "ccna-u05-l3-e5",
+          "type": "choice",
+          "concept": "ipv6-subnetting",
+          "prompt": "From 2001:db8:acad::/48, which is the subnet with ID (identifier) 10 (hexadecimal)?",
+          "options": [
+            "2001:db8:acad:10::/64",
+            "2001:db8:acad::10/64",
+            "2001:db8:10::/64",
+            "2001:db8:acad:1:0::/48"
+          ],
+          "answer": 0,
+          "explanation": "Subnet ID (identifier) berada di kelompok keempat, jadi subnet 10 adalah 2001:db8:acad:10::/64. 2001:db8:acad::10 adalah alamat host di subnet 0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-site48",
+            "ccna-f-u05-v6-prefix"
+          ]
+        },
+        {
+          "id": "ccna-u05-l3-e6",
+          "type": "fill",
+          "concept": "ipv6-subnetting",
+          "prompt": "Complete the plan for 2001:db8:acad::/48.",
+          "sentence": "The third LAN (Local Area Network) subnet, with subnet ID (identifier) 3, is 2001:db8:acad:___::/___.",
+          "bank": [
+            "3",
+            "64",
+            "48",
+            "30"
+          ],
+          "answers": [
+            "3",
+            "64"
+          ],
+          "explanation": "Subnet ID (identifier) di kelompok keempat dan setiap LAN (Local Area Network) memakai /64.",
+          "requires": [
+            "ccna-f-u05-site48",
+            "ccna-f-u05-v6-64"
+          ]
+        },
+        {
+          "id": "ccna-u05-l3-e7",
+          "type": "truefalse",
+          "concept": "ipv6-subnetting",
+          "prompt": "RFC (Request for Comments) 6164 recommends a /127 prefix for point-to-point links between routers.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. /127 dipakai untuk link point-to-point antar router.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-p2p127"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u05-l4",
       "title": "Modified EUI-64 dan SLAAC",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u05-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "eui-64"
+          ],
+          "title": "Modified EUI-64",
+          "body": "Modified EUI-64 (Extended Unique Identifier) membuat interface ID (identifier) 64 bit dari MAC (Media Access Control) 48 bit. Belah MAC menjadi dua, sisipkan fffe di tengah, lalu balik bit ke-7 dari kiri (bit universal/local). Contoh MAC 0050.7966.6800: 0050:79ff:fe66:6800, lalu 00 menjadi 02, jadi interface ID-nya 0250:79ff:fe66:6800. Di IOS, ipv6 address 2001:db8:1::/64 eui-64 memakai cara ini.",
+          "keyPoints": [
+            "Belah MAC, sisipkan fffe",
+            "Balik bit ke-7",
+            "ipv6 address ... eui-64"
+          ],
+          "visual": "Eui64Steps",
+          "teaches": [
+            "ccna-f-u05-eui64",
+            "ccna-f-u05-eui64-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e1",
+          "type": "choice",
+          "concept": "eui-64",
+          "prompt": "What is the modified EUI-64 (Extended Unique Identifier) interface ID (identifier) for the MAC (Media Access Control) address 0011.2233.4455?",
+          "options": [
+            "0211:22ff:fe33:4455",
+            "0011:22ff:fe33:4455",
+            "0211:2233:fffe:4455",
+            "0211:22fe:ff33:4455"
+          ],
+          "answer": 0,
+          "explanation": "Sisipkan fffe di tengah: 0011:22ff:fe33:4455. Lalu balik bit ke-7: 00 menjadi 02.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-eui64",
+            "ccna-f-u01-hex-binary"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e2",
+          "type": "truefalse",
+          "concept": "eui-64",
+          "prompt": "With modified EUI-64 (Extended Unique Identifier), the bytes ff and fe are inserted in the middle of the MAC (Media Access Control) address.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. MAC (Media Access Control) dibelah dua, lalu fffe disisipkan di tengah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-eui64"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e3",
+          "type": "choice",
+          "concept": "eui-64",
+          "prompt": "The MAC (Media Access Control) address of an interface starts with 02. After the modified EUI-64 (Extended Unique Identifier) process, how does the interface ID (identifier) start?",
+          "options": [
+            "00",
+            "02",
+            "fe",
+            "ff"
+          ],
+          "answer": 0,
+          "explanation": "Bit ke-7 dibalik: 02 (00000010) menjadi 00 (00000000).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-eui64",
+            "ccna-f-u04-bin-place"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "slaac"
+          ],
+          "title": "SLAAC",
+          "body": "Dengan SLAAC (Stateless Address Autoconfiguration), host membuat alamatnya sendiri tanpa server DHCP (Dynamic Host Configuration Protocol). Host mengirim Router Solicitation (RS) ke ff02::2. Router menjawab dengan Router Advertisement (RA) yang membawa prefix, dari alamat link-local router itu. Host menambahkan interface ID (identifier) ke prefix, lalu menjalankan DAD (Duplicate Address Detection) supaya alamatnya tidak dipakai host lain.",
+          "keyPoints": [
+            "RS (Router Solicitation) ke ff02::2, RA (Router Advertisement) membawa prefix",
+            "Host membuat alamat sendiri",
+            "DAD sebelum dipakai"
+          ],
+          "visual": "SlaacFlow",
+          "teaches": [
+            "ccna-f-u05-rs-ra",
+            "ccna-f-u05-slaac",
+            "ccna-f-u05-dad"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e4",
+          "type": "order",
+          "concept": "eui-64",
+          "prompt": "Put the modified EUI-64 (Extended Unique Identifier) steps in order.",
+          "items": [
+            "Split the 48-bit MAC (Media Access Control) address into two halves",
+            "Insert fffe between the two halves",
+            "Flip the seventh bit of the first byte",
+            "Join the result to the /64 prefix"
+          ],
+          "explanation": "Belah MAC (Media Access Control), sisipkan fffe, balik bit ke-7, lalu gabungkan dengan prefix /64.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-eui64"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e5",
+          "type": "choice",
+          "concept": "slaac",
+          "prompt": "With SLAAC (Stateless Address Autoconfiguration), where does a host get the prefix for its address?",
+          "options": [
+            "From the Router Advertisement on the link",
+            "From a DHCP (Dynamic Host Configuration Protocol) server lease",
+            "From its own MAC (Media Access Control) address",
+            "From the DNS (Domain Name System) server"
+          ],
+          "answer": 0,
+          "explanation": "Prefix datang dari Router Advertisement. MAC (Media Access Control) hanya bisa menjadi bahan interface ID (identifier), dan SLAAC (Stateless Address Autoconfiguration) tidak butuh server DHCP (Dynamic Host Configuration Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-rs-ra",
+            "ccna-f-u05-slaac",
+            "ccna-f-u05-eui64"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e6",
+          "type": "truefalse",
+          "concept": "slaac",
+          "prompt": "Before using an address it made by SLAAC (Stateless Address Autoconfiguration), a host checks that no other host already uses it.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Itulah DAD (Duplicate Address Detection), memakai Neighbor Solicitation.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-dad",
+            "ccna-f-u05-slaac"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e7",
+          "type": "order",
+          "concept": "slaac",
+          "prompt": "Put the SLAAC (Stateless Address Autoconfiguration) steps in order.",
+          "items": [
+            "The host sends a Router Solicitation to ff02::2",
+            "The router answers with a Router Advertisement carrying the prefix",
+            "The host adds its interface ID (identifier) to the prefix",
+            "The host runs Duplicate Address Detection before using the address"
+          ],
+          "explanation": "RS (Router Solicitation), RA (Router Advertisement) dengan prefix, host membentuk alamat, lalu DAD (Duplicate Address Detection).",
+          "requires": [
+            "ccna-f-u05-rs-ra",
+            "ccna-f-u05-slaac",
+            "ccna-f-u05-dad"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "temporary-address"
+          ],
+          "title": "Interface ID acak dan ipv6 unicast-routing",
+          "body": "Interface ID (identifier) dari MAC (Media Access Control) membuat host mudah dilacak. Karena itu RFC (Request for Comments) 8981 mendefinisikan temporary address dengan interface ID acak yang berganti berkala, dan banyak sistem operasi memakainya. Di sisi router Cisco, ipv6 unicast-routing harus aktif supaya router meneruskan paket IPv6 dan mengirim RA (Router Advertisement); tanpa itu SLAAC (Stateless Address Autoconfiguration) di LAN (Local Area Network) tidak jalan.",
+          "keyPoints": [
+            "Interface ID acak: privasi",
+            "ipv6 unicast-routing wajib di router",
+            "Tanpa RA, SLAAC gagal"
+          ],
+          "teaches": [
+            "ccna-f-u05-temporary",
+            "ccna-f-u05-unicast-routing"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e8",
+          "type": "truefalse",
+          "concept": "temporary-address",
+          "prompt": "Every SLAAC (Stateless Address Autoconfiguration) address must use an interface ID (identifier) built from the MAC (Media Access Control) address.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Temporary address memakai interface ID (identifier) acak yang berganti berkala.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-temporary",
+            "ccna-f-u05-slaac"
+          ]
+        },
+        {
+          "id": "ccna-u05-l4-e9",
+          "type": "ios",
+          "concept": "temporary-address",
+          "prompt": "Hosts on GigabitEthernet0/0/1 of R1 should get addresses by SLAAC (Stateless Address Autoconfiguration) from 2001:db8:acad:2::/64. Enable IPv6 routing, give the interface an EUI-64 (Extended Unique Identifier) address from that prefix, and enable it.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "ipv6 unicast-routing"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ipv6 address 2001:db8:acad:2::/64 eui-64"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ipv6 unicast-routing",
+            "interface g0/0/1",
+            "ipv6 address 2001:db8:acad:2::/64 eui-64",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "ipv6 unicast-routing membuat router meneruskan IPv6 dan mengirim RA (Router Advertisement). eui-64 cukup diberi prefix /64; interface ID (identifier) dibuat dari MAC (Media Access Control).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-unicast-routing",
+            "ccna-f-u05-eui64-cmd",
+            "ccna-f-u05-rs-ra",
+            "ccna-f-u03-if-states"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u05-l5",
       "title": "Konfigurasi dan troubleshoot IPv6",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u05-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "ipv6-config"
+          ],
+          "title": "Perintah IPv6 di interface",
+          "body": "ipv6 address 2001:db8:acad:1::1/64 memasang alamat global. ipv6 address fe80::1 link-local mengganti link-local otomatis dengan alamat yang mudah diingat. ipv6 enable mengaktifkan IPv6 dengan link-local saja. Berbeda dari IPv4, ipv6 address kedua tidak menggantikan yang pertama: interface bisa punya beberapa alamat global, jadi alamat yang salah dihapus dengan no ipv6 address.",
+          "keyPoints": [
+            "ipv6 address: alamat global",
+            "... link-local: link-local manual",
+            "Alamat salah: no ipv6 address"
+          ],
+          "teaches": [
+            "ccna-f-u05-v6-cmd",
+            "ccna-f-u05-lla-cmd",
+            "ccna-f-u05-ipv6-enable",
+            "ccna-f-u05-multi-addr"
+          ]
+        },
+        {
+          "id": "ccna-u05-l5-e1",
+          "type": "choice",
+          "concept": "ipv6-config",
+          "prompt": "Which command enables IPv6 on an interface with only a link-local address?",
+          "options": [
+            "ipv6 enable",
+            "ipv6 unicast-routing",
+            "ipv6 address autoconfig default",
+            "ipv6 address fe80::/10"
+          ],
+          "answer": 0,
+          "explanation": "ipv6 enable mengaktifkan IPv6 dengan link-local otomatis saja. ipv6 unicast-routing adalah perintah global untuk penerusan paket.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-ipv6-enable",
+            "ccna-f-u05-unicast-routing"
+          ]
+        },
+        {
+          "id": "ccna-u05-l5-e2",
+          "type": "ios",
+          "concept": "ipv6-config",
+          "prompt": "Give GigabitEthernet0/0/0 on R1 the link-local address fe80::1 so neighbors can find it easily.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ipv6 address 2001:db8:acad:1::1/64",
+                "no shutdown"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ipv6 address fe80::1 link-local"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ipv6 address fe80::1 link-local",
+            "end"
+          ],
+          "explanation": "Kata kunci link-local membuat fe80::1 menggantikan link-local otomatis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-lla-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u05-l5-e3",
+          "type": "truefalse",
+          "concept": "ipv6-config",
+          "prompt": "Entering a second ipv6 address command with a different global address replaces the first address.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Interface IPv6 bisa punya beberapa alamat global, jadi alamat kedua ditambahkan. Alamat lama dihapus dengan no ipv6 address.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-multi-addr"
+          ]
+        },
+        {
+          "id": "ccna-u05-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "ipv6-verify"
+          ],
+          "title": "Memeriksa IPv6",
+          "body": "show ipv6 interface brief menampilkan status setiap interface, lalu di bawahnya link-local dan alamat global. Masalah yang sering muncul: interface masih shutdown, prefix salah ketik sehingga host dan router tidak satu subnet, atau ipv6 unicast-routing lupa diaktifkan sehingga host tidak menerima RA (Router Advertisement) dan tidak bisa memakai SLAAC (Stateless Address Autoconfiguration).",
+          "keyPoints": [
+            "show ipv6 interface brief",
+            "Cek status, link-local, global",
+            "Lupa unicast-routing: tidak ada RA"
+          ],
+          "teaches": [
+            "ccna-f-u05-show-v6-br",
+            "ccna-f-u05-unicast-routing",
+            "ccna-f-u05-slaac"
+          ]
+        },
+        {
+          "id": "ccna-u05-l5-e4",
+          "type": "exhibit",
+          "concept": "ipv6-verify",
+          "prompt": "Refer to the exhibit. Hosts on the 2001:db8:acad:2::/64 LAN (Local Area Network) behind G0/0/1 cannot reach R1. What is the problem?",
+          "outputs": [
+            {
+              "title": "R1# show ipv6 interface brief",
+              "text": "GigabitEthernet0/0/0   [up/up]\n    FE80::1\n    2001:DB8:ACAD:1::1\nGigabitEthernet0/0/1   [up/up]\n    FE80::250:79FF:FE66:6801\n    2001:DB8:ACAD:20::1\nGigabitEthernet0/0/2   [administratively down/down]\n    unassigned"
+            }
+          ],
+          "options": [
+            "G0/0/1 has the wrong subnet ID (identifier) in its global address",
+            "G0/0/1 has no link-local address at all",
+            "G0/0/0 needs the eui-64 keyword",
+            "G0/0/1 is administratively down"
+          ],
+          "answer": 0,
+          "explanation": "Alamat G0/0/1 berada di subnet 2001:db8:acad:20::/64, bukan :2::. Link-local sudah ada, interface up/up, dan G0/0/0 tidak terkait.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-show-v6-br",
+            "ccna-f-u05-v6-prefix",
+            "ccna-f-u05-lla-auto"
+          ]
+        },
+        {
+          "id": "ccna-u05-l5-e5",
+          "type": "ios",
+          "concept": "ipv6-verify",
+          "prompt": "GigabitEthernet0/0/1 on R1 was given 2001:db8:acad:20::1/64 by mistake. Its LAN (Local Area Network) is 2001:db8:acad:2::/64. Remove the wrong address and add 2001:db8:acad:2::1/64.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ipv6 address 2001:db8:acad:20::1/64",
+                "no shutdown"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ipv6 address 2001:db8:acad:2::1/64"
+              }
+            ],
+            "absent": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ipv6 address 2001:db8:acad:20::1/64"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "no ipv6 address 2001:db8:acad:20::1/64",
+            "ipv6 address 2001:db8:acad:2::1/64",
+            "end"
+          ],
+          "explanation": "Alamat IPv6 baru ditambahkan, bukan menggantikan, jadi alamat yang salah harus dihapus dengan no ipv6 address.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-multi-addr",
+            "ccna-f-u05-v6-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u05-l5-e6",
+          "type": "choice",
+          "concept": "ipv6-verify",
+          "prompt": "R1 has correct IPv6 addresses on its LAN (Local Area Network) interface, but hosts get no address by SLAAC (Stateless Address Autoconfiguration). What is the most likely cause?",
+          "options": [
+            "ipv6 unicast-routing is not enabled on R1",
+            "The hosts have no IPv4 default gateway",
+            "The LAN uses a /64 prefix",
+            "The interface has a link-local address"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa ipv6 unicast-routing, router tidak mengirim RA (Router Advertisement), jadi host tidak mendapat prefix. /64 dan link-local justru wajar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-unicast-routing",
+            "ccna-f-u05-slaac",
+            "ccna-f-u05-v6-64",
+            "ccna-f-u05-lla-auto"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u05-l6",
@@ -35,8 +1040,322 @@
         "kind": "handson",
         "from": "ccna-u05-l5"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u05-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "ipv6-lab"
+          ],
+          "title": "Alur kerja IPv6 di router",
+          "body": "Aktifkan ipv6 unicast-routing, beri setiap interface LAN (Local Area Network) alamat dari subnet /64-nya, set link-local yang mudah diingat seperti fe80::1, lalu nyalakan interface. Cek dengan show ipv6 interface brief dan pastikan host mendapat alamat lewat SLAAC (Stateless Address Autoconfiguration).",
+          "keyPoints": [
+            "unicast-routing dulu",
+            "Global /64 dan link-local fe80::1",
+            "Cek, lalu simpan"
+          ],
+          "teaches": [
+            "ccna-f-u05-unicast-routing",
+            "ccna-f-u05-v6-cmd",
+            "ccna-f-u05-lla-cmd",
+            "ccna-f-u05-show-v6-br"
+          ]
+        },
+        {
+          "id": "ccna-u05-l6-e1",
+          "type": "ios",
+          "concept": "ipv6-lab",
+          "prompt": "Set up IPv6 on R1: enable IPv6 routing, give GigabitEthernet0/0/0 2001:db8:acad:1::1/64 and GigabitEthernet0/0/1 2001:db8:acad:2::1/64, use fe80::1 as the link-local address on both, enable both interfaces, and check the IPv6 interface summary.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ipv6 unicast-routing"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ipv6 address 2001:db8:acad:1::1/64"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ipv6 address fe80::1 link-local"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "no shutdown"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ipv6 address 2001:db8:acad:2::1/64"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ipv6 address fe80::1 link-local"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no shutdown"
+              }
+            ],
+            "run": [
+              "show ipv6 interface brief"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ipv6 unicast-routing",
+            "interface g0/0/0",
+            "ipv6 address 2001:db8:acad:1::1/64",
+            "ipv6 address fe80::1 link-local",
+            "no shutdown",
+            "interface g0/0/1",
+            "ipv6 address 2001:db8:acad:2::1/64",
+            "ipv6 address fe80::1 link-local",
+            "no shutdown",
+            "end",
+            "show ipv6 interface brief"
+          ],
+          "explanation": "Link-local hanya berlaku di satu link, jadi fe80::1 boleh dipakai di kedua interface. Alamat global harus beda subnet per LAN (Local Area Network).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-unicast-routing",
+            "ccna-f-u05-v6-cmd",
+            "ccna-f-u05-lla-cmd",
+            "ccna-f-u05-lla",
+            "ccna-f-u05-show-v6-br"
+          ]
+        },
+        {
+          "id": "ccna-u05-l6-e2",
+          "type": "truefalse",
+          "concept": "ipv6-lab",
+          "prompt": "The same link-local address, fe80::1, can be used on two different interfaces of one router.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Link-local hanya berlaku di link-nya sendiri, jadi alamat yang sama di link berbeda tidak bentrok.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-lla"
+          ]
+        },
+        {
+          "id": "ccna-u05-l6-e3",
+          "type": "ios",
+          "concept": "ipv6-lab",
+          "prompt": "R1 forwards IPv6 already. Add the interface GigabitEthernet0/0/2 for a new LAN (Local Area Network), 2001:db8:acad:3::/64, using an EUI-64 (Extended Unique Identifier) address. Enable it and save the configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ipv6 unicast-routing"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/2",
+                "line": "ipv6 address 2001:db8:acad:3::/64 eui-64"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/2",
+                "line": "no shutdown"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/2",
+            "ipv6 address 2001:db8:acad:3::/64 eui-64",
+            "no shutdown",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Dengan eui-64 cukup tulis prefix /64; interface ID (identifier) dibuat dari MAC (Media Access Control). Lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-eui64-cmd",
+            "ccna-f-u02-save"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u05-v6-128",
+      "statement": "Alamat IPv6 panjangnya 128 bit, ditulis sebagai delapan kelompok 16 bit dalam heksadesimal yang dipisah titik dua, misalnya 2001:db8:0:0:8:800:200c:417a.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-v6-leading",
+      "statement": "Nol di depan setiap kelompok boleh dibuang, tapi setiap kelompok tetap minimal satu digit.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-v6-double-colon",
+      "statement": "Satu deret kelompok nol yang berurutan boleh diganti \"::\", dan \"::\" hanya boleh muncul sekali dalam satu alamat.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-v6-canonical",
+      "statement": "RFC 5952 menyarankan huruf kecil, \"::\" untuk deret nol terpanjang (yang paling kiri kalau sama panjang), dan tidak memakai \"::\" untuk satu kelompok nol saja.",
+      "source": "https://www.rfc-editor.org/rfc/rfc5952.html"
+    },
+    {
+      "id": "ccna-f-u05-v6-doc",
+      "statement": "Prefix 2001:db8::/32 dicadangkan untuk contoh di dokumentasi.",
+      "source": "https://www.rfc-editor.org/rfc/rfc3849.html"
+    },
+    {
+      "id": "ccna-f-u05-gua",
+      "statement": "Global unicast address saat ini dialokasikan dari 2000::/3, yaitu alamat yang diawali 2 atau 3, dan bisa dirutekan di internet.",
+      "source": "https://www.iana.org/assignments/ipv6-address-space"
+    },
+    {
+      "id": "ccna-f-u05-ula",
+      "statement": "Unique local address memakai fc00::/7; dalam praktik diawali fd (bit L bernilai 1 dengan global ID acak) dan dipakai di dalam site, tidak dirutekan di internet.",
+      "source": "https://www.rfc-editor.org/rfc/rfc4193.html"
+    },
+    {
+      "id": "ccna-f-u05-lla",
+      "statement": "Link-local address memakai fe80::/10, hanya berlaku di satu link, dan router tidak meneruskan paket dengan alamat link-local ke link lain.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-lla-auto",
+      "statement": "Setiap interface IPv6 wajib punya link-local address; di Cisco IOS, link-local dibuat otomatis dari fe80:: dan interface ID modified EUI-64 begitu IPv6 aktif di interface.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html"
+    },
+    {
+      "id": "ccna-f-u05-mcast",
+      "statement": "Alamat multicast IPv6 diawali ff (ff00::/8); ff02::1 adalah semua node di link dan ff02::2 adalah semua router di link.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-no-bcast",
+      "statement": "IPv6 tidak punya alamat broadcast; fungsinya digantikan multicast.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-anycast",
+      "statement": "Alamat anycast diberikan ke beberapa interface, biasanya di perangkat berbeda; paket dikirim ke salah satunya, yang terdekat menurut routing. Anycast diambil dari ruang unicast, jadi bentuknya tidak bisa dibedakan dari unicast.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-loop6",
+      "statement": "::1 adalah alamat loopback, dan :: (semua bit 0) adalah unspecified address.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-solicited",
+      "statement": "Alamat solicited-node multicast dibentuk dari prefix ff02::1:ff00:0/104 ditambah 24 bit terakhir alamat unicast.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-ndp",
+      "statement": "NDP (Neighbor Discovery Protocol) memakai Neighbor Solicitation dan Neighbor Advertisement untuk mencari alamat link-layer tetangga, menggantikan ARP di IPv4.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4861"
+    },
+    {
+      "id": "ccna-f-u05-v6-prefix",
+      "statement": "Prefix IPv6 ditulis alamat/panjang prefix, misalnya 2001:db8:abcd:12::/64.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-v6-64",
+      "statement": "Untuk alamat unicast (selain yang diawali biner 000), interface ID panjangnya 64 bit, jadi subnet LAN memakai /64.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-gua-parts",
+      "statement": "Global unicast address terdiri dari global routing prefix, subnet ID, dan interface ID.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-site48",
+      "statement": "Situs pelanggan umumnya mendapat prefix seperti /48 atau /56; dari /48 tersedia 16 bit subnet ID sampai /64, yaitu 65.536 subnet /64.",
+      "source": "https://www.rfc-editor.org/rfc/rfc6177.html"
+    },
+    {
+      "id": "ccna-f-u05-p2p127",
+      "statement": "RFC 6164 merekomendasikan prefix /127 untuk link point-to-point antar router.",
+      "source": "https://www.rfc-editor.org/rfc/rfc6164.html"
+    },
+    {
+      "id": "ccna-f-u05-eui64",
+      "statement": "Modified EUI-64 membentuk interface ID 64 bit dari MAC 48 bit: MAC dibelah dua, fffe disisipkan di tengah, lalu bit ke-7 (bit universal/local) dibalik.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4291"
+    },
+    {
+      "id": "ccna-f-u05-eui64-cmd",
+      "statement": "ipv6 address <prefix>/64 eui-64 membentuk alamat dari prefix ditambah interface ID EUI-64; hanya prefix 64 bit yang perlu ditulis.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html"
+    },
+    {
+      "id": "ccna-f-u05-rs-ra",
+      "statement": "Host mengirim Router Solicitation (RS) ke ff02::2, dan router mengirim Router Advertisement (RA) secara berkala dan sebagai jawaban RS; RA membawa prefix untuk link itu dan dikirim dari alamat link-local router.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4861"
+    },
+    {
+      "id": "ccna-f-u05-slaac",
+      "statement": "Dengan SLAAC (Stateless Address Autoconfiguration), host membentuk alamatnya sendiri dari prefix di RA ditambah interface ID, tanpa server DHCP.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4862"
+    },
+    {
+      "id": "ccna-f-u05-dad",
+      "statement": "Sebelum memakai alamat, host menjalankan DAD (Duplicate Address Detection) dengan Neighbor Solicitation untuk memastikan alamat itu belum dipakai.",
+      "source": "https://datatracker.ietf.org/doc/html/rfc4862"
+    },
+    {
+      "id": "ccna-f-u05-temporary",
+      "statement": "RFC 8981 mendefinisikan temporary address dengan interface ID acak yang berganti berkala, supaya host tidak mudah dilacak dari MAC-nya.",
+      "source": "https://www.rfc-editor.org/rfc/rfc8981.html"
+    },
+    {
+      "id": "ccna-f-u05-unicast-routing",
+      "statement": "ipv6 unicast-routing mengaktifkan penerusan paket IPv6 unicast di router Cisco; tanpa perintah ini router juga tidak mengirim RA.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u05-v6-cmd",
+      "statement": "Alamat IPv6 dipasang di interface dengan ipv6 address <alamat>/<panjang prefix>, misalnya ipv6 address 2001:db8:acad:1::1/64.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html"
+    },
+    {
+      "id": "ccna-f-u05-lla-cmd",
+      "statement": "ipv6 address fe80::1 link-local mengganti link-local otomatis dengan alamat yang ditentukan sendiri.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html"
+    },
+    {
+      "id": "ccna-f-u05-ipv6-enable",
+      "statement": "ipv6 enable mengaktifkan IPv6 di interface hanya dengan link-local address, tanpa alamat global.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html"
+    },
+    {
+      "id": "ccna-f-u05-multi-addr",
+      "statement": "Interface IPv6 bisa punya beberapa alamat global; perintah ipv6 address berikutnya menambah alamat, tidak menggantikan yang lama, jadi alamat yang salah dihapus dengan no ipv6 address.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u05-show-v6-br",
+      "statement": "show ipv6 interface brief menampilkan status setiap interface beserta link-local dan alamat global-nya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html",
+      "verify": true
+    }
+  ]
 }

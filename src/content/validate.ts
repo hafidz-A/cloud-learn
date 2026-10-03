@@ -107,7 +107,8 @@ export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string>
       // "Entra ID" is the product name, not an abbreviation to expand.
       if (abbr === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
       // "TCP/IP (Transmission Control Protocol/Internet Protocol)" expands both parts at once.
-      const after = /^(\/[A-Z][A-Za-z0-9]*)*\s*\(/.test(text.slice(end))
+      // "EUI-64 (Extended Unique Identifier)" expands the name before its number.
+      const after = /^(-\d+)?(\/[A-Z][A-Za-z0-9]*)*\s*\(/.test(text.slice(end))
       const inside = text[start - 1] === '(' && text[end] === ')'
       // A bare word inside an expansion is part of an official name: "WLC (Wireless LAN Controller)".
       if (!after && !inside && insideExpansion(text, start)) continue

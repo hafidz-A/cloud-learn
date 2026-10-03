@@ -302,3 +302,23 @@ describe('the saved goal', () => {
     expect(judgeSession(runSession(R1, ['wr', 'conf t', 'hostname R7', 'end']).state, goal).correct).toBe(false)
   })
 })
+
+describe('show ipv6 interface brief', () => {
+  it('lists the link-local address (EUI-64 or manual) and the global addresses, in upper case', () => {
+    const run = runSession({ hostname: 'R1', model: 'isr4331' }, [
+      'configure terminal',
+      'interface g0/0/0',
+      'ipv6 address 2001:db8:acad:1::1/64',
+      'interface g0/0/1',
+      'ipv6 address 2001:db8:acad:2::/64 eui-64',
+      'ipv6 address fe80::1 link-local',
+      'end',
+      'show ipv6 interface brief',
+      'show running-config',
+    ])
+    const text = run.transcript.map((l) => l.text).join('\n')
+    expect(text).toContain('GigabitEthernet0/0/0   [administratively down/down]\n    FE80::250:79FF:FE66:6800\n    2001:DB8:ACAD:1::1')
+    expect(text).toContain('    FE80::1\n    2001:DB8:ACAD:2:250:79FF:FE66:6801')
+    expect(text).toContain(' ipv6 address 2001:DB8:ACAD:2::/64 eui-64')
+  })
+})

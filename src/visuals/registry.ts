@@ -14,6 +14,10 @@ import { OctetBits } from './OctetBits'
 import { SubnetMaskBits } from './SubnetMaskBits'
 import { SubnetBlocks } from './SubnetBlocks'
 import { VlsmPlan } from './VlsmPlan'
+import { Ipv6Compression } from './Ipv6Compression'
+import { Ipv6AddressTypes } from './Ipv6AddressTypes'
+import { Eui64Steps } from './Eui64Steps'
+import { SlaacFlow } from './SlaacFlow'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -81,6 +85,10 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  SlaacFlow,
+  Eui64Steps,
+  Ipv6AddressTypes,
+  Ipv6Compression,
   VlsmPlan,
   SubnetBlocks,
   SubnetMaskBits,

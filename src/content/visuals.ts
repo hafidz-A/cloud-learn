@@ -118,6 +118,11 @@ export const VISUAL_CATALOG = {
   SubnetMaskBits: ['subnet-mask'],
   SubnetBlocks: ['subnet-calculation'],
   VlsmPlan: ['vlsm'],
+  // Unit 5
+  Ipv6Compression: ['ipv6-format'],
+  Ipv6AddressTypes: ['ipv6-address-types'],
+  Eui64Steps: ['eui-64'],
+  SlaacFlow: ['slaac'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

@@ -448,6 +448,164 @@
         "https://www.cisco.com/E-Learning/bulk/public/tac/cim/cib/using_cisco_ios_software/cmdrefs/show_ip_interface.htm",
         "https://datatracker.ietf.org/doc/html/rfc1122"
       ]
+    },
+    {
+      "lesson": "ccna-u05-l6",
+      "title": "IPv6 di router dan SLAAC",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Mengaktifkan IPv6 routing, memasang alamat global dan link-local di dua LAN (Local Area Network), lalu membuktikan PC mendapat alamat lewat SLAAC (Stateless Address Autoconfiguration) dan bisa ping antar-LAN.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "r1",
+            "to": "sw2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw2",
+            "to": "pc2",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "2001:db8:acad:1::1/64, fe80::1"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "2001:db8:acad:2::1/64, fe80::1"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "SLAAC dari 2001:db8:acad:1::/64"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "SLAAC dari 2001:db8:acad:2::/64"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through sesuai topologi."
+        },
+        {
+          "text": "Aktifkan IPv6 routing dan pasang alamat di kedua interface.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "ipv6 unicast-routing",
+            "interface g0/0/0",
+            "ipv6 address 2001:db8:acad:1::1/64",
+            "ipv6 address fe80::1 link-local",
+            "no shutdown",
+            "interface g0/0/1",
+            "ipv6 address 2001:db8:acad:2::1/64",
+            "ipv6 address fe80::1 link-local",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Di PC1 dan PC2, buka Desktop > IP Configuration, lalu di bagian IPv6 pilih Automatic. Catat alamat yang didapat dan gateway-nya."
+        },
+        {
+          "text": "Periksa interface dan simpan.",
+          "device": "R1",
+          "commands": [
+            "show ipv6 interface brief",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Ringkasan interface IPv6.",
+          "device": "R1",
+          "command": "show ipv6 interface brief",
+          "expect": "G0/0/0 dan G0/0/1 [up/up], masing-masing dengan FE80::1 dan alamat global 2001:DB8:ACAD:1::1 serta 2001:DB8:ACAD:2::1."
+        },
+        {
+          "text": "Alamat PC1 di IP Configuration.",
+          "expect": "Alamat IPv6 diawali 2001:db8:acad:1: dan gateway fe80::1, alamat link-local router."
+        },
+        {
+          "text": "Uji dari PC1: ping alamat IPv6 PC2.",
+          "expect": "Ping berhasil."
+        },
+        {
+          "text": "Matikan IPv6 routing dengan no ipv6 unicast-routing, lalu minta alamat lagi di PC1 (pilih Static lalu Automatic).",
+          "expect": "PC1 tidak lagi mendapat prefix global, karena router berhenti mengirim Router Advertisement. Aktifkan lagi ipv6 unicast-routing."
+        }
+      ],
+      "notes": [
+        "Interface ID yang dibuat PC di Packet Tracer bisa EUI-64 (Extended Unique Identifier) atau acak, tergantung versinya. Keduanya sah.",
+        "Langkah terakhir pada checks menguji efek ipv6 unicast-routing pada Router Advertisement. Tandai hasilnya kalau Packet Tracer berperilaku lain."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html",
+        "https://datatracker.ietf.org/doc/html/rfc4861",
+        "https://datatracker.ietf.org/doc/html/rfc4862"
+      ]
     }
   ]
 }
