@@ -6,23 +6,732 @@
     {
       "id": "ccna-u22-l1",
       "title": "Site-to-site dan remote access",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u22-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "vpn-types"
+          ],
+          "title": "Site-to-site dan remote access",
+          "body": "VPN (virtual private network) membangun terowongan terenkripsi melintasi internet. Site-to-site menghubungkan dua jaringan lewat gateway, misalnya router di kantor pusat dan cabang; host di kedua LAN (local area network) tidak perlu software apa pun. Remote access menghubungkan satu perangkat, misalnya laptop karyawan di rumah, dengan software klien VPN ke gateway kantor.",
+          "keyPoints": [
+            "VPN: terowongan terenkripsi di internet",
+            "Site-to-site: jaringan ke jaringan",
+            "Remote access: satu perangkat ke kantor"
+          ],
+          "visual": "VpnTypes",
+          "teaches": [
+            "ccna-f-u22-vpn",
+            "ccna-f-u22-s2s",
+            "ccna-f-u22-ra"
+          ]
+        },
+        {
+          "id": "ccna-u22-l1-e1",
+          "type": "choice",
+          "concept": "vpn-types",
+          "prompt": "A company wants every host in its branch office to reach the head office over the internet without installing anything on the hosts. Which VPN (virtual private network) type fits?",
+          "options": [
+            "Site-to-site",
+            "Remote access",
+            "Clientless SSL (Secure Sockets Layer)",
+            "None, the hosts need a VPN client"
+          ],
+          "answer": 0,
+          "explanation": "Site-to-site dibangun antar gateway, jadi host tidak perlu software VPN (virtual private network).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-s2s",
+            "ccna-f-u22-ra"
+          ]
+        },
+        {
+          "id": "ccna-u22-l1-e2",
+          "type": "truefalse",
+          "concept": "vpn-types",
+          "prompt": "A remote access VPN (virtual private network) usually needs VPN client software on the user device.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Satu perangkat membangun terowongan sendiri ke gateway kantor.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-ra"
+          ]
+        },
+        {
+          "id": "ccna-u22-l1-e3",
+          "type": "match",
+          "concept": "vpn-types",
+          "prompt": "Match each VPN (virtual private network) term to its description.",
+          "pairs": [
+            [
+              "Site-to-site",
+              "Gateway to gateway, whole networks"
+            ],
+            [
+              "Remote access",
+              "One user device to the company network"
+            ],
+            [
+              "VPN gateway",
+              "Router or firewall that ends the tunnel"
+            ],
+            [
+              "Tunnel",
+              "Encrypted path across the internet"
+            ]
+          ],
+          "explanation": "Site-to-site antar gateway, remote access dari satu perangkat, gateway mengakhiri terowongan, dan terowongan adalah jalur terenkripsinya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-vpn",
+            "ccna-f-u22-s2s",
+            "ccna-f-u22-ra"
+          ]
+        },
+        {
+          "id": "ccna-u22-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "ra-clients"
+          ],
+          "title": "Teknologi remote access",
+          "body": "Remote access di Cisco memakai TLS (Transport Layer Security) atau DTLS (Datagram Transport Layer Security), sering disebut SSL (Secure Sockets Layer) VPN (virtual private network), atau IPsec dengan IKEv2. Kliennya Cisco Secure Client, dulu bernama AnyConnect. Mode clientless berjalan di web browser tanpa software klien, tetapi hanya untuk aplikasi tertentu seperti halaman web. Site-to-site antar router atau firewall umumnya memakai IPsec.",
+          "keyPoints": [
+            "Remote access: TLS atau IPsec IKEv2",
+            "Klien: Cisco Secure Client",
+            "Clientless: lewat browser, terbatas"
+          ],
+          "teaches": [
+            "ccna-f-u22-ra-proto",
+            "ccna-f-u22-clientless",
+            "ccna-f-u22-s2s-ipsec"
+          ]
+        },
+        {
+          "id": "ccna-u22-l1-e4",
+          "type": "choice",
+          "concept": "ra-clients",
+          "prompt": "A contractor must open one internal web application from a personal laptop, and installing software is not allowed. Which option fits?",
+          "options": [
+            "A clientless SSL (Secure Sockets Layer) VPN (virtual private network)",
+            "Site-to-site IPsec between the laptop and the head office router",
+            "Cisco Secure Client installed on the laptop with a full tunnel",
+            "Telnet from the laptop to the VPN (virtual private network) gateway"
+          ],
+          "answer": 0,
+          "explanation": "Mode clientless berjalan di browser tanpa software, cukup untuk aplikasi web.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-clientless",
+            "ccna-f-u22-ra-proto"
+          ]
+        },
+        {
+          "id": "ccna-u22-l1-e5",
+          "type": "multi",
+          "concept": "ra-clients",
+          "prompt": "Which two protocols can Cisco remote access VPNs (virtual private networks) use? (Choose two.)",
+          "options": [
+            "TLS (Transport Layer Security) or DTLS (Datagram Transport Layer Security)",
+            "IPsec with IKEv2",
+            "Telnet",
+            "TFTP (Trivial File Transfer Protocol)"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Remote access Cisco memakai TLS (Transport Layer Security) atau DTLS (Datagram Transport Layer Security), atau IPsec IKEv2. Telnet dan TFTP (Trivial File Transfer Protocol) tidak mengenkripsi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-ra-proto"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u22-l2",
       "title": "Protokol IPsec",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u22-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "ipsec-services"
+          ],
+          "title": "Apa yang diberikan IPsec",
+          "body": "IPsec adalah kumpulan standar terbuka untuk mengamankan paket IP (Internet Protocol). Ada empat layanan: kerahasiaan lewat enkripsi, integritas supaya isi tidak diubah, autentikasi asal data supaya pengirimnya benar, dan perlindungan dari replay supaya paket lama tidak bisa dikirim ulang. Ini memakai bahan kriptografi dari unit sebelumnya.",
+          "keyPoints": [
+            "Kerahasiaan: enkripsi",
+            "Integritas dan autentikasi asal",
+            "Anti-replay"
+          ],
+          "teaches": [
+            "ccna-f-u22-ipsec-services",
+            "ccna-f-u19-symmetric",
+            "ccna-f-u19-hash"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-e1",
+          "type": "match",
+          "concept": "ipsec-services",
+          "prompt": "Match each IPsec service to what it protects against.",
+          "pairs": [
+            [
+              "Confidentiality",
+              "Someone reading the data"
+            ],
+            [
+              "Integrity",
+              "Someone changing the data"
+            ],
+            [
+              "Origin authentication",
+              "Someone pretending to be the peer"
+            ],
+            [
+              "Anti-replay",
+              "Someone sending old packets again"
+            ]
+          ],
+          "explanation": "Enkripsi melawan penyadapan, integritas melawan perubahan, autentikasi melawan penyamaran, dan anti-replay melawan pengiriman ulang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-ipsec-services"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "ipsec-protocols"
+          ],
+          "title": "AH dan ESP",
+          "body": "IPsec punya dua protokol pembungkus. AH (Authentication Header), protokol IP (Internet Protocol) 51, memberi integritas dan autentikasi tetapi tidak mengenkripsi. ESP (Encapsulating Security Payload), protokol IP 50, memberi enkripsi dan bisa juga integritas serta autentikasi. Karena hanya ESP yang merahasiakan isi, ESP yang umum dipakai untuk VPN (virtual private network).",
+          "keyPoints": [
+            "AH: protokol 51, tanpa enkripsi",
+            "ESP: protokol 50, dengan enkripsi",
+            "VPN umumnya memakai ESP"
+          ],
+          "visual": "EspAh",
+          "teaches": [
+            "ccna-f-u22-ah",
+            "ccna-f-u22-esp"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-e2",
+          "type": "choice",
+          "concept": "ipsec-protocols",
+          "prompt": "Which IPsec protocol encrypts the data?",
+          "options": [
+            "ESP (Encapsulating Security Payload)",
+            "AH (Authentication Header)",
+            "IKE (Internet Key Exchange)",
+            "GRE (Generic Routing Encapsulation)"
+          ],
+          "answer": 0,
+          "explanation": "Hanya ESP (Encapsulating Security Payload) yang mengenkripsi. AH (Authentication Header) hanya integritas dan autentikasi, IKE (Internet Key Exchange) menegosiasikan kunci, dan GRE (Generic Routing Encapsulation) tidak mengenkripsi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-esp",
+            "ccna-f-u22-ah"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-e3",
+          "type": "truefalse",
+          "concept": "ipsec-protocols",
+          "prompt": "AH (Authentication Header) keeps the data secret from anyone who captures the packets.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. AH (Authentication Header) tidak mengenkripsi; isinya tetap bisa dibaca.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-ah"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "ike"
+          ],
+          "title": "IKE dan security association",
+          "body": "Sebelum data dikirim, kedua ujung harus sepakat algoritma dan kunci. IKE (Internet Key Exchange) di UDP (User Datagram Protocol) 500 mengautentikasi kedua peer dan menegosiasikan semuanya. Hasilnya security association (SA), yang berlaku satu arah, jadi dibutuhkan sepasang. Di IKEv1, phase 1 membangun saluran aman antar peer, lalu phase 2 menegosiasikan SA (security association) untuk data.",
+          "keyPoints": [
+            "IKE: UDP 500, negosiasi kunci",
+            "SA satu arah, jadi sepasang",
+            "IKEv1: phase 1 lalu phase 2"
+          ],
+          "teaches": [
+            "ccna-f-u22-ike",
+            "ccna-f-u22-sa",
+            "ccna-f-u22-ikev1-phases"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-e4",
+          "type": "choice",
+          "concept": "ike",
+          "prompt": "What is the job of IKE (Internet Key Exchange) in an IPsec VPN (virtual private network)?",
+          "options": [
+            "Authenticate the peers and negotiate keys and algorithms",
+            "Encrypt the user data",
+            "Translate private addresses",
+            "Route packets between sites"
+          ],
+          "answer": 0,
+          "explanation": "IKE (Internet Key Exchange) menyiapkan SA (security association); enkripsi data dilakukan ESP (Encapsulating Security Payload).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-ike",
+            "ccna-f-u22-esp"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-e5",
+          "type": "sort",
+          "concept": "ipsec-protocols",
+          "prompt": "Sort each property into the protocol it belongs to.",
+          "buckets": [
+            "AH (Authentication Header)",
+            "ESP (Encapsulating Security Payload)",
+            "IKE (Internet Key Exchange)"
+          ],
+          "items": [
+            {
+              "text": "IP (Internet Protocol) protocol 51",
+              "bucket": 0
+            },
+            {
+              "text": "IP protocol 50",
+              "bucket": 1
+            },
+            {
+              "text": "Encrypts the payload",
+              "bucket": 1
+            },
+            {
+              "text": "UDP (User Datagram Protocol) port 500",
+              "bucket": 2
+            },
+            {
+              "text": "Negotiates the security associations",
+              "bucket": 2
+            }
+          ],
+          "explanation": "AH (Authentication Header) memakai protokol 51, ESP (Encapsulating Security Payload) protokol 50 dan mengenkripsi, sedangkan IKE (Internet Key Exchange) di UDP (User Datagram Protocol) 500 menegosiasikan SA (security association).",
+          "requires": [
+            "ccna-f-u22-ah",
+            "ccna-f-u22-esp",
+            "ccna-f-u22-ike"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-m4",
+          "type": "learn",
+          "concepts": [
+            "natt"
+          ],
+          "title": "IPsec melewati NAT",
+          "body": "ESP (Encapsulating Security Payload) tidak punya nomor port, jadi PAT (Port Address Translation) di tengah jalan tidak bisa membedakan sesinya. NAT (Network Address Translation) traversal membungkus ESP di dalam UDP (User Datagram Protocol) port 4500. Itu sebabnya firewall untuk VPN (virtual private network) biasanya membuka UDP 500 untuk IKE (Internet Key Exchange) dan UDP 4500 untuk NAT traversal.",
+          "keyPoints": [
+            "ESP tidak punya port",
+            "NAT traversal: ESP di UDP 4500",
+            "Buka UDP 500 dan 4500"
+          ],
+          "teaches": [
+            "ccna-f-u22-natt",
+            "ccna-f-u22-ike",
+            "ccna-f-u20-pat"
+          ]
+        },
+        {
+          "id": "ccna-u22-l2-e6",
+          "type": "truefalse",
+          "concept": "natt",
+          "prompt": "NAT (Network Address Translation) traversal wraps ESP (Encapsulating Security Payload) in UDP (User Datagram Protocol) port 4500.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Dengan UDP (User Datagram Protocol), PAT (Port Address Translation) bisa membedakan sesinya lewat port.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-natt"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u22-l3",
       "title": "Mode tunnel dan transport",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u22-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "ipsec-modes"
+          ],
+          "title": "Tunnel mode dan transport mode",
+          "body": "ESP (Encapsulating Security Payload) bisa dipakai dalam dua mode. Transport mode hanya melindungi payload dan mempertahankan header IP (Internet Protocol) asli, cocok antar dua host yang berkomunikasi langsung. Tunnel mode melindungi seluruh paket asli, termasuk header-nya, lalu menambahkan header IP baru berisi alamat kedua gateway. VPN (virtual private network) site-to-site memakai tunnel mode.",
+          "keyPoints": [
+            "Transport: header asli tetap",
+            "Tunnel: seluruh paket dibungkus",
+            "Site-to-site: tunnel mode"
+          ],
+          "visual": "TunnelTransport",
+          "teaches": [
+            "ccna-f-u22-transport",
+            "ccna-f-u22-tunnel"
+          ]
+        },
+        {
+          "id": "ccna-u22-l3-e1",
+          "type": "choice",
+          "concept": "ipsec-modes",
+          "prompt": "In a site-to-site VPN (virtual private network) in tunnel mode, which addresses are in the outer IP (Internet Protocol) header?",
+          "options": [
+            "The addresses of the two VPN gateways",
+            "The addresses of the original hosts",
+            "The private addresses of the LANs (local area networks)",
+            "Broadcast addresses"
+          ],
+          "answer": 0,
+          "explanation": "Header baru berisi alamat kedua gateway; alamat host asli ada di dalam paket yang dienkripsi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-tunnel"
+          ]
+        },
+        {
+          "id": "ccna-u22-l3-e2",
+          "type": "truefalse",
+          "concept": "ipsec-modes",
+          "prompt": "Transport mode hides the original IP (Internet Protocol) header from anyone who captures the packet.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Transport mode mempertahankan header IP (Internet Protocol) asli; hanya payload yang dilindungi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-transport"
+          ]
+        },
+        {
+          "id": "ccna-u22-l3-e3",
+          "type": "choice",
+          "concept": "ipsec-modes",
+          "prompt": "Which mode protects traffic between two hosts that talk to each other directly, such as a server and its backup server?",
+          "options": [
+            "Transport mode",
+            "Tunnel mode",
+            "Clientless mode",
+            "Split mode"
+          ],
+          "answer": 0,
+          "explanation": "Transport mode cocok antar dua host yang berkomunikasi langsung; tunnel mode dipakai antar gateway.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-transport",
+            "ccna-f-u22-tunnel"
+          ]
+        },
+        {
+          "id": "ccna-u22-l3-e4",
+          "type": "order",
+          "concept": "ipsec-modes",
+          "prompt": "Order the parts of an ESP (Encapsulating Security Payload) packet in tunnel mode, from first to last.",
+          "items": [
+            "New IP (Internet Protocol) header",
+            "ESP header",
+            "Original IP header",
+            "Data",
+            "ESP trailer"
+          ],
+          "explanation": "Header IP (Internet Protocol) baru di depan, lalu header ESP (Encapsulating Security Payload), paket asli yang dienkripsi, dan trailer ESP.",
+          "requires": [
+            "ccna-f-u22-tunnel",
+            "ccna-f-u22-esp"
+          ]
+        },
+        {
+          "id": "ccna-u22-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "gre-ipsec"
+          ],
+          "title": "GRE over IPsec",
+          "body": "IPsec biasa hanya membawa unicast. Padahal protokol routing seperti OSPF (Open Shortest Path First) mengirim hello sebagai multicast. Solusinya GRE (Generic Routing Encapsulation) over IPsec: GRE membungkus multicast menjadi paket unicast antar gateway, lalu IPsec mengenkripsinya. GRE sendiri tidak mengenkripsi apa pun.",
+          "keyPoints": [
+            "IPsec biasa: unicast saja",
+            "GRE membawa multicast",
+            "GRE tidak mengenkripsi"
+          ],
+          "teaches": [
+            "ccna-f-u22-gre",
+            "ccna-f-u17-mcast"
+          ]
+        },
+        {
+          "id": "ccna-u22-l3-e5",
+          "type": "choice",
+          "concept": "gre-ipsec",
+          "prompt": "Two sites must run OSPF (Open Shortest Path First) across an encrypted tunnel. Which design fits?",
+          "options": [
+            "GRE (Generic Routing Encapsulation) over IPsec",
+            "GRE (Generic Routing Encapsulation) alone",
+            "IPsec AH (Authentication Header) alone",
+            "A clientless SSL (Secure Sockets Layer) VPN (virtual private network)"
+          ],
+          "answer": 0,
+          "explanation": "GRE (Generic Routing Encapsulation) membawa multicast OSPF (Open Shortest Path First), dan IPsec mengenkripsinya. GRE saja tidak terenkripsi, dan AH (Authentication Header) tidak mengenkripsi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-gre",
+            "ccna-f-u22-ah"
+          ]
+        },
+        {
+          "id": "ccna-u22-l3-e6",
+          "type": "multi",
+          "concept": "gre-ipsec",
+          "prompt": "Which two statements about GRE (Generic Routing Encapsulation) over IPsec are true? (Choose two.)",
+          "options": [
+            "GRE can carry multicast traffic such as routing protocol hellos",
+            "IPsec provides the encryption",
+            "GRE encrypts the traffic by itself",
+            "It only works for remote access users"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "GRE (Generic Routing Encapsulation) membawa multicast, IPsec mengenkripsi. GRE tidak mengenkripsi, dan desain ini dipakai antar gateway.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-gre"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u22-l4",
       "title": "Memilih solusi VPN",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u22-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "vpn-choice"
+          ],
+          "title": "Memilih solusi VPN",
+          "body": "Tanyakan dua hal. Apa yang disambungkan: dua jaringan memakai site-to-site IPsec di gateway, satu pengguna memakai remote access. Apa yang dibutuhkan pengguna: akses penuh memakai klien seperti Cisco Secure Client, sedangkan satu aplikasi web cukup lewat clientless. Untuk remote access, split tunneling hanya mengirim lalu lintas kantor lewat terowongan.",
+          "keyPoints": [
+            "Dua jaringan: site-to-site",
+            "Satu pengguna: remote access",
+            "Split tunneling: hanya lalu lintas kantor"
+          ],
+          "teaches": [
+            "ccna-f-u22-s2s",
+            "ccna-f-u22-ra",
+            "ccna-f-u22-clientless",
+            "ccna-f-u22-split"
+          ]
+        },
+        {
+          "id": "ccna-u22-l4-e1",
+          "type": "sort",
+          "concept": "vpn-choice",
+          "prompt": "Sort each need into the VPN (virtual private network) type that fits.",
+          "buckets": [
+            "Site-to-site",
+            "Remote access"
+          ],
+          "items": [
+            {
+              "text": "A branch office LAN (local area network) reaches the head office",
+              "bucket": 0
+            },
+            {
+              "text": "A salesperson works from a hotel",
+              "bucket": 1
+            },
+            {
+              "text": "Two data centers share traffic over the internet",
+              "bucket": 0
+            },
+            {
+              "text": "An admin connects from home with a laptop",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Jaringan ke jaringan memakai site-to-site; satu pengguna memakai remote access.",
+          "requires": [
+            "ccna-f-u22-s2s",
+            "ccna-f-u22-ra"
+          ]
+        },
+        {
+          "id": "ccna-u22-l4-e2",
+          "type": "choice",
+          "concept": "vpn-choice",
+          "prompt": "Remote users should send only traffic for the company network through the VPN (virtual private network), and reach other internet sites directly. What is this called?",
+          "options": [
+            "Split tunneling",
+            "Full tunneling",
+            "Transport mode",
+            "NAT (Network Address Translation) traversal"
+          ],
+          "answer": 0,
+          "explanation": "Split tunneling memisahkan lalu lintas kantor dari lalu lintas internet lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-split"
+          ]
+        },
+        {
+          "id": "ccna-u22-l4-e3",
+          "type": "truefalse",
+          "concept": "vpn-choice",
+          "prompt": "Hosts behind two routers in a site-to-site VPN (virtual private network) each need Cisco Secure Client installed.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Di site-to-site, gateway yang membangun terowongan; host tidak perlu software VPN (virtual private network).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-s2s"
+          ]
+        },
+        {
+          "id": "ccna-u22-l4-e4",
+          "type": "choice",
+          "concept": "vpn-choice",
+          "prompt": "Which pair of choices builds a secure link between a head office router and a branch router that also carries OSPF (Open Shortest Path First)?",
+          "options": [
+            "GRE (Generic Routing Encapsulation) over IPsec, tunnel mode",
+            "Remote access with clientless SSL (Secure Sockets Layer) on both routers",
+            "AH (Authentication Header) in transport mode on each host",
+            "Telnet between the routers with service password-encryption"
+          ],
+          "answer": 0,
+          "explanation": "Antar router berarti site-to-site, OSPF (Open Shortest Path First) butuh GRE (Generic Routing Encapsulation), dan IPsec di tunnel mode mengenkripsinya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-s2s",
+            "ccna-f-u22-gre",
+            "ccna-f-u22-tunnel"
+          ]
+        },
+        {
+          "id": "ccna-u22-l4-e5",
+          "type": "multi",
+          "concept": "vpn-choice",
+          "prompt": "Which two ports should a firewall allow for an IPsec VPN (virtual private network) that may pass through NAT (Network Address Translation)? (Choose two.)",
+          "options": [
+            "UDP (User Datagram Protocol) 500",
+            "UDP (User Datagram Protocol) 4500",
+            "TCP (Transmission Control Protocol) 23",
+            "UDP (User Datagram Protocol) 69"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "UDP (User Datagram Protocol) 500 untuk IKE (Internet Key Exchange) dan UDP 4500 untuk NAT (Network Address Translation) traversal. TCP (Transmission Control Protocol) 23 Telnet dan UDP 69 TFTP (Trivial File Transfer Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u22-ike",
+            "ccna-f-u22-natt"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u22-vpn",
+      "statement": "VPN membangun terowongan terenkripsi melintasi jaringan publik seperti internet, sehingga data pribadi tetap terlindung.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/net_mgmt/vpn_solutions_center/2-0/ip_security/provisioning/guide/IPsecPG1.html"
+    },
+    {
+      "id": "ccna-f-u22-s2s",
+      "statement": "VPN site-to-site menghubungkan dua jaringan lewat gateway seperti router atau firewall; host di kedua LAN tidak perlu software VPN.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/device-config/770/management-center-device-config-77/vpn-s2s.html"
+    },
+    {
+      "id": "ccna-f-u22-ra",
+      "statement": "VPN remote access menghubungkan satu perangkat pengguna ke jaringan kantor, biasanya dengan software klien VPN di perangkat itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/device-config/720/management-center-device-config-72/secure-connections-remote-access.html"
+    },
+    {
+      "id": "ccna-f-u22-ra-proto",
+      "statement": "VPN remote access Cisco memakai TLS (Transport Layer Security) dan DTLS, atau IPsec IKEv2, dengan Cisco Secure Client (dulu AnyConnect) sebagai klien.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/device-config/720/management-center-device-config-72/secure-connections-remote-access.html"
+    },
+    {
+      "id": "ccna-f-u22-clientless",
+      "statement": "SSL VPN mode clientless berjalan lewat web browser tanpa software klien, tetapi hanya untuk aplikasi tertentu seperti halaman web.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_conn_sslvpn/configuration/15-mt/sec-conn-sslvpn-15-mt-book/sec-conn-sslvpn-ssl-vpn.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u22-s2s-ipsec",
+      "statement": "VPN site-to-site antar router atau firewall umumnya memakai IPsec.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/device-config/770/management-center-device-config-77/vpn-s2s.html"
+    },
+    {
+      "id": "ccna-f-u22-ipsec-services",
+      "statement": "IPsec memberi kerahasiaan (enkripsi), integritas data, autentikasi asal data, dan perlindungan dari replay.",
+      "source": "https://www.rfc-editor.org/rfc/rfc4301.html"
+    },
+    {
+      "id": "ccna-f-u22-ah",
+      "statement": "AH (Authentication Header), protokol IP 51, memberi integritas dan autentikasi asal data tetapi tidak mengenkripsi.",
+      "source": "https://www.rfc-editor.org/rfc/rfc4302.html"
+    },
+    {
+      "id": "ccna-f-u22-esp",
+      "statement": "ESP (Encapsulating Security Payload), protokol IP 50, memberi enkripsi dan bisa juga integritas serta autentikasi; ESP adalah pilihan yang umum dipakai.",
+      "source": "https://www.rfc-editor.org/rfc/rfc4303.html"
+    },
+    {
+      "id": "ccna-f-u22-ike",
+      "statement": "IKE (Internet Key Exchange) mengautentikasi kedua ujung dan menegosiasikan algoritma serta kunci IPsec; IKE memakai UDP 500.",
+      "source": "https://www.rfc-editor.org/rfc/rfc7296.html"
+    },
+    {
+      "id": "ccna-f-u22-sa",
+      "statement": "Security association (SA) IPsec berlaku satu arah, jadi lalu lintas dua arah butuh sepasang SA.",
+      "source": "https://www.rfc-editor.org/rfc/rfc4301.html"
+    },
+    {
+      "id": "ccna-f-u22-ikev1-phases",
+      "statement": "Di IKEv1, phase 1 membangun saluran aman antar peer, lalu phase 2 menegosiasikan SA IPsec untuk data.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/217432-understand-ipsec-ikev1-protocol.html"
+    },
+    {
+      "id": "ccna-f-u22-natt",
+      "statement": "NAT traversal membungkus ESP di dalam UDP port 4500 supaya bisa melewati perangkat NAT (Network Address Translation).",
+      "source": "https://www.rfc-editor.org/rfc/rfc3948.html"
+    },
+    {
+      "id": "ccna-f-u22-tunnel",
+      "statement": "Tunnel mode melindungi seluruh paket IP asli dan menambahkan header IP baru; mode ini dipakai antar gateway VPN.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/net_mgmt/vpn_solutions_center/2-0/ip_security/provisioning/guide/IPsecPG1.html"
+    },
+    {
+      "id": "ccna-f-u22-transport",
+      "statement": "Transport mode hanya melindungi payload dan mempertahankan header IP asli; mode ini dipakai antar dua host yang berkomunikasi langsung.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/net_mgmt/vpn_solutions_center/2-0/ip_security/provisioning/guide/IPsecPG1.html"
+    },
+    {
+      "id": "ccna-f-u22-gre",
+      "statement": "IPsec biasa hanya membawa unicast, jadi GRE over IPsec dipakai kalau terowongan harus membawa multicast seperti hello protokol routing.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr3-fwd/gre/gre-configuration-guide/m-gre-over-ipsec.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u22-split",
+      "statement": "Split tunneling hanya mengirim lalu lintas ke jaringan kantor lewat terowongan, sedangkan lalu lintas internet lain keluar langsung.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/device-config/720/management-center-device-config-72/secure-connections-remote-access.html",
+      "verify": true
+    }
+  ]
 }

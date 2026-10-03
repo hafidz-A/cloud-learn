@@ -189,6 +189,10 @@ export const VISUAL_CATALOG = {
   // Unit 21
   DnsResolve: ['dns-resolution'],
   DnsRecords: ['dns-records'],
+  // Unit 22
+  VpnTypes: ['vpn-types'],
+  EspAh: ['ipsec-protocols'],
+  TunnelTransport: ['ipsec-modes'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

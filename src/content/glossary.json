@@ -407,7 +407,7 @@
   {
     "term": "TLS",
     "expansion": "Transport Layer Security",
-    "description": "Protokol enkripsi untuk koneksi jaringan, misalnya HTTPS. Azure Bastion memakai TLS di port 443."
+    "description": "Protokol enkripsi di atas TCP, dipakai HTTPS dan SSL VPN."
   },
   {
     "term": "TTL",
@@ -451,8 +451,8 @@
   },
   {
     "term": "VPN",
-    "expansion": "Virtual Private Network",
-    "description": "Koneksi terenkripsi lewat internet publik antara dua jaringan."
+    "expansion": "virtual private network",
+    "description": "Terowongan terenkripsi melintasi jaringan publik."
   },
   {
     "term": "ZRS",
@@ -1116,5 +1116,55 @@
     "term": "AAAA",
     "expansion": "IPv6 address record",
     "description": "Record DNS yang memetakan nama ke alamat IPv6."
+  },
+  {
+    "term": "IPsec",
+    "expansion": "Internet Protocol Security",
+    "description": "Kumpulan standar untuk mengamankan paket IP: enkripsi, integritas, dan autentikasi."
+  },
+  {
+    "term": "ESP",
+    "expansion": "Encapsulating Security Payload",
+    "description": "Protokol IPsec (protokol IP 50) yang mengenkripsi data."
+  },
+  {
+    "term": "AH",
+    "expansion": "Authentication Header",
+    "description": "Protokol IPsec (protokol IP 51) untuk integritas dan autentikasi tanpa enkripsi."
+  },
+  {
+    "term": "IKE",
+    "expansion": "Internet Key Exchange",
+    "description": "Protokol di UDP 500 yang menegosiasikan algoritma dan kunci IPsec."
+  },
+  {
+    "term": "IKEv2",
+    "expansion": "Internet Key Exchange version 2",
+    "description": "Versi kedua IKE, juga dipakai untuk VPN remote access."
+  },
+  {
+    "term": "IKEv1",
+    "expansion": "Internet Key Exchange version 1",
+    "description": "Versi pertama IKE, dengan phase 1 dan phase 2."
+  },
+  {
+    "term": "SA",
+    "expansion": "security association",
+    "description": "Kesepakatan algoritma dan kunci IPsec untuk satu arah lalu lintas."
+  },
+  {
+    "term": "DTLS",
+    "expansion": "Datagram Transport Layer Security",
+    "description": "Versi TLS untuk UDP."
+  },
+  {
+    "term": "SSL",
+    "expansion": "Secure Sockets Layer",
+    "description": "Pendahulu TLS; nama SSL VPN masih dipakai untuk VPN berbasis TLS."
+  },
+  {
+    "term": "GRE",
+    "expansion": "Generic Routing Encapsulation",
+    "description": "Protokol terowongan tanpa enkripsi yang bisa membawa multicast."
   }
 ]
