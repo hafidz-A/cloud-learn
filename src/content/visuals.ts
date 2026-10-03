@@ -212,6 +212,10 @@ export const VISUAL_CATALOG = {
   AnsibleFlow: ['ansible'],
   YamlShapes: ['yaml'],
   PlaybookAnatomy: ['playbook'],
+  // Unit 28
+  GenVsAgentic: ['genai-agentic'],
+  PromptParts: ['prompt'],
+  DataClasses: ['data-class'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

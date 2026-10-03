@@ -85,6 +85,9 @@ import { SyslogFormat } from './SyslogFormat'
 import { AnsibleFlow } from './AnsibleFlow'
 import { YamlShapes } from './YamlShapes'
 import { PlaybookAnatomy } from './PlaybookAnatomy'
+import { GenVsAgentic } from './GenVsAgentic'
+import { PromptParts } from './PromptParts'
+import { DataClasses } from './DataClasses'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -152,6 +155,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  DataClasses,
+  PromptParts,
+  GenVsAgentic,
   PlaybookAnatomy,
   YamlShapes,
   AnsibleFlow,

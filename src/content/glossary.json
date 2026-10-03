@@ -1261,5 +1261,20 @@
     "term": "CML",
     "expansion": "Cisco Modeling Labs",
     "description": "Alat simulasi jaringan Cisco yang menjalankan image IOS asli; edisi Free gratis untuk topologi kecil."
+  },
+  {
+    "term": "AI",
+    "expansion": "artificial intelligence",
+    "description": "Kecerdasan buatan."
+  },
+  {
+    "term": "AgenticOps",
+    "expansion": "agentic operations",
+    "description": "Istilah Cisco untuk operasi TI yang memakai AI agent."
+  },
+  {
+    "term": "TI",
+    "expansion": "teknologi informasi",
+    "description": "Bidang yang mengelola komputer, jaringan, dan sistem informasi."
   }
 ]
