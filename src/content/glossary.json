@@ -6,8 +6,8 @@
   },
   {
     "term": "ACL",
-    "expansion": "Access Control List",
-    "description": "Daftar aturan permit dan deny untuk memfilter trafik."
+    "expansion": "access control list",
+    "description": "Daftar baris permit dan deny untuk memilih paket."
   },
   {
     "term": "ACR",

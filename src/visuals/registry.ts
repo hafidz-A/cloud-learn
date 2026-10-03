@@ -71,6 +71,8 @@ import { DnsRecords } from './DnsRecords'
 import { VpnTypes } from './VpnTypes'
 import { EspAh } from './EspAh'
 import { TunnelTransport } from './TunnelTransport'
+import { AclFlow } from './AclFlow'
+import { AclPlacement } from './AclPlacement'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -138,6 +140,8 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  AclPlacement,
+  AclFlow,
   TunnelTransport,
   EspAh,
   VpnTypes,

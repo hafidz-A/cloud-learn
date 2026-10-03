@@ -910,6 +910,8 @@ function generated(st: DeviceState, command: string): string | undefined {
   if (command === 'show ipv6 route' || command === 'show ipv6 route static' || command === 'show ipv6 route connected') return ipv6RouteTable(st, command.split(' ')[3])
   if (command === 'show vlan brief') return vlanBrief(st)
   if (command === 'show ip nat translations') return natTranslations(st)
+  const acl = /^show (?:ip )?access-lists(?: (\S+))?$/.exec(command)
+  if (acl) return accessLists(st, acl[1])
   return undefined
 }
 
@@ -959,6 +961,37 @@ function display(line: string): string {
     .replace(/^(key) \S+$/, '$1 <tersembunyi>')
     // IOS shows IPv6 addresses in upper case: "ipv6 address 2001:DB8:1::1/64".
     .replace(/^ipv6 (address|route) .*/, (l) => l.replace(/\S*:\S*/g, (w) => w.toUpperCase()))
+}
+
+/**
+ * Numbered and named ACLs with their sequence numbers. Hit counts ("(12 matches)")
+ * need traffic, which the simulator does not send, so none are shown.
+ */
+function accessLists(st: DeviceState, only?: string): string {
+  const lists: { name: string; standard: boolean; entries: { seq: number; line: string }[] }[] = []
+  const numbered = new Map<string, string[]>()
+  for (const line of st.config.get('')?.values() ?? []) {
+    const m = /^access-list (\d+) (.*)$/.exec(line)
+    if (m && !m[2].startsWith('remark')) numbered.set(m[1], [...(numbered.get(m[1]) ?? []), m[2]])
+  }
+  for (const [n, entries] of numbered) {
+    const num = Number(n)
+    lists.push({ name: n, standard: num < 100 || (num >= 1300 && num <= 1999), entries: entries.map((line, i) => ({ seq: (i + 1) * 10, line })) })
+  }
+  for (const [context, entries] of st.acls) {
+    const m = /^ip access-list (standard|extended) (\S+)$/.exec(context)
+    if (m) lists.push({ name: m[2], standard: m[1] === 'standard', entries: entries.filter((e) => !e.line.startsWith('remark')) })
+  }
+  const out: string[] = []
+  for (const l of lists.filter((x) => !only || x.name === only)) {
+    out.push(`${l.standard ? 'Standard' : 'Extended'} IP access list ${l.name}`)
+    for (const e of l.entries) {
+      // Standard lists print the wildcard as "wildcard bits" (Cisco doc 23602).
+      const line = l.standard ? e.line.replace(/ (\d+\.\d+\.\d+\.\d+) (\d+\.\d+\.\d+\.\d+)$/, ' $1, wildcard bits $2') : e.line
+      out.push(`    ${e.seq} ${line}`)
+    }
+  }
+  return out.join('\n')
 }
 
 /**

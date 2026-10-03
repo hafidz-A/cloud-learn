@@ -6,27 +6,795 @@
     {
       "id": "ccna-u23-l1",
       "title": "Cara kerja ACL",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u23-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "acl-basics"
+          ],
+          "title": "Cara ACL dibaca",
+          "body": "ACL (access control list) adalah daftar baris permit dan deny. Router membacanya dari atas ke bawah. Baris pertama yang cocok menentukan hasilnya, dan baris setelahnya tidak dibaca lagi. Di akhir setiap ACL ada deny tersembunyi, jadi paket yang tidak cocok dengan baris mana pun ditolak. ACL yang hanya berisi deny pun menolak semua lalu lintas.",
+          "keyPoints": [
+            "Dari atas ke bawah",
+            "Cocok pertama menang",
+            "Deny tersembunyi di akhir"
+          ],
+          "visual": "AclFlow",
+          "teaches": [
+            "ccna-f-u23-purpose",
+            "ccna-f-u23-top-down",
+            "ccna-f-u23-implicit-deny",
+            "ccna-f-u23-empty-acl"
+          ]
+        },
+        {
+          "id": "ccna-u23-l1-e1",
+          "type": "choice",
+          "concept": "acl-basics",
+          "prompt": "An ACL (access control list) has: 10 deny host 192.168.1.66, then 20 permit 192.168.1.0 0.0.0.255. What happens to a packet from 192.168.1.66?",
+          "options": [
+            "It is denied by line 10",
+            "It is permitted by line 20",
+            "Both lines apply, so it is logged",
+            "It is permitted because permit lines win"
+          ],
+          "answer": 0,
+          "explanation": "Baris 10 cocok lebih dulu, jadi paket ditolak dan baris 20 tidak dibaca.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-top-down"
+          ]
+        },
+        {
+          "id": "ccna-u23-l1-e2",
+          "type": "truefalse",
+          "concept": "acl-basics",
+          "prompt": "A packet that matches no line in an ACL (access control list) is permitted.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Deny tersembunyi di akhir ACL (access control list) menolaknya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-implicit-deny"
+          ]
+        },
+        {
+          "id": "ccna-u23-l1-e3",
+          "type": "choice",
+          "concept": "acl-basics",
+          "prompt": "An ACL (access control list) contains only: deny 192.168.1.0 0.0.0.255. It is applied inbound on a LAN (local area network) interface. Which traffic gets through?",
+          "options": [
+            "None",
+            "Everything except 192.168.1.0/24",
+            "Only 192.168.1.0/24",
+            "Only routing protocol traffic"
+          ],
+          "answer": 0,
+          "explanation": "Tidak ada baris permit, jadi semua paket lain kena deny tersembunyi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-implicit-deny",
+            "ccna-f-u23-empty-acl"
+          ]
+        },
+        {
+          "id": "ccna-u23-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "acl-direction"
+          ],
+          "title": "Inbound dan outbound",
+          "body": "ACL (access control list) dipasang di interface dengan arah. Inbound memeriksa paket saat masuk, sebelum router mencari route. Outbound memeriksa paket setelah routing, sebelum keluar interface. Satu interface hanya bisa memakai satu ACL per protokol per arah, jadi paling banyak satu ACL IPv4 inbound dan satu outbound.",
+          "keyPoints": [
+            "Inbound: sebelum routing",
+            "Outbound: setelah routing",
+            "Satu ACL per protokol per arah"
+          ],
+          "teaches": [
+            "ccna-f-u23-in-out",
+            "ccna-f-u23-one-per"
+          ]
+        },
+        {
+          "id": "ccna-u23-l1-e4",
+          "type": "choice",
+          "concept": "acl-direction",
+          "prompt": "Which ACL (access control list) direction checks packets before the router looks up the routing table?",
+          "options": [
+            "Inbound",
+            "Outbound",
+            "Both",
+            "Neither"
+          ],
+          "answer": 0,
+          "explanation": "ACL (access control list) inbound diperiksa saat paket masuk, sebelum routing.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-in-out"
+          ]
+        },
+        {
+          "id": "ccna-u23-l1-e5",
+          "type": "multi",
+          "concept": "acl-direction",
+          "prompt": "Which two statements are true? (Choose two.)",
+          "options": [
+            "An interface can have one IPv4 ACL (access control list) inbound and one outbound",
+            "An outbound ACL (access control list) checks packets after routing",
+            "An interface can have two IPv4 ACLs (access control list) inbound at once",
+            "An inbound ACL (access control list) checks packets after they leave the interface"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Satu ACL (access control list) per protokol per arah, dan outbound diperiksa setelah routing.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-one-per",
+            "ccna-f-u23-in-out"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u23-l2",
       "title": "ACL standard",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u23-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "acl-standard"
+          ],
+          "title": "ACL standard",
+          "body": "ACL (access control list) standard hanya memeriksa alamat sumber. Nomornya 1 sampai 99 atau 1300 sampai 1999. Alamat ditulis dengan wildcard, sama seperti di OSPF (Open Shortest Path First): 192.168.1.0 0.0.0.255 untuk satu /24. host diikuti alamat berarti satu host, begitu juga alamat tanpa wildcard, dan any berarti semua alamat. Lalu pasang dengan ip access-group di interface.",
+          "keyPoints": [
+            "Hanya alamat sumber",
+            "Nomor 1–99 dan 1300–1999",
+            "host = 0.0.0.0, any = semua"
+          ],
+          "teaches": [
+            "ccna-f-u23-standard",
+            "ccna-f-u23-host-any",
+            "ccna-f-u23-default-wild",
+            "ccna-f-u17-wildcard",
+            "ccna-f-u23-access-group"
+          ]
+        },
+        {
+          "id": "ccna-u23-l2-e1",
+          "type": "ios",
+          "concept": "acl-standard",
+          "prompt": "On R1, create standard ACL (access control list) 10 that denies host 192.168.1.66 and permits the rest of 192.168.1.0/24, then apply it outbound on G0/0/1, toward the server LAN (local area network).",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.0.1 255.255.255.0"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "access-list 10 deny host 192.168.1.66"
+              },
+              {
+                "line": "access-list 10 permit 192.168.1.0 0.0.0.255"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip access-group 10 out"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "access-list 10 deny host 192.168.1.66",
+            "access-list 10 permit 192.168.1.0 0.0.0.255",
+            "interface g0/0/1",
+            "ip access-group 10 out",
+            "end"
+          ],
+          "explanation": "Baris deny untuk satu host ditulis lebih dulu, lalu permit untuk subnetnya, dan ACL (access control list) dipasang keluar ke LAN (Local Area Network) server.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-standard",
+            "ccna-f-u23-host-any",
+            "ccna-f-u23-top-down",
+            "ccna-f-u23-access-group"
+          ]
+        },
+        {
+          "id": "ccna-u23-l2-e2",
+          "type": "choice",
+          "concept": "acl-standard",
+          "prompt": "Which field can a standard ACL (access control list) check?",
+          "options": [
+            "Only the source address",
+            "The source and destination addresses",
+            "The destination port",
+            "The protocol type"
+          ],
+          "answer": 0,
+          "explanation": "ACL (access control list) standard hanya melihat alamat sumber; yang lain butuh ACL extended.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-standard"
+          ]
+        },
+        {
+          "id": "ccna-u23-l2-e3",
+          "type": "truefalse",
+          "concept": "acl-standard",
+          "prompt": "access-list 5 permit 10.1.1.1 matches only the host 10.1.1.1.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Di ACL (access control list) standard, alamat tanpa wildcard dianggap memakai 0.0.0.0, yaitu satu host.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-default-wild",
+            "ccna-f-u23-host-any"
+          ]
+        },
+        {
+          "id": "ccna-u23-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "acl-placement"
+          ],
+          "title": "Di mana memasang ACL standard",
+          "body": "Karena ACL (access control list) standard hanya melihat sumber, pasang dekat tujuan. Kalau dipasang dekat sumber, ia memblokir sumber itu ke semua tujuan, bukan hanya ke server yang dimaksud. ACL extended bisa memilih tujuan dan port, jadi dipasang dekat sumber supaya lalu lintas yang ditolak tidak melintasi jaringan.",
+          "keyPoints": [
+            "Standard: dekat tujuan",
+            "Extended: dekat sumber",
+            "Standard dekat sumber memblokir terlalu banyak"
+          ],
+          "visual": "AclPlacement",
+          "teaches": [
+            "ccna-f-u23-place-std",
+            "ccna-f-u23-place-ext"
+          ]
+        },
+        {
+          "id": "ccna-u23-l2-e4",
+          "type": "choice",
+          "concept": "acl-placement",
+          "prompt": "A standard ACL (access control list) must stop 192.168.1.0/24 from reaching only the server LAN (local area network) behind R2. Where should it go?",
+          "options": [
+            "Outbound on the R2 interface toward the server LAN",
+            "Inbound on the R1 interface facing 192.168.1.0/24",
+            "Outbound on the R1 interface facing 192.168.1.0/24",
+            "On every router interface"
+          ],
+          "answer": 0,
+          "explanation": "Dekat tujuan, supaya 192.168.1.0/24 masih bisa ke tujuan lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-place-std"
+          ]
+        },
+        {
+          "id": "ccna-u23-l2-e5",
+          "type": "truefalse",
+          "concept": "acl-placement",
+          "prompt": "Extended ACLs (access control lists) are usually placed close to the source.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. ACL (access control list) extended bisa memilih tujuan, jadi aman ditempatkan dekat sumber dan menolak lebih awal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-place-ext"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u23-l3",
       "title": "ACL extended",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u23-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "acl-extended"
+          ],
+          "title": "ACL extended",
+          "body": "ACL (access control list) extended memeriksa protokol, sumber, tujuan, dan port. Nomornya 100 sampai 199 atau 2000 sampai 2699. Urutannya: permit atau deny, protokol (ip, tcp, udp, icmp), sumber, lalu tujuan, dan untuk tcp atau udp bisa ditambah port, misalnya eq 80. Jadi access-list 110 permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80 mengizinkan LAN (local area network) membuka web di satu server.",
+          "keyPoints": [
+            "Protokol, sumber, tujuan, port",
+            "Nomor 100–199 dan 2000–2699",
+            "eq 80 setelah tujuan: port tujuan"
+          ],
+          "teaches": [
+            "ccna-f-u23-extended",
+            "ccna-f-u23-ports"
+          ]
+        },
+        {
+          "id": "ccna-u23-l3-e1",
+          "type": "ios",
+          "concept": "acl-extended",
+          "prompt": "On R1, create extended ACL (access control list) 110 that permits 192.168.1.0/24 to reach web server 10.0.0.10 on TCP (Transmission Control Protocol) port 80, and permits ICMP (Internet Control Message Protocol) from that LAN (local area network) to anywhere. Apply it inbound on G0/0/0.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "access-list 110 permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80"
+              },
+              {
+                "line": "access-list 110 permit icmp 192.168.1.0 0.0.0.255 any"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip access-group 110 in"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "access-list 110 permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80",
+            "access-list 110 permit icmp 192.168.1.0 0.0.0.255 any",
+            "interface g0/0/0",
+            "ip access-group 110 in",
+            "end"
+          ],
+          "explanation": "Dua baris permit, dan sisanya kena deny tersembunyi. ACL (access control list) dipasang masuk di interface LAN (Local Area Network), dekat sumber. IOS menampilkan port 80 sebagai www.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-extended",
+            "ccna-f-u23-ports",
+            "ccna-f-u23-access-group",
+            "ccna-f-u23-place-ext"
+          ]
+        },
+        {
+          "id": "ccna-u23-l3-e2",
+          "type": "choice",
+          "concept": "acl-extended",
+          "prompt": "Which line blocks Telnet from any host to the router at 10.0.0.1?",
+          "options": [
+            "access-list 120 deny tcp any host 10.0.0.1 eq 23",
+            "access-list 20 deny host 10.0.0.1",
+            "access-list 120 deny udp any host 10.0.0.1 eq 23",
+            "access-list 120 deny tcp host 10.0.0.1 eq 23 any"
+          ],
+          "answer": 0,
+          "explanation": "Telnet memakai TCP (Transmission Control Protocol) 23, dan router adalah tujuannya. ACL (access control list) 20 standard hanya melihat sumber, udp salah protokol, dan baris terakhir menaruh router sebagai sumber.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-extended",
+            "ccna-f-u23-ports",
+            "ccna-f-u01-ports-tcp"
+          ]
+        },
+        {
+          "id": "ccna-u23-l3-e3",
+          "type": "match",
+          "concept": "acl-extended",
+          "prompt": "Match each port operator to its meaning.",
+          "pairs": [
+            [
+              "eq 443",
+              "Port equal to 443"
+            ],
+            [
+              "gt 1023",
+              "Port greater than 1023"
+            ],
+            [
+              "lt 1024",
+              "Port less than 1024"
+            ],
+            [
+              "range 20 21",
+              "Ports 20 through 21"
+            ]
+          ],
+          "explanation": "eq sama dengan, gt lebih besar, lt lebih kecil, dan range rentang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-ports"
+          ]
+        },
+        {
+          "id": "ccna-u23-l3-e4",
+          "type": "truefalse",
+          "concept": "acl-extended",
+          "prompt": "In access-list 110 permit tcp any host 10.0.0.10 eq 443, the port 443 is the destination port.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Port ditulis setelah alamat yang diperiksanya, dan di sini setelah tujuan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-ports"
+          ]
+        },
+        {
+          "id": "ccna-u23-l3-e5",
+          "type": "exhibit",
+          "concept": "acl-extended",
+          "prompt": "Refer to the exhibit. ACL (access control list) 130 is applied inbound on the LAN (local area network) interface. Which traffic from the LAN is allowed?",
+          "outputs": [
+            {
+              "title": "R1# show access-lists 130",
+              "text": "Extended IP access list 130\n    10 permit tcp 192.168.1.0 0.0.0.255 any eq www"
+            }
+          ],
+          "options": [
+            "Only TCP (Transmission Control Protocol) port 80",
+            "All TCP (Transmission Control Protocol) traffic",
+            "All traffic except port 80",
+            "Web traffic and ping"
+          ],
+          "answer": 0,
+          "explanation": "Hanya ada satu permit, TCP (Transmission Control Protocol) port 80; sisanya, termasuk ping, kena deny tersembunyi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-extended",
+            "ccna-f-u23-implicit-deny",
+            "ccna-f-u23-ports"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u23-l4",
       "title": "Named ACL dan nomor urut",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u23-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "acl-named"
+          ],
+          "title": "ACL bernama",
+          "body": "Nama lebih mudah dibaca daripada nomor. ip access-list extended diikuti nama, misalnya Web, membuat ACL (access control list) bernama dan masuk ke modenya; baris permit dan deny lalu ditulis tanpa awalan access-list. Setiap baris mendapat nomor urut, mulai 10 dan naik 10. remark menambahkan catatan tanpa mengubah cara paket dicocokkan.",
+          "keyPoints": [
+            "ip access-list standard atau extended <nama>",
+            "Nomor urut 10, 20, 30",
+            "remark: catatan"
+          ],
+          "teaches": [
+            "ccna-f-u23-named",
+            "ccna-f-u23-seq",
+            "ccna-f-u23-remark"
+          ]
+        },
+        {
+          "id": "ccna-u23-l4-e1",
+          "type": "ios",
+          "concept": "acl-named",
+          "prompt": "On R1, create extended ACL (access control list) Web with a remark Akses web kantor, a line that permits 192.168.1.0/24 to any destination on TCP (Transmission Control Protocol) 443, and apply it inbound on G0/0/0.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "ip access-list extended Web",
+                "line": "remark Akses web kantor"
+              },
+              {
+                "context": "ip access-list extended Web",
+                "line": "permit tcp 192.168.1.0 0.0.0.255 any eq 443"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip access-group Web in"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip access-list extended Web",
+            "remark Akses web kantor",
+            "permit tcp 192.168.1.0 0.0.0.255 any eq 443",
+            "exit",
+            "interface g0/0/0",
+            "ip access-group Web in",
+            "end"
+          ],
+          "explanation": "ACL (access control list) bernama dibuat, catatan ditambahkan, baris permit ditulis di modenya, lalu dipasang dengan namanya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-named",
+            "ccna-f-u23-remark",
+            "ccna-f-u23-access-group"
+          ]
+        },
+        {
+          "id": "ccna-u23-l4-e2",
+          "type": "truefalse",
+          "concept": "acl-named",
+          "prompt": "A remark line changes which packets an ACL (access control list) permits.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. remark hanya catatan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-remark"
+          ]
+        },
+        {
+          "id": "ccna-u23-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "acl-edit"
+          ],
+          "title": "Menyisipkan dan menghapus baris",
+          "body": "Di mode ACL (access control list) bernama, tulis nomor urut di depan baris untuk menyisipkannya di tempat tertentu: 15 deny ip host 192.168.1.66 any masuk di antara baris 10 dan 20. no diikuti nomor urut menghapus satu baris saja. Karena cocok pertama menang, posisi baris menentukan hasilnya. show access-lists menampilkan baris beserta nomor urutnya.",
+          "keyPoints": [
+            "15 <baris>: sisipkan di antara 10 dan 20",
+            "no 20: hapus satu baris",
+            "Posisi menentukan hasil"
+          ],
+          "teaches": [
+            "ccna-f-u23-seq-edit",
+            "ccna-f-u23-seq",
+            "ccna-f-u23-top-down",
+            "ccna-f-u23-show-acl"
+          ]
+        },
+        {
+          "id": "ccna-u23-l4-e3",
+          "type": "ios",
+          "concept": "acl-edit",
+          "prompt": "In extended ACL (access control list) Web on R1, add a line that permits 192.168.1.0/24 to any destination on TCP (Transmission Control Protocol) 443. Then insert line 5 that denies all IP (Internet Protocol) traffic from host 192.168.1.66 to any destination, so it is checked first.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "ip access-list extended Web",
+                "line": "permit tcp 192.168.1.0 0.0.0.255 any eq 443"
+              },
+              {
+                "context": "ip access-list extended Web",
+                "line": "deny ip host 192.168.1.66 any"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip access-list extended Web",
+            "permit tcp 192.168.1.0 0.0.0.255 any eq 443",
+            "5 deny ip host 192.168.1.66 any",
+            "end"
+          ],
+          "explanation": "Nomor 5 lebih kecil dari 10, jadi baris deny dibaca lebih dulu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-seq-edit",
+            "ccna-f-u23-top-down"
+          ]
+        },
+        {
+          "id": "ccna-u23-l4-e4",
+          "type": "exhibit",
+          "concept": "acl-edit",
+          "prompt": "Refer to the exhibit. Which command, entered in ACL (access control list) mode for Staf, removes only the line that denies host 192.168.2.9?",
+          "outputs": [
+            {
+              "title": "R1# show access-lists Staf",
+              "text": "Standard IP access list Staf\n    10 permit 192.168.2.0, wildcard bits 0.0.0.255\n    20 deny 192.168.2.9"
+            }
+          ],
+          "options": [
+            "no 20",
+            "no access-list Staf",
+            "no deny host 192.168.2.9 any",
+            "no 10"
+          ],
+          "answer": 0,
+          "explanation": "no diikuti nomor urut menghapus satu baris. no 10 menghapus baris lain, dan no access-list menghapus semuanya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-seq-edit",
+            "ccna-f-u23-show-acl"
+          ]
+        },
+        {
+          "id": "ccna-u23-l4-e5",
+          "type": "choice",
+          "concept": "acl-edit",
+          "prompt": "In the exhibit above, line 20 never matches anything. Why?",
+          "options": [
+            "Line 10 already permits 192.168.2.9 first",
+            "Standard ACLs (access control lists) ignore host entries",
+            "Deny lines are always read last",
+            "The wildcard bits are wrong"
+          ],
+          "answer": 0,
+          "explanation": "Host 192.168.2.9 ada di 192.168.2.0/24, jadi baris 10 cocok lebih dulu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-top-down",
+            "ccna-f-u23-seq"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u23-l5",
       "title": "Menerapkan dan troubleshoot ACL",
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u23-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "acl-vty"
+          ],
+          "title": "Membatasi akses manajemen",
+          "body": "ACL (access control list) juga bisa membatasi siapa yang boleh membuka sesi SSH (Secure Shell) ke perangkat. Buat ACL standard berisi alamat admin, lalu di line vty pasang access-class diikuti nomor atau nama ACL dan kata in. Dengan begitu satu ACL melindungi semua interface sekaligus.",
+          "keyPoints": [
+            "ACL standard berisi alamat admin",
+            "access-class <acl> in di line vty",
+            "Melindungi semua interface"
+          ],
+          "teaches": [
+            "ccna-f-u23-access-class",
+            "ccna-f-u23-standard"
+          ]
+        },
+        {
+          "id": "ccna-u23-l5-e1",
+          "type": "ios",
+          "concept": "acl-vty",
+          "prompt": "Allow only the admin subnet 192.168.99.0/24 to open remote sessions to R1. Use standard ACL (access control list) 5 on vty lines 0 to 4.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "access-list 5 permit 192.168.99.0 0.0.0.255"
+              },
+              {
+                "context": "line vty 0 4",
+                "line": "access-class 5 in"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "access-list 5 permit 192.168.99.0 0.0.0.255",
+            "line vty 0 4",
+            "access-class 5 in",
+            "end"
+          ],
+          "explanation": "ACL (access control list) 5 mengizinkan subnet admin, dan access-class memasangnya di line vty; alamat lain kena deny tersembunyi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-access-class",
+            "ccna-f-u23-standard",
+            "ccna-f-u23-implicit-deny"
+          ]
+        },
+        {
+          "id": "ccna-u23-l5-e2",
+          "type": "choice",
+          "concept": "acl-vty",
+          "prompt": "Which command applies an ACL (access control list) to the vty lines?",
+          "options": [
+            "access-class 5 in",
+            "ip access-group 5 in",
+            "access-list 5 in",
+            "transport input 5"
+          ],
+          "answer": 0,
+          "explanation": "Di line, ACL (access control list) dipasang dengan access-class; ip access-group dipakai di interface.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-access-class",
+            "ccna-f-u23-access-group"
+          ]
+        },
+        {
+          "id": "ccna-u23-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "acl-trouble"
+          ],
+          "title": "Kalau ACL bermasalah",
+          "body": "show access-lists menampilkan setiap baris dengan nomor urut dan, setelah ada lalu lintas, jumlah paket yang cocok. Baris yang jumlahnya naik menunjukkan baris mana yang memutuskan. Kesalahan yang umum: lupa baris permit sehingga deny tersembunyi menolak semuanya, urutan baris salah, arah in atau out keliru, atau sumber dan tujuan tertukar.",
+          "keyPoints": [
+            "show access-lists: jumlah cocok",
+            "Lupa permit: semua ditolak",
+            "Urutan, arah, sumber-tujuan"
+          ],
+          "teaches": [
+            "ccna-f-u23-show-acl",
+            "ccna-f-u23-implicit-deny",
+            "ccna-f-u23-top-down",
+            "ccna-f-u23-in-out"
+          ]
+        },
+        {
+          "id": "ccna-u23-l5-e3",
+          "type": "exhibit",
+          "concept": "acl-trouble",
+          "prompt": "Refer to the exhibit. Hosts in 192.168.1.0/24 cannot reach anything after ACL (access control list) 150 is applied inbound on their LAN (local area network) interface. What is the fix?",
+          "outputs": [
+            {
+              "title": "R1# show access-lists 150",
+              "text": "Extended IP access list 150\n    10 deny tcp 192.168.1.0 0.0.0.255 any eq telnet (12 matches)"
+            }
+          ],
+          "options": [
+            "Add a permit line",
+            "Move the deny line to sequence 30 so it is read last",
+            "Apply the ACL outbound on the same interface instead",
+            "Change it to a standard ACL with the same number"
+          ],
+          "answer": 0,
+          "explanation": "Hanya ada satu deny, jadi semua sisanya kena deny tersembunyi. Tambahkan baris permit, misalnya permit ip any any.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-implicit-deny",
+            "ccna-f-u23-show-acl"
+          ]
+        },
+        {
+          "id": "ccna-u23-l5-e4",
+          "type": "multi",
+          "concept": "acl-trouble",
+          "prompt": "Which two mistakes can make an ACL (access control list) block traffic it was meant to permit? (Choose two.)",
+          "options": [
+            "A broader deny line placed before the permit line",
+            "Swapping the source and destination in an extended ACL",
+            "Adding a remark line",
+            "Using sequence numbers 10 and 20"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Baris deny yang lebih luas di atas menang lebih dulu, dan sumber-tujuan yang tertukar membuat baris permit tidak pernah cocok. remark dan nomor urut tidak memengaruhi pencocokan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-top-down",
+            "ccna-f-u23-extended",
+            "ccna-f-u23-remark"
+          ]
+        },
+        {
+          "id": "ccna-u23-l5-e5",
+          "type": "truefalse",
+          "concept": "acl-trouble",
+          "prompt": "show access-lists shows match counts only after traffic has hit the ACL (access control list) lines.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Jumlah cocok muncul di samping baris setelah ada paket yang cocok.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-show-acl"
+          ]
+        }
+      ]
     },
     {
       "id": "ccna-u23-l6",
@@ -35,8 +803,254 @@
         "kind": "handson",
         "from": "ccna-u23-l5"
       },
-      "items": []
+      "items": [
+        {
+          "id": "ccna-u23-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "acl-lab"
+          ],
+          "title": "Rencana lab",
+          "body": "LAN (local area network) staf 192.168.1.0/24 di G0/0/0 R1, server 10.0.0.10 di G0/0/1. Staf boleh membuka web di server, boleh ping, tetapi tidak boleh Telnet ke server. Satu ACL (access control list) extended bernama Staf dipasang masuk di G0/0/0, dekat sumber. Lalu uji dari PC dan lihat jumlah cocok di setiap baris.",
+          "keyPoints": [
+            "ACL extended Staf",
+            "Dipasang inbound di G0/0/0",
+            "Uji, lalu lihat jumlah cocok"
+          ],
+          "teaches": [
+            "ccna-f-u23-place-ext",
+            "ccna-f-u23-named",
+            "ccna-f-u23-show-acl"
+          ]
+        },
+        {
+          "id": "ccna-u23-l6-e1",
+          "type": "ios",
+          "concept": "acl-lab",
+          "prompt": "On R1, create extended ACL (access control list) Staf: deny Telnet from 192.168.1.0/24 to host 10.0.0.10, permit TCP (Transmission Control Protocol) 80 from that LAN (local area network) to host 10.0.0.10, and permit ICMP (Internet Control Message Protocol) from that LAN to anywhere. Apply it inbound on G0/0/0 and save.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.0.1 255.255.255.0"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "ip access-list extended Staf",
+                "line": "deny tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 23"
+              },
+              {
+                "context": "ip access-list extended Staf",
+                "line": "permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80"
+              },
+              {
+                "context": "ip access-list extended Staf",
+                "line": "permit icmp 192.168.1.0 0.0.0.255 any"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip access-group Staf in"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "ip access-list extended Staf",
+            "deny tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 23",
+            "permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80",
+            "permit icmp 192.168.1.0 0.0.0.255 any",
+            "exit",
+            "interface g0/0/0",
+            "ip access-group Staf in",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Tiga baris sesuai kebutuhan, deny tersembunyi menolak sisanya, dan ACL (access control list) dipasang masuk dekat sumber.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-named",
+            "ccna-f-u23-extended",
+            "ccna-f-u23-ports",
+            "ccna-f-u23-access-group",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u23-l6-e2",
+          "type": "ios",
+          "concept": "acl-lab",
+          "prompt": "Display ACL (access control list) Staf on R1 to check its lines and sequence numbers.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "ip access-list extended Staf",
+                "line": "permit icmp 192.168.1.0 0.0.0.255 any"
+              }
+            ],
+            "run": [
+              "show access-lists Staf"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip access-list extended Staf",
+            "permit icmp 192.168.1.0 0.0.0.255 any",
+            "end",
+            "show access-lists Staf"
+          ],
+          "explanation": "Barisnya tampil dengan nomor urut 10 dan seterusnya; jumlah cocok baru muncul setelah ada lalu lintas.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-show-acl",
+            "ccna-f-u23-seq"
+          ]
+        },
+        {
+          "id": "ccna-u23-l6-e3",
+          "type": "choice",
+          "concept": "acl-lab",
+          "prompt": "After the lab, a staff PC tries to open an SSH (Secure Shell) session to 10.0.0.10. What happens?",
+          "options": [
+            "It is blocked by the hidden deny at the end",
+            "It is permitted because only Telnet is denied",
+            "It is permitted by the ICMP (Internet Control Message Protocol) line",
+            "It is blocked by the Telnet line"
+          ],
+          "answer": 0,
+          "explanation": "SSH (Secure Shell) memakai TCP (Transmission Control Protocol) 22, yang tidak cocok dengan baris mana pun, jadi deny tersembunyi menolaknya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u23-implicit-deny",
+            "ccna-f-u01-ports-tcp"
+          ]
+        }
+      ]
     }
   ],
-  "facts": []
+  "facts": [
+    {
+      "id": "ccna-f-u23-purpose",
+      "statement": "ACL adalah daftar baris permit dan deny yang dipakai router untuk memilih paket, misalnya untuk menyaring lalu lintas di interface.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-top-down",
+      "statement": "ACL dibaca dari atas ke bawah; baris pertama yang cocok menentukan hasilnya, dan baris setelahnya tidak dibaca.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-implicit-deny",
+      "statement": "Di akhir setiap ACL ada deny tersembunyi, jadi paket yang tidak cocok dengan baris mana pun ditolak.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-in-out",
+      "statement": "ACL inbound memeriksa paket sebelum routing, sedangkan ACL outbound memeriksa paket setelah routing, sebelum keluar interface.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-one-per",
+      "statement": "Satu interface hanya bisa memakai satu ACL per protokol per arah.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_data_acl/configuration/12-4t/sec-data-acl-12-4t-book/sec-create-ip-apply.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u23-standard",
+      "statement": "ACL standard hanya memeriksa alamat sumber; nomornya 1 sampai 99 dan 1300 sampai 1999.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-extended",
+      "statement": "ACL extended memeriksa protokol, alamat sumber dan tujuan, serta port; nomornya 100 sampai 199 dan 2000 sampai 2699.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-host-any",
+      "statement": "host <alamat> sama dengan wildcard 0.0.0.0, dan any sama dengan alamat apa pun dengan wildcard 255.255.255.255.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-default-wild",
+      "statement": "Di ACL standard, alamat tanpa wildcard dianggap memakai wildcard 0.0.0.0, yaitu satu host.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-ports",
+      "statement": "Di ACL extended, operator eq, gt, lt, neq, dan range membandingkan nomor port TCP atau UDP.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-place-ext",
+      "statement": "ACL extended sebaiknya dipasang dekat sumber, supaya lalu lintas yang ditolak tidak melintasi jaringan.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/access-lists/26448-ACLsamples.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u23-place-std",
+      "statement": "ACL standard sebaiknya dipasang dekat tujuan, karena hanya melihat sumber dan bisa memblokir sumber itu ke semua tujuan lain.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/access-lists/26448-ACLsamples.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u23-named",
+      "statement": "ip access-list standard <nama> atau ip access-list extended <nama> membuat ACL bernama dan masuk ke mode konfigurasinya.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-seq",
+      "statement": "Setiap baris ACL punya nomor urut; bawaannya mulai 10 dan naik 10.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_data_acl/configuration/15-e/sec-data-acl-15-e-book/sec-acl-seq-num.html"
+    },
+    {
+      "id": "ccna-f-u23-seq-edit",
+      "statement": "Di mode ACL bernama, baris bisa disisipkan dengan menulis nomor urut di depannya, dan dihapus dengan no <nomor urut>.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_data_acl/configuration/15-e/sec-data-acl-15-e-book/sec-acl-seq-num.html"
+    },
+    {
+      "id": "ccna-f-u23-remark",
+      "statement": "remark menambahkan catatan di ACL tanpa mengubah cara paket dicocokkan.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-access-group",
+      "statement": "ip access-group <nomor atau nama> in atau out memasang ACL di interface.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-access-class",
+      "statement": "access-class <nomor atau nama> in di line vty membatasi siapa yang boleh membuka sesi remote ke perangkat.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u23-show-acl",
+      "statement": "show access-lists menampilkan isi setiap ACL dengan nomor urut, dan jumlah paket yang cocok di setiap baris setelah ada lalu lintas.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html"
+    },
+    {
+      "id": "ccna-f-u23-empty-acl",
+      "statement": "ACL yang hanya berisi deny tanpa permit menolak semua lalu lintas di interface itu karena deny tersembunyi.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html",
+      "verify": true
+    }
+  ]
 }

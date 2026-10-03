@@ -193,6 +193,9 @@ export const VISUAL_CATALOG = {
   VpnTypes: ['vpn-types'],
   EspAh: ['ipsec-protocols'],
   TunnelTransport: ['ipsec-modes'],
+  // Unit 23
+  AclFlow: ['acl-basics'],
+  AclPlacement: ['acl-placement'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

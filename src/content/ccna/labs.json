@@ -2705,6 +2705,136 @@
         "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html",
         "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/221481-8605-13.html"
       ]
+    },
+    {
+      "lesson": "ccna-u23-l6",
+      "title": "ACL extended",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Membatasi LAN (local area network) staf dengan satu ACL (access control list) extended bernama: web dan ping ke server boleh, Telnet ke server ditolak, lalu membuktikannya dari PC dan dari jumlah cocok di setiap baris.",
+      "topology": {
+        "devices": [
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 1
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 1,
+            "note": "ISR4331"
+          },
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "Server",
+            "x": 4,
+            "y": 1
+          }
+        ],
+        "links": [
+          {
+            "from": "pc1",
+            "to": "r1",
+            "toPort": "G0/0/0"
+          },
+          {
+            "from": "r1",
+            "to": "srv",
+            "fromPort": "G0/0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.10/24, gateway 192.168.1.1"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.1.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "10.0.0.1/24"
+        },
+        {
+          "device": "Server",
+          "port": "NIC",
+          "address": "10.0.0.10/24, gateway 10.0.0.1"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pasang perangkat, sambungkan PC1 dan Server ke R1 dengan kabel straight-through, dan isi alamat PC1 dan Server. Di Server, pastikan layanan HTTP menyala."
+        },
+        {
+          "text": "Alamat R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R1",
+            "interface g0/0/0",
+            "ip address 192.168.1.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 10.0.0.1 255.255.255.0",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Uji dulu tanpa ACL: dari PC1, ping 10.0.0.10 dan buka http://10.0.0.10 di Web Browser. Keduanya harus berhasil."
+        },
+        {
+          "text": "Buat dan pasang ACL Staf.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "ip access-list extended Staf",
+            "deny tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 23",
+            "permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80",
+            "permit icmp 192.168.1.0 0.0.0.255 any",
+            "exit",
+            "interface g0/0/0",
+            "ip access-group Staf in",
+            "end",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Dari PC1, ping 10.0.0.10 dan buka http://10.0.0.10.",
+          "expect": "Keduanya berhasil."
+        },
+        {
+          "text": "Dari PC1, ketik telnet 10.0.0.10 di Command Prompt.",
+          "expect": "Gagal; koneksi tidak terbentuk."
+        },
+        {
+          "text": "Jumlah cocok di setiap baris.",
+          "device": "R1",
+          "command": "show access-lists Staf",
+          "expect": "Baris 10 (deny telnet), 20 (permit www), dan 30 (permit icmp) masing-masing menunjukkan jumlah cocok sesuai uji tadi."
+        }
+      ],
+      "notes": [
+        "Server di Packet Tracer tidak menjalankan layanan Telnet, jadi telnet bisa gagal juga tanpa ACL. Bandingkan jumlah cocok di baris 10 sebelum dan sesudah mencoba telnet untuk melihat ACL bekerja."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_data_acl/configuration/15-e/sec-data-acl-15-e-book/sec-acl-seq-num.html"
+      ]
     }
   ]
 }

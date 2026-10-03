@@ -416,3 +416,21 @@ describe('show ip nat translations', () => {
     expect(text).toContain('Langit: entri dinamis')
   })
 })
+
+describe('show access-lists', () => {
+  it('prints numbered and named lists with sequence numbers and wildcard bits', () => {
+    const run = runSession({ hostname: 'R1', model: 'isr4331' }, [
+      'configure terminal',
+      'access-list 1 deny 192.168.1.0 0.0.0.255',
+      'access-list 1 permit any',
+      'ip access-list extended WEB',
+      'permit tcp 192.168.1.0 0.0.0.255 any eq 80',
+      '15 deny ip any host 10.0.0.1',
+      'end',
+      'show access-lists',
+    ])
+    const text = run.transcript.map((l) => l.text).join('\n')
+    expect(text).toContain('Standard IP access list 1\n    10 deny 192.168.1.0, wildcard bits 0.0.0.255\n    20 permit any')
+    expect(text).toContain('Extended IP access list WEB\n    10 permit tcp 192.168.1.0 0.0.0.255 any eq www\n    15 deny ip any host 10.0.0.1')
+  })
+})
