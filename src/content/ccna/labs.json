@@ -3137,6 +3137,121 @@
         "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html",
         "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
       ]
+    },
+    {
+      "lesson": "ccna-u27-l5",
+      "title": "Ansible ke router",
+      "minutes": 45,
+      "tool": "cml-free",
+      "goal": "Menyiapkan R1 supaya bisa dikelola Ansible lewat SSH (Secure Shell), lalu menjalankan playbook dari control node Linux dan membuktikan bahwa playbook idempotent.",
+      "topology": {
+        "devices": [
+          {
+            "id": "ctl",
+            "kind": "server",
+            "label": "Ansible",
+            "x": 0,
+            "y": 1,
+            "note": "Ubuntu"
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 3,
+            "y": 1,
+            "note": "IOSv"
+          }
+        ],
+        "links": [
+          {
+            "from": "ctl",
+            "to": "r1",
+            "fromPort": "ens2",
+            "toPort": "G0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "Ansible",
+          "port": "ens2",
+          "address": "192.168.27.10/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/1",
+          "address": "192.168.27.1/24"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Di CML (Cisco Modeling Labs) Free, buat node Ubuntu dan node IOSv, lalu sambungkan."
+        },
+        {
+          "text": "Beri R1 alamat: interface g0/1, ip address 192.168.27.1 255.255.255.0, no shutdown."
+        },
+        {
+          "text": "Siapkan SSH dan user di R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R1",
+            "ip domain name lab.local",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "username otomasi secret Rahasia-27",
+            "enable secret Enable-27",
+            "line vty 0 4",
+            "login local",
+            "transport input ssh",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Di node Ubuntu: beri alamat 192.168.27.10/24 ke ens2, pasang Ansible dan koleksi cisco.ios (ansible-galaxy collection install cisco.ios), lalu uji ssh otomasi@192.168.27.1."
+        },
+        {
+          "text": "Buat file inventory.ini berisi [routers] lalu baris R1 ansible_host=192.168.27.1, dan group_vars/routers.yml berisi ansible_connection: ansible.netcommon.network_cli, ansible_network_os: cisco.ios.ios, ansible_user: otomasi, ansible_become: true, ansible_become_method: enable, serta password yang dienkripsi dengan ansible-vault."
+        },
+        {
+          "text": "Buat rapikan.yml seperti di soal terakhir lesson ini, lalu jalankan ansible-playbook -i inventory.ini rapikan.yml --check --ask-vault-pass."
+        },
+        {
+          "text": "Jalankan lagi tanpa --check, lalu jalankan sekali lagi."
+        }
+      ],
+      "checks": [
+        {
+          "text": "Hasil --check.",
+          "expect": "Task Deskripsi uplink dilaporkan changed, tetapi deskripsi belum ada di R1."
+        },
+        {
+          "text": "Status SSH sebelum menjalankan playbook.",
+          "device": "R1",
+          "command": "show ip ssh",
+          "expect": "SSH Enabled - version 2.0."
+        },
+        {
+          "text": "Hasil jalan pertama: di R1 ketik show running-config interface g0/1.",
+          "expect": "Ada baris description Ke ISP."
+        },
+        {
+          "text": "Hasil jalan kedua.",
+          "expect": "PLAY RECAP menunjukkan changed=0 untuk R1, karena konfigurasi sudah sesuai."
+        }
+      ],
+      "notes": [
+        "Packet Tracer tidak bisa menjalankan Ansible, jadi lab ini memakai CML (Cisco Modeling Labs) Free dengan image IOSv.",
+        "Nama interface IOSv adalah GigabitEthernet0/1, bukan GigabitEthernet0/0/1; sesuaikan parents di playbook menjadi interface GigabitEthernet0/1."
+      ],
+      "sources": [
+        "https://docs.ansible.com/projects/ansible/latest/network/user_guide/platform_ios.html",
+        "https://docs.ansible.com/projects/ansible/latest/collections/cisco/ios/ios_config_module.html",
+        "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_checkmode.html"
+      ]
     }
   ]
 }

@@ -1246,5 +1246,20 @@
     "term": "SNMPv1",
     "expansion": "Simple Network Management Protocol version 1",
     "description": "Versi pertama SNMP, memakai community string."
+  },
+  {
+    "term": "YAML",
+    "expansion": "YAML Ain't Markup Language",
+    "description": "Format data teks berbasis indentasi, dipakai playbook Ansible."
+  },
+  {
+    "term": "INI",
+    "expansion": "initialization file format",
+    "description": "Format file teks sederhana dengan bagian dalam kurung siku, dipakai untuk inventory."
+  },
+  {
+    "term": "CML",
+    "expansion": "Cisco Modeling Labs",
+    "description": "Alat simulasi jaringan Cisco yang menjalankan image IOS asli; edisi Free gratis untuk topologi kecil."
   }
 ]

@@ -208,6 +208,10 @@ export const VISUAL_CATALOG = {
   SnmpRoles: ['snmp'],
   SyslogLevels: ['syslog-levels'],
   SyslogFormat: ['syslog-format'],
+  // Unit 27
+  AnsibleFlow: ['ansible'],
+  YamlShapes: ['yaml'],
+  PlaybookAnatomy: ['playbook'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG
