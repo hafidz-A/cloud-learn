@@ -157,6 +157,10 @@ export const VISUAL_CATALOG = {
   StpRoles: ['stp-roles'],
   StpStates: ['stp-states'],
   StpGuards: ['stp-guards'],
+  // Unit 14
+  TroubleshootLadder: ['troubleshoot-flow'],
+  PingSymbols: ['ping-output'],
+  TracerouteTtl: ['traceroute'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

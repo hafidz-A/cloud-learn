@@ -807,7 +807,7 @@
             "An SVI is the gateway of its VLAN (Virtual LAN) on a layer 3 switch",
             "A layer 2 switch uses an SVI for management access",
             "An SVI is a physical port with no switchport",
-            "An SVI stays up even when its VLAN does not exist"
+            "An SVI stays up even when its VLAN (Virtual LAN) does not exist"
           ],
           "answers": [
             0,

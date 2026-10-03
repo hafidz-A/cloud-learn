@@ -522,7 +522,7 @@
   {
     "term": "SYN",
     "expansion": "Synchronize",
-    "description": "Pesan pertama three-way handshake TCP."
+    "description": "Flag TCP yang membuka koneksi, langkah pertama three-way handshake."
   },
   {
     "term": "ACK",
@@ -935,5 +935,30 @@
     "term": "PVST",
     "expansion": "Per-VLAN Spanning Tree",
     "description": "Spanning tree versi Cisco dengan satu instance per VLAN. PVST+ dan Rapid PVST+ adalah versinya."
+  },
+  {
+    "term": "EPC",
+    "expansion": "Embedded Packet Capture",
+    "description": "Fitur Cisco IOS XE untuk menangkap paket di perangkat dengan perintah monitor capture."
+  },
+  {
+    "term": "DF",
+    "expansion": "Don't Fragment",
+    "description": "Bit di header IPv4 yang melarang paket dipecah. Bisa diatur di extended ping."
+  },
+  {
+    "term": "RST",
+    "expansion": "Reset",
+    "description": "Flag TCP yang menolak atau memutus koneksi secara paksa."
+  },
+  {
+    "term": "ICMP",
+    "expansion": "Internet Control Message Protocol",
+    "description": "Protokol pesan kontrol IP, dipakai ping (Echo) dan traceroute (time exceeded, unreachable)."
+  },
+  {
+    "term": "OSPF",
+    "expansion": "Open Shortest Path First",
+    "description": "Protokol routing link-state yang dibahas di Jalur 3."
   }
 ]

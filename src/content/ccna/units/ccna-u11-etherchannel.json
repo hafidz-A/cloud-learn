@@ -311,7 +311,7 @@
           "prompt": "SW1 uses channel-group 1 mode active, and SW2 uses channel-group 1 mode on. What happens?",
           "options": [
             "No working bundle forms, because mode on does not run LACP (Link Aggregation Control Protocol)",
-            "A normal LACP bundle forms on both switches right away",
+            "A normal LACP (Link Aggregation Control Protocol) bundle forms on both switches right away",
             "A PAgP (Port Aggregation Protocol) bundle forms",
             "SW2 switches itself to passive mode and the bundle forms"
           ],
@@ -702,7 +702,7 @@
           "prompt": "SW1 uses channel-group 1 mode passive, and SW2 also uses passive. What do the member ports show?",
           "options": [
             "Stand-alone (I), because neither side starts LACP (Link Aggregation Control Protocol)",
-            "Bundled (P), because both sides run LACP",
+            "Bundled (P), because both sides run LACP (Link Aggregation Control Protocol)",
             "Suspended (s), because their speeds differ",
             "Down (D), because passive mode shuts the member ports down"
           ],

@@ -805,7 +805,7 @@
           "prompt": "A company wants each employee to sign in to Wi-Fi with their own username, and to block a user without changing anyone else password. Which mode fits?",
           "options": [
             "WPA2 (Wi-Fi Protected Access 2) Enterprise with 802.1X",
-            "WPA2 Personal with one strong PSK (pre-shared key)",
+            "WPA2 (Wi-Fi Protected Access 2) Personal with one strong PSK (pre-shared key)",
             "An open SSID (Service Set Identifier) with no password",
             "WEP (Wired Equivalent Privacy) with a 128-bit key"
           ],

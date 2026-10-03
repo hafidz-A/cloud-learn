@@ -65,6 +65,9 @@ const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 
  */
 const DEVICE_NAME = /^(([A-Z]{2,4}-)?(R|SW|PC|SRV|AP|S|G|F|E)\d+|ISR\d{4})$/
 
+/** Text ending inside an IOS system message name, such as "%LINEPROTO-5-" before "UPDOWN". */
+const SYSLOG_NAME = /%[A-Z0-9_-]*$/
+
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')
 
@@ -102,6 +105,8 @@ export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string>
       const start = m.index
       const end = start + m[0].length
       if (seen.has(abbr) || NOT_ABBREVIATIONS.has(abbr) || DEVICE_NAME.test(abbr) || expandedBy.has(abbr)) continue
+      // IOS system message names such as %LINEPROTO-5-UPDOWN are labels.
+      if (SYSLOG_NAME.test(text.slice(0, start))) continue
       // IEEE physical layer names such as 1000BASE-SX and 1000BASE-LX/LH are names.
       if (/\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start))) continue
       // "Entra ID" is the product name, not an abbreviation to expand.
@@ -571,7 +576,7 @@ export function abbreviationsIn(texts: string[]): Set<string> {
   for (const text of texts) {
     for (const m of text.matchAll(ABBREVIATION)) {
       const start = m.index
-      if (NOT_ABBREVIATIONS.has(m[1]) || DEVICE_NAME.test(m[1]) || /\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start))) continue
+      if (NOT_ABBREVIATIONS.has(m[1]) || DEVICE_NAME.test(m[1]) || /\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start)) || SYSLOG_NAME.test(text.slice(0, start))) continue
       if (m[1] === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
       found.add(m[1])
     }

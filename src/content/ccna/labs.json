@@ -1729,6 +1729,159 @@
         "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html",
         "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
       ]
+    },
+    {
+      "lesson": "ccna-u14-l5",
+      "title": "Mencari tiga kerusakan",
+      "minutes": 40,
+      "tool": "packet-tracer",
+      "goal": "Membuat tiga kerusakan dengan sengaja, lalu menemukan dan memperbaikinya hanya dengan show, ping, dan traceroute, mengikuti urutan dari bawah ke atas.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1",
+            "label": "trunk"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "Fa0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/1.10",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1.20",
+          "address": "192.168.20.1/24"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24, gateway .1 (VLAN 10)"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.20.12/24, gateway .1 (VLAN 20)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Bangun ulang topologi router-on-a-stick dari lab Unit 10 dan pastikan PC1 bisa ping PC2."
+        },
+        {
+          "text": "Minta teman membuat tiga kerusakan tanpa memberitahumu, atau buat sendiri: matikan Fa0/2, hapus VLAN 20 dari trunk, dan ubah gateway PC1 menjadi 192.168.10.254.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface fa0/2",
+            "shutdown",
+            "interface g0/1",
+            "switchport trunk allowed vlan remove 20",
+            "end"
+          ]
+        },
+        {
+          "text": "Mulai dari layer 1.",
+          "device": "SW1",
+          "commands": [
+            "show interfaces status",
+            "show ip interface brief"
+          ]
+        },
+        {
+          "text": "Lanjut ke layer 2.",
+          "device": "SW1",
+          "commands": [
+            "show vlan brief",
+            "show interfaces trunk",
+            "show mac address-table"
+          ]
+        },
+        {
+          "text": "Lanjut ke layer 3: dari router, uji ke kedua PC.",
+          "device": "R1",
+          "commands": [
+            "ping 192.168.10.11",
+            "ping 192.168.20.12"
+          ]
+        },
+        {
+          "text": "Periksa gateway PC1 dengan ipconfig di Command Prompt, lalu perbaiki ketiga kerusakan satu per satu."
+        }
+      ],
+      "checks": [
+        {
+          "text": "Status port PC2.",
+          "device": "SW1",
+          "command": "show interfaces status",
+          "expect": "Fa0/2 kembali connected setelah no shutdown."
+        },
+        {
+          "text": "VLAN di trunk.",
+          "device": "SW1",
+          "command": "show interfaces trunk",
+          "expect": "VLAN 10 dan 20 kembali diizinkan dan aktif di Gi0/1."
+        },
+        {
+          "text": "Uji akhir dari PC1: ping 192.168.20.12 dan tracert 192.168.20.12.",
+          "expect": "Ping berhasil, dan tracert menunjukkan 192.168.10.1 sebagai hop pertama."
+        }
+      ],
+      "notes": [
+        "Packet Tracer punya mode Simulation yang menampilkan paket per langkah, mirip packet capture sederhana. Coba lihat ping PC1 ke PC2 di mode itu."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-software-releases-121-mainline/12778-ping-traceroute.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13730-ext-ping-trace.html"
+      ]
     }
   ]
 }

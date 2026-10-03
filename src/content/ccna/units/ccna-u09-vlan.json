@@ -644,7 +644,7 @@
             "As an access port, because client traffic is tunneled to the WLC (Wireless LAN Controller)",
             "As a trunk carrying the three client VLANs (Virtual LAN)",
             "As a routed port with an IP (Internet Protocol) address per SSID",
-            "As a voice VLAN port"
+            "As a voice VLAN (Virtual LAN) port"
           ],
           "answer": 0,
           "explanation": "Mode local membawa semua trafik klien di tunnel CAPWAP (Control and Provisioning of Wireless Access Points) ke WLC (Wireless LAN Controller), jadi port akses sudah cukup berapa pun jumlah SSID (Service Set Identifier)-nya.",
@@ -1265,9 +1265,9 @@
           ],
           "options": [
             "Fa0/3 is in VLAN (Virtual LAN) 20 instead of VLAN 10",
-            "VLAN 10 has the wrong name",
-            "Fa0/3 needs a voice VLAN",
-            "The switch needs VLAN 1 deleted before VLAN 10 can be used"
+            "VLAN (Virtual LAN) 10 has the wrong name",
+            "Fa0/3 needs a voice VLAN (Virtual LAN)",
+            "The switch needs VLAN (Virtual LAN) 1 deleted before VLAN 10 can be used"
           ],
           "answer": 0,
           "explanation": "PC1 dan PC2 di VLAN (Virtual LAN) 10, sedangkan Fa0/3 masuk VLAN 20, jadi PC3 berada di broadcast domain lain.",

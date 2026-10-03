@@ -153,7 +153,7 @@
             "A WAN (Wide Area Network)",
             "A LAN (Local Area Network)",
             "A VLAN (Virtual LAN)",
-            "A wireless LAN"
+            "A wireless LAN (Local Area Network)"
           ],
           "answer": 0,
           "explanation": "WAN (Wide Area Network) menghubungkan beberapa LAN (Local Area Network) yang berjauhan secara geografis. LAN hanya mencakup satu lokasi.",
@@ -752,7 +752,7 @@
             "FCS (Frame Check Sequence)",
             "Type",
             "Source MAC (Media Access Control) address",
-            "Destination MAC address"
+            "Destination MAC (Media Access Control) address"
           ],
           "answer": 0,
           "explanation": "FCS (Frame Check Sequence) dihitung ulang oleh penerima. Kalau tidak cocok, frame dibuang karena rusak.",
@@ -1048,9 +1048,9 @@
           "prompt": "A packet travels from PC1 through R1 and R2 to a server. Which two values are the same in the frame PC1 sends and in the frame that arrives at the server? (Choose two.) There is no NAT (Network Address Translation).",
           "options": [
             "The source IP (Internet Protocol) address",
-            "The destination IP address",
+            "The destination IP (Internet Protocol) address",
             "The source MAC (Media Access Control) address",
-            "The destination MAC address"
+            "The destination MAC (Media Access Control) address"
           ],
           "answers": [
             0,
@@ -1336,9 +1336,9 @@
           "prompt": "Which transport protocol and port does a DHCP (Dynamic Host Configuration Protocol) server listen on?",
           "options": [
             "UDP (User Datagram Protocol) 67",
-            "UDP 68",
+            "UDP (User Datagram Protocol) 68",
             "TCP (Transmission Control Protocol) 67",
-            "TCP 53"
+            "TCP (Transmission Control Protocol) 53"
           ],
           "answer": 0,
           "explanation": "Server DHCP (Dynamic Host Configuration Protocol) memakai UDP (User Datagram Protocol) port 67, klien memakai port 68.",

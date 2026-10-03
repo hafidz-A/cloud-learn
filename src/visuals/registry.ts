@@ -44,6 +44,9 @@ import { StpLoop } from './StpLoop'
 import { StpRoles } from './StpRoles'
 import { StpStates } from './StpStates'
 import { StpGuards } from './StpGuards'
+import { TroubleshootLadder } from './TroubleshootLadder'
+import { PingSymbols } from './PingSymbols'
+import { TracerouteTtl } from './TracerouteTtl'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -111,6 +114,9 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  TracerouteTtl,
+  PingSymbols,
+  TroubleshootLadder,
   StpGuards,
   StpStates,
   StpRoles,
