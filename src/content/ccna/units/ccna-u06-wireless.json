@@ -1,0 +1,1304 @@
+{
+  "id": "ccna-u06-wireless",
+  "path": 1,
+  "title": "Wireless",
+  "lessons": [
+    {
+      "id": "ccna-u06-l1",
+      "title": "Karakteristik RF",
+      "items": [
+        {
+          "id": "ccna-u06-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "wifi-basics"
+          ],
+          "title": "Gelombang radio dan SSID",
+          "body": "Wi-Fi mengirim data lewat gelombang radio di band 2,4 GHz, 5 GHz, atau 6 GHz. Klien memilih jaringan dari SSID (Service Set Identifier), nama WLAN (wireless LAN) yang maksimal 32 karakter. Pada daya yang sama, sinyal 5 GHz melemah lebih cepat daripada 2,4 GHz, jadi sel 5 GHz lebih kecil.",
+          "keyPoints": [
+            "Band 2,4, 5, dan 6 GHz",
+            "SSID: nama WLAN, maks 32 karakter",
+            "5 GHz: jangkauan lebih pendek"
+          ],
+          "teaches": [
+            "ccna-f-u06-bands",
+            "ccna-f-u06-ssid",
+            "ccna-f-u06-range"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e1",
+          "type": "truefalse",
+          "concept": "wifi-basics",
+          "prompt": "An SSID (Service Set Identifier) can be up to 32 characters long.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. SSID (Service Set Identifier) adalah nama WLAN (wireless LAN) dengan panjang maksimal 32 karakter.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-ssid"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e2",
+          "type": "choice",
+          "concept": "wifi-basics",
+          "prompt": "An AP (access point) sends the same power on 2.4 GHz and 5 GHz. Which band usually covers a larger area?",
+          "options": [
+            "2.4 GHz",
+            "5 GHz",
+            "Both cover exactly the same area",
+            "Neither, because range depends only on the SSID (Service Set Identifier)"
+          ],
+          "answer": 0,
+          "explanation": "Sinyal 5 GHz melemah lebih cepat, jadi sel 2,4 GHz lebih luas pada daya yang sama. SSID (Service Set Identifier) tidak memengaruhi jangkauan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-range",
+            "ccna-f-u06-ssid"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "bss-ess"
+          ],
+          "title": "BSS, BSSID, dan ESS",
+          "body": "Satu AP (access point) beserta kliennya membentuk BSS (Basic Service Set). BSS dikenali dari BSSID (Basic Service Set Identifier), yaitu MAC (Media Access Control) radio AP itu. Kalau beberapa AP memakai SSID (Service Set Identifier) yang sama, semuanya membentuk ESS (Extended Service Set), sehingga laptop bisa pindah dari satu AP ke AP lain (roaming) tanpa ganti nama jaringan.",
+          "keyPoints": [
+            "BSS: satu AP dan kliennya",
+            "BSSID: MAC radio AP",
+            "ESS: banyak AP, SSID sama"
+          ],
+          "visual": "BssEss",
+          "teaches": [
+            "ccna-f-u06-bss-ess"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e3",
+          "type": "match",
+          "concept": "bss-ess",
+          "prompt": "Match each term to its meaning.",
+          "pairs": [
+            [
+              "SSID (Service Set Identifier)",
+              "The network name that clients see"
+            ],
+            [
+              "BSS (Basic Service Set)",
+              "One AP (access point) and its clients"
+            ],
+            [
+              "BSSID (Basic Service Set Identifier)",
+              "The MAC (Media Access Control) address of the AP radio"
+            ],
+            [
+              "ESS (Extended Service Set)",
+              "Several APs that share one SSID for roaming"
+            ]
+          ],
+          "explanation": "SSID (Service Set Identifier) adalah nama jaringan, BSS (Basic Service Set) satu AP (access point) dan kliennya, BSSID (Basic Service Set Identifier) MAC (Media Access Control) radio AP, dan ESS (Extended Service Set) gabungan beberapa AP dengan SSID yang sama.",
+          "requires": [
+            "ccna-f-u06-ssid",
+            "ccna-f-u06-bss-ess"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e4",
+          "type": "choice",
+          "concept": "bss-ess",
+          "prompt": "Three APs (access points) in one building use the same SSID (Service Set Identifier), so laptops can move between them. What does this form?",
+          "options": [
+            "An ESS (Extended Service Set)",
+            "A single BSS (Basic Service Set)",
+            "Three separate SSIDs",
+            "One shared BSSID (Basic Service Set Identifier)"
+          ],
+          "answer": 0,
+          "explanation": "Beberapa AP (access point) dengan SSID (Service Set Identifier) yang sama membentuk ESS (Extended Service Set). Tiap AP tetap punya BSS (Basic Service Set) dan BSSID (Basic Service Set Identifier) sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-bss-ess"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "rf-behavior"
+          ],
+          "title": "Apa yang terjadi pada sinyal",
+          "body": "Benda di jalur sinyal RF (radio frequency) mengubah sinyal itu. Tembok, air, dan tubuh manusia menyerapnya (absorption). Logam dan kaca memantulkannya (reflection). Saat masuk medium lain, sinyal berbelok (refraction). Permukaan kasar menghamburkannya (scattering), dan tepi penghalang membelokkannya (diffraction).",
+          "keyPoints": [
+            "Absorption: diserap",
+            "Reflection: memantul",
+            "Refraction, scattering, diffraction"
+          ],
+          "visual": "RfBehaviors",
+          "teaches": [
+            "ccna-f-u06-behaviors"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e5",
+          "type": "match",
+          "concept": "rf-behavior",
+          "prompt": "Match each RF (radio frequency) behavior to its example.",
+          "pairs": [
+            [
+              "Absorption",
+              "A crowd of people weakens the signal"
+            ],
+            [
+              "Reflection",
+              "The signal bounces off a metal cabinet"
+            ],
+            [
+              "Scattering",
+              "A rough surface spreads the signal in many directions"
+            ],
+            [
+              "Diffraction",
+              "The signal bends around the edge of a wall"
+            ]
+          ],
+          "explanation": "Tubuh manusia menyerap sinyal, logam memantulkan, permukaan kasar menghamburkan, dan tepi penghalang membelokkan sinyal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-behaviors"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "signal-strength"
+          ],
+          "title": "dBm, RSSI, dan SNR",
+          "body": "Kekuatan sinyal dinyatakan dalam dBm, skala logaritmik terhadap 1 milliwatt. Nilainya biasanya negatif, dan yang lebih dekat ke 0 lebih kuat: -60 dBm lebih kuat daripada -80 dBm. RSSI (received signal strength indicator) adalah kekuatan sinyal yang diterima klien. SNR (signal-to-noise ratio) adalah selisih sinyal dengan noise floor; makin besar SNR, makin bersih sinyalnya.",
+          "keyPoints": [
+            "-60 dBm lebih kuat dari -80 dBm",
+            "RSSI: kekuatan yang diterima",
+            "SNR besar: lebih baik"
+          ],
+          "teaches": [
+            "ccna-f-u06-dbm",
+            "ccna-f-u06-rssi-snr"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e6",
+          "type": "choice",
+          "concept": "signal-strength",
+          "prompt": "Which received signal is the strongest?",
+          "options": [
+            "-55 dBm",
+            "-67 dBm",
+            "-75 dBm",
+            "-90 dBm"
+          ],
+          "answer": 0,
+          "explanation": "dBm biasanya negatif, dan yang paling dekat ke 0 paling kuat: -55 dBm.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-dbm"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e7",
+          "type": "choice",
+          "concept": "signal-strength",
+          "prompt": "A client sees a signal of -65 dBm and a noise floor of -90 dBm. What is its SNR (signal-to-noise ratio)?",
+          "options": [
+            "25 dB",
+            "155 dB",
+            "-25 dB",
+            "65 dB"
+          ],
+          "answer": 0,
+          "explanation": "SNR (signal-to-noise ratio) = sinyal dikurangi noise: -65 - (-90) = 25 dB.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-rssi-snr",
+            "ccna-f-u06-dbm"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e8",
+          "type": "truefalse",
+          "concept": "signal-strength",
+          "prompt": "A higher SNR (signal-to-noise ratio) means a cleaner signal for the client.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. SNR (signal-to-noise ratio) yang besar berarti sinyal jauh di atas noise.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-rssi-snr"
+          ]
+        },
+        {
+          "id": "ccna-u06-l1-e9",
+          "type": "multi",
+          "concept": "signal-strength",
+          "prompt": "Which two readings describe a better connection than -80 dBm with an SNR (signal-to-noise ratio) of 10 dB? (Choose two.)",
+          "options": [
+            "-62 dBm with an SNR of 30 dB",
+            "-58 dBm with an SNR of 28 dB",
+            "-85 dBm with an SNR of 8 dB",
+            "-90 dBm with an SNR of 5 dB"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Sinyal yang lebih dekat ke 0 dBm dan SNR (signal-to-noise ratio) yang lebih besar berarti koneksi lebih baik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-dbm",
+            "ccna-f-u06-rssi-snr"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u06-l2",
+      "title": "Band dan channel",
+      "items": [
+        {
+          "id": "ccna-u06-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "wifi-channels"
+          ],
+          "title": "Channel 2,4 GHz",
+          "body": "Band 2,4 GHz dibagi menjadi channel yang jaraknya hanya 5 MHz, padahal setiap channel lebarnya sekitar 22 MHz. Akibatnya channel yang berdekatan saling tumpang tindih. Hanya tiga channel yang tidak tumpang tindih: 1, 6, dan 11. AP (access point) yang bersebelahan sebaiknya memakai tiga channel ini secara bergantian.",
+          "keyPoints": [
+            "Channel 2,4 GHz saling tumpang tindih",
+            "Bebas tumpang tindih: 1, 6, 11",
+            "AP tetangga: channel berbeda"
+          ],
+          "visual": "Channels24",
+          "teaches": [
+            "ccna-f-u06-ch24"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-e1",
+          "type": "multi",
+          "concept": "wifi-channels",
+          "prompt": "Which three 2.4 GHz channels do not overlap? (Choose three.)",
+          "options": [
+            "1",
+            "6",
+            "11",
+            "3",
+            "9"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "explanation": "Di 2,4 GHz hanya 1, 6, dan 11 yang tidak saling tumpang tindih.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-ch24"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-e2",
+          "type": "truefalse",
+          "concept": "wifi-channels",
+          "prompt": "In the 2.4 GHz band, channels 1 and 4 do not overlap.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Hanya 1, 6, dan 11 yang tidak tumpang tindih; channel 4 menimpa channel 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-ch24"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "channel-interference"
+          ],
+          "title": "Co-channel dan adjacent channel",
+          "body": "Kalau dua AP (access point) saling mendengar di channel yang sama, terjadi co-channel interference: keduanya harus bergantian bicara, jadi kapasitasnya terbagi. Kalau AP berdekatan memakai channel yang tumpang tindih sebagian, misalnya 1 dan 3, terjadi adjacent channel interference, yang menjadi noise. Band 5 GHz punya jauh lebih banyak channel yang tidak tumpang tindih, jadi lebih mudah direncanakan.",
+          "keyPoints": [
+            "Channel sama: co-channel",
+            "Channel tumpang tindih sebagian: adjacent",
+            "5 GHz: lebih banyak channel bebas"
+          ],
+          "teaches": [
+            "ccna-f-u06-cci",
+            "ccna-f-u06-aci",
+            "ccna-f-u06-ch5"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-e3",
+          "type": "exhibit",
+          "concept": "channel-interference",
+          "prompt": "Refer to the exhibit. Three neighboring 2.4 GHz APs (access points) hear each other. Which change gives each AP a channel that does not overlap with the others?",
+          "diagram": {
+            "devices": [
+              {
+                "id": "ap1",
+                "kind": "ap",
+                "label": "AP1",
+                "x": 0,
+                "y": 0,
+                "note": "channel 1"
+              },
+              {
+                "id": "ap2",
+                "kind": "ap",
+                "label": "AP2",
+                "x": 2,
+                "y": 0,
+                "note": "channel 1"
+              },
+              {
+                "id": "ap3",
+                "kind": "ap",
+                "label": "AP3",
+                "x": 4,
+                "y": 0,
+                "note": "channel 1"
+              }
+            ],
+            "links": [
+              {
+                "from": "ap1",
+                "to": "ap2",
+                "style": "dashed"
+              },
+              {
+                "from": "ap2",
+                "to": "ap3",
+                "style": "dashed"
+              }
+            ]
+          },
+          "options": [
+            "Set AP2 to channel 6 and AP3 to channel 11",
+            "Set all three APs to channel 6",
+            "Set AP2 to channel 2 and AP3 to channel 3",
+            "Set AP3 to channel 1 so it matches AP1"
+          ],
+          "answer": 0,
+          "explanation": "Sekarang ketiganya di channel 1, jadi terjadi co-channel interference. Memakai 1, 6, dan 11 memberi channel yang tidak tumpang tindih. Channel 2 dan 3 tumpang tindih dengan 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-ch24",
+            "ccna-f-u06-cci",
+            "ccna-f-u06-aci"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-e4",
+          "type": "choice",
+          "concept": "channel-interference",
+          "prompt": "Two neighboring APs (access points) use channels 1 and 3 in the 2.4 GHz band. What problem does this cause?",
+          "options": [
+            "Adjacent channel interference",
+            "Co-channel interference",
+            "A duplex mismatch on both APs",
+            "An SSID (Service Set Identifier) conflict"
+          ],
+          "answer": 0,
+          "explanation": "Channel 1 dan 3 tumpang tindih sebagian, jadi terjadi adjacent channel interference. Co-channel terjadi kalau channel-nya sama persis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-aci",
+            "ccna-f-u06-cci"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-e5",
+          "type": "choice",
+          "concept": "channel-interference",
+          "prompt": "Why is the 5 GHz band preferred for a crowded office with many APs (access points)?",
+          "options": [
+            "It has many more channels that do not overlap",
+            "It reaches farther than the 2.4 GHz band",
+            "It needs no SSID (Service Set Identifier) at all",
+            "It uses only channels 1, 6, and 11"
+          ],
+          "answer": 0,
+          "explanation": "Band 5 GHz punya jauh lebih banyak channel yang tidak tumpang tindih. Jangkauannya justru lebih pendek dari 2,4 GHz.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-ch5",
+            "ccna-f-u06-range",
+            "ccna-f-u06-ch24"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "channel-width"
+          ],
+          "title": "Lebar channel",
+          "body": "Beberapa channel 20 MHz bisa digabung menjadi 40, 80, atau 160 MHz. Channel yang lebih lebar membawa lebih banyak data, tapi jumlah channel yang tidak tumpang tindih jadi berkurang, sehingga AP (access point) yang bersebelahan lebih sulit mendapat channel sendiri. Di area padat, channel yang lebih sempit sering lebih baik.",
+          "keyPoints": [
+            "Lebih lebar: lebih cepat",
+            "Tapi channel bebas berkurang",
+            "Area padat: channel sempit"
+          ],
+          "teaches": [
+            "ccna-f-u06-width"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-e6",
+          "type": "truefalse",
+          "concept": "channel-width",
+          "prompt": "Using 80 MHz channels instead of 20 MHz channels leaves more channels that do not overlap.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Channel yang lebih lebar menggabungkan beberapa channel, jadi channel yang tersisa lebih sedikit.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-width"
+          ]
+        },
+        {
+          "id": "ccna-u06-l2-e7",
+          "type": "sort",
+          "concept": "channel-interference",
+          "prompt": "Sort each channel plan for neighboring 2.4 GHz APs (access points).",
+          "buckets": [
+            "No overlap",
+            "Overlap"
+          ],
+          "items": [
+            {
+              "text": "1, 6, 11",
+              "bucket": 0
+            },
+            {
+              "text": "6, 11, 1",
+              "bucket": 0
+            },
+            {
+              "text": "1, 2, 3",
+              "bucket": 1
+            },
+            {
+              "text": "1, 4, 8",
+              "bucket": 1
+            },
+            {
+              "text": "6, 6, 11",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Hanya kombinasi 1, 6, dan 11 yang bebas tumpang tindih. 6, 6, 11 memakai channel yang sama dua kali, jadi terjadi co-channel interference.",
+          "requires": [
+            "ccna-f-u06-ch24",
+            "ccna-f-u06-cci"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u06-l3",
+      "title": "Standar 802.11",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u06-l2"
+      },
+      "items": [
+        {
+          "id": "ccna-u06-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "wifi-standards"
+          ],
+          "title": "Standar lama: a, b, g",
+          "body": "802.11b memakai 2,4 GHz sampai 11 Mbps. 802.11a memakai 5 GHz sampai 54 Mbps. 802.11g kembali ke 2,4 GHz dengan kecepatan sampai 54 Mbps. Ketiganya sudah lama, tapi masih sering muncul di soal karena menunjukkan band mana yang dipakai tiap generasi.",
+          "keyPoints": [
+            "b: 2,4 GHz, 11 Mbps",
+            "a: 5 GHz, 54 Mbps",
+            "g: 2,4 GHz, 54 Mbps"
+          ],
+          "teaches": [
+            "ccna-f-u06-std-legacy"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-e1",
+          "type": "choice",
+          "concept": "wifi-standards",
+          "prompt": "Which of these older standards uses the 5 GHz band?",
+          "options": [
+            "802.11a",
+            "802.11b",
+            "802.11g",
+            "All three use 2.4 GHz"
+          ],
+          "answer": 0,
+          "explanation": "802.11a memakai 5 GHz. 802.11b dan 802.11g memakai 2,4 GHz.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-std-legacy"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-e2",
+          "type": "truefalse",
+          "concept": "wifi-standards",
+          "prompt": "802.11g reaches up to 54 Mbps in the 2.4 GHz band.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. 802.11g memakai 2,4 GHz dengan kecepatan sampai 54 Mbps.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-std-legacy"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "wifi-generations"
+          ],
+          "title": "Wi-Fi 4 sampai Wi-Fi 7",
+          "body": "802.11n (Wi-Fi 4) memakai 2,4 dan 5 GHz dan memperkenalkan MIMO (multiple-input multiple-output). 802.11ac (Wi-Fi 5) hanya memakai 5 GHz. 802.11ax (Wi-Fi 6) memakai 2,4 dan 5 GHz dan menambahkan OFDMA (Orthogonal Frequency-Division Multiple Access); Wi-Fi 6E membawanya ke 6 GHz. 802.11be (Wi-Fi 7) memakai tiga band, channel 320 MHz, dan bisa memakai beberapa band sekaligus.",
+          "keyPoints": [
+            "n: Wi-Fi 4, 2,4 dan 5 GHz",
+            "ac: Wi-Fi 5, 5 GHz",
+            "ax: Wi-Fi 6, 6E di 6 GHz",
+            "be: Wi-Fi 7"
+          ],
+          "teaches": [
+            "ccna-f-u06-std-n-ac",
+            "ccna-f-u06-std-ax",
+            "ccna-f-u06-std-be"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-e3",
+          "type": "choice",
+          "concept": "wifi-generations",
+          "prompt": "Which standard is Wi-Fi 6?",
+          "options": [
+            "802.11ax",
+            "802.11ac",
+            "802.11n",
+            "802.11be"
+          ],
+          "answer": 0,
+          "explanation": "Wi-Fi 6 adalah 802.11ax. 802.11ac adalah Wi-Fi 5, 802.11n Wi-Fi 4, dan 802.11be Wi-Fi 7.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-std-ax",
+            "ccna-f-u06-std-n-ac",
+            "ccna-f-u06-std-be"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-e4",
+          "type": "truefalse",
+          "concept": "wifi-generations",
+          "prompt": "802.11ac (Wi-Fi 5) works in both the 2.4 GHz and 5 GHz bands.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. 802.11ac hanya memakai 5 GHz; 802.11n dan 802.11ax yang memakai kedua band.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-std-n-ac"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-e5",
+          "type": "choice",
+          "concept": "wifi-generations",
+          "prompt": "Which name describes 802.11ax running in the 6 GHz band?",
+          "options": [
+            "Wi-Fi 6E",
+            "Wi-Fi 5",
+            "Wi-Fi 4",
+            "802.11g"
+          ],
+          "answer": 0,
+          "explanation": "Wi-Fi 6E adalah 802.11ax di band 6 GHz.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-std-ax",
+            "ccna-f-u06-std-n-ac",
+            "ccna-f-u06-std-legacy"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "wifi-band-summary"
+          ],
+          "title": "Ringkasan band per standar",
+          "body": "Hanya 2,4 GHz: 802.11b dan 802.11g. Hanya 5 GHz: 802.11a dan 802.11ac. Dua band, 2,4 dan 5 GHz: 802.11n dan 802.11ax. Tambahan 6 GHz: Wi-Fi 6E dan Wi-Fi 7. Kalau soal menanyakan band, ingat tiga kelompok ini.",
+          "keyPoints": [
+            "2,4 GHz saja: b, g",
+            "5 GHz saja: a, ac",
+            "Dua band: n, ax"
+          ],
+          "teaches": [
+            "ccna-f-u06-std-legacy",
+            "ccna-f-u06-std-n-ac",
+            "ccna-f-u06-std-ax"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-e6",
+          "type": "match",
+          "concept": "wifi-band-summary",
+          "prompt": "Match each standard to its band and top rate.",
+          "pairs": [
+            [
+              "802.11b",
+              "2.4 GHz, up to 11 Mbps"
+            ],
+            [
+              "802.11a",
+              "5 GHz, up to 54 Mbps"
+            ],
+            [
+              "802.11g",
+              "2.4 GHz, up to 54 Mbps"
+            ],
+            [
+              "802.11ac",
+              "5 GHz only"
+            ]
+          ],
+          "explanation": "802.11b dan g memakai 2,4 GHz, sedangkan 802.11a dan 802.11ac memakai 5 GHz.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-std-legacy",
+            "ccna-f-u06-std-n-ac"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-e7",
+          "type": "multi",
+          "concept": "wifi-band-summary",
+          "prompt": "Which two standards can use the 2.4 GHz band? (Choose two.)",
+          "options": [
+            "802.11n",
+            "802.11ax",
+            "802.11ac",
+            "802.11a"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "802.11n dan 802.11ax memakai 2,4 dan 5 GHz. 802.11ac dan 802.11a hanya 5 GHz.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-std-n-ac",
+            "ccna-f-u06-std-ax",
+            "ccna-f-u06-std-legacy"
+          ]
+        },
+        {
+          "id": "ccna-u06-l3-e8",
+          "type": "order",
+          "concept": "wifi-generations",
+          "prompt": "Put these standards in order, from oldest to newest.",
+          "items": [
+            "802.11b",
+            "802.11n",
+            "802.11ac",
+            "802.11ax",
+            "802.11be"
+          ],
+          "explanation": "802.11b, lalu Wi-Fi 4 (n), Wi-Fi 5 (ac), Wi-Fi 6 (ax), dan Wi-Fi 7 (be).",
+          "requires": [
+            "ccna-f-u06-std-legacy",
+            "ccna-f-u06-std-n-ac",
+            "ccna-f-u06-std-ax",
+            "ccna-f-u06-std-be"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u06-l4",
+      "title": "Keamanan wireless",
+      "items": [
+        {
+          "id": "ccna-u06-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "wifi-security"
+          ],
+          "title": "Dari WEP ke WPA3",
+          "body": "WEP (Wired Equivalent Privacy) memakai kunci statis bersama dan sudah tidak aman. WPA (Wi-Fi Protected Access) dibuat untuk menutup kelemahan WEP dengan TKIP (Temporal Key Integrity Protocol). WPA2 (Wi-Fi Protected Access 2) memakai AES (Advanced Encryption Standard), yang lebih kuat. WPA3 (Wi-Fi Protected Access 3) adalah generasi terbaru; di band 6 GHz, WPA2 bahkan tidak boleh dipakai lagi.",
+          "keyPoints": [
+            "WEP: jangan dipakai",
+            "WPA: TKIP",
+            "WPA2: AES",
+            "WPA3: terbaru, wajib di 6 GHz"
+          ],
+          "visual": "WifiSecurity",
+          "teaches": [
+            "ccna-f-u06-wep",
+            "ccna-f-u06-wpa2-aes",
+            "ccna-f-u06-wpa3-6e"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-e1",
+          "type": "choice",
+          "concept": "wifi-security",
+          "prompt": "Which encryption does WPA2 (Wi-Fi Protected Access 2) use?",
+          "options": [
+            "AES (Advanced Encryption Standard)",
+            "TKIP (Temporal Key Integrity Protocol) only",
+            "A static WEP (Wired Equivalent Privacy) key",
+            "No encryption, only authentication"
+          ],
+          "answer": 0,
+          "explanation": "WPA2 (Wi-Fi Protected Access 2) memakai AES (Advanced Encryption Standard). TKIP (Temporal Key Integrity Protocol) dipakai WPA (Wi-Fi Protected Access) generasi pertama, dan WEP (Wired Equivalent Privacy) memakai kunci statis yang sudah tidak aman.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-wpa2-aes",
+            "ccna-f-u06-wep"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-e2",
+          "type": "truefalse",
+          "concept": "wifi-security",
+          "prompt": "WEP (Wired Equivalent Privacy) is still an acceptable choice for a new office WLAN (wireless LAN).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. WEP (Wired Equivalent Privacy) memakai kunci statis bersama dan sudah tidak aman; pakai WPA2 (Wi-Fi Protected Access 2) atau WPA3 (Wi-Fi Protected Access 3).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-wep"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "personal-enterprise"
+          ],
+          "title": "Personal dan Enterprise",
+          "body": "Mode Personal memakai satu PSK (pre-shared key), password 8 sampai 63 karakter yang sama untuk semua pengguna. Mode Enterprise memakai 802.1X dengan server autentikasi seperti RADIUS (Remote Authentication Dial-In User Service), sehingga setiap pengguna login dengan kredensialnya sendiri. Kalau satu karyawan keluar, akunnya cukup dinonaktifkan tanpa mengganti password semua orang.",
+          "keyPoints": [
+            "Personal: satu PSK untuk semua",
+            "Enterprise: 802.1X dan RADIUS",
+            "Enterprise: kredensial per pengguna"
+          ],
+          "teaches": [
+            "ccna-f-u06-personal-ent",
+            "ccna-f-u06-psk-len"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-e3",
+          "type": "choice",
+          "concept": "personal-enterprise",
+          "prompt": "A company wants each employee to sign in to Wi-Fi with their own username, and to block a user without changing anyone else password. Which mode fits?",
+          "options": [
+            "WPA2 (Wi-Fi Protected Access 2) Enterprise with 802.1X",
+            "WPA2 (Wi-Fi Protected Access 2) Personal with one strong PSK (pre-shared key)",
+            "An open SSID (Service Set Identifier) with no password",
+            "WEP (Wired Equivalent Privacy) with a 128-bit key"
+          ],
+          "answer": 0,
+          "explanation": "Enterprise memakai 802.1X dan server seperti RADIUS (Remote Authentication Dial-In User Service), jadi tiap pengguna punya kredensial sendiri. PSK (pre-shared key) dipakai bersama semua orang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-personal-ent",
+            "ccna-f-u06-wep"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-e4",
+          "type": "truefalse",
+          "concept": "personal-enterprise",
+          "prompt": "A WPA2 (Wi-Fi Protected Access 2) Personal pre-shared key can be 8 to 63 characters long.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. PSK (pre-shared key) berisi 8 sampai 63 karakter teks.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-psk-len"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "wpa3"
+          ],
+          "title": "WPA3",
+          "body": "WPA3 (Wi-Fi Protected Access 3)-Personal mengganti PSK (pre-shared key) dengan SAE (Simultaneous Authentication of Equals), yang lebih tahan terhadap serangan tebak password offline. WPA3-Enterprise tetap memakai 802.1X. WPA3 juga mewajibkan PMF (Protected Management Frames), yang melindungi frame manajemen, misalnya deauthentication, dari pemalsuan.",
+          "keyPoints": [
+            "Personal: SAE",
+            "Enterprise: 802.1X",
+            "PMF wajib"
+          ],
+          "teaches": [
+            "ccna-f-u06-wpa3-sae",
+            "ccna-f-u06-wpa3-ent",
+            "ccna-f-u06-pmf"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-e5",
+          "type": "match",
+          "concept": "wpa3",
+          "prompt": "Match each feature to its description.",
+          "pairs": [
+            [
+              "SAE (Simultaneous Authentication of Equals)",
+              "WPA3 (Wi-Fi Protected Access 3) Personal key exchange that resists offline password guessing"
+            ],
+            [
+              "802.1X",
+              "Per-user sign-in for Enterprise mode"
+            ],
+            [
+              "PMF (Protected Management Frames)",
+              "Protects frames such as deauthentication"
+            ],
+            [
+              "TKIP (Temporal Key Integrity Protocol)",
+              "Older encryption used by the first WPA (Wi-Fi Protected Access)"
+            ]
+          ],
+          "explanation": "SAE (Simultaneous Authentication of Equals) untuk WPA3 (Wi-Fi Protected Access 3)-Personal, 802.1X untuk mode Enterprise, PMF (Protected Management Frames) melindungi frame manajemen, dan TKIP (Temporal Key Integrity Protocol) adalah enkripsi WPA (Wi-Fi Protected Access) lama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-wpa3-sae",
+            "ccna-f-u06-personal-ent",
+            "ccna-f-u06-pmf",
+            "ccna-f-u06-wpa2-aes"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-e6",
+          "type": "choice",
+          "concept": "wpa3",
+          "prompt": "Which method does WPA3 (Wi-Fi Protected Access 3) Personal use to make offline password guessing harder?",
+          "options": [
+            "SAE (Simultaneous Authentication of Equals)",
+            "TKIP (Temporal Key Integrity Protocol)",
+            "A shared WEP (Wired Equivalent Privacy) key",
+            "MAC (Media Access Control) address filtering"
+          ],
+          "answer": 0,
+          "explanation": "WPA3 (Wi-Fi Protected Access 3)-Personal memakai SAE (Simultaneous Authentication of Equals). TKIP (Temporal Key Integrity Protocol) dan WEP (Wired Equivalent Privacy) adalah teknologi lama, dan filter MAC (Media Access Control) bukan metode autentikasi WPA3.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-wpa3-sae",
+            "ccna-f-u06-wpa2-aes",
+            "ccna-f-u06-wep"
+          ]
+        },
+        {
+          "id": "ccna-u06-l4-e7",
+          "type": "multi",
+          "concept": "wpa3",
+          "prompt": "Which two statements about WPA3 (Wi-Fi Protected Access 3) are true? (Choose two.)",
+          "options": [
+            "Protected Management Frames are required",
+            "A 6 GHz WLAN (wireless LAN) must use WPA3 or OWE (Opportunistic Wireless Encryption) instead of WPA2 (Wi-Fi Protected Access 2)",
+            "WPA3 Enterprise drops 802.1X",
+            "WPA3 Personal uses TKIP (Temporal Key Integrity Protocol)"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "PMF (Protected Management Frames) wajib di WPA3 (Wi-Fi Protected Access 3), dan 6 GHz tidak menerima WPA2 (Wi-Fi Protected Access 2). WPA3-Enterprise tetap memakai 802.1X, dan WPA3-Personal memakai SAE (Simultaneous Authentication of Equals), bukan TKIP (Temporal Key Integrity Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-pmf",
+            "ccna-f-u06-wpa3-6e",
+            "ccna-f-u06-wpa3-ent",
+            "ccna-f-u06-wpa3-sae"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u06-l5",
+      "title": "Penyebab interferensi",
+      "items": [
+        {
+          "id": "ccna-u06-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "wifi-interference"
+          ],
+          "title": "Sumber interferensi",
+          "body": "Band 2,4 GHz juga dipakai perangkat non-Wi-Fi seperti microwave oven, Bluetooth, dan telepon cordless. Bagi Wi-Fi, sinyal mereka adalah noise. Band 5 GHz tidak terganggu perangkat-perangkat itu. Bahan seperti beton, logam, dan air, termasuk tubuh manusia, menyerap atau memantulkan sinyal, sehingga jangkauan AP (access point) berkurang.",
+          "keyPoints": [
+            "Microwave, Bluetooth, cordless: 2,4 GHz",
+            "5 GHz bebas dari mereka",
+            "Beton, logam, air melemahkan sinyal"
+          ],
+          "teaches": [
+            "ccna-f-u06-non-wifi",
+            "ccna-f-u06-5g-clear",
+            "ccna-f-u06-materials"
+          ]
+        },
+        {
+          "id": "ccna-u06-l5-e1",
+          "type": "choice",
+          "concept": "wifi-interference",
+          "prompt": "Users near the break room lose Wi-Fi on 2.4 GHz whenever someone heats lunch. What is the best fix?",
+          "options": [
+            "Move those users to the 5 GHz band",
+            "Change the SSID (Service Set Identifier) name",
+            "Switch the WLAN (wireless LAN) from WPA2 (Wi-Fi Protected Access 2) to WEP (Wired Equivalent Privacy)",
+            "Raise the channel width to 80 MHz"
+          ],
+          "answer": 0,
+          "explanation": "Microwave oven mengganggu 2,4 GHz, sedangkan 5 GHz tidak terganggu. Nama SSID (Service Set Identifier) dan keamanan tidak memengaruhi interferensi, dan WEP (Wired Equivalent Privacy) justru tidak aman.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-non-wifi",
+            "ccna-f-u06-5g-clear",
+            "ccna-f-u06-wep"
+          ]
+        },
+        {
+          "id": "ccna-u06-l5-e2",
+          "type": "multi",
+          "concept": "wifi-interference",
+          "prompt": "Which two devices commonly interfere with 2.4 GHz Wi-Fi? (Choose two.)",
+          "options": [
+            "Microwave ovens",
+            "Bluetooth headsets",
+            "Fiber optic cables",
+            "Category 6 copper cables"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Microwave oven dan Bluetooth memakai 2,4 GHz. Kabel fiber dan tembaga tidak memancarkan sinyal di band itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-non-wifi",
+            "ccna-f-u03-emi"
+          ]
+        },
+        {
+          "id": "ccna-u06-l5-e3",
+          "type": "truefalse",
+          "concept": "wifi-interference",
+          "prompt": "A metal filing cabinet between an AP (access point) and a client can weaken the signal.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Logam memantulkan sinyal, sehingga yang sampai ke klien lebih lemah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-materials",
+            "ccna-f-u06-behaviors"
+          ]
+        },
+        {
+          "id": "ccna-u06-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "rrm"
+          ],
+          "title": "Menangani interferensi",
+          "body": "Langkah umumnya: pakai channel yang tidak tumpang tindih (1, 6, dan 11 di 2,4 GHz), arahkan klien ke 5 GHz, dan atur daya transmit supaya sel AP (access point) tidak terlalu saling menimpa. Di jaringan Cisco dengan WLC (Wireless LAN Controller), RRM (Radio Resource Management) melakukan pengaturan channel dan daya ini secara otomatis.",
+          "keyPoints": [
+            "Channel tidak tumpang tindih",
+            "Klien ke 5 GHz",
+            "RRM mengatur channel dan daya otomatis"
+          ],
+          "teaches": [
+            "ccna-f-u06-rrm",
+            "ccna-f-u06-ch24",
+            "ccna-f-u06-5g-clear"
+          ]
+        },
+        {
+          "id": "ccna-u06-l5-e4",
+          "type": "choice",
+          "concept": "rrm",
+          "prompt": "Which Cisco WLC (Wireless LAN Controller) feature automatically adjusts AP (access point) channels and transmit power?",
+          "options": [
+            "RRM (Radio Resource Management)",
+            "SAE (Simultaneous Authentication of Equals)",
+            "PMF (Protected Management Frames)",
+            "The SSID (Service Set Identifier) broadcast setting"
+          ],
+          "answer": 0,
+          "explanation": "RRM (Radio Resource Management) mengatur channel dan daya AP (access point) secara otomatis. SAE (Simultaneous Authentication of Equals) dan PMF (Protected Management Frames) adalah fitur keamanan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-rrm",
+            "ccna-f-u06-wpa3-sae",
+            "ccna-f-u06-pmf"
+          ]
+        },
+        {
+          "id": "ccna-u06-l5-e5",
+          "type": "exhibit",
+          "concept": "rrm",
+          "prompt": "Refer to the exhibit. Clients near AP2 report a weak signal and many retries. AP2 is in a storage room. What is the most likely cause?",
+          "diagram": {
+            "devices": [
+              {
+                "id": "ap1",
+                "kind": "ap",
+                "label": "AP1",
+                "x": 0,
+                "y": 0,
+                "note": "channel 1, SSID Kantor"
+              },
+              {
+                "id": "ap2",
+                "kind": "ap",
+                "label": "AP2",
+                "x": 2,
+                "y": 0,
+                "note": "channel 6, ruang gudang beton, rak logam"
+              },
+              {
+                "id": "ap3",
+                "kind": "ap",
+                "label": "AP3",
+                "x": 4,
+                "y": 0,
+                "note": "channel 11, SSID Kantor"
+              }
+            ],
+            "links": [
+              {
+                "from": "ap1",
+                "to": "ap2",
+                "style": "dashed"
+              },
+              {
+                "from": "ap2",
+                "to": "ap3",
+                "style": "dashed"
+              }
+            ]
+          },
+          "options": [
+            "The concrete wall and metal shelves around AP2 absorb and reflect the signal",
+            "AP2 uses channel 6, which overlaps with channel 1",
+            "AP2 broadcasts a different SSID (Service Set Identifier) from AP1",
+            "The 2.4 GHz band has no channels that do not overlap"
+          ],
+          "answer": 0,
+          "explanation": "Beton dan logam menyerap serta memantulkan sinyal. Channel 6 tidak tumpang tindih dengan 1 dan 11, dan SSID (Service Set Identifier) tidak memengaruhi kekuatan sinyal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u06-materials",
+            "ccna-f-u06-behaviors",
+            "ccna-f-u06-ch24",
+            "ccna-f-u06-ssid"
+          ]
+        },
+        {
+          "id": "ccna-u06-l5-e6",
+          "type": "sort",
+          "concept": "wifi-interference",
+          "prompt": "Sort each item by the problem it causes.",
+          "buckets": [
+            "Noise in 2.4 GHz",
+            "Weakens the signal"
+          ],
+          "items": [
+            {
+              "text": "Microwave oven",
+              "bucket": 0
+            },
+            {
+              "text": "Bluetooth speaker",
+              "bucket": 0
+            },
+            {
+              "text": "Cordless phone",
+              "bucket": 0
+            },
+            {
+              "text": "Concrete wall",
+              "bucket": 1
+            },
+            {
+              "text": "Metal shelves",
+              "bucket": 1
+            },
+            {
+              "text": "Large water tank",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Microwave, Bluetooth, dan telepon cordless memancarkan di 2,4 GHz. Beton, logam, dan air menyerap atau memantulkan sinyal.",
+          "requires": [
+            "ccna-f-u06-non-wifi",
+            "ccna-f-u06-materials"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u06-bands",
+      "statement": "Wi-Fi bekerja di band radio 2,4 GHz, 5 GHz, dan 6 GHz.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wireless-rf-reference-guide.html"
+    },
+    {
+      "id": "ccna-f-u06-range",
+      "statement": "Pada daya yang sama, sinyal 5 GHz melemah lebih cepat daripada 2,4 GHz, jadi jangkauan sel 5 GHz lebih kecil.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-behaviors",
+      "statement": "Sinyal RF bisa diserap (absorption), dipantulkan (reflection), dibiaskan (refraction), dihamburkan (scattering), atau dibelokkan di sekitar penghalang (diffraction).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html"
+    },
+    {
+      "id": "ccna-f-u06-dbm",
+      "statement": "Kekuatan sinyal dinyatakan dalam dBm, skala logaritmik terhadap 1 milliwatt; -60 dBm lebih kuat daripada -80 dBm.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html"
+    },
+    {
+      "id": "ccna-f-u06-rssi-snr",
+      "statement": "RSSI (received signal strength indicator) adalah kekuatan sinyal yang diterima, sedangkan SNR (signal-to-noise ratio) adalah selisih sinyal dengan noise floor dalam dB; makin besar SNR, makin baik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html"
+    },
+    {
+      "id": "ccna-f-u06-ssid",
+      "statement": "SSID (Service Set Identifier) adalah nama WLAN yang dilihat klien, panjangnya maksimal 32 karakter.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/ewc/16-12/config-guide/ewc_cg_16_12/wlans.html"
+    },
+    {
+      "id": "ccna-f-u06-bss-ess",
+      "statement": "Satu AP beserta kliennya membentuk BSS (Basic Service Set) yang dikenali dari BSSID, yaitu MAC radio AP; beberapa AP dengan SSID yang sama membentuk ESS (Extended Service Set), sehingga klien bisa roaming.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wireless-rf-reference-guide.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-ch24",
+      "statement": "Di band 2,4 GHz hanya tiga channel yang tidak saling tumpang tindih: 1, 6, dan 11.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html"
+    },
+    {
+      "id": "ccna-f-u06-ch5",
+      "statement": "Band 5 GHz punya jauh lebih banyak channel yang tidak tumpang tindih, sehingga cocok untuk area yang padat.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html"
+    },
+    {
+      "id": "ccna-f-u06-cci",
+      "statement": "Kalau dua AP saling mendengar di channel yang sama, terjadi co-channel interference: keduanya harus berbagi waktu bicara di channel itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html"
+    },
+    {
+      "id": "ccna-f-u06-aci",
+      "statement": "Adjacent channel interference terjadi saat AP yang berdekatan memakai channel yang tumpang tindih sebagian, misalnya channel 1 dan 3 di 2,4 GHz.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-width",
+      "statement": "Channel bisa digabung menjadi 40, 80, atau 160 MHz untuk throughput yang lebih tinggi, tapi jumlah channel yang tidak tumpang tindih jadi berkurang.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-std-legacy",
+      "statement": "802.11b memakai 2,4 GHz sampai 11 Mbps, 802.11a memakai 5 GHz sampai 54 Mbps, dan 802.11g memakai 2,4 GHz sampai 54 Mbps.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wireless-rf-reference-guide.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-std-n-ac",
+      "statement": "802.11n (Wi-Fi 4) memakai 2,4 dan 5 GHz dengan MIMO (multiple-input multiple-output), sedangkan 802.11ac (Wi-Fi 5) hanya memakai 5 GHz.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wireless-rf-reference-guide.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-std-ax",
+      "statement": "802.11ax (Wi-Fi 6) memakai 2,4 dan 5 GHz dan menambahkan OFDMA (Orthogonal Frequency-Division Multiple Access); Wi-Fi 6E membawa 802.11ax ke band 6 GHz.",
+      "source": "https://www.cisco.com/c/en/us/products/collateral/wireless/white-paper-c11-740788.html"
+    },
+    {
+      "id": "ccna-f-u06-std-be",
+      "statement": "802.11be (Wi-Fi 7) bekerja di 2,4, 5, dan 6 GHz, mendukung channel 320 MHz di 6 GHz, dan bisa memakai beberapa band sekaligus (Multi-Link Operation).",
+      "source": "https://www.cisco.com/c/en/us/products/collateral/networking/wireless/wifi7-future-of-wireless-dg.html"
+    },
+    {
+      "id": "ccna-f-u06-wep",
+      "statement": "WEP (Wired Equivalent Privacy) memakai kunci statis bersama 64 atau 128 bit; WPA dibuat untuk menutup kelemahannya, dan WEP tidak boleh dipakai lagi.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/wireless-mobility/wireless-lan-wlan/67134-wpa2-config.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-wpa2-aes",
+      "statement": "WPA2 memakai AES (Advanced Encryption Standard), yang lebih kuat daripada TKIP (Temporal Key Integrity Protocol) yang dipakai WPA.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/wireless-mobility/wireless-lan-wlan/67134-wpa2-config.html"
+    },
+    {
+      "id": "ccna-f-u06-personal-ent",
+      "statement": "Mode Personal memakai satu PSK (pre-shared key) untuk semua pengguna, sedangkan mode Enterprise memakai 802.1X dengan server autentikasi seperti RADIUS (Remote Authentication Dial-In User Service), sehingga setiap pengguna punya kredensial sendiri.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/wireless-mobility/wireless-lan-wlan/67134-wpa2-config.html"
+    },
+    {
+      "id": "ccna-f-u06-psk-len",
+      "statement": "PSK WPA dan WPA2 berisi 8 sampai 63 karakter teks.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/access_point/mob_exp/810/user_guide/b_ME_User_Guide_810/specify_wireless_setgs.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-wpa3-sae",
+      "statement": "WPA3-Personal memakai SAE (Simultaneous Authentication of Equals), yang lebih tahan terhadap serangan tebak password offline daripada PSK WPA2.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wpa3-dg.html"
+    },
+    {
+      "id": "ccna-f-u06-wpa3-ent",
+      "statement": "WPA3-Enterprise tetap memakai 802.1X, dengan pilihan keamanan yang lebih kuat.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wpa3-dg.html"
+    },
+    {
+      "id": "ccna-f-u06-pmf",
+      "statement": "WPA3 mewajibkan PMF (Protected Management Frames), yang melindungi frame manajemen seperti deauthentication dari pemalsuan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wpa3-dg.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-wpa3-6e",
+      "statement": "Di band 6 GHz (Wi-Fi 6E), WPA2 tidak boleh dipakai; WLAN harus memakai WPA3 atau OWE (Opportunistic Wireless Encryption).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wpa3-dg.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-non-wifi",
+      "statement": "Perangkat non-Wi-Fi di 2,4 GHz, seperti microwave oven, Bluetooth, dan telepon cordless, menjadi noise yang mengganggu Wi-Fi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html"
+    },
+    {
+      "id": "ccna-f-u06-5g-clear",
+      "statement": "Band 5 GHz tidak terganggu perangkat 2,4 GHz seperti microwave oven, Bluetooth, dan telepon cordless.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html"
+    },
+    {
+      "id": "ccna-f-u06-materials",
+      "statement": "Bahan seperti beton, logam, dan air (termasuk tubuh manusia) menyerap atau memantulkan sinyal, sehingga jangkauan AP berkurang.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/Enterprise-Mobility-8-5-Design-Guide/Enterprise_Mobility_8-5_Deployment_Guide/wlanrf.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u06-rrm",
+      "statement": "RRM (Radio Resource Management) di WLC (Wireless LAN Controller) Cisco otomatis mengatur channel dan daya transmit AP untuk mengurangi interferensi.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/wireless-mobility/wireless-lan-wlan/71113-rrm-new.html"
+    }
+  ]
+}

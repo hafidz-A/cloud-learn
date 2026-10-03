@@ -16,4 +16,5 @@ export function modeLabel(mode: ExamMode, domain?: PathId): string {
 export const CERTIFICATION_PAGES: Record<CourseId, string> = {
   az900: 'https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/',
   az104: 'https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/',
+  ccna: 'https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/exams-and-training.html',
 }

@@ -1,5 +1,8 @@
 import { PORTAL_NAMES, type CaseStudy, type CourseId, type Exercise, type Fact, type IntroCard, type LearnCard, type Lesson, type LessonItem, type Unit } from '../lib/types'
-import { courseCoverage } from './coverage'
+import { PHYSICAL, errorLines, givenProblems, judgeSession, parseGoalLine, parseGoalRun, runSession, type IosLineReq } from '../ios/engine'
+import { branchProblems } from '../lib/tree'
+import type { IosExercise, Lab, NetDiagram } from '../lib/types'
+import { courseCoverage, isCiscoCourseSource } from './coverage'
 import { EXAM_TYPES } from './examTypes'
 import { isVisualName, VISUAL_NAMES, VISUALS_BY_CONCEPT } from './visuals'
 
@@ -38,6 +41,8 @@ const KNOWN_TYPES = new Set([
   'template',
   'topology',
   'kql',
+  'ios',
+  'exhibit',
 ])
 
 const PLACE_RULES = new Set(['valid', 'one-per-zone', 'spread'])
@@ -52,7 +57,16 @@ const MIXED_CASE_ABBREVIATIONS = ['IaaS', 'PaaS', 'SaaS', 'CapEx', 'OpEx', 'VNet
  * names (AZ, P1, E3, the App Service Free plan F1), region names (East US), HTTP
  * methods (DELETE, POST), and the DNS record type AAAA.
  */
-const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA'])
+const NOT_ABBREVIATIONS = new Set(['AZ', 'P1', 'P2', 'E3', 'F1', 'SAP', 'HANA', 'US', 'GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'AAAA', 'PC', 'IOS', 'XE', 'CCNA', 'EXEC', 'AND', 'OK'])
+
+/**
+ * CCNA device, interface, and model names (R1, SW2, HQ-R1, PC1, SRV1, the "G0" of
+ * G0/0/0, ISR4331) are labels, not abbreviations. PC and Cisco IOS (XE) are product words used as names.
+ */
+const DEVICE_NAME = /^(([A-Z]{2,4}-)?(R|SW|PC|SRV|AP|S|G|F|E)\d+|ISR\d{4})$/
+
+/** Text ending inside an IOS system message name, such as "%LINEPROTO-5-" before "UPDOWN". */
+const SYSLOG_NAME = /%[A-Z0-9_-]*$/
 
 // Hyphenated abbreviations such as RA-GRS count as one token.
 const ABBREVIATION = new RegExp(`\\b(${MIXED_CASE_ABBREVIATIONS.join('|')}|[A-Z][A-Z0-9]+(?:-[A-Z][A-Z0-9]+)*)s?\\b`, 'g')
@@ -75,6 +89,13 @@ function initials(text: string): string {
  * Accepted forms: "NSG (Network Security Group)" or "Network Security Group (NSG)".
  * `expandedBy` lets a match pair like ["NSG", "Network Security Group"] count as expanded.
  */
+/** True when `at` is inside the parentheses that directly follow an abbreviation, which is its expansion. */
+function insideExpansion(text: string, at: number): boolean {
+  const open = text.lastIndexOf('(', at)
+  if (open < 0 || text.lastIndexOf(')', at) > open) return false
+  return /(^|[\s/-])[A-Z][A-Za-z0-9]*[A-Z0-9](?:-[A-Z][A-Z0-9]+)*(-\d+|\+)?s?(\/[A-Z][A-Za-z0-9]*)*\s*$/.test(text.slice(0, open))
+}
+
 export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string> = new Set()): string[] {
   const seen = new Set<string>()
   const missing: string[] = []
@@ -83,12 +104,20 @@ export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string>
       const abbr = m[1]
       const start = m.index
       const end = start + m[0].length
-      if (seen.has(abbr) || NOT_ABBREVIATIONS.has(abbr) || expandedBy.has(abbr)) continue
+      if (seen.has(abbr) || NOT_ABBREVIATIONS.has(abbr) || DEVICE_NAME.test(abbr) || expandedBy.has(abbr)) continue
+      // IOS system message names such as %LINEPROTO-5-UPDOWN are labels.
+      if (SYSLOG_NAME.test(text.slice(0, start))) continue
+      // IEEE physical layer names such as 1000BASE-SX and 1000BASE-LX/LH are names.
+      if (/\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start))) continue
       // "Entra ID" is the product name, not an abbreviation to expand.
       if (abbr === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
-      seen.add(abbr)
-      const after = /^\s*\(/.test(text.slice(end))
+      // "TCP/IP (Transmission Control Protocol/Internet Protocol)" expands both parts at once.
+      // "EUI-64 (Extended Unique Identifier)" and "PVST+ (Per-VLAN Spanning Tree Plus)" expand the whole name.
+      const after = /^(-\d+|\+)?(\/[A-Z][A-Za-z0-9]*)*\s*\(/.test(text.slice(end))
       const inside = text[start - 1] === '(' && text[end] === ')'
+      // A bare word inside an expansion is part of an official name: "WLC (Wireless LAN Controller)".
+      if (!after && !inside && insideExpansion(text, start)) continue
+      seen.add(abbr)
       if (!after && !inside) missing.push(abbr)
     }
   }
@@ -124,8 +153,11 @@ export function questionTexts(e: Exercise): string[] {
     case 'template':
     case 'topology':
       return [e.prompt, ...e.options]
+    case 'exhibit':
+      return [e.prompt, ...e.options]
     case 'config':
     case 'kql':
+    case 'ios':
       return [e.prompt]
   }
 }
@@ -242,7 +274,8 @@ function checkExercise(e: Exercise, push: (message: string, level?: Issue['level
       break
     case 'template':
       checkOptions(e.options, e.answer, push)
-      if (e.language !== 'json' && e.language !== 'bicep') push('language must be "json" or "bicep"')
+      if (e.language !== 'json' && e.language !== 'bicep' && e.language !== 'yaml') push('language must be "json", "bicep", or "yaml"')
+      if (e.language === 'yaml' && !e.fileName) push('YAML needs a fileName for its header, such as "playbook.yml"')
       if (e.fileName !== undefined && !e.fileName.trim()) push('template fileName is empty')
       if (!e.code?.trim()) push('template code is empty')
       else if (e.language === 'json') {
@@ -290,6 +323,15 @@ function checkExercise(e: Exercise, push: (message: string, level?: Issue['level
       }
       break
     }
+    case 'ios':
+      for (const problem of iosProblems(e)) push(problem)
+      break
+    case 'exhibit':
+      checkOptions(e.options, e.answer, push)
+      if (!e.diagram && !e.outputs?.length) push('an exhibit needs a diagram, device output, or both')
+      if (e.diagram) for (const problem of diagramProblems(e.diagram)) push(problem)
+      for (const o of e.outputs ?? []) if (!o.title?.trim() || !o.text?.trim()) push('every exhibit output needs a title and text')
+      break
     case 'kql': {
       const pool = [...e.tokens]
       for (const t of e.answer) {
@@ -320,6 +362,144 @@ function checkExercise(e: Exercise, push: (message: string, level?: Issue['level
 
   checkEntraName([...questionTexts(e), e.explanation], push)
   if (e.verify) push('marked verify: true, double-check this fact', 'warn')
+}
+
+const MODELS = ['isr4331', 'c2960', 'c3650']
+
+/**
+ * An IOS question (LANGIT_CCNA_PLAN.md section 7): every goal and output must be a
+ * command the simulator knows, the given configuration must go in cleanly, the
+ * solution must reach the goal without errors, and an empty terminal must not.
+ */
+export function iosProblems(e: IosExercise): string[] {
+  const out: string[] = []
+  const model = e.device?.model
+  if (!MODELS.includes(model)) return [`unknown device model "${String(model)}", known: ${MODELS.join(', ')}`]
+  if (!e.device.hostname?.trim()) out.push('the device needs a hostname')
+  if (e.start !== undefined && !['user', 'priv', 'config'].includes(e.start)) out.push('start must be "user", "priv", or "config"')
+  if (!Array.isArray(e.solution) || e.solution.length === 0) out.push('an ios question needs a solution')
+  const goal = e.goal ?? {}
+  if (!goal.config?.length && !goal.run?.length && !goal.saved) out.push('the goal needs config lines, commands to run, or saving')
+  const tryLine = (req: IosLineReq) => {
+    try {
+      parseGoalLine(model, req)
+    } catch (err) {
+      out.push(`goal: ${(err as Error).message}`)
+    }
+  }
+  for (const req of goal.config ?? []) {
+    if ('anyOf' in req) req.anyOf.flat().forEach(tryLine)
+    else if ('sequence' in req) req.sequence.forEach((line) => tryLine({ context: req.context, line }))
+    else tryLine(req)
+  }
+  for (const req of goal.absent ?? []) tryLine(req)
+  for (const cmd of goal.run ?? []) {
+    try {
+      parseGoalRun(model, cmd)
+    } catch (err) {
+      out.push(`goal: ${(err as Error).message}`)
+    }
+  }
+  for (const key of Object.keys(e.outputs ?? {})) {
+    try {
+      const full = parseGoalRun(model, key)
+      if (full !== key) out.push(`outputs key "${key}" should be written in full: "${full}"`)
+    } catch (err) {
+      out.push(`outputs: ${(err as Error).message}`)
+    }
+  }
+  for (const name of e.cabled ?? []) if (!PHYSICAL[model].includes(name) && !/^Vlan\d+$/.test(name)) out.push(`cabled "${name}" is not an interface of ${model}`)
+  const setup = { hostname: e.device.hostname, model, start: e.start, given: e.given, outputs: e.outputs, cabled: e.cabled }
+  out.push(...givenProblems(setup))
+  if (out.length) return out
+  const solved = runSession(setup, e.solution)
+  const errors = errorLines(solved.transcript)
+  if (errors.length) out.push(`the solution gets errors: ${errors.join(' | ')}`)
+  const judged = judgeSession(solved.state, goal)
+  if (!judged.correct) out.push(`the solution does not reach the goal: ${judged.missing.join('; ')}`)
+  if (judgeSession(runSession(setup, []).state, goal).correct) out.push('the goal already holds before anything is typed')
+  return out
+}
+
+const DEVICE_KINDS = ['router', 'switch', 'l3switch', 'pc', 'laptop', 'server', 'ap', 'wlc', 'phone', 'printer', 'cloud', 'firewall']
+
+export function diagramProblems(d: NetDiagram): string[] {
+  const out: string[] = []
+  const ids = new Set<string>()
+  const cells = new Set<string>()
+  for (const dev of d.devices ?? []) {
+    if (ids.has(dev.id)) out.push(`diagram device id "${dev.id}" is used twice`)
+    ids.add(dev.id)
+    if (!DEVICE_KINDS.includes(dev.kind)) out.push(`diagram device "${dev.id}" has unknown kind "${dev.kind}"`)
+    if (!Number.isInteger(dev.x) || dev.x < 0 || dev.x > 4 || !Number.isInteger(dev.y) || dev.y < 0) out.push(`diagram device "${dev.id}" must sit at x 0-4 and y 0 or more`)
+    if (cells.has(`${dev.x},${dev.y}`)) out.push(`two diagram devices share the cell ${dev.x},${dev.y}`)
+    cells.add(`${dev.x},${dev.y}`)
+    if (!dev.label?.trim()) out.push(`diagram device "${dev.id}" needs a label`)
+  }
+  if ((d.devices ?? []).length < 2) out.push('a diagram needs at least 2 devices')
+  for (const l of d.links ?? []) if (!ids.has(l.from) || !ids.has(l.to)) out.push(`diagram link ${l.from} -> ${l.to} points to a device that does not exist`)
+  return out
+}
+
+const LAB_MODEL: Record<string, string> = { router: 'isr4331', switch: 'c2960', l3switch: 'c3650' }
+
+/**
+ * Packet Tracer labs (LANGIT_CCNA_PLAN.md section 8): one per hands-on lesson,
+ * attached to such a lesson, with official sources, a topology, and IOS commands
+ * that the simulator accepts in the order the steps give them.
+ */
+export function validateLabs(labs: Lab[], units: Unit[]): Issue[] {
+  const issues: Issue[] = []
+  const lessons = new Map(units.flatMap((u) => u.lessons.map((l) => [l.id, l] as const)))
+  const seen = new Set<string>()
+  for (const lab of labs) {
+    const push = (message: string, level: Issue['level'] = 'error') => issues.push({ level, where: `lab ${lab.lesson}`, message })
+    const lesson = lessons.get(lab.lesson)
+    if (!lesson) push(`lab belongs to unknown lesson "${lab.lesson}"`)
+    else if (lesson.branch?.kind !== 'handson') push('a lab belongs to a hands-on lesson')
+    if (seen.has(lab.lesson)) push('a hands-on lesson has one lab')
+    seen.add(lab.lesson)
+    if (!lab.title?.trim() || !lab.goal?.trim()) push('a lab needs a title and a goal')
+    if (!Number.isInteger(lab.minutes) || lab.minutes < 5 || lab.minutes > 90) push('minutes should be 5-90')
+    if (!['packet-tracer', 'cml-free', 'linux', 'any'].includes(lab.tool)) push(`unknown tool "${lab.tool}"`)
+    for (const problem of diagramProblems(lab.topology ?? { devices: [], links: [] })) push(problem)
+    if (!lab.steps?.length || !lab.checks?.length) push('a lab needs steps and checks')
+    if (!lab.sources?.length) push('a lab needs official sources')
+    for (const src of lab.sources ?? []) if (!isCiscoCourseSource(src)) push(`source "${src}" is not an official Cisco, IETF, IEEE, or Ansible page`)
+    const missing = unexpandedAbbreviations([lab.goal, ...lab.steps.map((s) => s.text), ...lab.checks.flatMap((c) => [c.text, c.expect]), ...(lab.notes ?? [])])
+    if (missing.length) push(`expand on first use in the lab: ${missing.join(', ')}`, 'warn')
+    if (lab.tool === 'linux') continue
+    // Replay each IOS device's commands in step order, from privileged EXEC.
+    const kindOf = new Map((lab.topology?.devices ?? []).map((d) => [d.label, d.kind]))
+    const sessions = new Map<string, string[]>()
+    for (const s of lab.steps ?? []) {
+      if (!s.commands?.length) continue
+      const model = LAB_MODEL[kindOf.get(s.device ?? '') ?? '']
+      if (!s.device || !model) {
+        if (s.device && !kindOf.has(s.device)) push(`step device "${s.device}" is not in the topology`)
+        continue
+      }
+      sessions.set(s.device, [...(sessions.get(s.device) ?? []), ...s.commands])
+    }
+    for (const [device, commands] of sessions) {
+      const model = LAB_MODEL[kindOf.get(device)!] as 'isr4331'
+      const run = runSession({ hostname: device, model }, commands)
+      // In a lab the output comes from Packet Tracer, so an exec command without prepared output is fine.
+      const errors = errorLines(run.transcript).filter((e) => !e.startsWith('Langit: output "'))
+      if (errors.length) push(`commands on ${device} get errors in the simulator: ${errors.join(' | ')}`)
+    }
+    for (const c of lab.checks ?? []) {
+      const model = LAB_MODEL[kindOf.get(c.device ?? '') ?? '']
+      if (!c.command || !model) continue
+      try {
+        parseGoalRun(model as 'isr4331', c.command)
+      } catch (err) {
+        push(`check on ${c.device}: ${(err as Error).message}`)
+      }
+    }
+  }
+  for (const [id, lesson] of lessons) if (lesson.branch?.kind === 'handson' && lesson.items.length && !seen.has(id)) issues.push({ level: 'warn', where: id, message: 'a hands-on lesson should have a Packet Tracer lab' })
+  return issues
 }
 
 function checkPortal(portal: string | undefined, push: (m: string) => void) {
@@ -371,14 +551,18 @@ function checkLearn(card: LearnCard, facts: Set<string>, push: (message: string,
   if (needsVisual.length && !card.visual) {
     push(`"${needsVisual[0]}" needs a visual (${VISUALS_BY_CONCEPT.get(needsVisual[0])!.join(' or ')})`)
   }
-  if (card.link !== undefined && !/^https:\/\/learn\.microsoft\.com\//.test(card.link)) push('link should point to Microsoft Learn', 'warn')
+  if (card.link !== undefined) {
+    if (card.id.startsWith('ccna-')) {
+      if (!isCiscoCourseSource(card.link)) push('link should point to Cisco, the IETF, IEEE, or Ansible documentation', 'warn')
+    } else if (!/^https:\/\/learn\.microsoft\.com\//.test(card.link)) push('link should point to Microsoft Learn', 'warn')
+  }
   const missing = unexpandedAbbreviations(learnTexts(card))
   if (missing.length) push(`expand on first use in the learn card: ${missing.join(', ')}`, 'warn')
   checkEntraName([card.title, ...learnTexts(card)], push)
 }
 
 function checkFact(fact: Fact, push: (message: string, level?: Issue['level']) => void) {
-  if (!/^(az104-)?f-[a-z0-9]+(-[a-z0-9]+)+$/.test(fact.id ?? '')) push(`fact id "${fact.id}" should look like "f-u07-zrs" (AZ-104: "az104-f-u04-reserved-ips")`)
+  if (!/^(az104-|ccna-)?f-[a-z0-9]+(-[a-z0-9]+)+$/.test(fact.id ?? '')) push(`fact id "${fact.id}" should look like "f-u07-zrs" (AZ-104: "az104-f-u04-reserved-ips", CCNA: "ccna-f-u04-rfc1918")`)
   if (!fact.statement?.trim()) push(`fact "${fact.id}" has no statement`)
   checkEntraName([fact.statement ?? ''], push)
 }
@@ -392,7 +576,7 @@ export function abbreviationsIn(texts: string[]): Set<string> {
   for (const text of texts) {
     for (const m of text.matchAll(ABBREVIATION)) {
       const start = m.index
-      if (NOT_ABBREVIATIONS.has(m[1])) continue
+      if (NOT_ABBREVIATIONS.has(m[1]) || DEVICE_NAME.test(m[1]) || /\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start)) || SYSLOG_NAME.test(text.slice(0, start))) continue
       if (m[1] === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
       found.add(m[1])
     }
@@ -423,10 +607,15 @@ function longRuns(lesson: Lesson): number {
   return longest > MAX_EXERCISE_RUN ? longest : 0
 }
 
-/** Per-course shape rules: AZ-104 (LANGIT_AZ104_PLAN.md sections 3-5) has 5 paths, 4-6 lessons, and 3-5 learn cards per lesson. */
-const COURSE_RULES: Record<CourseId, { prefix: string; paths: number; lessons: [number, number]; learnCards: [number, number] }> = {
-  az900: { prefix: '', paths: 3, lessons: [3, 5], learnCards: [2, 4] },
-  az104: { prefix: 'az104-', paths: 5, lessons: [4, 6], learnCards: [3, 5] },
+/**
+ * Per-course shape rules: AZ-104 (LANGIT_AZ104_PLAN.md sections 3-5) has 5 paths, 4-6 lessons, and 3-5 learn
+ * cards per lesson. CCNA (LANGIT_CCNA_PLAN.md section 5) has shorter branch lessons: a hands-on lesson is a
+ * few long simulator tasks.
+ */
+const COURSE_RULES: Record<CourseId, { prefix: string; paths: number; lessons: [number, number]; learnCards: [number, number]; exercises: [number, number] }> = {
+  az900: { prefix: '', paths: 3, lessons: [3, 5], learnCards: [2, 4], exercises: [8, 12] },
+  az104: { prefix: 'az104-', paths: 5, lessons: [4, 6], learnCards: [3, 5], exercises: [8, 12] },
+  ccna: { prefix: 'ccna-', paths: 5, lessons: [3, 9], learnCards: [1, 4], exercises: [6, 12] },
 }
 
 export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[] {
@@ -445,8 +634,8 @@ export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[
       if (ids.has(id)) pusher(where)(`duplicate id "${id}"`)
       ids.add(id)
       // Plan section 3: without the prefix, AZ-104 progress would mix with AZ-900 progress in sync.
-      if (rules.prefix && !id?.startsWith(rules.prefix)) pusher(where)(`AZ-104 id "${id}" must start with "${rules.prefix}"`)
-      if (!rules.prefix && id?.startsWith('az104-')) pusher(where)(`AZ-900 id "${id}" must not start with "az104-"`)
+      if (rules.prefix && !id?.startsWith(rules.prefix)) pusher(where)(`${course === 'ccna' ? 'CCNA' : 'AZ-104'} id "${id}" must start with "${rules.prefix}"`)
+      if (!rules.prefix && (id?.startsWith('az104-') || id?.startsWith('ccna-'))) pusher(where)(`AZ-900 id "${id}" must not start with "az104-" or "ccna-"`)
     }
 
     claim(unit.id, uw)
@@ -459,12 +648,15 @@ export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[
       claim(fact.id, `${uw} > ${fact.id}`)
       checkFact(fact, pusher(`${uw} > ${fact.id}`))
     }
+    // The lesson tree (LANGIT_CCNA_PLAN.md section 4.2): only CCNA has branches.
+    if (course === 'ccna') for (const p of branchProblems(unit)) pusher(`${uw} > ${p.lesson}`)(p.message)
+    else for (const l of unit.lessons) if (l.branch) pusher(`${uw} > ${l.id}`)('only CCNA lessons can be branches')
 
     unit.lessons.forEach((lesson, li) => {
       const lw = `${uw} > ${lesson.id}`
       const warn = (message: string) => pusher(lw)(message, 'warn')
       claim(lesson.id, lw)
-      const expectedLessonId = `${/^(az104-)?u\d{2}/.exec(unit.id)?.[0]}-l${li + 1}`
+      const expectedLessonId = `${/^(az104-|ccna-)?u\d{2}/.exec(unit.id)?.[0]}-l${li + 1}`
       if (lesson.id !== expectedLessonId) pusher(lw)(`lesson id should be "${expectedLessonId}"`)
       if (!Array.isArray(lesson.items)) {
         pusher(lw)('lesson needs an "items" array (plan section 11)')
@@ -475,12 +667,15 @@ export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[
       const exercises = lesson.items.filter((i): i is Exercise => i.type !== 'intro' && i.type !== 'learn' && !i.retired)
       const learnCards = lesson.items.filter((i) => i.type === 'learn').length
       const intros = lesson.items.filter((i) => i.type === 'intro').length
-      if (exercises.length < 8 || exercises.length > 12) warn(`lessons should have 8-12 exercises, found ${exercises.length}`)
+      const handson = lesson.branch?.kind === 'handson'
+      const [minEx, maxEx] = handson ? [3, 8] : rules.exercises
+      if (exercises.length < minEx || exercises.length > maxEx) warn(`lessons should have ${minEx}-${maxEx} exercises, found ${exercises.length}`)
       const [minCards, maxCards] = rules.learnCards
       if (reworked && (learnCards < minCards || learnCards > maxCards)) warn(`lessons should have ${minCards}-${maxCards} learn cards, found ${learnCards}`)
       if (!reworked && intros > 3) warn(`a lesson introduces at most 3 new concepts, found ${intros} intro cards`)
       const types = new Set(exercises.map((e) => e.type))
-      if (types.size < 4) warn(`lessons should use at least 4 exercise types, found ${types.size}`)
+      if (types.size < (handson ? 2 : 4)) warn(`lessons should use at least ${handson ? 2 : 4} exercise types, found ${types.size}`)
+      if (handson && exercises.filter((e) => e.type === 'ios').length < 2) warn('a hands-on lesson should have at least 2 ios exercises')
       const run = longRuns(lesson)
       if (run) warn(`${run} exercises in a row without a learn card between them`)
 
@@ -530,10 +725,11 @@ export function coverageIssues(units: Unit[]): Issue[] {
       const where = `${unitOf.get(gap.exercise) ?? cov.unitId} > ${gap.exercise}`
       if (gap.kind === 'unknown') push(where, `requires unknown fact "${gap.fact}"`)
       else if (gap.kind === 'taught-later') push(where, `fact "${gap.fact}" is only taught after this exercise`)
+      else if (gap.kind === 'optional-only') push(where, `fact "${gap.fact}" is only taught in an optional branch, which the player may skip`)
       else push(where, `fact "${gap.fact}" is not taught by any learn card`)
     }
     for (const fact of cov.untaughtFacts) push(`${cov.unitId} > ${fact}`, `fact "${fact}" is not taught by any learn card`)
-    for (const fact of cov.badSources) push(`${cov.unitId} > ${fact}`, `fact "${fact}" needs a Microsoft Learn source, or verify: true`)
+    for (const fact of cov.badSources) push(`${cov.unitId} > ${fact}`, `fact "${fact}" needs an official source (Microsoft Learn; for CCNA Cisco, IETF, IEEE, or Ansible), or verify: true`)
   }
   return issues
 }

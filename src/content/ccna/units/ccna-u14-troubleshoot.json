@@ -1,0 +1,852 @@
+{
+  "id": "ccna-u14-troubleshoot",
+  "path": 2,
+  "title": "Troubleshoot Layer 2 dan Layer 3",
+  "lessons": [
+    {
+      "id": "ccna-u14-l1",
+      "title": "Perintah show dan log",
+      "items": [
+        {
+          "id": "ccna-u14-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "troubleshoot-flow"
+          ],
+          "title": "Dari bawah ke atas",
+          "body": "Mulai dari layer 1: show ip interface brief dan show interfaces untuk status dan error. Lalu layer 2: show interfaces status, show vlan brief, show interfaces trunk, dan show mac address-table untuk melihat apakah port, VLAN (Virtual LAN), dan MAC (Media Access Control) sudah benar. Baru layer 3: alamat, gateway, dan ping. Setiap langkah mencoret satu kelompok penyebab.",
+          "keyPoints": [
+            "Layer 1: status dan error",
+            "Layer 2: VLAN, trunk, tabel MAC",
+            "Layer 3: alamat, gateway, ping"
+          ],
+          "visual": "TroubleshootLadder",
+          "teaches": [
+            "ccna-f-u03-if-states",
+            "ccna-f-u09-show-vlan",
+            "ccna-f-u10-show-trunk",
+            "ccna-f-u01-mac-learn"
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-e1",
+          "type": "match",
+          "concept": "troubleshoot-flow",
+          "prompt": "Match each question to the command that answers it.",
+          "pairs": [
+            [
+              "Is the interface up and does it have an address?",
+              "show ip interface brief"
+            ],
+            [
+              "Which VLAN (Virtual LAN) is each access port in?",
+              "show vlan brief"
+            ],
+            [
+              "Which VLANs cross the trunk?",
+              "show interfaces trunk"
+            ],
+            [
+              "On which port did the switch learn a MAC (Media Access Control) address?",
+              "show mac address-table"
+            ]
+          ],
+          "explanation": "Setiap perintah menjawab satu pertanyaan: status dan alamat, VLAN (Virtual LAN) port akses, VLAN di trunk, dan lokasi MAC (Media Access Control).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-sh-ip-int-br",
+            "ccna-f-u09-show-vlan",
+            "ccna-f-u10-show-trunk",
+            "ccna-f-u01-mac-learn"
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-e2",
+          "type": "exhibit",
+          "concept": "troubleshoot-flow",
+          "prompt": "Refer to the exhibit. PC1 (0050.7966.6811) is in VLAN (Virtual LAN) 10 and cannot reach its gateway. What is the problem?",
+          "outputs": [
+            {
+              "title": "SW1# show mac address-table dynamic",
+              "text": "          Mac Address Table\n-------------------------------------------\n\nVlan    Mac Address       Type        Ports\n----    -----------       --------    -----\n  10    0050.7966.6812    DYNAMIC     Fa0/2\n  20    0050.7966.6811    DYNAMIC     Fa0/3\n   1    0050.7966.6801    DYNAMIC     Gi0/1"
+            }
+          ],
+          "options": [
+            "PC1 was learned in VLAN 20, so its port is in the wrong VLAN",
+            "The switch has not learned the MAC (Media Access Control) address of PC1 on any port",
+            "The trunk on Gi0/1 carries too many VLANs for the gateway",
+            "The MAC (Media Access Control) aging time on SW1 is too short"
+          ],
+          "answer": 0,
+          "explanation": "Tabel MAC (Media Access Control) mencatat PC1 di VLAN (Virtual LAN) 20 pada Fa0/3, jadi port PC1 masuk VLAN yang salah. Switch sudah mempelajari MAC-nya, jadi kabel dan port berfungsi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-mac-learn",
+            "ccna-f-u09-access-cmd",
+            "ccna-f-u01-mac-aging"
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "syslog-read"
+          ],
+          "title": "Membaca log",
+          "body": "IOS mencatat kejadian penting sebagai pesan berbentuk %FACILITY-SEVERITY-MNEMONIC, misalnya %LINEPROTO-5-UPDOWN. Severity berupa angka 0 sampai 7; makin kecil makin parah. %LINK-3-UPDOWN melaporkan perubahan status interface, dan %LINEPROTO-5-UPDOWN perubahan line protocol. show logging menampilkan pesan yang tersimpan di buffer.",
+          "keyPoints": [
+            "%FACILITY-SEVERITY-MNEMONIC",
+            "0 paling parah, 7 paling ringan",
+            "show logging"
+          ],
+          "teaches": [
+            "ccna-f-u14-msg-format",
+            "ccna-f-u14-link-msgs",
+            "ccna-f-u14-show-logging"
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-e3",
+          "type": "choice",
+          "concept": "syslog-read",
+          "prompt": "In the message %LINEPROTO-5-UPDOWN, what does the number 5 tell you?",
+          "options": [
+            "The severity level",
+            "The interface number",
+            "How many times the event happened",
+            "The VLAN (Virtual LAN) of the port"
+          ],
+          "answer": 0,
+          "explanation": "Angka di tengah adalah severity, 0 sampai 7. Bagian sebelum angka adalah facility, dan bagian sesudahnya mnemonic.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-msg-format"
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-e4",
+          "type": "truefalse",
+          "concept": "syslog-read",
+          "prompt": "A message with severity 2 is more serious than a message with severity 6.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Makin kecil angka severity, makin parah kejadiannya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-msg-format"
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-e5",
+          "type": "exhibit",
+          "concept": "syslog-read",
+          "prompt": "Refer to the exhibit. What happened to GigabitEthernet0/1 at 10:15:22?",
+          "outputs": [
+            {
+              "title": "SW1# show logging | include Gi",
+              "text": "*Oct  3 10:15:22: %LINK-3-UPDOWN: Interface GigabitEthernet0/1, changed state to down\n*Oct  3 10:15:23: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to down"
+            }
+          ],
+          "options": [
+            "Layer 1 went down, then the line protocol followed",
+            "Someone entered the shutdown command on the interface first",
+            "The interface came up after a new cable was plugged in",
+            "Only a routing protocol neighbor was lost on that interface"
+          ],
+          "answer": 0,
+          "explanation": "%LINK-3-UPDOWN mengubah status menjadi down (layer 1), lalu %LINEPROTO-5-UPDOWN menunjukkan line protocol ikut down. Shutdown akan tercatat sebagai administratively down.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-link-msgs",
+            "ccna-f-u03-if-states"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u14-l2",
+      "title": "Ping dan extended ping",
+      "items": [
+        {
+          "id": "ccna-u14-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "ping-output"
+          ],
+          "title": "Membaca hasil ping",
+          "body": "Ping IOS mengirim lima ICMP (Internet Control Message Protocol) Echo berukuran 100 byte dengan timeout 2 detik. Setiap karakter adalah satu hasil: ! balasan diterima, . timeout, dan U berarti ada router yang mengirim ICMP unreachable. Ping pertama ke host di subnet lokal sering menunjukkan .!!!!, karena paket pertama hilang selama ARP (Address Resolution Protocol) berjalan.",
+          "keyPoints": [
+            "! berhasil, . timeout, U unreachable",
+            ".!!!!: menunggu ARP",
+            "Lima paket, 100 byte"
+          ],
+          "visual": "PingSymbols",
+          "teaches": [
+            "ccna-f-u14-ping-chars",
+            "ccna-f-u14-ping-arp",
+            "ccna-f-u14-ping-default"
+          ]
+        },
+        {
+          "id": "ccna-u14-l2-e1",
+          "type": "choice",
+          "concept": "ping-output",
+          "prompt": "R1 pings a host on its LAN (Local Area Network) for the first time and sees .!!!!. What is the most likely reason?",
+          "options": [
+            "ARP (Address Resolution Protocol) delayed the first packet",
+            "The host turns its network card off for one second out of every five",
+            "An ACL (access control list) on R1 drops exactly 20 percent of traffic",
+            "The cable has CRC (cyclic redundancy check) errors"
+          ],
+          "answer": 0,
+          "explanation": "Paket pertama hilang selama ARP (Address Resolution Protocol) berjalan; setelah itu semua berhasil. Masalah kabel atau filter tidak akan berpola seperti ini.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-ping-arp",
+            "ccna-f-u01-arp-purpose"
+          ]
+        },
+        {
+          "id": "ccna-u14-l2-e2",
+          "type": "match",
+          "concept": "ping-output",
+          "prompt": "Match each ping result to its meaning.",
+          "pairs": [
+            [
+              "!!!!!",
+              "Every reply came back"
+            ],
+            [
+              ".....",
+              "No reply before the timeout"
+            ],
+            [
+              "U.U.U",
+              "A router reports the destination is unreachable"
+            ],
+            [
+              ".!!!!",
+              "The first packet was lost, usually to ARP (Address Resolution Protocol)"
+            ]
+          ],
+          "explanation": "! berhasil, . timeout, U unreachable, dan .!!!! biasanya karena ARP (Address Resolution Protocol) pada paket pertama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-ping-chars",
+            "ccna-f-u14-ping-arp"
+          ]
+        },
+        {
+          "id": "ccna-u14-l2-e3",
+          "type": "truefalse",
+          "concept": "ping-output",
+          "prompt": "A period in IOS ping output means no reply arrived before the timeout.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Titik berarti timeout; U berarti ada router yang mengirim ICMP (Internet Control Message Protocol) unreachable.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-ping-chars"
+          ]
+        },
+        {
+          "id": "ccna-u14-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "extended-ping"
+          ],
+          "title": "Extended ping",
+          "body": "Ping biasa memakai alamat interface keluar sebagai sumber. Extended ping bisa mengatur alamat sumber, jumlah paket, ukuran, dan bit DF (don't fragment). Alamat sumber penting: ping dari interface LAN (Local Area Network) menguji apakah tujuan punya route balik ke subnet LAN itu, bukan hanya ke link antar router. Versi satu baris: ping diikuti tujuan, lalu source dan nama interface.",
+          "keyPoints": [
+            "Atur sumber, jumlah, ukuran, DF",
+            "Sumber LAN: uji route balik",
+            "ping <tujuan> source <interface>"
+          ],
+          "teaches": [
+            "ccna-f-u14-ext-ping",
+            "ccna-f-u14-ping-source"
+          ]
+        },
+        {
+          "id": "ccna-u14-l2-e4",
+          "type": "ios",
+          "concept": "extended-ping",
+          "prompt": "Hosts on the LAN (Local Area Network) of R1 (GigabitEthernet0/0/0) cannot reach 10.2.2.2, but R1 itself can. Ping 10.2.2.2 from R1 using the LAN interface as the source.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "outputs": {
+            "ping 10.2.2.2 source GigabitEthernet0/0/0": "Type escape sequence to abort.\nSending 5, 100-byte ICMP Echos to 10.2.2.2, timeout is 2 seconds:\nPacket sent with a source address of 192.168.1.1\n!!!!!\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 1/2/4 ms"
+          },
+          "goal": {
+            "run": [
+              "ping 10.2.2.2 source GigabitEthernet0/0/0"
+            ]
+          },
+          "solution": [
+            "ping 10.2.2.2 source g0/0/0"
+          ],
+          "explanation": "Dengan sumber G0/0/0, ping menguji apakah 10.2.2.2 punya route balik ke subnet LAN (Local Area Network). Hasil berhasil di sini berarti masalahnya ada di tempat lain, misalnya gateway host.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-ping-source",
+            "ccna-f-u14-ext-ping"
+          ]
+        },
+        {
+          "id": "ccna-u14-l2-e5",
+          "type": "choice",
+          "concept": "extended-ping",
+          "prompt": "R1 can ping 10.2.2.2 from its WAN (Wide Area Network) interface, but a ping sourced from its LAN (Local Area Network) interface fails. What is the most likely cause?",
+          "options": [
+            "No route back exists to the LAN subnet of R1",
+            "R1 has no route at all toward the network of 10.2.2.2",
+            "The LAN interface of R1 is shut down by an administrator",
+            "ARP (Address Resolution Protocol) is disabled on R1"
+          ],
+          "answer": 0,
+          "explanation": "Ping dari WAN (Wide Area Network) berhasil, jadi R1 punya route ke tujuan. Kalau dari LAN (Local Area Network) gagal, balasan ke subnet LAN tidak punya jalan pulang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-ext-ping"
+          ]
+        },
+        {
+          "id": "ccna-u14-l2-e6",
+          "type": "multi",
+          "concept": "extended-ping",
+          "prompt": "Which two settings can extended ping change? (Choose two.)",
+          "options": [
+            "The source address",
+            "The packet size",
+            "The destination MAC (Media Access Control) address",
+            "The routing table of the router"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Extended ping mengatur sumber, jumlah, ukuran, dan bit DF (don't fragment). MAC (Media Access Control) tujuan diatur ARP (Address Resolution Protocol), bukan oleh ping.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-ext-ping"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u14-l3",
+      "title": "Traceroute",
+      "items": [
+        {
+          "id": "ccna-u14-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "traceroute"
+          ],
+          "title": "Cara kerja traceroute",
+          "body": "traceroute IOS mengirim probe UDP (User Datagram Protocol) ke port tinggi, mulai 33434, dengan TTL (time to live) 1, lalu 2, dan seterusnya. Router yang membuang probe karena TTL habis membalas ICMP (Internet Control Message Protocol) time exceeded, sehingga muncul sebagai satu hop. Tujuan akhir membalas port unreachable. Bawaannya tiga probe per hop, maksimum 30 hop. tracert di Windows memakai ICMP Echo.",
+          "keyPoints": [
+            "TTL naik satu per satu",
+            "Router: time exceeded",
+            "Tujuan: port unreachable"
+          ],
+          "visual": "TracerouteTtl",
+          "teaches": [
+            "ccna-f-u14-tr-how",
+            "ccna-f-u14-tr-end",
+            "ccna-f-u14-tr-default",
+            "ccna-f-u14-tr-windows"
+          ]
+        },
+        {
+          "id": "ccna-u14-l3-e1",
+          "type": "order",
+          "concept": "traceroute",
+          "prompt": "Put the traceroute events in order for a path R1 to R2 to server.",
+          "items": [
+            "R1 sends a probe with TTL (time to live) 1",
+            "R2 drops it and sends ICMP (Internet Control Message Protocol) time exceeded",
+            "R1 sends a probe with TTL 2",
+            "The server answers with ICMP port unreachable"
+          ],
+          "explanation": "TTL (time to live) 1 berhenti di R2, lalu TTL 2 sampai ke server, yang membalas port unreachable.",
+          "requires": [
+            "ccna-f-u14-tr-how",
+            "ccna-f-u14-tr-end"
+          ]
+        },
+        {
+          "id": "ccna-u14-l3-e2",
+          "type": "choice",
+          "concept": "traceroute",
+          "prompt": "Which reply tells IOS traceroute that a probe reached the final destination?",
+          "options": [
+            "ICMP (Internet Control Message Protocol) port unreachable",
+            "ICMP (Internet Control Message Protocol) time exceeded",
+            "ICMP (Internet Control Message Protocol) echo reply",
+            "A TCP (Transmission Control Protocol) SYN (synchronize) segment from the target"
+          ],
+          "answer": 0,
+          "explanation": "Router di jalur membalas time exceeded; tujuan akhir membalas port unreachable karena tidak ada layanan di port UDP (User Datagram Protocol) tinggi itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-tr-end",
+            "ccna-f-u14-tr-how"
+          ]
+        },
+        {
+          "id": "ccna-u14-l3-e3",
+          "type": "choice",
+          "concept": "traceroute",
+          "prompt": "How does Windows tracert differ from Cisco IOS traceroute?",
+          "options": [
+            "tracert sends ICMP (Internet Control Message Protocol) Echo Requests instead of UDP (User Datagram Protocol) probes",
+            "tracert keeps one fixed TTL (time to live) of 30 for all probes and lists only the routers that answer",
+            "tracert only shows the last hop",
+            "tracert needs a source interface"
+          ],
+          "answer": 0,
+          "explanation": "tracert memakai ICMP (Internet Control Message Protocol) Echo, sedangkan IOS traceroute memakai UDP (User Datagram Protocol) ke port tinggi. Keduanya menaikkan TTL (time to live) satu per satu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-tr-windows",
+            "ccna-f-u14-tr-how"
+          ]
+        },
+        {
+          "id": "ccna-u14-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "traceroute-read"
+          ],
+          "title": "Membaca hasil traceroute",
+          "body": "Setiap baris adalah satu hop dengan alamat router dan waktu tiga probe. Tanda * berarti probe itu tidak dijawab dalam batas waktu. Kalau output berhenti di satu hop lalu hanya berisi *, paket biasanya berhenti setelah router terakhir yang menjawab: periksa route atau filter di hop berikutnya.",
+          "keyPoints": [
+            "Satu baris, satu hop",
+            "* = tidak dijawab",
+            "Berhenti: periksa hop berikutnya"
+          ],
+          "teaches": [
+            "ccna-f-u14-tr-star",
+            "ccna-f-u14-tr-default"
+          ]
+        },
+        {
+          "id": "ccna-u14-l3-e4",
+          "type": "exhibit",
+          "concept": "traceroute-read",
+          "prompt": "Refer to the exhibit. Where should you start looking for the problem?",
+          "outputs": [
+            {
+              "title": "R1# traceroute 10.9.9.9",
+              "text": "Type escape sequence to abort.\nTracing the route to 10.9.9.9\nVRF info: (vrf in name/id, vrf out name/id)\n  1 10.0.12.2 1 msec 1 msec 0 msec\n  2 10.0.23.3 1 msec 1 msec 2 msec\n  3  *  *  *\n  4  *  *  *"
+            }
+          ],
+          "options": [
+            "At 10.0.23.3 and the next hop after it",
+            "At 10.0.12.2, the first hop of the path",
+            "On the PC that started the trace",
+            "Nowhere, because the trace finished successfully"
+          ],
+          "answer": 0,
+          "explanation": "Hop 1 dan 2 menjawab, lalu hanya ada *. Paket berhenti setelah 10.0.23.3, jadi mulai dari router itu: apakah punya route ke tujuan, atau ada filter.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-tr-star",
+            "ccna-f-u14-tr-how"
+          ]
+        },
+        {
+          "id": "ccna-u14-l3-e5",
+          "type": "ios",
+          "concept": "traceroute-read",
+          "prompt": "Trace the path from R1 to 10.3.3.3.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "outputs": {
+            "traceroute 10.3.3.3": "Type escape sequence to abort.\nTracing the route to 10.3.3.3\nVRF info: (vrf in name/id, vrf out name/id)\n  1 10.0.12.2 1 msec 1 msec 0 msec\n  2 10.0.23.3 1 msec 2 msec 1 msec\n  3 10.3.3.3 2 msec 1 msec 2 msec"
+          },
+          "goal": {
+            "run": [
+              "traceroute 10.3.3.3"
+            ]
+          },
+          "solution": [
+            "traceroute 10.3.3.3"
+          ],
+          "explanation": "Ketiga hop menjawab, dan baris terakhir adalah tujuan itu sendiri, jadi jalurnya lengkap.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-tr-how",
+            "ccna-f-u14-tr-end"
+          ]
+        },
+        {
+          "id": "ccna-u14-l3-e6",
+          "type": "truefalse",
+          "concept": "traceroute-read",
+          "prompt": "An asterisk in traceroute output always means the router at that hop is powered off.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. * hanya berarti probe tidak dijawab dalam batas waktu, misalnya karena filter atau router yang memilih tidak membalas.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-tr-star"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u14-l4",
+      "title": "Membaca packet capture",
+      "items": [
+        {
+          "id": "ccna-u14-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "packet-capture"
+          ],
+          "title": "Packet capture",
+          "body": "Kalau show dan ping belum cukup, lihat paketnya langsung. Di PC biasanya dipakai aplikasi capture; di Cisco IOS XE ada Embedded Packet Capture (EPC) dengan perintah monitor capture, yang hasilnya bisa diekspor ke file. Capture menunjukkan apa yang benar-benar lewat: alamat, protokol, dan flag.",
+          "keyPoints": [
+            "Lihat paket yang benar-benar lewat",
+            "IOS XE: monitor capture",
+            "Ekspor ke file"
+          ],
+          "teaches": [
+            "ccna-f-u14-epc"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e1",
+          "type": "choice",
+          "concept": "packet-capture",
+          "prompt": "Which Cisco IOS XE feature captures packets on the router itself?",
+          "options": [
+            "Embedded Packet Capture",
+            "show logging with a larger logging buffer",
+            "CDP (Cisco Discovery Protocol)",
+            "Extended ping"
+          ],
+          "answer": 0,
+          "explanation": "Embedded Packet Capture menangkap paket di perangkat. show logging hanya berisi pesan sistem.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-epc",
+            "ccna-f-u14-show-logging"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "capture-fields"
+          ],
+          "title": "Membaca field penting",
+          "body": "Di header IPv4, field Protocol menunjukkan isi paket: 1 ICMP (Internet Control Message Protocol), 6 TCP (Transmission Control Protocol), 17 UDP (User Datagram Protocol). TTL (time to live) berkurang di setiap router. Di TCP, SYN (synchronize) membuka koneksi; kalau dijawab RST (reset), host tujuan tidak menerima koneksi di port itu. Di setiap router, MAC (Media Access Control) frame berganti, tapi alamat IP (Internet Protocol) sumber dan tujuan tetap.",
+          "keyPoints": [
+            "Protocol: 1, 6, 17",
+            "TTL turun per router",
+            "SYN dijawab RST: port tertutup"
+          ],
+          "teaches": [
+            "ccna-f-u14-proto-num",
+            "ccna-f-u14-ttl",
+            "ccna-f-u14-tcp-rst",
+            "ccna-f-u01-rewrite"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e2",
+          "type": "exhibit",
+          "concept": "capture-fields",
+          "prompt": "Refer to the exhibit. A user cannot open the web app on 10.2.2.20. What does the capture show?",
+          "outputs": [
+            {
+              "title": "Capture di PC1",
+              "text": "No.  Source        Destination   Protocol  Info\n1    192.168.1.10  10.2.2.20     TCP       51514 > 443 [SYN]\n2    10.2.2.20     192.168.1.10  TCP       443 > 51514 [RST, ACK]\n3    192.168.1.10  10.2.2.20     TCP       51515 > 443 [SYN]\n4    10.2.2.20     192.168.1.10  TCP       443 > 51515 [RST, ACK]"
+            }
+          ],
+          "options": [
+            "The server refuses connections on port 443",
+            "The packets never reach the server",
+            "DNS (Domain Name System) fails to resolve the name",
+            "The TCP (Transmission Control Protocol) handshake completes normally"
+          ],
+          "answer": 0,
+          "explanation": "SYN (synchronize) ke port 443 dijawab RST (reset) dari server: paket sampai, tapi tidak ada layanan yang menerima koneksi di port itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-tcp-rst",
+            "ccna-f-u01-tcp-handshake"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e3",
+          "type": "choice",
+          "concept": "capture-fields",
+          "prompt": "An IPv4 header shows Protocol 17. What is inside the packet?",
+          "options": [
+            "UDP (User Datagram Protocol)",
+            "TCP (Transmission Control Protocol)",
+            "ICMP (Internet Control Message Protocol)",
+            "OSPF (Open Shortest Path First)"
+          ],
+          "answer": 0,
+          "explanation": "Protocol 17 adalah UDP (User Datagram Protocol); 6 adalah TCP (Transmission Control Protocol) dan 1 adalah ICMP (Internet Control Message Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-proto-num"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e4",
+          "type": "truefalse",
+          "concept": "capture-fields",
+          "prompt": "When a packet crosses a router, its source and destination IP (Internet Protocol) addresses change, but the MAC (Media Access Control) addresses stay the same.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Kebalikannya: MAC (Media Access Control) diganti di setiap router, sedangkan alamat IP (Internet Protocol) tetap (kecuali ada NAT (Network Address Translation)).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-rewrite"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e5",
+          "type": "choice",
+          "concept": "capture-fields",
+          "prompt": "A capture taken on R2 shows a packet from PC1 with TTL (time to live) 126. PC1 started it with TTL 128. How many routers did it cross before R2 received it?",
+          "options": [
+            "2",
+            "126",
+            "128",
+            "0"
+          ],
+          "answer": 0,
+          "explanation": "TTL (time to live) berkurang satu di setiap router: 128 - 126 = 2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-ttl"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u14-l5",
+      "title": "Lab: mencari kerusakan",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u14-l4"
+      },
+      "items": [
+        {
+          "id": "ccna-u14-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "fault-lab"
+          ],
+          "title": "Alur kerja mencari kerusakan",
+          "body": "Ikuti urutan yang sama setiap kali: status interface, lalu VLAN (Virtual LAN) dan trunk, lalu alamat dan gateway, lalu ping dan traceroute. Catat apa yang dicoret di setiap langkah. Perbaiki satu hal, uji lagi, baru lanjut.",
+          "keyPoints": [
+            "Urutan tetap",
+            "Satu perbaikan, satu uji",
+            "Catat yang sudah dicoret"
+          ],
+          "teaches": [
+            "ccna-f-u03-if-states",
+            "ccna-f-u09-show-vlan",
+            "ccna-f-u14-ping-chars"
+          ]
+        },
+        {
+          "id": "ccna-u14-l5-e1",
+          "type": "exhibit",
+          "concept": "fault-lab",
+          "prompt": "Refer to the exhibit. PC2 on Fa0/2 cannot reach anything. What is the first fix?",
+          "outputs": [
+            {
+              "title": "SW1# show interfaces status",
+              "text": "Port      Name     Status       Vlan       Duplex  Speed Type\nFa0/1              connected    10         a-full  a-100 10/100BaseTX\nFa0/2              disabled     10           auto   auto 10/100BaseTX\nGi0/1              connected    trunk      a-full a-1000 10/100/1000BaseTX"
+            }
+          ],
+          "options": [
+            "Bring up the disabled Fa0/2",
+            "Move Fa0/2 to VLAN (Virtual LAN) 10",
+            "Replace the cable on the Gi0/1 trunk port",
+            "Enable PortFast on Gi0/1"
+          ],
+          "answer": 0,
+          "explanation": "Fa0/2 berstatus disabled, artinya administratively down. Perbaiki layer 1 dulu dengan no shutdown sebelum memeriksa VLAN (Virtual LAN).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-status-cmd",
+            "ccna-f-u03-if-states"
+          ]
+        },
+        {
+          "id": "ccna-u14-l5-e2",
+          "type": "ios",
+          "concept": "fault-lab",
+          "prompt": "FastEthernet0/2 on SW1 is administratively down. Bring it up and check the interface summary.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface FastEthernet0/2",
+              "lines": [
+                "switchport mode access",
+                "switchport access vlan 10",
+                "shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "FastEthernet0/2"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "no shutdown"
+              }
+            ],
+            "run": [
+              "show ip interface brief"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/2",
+            "no shutdown",
+            "end",
+            "show ip interface brief"
+          ],
+          "explanation": "no shutdown menyalakan port; show ip interface brief memastikan status-nya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u03-if-states",
+            "ccna-f-u04-sh-ip-int-br"
+          ]
+        },
+        {
+          "id": "ccna-u14-l5-e3",
+          "type": "ios",
+          "concept": "fault-lab",
+          "prompt": "After the fix, prove that R1 can reach the server 10.2.2.2 when the ping comes from its LAN (Local Area Network) interface GigabitEthernet0/0/0.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "outputs": {
+            "ping 10.2.2.2 source GigabitEthernet0/0/0": "Type escape sequence to abort.\nSending 5, 100-byte ICMP Echos to 10.2.2.2, timeout is 2 seconds:\nPacket sent with a source address of 192.168.1.1\n!!!!!\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 1/2/4 ms"
+          },
+          "goal": {
+            "run": [
+              "ping 10.2.2.2 source GigabitEthernet0/0/0"
+            ]
+          },
+          "solution": [
+            "ping 10.2.2.2 source g0/0/0"
+          ],
+          "explanation": "Ping dengan sumber interface LAN (Local Area Network) membuktikan jalur pergi dan pulang untuk subnet LAN.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-ping-source",
+            "ccna-f-u14-ext-ping"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u14-msg-format",
+      "statement": "Pesan sistem IOS berbentuk %FACILITY-SEVERITY-MNEMONIC diikuti deskripsi, misalnya %LINEPROTO-5-UPDOWN; severity berupa angka 0 sampai 7, dan makin kecil makin parah.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/SysMsgLogging.html"
+    },
+    {
+      "id": "ccna-f-u14-show-logging",
+      "statement": "show logging menampilkan isi buffer log perangkat, termasuk pesan perubahan status interface.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/SysMsgLogging.html"
+    },
+    {
+      "id": "ccna-f-u14-link-msgs",
+      "statement": "%LINK-3-UPDOWN melaporkan perubahan status interface (layer 1), sedangkan %LINEPROTO-5-UPDOWN melaporkan perubahan status line protocol (layer 2).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/SysMsgLogging.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u14-ping-chars",
+      "statement": "Di output ping IOS, ! berarti balasan diterima, . berarti timeout, dan U berarti router mengirim ICMP unreachable.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-software-releases-121-mainline/12778-ping-traceroute.html"
+    },
+    {
+      "id": "ccna-f-u14-ping-arp",
+      "statement": "Ping pertama ke tujuan di subnet lokal sering menunjukkan .!!!!, karena paket pertama hilang selama perangkat menunggu ARP selesai.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-software-releases-121-mainline/12778-ping-traceroute.html"
+    },
+    {
+      "id": "ccna-f-u14-ping-default",
+      "statement": "Secara bawaan ping IOS mengirim lima ICMP Echo berukuran 100 byte dengan timeout 2 detik.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-software-releases-121-mainline/12778-ping-traceroute.html"
+    },
+    {
+      "id": "ccna-f-u14-ext-ping",
+      "statement": "Extended ping bisa mengatur alamat sumber, jumlah paket, ukuran, dan bit DF (don't fragment); alamat sumber dipakai untuk menguji apakah tujuan punya route balik ke subnet sumber itu.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13730-ext-ping-trace.html"
+    },
+    {
+      "id": "ccna-f-u14-ping-source",
+      "statement": "ping <tujuan> source <interface> mengirim ping dengan alamat interface itu sebagai alamat sumber.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13730-ext-ping-trace.html"
+    },
+    {
+      "id": "ccna-f-u14-tr-how",
+      "statement": "traceroute IOS mengirim probe UDP ke port tinggi, mulai 33434, dengan TTL yang naik dari 1; router yang membuang probe karena TTL habis membalas ICMP time exceeded, sehingga router di jalur muncul satu per satu.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13730-ext-ping-trace.html"
+    },
+    {
+      "id": "ccna-f-u14-tr-end",
+      "statement": "Tujuan akhir membalas probe traceroute dengan ICMP port unreachable, tanda traceroute sudah sampai.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-software-releases-121-mainline/12778-ping-traceroute.html"
+    },
+    {
+      "id": "ccna-f-u14-tr-star",
+      "statement": "Tanda * di output traceroute berarti probe itu tidak dijawab dalam batas waktu.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-software-releases-121-mainline/12778-ping-traceroute.html"
+    },
+    {
+      "id": "ccna-f-u14-tr-default",
+      "statement": "Secara bawaan traceroute IOS mengirim tiga probe per hop dengan TTL maksimum 30.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13730-ext-ping-trace.html"
+    },
+    {
+      "id": "ccna-f-u14-tr-windows",
+      "statement": "tracert di Windows mengirim ICMP Echo Request dengan TTL yang naik, bukan probe UDP.",
+      "source": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tracert"
+    },
+    {
+      "id": "ccna-f-u14-epc",
+      "statement": "Embedded Packet Capture (EPC) di Cisco IOS XE menangkap paket yang masuk, keluar, atau melewati perangkat dengan perintah monitor capture, dan hasilnya bisa diekspor ke file.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/epc/configuration/xe-17/epc-xe-17-book/nm-packet-capture-xe.html"
+    },
+    {
+      "id": "ccna-f-u14-ttl",
+      "statement": "Field TTL (time to live) di header IPv4 berkurang di setiap router, dan paket dibuang saat TTL mencapai 0.",
+      "source": "https://www.rfc-editor.org/rfc/rfc791.html"
+    },
+    {
+      "id": "ccna-f-u14-proto-num",
+      "statement": "Field Protocol di header IPv4 menunjukkan isi paket: 1 untuk ICMP, 6 untuk TCP, dan 17 untuk UDP.",
+      "source": "https://www.iana.org/assignments/protocol-numbers"
+    },
+    {
+      "id": "ccna-f-u14-tcp-rst",
+      "statement": "Di TCP, segmen dengan flag RST menolak atau memutus koneksi; SYN yang dijawab RST berarti host tujuan tidak menerima koneksi di port itu.",
+      "source": "https://www.rfc-editor.org/rfc/rfc9293.html"
+    }
+  ]
+}

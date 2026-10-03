@@ -1,0 +1,827 @@
+{
+  "id": "ccna-u27-ansible",
+  "path": 5,
+  "title": "Ansible",
+  "lessons": [
+    {
+      "id": "ccna-u27-l1",
+      "title": "Konsep Ansible",
+      "items": [
+        {
+          "id": "ccna-u27-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "ansible"
+          ],
+          "title": "Cara kerja Ansible",
+          "body": "Ansible adalah alat otomasi. Perintahnya dijalankan di control node, biasanya komputer Linux, dan perangkat yang dikendalikan disebut managed node. Ansible tidak butuh agent di perangkat: untuk router dan switch, Ansible terhubung lewat SSH (Secure Shell). Berbeda dengan server, modul untuk perangkat jaringan berjalan di control node itu sendiri.",
+          "keyPoints": [
+            "Control node menjalankan Ansible",
+            "Tanpa agent, lewat SSH",
+            "Modul jaringan berjalan di control node"
+          ],
+          "visual": "AnsibleFlow",
+          "teaches": [
+            "ccna-f-u27-control-node",
+            "ccna-f-u27-agentless",
+            "ccna-f-u27-net-modules"
+          ]
+        },
+        {
+          "id": "ccna-u27-l1-e1",
+          "type": "choice",
+          "concept": "ansible",
+          "prompt": "What must be installed on a Cisco router before Ansible can manage it?",
+          "options": [
+            "Only SSH (Secure Shell) access",
+            "An Ansible agent",
+            "Python and the Ansible package",
+            "A Linux shell"
+          ],
+          "answer": 0,
+          "explanation": "Ansible tanpa agent; router cukup bisa diakses lewat SSH (Secure Shell). Modul jaringan berjalan di control node.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-agentless",
+            "ccna-f-u27-net-modules"
+          ]
+        },
+        {
+          "id": "ccna-u27-l1-e2",
+          "type": "truefalse",
+          "concept": "ansible",
+          "prompt": "For network devices, Ansible modules run on the control node rather than on the router.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Modul jaringan berjalan di control node lalu bicara ke perangkat lewat SSH (Secure Shell).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-net-modules"
+          ]
+        },
+        {
+          "id": "ccna-u27-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "ansible-parts"
+          ],
+          "title": "Inventory, playbook, task, modul",
+          "body": "Inventory adalah daftar perangkat, dikelompokkan, misalnya grup routers. Playbook adalah file YAML (YAML Ain't Markup Language) berisi play; setiap play memetakan host ke daftar task. Task menjalankan satu modul dengan argumennya, dan modul yang benar-benar bekerja. Sebagian besar modul idempotent: kalau keadaan yang diinginkan sudah tercapai, tidak ada yang diubah.",
+          "keyPoints": [
+            "Inventory: daftar perangkat",
+            "Play: host ke task",
+            "Idempotent: aman diulang"
+          ],
+          "teaches": [
+            "ccna-f-u27-inventory",
+            "ccna-f-u27-playbook",
+            "ccna-f-u27-task-module",
+            "ccna-f-u27-idempotent"
+          ]
+        },
+        {
+          "id": "ccna-u27-l1-e3",
+          "type": "match",
+          "concept": "ansible-parts",
+          "prompt": "Match each Ansible term to its description.",
+          "pairs": [
+            [
+              "Inventory",
+              "List of managed nodes and their groups"
+            ],
+            [
+              "Playbook",
+              "YAML (YAML Ain't Markup Language) file that holds plays"
+            ],
+            [
+              "Task",
+              "Calls one module with arguments"
+            ],
+            [
+              "Module",
+              "Code that does the actual work"
+            ],
+            [
+              "Control node",
+              "Computer that runs ansible-playbook"
+            ]
+          ],
+          "explanation": "Inventory daftar perangkat, playbook berisi play, task memanggil modul, modul bekerja, dan control node menjalankan semuanya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-inventory",
+            "ccna-f-u27-playbook",
+            "ccna-f-u27-task-module",
+            "ccna-f-u27-control-node"
+          ]
+        },
+        {
+          "id": "ccna-u27-l1-e4",
+          "type": "choice",
+          "concept": "ansible-parts",
+          "prompt": "A playbook that adds a VLAN (Virtual LAN) runs twice. The VLAN already exists on the second run, so nothing changes. Which property is this?",
+          "options": [
+            "Idempotence",
+            "Agentless design",
+            "Check mode",
+            "Privilege escalation"
+          ],
+          "answer": 0,
+          "explanation": "Hasil yang sama walau dijalankan berulang disebut idempotent.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-idempotent"
+          ]
+        },
+        {
+          "id": "ccna-u27-l1-e5",
+          "type": "truefalse",
+          "concept": "ansible-parts",
+          "prompt": "Each play in a playbook maps a group of hosts to a list of tasks.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Play menentukan host mana dan task apa.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-playbook"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u27-l2",
+      "title": "Dasar YAML",
+      "branch": {
+        "kind": "prereq",
+        "from": "ccna-u27-l1"
+      },
+      "items": [
+        {
+          "id": "ccna-u27-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "yaml"
+          ],
+          "title": "Dasar YAML",
+          "body": "Playbook dan banyak inventory ditulis dalam YAML (YAML Ain't Markup Language). File biasanya diawali tiga tanda minus. Dictionary ditulis kunci, titik dua, spasi, lalu nilai. Item list diawali tanda minus dan spasi. Susunan bersarang ditunjukkan dengan indentasi spasi, dan tab tidak boleh dipakai.",
+          "keyPoints": [
+            "Awal: ---",
+            "kunci: nilai",
+            "- item list, indentasi spasi"
+          ],
+          "visual": "YamlShapes",
+          "teaches": [
+            "ccna-f-u27-yaml-start",
+            "ccna-f-u27-yaml-dict",
+            "ccna-f-u27-yaml-list",
+            "ccna-f-u27-yaml-indent"
+          ]
+        },
+        {
+          "id": "ccna-u27-l2-e1",
+          "type": "template",
+          "concept": "yaml",
+          "prompt": "How many items does the list under vlans hold?",
+          "language": "yaml",
+          "code": "---\nhostname: R1\nvlans:\n  - 10\n  - 20\n  - 30\nlocation: Rak-2",
+          "fileName": "vars.yml",
+          "options": [
+            "3",
+            "1",
+            "4",
+            "6"
+          ],
+          "answer": 0,
+          "explanation": "Tiga baris berawalan tanda minus di bawah vlans adalah tiga item list. hostname dan location adalah kunci terpisah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-yaml-list",
+            "ccna-f-u27-yaml-dict"
+          ]
+        },
+        {
+          "id": "ccna-u27-l2-e2",
+          "type": "truefalse",
+          "concept": "yaml",
+          "prompt": "YAML (YAML Ain't Markup Language) allows tab characters for indentation.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Indentasi YAML (YAML Ain't Markup Language) memakai spasi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-yaml-indent"
+          ]
+        },
+        {
+          "id": "ccna-u27-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "yaml-values"
+          ],
+          "title": "Nilai dan komentar",
+          "body": "Nilai seperti true dan false dibaca sebagai boolean, angka sebagai angka, dan sisanya sebagai string. Tanda pagar memulai komentar yang diabaikan. Nilai sebuah kunci juga bisa berupa dictionary lain atau list, ditulis di baris berikutnya dengan indentasi lebih dalam.",
+          "keyPoints": [
+            "true dan false: boolean",
+            "# komentar",
+            "Nilai bisa dict atau list bersarang"
+          ],
+          "teaches": [
+            "ccna-f-u27-yaml-bool",
+            "ccna-f-u27-yaml-dict",
+            "ccna-f-u27-yaml-list"
+          ]
+        },
+        {
+          "id": "ccna-u27-l2-e3",
+          "type": "template",
+          "concept": "yaml-values",
+          "prompt": "What is the value of enabled for interface GigabitEthernet0/0/1?",
+          "language": "yaml",
+          "code": "---\ninterfaces:\n  - name: GigabitEthernet0/0/0\n    enabled: true   # ke LAN\n  - name: GigabitEthernet0/0/1\n    enabled: false  # cadangan",
+          "fileName": "vars.yml",
+          "options": [
+            "false",
+            "true",
+            "cadangan",
+            "GigabitEthernet0/0/1"
+          ],
+          "answer": 0,
+          "explanation": "Item kedua punya enabled: false; teks setelah tanda pagar adalah komentar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-yaml-bool",
+            "ccna-f-u27-yaml-list"
+          ]
+        },
+        {
+          "id": "ccna-u27-l2-e4",
+          "type": "choice",
+          "concept": "yaml-values",
+          "prompt": "Which YAML (YAML Ain't Markup Language) snippet is a list of two VLAN (Virtual LAN) IDs (identifier)?",
+          "options": [
+            "vlans:\n  - 10\n  - 20",
+            "vlans: 10 20 # two items",
+            "vlans:\n  10: 20",
+            "- vlans 10, 20, as a list"
+          ],
+          "answer": 0,
+          "explanation": "Item list diawali tanda minus dengan indentasi yang sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-yaml-list"
+          ]
+        },
+        {
+          "id": "ccna-u27-l2-e5",
+          "type": "multi",
+          "concept": "yaml-values",
+          "prompt": "Which two lines are valid YAML (YAML Ain't Markup Language) key-value pairs? (Choose two.)",
+          "options": [
+            "hostname: R1",
+            "enabled: true",
+            "hostname=R1",
+            "hostname:R1:"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Pasangan kunci dan nilai memakai titik dua dan spasi. Tanda sama dengan bukan sintaks YAML (YAML Ain't Markup Language).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-yaml-dict",
+            "ccna-f-u27-yaml-bool"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u27-l3",
+      "title": "Inventory dan playbook",
+      "items": [
+        {
+          "id": "ccna-u27-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "inventory"
+          ],
+          "title": "Inventory untuk IOS",
+          "body": "Inventory format INI (initialization file format) menulis grup di dalam kurung siku, misalnya [routers], lalu nama host di bawahnya dengan ansible_host berisi alamatnya. Variabel grup untuk IOS: ansible_connection berisi ansible.netcommon.network_cli dan ansible_network_os berisi cisco.ios.ios. Untuk privileged EXEC, ansible_become: true dengan ansible_become_method: enable. Password dienkripsi dengan Ansible Vault, bukan ditulis biasa.",
+          "keyPoints": [
+            "[routers] lalu host",
+            "network_cli dan cisco.ios.ios",
+            "become dengan enable, password di Vault"
+          ],
+          "teaches": [
+            "ccna-f-u27-ini-inventory",
+            "ccna-f-u27-ios-vars",
+            "ccna-f-u27-become",
+            "ccna-f-u27-vault"
+          ]
+        },
+        {
+          "id": "ccna-u27-l3-e1",
+          "type": "template",
+          "concept": "inventory",
+          "prompt": "Which value belongs on the blank line for ansible_network_os?",
+          "language": "yaml",
+          "code": "---\n# group_vars/routers.yml\nansible_connection: ansible.netcommon.network_cli\nansible_network_os: ________\nansible_user: otomasi\nansible_become: true\nansible_become_method: enable",
+          "fileName": "group_vars/routers.yml",
+          "options": [
+            "cisco.ios.ios",
+            "linux",
+            "ssh",
+            "cisco.ios.ios_config"
+          ],
+          "answer": 0,
+          "explanation": "Untuk IOS, ansible_network_os berisi cisco.ios.ios. ios_config adalah nama modul, bukan platform.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-ios-vars"
+          ]
+        },
+        {
+          "id": "ccna-u27-l3-e2",
+          "type": "choice",
+          "concept": "inventory",
+          "prompt": "Why does the inventory set ansible_become_method to enable for IOS devices?",
+          "options": [
+            "So tasks can run in privileged EXEC mode",
+            "So the playbook runs faster",
+            "So the device installs an agent",
+            "So SSH (Secure Shell) is replaced by Telnet"
+          ],
+          "answer": 0,
+          "explanation": "become dengan metode enable membawa sesi ke privileged EXEC.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-become"
+          ]
+        },
+        {
+          "id": "ccna-u27-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "playbook"
+          ],
+          "title": "Susunan playbook",
+          "body": "Playbook diawali tanda minus untuk play pertama: name, hosts (grup dari inventory), lalu tasks. Untuk perangkat jaringan, gather_facts: false sering dipakai supaya Ansible tidak mengumpulkan fakta server. Setiap task di bawah tasks diawali tanda minus, punya name, lalu nama modul dan argumennya.",
+          "keyPoints": [
+            "- name, hosts, tasks",
+            "gather_facts: false",
+            "Task: name lalu modul"
+          ],
+          "visual": "PlaybookAnatomy",
+          "teaches": [
+            "ccna-f-u27-playbook",
+            "ccna-f-u27-task-module",
+            "ccna-f-u27-yaml-list"
+          ]
+        },
+        {
+          "id": "ccna-u27-l3-e3",
+          "type": "template",
+          "concept": "playbook",
+          "prompt": "Which host group does this play target?",
+          "language": "yaml",
+          "code": "---\n- name: Cek versi\n  hosts: routers\n  gather_facts: false\n  tasks:\n    - name: Ambil show version\n      cisco.ios.ios_command:\n        commands:\n          - show version",
+          "fileName": "cek.yml",
+          "options": [
+            "routers",
+            "Cek versi",
+            "show version",
+            "all hosts in the inventory"
+          ],
+          "answer": 0,
+          "explanation": "hosts menentukan grup dari inventory, di sini routers. name hanya label.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-playbook"
+          ]
+        },
+        {
+          "id": "ccna-u27-l3-e4",
+          "type": "truefalse",
+          "concept": "playbook",
+          "prompt": "In a playbook, the name of a task decides which module runs.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. name hanya label; kunci modul, misalnya cisco.ios.ios_command, menentukan apa yang dijalankan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-task-module"
+          ]
+        },
+        {
+          "id": "ccna-u27-l3-e5",
+          "type": "order",
+          "concept": "playbook",
+          "prompt": "Order these keys as they usually appear in a play.",
+          "items": [
+            "name",
+            "hosts",
+            "gather_facts",
+            "tasks"
+          ],
+          "explanation": "Biasanya name, hosts, gather_facts, lalu tasks; tasks berisi daftar task.",
+          "requires": [
+            "ccna-f-u27-playbook"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u27-l4",
+      "title": "Menjalankan perintah di IOS",
+      "items": [
+        {
+          "id": "ccna-u27-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "ios-modules"
+          ],
+          "title": "ios_command dan ios_config",
+          "body": "cisco.ios.ios_command mengirim perintah seperti show dan mengembalikan hasilnya; modul ini tidak bisa dipakai di mode konfigurasi. cisco.ios.ios_config mengubah konfigurasi: lines berisi perintah, dan parents menunjukkan bagian konfigurasi, misalnya interface GigabitEthernet0/0/1. Supaya idempotent, lines ditulis persis seperti di running-config.",
+          "keyPoints": [
+            "ios_command: show",
+            "ios_config: lines dan parents",
+            "lines persis seperti running-config"
+          ],
+          "teaches": [
+            "ccna-f-u27-ios-command",
+            "ccna-f-u27-ios-config",
+            "ccna-f-u27-ios-config-idem"
+          ]
+        },
+        {
+          "id": "ccna-u27-l4-e1",
+          "type": "template",
+          "concept": "ios-modules",
+          "prompt": "What does this task do?",
+          "language": "yaml",
+          "code": "- name: Deskripsi uplink\n  cisco.ios.ios_config:\n    parents: interface GigabitEthernet0/0/1\n    lines:\n      - description Ke ISP",
+          "fileName": "uplink.yml",
+          "options": [
+            "Adds the description under interface GigabitEthernet0/0/1",
+            "Runs show interface GigabitEthernet0/0/1",
+            "Adds a global description line",
+            "Saves the configuration"
+          ],
+          "answer": 0,
+          "explanation": "parents menentukan bagian interface, dan lines berisi perintah di dalamnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-ios-config"
+          ]
+        },
+        {
+          "id": "ccna-u27-l4-e2",
+          "type": "choice",
+          "concept": "ios-modules",
+          "prompt": "Which module should collect the output of show ip interface brief from 50 routers?",
+          "options": [
+            "cisco.ios.ios_command",
+            "cisco.ios.ios_config",
+            "ansible.builtin.copy",
+            "cisco.ios.ios_interfaces"
+          ],
+          "answer": 0,
+          "explanation": "ios_command menjalankan perintah show dan mengembalikan hasilnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-ios-command"
+          ]
+        },
+        {
+          "id": "ccna-u27-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "run-ansible"
+          ],
+          "title": "Menjalankan dan menyimpan",
+          "body": "ansible-playbook -i diikuti inventory dan nama playbook menjalankan playbook. Opsi --check menjalankannya dalam check mode, yang melaporkan apa yang akan berubah tanpa mengubah perangkat. Bawaannya ios_config tidak menyimpan ke startup-config; save_when: modified menyimpan kalau running-config berubah.",
+          "keyPoints": [
+            "ansible-playbook -i <inventory> <playbook>",
+            "--check: uji tanpa mengubah",
+            "save_when: modified untuk menyimpan"
+          ],
+          "teaches": [
+            "ccna-f-u27-run-playbook",
+            "ccna-f-u27-check-mode",
+            "ccna-f-u27-save-when"
+          ]
+        },
+        {
+          "id": "ccna-u27-l4-e3",
+          "type": "choice",
+          "concept": "run-ansible",
+          "prompt": "An engineer wants to see what a playbook would change on the routers without changing anything. Which option helps?",
+          "options": [
+            "--check",
+            "--save",
+            "--force",
+            "--agent"
+          ],
+          "answer": 0,
+          "explanation": "Check mode melaporkan perubahan tanpa menerapkannya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-check-mode"
+          ]
+        },
+        {
+          "id": "ccna-u27-l4-e4",
+          "type": "truefalse",
+          "concept": "run-ansible",
+          "prompt": "By default, cisco.ios.ios_config copies the running configuration to the startup configuration after every change.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Bawaannya tidak disimpan; pakai save_when, misalnya modified.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-save-when"
+          ]
+        },
+        {
+          "id": "ccna-u27-l4-e5",
+          "type": "multi",
+          "concept": "run-ansible",
+          "prompt": "Which two statements about ios_config are true? (Choose two.)",
+          "options": [
+            "parents selects the configuration section, such as an interface",
+            "lines should match the running-config text exactly for idempotence",
+            "It cannot change interface settings",
+            "It needs an agent on the router"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "parents memilih bagian, dan lines yang persis sama menjaga idempotence. Modul ini bisa mengubah interface dan tidak butuh agent.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-ios-config",
+            "ccna-f-u27-ios-config-idem",
+            "ccna-f-u27-agentless"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u27-l5",
+      "title": "Lab: Ansible ke router",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u27-l4"
+      },
+      "items": [
+        {
+          "id": "ccna-u27-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "ansible-lab"
+          ],
+          "title": "Rencana lab",
+          "body": "Router harus siap dulu: SSH (Secure Shell) versi 2, user lokal untuk Ansible, dan enable secret untuk become. Lalu dari control node Linux, inventory berisi R1, dan playbook mengatur deskripsi interface serta menyimpan konfigurasi. Jalankan dengan --check dulu, lalu sungguhan, lalu sekali lagi untuk melihat idempotence.",
+          "keyPoints": [
+            "Siapkan SSH dan user di router",
+            "Inventory dan playbook di control node",
+            "--check, jalankan, ulangi"
+          ],
+          "teaches": [
+            "ccna-f-u19-ssh-steps",
+            "ccna-f-u27-become",
+            "ccna-f-u27-check-mode",
+            "ccna-f-u27-idempotent"
+          ]
+        },
+        {
+          "id": "ccna-u27-l5-e1",
+          "type": "ios",
+          "concept": "ansible-lab",
+          "prompt": "Prepare R1 for Ansible: domain lab.local, a 2048-bit RSA (Rivest-Shamir-Adleman) key, SSH (Secure Shell) version 2, local user otomasi with secret Rahasia-27, enable secret Enable-27, and vty lines 0 to 4 with local login and SSH only.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "ip domain name lab.local"
+              },
+              {
+                "line": "ip ssh version 2"
+              },
+              {
+                "line": "username otomasi secret Rahasia-27"
+              },
+              {
+                "line": "enable secret Enable-27"
+              },
+              {
+                "context": "line vty 0 4",
+                "line": "login local"
+              },
+              {
+                "context": "line vty 0 4",
+                "line": "transport input ssh"
+              }
+            ],
+            "rsaKeys": true
+          },
+          "solution": [
+            "configure terminal",
+            "ip domain name lab.local",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "username otomasi secret Rahasia-27",
+            "enable secret Enable-27",
+            "line vty 0 4",
+            "login local",
+            "transport input ssh",
+            "end"
+          ],
+          "explanation": "Ansible masuk lewat SSH (Secure Shell) dengan user otomasi, lalu become memakai enable secret untuk ke privileged EXEC.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-ssh-steps",
+            "ccna-f-u19-local-user",
+            "ccna-f-u27-become"
+          ]
+        },
+        {
+          "id": "ccna-u27-l5-e2",
+          "type": "ios",
+          "concept": "ansible-lab",
+          "prompt": "Confirm on R1 that SSH (Secure Shell) is enabled before running the playbook.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ip domain name lab.local"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip ssh version 2"
+              }
+            ],
+            "run": [
+              "show ip ssh"
+            ],
+            "rsaKeys": true
+          },
+          "solution": [
+            "configure terminal",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "end",
+            "show ip ssh"
+          ],
+          "explanation": "show ip ssh harus menunjukkan SSH (Secure Shell) Enabled - version 2.0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-show-ssh"
+          ]
+        },
+        {
+          "id": "ccna-u27-l5-e3",
+          "type": "template",
+          "concept": "ansible-lab",
+          "prompt": "The playbook below runs a second time and R1 already has the description. What does Ansible report for the first task?",
+          "language": "yaml",
+          "code": "---\n- name: Rapikan R1\n  hosts: routers\n  gather_facts: false\n  tasks:\n    - name: Deskripsi uplink\n      cisco.ios.ios_config:\n        parents: interface GigabitEthernet0/0/1\n        lines:\n          - description Ke ISP\n        save_when: modified",
+          "fileName": "rapikan.yml",
+          "options": [
+            "ok, with no change",
+            "changed, because it always re-sends the lines",
+            "failed, because the description exists",
+            "skipped, because of save_when"
+          ],
+          "answer": 0,
+          "explanation": "Baris yang sama sudah ada di running-config, jadi modul idempotent tidak mengubah apa pun dan melaporkan ok.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u27-idempotent",
+            "ccna-f-u27-ios-config-idem"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u27-control-node",
+      "statement": "Control node adalah komputer tempat perintah Ansible seperti ansible-playbook dijalankan, dan managed node adalah perangkat yang dikendalikannya.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/network/getting_started/basic_concepts.html"
+    },
+    {
+      "id": "ccna-f-u27-agentless",
+      "statement": "Ansible tidak butuh agent di perangkat yang dikelola; untuk perangkat jaringan, Ansible terhubung lewat SSH.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/getting_started/index.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u27-net-modules",
+      "statement": "Berbeda dengan sebagian besar modul Ansible, modul jaringan berjalan di control node, bukan di perangkat jaringan.",
+      "source": "https://docs.ansible.com/ansible/latest/network/getting_started/network_differences.html"
+    },
+    {
+      "id": "ccna-f-u27-inventory",
+      "statement": "Inventory adalah daftar managed node, beserta informasi seperti alamat IP, dan dipakai untuk mengelompokkan perangkat.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/network/getting_started/basic_concepts.html"
+    },
+    {
+      "id": "ccna-f-u27-playbook",
+      "statement": "Playbook adalah file YAML berisi satu atau beberapa play; setiap play memetakan host ke daftar task.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/network/getting_started/basic_concepts.html"
+    },
+    {
+      "id": "ccna-f-u27-task-module",
+      "statement": "Task menjalankan satu modul dengan argumennya; modul adalah kode yang benar-benar melakukan pekerjaannya.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/network/getting_started/basic_concepts.html"
+    },
+    {
+      "id": "ccna-f-u27-idempotent",
+      "statement": "Operasi idempotent memberi hasil yang sama walau dijalankan berulang; sebagian besar modul Ansible tidak mengubah apa pun kalau keadaan yang diinginkan sudah tercapai.",
+      "source": "https://docs.ansible.com/ansible/latest/reference_appendices/glossary.html"
+    },
+    {
+      "id": "ccna-f-u27-yaml-start",
+      "statement": "File YAML Ansible biasanya diawali tiga tanda minus (---).",
+      "source": "https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html"
+    },
+    {
+      "id": "ccna-f-u27-yaml-dict",
+      "statement": "Dictionary di YAML ditulis sebagai kunci: nilai, dengan spasi setelah titik dua.",
+      "source": "https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html"
+    },
+    {
+      "id": "ccna-f-u27-yaml-list",
+      "statement": "Item list di YAML diawali tanda minus dan spasi, dengan indentasi yang sama untuk setiap item.",
+      "source": "https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html"
+    },
+    {
+      "id": "ccna-f-u27-yaml-indent",
+      "statement": "YAML memakai indentasi spasi untuk menunjukkan susunan bersarang; tab tidak boleh dipakai untuk indentasi.",
+      "source": "https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u27-yaml-bool",
+      "statement": "Nilai seperti true dan false dibaca sebagai boolean, dan tanda pagar memulai komentar.",
+      "source": "https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html"
+    },
+    {
+      "id": "ccna-f-u27-ini-inventory",
+      "statement": "Inventory format INI menulis grup di dalam kurung siku, misalnya [routers], lalu nama host di bawahnya, dengan variabel seperti ansible_host.",
+      "source": "https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html"
+    },
+    {
+      "id": "ccna-f-u27-ios-vars",
+      "statement": "Untuk Cisco IOS, ansible_connection diisi ansible.netcommon.network_cli dan ansible_network_os diisi cisco.ios.ios.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/network/user_guide/platform_ios.html"
+    },
+    {
+      "id": "ccna-f-u27-become",
+      "statement": "Untuk masuk privileged EXEC, Ansible memakai ansible_become: true dengan ansible_become_method: enable.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/network/user_guide/platform_ios.html"
+    },
+    {
+      "id": "ccna-f-u27-vault",
+      "statement": "Password tidak boleh disimpan sebagai teks biasa; enkripsi dengan Ansible Vault.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/network/user_guide/platform_ios.html"
+    },
+    {
+      "id": "ccna-f-u27-ios-command",
+      "statement": "cisco.ios.ios_command mengirim perintah, misalnya show, dan mengembalikan hasilnya; modul ini tidak bisa dipakai di mode konfigurasi.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/collections/cisco/ios/ios_command_module.html"
+    },
+    {
+      "id": "ccna-f-u27-ios-config",
+      "statement": "cisco.ios.ios_config mengonfigurasi IOS: lines berisi perintah, dan parents menunjukkan bagian konfigurasi tempat perintah itu berada, misalnya interface.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/collections/cisco/ios/ios_config_module.html"
+    },
+    {
+      "id": "ccna-f-u27-ios-config-idem",
+      "statement": "Supaya ios_config idempotent, lines harus ditulis persis seperti di running-config.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/collections/cisco/ios/ios_config_module.html"
+    },
+    {
+      "id": "ccna-f-u27-save-when",
+      "statement": "Bawaannya ios_config tidak menyalin ke startup-config; save_when: modified menyimpan kalau running-config berubah sejak penyimpanan terakhir.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/collections/cisco/ios/ios_config_module.html"
+    },
+    {
+      "id": "ccna-f-u27-run-playbook",
+      "statement": "ansible-playbook -i <inventory> <playbook> menjalankan playbook terhadap host di inventory.",
+      "source": "https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html"
+    },
+    {
+      "id": "ccna-f-u27-check-mode",
+      "statement": "Opsi --check menjalankan playbook dalam check mode, yang melaporkan perubahan tanpa benar-benar mengubah perangkat.",
+      "source": "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_checkmode.html"
+    }
+  ]
+}

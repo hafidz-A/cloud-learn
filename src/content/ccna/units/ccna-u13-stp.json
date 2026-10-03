@@ -1,0 +1,1636 @@
+{
+  "id": "ccna-u13-stp",
+  "path": 2,
+  "title": "Rapid PVST+",
+  "lessons": [
+    {
+      "id": "ccna-u13-l1",
+      "title": "Kenapa loop Layer 2 berbahaya",
+      "items": [
+        {
+          "id": "ccna-u13-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "stp-loop"
+          ],
+          "title": "Kenapa loop layer 2 berbahaya",
+          "body": "Link cadangan antar switch membuat jaringan tahan putus, tapi juga membentuk loop. Header Ethernet tidak punya TTL (time to live), jadi broadcast yang masuk loop berputar terus dan digandakan di setiap switch: terjadilah broadcast storm. Tabel MAC (Media Access Control) terus berubah karena MAC yang sama muncul di port berbeda, dan host menerima frame ganda.",
+          "keyPoints": [
+            "Ethernet tidak punya TTL",
+            "Broadcast storm",
+            "Tabel MAC berubah-ubah, frame ganda"
+          ],
+          "visual": "StpLoop",
+          "teaches": [
+            "ccna-f-u13-loop-harm",
+            "ccna-f-u13-no-ttl"
+          ]
+        },
+        {
+          "id": "ccna-u13-l1-e1",
+          "type": "choice",
+          "concept": "stp-loop",
+          "prompt": "Why can a broadcast loop forever in a layer 2 loop, but not in a layer 3 routing loop?",
+          "options": [
+            "The Ethernet header has no TTL (time to live) field",
+            "Switches drop every broadcast after one hop",
+            "Routers forward broadcasts to all interfaces",
+            "Ethernet frames carry a hop count of 15"
+          ],
+          "answer": 0,
+          "explanation": "Paket IP (Internet Protocol) punya TTL (time to live) yang turun di setiap router, sedangkan frame Ethernet tidak punya field seperti itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-no-ttl"
+          ]
+        },
+        {
+          "id": "ccna-u13-l1-e2",
+          "type": "multi",
+          "concept": "stp-loop",
+          "prompt": "Which two symptoms point to a layer 2 loop? (Choose two.)",
+          "options": [
+            "A broadcast storm that saturates links",
+            "MAC (Media Access Control) addresses that keep moving between ports",
+            "A single CRC (cyclic redundancy check) error on one port",
+            "An interface in administratively down state"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Loop menyebabkan broadcast storm dan tabel MAC (Media Access Control) yang terus berubah. CRC (cyclic redundancy check) dan shutdown adalah masalah lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-loop-harm",
+            "ccna-f-u03-crc-cause",
+            "ccna-f-u03-if-states"
+          ]
+        },
+        {
+          "id": "ccna-u13-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "stp-purpose"
+          ],
+          "title": "Tugas STP",
+          "body": "STP (Spanning Tree Protocol) mencegah loop tanpa mencabut kabel. Switch saling bertukar BPDU (bridge protocol data unit), lalu menempatkan port redundan di state blocking, sehingga hanya ada satu jalur aktif antara dua titik. Kalau jalur aktif putus, STP membuka port cadangan itu. Jadi redundansi tetap ada, tapi loop tidak.",
+          "keyPoints": [
+            "Tukar BPDU",
+            "Port redundan diblokir",
+            "Jalur putus: cadangan dibuka"
+          ],
+          "teaches": [
+            "ccna-f-u13-stp-purpose"
+          ]
+        },
+        {
+          "id": "ccna-u13-l1-e3",
+          "type": "sort",
+          "concept": "stp-loop",
+          "prompt": "Sort each item by whether it comes from a layer 2 loop.",
+          "buckets": [
+            "Caused by a layer 2 loop",
+            "Not caused by a loop"
+          ],
+          "items": [
+            {
+              "text": "Broadcast storm",
+              "bucket": 0
+            },
+            {
+              "text": "Duplicate frames at a host",
+              "bucket": 0
+            },
+            {
+              "text": "MAC (Media Access Control) table instability",
+              "bucket": 0
+            },
+            {
+              "text": "A port in administratively down state",
+              "bucket": 1
+            },
+            {
+              "text": "A duplex mismatch",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Broadcast storm, frame ganda, dan tabel MAC (Media Access Control) yang berubah-ubah adalah gejala loop. Shutdown dan duplex mismatch adalah masalah lain.",
+          "requires": [
+            "ccna-f-u13-loop-harm",
+            "ccna-f-u03-if-states",
+            "ccna-f-u03-mismatch-symptoms"
+          ]
+        },
+        {
+          "id": "ccna-u13-l1-e4",
+          "type": "truefalse",
+          "concept": "stp-purpose",
+          "prompt": "STP (Spanning Tree Protocol) removes redundancy by asking the engineer to unplug the extra links.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. STP (Spanning Tree Protocol) memblokir port redundan secara logis dan membukanya lagi kalau jalur utama putus.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-stp-purpose"
+          ]
+        },
+        {
+          "id": "ccna-u13-l1-e5",
+          "type": "choice",
+          "concept": "stp-purpose",
+          "prompt": "Three switches are cabled in a triangle with STP (Spanning Tree Protocol) running. How many ports are blocking in a stable state?",
+          "options": [
+            "One",
+            "None",
+            "Three",
+            "Six"
+          ],
+          "answer": 0,
+          "explanation": "Satu port yang diblokir cukup untuk memutus loop segitiga, sementara kedua jalur lain tetap aktif.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-stp-purpose"
+          ]
+        },
+        {
+          "id": "ccna-u13-l1-e6",
+          "type": "truefalse",
+          "concept": "stp-purpose",
+          "prompt": "When the active path fails, STP (Spanning Tree Protocol) can move a blocked port to forwarding so traffic finds another way.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Port yang diblokir adalah jalur cadangan yang dibuka saat jalur utama putus.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-stp-purpose"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u13-l2",
+      "title": "Root bridge dan bridge ID",
+      "items": [
+        {
+          "id": "ccna-u13-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "root-bridge"
+          ],
+          "title": "Memilih root bridge",
+          "body": "Semua keputusan STP (Spanning Tree Protocol) dihitung dari satu titik: root bridge. Root adalah switch dengan bridge ID (identifier) terendah. Bridge ID berisi priority dan MAC (Media Access Control) address. Priority terendah menang; kalau sama, MAC terendah menang. Priority bawaan 32768, jadi tanpa konfigurasi, switch dengan MAC terendah, biasanya yang paling tua, menjadi root.",
+          "keyPoints": [
+            "Bridge ID terendah = root",
+            "Priority dulu, lalu MAC",
+            "Bawaan 32768: MAC yang menentukan"
+          ],
+          "teaches": [
+            "ccna-f-u13-root-election",
+            "ccna-f-u13-priority"
+          ]
+        },
+        {
+          "id": "ccna-u13-l2-e1",
+          "type": "choice",
+          "concept": "root-bridge",
+          "prompt": "SW1 has priority 32768 and MAC (Media Access Control) 0050.7966.0001. SW2 has priority 28672 and MAC 0011.2233.4455. Which switch becomes root?",
+          "options": [
+            "SW2, because its priority is lower",
+            "SW1, because its MAC is higher",
+            "SW2, because its MAC is lower",
+            "Neither, until an engineer picks one"
+          ],
+          "answer": 0,
+          "explanation": "Priority dibandingkan dulu: 28672 lebih rendah dari 32768, jadi SW2 menjadi root. MAC (Media Access Control) baru dipakai kalau priority sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-root-election"
+          ]
+        },
+        {
+          "id": "ccna-u13-l2-e2",
+          "type": "truefalse",
+          "concept": "root-bridge",
+          "prompt": "If all switches keep the default priority, the switch with the lowest MAC (Media Access Control) address becomes root.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Priority sama, jadi MAC (Media Access Control) terendah yang menentukan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-root-election",
+            "ccna-f-u13-priority"
+          ]
+        },
+        {
+          "id": "ccna-u13-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "bridge-id"
+          ],
+          "title": "Bridge ID dan PVST+",
+          "body": "Bridge ID (identifier) berisi priority 4 bit, extended system ID 12 bit yang berisi nomor VLAN (Virtual LAN), dan MAC (Media Access Control) 48 bit. Karena itu priority hanya boleh kelipatan 4096, dan priority VLAN 10 bawaan tampil sebagai 32768 + 10 = 32778. PVST+ (Per-VLAN Spanning Tree Plus) dan Rapid PVST+ menjalankan satu spanning tree per VLAN, jadi setiap VLAN bisa punya root yang berbeda.",
+          "keyPoints": [
+            "Priority + VLAN + MAC",
+            "Kelipatan 4096",
+            "Satu tree per VLAN"
+          ],
+          "teaches": [
+            "ccna-f-u13-bid",
+            "ccna-f-u13-priority",
+            "ccna-f-u13-pvst"
+          ]
+        },
+        {
+          "id": "ccna-u13-l2-e3",
+          "type": "choice",
+          "concept": "bridge-id",
+          "prompt": "A switch keeps the default priority. What priority value does it show for VLAN (Virtual LAN) 20?",
+          "options": [
+            "32788",
+            "32768",
+            "20",
+            "4096"
+          ],
+          "answer": 0,
+          "explanation": "Extended system ID (identifier) menambahkan nomor VLAN (Virtual LAN) ke priority: 32768 + 20 = 32788.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-bid",
+            "ccna-f-u13-priority"
+          ]
+        },
+        {
+          "id": "ccna-u13-l2-e4",
+          "type": "multi",
+          "concept": "bridge-id",
+          "prompt": "Which two values are valid spanning tree priorities? (Choose two.)",
+          "options": [
+            "4096",
+            "28672",
+            "1000",
+            "32770"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Priority harus kelipatan 4096: 4096 dan 28672 sah, sedangkan 1000 dan 32770 tidak.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-priority"
+          ]
+        },
+        {
+          "id": "ccna-u13-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "root-config"
+          ],
+          "title": "Menentukan root sendiri",
+          "body": "Jangan biarkan switch tertua menjadi root secara kebetulan. spanning-tree vlan diikuti nomor dan root primary mengatur priority supaya switch itu menjadi root, biasanya 24576. root secondary menyiapkan cadangan, biasanya 28672. Priority juga bisa diset langsung, misalnya spanning-tree vlan 10 priority 4096; nilai yang bukan kelipatan 4096 ditolak IOS.",
+          "keyPoints": [
+            "root primary: biasanya 24576",
+            "root secondary: biasanya 28672",
+            "Atau priority langsung, kelipatan 4096"
+          ],
+          "teaches": [
+            "ccna-f-u13-root-cmd",
+            "ccna-f-u13-priority"
+          ]
+        },
+        {
+          "id": "ccna-u13-l2-e5",
+          "type": "ios",
+          "concept": "root-config",
+          "prompt": "Make the core switch SW1 the root bridge for VLANs (Virtual LANs) 10 and 20 with the root macro.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "spanning-tree vlan 10,20 priority 24576"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "spanning-tree vlan 10,20 root primary",
+            "end"
+          ],
+          "explanation": "root primary mengatur priority supaya SW1 menjadi root. Di running-config IOS menyimpannya sebagai priority 24576.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-root-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u13-l2-e6",
+          "type": "ios",
+          "concept": "root-config",
+          "prompt": "Set the VLAN (Virtual LAN) 30 priority of SW2 to 4096 so it becomes root for VLAN 30 only.",
+          "device": {
+            "hostname": "SW2",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "spanning-tree vlan 30 priority 4096"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "spanning-tree vlan 30 priority 4096",
+            "end"
+          ],
+          "explanation": "4096 adalah kelipatan 4096 dan lebih rendah dari 32768, jadi SW2 menjadi root VLAN (Virtual LAN) 30.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-root-cmd",
+            "ccna-f-u13-priority",
+            "ccna-f-u13-pvst"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u13-l3",
+      "title": "Peran dan state port",
+      "items": [
+        {
+          "id": "ccna-u13-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "stp-roles"
+          ],
+          "title": "Peran port",
+          "body": "Setelah root terpilih, setiap switch lain memilih satu root port: port dengan biaya terendah menuju root. Setiap segmen punya satu designated port, yang meneruskan ke arah segmen itu; semua port aktif di root bridge adalah designated. Port lain menjadi alternate port, cadangan root port, atau backup port. Root dan designated forwarding; alternate dan backup discarding.",
+          "keyPoints": [
+            "Root port: termurah ke root",
+            "Satu designated per segmen",
+            "Alternate: cadangan, discarding"
+          ],
+          "visual": "StpRoles",
+          "teaches": [
+            "ccna-f-u13-roles",
+            "ccna-f-u13-root-all-desg",
+            "ccna-f-u13-role-state"
+          ]
+        },
+        {
+          "id": "ccna-u13-l3-e1",
+          "type": "match",
+          "concept": "stp-roles",
+          "prompt": "Match each port role to its description.",
+          "pairs": [
+            [
+              "Root port",
+              "Lowest cost path to the root, on a non-root switch"
+            ],
+            [
+              "Designated port",
+              "Forwards toward one segment; one per segment"
+            ],
+            [
+              "Alternate port",
+              "Backup path to the root, in discarding state"
+            ],
+            [
+              "Backup port",
+              "Redundant port on the same segment as a designated port"
+            ]
+          ],
+          "explanation": "Root port untuk jalur ke root, designated satu per segmen, alternate cadangan jalur ke root, dan backup cadangan di segmen yang sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-roles"
+          ]
+        },
+        {
+          "id": "ccna-u13-l3-e2",
+          "type": "truefalse",
+          "concept": "stp-roles",
+          "prompt": "A root bridge has one root port.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Root bridge tidak punya root port; semua port aktifnya designated.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-root-all-desg",
+            "ccna-f-u13-roles"
+          ]
+        },
+        {
+          "id": "ccna-u13-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "stp-cost"
+          ],
+          "title": "Biaya ke root",
+          "body": "Biaya port bergantung pada kecepatan. Dalam mode short, 10 Mbps bernilai 100, 100 Mbps bernilai 19, 1 Gbps bernilai 4, dan 10 Gbps bernilai 2. Root path cost adalah jumlah biaya port di jalan menuju root. Kalau biayanya sama, switch memilih lewat bridge ID (identifier) tetangga terendah, lalu port ID tetangga terendah.",
+          "keyPoints": [
+            "100 Mbps: 19, 1 Gbps: 4",
+            "Jumlahkan biaya ke root",
+            "Seri: bridge ID, lalu port ID tetangga"
+          ],
+          "teaches": [
+            "ccna-f-u13-cost",
+            "ccna-f-u13-tiebreak"
+          ]
+        },
+        {
+          "id": "ccna-u13-l3-e3",
+          "type": "choice",
+          "concept": "stp-cost",
+          "prompt": "SW3 reaches the root over a direct 100 Mbps link, or over two 1 Gbps links through SW2. Which path does it use?",
+          "options": [
+            "The path through SW2, cost 8",
+            "The direct link, cost 19",
+            "Both, sharing the load",
+            "Neither, because the costs are equal"
+          ],
+          "answer": 0,
+          "explanation": "Dua link 1 Gbps berbiaya 4 + 4 = 8, lebih rendah dari 19 untuk link langsung 100 Mbps. STP (Spanning Tree Protocol) tidak membagi beban di dua jalur.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-cost",
+            "ccna-f-u13-roles"
+          ]
+        },
+        {
+          "id": "ccna-u13-l3-e4",
+          "type": "exhibit",
+          "concept": "stp-cost",
+          "prompt": "Refer to the exhibit. Which port of SW2 is blocking for VLAN (Virtual LAN) 10?",
+          "outputs": [
+            {
+              "title": "SW2# show spanning-tree vlan 10",
+              "text": "VLAN0010\n  Spanning tree enabled protocol rstp\n  Root ID    Priority    24586\n             Address     0050.7966.6801\n             Cost        4\n             Port        25 (GigabitEthernet0/1)\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\n\n  Bridge ID  Priority    32778  (priority 32768 sys-id-ext 10)\n             Address     0050.7966.6802\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\n\nInterface           Role Sts Cost      Prio.Nbr Type\n------------------- ---- --- --------- -------- --------------------------------\nFa0/1               Desg FWD 19        128.1    P2p Edge\nGi0/1               Root FWD 4         128.25   P2p\nGi0/2               Altn BLK 4         128.26   P2p"
+            }
+          ],
+          "options": [
+            "Gi0/2, the alternate port",
+            "Gi0/1, the root port",
+            "Fa0/1, the edge port",
+            "None of the ports"
+          ],
+          "answer": 0,
+          "explanation": "Gi0/2 berperan Altn dengan status blocking. Gi0/1 adalah root port yang forwarding, dan Fa0/1 designated edge port.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-role-state",
+            "ccna-f-u13-roles"
+          ]
+        },
+        {
+          "id": "ccna-u13-l3-e5",
+          "type": "truefalse",
+          "concept": "stp-cost",
+          "prompt": "A 1 Gbps link has a lower default spanning tree cost than a 100 Mbps link.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. 1 Gbps bernilai 4, sedangkan 100 Mbps bernilai 19.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-cost"
+          ]
+        },
+        {
+          "id": "ccna-u13-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "stp-states"
+          ],
+          "title": "State RSTP",
+          "body": "RSTP (Rapid Spanning Tree Protocol) hanya punya tiga state: discarding, learning, dan forwarding. Di discarding, port tidak meneruskan data. Di learning, port mulai mengisi tabel MAC (Media Access Control) tapi belum meneruskan. Di forwarding, port meneruskan data. State disabled, blocking, dan listening milik STP (Spanning Tree Protocol) lama digabung menjadi discarding.",
+          "keyPoints": [
+            "Discarding, learning, forwarding",
+            "Learning: isi tabel MAC",
+            "Blocking lama = discarding"
+          ],
+          "visual": "StpStates",
+          "teaches": [
+            "ccna-f-u13-rstp-states"
+          ]
+        },
+        {
+          "id": "ccna-u13-l3-e6",
+          "type": "choice",
+          "concept": "stp-states",
+          "prompt": "Which RSTP (Rapid Spanning Tree Protocol) state learns MAC (Media Access Control) addresses but does not forward data yet?",
+          "options": [
+            "Learning",
+            "Discarding",
+            "Forwarding",
+            "Listening"
+          ],
+          "answer": 0,
+          "explanation": "Learning mengisi tabel MAC (Media Access Control) tanpa meneruskan data. Listening bukan state RSTP (Rapid Spanning Tree Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-rstp-states"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u13-l4",
+      "title": "STP klasik 802.1D",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u13-l3"
+      },
+      "items": [
+        {
+          "id": "ccna-u13-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "classic-stp"
+          ],
+          "title": "STP 802.1D",
+          "body": "STP (Spanning Tree Protocol) versi awal, 802.1D, punya lima state: disabled, blocking, listening, learning, dan forwarding. Timer bawaannya: hello 2 detik, forward delay 15 detik, dan max age 20 detik. Port yang mau forwarding harus melewati listening dan learning, masing-masing selama forward delay, jadi sekitar 30 detik.",
+          "keyPoints": [
+            "Lima state",
+            "Hello 2, forward delay 15, max age 20",
+            "Listening + learning: 30 detik"
+          ],
+          "teaches": [
+            "ccna-f-u13-stp-states",
+            "ccna-f-u13-stp-timers"
+          ]
+        },
+        {
+          "id": "ccna-u13-l4-e1",
+          "type": "choice",
+          "concept": "classic-stp",
+          "prompt": "What is the default forward delay timer in 802.1D?",
+          "options": [
+            "15 seconds",
+            "2 seconds",
+            "20 seconds",
+            "30 seconds"
+          ],
+          "answer": 0,
+          "explanation": "Forward delay 15 detik; hello 2 detik dan max age 20 detik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-stp-timers"
+          ]
+        },
+        {
+          "id": "ccna-u13-l4-e2",
+          "type": "choice",
+          "concept": "classic-stp",
+          "prompt": "About how long does an 802.1D port take to move from listening to forwarding?",
+          "options": [
+            "30 seconds",
+            "2 seconds",
+            "15 seconds",
+            "50 seconds"
+          ],
+          "answer": 0,
+          "explanation": "Listening dan learning masing-masing selama forward delay, 15 + 15 = 30 detik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-stp-timers"
+          ]
+        },
+        {
+          "id": "ccna-u13-l4-e3",
+          "type": "order",
+          "concept": "classic-stp",
+          "prompt": "Put the 802.1D states a port passes through, from blocking to forwarding, in order.",
+          "items": [
+            "Blocking",
+            "Listening",
+            "Learning",
+            "Forwarding"
+          ],
+          "explanation": "Port yang dibuka berjalan dari blocking ke listening, learning, lalu forwarding.",
+          "requires": [
+            "ccna-f-u13-stp-states"
+          ]
+        },
+        {
+          "id": "ccna-u13-l4-e4",
+          "type": "match",
+          "concept": "classic-stp",
+          "prompt": "Match each 802.1D timer to its default value.",
+          "pairs": [
+            [
+              "Hello",
+              "2 seconds"
+            ],
+            [
+              "Forward delay",
+              "15 seconds"
+            ],
+            [
+              "Max age",
+              "20 seconds"
+            ],
+            [
+              "Listening plus learning",
+              "30 seconds"
+            ]
+          ],
+          "explanation": "Hello 2, forward delay 15, max age 20, dan listening ditambah learning 30 detik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-stp-timers"
+          ]
+        },
+        {
+          "id": "ccna-u13-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "rstp-vs-stp"
+          ],
+          "title": "Kenapa RSTP lebih cepat",
+          "body": "RSTP (Rapid Spanning Tree Protocol) tidak menunggu timer. Dua switch bertukar proposal dan agreement, dan begitu tetangga setuju, port langsung forwarding tanpa menunggu dua kali forward delay. State-nya juga lebih sedikit: disabled, blocking, dan listening digabung menjadi discarding.",
+          "keyPoints": [
+            "Proposal dan agreement",
+            "Tidak menunggu 2 x forward delay",
+            "Lima state jadi tiga"
+          ],
+          "teaches": [
+            "ccna-f-u13-rstp-fast",
+            "ccna-f-u13-rstp-states"
+          ]
+        },
+        {
+          "id": "ccna-u13-l4-e5",
+          "type": "truefalse",
+          "concept": "rstp-vs-stp",
+          "prompt": "RSTP (Rapid Spanning Tree Protocol) must always wait twice the forward delay before a port forwards.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Dengan proposal dan agreement, port bisa langsung forwarding.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-rstp-fast"
+          ]
+        },
+        {
+          "id": "ccna-u13-l4-e6",
+          "type": "sort",
+          "concept": "rstp-vs-stp",
+          "prompt": "Sort each state by the protocol that uses it.",
+          "buckets": [
+            "802.1D only",
+            "Both 802.1D and RSTP (Rapid Spanning Tree Protocol)",
+            "RSTP only"
+          ],
+          "items": [
+            {
+              "text": "Listening",
+              "bucket": 0
+            },
+            {
+              "text": "Blocking",
+              "bucket": 0
+            },
+            {
+              "text": "Learning",
+              "bucket": 1
+            },
+            {
+              "text": "Forwarding",
+              "bucket": 1
+            },
+            {
+              "text": "Discarding",
+              "bucket": 2
+            }
+          ],
+          "explanation": "Listening dan blocking hanya di 802.1D, discarding hanya di RSTP (Rapid Spanning Tree Protocol), dan learning serta forwarding ada di keduanya.",
+          "requires": [
+            "ccna-f-u13-stp-states",
+            "ccna-f-u13-rstp-states"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u13-l5",
+      "title": "Konfigurasi Rapid PVST+",
+      "items": [
+        {
+          "id": "ccna-u13-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "rpvst-config"
+          ],
+          "title": "Mengaktifkan Rapid PVST+",
+          "body": "spanning-tree mode rapid-pvst mengaktifkan Rapid PVST+ (Per-VLAN Spanning Tree Plus): RSTP (Rapid Spanning Tree Protocol) per VLAN (Virtual LAN). Semua switch di jaringan sebaiknya memakai mode yang sama. show spanning-tree vlan diikuti nomor menampilkan root ID (identifier), bridge ID switch itu, dan role, state, serta cost setiap port.",
+          "keyPoints": [
+            "spanning-tree mode rapid-pvst",
+            "RSTP per VLAN",
+            "show spanning-tree vlan <id>"
+          ],
+          "teaches": [
+            "ccna-f-u13-mode-cmd",
+            "ccna-f-u13-show-stp",
+            "ccna-f-u13-pvst"
+          ]
+        },
+        {
+          "id": "ccna-u13-l5-e1",
+          "type": "ios",
+          "concept": "rpvst-config",
+          "prompt": "Switch SW1 from PVST+ (Per-VLAN Spanning Tree Plus) to Rapid PVST+.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "spanning-tree mode rapid-pvst"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "end"
+          ],
+          "explanation": "spanning-tree mode rapid-pvst mengaktifkan RSTP (Rapid Spanning Tree Protocol) per VLAN (Virtual LAN).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-mode-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u13-l5-e2",
+          "type": "exhibit",
+          "concept": "rpvst-config",
+          "prompt": "Refer to the exhibit. Is SW2 the root bridge for VLAN (Virtual LAN) 10?",
+          "outputs": [
+            {
+              "title": "SW2# show spanning-tree vlan 10",
+              "text": "VLAN0010\n  Spanning tree enabled protocol rstp\n  Root ID    Priority    24586\n             Address     0050.7966.6801\n             Cost        4\n             Port        25 (GigabitEthernet0/1)\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\n\n  Bridge ID  Priority    32778  (priority 32768 sys-id-ext 10)\n             Address     0050.7966.6802\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\n\nInterface           Role Sts Cost      Prio.Nbr Type\n------------------- ---- --- --------- -------- --------------------------------\nFa0/1               Desg FWD 19        128.1    P2p Edge\nGi0/1               Root FWD 4         128.25   P2p\nGi0/2               Altn BLK 4         128.26   P2p"
+            }
+          ],
+          "options": [
+            "No, the root has priority 24586 and a different MAC (Media Access Control) address",
+            "Yes, because it has a root port",
+            "Yes, because its priority is 32778",
+            "It cannot be known from this output"
+          ],
+          "answer": 0,
+          "explanation": "Root ID (identifier) dan Bridge ID berbeda, dan SW2 punya root port Gi0/1, jadi SW2 bukan root. Root bridge tidak punya root port.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-show-stp",
+            "ccna-f-u13-root-all-desg",
+            "ccna-f-u13-bid"
+          ]
+        },
+        {
+          "id": "ccna-u13-l5-e3",
+          "type": "exhibit",
+          "concept": "rpvst-config",
+          "prompt": "Refer to the exhibit. What is the root path cost of SW2 for VLAN (Virtual LAN) 10?",
+          "outputs": [
+            {
+              "title": "SW2# show spanning-tree vlan 10",
+              "text": "VLAN0010\n  Spanning tree enabled protocol rstp\n  Root ID    Priority    24586\n             Address     0050.7966.6801\n             Cost        4\n             Port        25 (GigabitEthernet0/1)\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\n\n  Bridge ID  Priority    32778  (priority 32768 sys-id-ext 10)\n             Address     0050.7966.6802\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\n\nInterface           Role Sts Cost      Prio.Nbr Type\n------------------- ---- --- --------- -------- --------------------------------\nFa0/1               Desg FWD 19        128.1    P2p Edge\nGi0/1               Root FWD 4         128.25   P2p\nGi0/2               Altn BLK 4         128.26   P2p"
+            }
+          ],
+          "options": [
+            "4",
+            "19",
+            "24586",
+            "128"
+          ],
+          "answer": 0,
+          "explanation": "Baris Cost di bagian Root ID (identifier) bernilai 4: satu link 1 Gbps ke root. 128 adalah port priority, dan 24586 priority root.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-show-stp",
+            "ccna-f-u13-cost"
+          ]
+        },
+        {
+          "id": "ccna-u13-l5-e4",
+          "type": "match",
+          "concept": "rpvst-config",
+          "prompt": "Match each part of show spanning-tree to its meaning.",
+          "pairs": [
+            [
+              "Root ID (identifier)",
+              "The root bridge of this VLAN (Virtual LAN)"
+            ],
+            [
+              "Bridge ID",
+              "This switch"
+            ],
+            [
+              "Role Root",
+              "The best path toward the root"
+            ],
+            [
+              "Role Altn",
+              "A backup path to the root that does not forward"
+            ]
+          ],
+          "explanation": "Root ID (identifier) adalah root bridge, Bridge ID switch itu sendiri, Role Root jalur terbaik ke root, dan Role Altn jalur cadangan yang tidak meneruskan data.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-show-stp",
+            "ccna-f-u13-roles",
+            "ccna-f-u13-role-state"
+          ]
+        },
+        {
+          "id": "ccna-u13-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "stp-tuning"
+          ],
+          "title": "Mengarahkan jalur",
+          "body": "Kalau STP (Spanning Tree Protocol) memilih jalur yang tidak diinginkan, ada dua cara. Ubah root bridge dengan priority, atau ubah biaya port dengan spanning-tree cost di interface. Biaya yang lebih rendah membuat port itu lebih mungkin menjadi root port.",
+          "keyPoints": [
+            "Ubah root: priority",
+            "Ubah jalur: spanning-tree cost",
+            "Biaya rendah: lebih dipilih"
+          ],
+          "teaches": [
+            "ccna-f-u13-cost-cmd",
+            "ccna-f-u13-root-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u13-l5-e5",
+          "type": "ios",
+          "concept": "stp-tuning",
+          "prompt": "SW3 should prefer its uplink GigabitEthernet0/2 over Gi0/1 toward the root. Both have cost 4. Lower the cost of Gi0/2 to 2.",
+          "device": {
+            "hostname": "SW3",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/2",
+                "line": "spanning-tree cost 2"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/2",
+            "spanning-tree cost 2",
+            "end"
+          ],
+          "explanation": "Biaya yang lebih rendah membuat Gi0/2 menjadi jalur termurah ke root, jadi port itu menjadi root port.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-cost-cmd",
+            "ccna-f-u13-roles"
+          ]
+        },
+        {
+          "id": "ccna-u13-l5-e6",
+          "type": "truefalse",
+          "concept": "stp-tuning",
+          "prompt": "With Rapid PVST+ (Per-VLAN Spanning Tree Plus), VLAN (Virtual LAN) 10 and VLAN 20 can have different root bridges.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Ada satu instance per VLAN (Virtual LAN), jadi root-nya bisa berbeda, misalnya untuk membagi beban.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-pvst"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u13-l6",
+      "title": "PortFast",
+      "items": [
+        {
+          "id": "ccna-u13-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "portfast"
+          ],
+          "title": "PortFast",
+          "body": "PC yang dinyalakan tidak membentuk loop, tapi STP (Spanning Tree Protocol) klasik tetap membuat port-nya menunggu listening dan learning sekitar 30 detik. Akibatnya PC bisa gagal mendapat alamat DHCP (Dynamic Host Configuration Protocol). PortFast, dengan spanning-tree portfast di interface, membuat port ke perangkat akhir langsung forwarding. Pasang hanya di port ke perangkat akhir, bukan ke switch. Di RSTP (Rapid Spanning Tree Protocol), port seperti ini disebut edge port.",
+          "keyPoints": [
+            "Port ke perangkat akhir",
+            "Langsung forwarding",
+            "RSTP: edge port"
+          ],
+          "teaches": [
+            "ccna-f-u13-portfast",
+            "ccna-f-u13-stp-timers",
+            "ccna-f-u13-portfast-cmd",
+            "ccna-f-u13-portfast-edge"
+          ]
+        },
+        {
+          "id": "ccna-u13-l6-e1",
+          "type": "ios",
+          "concept": "portfast",
+          "prompt": "FastEthernet0/5 on SW1 connects a PC. Make it forward right away when the PC turns on.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface FastEthernet0/5",
+              "lines": [
+                "switchport mode access",
+                "switchport access vlan 10"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "spanning-tree portfast"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/5",
+            "spanning-tree portfast",
+            "end"
+          ],
+          "explanation": "spanning-tree portfast membuat port ke PC langsung forwarding.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-portfast",
+            "ccna-f-u13-portfast-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u13-l6-e2",
+          "type": "truefalse",
+          "concept": "portfast",
+          "prompt": "PortFast should be enabled on uplinks between switches to make them converge faster.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. PortFast hanya untuk port ke perangkat akhir; di port antar switch, port yang langsung forwarding bisa membuat loop sementara.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-portfast-edge"
+          ]
+        },
+        {
+          "id": "ccna-u13-l6-e3",
+          "type": "choice",
+          "concept": "portfast",
+          "prompt": "Without PortFast, why might a PC that boots fast fail to get a DHCP (Dynamic Host Configuration Protocol) address?",
+          "options": [
+            "Its port is still in listening and learning when the PC sends its first request",
+            "PortFast is needed to forward broadcasts",
+            "DHCP only works on trunk ports",
+            "The PC must send a BPDU (bridge protocol data unit) first"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa PortFast, port STP (Spanning Tree Protocol) klasik menunggu sekitar 30 detik sebelum forwarding, jadi permintaan DHCP (Dynamic Host Configuration Protocol) pertama bisa hilang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-portfast",
+            "ccna-f-u13-stp-timers"
+          ]
+        },
+        {
+          "id": "ccna-u13-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "portfast-default"
+          ],
+          "title": "PortFast untuk semua port akses",
+          "body": "Daripada memasang PortFast satu per satu, spanning-tree portfast default di global configuration mengaktifkannya di semua port akses. Port trunk, yang biasanya menuju switch lain, tidak ikut. Tetap pastikan port akses tidak tersambung ke switch.",
+          "keyPoints": [
+            "spanning-tree portfast default",
+            "Semua port akses",
+            "Trunk tidak ikut"
+          ],
+          "teaches": [
+            "ccna-f-u13-portfast-cmd",
+            "ccna-f-u13-portfast-edge"
+          ]
+        },
+        {
+          "id": "ccna-u13-l6-e4",
+          "type": "ios",
+          "concept": "portfast-default",
+          "prompt": "All access ports on SW1 connect to end devices. Enable PortFast on every access port with one command.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "spanning-tree portfast default"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "spanning-tree portfast default",
+            "end"
+          ],
+          "explanation": "spanning-tree portfast default mengaktifkan PortFast di semua port akses sekaligus.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-portfast-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u13-l6-e5",
+          "type": "choice",
+          "concept": "portfast-default",
+          "prompt": "Which port is the best place for PortFast?",
+          "options": [
+            "An access port to a printer",
+            "A trunk to the distribution switch",
+            "An EtherChannel to another switch",
+            "A routed port to a router"
+          ],
+          "answer": 0,
+          "explanation": "PortFast untuk port ke perangkat akhir, seperti printer. Port ke switch lain tidak boleh langsung forwarding.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-portfast-edge",
+            "ccna-f-u13-portfast"
+          ]
+        },
+        {
+          "id": "ccna-u13-l6-e6",
+          "type": "multi",
+          "concept": "portfast-default",
+          "prompt": "Which two statements about PortFast are true? (Choose two.)",
+          "options": [
+            "It skips listening and learning",
+            "In RSTP (Rapid Spanning Tree Protocol), a PortFast port is an edge port",
+            "It disables STP (Spanning Tree Protocol) on the whole switch",
+            "It is meant for links to other switches"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "PortFast melewati listening dan learning, dan di RSTP (Rapid Spanning Tree Protocol) disebut edge port. Ia tidak mematikan STP (Spanning Tree Protocol) dan bukan untuk link antar switch.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-portfast",
+            "ccna-f-u13-portfast-edge"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u13-l7",
+      "title": "BPDU guard, root guard, loop guard",
+      "items": [
+        {
+          "id": "ccna-u13-l7-m1",
+          "type": "learn",
+          "concepts": [
+            "bpdu-guard"
+          ],
+          "title": "BPDU guard",
+          "body": "Bagaimana kalau seseorang mencolokkan switch ke port PortFast? BPDU (bridge protocol data unit) guard menjaga hal itu: kalau port PortFast menerima BPDU (bridge protocol data unit), port langsung dimatikan menjadi err-disabled. Port harus dinyalakan ulang dengan shutdown lalu no shutdown setelah penyebabnya dicabut, atau dengan errdisable recovery. Pasang dengan spanning-tree bpduguard enable, atau spanning-tree portfast bpduguard default untuk semua port PortFast.",
+          "keyPoints": [
+            "BPDU di port PortFast: err-disabled",
+            "Pulihkan: shutdown, no shutdown",
+            "Global: portfast bpduguard default"
+          ],
+          "visual": "StpGuards",
+          "teaches": [
+            "ccna-f-u13-bpduguard",
+            "ccna-f-u13-bpduguard-cmd",
+            "ccna-f-u03-err-disabled"
+          ]
+        },
+        {
+          "id": "ccna-u13-l7-e1",
+          "type": "ios",
+          "concept": "bpdu-guard",
+          "prompt": "Protect the PortFast port FastEthernet0/5 on SW1: shut it down if a switch is ever plugged in.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface FastEthernet0/5",
+              "lines": [
+                "switchport mode access",
+                "spanning-tree portfast"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "spanning-tree bpduguard enable"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/5",
+            "spanning-tree bpduguard enable",
+            "end"
+          ],
+          "explanation": "BPDU (bridge protocol data unit) guard mematikan port menjadi err-disabled kalau menerima BPDU (bridge protocol data unit).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-bpduguard",
+            "ccna-f-u13-bpduguard-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u13-l7-e2",
+          "type": "choice",
+          "concept": "bpdu-guard",
+          "prompt": "A user plugs a small switch into a port with PortFast and BPDU (bridge protocol data unit) guard. What happens?",
+          "options": [
+            "The port goes err-disabled",
+            "The new switch becomes the root",
+            "The port changes to an alternate port",
+            "Nothing, because PortFast ignores BPDUs"
+          ],
+          "answer": 0,
+          "explanation": "BPDU (bridge protocol data unit) guard mematikan port PortFast yang menerima BPDU, jadi port menjadi err-disabled.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-bpduguard"
+          ]
+        },
+        {
+          "id": "ccna-u13-l7-m2",
+          "type": "learn",
+          "concepts": [
+            "root-loop-guard"
+          ],
+          "title": "Root guard dan loop guard",
+          "body": "Root guard dipasang di port ke switch bawahan supaya port itu tetap designated. Kalau datang BPDU (bridge protocol data unit) yang lebih baik, port masuk root-inconsistent, dan pulih sendiri saat BPDU itu berhenti. Loop guard dipasang di root port dan alternate port: kalau BPDU tiba-tiba berhenti datang, port masuk loop-inconsistent alih-alih forwarding, sehingga tidak terbentuk loop.",
+          "keyPoints": [
+            "Root guard: tolak calon root baru",
+            "Loop guard: BPDU hilang, jangan forwarding",
+            "Root guard pulih sendiri"
+          ],
+          "teaches": [
+            "ccna-f-u13-rootguard",
+            "ccna-f-u13-loopguard",
+            "ccna-f-u13-guard-cmds"
+          ]
+        },
+        {
+          "id": "ccna-u13-l7-e3",
+          "type": "match",
+          "concept": "root-loop-guard",
+          "prompt": "Match each feature to what triggers it.",
+          "pairs": [
+            [
+              "BPDU (bridge protocol data unit) guard",
+              "Any BPDU (bridge protocol data unit) on a PortFast port"
+            ],
+            [
+              "Root guard",
+              "A superior BPDU on a designated port"
+            ],
+            [
+              "Loop guard",
+              "BPDUs stop arriving on a root or alternate port"
+            ],
+            [
+              "PortFast",
+              "An end device connects, so the port forwards at once"
+            ]
+          ],
+          "explanation": "BPDU (bridge protocol data unit) guard bereaksi pada BPDU apa pun di port PortFast, root guard pada BPDU yang lebih baik, loop guard pada BPDU yang hilang, dan PortFast mempercepat port ke perangkat akhir.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-bpduguard",
+            "ccna-f-u13-rootguard",
+            "ccna-f-u13-loopguard",
+            "ccna-f-u13-portfast"
+          ]
+        },
+        {
+          "id": "ccna-u13-l7-e4",
+          "type": "ios",
+          "concept": "root-loop-guard",
+          "prompt": "The distribution switch SW1 is root. GigabitEthernet0/2 goes down to an access switch that must never become root. Protect it.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/2",
+                "line": "spanning-tree guard root"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/2",
+            "spanning-tree guard root",
+            "end"
+          ],
+          "explanation": "Root guard menjaga Gi0/2 tetap designated dan memblokirnya kalau switch bawahan mencoba menjadi root.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-rootguard",
+            "ccna-f-u13-guard-cmds"
+          ]
+        },
+        {
+          "id": "ccna-u13-l7-e5",
+          "type": "truefalse",
+          "concept": "root-loop-guard",
+          "prompt": "A port blocked by root guard recovers by itself when the superior BPDUs (bridge protocol data units) stop.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Berbeda dari BPDU (bridge protocol data unit) guard yang membuat err-disabled, root guard pulih otomatis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-rootguard",
+            "ccna-f-u13-bpduguard"
+          ]
+        },
+        {
+          "id": "ccna-u13-l7-e6",
+          "type": "choice",
+          "concept": "root-loop-guard",
+          "prompt": "A fiber uplink fails in one direction, so the alternate port stops hearing BPDUs (bridge protocol data units). Which feature stops it from moving to forwarding and causing a loop?",
+          "options": [
+            "Loop guard",
+            "Root guard",
+            "PortFast",
+            "BPDU guard"
+          ],
+          "answer": 0,
+          "explanation": "Loop guard menahan port yang kehilangan BPDU (bridge protocol data unit) supaya tidak forwarding. Root guard bereaksi pada BPDU yang lebih baik, bukan yang hilang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-loopguard",
+            "ccna-f-u13-rootguard"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u13-l8",
+      "title": "Lab: Rapid PVST+",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u13-l7"
+      },
+      "items": [
+        {
+          "id": "ccna-u13-l8-m1",
+          "type": "learn",
+          "concepts": [
+            "stp-lab"
+          ],
+          "title": "Alur kerja spanning tree",
+          "body": "Pilih root bridge dan cadangannya dengan sengaja: root primary di switch inti, root secondary di switch cadangan. Aktifkan Rapid PVST+ (Per-VLAN Spanning Tree Plus) di semua switch. Di switch akses, pasang PortFast dan BPDU (bridge protocol data unit) guard di port ke perangkat akhir. Cek dengan show spanning-tree vlan diikuti nomor.",
+          "keyPoints": [
+            "Tentukan root dan cadangan",
+            "Rapid PVST+ di semua switch",
+            "PortFast dan BPDU guard di port akses"
+          ],
+          "teaches": [
+            "ccna-f-u13-root-cmd",
+            "ccna-f-u13-mode-cmd",
+            "ccna-f-u13-portfast-cmd",
+            "ccna-f-u13-bpduguard-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u13-l8-e1",
+          "type": "ios",
+          "concept": "stp-lab",
+          "prompt": "Configure the core switch SW1: run Rapid PVST+ (Per-VLAN Spanning Tree Plus) and make it the root bridge for VLANs (Virtual LANs) 1 and 10. Save the configuration.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "spanning-tree mode rapid-pvst"
+              },
+              {
+                "line": "spanning-tree vlan 1,10 priority 24576"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "spanning-tree vlan 1,10 root primary",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Rapid PVST+ (Per-VLAN Spanning Tree Plus) diaktifkan, root primary membuat SW1 root untuk VLAN (Virtual LAN) 1 dan 10, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-mode-cmd",
+            "ccna-f-u13-root-cmd",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u13-l8-e2",
+          "type": "ios",
+          "concept": "stp-lab",
+          "prompt": "On access switch SW3, run Rapid PVST+ (Per-VLAN Spanning Tree Plus) and protect the PC ports FastEthernet0/1 to FastEthernet0/10 with PortFast and BPDU (bridge protocol data unit) guard.",
+          "device": {
+            "hostname": "SW3",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "spanning-tree mode rapid-pvst"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/3",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/3",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/4",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/4",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/6",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/6",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/7",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/7",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/8",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/8",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/9",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/9",
+                "line": "spanning-tree bpduguard enable"
+              },
+              {
+                "context": "interface FastEthernet0/10",
+                "line": "spanning-tree portfast"
+              },
+              {
+                "context": "interface FastEthernet0/10",
+                "line": "spanning-tree bpduguard enable"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "interface range fa0/1 - 10",
+            "spanning-tree portfast",
+            "spanning-tree bpduguard enable",
+            "end"
+          ],
+          "explanation": "Rapid PVST+ (Per-VLAN Spanning Tree Plus) diaktifkan, lalu port PC mendapat PortFast dan BPDU (bridge protocol data unit) guard sekaligus dengan interface range.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-mode-cmd",
+            "ccna-f-u13-portfast-cmd",
+            "ccna-f-u13-bpduguard-cmd",
+            "ccna-f-u09-range"
+          ]
+        },
+        {
+          "id": "ccna-u13-l8-e3",
+          "type": "exhibit",
+          "concept": "stp-lab",
+          "prompt": "Refer to the exhibit. After the lab, SW2 shows this output. What should change so SW2 forwards on Gi0/2 instead of Gi0/1?",
+          "outputs": [
+            {
+              "title": "SW2# show spanning-tree vlan 10",
+              "text": "VLAN0010\n  Spanning tree enabled protocol rstp\n  Root ID    Priority    24586\n             Address     0050.7966.6801\n             Cost        4\n             Port        25 (GigabitEthernet0/1)\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\n\n  Bridge ID  Priority    32778  (priority 32768 sys-id-ext 10)\n             Address     0050.7966.6802\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\n\nInterface           Role Sts Cost      Prio.Nbr Type\n------------------- ---- --- --------- -------- --------------------------------\nFa0/1               Desg FWD 19        128.1    P2p Edge\nGi0/1               Root FWD 4         128.25   P2p\nGi0/2               Altn BLK 4         128.26   P2p"
+            }
+          ],
+          "options": [
+            "Lower the spanning-tree cost of Gi0/2 on SW2",
+            "Enable PortFast on Gi0/2",
+            "Enable BPDU (bridge protocol data unit) guard on Gi0/1",
+            "Shut down Fa0/1"
+          ],
+          "answer": 0,
+          "explanation": "Kedua uplink berbiaya 4, dan Gi0/1 menang seri. Biaya yang lebih rendah di Gi0/2 membuatnya menjadi root port. PortFast dan BPDU (bridge protocol data unit) guard tidak untuk uplink.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-cost-cmd",
+            "ccna-f-u13-tiebreak",
+            "ccna-f-u13-portfast-edge"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u13-loop-harm",
+      "statement": "Tanpa STP (Spanning Tree Protocol), link redundan antar switch membentuk loop layer 2 yang menyebabkan broadcast storm, tabel MAC yang terus berubah, dan frame ganda.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/5234-5.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u13-no-ttl",
+      "statement": "Header Ethernet tidak punya field TTL (time to live), jadi frame yang berputar di loop layer 2 tidak dibuang dengan sendirinya.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/5234-5.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u13-stp-purpose",
+      "statement": "STP mencegah loop dengan menempatkan port redundan di state blocking, sehingga hanya ada satu jalur aktif, dan membuka jalur cadangan itu kalau jalur utama putus.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/5234-5.html"
+    },
+    {
+      "id": "ccna-f-u13-root-election",
+      "statement": "Root bridge adalah switch dengan bridge ID terendah: priority terendah menang, dan kalau priority sama, MAC address terendah menang.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html"
+    },
+    {
+      "id": "ccna-f-u13-bid",
+      "statement": "Bridge ID terdiri dari priority 4 bit, extended system ID 12 bit yang berisi nomor VLAN, dan MAC address 48 bit; karena itu priority VLAN 10 bawaan tampil sebagai 32778.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html"
+    },
+    {
+      "id": "ccna-f-u13-priority",
+      "statement": "Priority bawaan adalah 32768, dan priority hanya boleh kelipatan 4096 antara 0 dan 61440.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html"
+    },
+    {
+      "id": "ccna-f-u13-pvst",
+      "statement": "PVST+ dan Rapid PVST+ menjalankan satu instance spanning tree per VLAN, jadi root bridge bisa berbeda untuk setiap VLAN.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html"
+    },
+    {
+      "id": "ccna-f-u13-root-cmd",
+      "statement": "spanning-tree vlan <id> root primary mengatur priority supaya switch menjadi root, biasanya 24576, dan root secondary menyiapkan cadangan, biasanya 28672; priority juga bisa diset langsung dengan spanning-tree vlan <id> priority <nilai>.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html"
+    },
+    {
+      "id": "ccna-f-u13-roles",
+      "statement": "Setiap switch non-root punya satu root port, yaitu port dengan biaya terendah ke root; setiap segmen punya satu designated port; port lain menjadi alternate port (cadangan root port) atau backup port.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html"
+    },
+    {
+      "id": "ccna-f-u13-root-all-desg",
+      "statement": "Semua port aktif di root bridge adalah designated port.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/5234-5.html"
+    },
+    {
+      "id": "ccna-f-u13-cost",
+      "statement": "Biaya port bawaan dalam mode short adalah 100 untuk 10 Mbps, 19 untuk 100 Mbps, 4 untuk 1 Gbps, dan 2 untuk 10 Gbps; root path cost adalah jumlah biaya port menuju root.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u13-tiebreak",
+      "statement": "Kalau biaya ke root sama, switch memilih root port lewat bridge ID tetangga yang terendah, lalu port ID tetangga yang terendah.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/5234-5.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u13-rstp-states",
+      "statement": "RSTP punya tiga state port: discarding, learning, dan forwarding; disabled, blocking, dan listening di 802.1D digabung menjadi discarding.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html"
+    },
+    {
+      "id": "ccna-f-u13-role-state",
+      "statement": "Root port dan designated port berada di state forwarding, sedangkan alternate port dan backup port berada di state discarding.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html"
+    },
+    {
+      "id": "ccna-f-u13-stp-states",
+      "statement": "STP 802.1D punya state disabled, blocking, listening, learning, dan forwarding.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/5234-5.html"
+    },
+    {
+      "id": "ccna-f-u13-stp-timers",
+      "statement": "Timer bawaan 802.1D adalah hello 2 detik, forward delay 15 detik, dan max age 20 detik; listening dan learning masing-masing berlangsung selama forward delay.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/5234-5.html"
+    },
+    {
+      "id": "ccna-f-u13-rstp-fast",
+      "statement": "RSTP mempercepat konvergensi dengan proposal dan agreement antar switch, sehingga port bisa langsung forwarding tanpa menunggu dua kali forward delay.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html"
+    },
+    {
+      "id": "ccna-f-u13-mode-cmd",
+      "statement": "spanning-tree mode rapid-pvst mengaktifkan Rapid PVST+ di switch Catalyst.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html"
+    },
+    {
+      "id": "ccna-f-u13-show-stp",
+      "statement": "show spanning-tree vlan <id> menampilkan root ID, bridge ID switch itu, serta role, state, dan cost setiap port.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html"
+    },
+    {
+      "id": "ccna-f-u13-cost-cmd",
+      "statement": "spanning-tree cost <nilai> di interface mengubah biaya port itu, sehingga pemilihan root port bisa diarahkan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html"
+    },
+    {
+      "id": "ccna-f-u13-portfast",
+      "statement": "PortFast membuat port ke perangkat akhir langsung forwarding tanpa listening dan learning; di RSTP port seperti itu disebut edge port.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
+    },
+    {
+      "id": "ccna-f-u13-portfast-edge",
+      "statement": "PortFast hanya dipasang di port ke perangkat akhir, bukan ke switch, karena port yang langsung forwarding ke switch lain bisa membentuk loop sementara.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
+    },
+    {
+      "id": "ccna-f-u13-portfast-cmd",
+      "statement": "spanning-tree portfast mengaktifkan PortFast di satu interface, dan spanning-tree portfast default mengaktifkannya di semua port akses.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
+    },
+    {
+      "id": "ccna-f-u13-bpduguard",
+      "statement": "BPDU guard mematikan port PortFast menjadi err-disabled kalau port itu menerima BPDU; port harus dinyalakan ulang secara manual atau dengan errdisable recovery.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
+    },
+    {
+      "id": "ccna-f-u13-bpduguard-cmd",
+      "statement": "spanning-tree bpduguard enable mengaktifkan BPDU guard di satu interface, dan spanning-tree portfast bpduguard default mengaktifkannya di semua port PortFast.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
+    },
+    {
+      "id": "ccna-f-u13-rootguard",
+      "statement": "Root guard menjaga port tetap designated; kalau menerima BPDU yang lebih baik, port masuk state root-inconsistent dan pulih sendiri saat BPDU itu berhenti.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10588-74.html"
+    },
+    {
+      "id": "ccna-f-u13-loopguard",
+      "statement": "Loop guard memasukkan root port atau alternate port ke state loop-inconsistent kalau BPDU berhenti datang, supaya port itu tidak tiba-tiba forwarding dan membentuk loop.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10596-84.html"
+    },
+    {
+      "id": "ccna-f-u13-guard-cmds",
+      "statement": "Root guard dipasang dengan spanning-tree guard root dan loop guard dengan spanning-tree guard loop di interface; spanning-tree loopguard default mengaktifkan loop guard secara global.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10588-74.html"
+    }
+  ]
+}

@@ -98,6 +98,124 @@ export const VISUAL_CATALOG = {
   // Unit 15
   VaultTypes: ['vault-types'],
   SiteRecoveryFlow: ['failover-commit-reprotect'],
+
+  // CCNA (LANGIT_CCNA_PLAN.md section 6)
+  // Unit 1
+  OsiTcpIp: ['osi-model', 'tcpip-model'],
+  Encapsulation: ['encapsulation'],
+  SwitchLearning: ['mac-learning'],
+  ArpExchange: ['arp'],
+  TcpHandshake: ['tcp-handshake'],
+  // Unit 2
+  CliModes: ['ios-modes'],
+  RunVsStartup: ['running-vs-startup'],
+  // Unit 3
+  StraightVsCrossover: ['straight-vs-crossover'],
+  FiberTypes: ['smf-vs-mmf'],
+  DuplexMismatch: ['duplex-mismatch'],
+  // Unit 4
+  OctetBits: ['binary-octet'],
+  SubnetMaskBits: ['subnet-mask'],
+  SubnetBlocks: ['subnet-calculation'],
+  VlsmPlan: ['vlsm'],
+  // Unit 5
+  Ipv6Compression: ['ipv6-format'],
+  Ipv6AddressTypes: ['ipv6-address-types'],
+  Eui64Steps: ['eui-64'],
+  SlaacFlow: ['slaac'],
+  // Unit 6
+  Channels24: ['wifi-channels'],
+  RfBehaviors: ['rf-behavior'],
+  WifiSecurity: ['wifi-security'],
+  BssEss: ['bss-ess'],
+  // Unit 7
+  HypervisorTypes: ['hypervisor-types'],
+  VmVsContainer: ['vm-vs-container'],
+  VirtualSwitch: ['virtual-switch'],
+  VrfTables: ['vrf'],
+  // Unit 8
+  ClientIpCommands: ['client-ip-settings'],
+  DhcpDora: ['dhcp-dora'],
+  DhcpRelay: ['dhcp-relay'],
+  // Unit 9
+  VlanDomains: ['vlan-concept'],
+  VoiceVlan: ['voice-vlan'],
+  PoeClasses: ['poe'],
+  // Unit 10
+  Dot1qTag: ['dot1q-tag'],
+  TrunkNative: ['native-vlan'],
+  RouterOnAStick: ['router-on-a-stick'],
+  SviRouting: ['svi'],
+  // Unit 11
+  EtherChannelBundle: ['etherchannel'],
+  LacpModes: ['lacp-modes'],
+  // Unit 12
+  CdpVsLldp: ['cdp-vs-lldp'],
+  NeighborScope: ['neighbor-scope'],
+  // Unit 13
+  StpLoop: ['stp-loop'],
+  StpRoles: ['stp-roles'],
+  StpStates: ['stp-states'],
+  StpGuards: ['stp-guards'],
+  // Unit 14
+  TroubleshootLadder: ['troubleshoot-flow'],
+  PingSymbols: ['ping-output'],
+  TracerouteTtl: ['traceroute'],
+  // Unit 15
+  RouteEntry: ['routing-table'],
+  LongestPrefix: ['longest-prefix'],
+  AdLadder: ['admin-distance'],
+  // Unit 16
+  StaticBothWays: ['static-route'],
+  FloatingStatic: ['floating-static'],
+  // Unit 17
+  OspfAreas: ['ospf-areas'],
+  WildcardMask: ['wildcard-mask'],
+  OspfStates: ['ospf-states'],
+  DrElection: ['ospf-dr'],
+  OspfCost: ['ospf-cost'],
+  // Unit 18
+  FhrpVirtual: ['fhrp'],
+  FhrpCompare: ['fhrp-compare'],
+  // Unit 19
+  CryptoBasics: ['crypto-basics'],
+  SshSetup: ['ssh'],
+  AaaFlow: ['aaa'],
+  TacacsRadius: ['tacacs-radius'],
+  // Unit 20
+  NatTerms: ['nat-terms'],
+  NatTypes: ['nat-types'],
+  PatPorts: ['pat'],
+  // Unit 21
+  DnsResolve: ['dns-resolution'],
+  DnsRecords: ['dns-records'],
+  // Unit 22
+  VpnTypes: ['vpn-types'],
+  EspAh: ['ipsec-protocols'],
+  TunnelTransport: ['ipsec-modes'],
+  // Unit 23
+  AclFlow: ['acl-basics'],
+  AclPlacement: ['acl-placement'],
+  // Unit 24
+  PsecModes: ['psec-violation'],
+  SnoopTrust: ['dhcp-snooping'],
+  L2Defenses: ['l2-threats'],
+  // Unit 25
+  MgmtModels: ['mgmt-models'],
+  SdnLayers: ['sdn'],
+  RestCrud: ['rest-api'],
+  // Unit 26
+  SnmpRoles: ['snmp'],
+  SyslogLevels: ['syslog-levels'],
+  SyslogFormat: ['syslog-format'],
+  // Unit 27
+  AnsibleFlow: ['ansible'],
+  YamlShapes: ['yaml'],
+  PlaybookAnatomy: ['playbook'],
+  // Unit 28
+  GenVsAgentic: ['genai-agentic'],
+  PromptParts: ['prompt'],
+  DataClasses: ['data-class'],
 } as const satisfies Record<string, readonly string[]>
 
 export type VisualName = keyof typeof VISUAL_CATALOG

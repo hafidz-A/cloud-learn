@@ -1,0 +1,2162 @@
+{
+  "id": "ccna-u17-ospf",
+  "path": 3,
+  "title": "OSPF",
+  "lessons": [
+    {
+      "id": "ccna-u17-l1",
+      "title": "Konsep OSPF",
+      "items": [
+        {
+          "id": "ccna-u17-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "ospf-concept"
+          ],
+          "title": "OSPF, protokol link-state",
+          "body": "Static route tidak menyesuaikan diri kalau link putus. OSPF (Open Shortest Path First) melakukannya otomatis. OSPF adalah protokol link-state: router bertukar LSA (link-state advertisement), sehingga semua router di satu area punya database topologi yang sama, lalu masing-masing menghitung jalur terbaik dengan SPF (shortest path first). Pesannya dikirim ke multicast 224.0.0.5, langsung di atas IP (Internet Protocol) dengan protocol number 89.",
+          "keyPoints": [
+            "Link-state: database sama per area",
+            "SPF menghitung jalur terbaik",
+            "Multicast 224.0.0.5, protokol 89"
+          ],
+          "teaches": [
+            "ccna-f-u17-link-state",
+            "ccna-f-u17-mcast"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-e1",
+          "type": "truefalse",
+          "concept": "ospf-concept",
+          "prompt": "In OSPF (Open Shortest Path First), every router in an area builds the same link-state database.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Router saling bertukar LSA (link-state advertisement), jadi database di satu area sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-link-state"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-e2",
+          "type": "choice",
+          "concept": "ospf-concept",
+          "prompt": "Which multicast address do OSPFv2 routers use to reach all OSPF (Open Shortest Path First) routers on a link?",
+          "options": [
+            "224.0.0.5",
+            "224.0.0.6",
+            "224.0.0.10",
+            "255.255.255.255"
+          ],
+          "answer": 0,
+          "explanation": "224.0.0.5 adalah semua router OSPF (Open Shortest Path First); 224.0.0.6 untuk DR (designated router) dan BDR (backup designated router). OSPF tidak memakai broadcast.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-mcast"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-e3",
+          "type": "multi",
+          "concept": "ospf-concept",
+          "prompt": "Which two statements about OSPF (Open Shortest Path First) are true? (Choose two.)",
+          "options": [
+            "It is a link-state routing protocol",
+            "It runs directly over IP (Internet Protocol) as protocol 89",
+            "It sends its full routing table by broadcast every 30 seconds",
+            "It uses hop count as its metric"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "OSPF (Open Shortest Path First) adalah protokol link-state yang berjalan di atas IP (Internet Protocol) dengan protocol number 89. Mengirim seluruh tabel secara berkala dan memakai hop count adalah ciri RIP (Routing Information Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-link-state",
+            "ccna-f-u17-mcast",
+            "ccna-f-u15-metric"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "ospf-areas"
+          ],
+          "title": "Area dan backbone",
+          "body": "OSPF (Open Shortest Path First) membagi jaringan besar menjadi area supaya database tetap kecil. Area 0 adalah backbone, dan semua area lain harus tersambung ke area 0. Router yang punya interface di area 0 dan area lain disebut ABR (area border router). Di CCNA, konfigurasi difokuskan pada single area, biasanya area 0.",
+          "keyPoints": [
+            "Area 0: backbone",
+            "Area lain tersambung ke area 0",
+            "ABR: di dua area"
+          ],
+          "visual": "OspfAreas",
+          "teaches": [
+            "ccna-f-u17-areas"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-e4",
+          "type": "choice",
+          "concept": "ospf-areas",
+          "prompt": "A router has interfaces in area 0 and area 1. What is it called?",
+          "options": [
+            "ABR (area border router)",
+            "DR (designated router)",
+            "BDR (backup designated router)",
+            "A stub router"
+          ],
+          "answer": 0,
+          "explanation": "Router di batas area 0 dan area lain adalah ABR (area border router). DR (designated router) dan BDR (backup designated router) dipilih per jaringan broadcast, bukan per area.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-areas"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "ospf-cost"
+          ],
+          "title": "Cost",
+          "body": "Metric OSPF (Open Shortest Path First) disebut cost. Di Cisco IOS, cost interface = reference bandwidth dibagi bandwidth interface, dan reference bawaannya 100 Mbps. Jadi 10 Mbps bernilai 10, tapi 100 Mbps, 1 Gbps, dan 10 Gbps sama-sama bernilai 1. Naikkan reference dengan auto-cost reference-bandwidth di semua router, atau atur satu interface dengan ip ospf cost.",
+          "keyPoints": [
+            "Cost = 100 Mbps / bandwidth",
+            "100 Mbps ke atas: cost 1",
+            "auto-cost reference-bandwidth di semua router"
+          ],
+          "visual": "OspfCost",
+          "teaches": [
+            "ccna-f-u17-cost",
+            "ccna-f-u17-ref-bw"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-e5",
+          "type": "choice",
+          "concept": "ospf-cost",
+          "prompt": "With the default reference bandwidth, what is the OSPF (Open Shortest Path First) cost of a 1 Gbps interface?",
+          "options": [
+            "1",
+            "10",
+            "100",
+            "1000"
+          ],
+          "answer": 0,
+          "explanation": "100 Mbps dibagi 1000 Mbps lebih kecil dari 1, tapi cost minimal 1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-cost"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-e6",
+          "type": "ios",
+          "concept": "ospf-cost",
+          "prompt": "The network has 10 Gbps and 1 Gbps links. On R1, change the OSPF (Open Shortest Path First) reference bandwidth to 10000 Mbps so they get different costs.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "router ospf 1",
+              "lines": [
+                "network 10.0.12.0 0.0.0.3 area 0"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "router ospf 1",
+                "line": "auto-cost reference-bandwidth 10000"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "router ospf 1",
+            "auto-cost reference-bandwidth 10000",
+            "end"
+          ],
+          "explanation": "Dengan reference 10000 Mbps, 10 Gbps bernilai 1 dan 1 Gbps bernilai 10. Lakukan hal yang sama di semua router.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-ref-bw",
+            "ccna-f-u17-cost"
+          ]
+        },
+        {
+          "id": "ccna-u17-l1-e7",
+          "type": "truefalse",
+          "concept": "ospf-cost",
+          "prompt": "With the default settings, OSPF (Open Shortest Path First) gives a 10 Gbps link a lower cost than a 100 Mbps link.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Keduanya bernilai 1, karena reference bawaannya hanya 100 Mbps.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-cost"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u17-l2",
+      "title": "Wildcard mask",
+      "branch": {
+        "kind": "prereq",
+        "from": "ccna-u17-l1"
+      },
+      "items": [
+        {
+          "id": "ccna-u17-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "wildcard-mask"
+          ],
+          "title": "Wildcard mask",
+          "body": "Perintah network di OSPF (Open Shortest Path First) dan ACL (access control list) memakai wildcard mask, bukan subnet mask. Bit 0 berarti harus cocok, dan bit 1 berarti diabaikan. Untuk sebuah subnet, wildcard adalah 255.255.255.255 dikurangi subnet mask: /24 menjadi 0.0.0.255 dan /30 menjadi 0.0.0.3.",
+          "keyPoints": [
+            "0: harus cocok, 1: abaikan",
+            "Wildcard = 255.255.255.255 - mask",
+            "/24: 0.0.0.255, /30: 0.0.0.3"
+          ],
+          "visual": "WildcardMask",
+          "teaches": [
+            "ccna-f-u17-wildcard"
+          ]
+        },
+        {
+          "id": "ccna-u17-l2-e1",
+          "type": "choice",
+          "concept": "wildcard-mask",
+          "prompt": "What is the wildcard mask for the subnet mask 255.255.255.224?",
+          "options": [
+            "0.0.0.31",
+            "0.0.0.32",
+            "0.0.0.224",
+            "255.255.255.31"
+          ],
+          "answer": 0,
+          "explanation": "255 - 224 = 31, jadi wildcard-nya 0.0.0.31.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-wildcard"
+          ]
+        },
+        {
+          "id": "ccna-u17-l2-e2",
+          "type": "match",
+          "concept": "wildcard-mask",
+          "prompt": "Match each subnet mask to its wildcard mask.",
+          "pairs": [
+            [
+              "255.255.255.0",
+              "0.0.0.255"
+            ],
+            [
+              "255.255.255.252",
+              "0.0.0.3"
+            ],
+            [
+              "255.255.240.0",
+              "0.0.15.255"
+            ],
+            [
+              "255.255.255.255",
+              "0.0.0.0"
+            ]
+          ],
+          "explanation": "Kurangkan setiap oktet dari 255: 0 menjadi 255, 252 menjadi 3, 240 menjadi 15, dan 255 menjadi 0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-wildcard"
+          ]
+        },
+        {
+          "id": "ccna-u17-l2-e3",
+          "type": "truefalse",
+          "concept": "wildcard-mask",
+          "prompt": "In a wildcard mask, a 1 bit means the matching bit of the address must be the same.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Bit 1 berarti diabaikan; bit 0 yang harus cocok.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-wildcard"
+          ]
+        },
+        {
+          "id": "ccna-u17-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "wildcard-host"
+          ],
+          "title": "Mencocokkan satu alamat",
+          "body": "Wildcard 0.0.0.0 berarti semua bit harus cocok, jadi hanya satu alamat. network 10.0.12.1 0.0.0.0 area 0 mengaktifkan OSPF (Open Shortest Path First) hanya di interface beralamat 10.0.12.1. Sebaliknya, network 10.0.0.0 0.255.255.255 area 0 mencocokkan semua interface yang diawali 10.",
+          "keyPoints": [
+            "0.0.0.0: satu alamat",
+            "0.255.255.255: seluruh 10.x.x.x",
+            "Pola cocok: OSPF aktif di interface itu"
+          ],
+          "teaches": [
+            "ccna-f-u17-wildcard-host",
+            "ccna-f-u17-network-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u17-l2-e4",
+          "type": "choice",
+          "concept": "wildcard-host",
+          "prompt": "Which network statement enables OSPF (Open Shortest Path First) only on the interface with address 192.168.1.1?",
+          "options": [
+            "network 192.168.1.1 0.0.0.0 area 0",
+            "network 192.168.1.0 0.0.0.255 area 0",
+            "network 192.168.1.1 255.255.255.255 area 0",
+            "network 192.168.0.0 0.0.255.255 area 0"
+          ],
+          "answer": 0,
+          "explanation": "Wildcard 0.0.0.0 mencocokkan satu alamat persis. 0.0.0.255 dan 0.0.255.255 mencocokkan banyak alamat, dan 255.255.255.255 mengabaikan semua bit.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-wildcard-host",
+            "ccna-f-u17-wildcard"
+          ]
+        },
+        {
+          "id": "ccna-u17-l2-e5",
+          "type": "multi",
+          "concept": "wildcard-host",
+          "prompt": "Which two interface addresses match network 10.1.0.0 0.0.255.255 area 0? (Choose two.)",
+          "options": [
+            "10.1.5.1",
+            "10.1.200.9",
+            "10.2.0.1",
+            "11.1.0.1"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Wildcard 0.0.255.255 mewajibkan dua oktet pertama sama dengan 10.1. 10.2.0.1 dan 11.1.0.1 berbeda di oktet itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-wildcard",
+            "ccna-f-u17-network-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u17-l2-e6",
+          "type": "fill",
+          "concept": "wildcard-mask",
+          "prompt": "Complete the statement for the subnet 172.16.8.0/22.",
+          "sentence": "network 172.16.8.0 0.0.___.___ area 0",
+          "bank": [
+            "3",
+            "255",
+            "252",
+            "0"
+          ],
+          "answers": [
+            "3",
+            "255"
+          ],
+          "explanation": "/22 adalah 255.255.252.0, jadi wildcard-nya 0.0.3.255.",
+          "requires": [
+            "ccna-f-u17-wildcard",
+            "ccna-f-u04-prefix"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u17-l3",
+      "title": "Router ID dan konfigurasi dasar",
+      "items": [
+        {
+          "id": "ccna-u17-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "ospf-config"
+          ],
+          "title": "Mengaktifkan OSPF",
+          "body": "router ospf diikuti process ID (identifier) membuat proses OSPF (Open Shortest Path First); process ID hanya berlaku lokal, jadi tidak harus sama dengan tetangga. Lalu tentukan interface yang ikut: perintah network dengan wildcard dan area, atau ip ospf diikuti process ID dan area langsung di interface. Keduanya hasilnya sama.",
+          "keyPoints": [
+            "router ospf <process-id>",
+            "network <alamat> <wildcard> area <id>",
+            "Atau ip ospf <pid> area <id> di interface"
+          ],
+          "teaches": [
+            "ccna-f-u17-router-ospf",
+            "ccna-f-u17-network-cmd",
+            "ccna-f-u17-ip-ospf-area"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-e1",
+          "type": "ios",
+          "concept": "ospf-config",
+          "prompt": "Enable OSPF (Open Shortest Path First) process 1 on R1 for the LAN (Local Area Network) 192.168.1.0/24 and the link 10.0.12.0/30, both in area 0, using network statements.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "router ospf 1",
+                "line": "network 192.168.1.0 0.0.0.255 area 0"
+              },
+              {
+                "context": "router ospf 1",
+                "line": "network 10.0.12.0 0.0.0.3 area 0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "router ospf 1",
+            "network 192.168.1.0 0.0.0.255 area 0",
+            "network 10.0.12.0 0.0.0.3 area 0",
+            "end"
+          ],
+          "explanation": "Setiap subnet dicocokkan dengan wildcard-nya: 0.0.0.255 untuk /24 dan 0.0.0.3 untuk /30.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-router-ospf",
+            "ccna-f-u17-network-cmd",
+            "ccna-f-u17-wildcard"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-e2",
+          "type": "ios",
+          "concept": "ospf-config",
+          "prompt": "Enable OSPF (Open Shortest Path First) process 1, area 0, directly on GigabitEthernet0/0/1 of R1 without a network statement.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip ospf 1 area 0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "ip ospf 1 area 0",
+            "end"
+          ],
+          "explanation": "ip ospf 1 area 0 di interface mengaktifkan OSPF (Open Shortest Path First) langsung di sana.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-ip-ospf-area"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "router-id"
+          ],
+          "title": "Router ID",
+          "body": "Setiap router OSPF (Open Shortest Path First) punya router ID (identifier) 32 bit yang ditulis seperti alamat IPv4. Urutan pemilihannya: perintah router-id; kalau tidak ada, alamat loopback tertinggi; kalau tidak ada loopback, alamat interface aktif tertinggi. Router ID yang diubah baru dipakai setelah proses dimulai ulang, misalnya dengan clear ip ospf process.",
+          "keyPoints": [
+            "1. router-id",
+            "2. Loopback tertinggi",
+            "3. Interface aktif tertinggi"
+          ],
+          "teaches": [
+            "ccna-f-u17-rid-order",
+            "ccna-f-u17-rid-change"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-e3",
+          "type": "choice",
+          "concept": "router-id",
+          "prompt": "R1 has no router-id command, Loopback0 10.1.1.1, and GigabitEthernet0/0/0 192.168.50.1. What is its OSPF (Open Shortest Path First) router ID (identifier)?",
+          "options": [
+            "10.1.1.1",
+            "192.168.50.1",
+            "0.0.0.0",
+            "1.1.1.1"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa router-id, loopback didahulukan walaupun alamat interface fisik lebih tinggi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-rid-order"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-e4",
+          "type": "ios",
+          "concept": "router-id",
+          "prompt": "Set the OSPF (Open Shortest Path First) router ID (identifier) of R1, process 1, to 1.1.1.1.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "router ospf 1",
+                "line": "router-id 1.1.1.1"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "router ospf 1",
+            "router-id 1.1.1.1",
+            "end"
+          ],
+          "explanation": "router-id di bawah router ospf menentukan router ID (identifier) secara eksplisit. Kalau proses sudah berjalan, ID baru dipakai setelah clear ip ospf process.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-rid-order",
+            "ccna-f-u17-rid-change"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-e5",
+          "type": "truefalse",
+          "concept": "router-id",
+          "prompt": "The OSPF (Open Shortest Path First) process ID (identifier) must match on two routers for them to become neighbors.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Process ID (identifier) hanya berlaku lokal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-router-ospf"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-e6",
+          "type": "match",
+          "concept": "ospf-config",
+          "prompt": "Match each OSPF (Open Shortest Path First) command to what it does.",
+          "pairs": [
+            [
+              "router ospf 1",
+              "Starts OSPF process 1"
+            ],
+            [
+              "network 10.0.12.0 0.0.0.3 area 0",
+              "Enables OSPF on interfaces in 10.0.12.0/30"
+            ],
+            [
+              "ip ospf 1 area 0",
+              "Enables OSPF on one interface directly"
+            ],
+            [
+              "router-id 1.1.1.1",
+              "Sets the router ID (identifier) by hand"
+            ]
+          ],
+          "explanation": "router ospf membuat proses, network dan ip ospf area mengaktifkan interface, dan router-id menentukan ID (identifier) secara manual.",
+          "requires": [
+            "ccna-f-u17-router-ospf",
+            "ccna-f-u17-network-cmd",
+            "ccna-f-u17-ip-ospf-area",
+            "ccna-f-u17-rid-order"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "passive-default"
+          ],
+          "title": "Passive interface dan default route",
+          "body": "Interface LAN (Local Area Network) yang hanya berisi PC tidak perlu mengirim hello. passive-interface diikuti nama interface menghentikan hello di sana, tapi subnet-nya tetap diumumkan. Untuk menyebarkan default route ke router lain, router tepi memakai default-information originate, asalkan router itu sendiri punya default route.",
+          "keyPoints": [
+            "passive-interface: tanpa hello",
+            "Subnet tetap diumumkan",
+            "default-information originate"
+          ],
+          "teaches": [
+            "ccna-f-u17-passive",
+            "ccna-f-u17-default-orig"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-e7",
+          "type": "ios",
+          "concept": "passive-default",
+          "prompt": "GigabitEthernet0/0/0 of R1 connects only PCs. Stop OSPF (Open Shortest Path First) hellos there while still advertising its subnet.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "router ospf 1",
+              "lines": [
+                "network 192.168.1.0 0.0.0.255 area 0",
+                "network 10.0.12.0 0.0.0.3 area 0"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "router ospf 1",
+                "line": "passive-interface GigabitEthernet0/0/0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "router ospf 1",
+            "passive-interface g0/0/0",
+            "end"
+          ],
+          "explanation": "passive-interface menghentikan hello di LAN (Local Area Network), sementara subnet-nya tetap diumumkan ke router lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-passive"
+          ]
+        },
+        {
+          "id": "ccna-u17-l3-e8",
+          "type": "choice",
+          "concept": "passive-default",
+          "prompt": "R1 has a static default route to the ISP (Internet Service Provider). Which command makes OSPF (Open Shortest Path First) share that default route with the other routers?",
+          "options": [
+            "default-information originate",
+            "passive-interface default",
+            "network 0.0.0.0 0.0.0.0 area 0",
+            "ip ospf 1 area 0"
+          ],
+          "answer": 0,
+          "explanation": "default-information originate mengumumkan default route milik R1 ke router OSPF (Open Shortest Path First) lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-default-orig",
+            "ccna-f-u17-passive"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u17-l4",
+      "title": "Neighbor dan adjacency",
+      "items": [
+        {
+          "id": "ccna-u17-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "ospf-neighbors"
+          ],
+          "title": "Syarat menjadi tetangga",
+          "body": "Router OSPF (Open Shortest Path First) mengirim hello setiap 10 detik dan menyatakan tetangga mati setelah 40 detik tanpa hello. Supaya menjadi tetangga, kedua sisi harus sama dalam area, subnet dan mask, hello dan dead interval, serta autentikasi. Router ID (identifier) kedua router juga harus berbeda.",
+          "keyPoints": [
+            "Hello 10, dead 40",
+            "Sama: area, subnet, timer, autentikasi",
+            "Router ID harus berbeda"
+          ],
+          "teaches": [
+            "ccna-f-u17-timers",
+            "ccna-f-u17-nbr-match",
+            "ccna-f-u17-rid-unique"
+          ]
+        },
+        {
+          "id": "ccna-u17-l4-e1",
+          "type": "multi",
+          "concept": "ospf-neighbors",
+          "prompt": "Which two settings must match for two OSPF (Open Shortest Path First) routers to become neighbors? (Choose two.)",
+          "options": [
+            "Hello and dead intervals",
+            "Area ID (identifier)",
+            "Process ID (identifier)",
+            "Router ID (identifier)"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Timer dan area harus sama. Process ID (identifier) hanya lokal, dan router ID justru harus berbeda.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-nbr-match",
+            "ccna-f-u17-router-ospf",
+            "ccna-f-u17-rid-unique"
+          ]
+        },
+        {
+          "id": "ccna-u17-l4-e2",
+          "type": "ios",
+          "concept": "ospf-neighbors",
+          "prompt": "R1 does not become a neighbor of R2 because GigabitEthernet0/0/1 of R1 sends hellos every 5 seconds, while R2 uses 10. Set the hello timer of R1 on that interface to 10 seconds.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip ospf hello-interval 5"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip ospf hello-interval 10"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "ip ospf hello-interval 10",
+            "end"
+          ],
+          "explanation": "Hello 10 detik sama dengan R2, jadi syarat timer terpenuhi dan adjacency bisa terbentuk.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-timers",
+            "ccna-f-u17-nbr-match"
+          ]
+        },
+        {
+          "id": "ccna-u17-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "ospf-states"
+          ],
+          "title": "State tetangga",
+          "body": "Tetangga OSPF (Open Shortest Path First) melewati beberapa state: Down, Init, 2-Way, ExStart, Exchange, Loading, lalu Full. Di 2-Way kedua router sudah saling melihat. Di jaringan broadcast, dua router DROTHER (DR other) berhenti di 2-Way, dan itu normal. Kalau tersangkut di ExStart atau Exchange, penyebab yang umum adalah MTU (maximum transmission unit) yang berbeda. show ip ospf neighbor menampilkan state setiap tetangga.",
+          "keyPoints": [
+            "Down sampai Full",
+            "DROTHER dengan DROTHER: 2-Way normal",
+            "Tersangkut ExStart: cek MTU"
+          ],
+          "visual": "OspfStates",
+          "teaches": [
+            "ccna-f-u17-states",
+            "ccna-f-u17-two-way",
+            "ccna-f-u17-mtu",
+            "ccna-f-u17-show-nbr"
+          ]
+        },
+        {
+          "id": "ccna-u17-l4-e3",
+          "type": "multi",
+          "concept": "ospf-states",
+          "prompt": "Which two states are normal, stable end states for an OSPF (Open Shortest Path First) neighbor? (Choose two.)",
+          "options": [
+            "Full",
+            "2-Way between two DROTHER (DR other) routers",
+            "ExStart",
+            "Init"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Full adalah tujuan akhir, dan 2-Way normal antara dua DROTHER (DR other). ExStart dan Init yang tidak berlanjut menandakan masalah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-states",
+            "ccna-f-u17-two-way",
+            "ccna-f-u17-mtu"
+          ]
+        },
+        {
+          "id": "ccna-u17-l4-e4",
+          "type": "choice",
+          "concept": "ospf-states",
+          "prompt": "Two OSPF (Open Shortest Path First) neighbors stay in the ExStart state. What is the most likely cause?",
+          "options": [
+            "An MTU (maximum transmission unit) mismatch",
+            "Different process IDs (identifier)",
+            "A passive LAN (Local Area Network) interface elsewhere",
+            "Both routers have priority 1"
+          ],
+          "answer": 0,
+          "explanation": "Tersangkut di ExStart atau Exchange biasanya karena MTU (maximum transmission unit) berbeda. Process ID (identifier) tidak perlu sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-mtu",
+            "ccna-f-u17-router-ospf"
+          ]
+        },
+        {
+          "id": "ccna-u17-l4-e5",
+          "type": "truefalse",
+          "concept": "ospf-states",
+          "prompt": "Two DROTHER (DR other) routers on the same Ethernet segment normally stay in the 2-Way state with each other.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. DROTHER (DR other) hanya membentuk adjacency penuh dengan DR (designated router) dan BDR (backup designated router).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-two-way"
+          ]
+        },
+        {
+          "id": "ccna-u17-l4-e6",
+          "type": "order",
+          "concept": "ospf-states",
+          "prompt": "Put the OSPF (Open Shortest Path First) neighbor states in order.",
+          "items": [
+            "Down",
+            "Init",
+            "2-Way",
+            "ExStart",
+            "Exchange",
+            "Loading",
+            "Full"
+          ],
+          "explanation": "Down, Init, 2-Way, ExStart, Exchange, Loading, lalu Full.",
+          "requires": [
+            "ccna-f-u17-states"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u17-l5",
+      "title": "Network broadcast dan point-to-point",
+      "items": [
+        {
+          "id": "ccna-u17-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "ospf-dr"
+          ],
+          "title": "DR dan BDR",
+          "body": "Interface Ethernet memakai network type broadcast. Di sana OSPF (Open Shortest Path First) memilih DR (designated router) dan BDR (backup designated router), supaya setiap router cukup membentuk adjacency penuh dengan keduanya. Pemenangnya priority interface tertinggi (bawaan 1), lalu router ID (identifier) tertinggi. Priority 0 tidak pernah menjadi DR atau BDR. Pemilihan tidak preemptive: router baru tidak merebut posisi DR.",
+          "keyPoints": [
+            "Broadcast: pilih DR dan BDR",
+            "Priority, lalu router ID",
+            "Priority 0: tidak ikut; tidak preemptive"
+          ],
+          "visual": "DrElection",
+          "teaches": [
+            "ccna-f-u17-type-default",
+            "ccna-f-u17-dr-why",
+            "ccna-f-u17-dr-elect",
+            "ccna-f-u17-dr-nopreempt"
+          ]
+        },
+        {
+          "id": "ccna-u17-l5-e1",
+          "type": "choice",
+          "concept": "ospf-dr",
+          "prompt": "Four routers share an Ethernet LAN (Local Area Network). All keep priority 1. Their router IDs (identifier) are 1.1.1.1, 2.2.2.2, 3.3.3.3, and 4.4.4.4, and they start at the same time. Which router becomes DR (designated router)?",
+          "options": [
+            "4.4.4.4",
+            "1.1.1.1",
+            "3.3.3.3",
+            "None, because priority 1 cannot be DR"
+          ],
+          "answer": 0,
+          "explanation": "Priority sama, jadi router ID (identifier) tertinggi menang: 4.4.4.4 menjadi DR (designated router) dan 3.3.3.3 BDR (backup designated router).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-dr-elect"
+          ]
+        },
+        {
+          "id": "ccna-u17-l5-e2",
+          "type": "ios",
+          "concept": "ospf-dr",
+          "prompt": "R1 must never become DR (designated router) or BDR (backup designated router) on its LAN (Local Area Network) interface GigabitEthernet0/0/0.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip ospf priority 0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip ospf priority 0",
+            "end"
+          ],
+          "explanation": "Priority 0 membuat R1 tidak pernah ikut pemilihan DR (designated router) dan BDR (backup designated router).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-dr-elect"
+          ]
+        },
+        {
+          "id": "ccna-u17-l5-e3",
+          "type": "truefalse",
+          "concept": "ospf-dr",
+          "prompt": "A new router with a higher OSPF (Open Shortest Path First) priority immediately takes over the DR (designated router) role.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Pemilihan DR (designated router) tidak preemptive; DR baru dipilih ulang kalau DR yang ada hilang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-dr-nopreempt"
+          ]
+        },
+        {
+          "id": "ccna-u17-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "ospf-p2p"
+          ],
+          "title": "Point-to-point",
+          "body": "Link Ethernet antar dua router tidak butuh DR (designated router), karena hanya ada dua router. ip ospf network point-to-point di kedua sisi mengubah network type, sehingga tidak ada pemilihan DR dan adjacency terbentuk lebih cepat. Di show ip ospf neighbor, kolom peran tetangga point-to-point hanya berisi tanda minus.",
+          "keyPoints": [
+            "Dua router: tidak perlu DR",
+            "ip ospf network point-to-point",
+            "Kolom peran: tanda minus"
+          ],
+          "teaches": [
+            "ccna-f-u17-p2p"
+          ]
+        },
+        {
+          "id": "ccna-u17-l5-e4",
+          "type": "ios",
+          "concept": "ospf-p2p",
+          "prompt": "GigabitEthernet0/0/1 of R1 links only to R2. Change its OSPF (Open Shortest Path First) network type so no DR (designated router) is elected.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip ospf network point-to-point"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "ip ospf network point-to-point",
+            "end"
+          ],
+          "explanation": "Network type point-to-point menghilangkan pemilihan DR (designated router). Lakukan hal yang sama di sisi R2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-p2p"
+          ]
+        },
+        {
+          "id": "ccna-u17-l5-e5",
+          "type": "truefalse",
+          "concept": "ospf-p2p",
+          "prompt": "On an OSPF (Open Shortest Path First) point-to-point network type, the two routers still elect a DR (designated router).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Hanya ada dua router, jadi DR (designated router) tidak dibutuhkan dan tidak dipilih.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-p2p"
+          ]
+        },
+        {
+          "id": "ccna-u17-l5-e6",
+          "type": "match",
+          "concept": "ospf-p2p",
+          "prompt": "Match each item to its meaning.",
+          "pairs": [
+            [
+              "FULL/DR (designated router)",
+              "Full adjacency with the designated router"
+            ],
+            [
+              "2WAY/DROTHER (DR other)",
+              "Normal state between two non-DR routers on a LAN (Local Area Network)"
+            ],
+            [
+              "FULL/  -",
+              "Full adjacency on a point-to-point link"
+            ],
+            [
+              "Priority 0",
+              "Never becomes DR or BDR (backup designated router)"
+            ]
+          ],
+          "explanation": "FULL/DR (designated router) adalah adjacency dengan DR, 2WAY/DROTHER (DR other) normal antar DROTHER, FULL/- di link point-to-point, dan priority 0 tidak pernah menjadi DR.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-show-nbr",
+            "ccna-f-u17-two-way",
+            "ccna-f-u17-p2p",
+            "ccna-f-u17-dr-elect"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u17-l6",
+      "title": "OSPFv3 untuk IPv6",
+      "items": [
+        {
+          "id": "ccna-u17-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "ospfv3"
+          ],
+          "title": "OSPFv3 untuk IPv6",
+          "body": "OSPFv3 membawa OSPF (Open Shortest Path First) ke IPv6. Konsepnya sama: area, cost, DR (designated router), dan state tetangga. Bedanya, OSPFv3 berjalan per link, memakai alamat link-local sebagai sumber pesan dan next hop, dan memakai multicast ff02::5 dan ff02::6. Router ID (identifier) tetap angka 32 bit; kalau router tidak punya alamat IPv4 aktif, router-id wajib diset manual.",
+          "keyPoints": [
+            "Per link, pakai link-local",
+            "ff02::5 dan ff02::6",
+            "Router ID 32 bit, set manual tanpa IPv4"
+          ],
+          "teaches": [
+            "ccna-f-u17-v3-basics",
+            "ccna-f-u17-v3-rid"
+          ]
+        },
+        {
+          "id": "ccna-u17-l6-e1",
+          "type": "choice",
+          "concept": "ospfv3",
+          "prompt": "Which address does OSPFv3 use as the next hop of its routes?",
+          "options": [
+            "The link-local address of the neighbor",
+            "The global address of the neighbor",
+            "ff02::5",
+            "The router ID (identifier) of the neighbor"
+          ],
+          "answer": 0,
+          "explanation": "OSPFv3 memakai link-local tetangga sebagai sumber pesan dan next hop. ff02::5 adalah multicast, dan router ID (identifier) bukan alamat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-basics"
+          ]
+        },
+        {
+          "id": "ccna-u17-l6-e2",
+          "type": "truefalse",
+          "concept": "ospfv3",
+          "prompt": "An IPv6-only router needs the router-id command before OSPFv3 can start.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Router ID (identifier) 32 bit biasanya diambil dari alamat IPv4; tanpa IPv4, harus diset manual.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-rid"
+          ]
+        },
+        {
+          "id": "ccna-u17-l6-e3",
+          "type": "choice",
+          "concept": "ospfv3",
+          "prompt": "Which multicast address do OSPFv3 routers use to reach all OSPF (Open Shortest Path First) routers on a link?",
+          "options": [
+            "ff02::5",
+            "ff02::1",
+            "224.0.0.5",
+            "ff02::2"
+          ],
+          "answer": 0,
+          "explanation": "ff02::5 adalah semua router OSPFv3, dan ff02::6 untuk DR (designated router) dan BDR (backup designated router). 224.0.0.5 adalah alamat OSPFv2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-basics",
+            "ccna-f-u17-mcast",
+            "ccna-f-u05-mcast"
+          ]
+        },
+        {
+          "id": "ccna-u17-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "ospfv3-config"
+          ],
+          "title": "Konfigurasi OSPFv3",
+          "body": "Pastikan ipv6 unicast-routing aktif. Buat proses dengan ipv6 router ospf diikuti process ID (identifier), lalu router-id. OSPFv3 tidak memakai perintah network: aktifkan di setiap interface dengan ipv6 ospf diikuti process ID dan area.",
+          "keyPoints": [
+            "ipv6 unicast-routing",
+            "ipv6 router ospf <pid> + router-id",
+            "ipv6 ospf <pid> area <id> per interface"
+          ],
+          "teaches": [
+            "ccna-f-u17-v3-cmds",
+            "ccna-f-u17-v3-rid"
+          ]
+        },
+        {
+          "id": "ccna-u17-l6-e4",
+          "type": "ios",
+          "concept": "ospfv3-config",
+          "prompt": "R1 is IPv6-only. Enable OSPFv3 process 1 with router ID (identifier) 1.1.1.1, and add GigabitEthernet0/0/0 and GigabitEthernet0/0/1 to area 0.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ipv6 unicast-routing"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ipv6 address 2001:db8:acad:1::1/64",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ipv6 address 2001:db8:acad:12::1/64",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "ipv6 router ospf 1",
+                "line": "router-id 1.1.1.1"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ipv6 ospf 1 area 0"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ipv6 ospf 1 area 0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ipv6 router ospf 1",
+            "router-id 1.1.1.1",
+            "interface g0/0/0",
+            "ipv6 ospf 1 area 0",
+            "interface g0/0/1",
+            "ipv6 ospf 1 area 0",
+            "end"
+          ],
+          "explanation": "Router ID (identifier) wajib karena tidak ada IPv4, lalu setiap interface diaktifkan dengan ipv6 ospf 1 area 0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-cmds",
+            "ccna-f-u17-v3-rid"
+          ]
+        },
+        {
+          "id": "ccna-u17-l6-e5",
+          "type": "choice",
+          "concept": "ospfv3-config",
+          "prompt": "How do you add an interface to OSPFv3 in Cisco IOS?",
+          "options": [
+            "ipv6 ospf 1 area 0 in interface configuration",
+            "network 2001:db8:acad:1::/64 area 0 under the process",
+            "ip ospf 1 area 0 in interface configuration",
+            "ipv6 router ospf 1 area 0 globally"
+          ],
+          "answer": 0,
+          "explanation": "OSPFv3 diaktifkan per interface dengan ipv6 ospf. Perintah network tidak dipakai di OSPFv3, dan ip ospf untuk OSPFv2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-cmds",
+            "ccna-f-u17-ip-ospf-area"
+          ]
+        },
+        {
+          "id": "ccna-u17-l6-e6",
+          "type": "multi",
+          "concept": "ospfv3-config",
+          "prompt": "Which two are the same in OSPFv2 and OSPFv3? (Choose two.)",
+          "options": [
+            "Area 0 is the backbone",
+            "The router ID (identifier) is a 32-bit number",
+            "Hellos go to 224.0.0.5",
+            "Interfaces are added with network statements"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Area dan router ID (identifier) 32 bit sama. OSPFv3 memakai ff02::5, dan interface ditambahkan dengan ipv6 ospf, bukan network.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-areas",
+            "ccna-f-u17-v3-rid",
+            "ccna-f-u17-v3-basics",
+            "ccna-f-u17-v3-cmds"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u17-l7",
+      "title": "Verifikasi dan troubleshoot OSPF",
+      "items": [
+        {
+          "id": "ccna-u17-l7-m1",
+          "type": "learn",
+          "concepts": [
+            "ospf-verify"
+          ],
+          "title": "Perintah verifikasi",
+          "body": "show ip ospf neighbor menampilkan tetangga, priority, state, dead time, alamat, dan interface. show ip ospf interface menampilkan area, cost, network type, peran DR (designated router), priority, serta timer hello dan dead. Route hasil OSPF (Open Shortest Path First) tampil di show ip route dengan kode O dan AD (administrative distance) 110.",
+          "keyPoints": [
+            "show ip ospf neighbor: tetangga",
+            "show ip ospf interface: area, cost, timer",
+            "show ip route: kode O, AD 110"
+          ],
+          "teaches": [
+            "ccna-f-u17-show-nbr",
+            "ccna-f-u17-show-int",
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u17-l7-e1",
+          "type": "exhibit",
+          "concept": "ospf-verify",
+          "prompt": "Refer to the exhibit. Which neighbor needs attention?",
+          "outputs": [
+            {
+              "title": "R1# show ip ospf neighbor",
+              "text": "Neighbor ID     Pri   State           Dead Time   Address         Interface\n2.2.2.2           1   FULL/BDR        00:00:35    192.168.1.2     GigabitEthernet0/0/0\n3.3.3.3           1   2WAY/DROTHER    00:00:31    192.168.1.3     GigabitEthernet0/0/0\n4.4.4.4           0   FULL/  -        00:00:38    10.0.14.2       GigabitEthernet0/0/1"
+            }
+          ],
+          "options": [
+            "None; all three are in a normal state",
+            "3.3.3.3, because it is only in 2WAY",
+            "4.4.4.4, because its priority is 0",
+            "2.2.2.2, because it is the BDR (backup designated router)"
+          ],
+          "answer": 0,
+          "explanation": "2WAY/DROTHER (DR other) normal antara dua DROTHER di LAN (Local Area Network). FULL/BDR (backup designated router) dan FULL/- (link point-to-point) juga normal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-two-way",
+            "ccna-f-u17-show-nbr",
+            "ccna-f-u17-p2p"
+          ]
+        },
+        {
+          "id": "ccna-u17-l7-e2",
+          "type": "exhibit",
+          "concept": "ospf-verify",
+          "prompt": "Refer to the exhibit. Which router is the DR (designated router) on GigabitEthernet0/0/0?",
+          "outputs": [
+            {
+              "title": "R1# show ip ospf neighbor",
+              "text": "Neighbor ID     Pri   State           Dead Time   Address         Interface\n2.2.2.2           1   FULL/BDR        00:00:35    192.168.1.2     GigabitEthernet0/0/0\n3.3.3.3           1   2WAY/DROTHER    00:00:31    192.168.1.3     GigabitEthernet0/0/0\n4.4.4.4           0   FULL/  -        00:00:38    10.0.14.2       GigabitEthernet0/0/1"
+            }
+          ],
+          "options": [
+            "R1 itself",
+            "2.2.2.2",
+            "3.3.3.3",
+            "4.4.4.4"
+          ],
+          "answer": 0,
+          "explanation": "Di Gi0/0/0, tetangganya BDR (2.2.2.2) dan DROTHER (3.3.3.3). Karena tidak ada tetangga yang DR (designated router), R1 sendirilah DR-nya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-show-nbr",
+            "ccna-f-u17-dr-why"
+          ]
+        },
+        {
+          "id": "ccna-u17-l7-e3",
+          "type": "exhibit",
+          "concept": "ospf-verify",
+          "prompt": "Refer to the exhibit. Why does R1 not form a neighbor on GigabitEthernet0/0/1?",
+          "outputs": [
+            {
+              "title": "R1# show ip ospf interface GigabitEthernet0/0/1",
+              "text": "GigabitEthernet0/0/1 is up, line protocol is up\n  Internet Address 10.0.12.1/30, Area 0, Attached via Network Statement\n  Process ID 1, Router ID 1.1.1.1, Network Type BROADCAST, Cost: 1\n  Transmit Delay is 1 sec, State DR, Priority 1\n  Timer intervals configured, Hello 5, Dead 20, Wait 20, Retransmit 5\n  Neighbor Count is 0, Adjacent neighbor count is 0"
+            },
+            {
+              "title": "R2# show ip ospf interface GigabitEthernet0/0/1 | include Timer",
+              "text": "  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5"
+            }
+          ],
+          "options": [
+            "Its timers differ from R2",
+            "The cost of the interface is only 1",
+            "The interface is in the backbone area 0",
+            "The network type is still broadcast"
+          ],
+          "answer": 0,
+          "explanation": "Timer R1 adalah hello 5 dan dead 20, sedangkan tetangga memakai bawaan 10 dan 40. Timer harus sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-show-int",
+            "ccna-f-u17-timers",
+            "ccna-f-u17-nbr-match"
+          ]
+        },
+        {
+          "id": "ccna-u17-l7-m2",
+          "type": "learn",
+          "concepts": [
+            "ospf-troubleshoot"
+          ],
+          "title": "Kesalahan yang umum",
+          "body": "Tetangga tidak muncul? Periksa: interface up, area sama, subnet sama, timer sama, dan interface antar router tidak dijadikan passive. Passive menghentikan hello, jadi adjacency di link itu tidak terbentuk. Route tidak muncul? Periksa apakah subnet itu masuk OSPF (Open Shortest Path First) lewat network atau ip ospf area.",
+          "keyPoints": [
+            "Interface up, area, subnet, timer",
+            "Jangan passive di link antar router",
+            "Subnet harus masuk OSPF"
+          ],
+          "teaches": [
+            "ccna-f-u17-nbr-match",
+            "ccna-f-u17-passive-pitfall",
+            "ccna-f-u17-network-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u17-l7-e4",
+          "type": "ios",
+          "concept": "ospf-troubleshoot",
+          "prompt": "R1 has no OSPF (Open Shortest Path First) neighbor on its link to R2 (GigabitEthernet0/0/1) because that interface was made passive by mistake. Fix it while keeping GigabitEthernet0/0/0 passive.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "router ospf 1",
+              "lines": [
+                "network 192.168.1.0 0.0.0.255 area 0",
+                "network 10.0.12.0 0.0.0.3 area 0",
+                "passive-interface GigabitEthernet0/0/0",
+                "passive-interface GigabitEthernet0/0/1"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "router ospf 1",
+                "line": "passive-interface GigabitEthernet0/0/0"
+              }
+            ],
+            "absent": [
+              {
+                "context": "router ospf 1",
+                "line": "passive-interface GigabitEthernet0/0/1"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "router ospf 1",
+            "no passive-interface g0/0/1",
+            "end"
+          ],
+          "explanation": "no passive-interface g0/0/1 menyalakan lagi hello di link ke R2, sementara LAN (Local Area Network) tetap passive.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-passive-pitfall",
+            "ccna-f-u17-passive"
+          ]
+        },
+        {
+          "id": "ccna-u17-l7-e5",
+          "type": "choice",
+          "concept": "ospf-troubleshoot",
+          "prompt": "R2 is a neighbor of R1, but the LAN (Local Area Network) 192.168.1.0/24 of R1 is missing from the routing table of R2. What should you check first on R1?",
+          "options": [
+            "That 192.168.1.0/24 is in OSPF (Open Shortest Path First) at all",
+            "That the process ID (identifier) matches R2",
+            "That R1 has priority 0",
+            "That the LAN interface is not passive"
+          ],
+          "answer": 0,
+          "explanation": "Tetangga sudah terbentuk, jadi yang kurang adalah subnet LAN (Local Area Network) yang belum dimasukkan ke OSPF (Open Shortest Path First). Passive tetap mengumumkan subnet, dan process ID (identifier) tidak perlu sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-network-cmd",
+            "ccna-f-u17-passive",
+            "ccna-f-u17-router-ospf"
+          ]
+        },
+        {
+          "id": "ccna-u17-l7-e6",
+          "type": "truefalse",
+          "concept": "ospf-troubleshoot",
+          "prompt": "A passive OSPF (Open Shortest Path First) interface still has its subnet advertised to other routers.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Passive hanya menghentikan hello; subnet-nya tetap diumumkan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-passive"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u17-l8",
+      "title": "Lab: OSPFv2 single area",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u17-l7"
+      },
+      "items": [
+        {
+          "id": "ccna-u17-l8-m1",
+          "type": "learn",
+          "concepts": [
+            "ospf-lab"
+          ],
+          "title": "Alur kerja OSPFv2 single area",
+          "body": "Di setiap router: buat router ospf dengan router-id yang jelas, masukkan semua subnet ke area 0, jadikan interface LAN (Local Area Network) passive, dan samakan reference bandwidth. Router tepi menambahkan default-information originate. Cek dengan show ip ospf neighbor dan show ip route.",
+          "keyPoints": [
+            "router-id yang jelas",
+            "Semua subnet di area 0",
+            "LAN passive, cek tetangga"
+          ],
+          "teaches": [
+            "ccna-f-u17-router-ospf",
+            "ccna-f-u17-rid-order",
+            "ccna-f-u17-network-cmd",
+            "ccna-f-u17-passive",
+            "ccna-f-u17-default-orig"
+          ]
+        },
+        {
+          "id": "ccna-u17-l8-e1",
+          "type": "ios",
+          "concept": "ospf-lab",
+          "prompt": "Configure OSPF (Open Shortest Path First) process 1 on R1: router ID (identifier) 1.1.1.1, area 0 for 192.168.1.0/24 and 10.0.12.0/30, the LAN (Local Area Network) interface GigabitEthernet0/0/0 passive, and share the existing default route. Save the configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "",
+              "lines": [
+                "ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/2"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/2",
+              "lines": [
+                "ip address 203.0.113.2 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1",
+            "GigabitEthernet0/0/2"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "router ospf 1",
+                "line": "router-id 1.1.1.1"
+              },
+              {
+                "context": "router ospf 1",
+                "line": "network 192.168.1.0 0.0.0.255 area 0"
+              },
+              {
+                "context": "router ospf 1",
+                "line": "network 10.0.12.0 0.0.0.3 area 0"
+              },
+              {
+                "context": "router ospf 1",
+                "line": "passive-interface GigabitEthernet0/0/0"
+              },
+              {
+                "context": "router ospf 1",
+                "line": "default-information originate"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "router ospf 1",
+            "router-id 1.1.1.1",
+            "network 192.168.1.0 0.0.0.255 area 0",
+            "network 10.0.12.0 0.0.0.3 area 0",
+            "passive-interface g0/0/0",
+            "default-information originate",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Router ID (identifier), network area 0, passive LAN (Local Area Network), dan default-information originate, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-rid-order",
+            "ccna-f-u17-network-cmd",
+            "ccna-f-u17-passive",
+            "ccna-f-u17-default-orig",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u17-l8-e2",
+          "type": "ios",
+          "concept": "ospf-lab",
+          "prompt": "On R2, enable OSPF (Open Shortest Path First) process 1 with router ID (identifier) 2.2.2.2 directly on GigabitEthernet0/0/0 (LAN (Local Area Network) 192.168.2.0/24) and GigabitEthernet0/0/1 (link to R1), both area 0, and make the LAN (Local Area Network) passive.",
+          "device": {
+            "hostname": "R2",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.2.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.2 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "router ospf 1",
+                "line": "router-id 2.2.2.2"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip ospf 1 area 0"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip ospf 1 area 0"
+              },
+              {
+                "context": "router ospf 1",
+                "line": "passive-interface GigabitEthernet0/0/0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "router ospf 1",
+            "router-id 2.2.2.2",
+            "passive-interface g0/0/0",
+            "interface g0/0/0",
+            "ip ospf 1 area 0",
+            "interface g0/0/1",
+            "ip ospf 1 area 0",
+            "end"
+          ],
+          "explanation": "Di R2 dipakai cara per interface; hasilnya sama dengan perintah network.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-ip-ospf-area",
+            "ccna-f-u17-rid-order",
+            "ccna-f-u17-passive"
+          ]
+        },
+        {
+          "id": "ccna-u17-l8-e3",
+          "type": "exhibit",
+          "concept": "ospf-lab",
+          "prompt": "Refer to the exhibit. After the lab, what does the O*E2 line on R2 show?",
+          "outputs": [
+            {
+              "title": "R2# show ip route ospf",
+              "text": "<output omitted>\nGateway of last resort is 10.0.12.1 to network 0.0.0.0\n\nO*E2  0.0.0.0/0 [110/1] via 10.0.12.1, 00:01:12, GigabitEthernet0/0/1\nO     192.168.1.0/24 [110/2] via 10.0.12.1, 00:01:12, GigabitEthernet0/0/1"
+            }
+          ],
+          "options": [
+            "R2 learned R1 default route by OSPF (Open Shortest Path First)",
+            "R2 has its own static default route to the ISP (Internet Service Provider)",
+            "R2 is the DR (designated router)",
+            "The LAN (Local Area Network) of R1 is missing"
+          ],
+          "answer": 0,
+          "explanation": "Kode O dengan * menunjukkan default route yang dipelajari lewat OSPF (Open Shortest Path First), hasil default-information originate di R1. E2 berarti route itu berasal dari luar OSPF.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-default-orig",
+            "ccna-f-u15-rt-codes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u17-l9",
+      "title": "Lab: OSPFv3",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u17-l8"
+      },
+      "items": [
+        {
+          "id": "ccna-u17-l9-m1",
+          "type": "learn",
+          "concepts": [
+            "ospfv3-lab"
+          ],
+          "title": "Menambahkan OSPFv3",
+          "body": "Topologi yang sama bisa menjalankan IPv6 juga. Aktifkan ipv6 unicast-routing, beri alamat IPv6, buat ipv6 router ospf dengan router-id, lalu aktifkan ipv6 ospf di setiap interface. OSPFv2 dan OSPFv3 berjalan berdampingan dan tidak saling mengganggu.",
+          "keyPoints": [
+            "ipv6 unicast-routing",
+            "ipv6 router ospf + router-id",
+            "ipv6 ospf di setiap interface"
+          ],
+          "teaches": [
+            "ccna-f-u17-v3-cmds",
+            "ccna-f-u17-v3-rid"
+          ]
+        },
+        {
+          "id": "ccna-u17-l9-e1",
+          "type": "ios",
+          "concept": "ospfv3-lab",
+          "prompt": "Add OSPFv3 to R1: enable IPv6 routing, create process 1 with router ID (identifier) 1.1.1.1, put GigabitEthernet0/0/0 and GigabitEthernet0/0/1 in area 0, and save.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ipv6 address 2001:db8:acad:1::1/64",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ipv6 address 2001:db8:acad:12::1/64",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ipv6 unicast-routing"
+              },
+              {
+                "context": "ipv6 router ospf 1",
+                "line": "router-id 1.1.1.1"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ipv6 ospf 1 area 0"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ipv6 ospf 1 area 0"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "ipv6 unicast-routing",
+            "ipv6 router ospf 1",
+            "router-id 1.1.1.1",
+            "interface g0/0/0",
+            "ipv6 ospf 1 area 0",
+            "interface g0/0/1",
+            "ipv6 ospf 1 area 0",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "IPv6 routing diaktifkan, proses OSPFv3 dibuat dengan router ID (identifier), interface masuk area 0, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-cmds",
+            "ccna-f-u17-v3-rid",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u17-l9-e2",
+          "type": "ios",
+          "concept": "ospfv3-lab",
+          "prompt": "Add OSPFv3 to R2 with router ID (identifier) 2.2.2.2: enable IPv6 routing and put GigabitEthernet0/0/1 (to R1) and GigabitEthernet0/0/2 (to R3) in area 0.",
+          "device": {
+            "hostname": "R2",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ipv6 address 2001:db8:acad:12::2/64",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/2",
+              "lines": [
+                "ipv6 address 2001:db8:acad:23::2/64",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/1",
+            "GigabitEthernet0/0/2"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ipv6 unicast-routing"
+              },
+              {
+                "context": "ipv6 router ospf 1",
+                "line": "router-id 2.2.2.2"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ipv6 ospf 1 area 0"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/2",
+                "line": "ipv6 ospf 1 area 0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ipv6 unicast-routing",
+            "ipv6 router ospf 1",
+            "router-id 2.2.2.2",
+            "interface g0/0/1",
+            "ipv6 ospf 1 area 0",
+            "interface g0/0/2",
+            "ipv6 ospf 1 area 0",
+            "end"
+          ],
+          "explanation": "Langkahnya sama dengan R1, dengan router ID (identifier) yang berbeda.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-cmds",
+            "ccna-f-u17-v3-rid",
+            "ccna-f-u17-rid-unique"
+          ]
+        },
+        {
+          "id": "ccna-u17-l9-e3",
+          "type": "exhibit",
+          "concept": "ospfv3-lab",
+          "prompt": "Refer to the exhibit. Why is the next hop of the OSPF (Open Shortest Path First) route a fe80 address?",
+          "outputs": [
+            {
+              "title": "R1# show ipv6 route ospf",
+              "text": "<output omitted>\nO   2001:DB8:ACAD:2::/64 [110/2]\n     via FE80::2, GigabitEthernet0/0/1"
+            }
+          ],
+          "options": [
+            "OSPFv3 always uses link-local next hops",
+            "The global address of R2 is configured wrong",
+            "The route is a static route, not OSPF",
+            "R1 has no IPv6 routing enabled at all"
+          ],
+          "answer": 0,
+          "explanation": "OSPFv3 memakai alamat link-local tetangga sebagai next hop. Itu normal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-basics"
+          ]
+        },
+        {
+          "id": "ccna-u17-l9-e4",
+          "type": "truefalse",
+          "concept": "ospfv3-lab",
+          "prompt": "OSPFv2 and OSPFv3 can run on the same routers at the same time.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Keduanya adalah proses terpisah, satu untuk IPv4 dan satu untuk IPv6.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u17-v3-basics",
+            "ccna-f-u17-link-state"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u17-link-state",
+      "statement": "OSPF (Open Shortest Path First) adalah protokol routing link-state: router bertukar LSA (link-state advertisement), menyusun database topologi yang sama di satu area, lalu menghitung jalur terbaik dengan algoritma SPF (shortest path first).",
+      "source": "https://www.rfc-editor.org/rfc/rfc2328.html"
+    },
+    {
+      "id": "ccna-f-u17-areas",
+      "statement": "OSPF membagi jaringan menjadi area; area 0 adalah backbone, area lain harus tersambung ke area 0, dan router dengan interface di area 0 dan area lain disebut ABR (area border router).",
+      "source": "https://www.rfc-editor.org/rfc/rfc2328.html"
+    },
+    {
+      "id": "ccna-f-u17-mcast",
+      "statement": "OSPFv2 memakai multicast 224.0.0.5 untuk semua router OSPF dan 224.0.0.6 untuk DR dan BDR, dan berjalan langsung di atas IP dengan protocol number 89.",
+      "source": "https://www.rfc-editor.org/rfc/rfc2328.html"
+    },
+    {
+      "id": "ccna-f-u17-cost",
+      "statement": "Metric OSPF adalah cost; di Cisco IOS cost = reference bandwidth dibagi bandwidth interface, dengan reference bawaan 100 Mbps, jadi semua link 100 Mbps ke atas bernilai 1.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/9237-9.html"
+    },
+    {
+      "id": "ccna-f-u17-ref-bw",
+      "statement": "auto-cost reference-bandwidth <Mbps> mengubah reference bandwidth dan sebaiknya diset sama di semua router; ip ospf cost <nilai> mengatur cost satu interface secara langsung.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/9237-9.html"
+    },
+    {
+      "id": "ccna-f-u17-wildcard",
+      "statement": "Wildcard mask menandai bit yang harus cocok dengan 0 dan bit yang diabaikan dengan 1; untuk sebuah subnet, wildcard adalah 255.255.255.255 dikurangi subnet mask, misalnya 0.0.0.255 untuk /24.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html"
+    },
+    {
+      "id": "ccna-f-u17-wildcard-host",
+      "statement": "Wildcard 0.0.0.0 berarti satu alamat persis, jadi network 10.0.12.1 0.0.0.0 area 0 hanya cocok dengan interface beralamat 10.0.12.1.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html"
+    },
+    {
+      "id": "ccna-f-u17-network-cmd",
+      "statement": "network <alamat> <wildcard> area <id> di router ospf mengaktifkan OSPF di setiap interface yang alamatnya cocok dengan pola itu, dan memasukkannya ke area itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html"
+    },
+    {
+      "id": "ccna-f-u17-router-ospf",
+      "statement": "router ospf <process-id> membuat proses OSPF; process ID hanya berlaku lokal, jadi tidak harus sama dengan tetangga.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/9237-9.html"
+    },
+    {
+      "id": "ccna-f-u17-rid-order",
+      "statement": "Router ID OSPF diambil dari perintah router-id; kalau tidak ada, dari alamat loopback tertinggi; kalau tidak ada loopback, dari alamat interface aktif tertinggi.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/9237-9.html"
+    },
+    {
+      "id": "ccna-f-u17-rid-change",
+      "statement": "Router ID yang diubah baru dipakai setelah proses OSPF dimulai ulang, misalnya dengan clear ip ospf process.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u17-ip-ospf-area",
+      "statement": "ip ospf <process-id> area <area> di interface mengaktifkan OSPF langsung di interface itu tanpa perintah network.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html"
+    },
+    {
+      "id": "ccna-f-u17-passive",
+      "statement": "passive-interface <interface> menghentikan hello di interface itu, tapi subnet-nya tetap diumumkan; cocok untuk interface LAN yang tidak punya router OSPF lain.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html"
+    },
+    {
+      "id": "ccna-f-u17-default-orig",
+      "statement": "default-information originate membuat router mengumumkan default route ke router OSPF lain, asalkan router itu sendiri punya default route.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html"
+    },
+    {
+      "id": "ccna-f-u17-timers",
+      "statement": "Bawaannya OSPF mengirim hello setiap 10 detik dan menyatakan tetangga mati setelah 40 detik tanpa hello di jaringan broadcast dan point-to-point.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13689-17.html"
+    },
+    {
+      "id": "ccna-f-u17-nbr-match",
+      "statement": "Supaya menjadi tetangga, kedua router harus sama dalam area, subnet dan mask, hello dan dead interval, serta autentikasi.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13699-29.html"
+    },
+    {
+      "id": "ccna-f-u17-rid-unique",
+      "statement": "Dua router OSPF dengan router ID yang sama tidak bisa membentuk adjacency yang benar.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13699-29.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u17-states",
+      "statement": "State tetangga OSPF berurutan Down, Init, 2-Way, ExStart, Exchange, Loading, lalu Full.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13685-13.html"
+    },
+    {
+      "id": "ccna-f-u17-two-way",
+      "statement": "Di jaringan broadcast, dua router DROTHER berhenti di state 2-Way, dan itu normal; adjacency Full hanya dibentuk dengan DR dan BDR.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13685-13.html"
+    },
+    {
+      "id": "ccna-f-u17-mtu",
+      "statement": "MTU (maximum transmission unit) yang berbeda di kedua sisi membuat tetangga tersangkut di state ExStart atau Exchange.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13684-12.html"
+    },
+    {
+      "id": "ccna-f-u17-dr-why",
+      "statement": "Di jaringan broadcast seperti Ethernet, OSPF memilih DR (designated router) dan BDR (backup designated router), sehingga setiap router cukup membentuk adjacency penuh dengan DR dan BDR saja.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13689-17.html"
+    },
+    {
+      "id": "ccna-f-u17-dr-elect",
+      "statement": "DR adalah router dengan priority interface tertinggi (bawaannya 1); kalau sama, router ID tertinggi; priority 0 berarti tidak pernah menjadi DR atau BDR.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13689-17.html"
+    },
+    {
+      "id": "ccna-f-u17-dr-nopreempt",
+      "statement": "Pemilihan DR tidak preemptive: router baru dengan priority lebih tinggi tidak merebut posisi DR yang sudah ada.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13689-17.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u17-p2p",
+      "statement": "Network type point-to-point tidak memilih DR dan BDR; ip ospf network point-to-point di link Ethernet antar dua router membuat adjacency lebih cepat terbentuk.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13689-17.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u17-type-default",
+      "statement": "Bawaannya interface Ethernet memakai network type broadcast.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13689-17.html"
+    },
+    {
+      "id": "ccna-f-u17-v3-basics",
+      "statement": "OSPFv3 adalah OSPF untuk IPv6: berjalan per link, memakai alamat link-local sebagai sumber pesan dan next hop, dan memakai multicast ff02::5 dan ff02::6.",
+      "source": "https://www.rfc-editor.org/rfc/rfc5340.html"
+    },
+    {
+      "id": "ccna-f-u17-v3-rid",
+      "statement": "Router ID OSPFv3 tetap angka 32 bit seperti alamat IPv4; kalau router tidak punya alamat IPv4 yang aktif, router-id harus diset manual.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/ip6-route-ospfv3-xe.html"
+    },
+    {
+      "id": "ccna-f-u17-v3-cmds",
+      "statement": "OSPFv3 diaktifkan dengan ipv6 router ospf <process-id> dan ipv6 ospf <process-id> area <area> di setiap interface, dengan ipv6 unicast-routing aktif.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/ip-version-6-ipv6/112100-ospfv3-config-guide.html"
+    },
+    {
+      "id": "ccna-f-u17-show-nbr",
+      "statement": "show ip ospf neighbor menampilkan router ID tetangga, priority, state seperti FULL/DR, dead time, alamat, dan interface.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13699-29.html"
+    },
+    {
+      "id": "ccna-f-u17-show-int",
+      "statement": "show ip ospf interface menampilkan area, cost, network type, state DR atau BDR, priority, serta timer hello dan dead setiap interface OSPF.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13689-17.html"
+    },
+    {
+      "id": "ccna-f-u17-passive-pitfall",
+      "statement": "Kalau interface antar router dijadikan passive, hello tidak dikirim di sana, jadi adjacency di link itu tidak terbentuk.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html",
+      "verify": true
+    }
+  ]
+}

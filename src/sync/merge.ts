@@ -33,6 +33,7 @@ export const SYNC_KEYS = [
   'heartsAt',
   'resetAt',
   'courses',
+  'ccna',
   'activeExam',
   'activeExamAt',
 ] as const satisfies readonly (keyof SyncData)[]
@@ -42,6 +43,7 @@ export function toSyncData(p: Progress): SyncData {
   for (const key of SYNC_KEYS) out[key] = p[key]
   // null, never undefined: JSON drops undefined, and the server keeps a key that a push leaves out.
   out.activeExam = p.activeExam ?? null
+  out.ccna = p.ccna ?? null
   return out as SyncData
 }
 
@@ -98,7 +100,7 @@ function mergeExams(a: ExamAttempt[], b: ExamAttempt[]): ExamAttempt[] {
 
 const EMPTY_COURSE: CourseProgress = { lessonsDone: {}, checkpoints: {}, unitLevel: {}, review: {}, reviewRemoved: {}, conceptStats: {}, examHistory: [] }
 
-/** One course's progress: the same rules for AZ-900 (top level) and AZ-104 (`courses.az104`). */
+/** One course's progress: the same rules for AZ-900 (top level), AZ-104 (`courses.az104`), and CCNA (`ccna`). */
 function mergeCourse(a: CourseProgress, b: CourseProgress): CourseProgress {
   return {
     lessonsDone: mergeRecords(a.lessonsDone, b.lessonsDone, (x, y) => ({
@@ -206,7 +208,8 @@ export function mergeProgress(a: SyncData, b: SyncData, { joining = false } = {}
   const placement = newerPlacement(a.courses?.az104?.placement, b.courses?.az104?.placement)
   const courses =
     a.courses?.az104 || b.courses?.az104 ? { az104: { ...mergeCourse(az104(a), az104(b)), ...(placement ? { placement } : {}) } } : {}
-  const finished = new Set([...az900.examHistory, ...(courses.az104?.examHistory ?? [])].map((e) => e.id))
+  const ccna = a.ccna || b.ccna ? mergeCourse({ ...EMPTY_COURSE, ...a.ccna }, { ...EMPTY_COURSE, ...b.ccna }) : null
+  const finished = new Set([...az900.examHistory, ...(courses.az104?.examHistory ?? []), ...(ccna?.examHistory ?? [])].map((e) => e.id))
 
   return {
     xp: Math.max(a.xp, b.xp, xpFromDays),
@@ -222,6 +225,7 @@ export function mergeProgress(a: SyncData, b: SyncData, { joining = false } = {}
     ...az900,
     resetAt: t(a.resetAt) >= t(b.resetAt) ? a.resetAt : b.resetAt,
     courses,
+    ccna,
     ...mergeActiveExam(a, b, finished),
   }
 }
@@ -232,6 +236,7 @@ export function readSyncData(value: unknown, defaults: SyncData): SyncData | nul
   const out = { ...defaults, ...(value as Partial<SyncData>) }
   if (typeof out.xp !== 'number' || typeof out.lessonsDone !== 'object' || !Array.isArray(out.examHistory)) return null
   if (!out.courses || typeof out.courses !== 'object' || Array.isArray(out.courses)) out.courses = {}
+  if (out.ccna && (typeof out.ccna !== 'object' || Array.isArray(out.ccna))) out.ccna = null
   if (out.activeExam && (typeof out.activeExam !== 'object' || !Array.isArray(out.activeExam.questionIds))) out.activeExam = null
   return out
 }

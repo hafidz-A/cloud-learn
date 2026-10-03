@@ -1,0 +1,1036 @@
+{
+  "id": "ccna-u11-etherchannel",
+  "path": 2,
+  "title": "EtherChannel",
+  "lessons": [
+    {
+      "id": "ccna-u11-l1",
+      "title": "Konsep EtherChannel",
+      "items": [
+        {
+          "id": "ccna-u11-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "etherchannel"
+          ],
+          "title": "EtherChannel",
+          "body": "EtherChannel menggabungkan beberapa link fisik, misalnya empat link Gigabit, menjadi satu link logis bernama port-channel. Bandwidth-nya bertambah, dan kalau satu kabel putus trafik tetap lewat link lainnya. STP (Spanning Tree Protocol) melihat port-channel sebagai satu link, jadi link anggotanya tidak diblokir satu per satu.",
+          "keyPoints": [
+            "Banyak link fisik, satu link logis",
+            "Bandwidth naik, tahan putus",
+            "STP melihat satu link"
+          ],
+          "visual": "EtherChannelBundle",
+          "teaches": [
+            "ccna-f-u11-ec-why",
+            "ccna-f-u11-ec-stp"
+          ]
+        },
+        {
+          "id": "ccna-u11-l1-e1",
+          "type": "truefalse",
+          "concept": "etherchannel",
+          "prompt": "Without EtherChannel, STP (Spanning Tree Protocol) usually blocks all but one of several parallel links between two switches.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Link paralel membentuk loop, jadi STP (Spanning Tree Protocol) memblokir sisanya. Dengan EtherChannel, semuanya menjadi satu link logis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-stp"
+          ]
+        },
+        {
+          "id": "ccna-u11-l1-e2",
+          "type": "choice",
+          "concept": "etherchannel",
+          "prompt": "Two switches are joined by four Gigabit links in one EtherChannel. One cable is cut. What happens?",
+          "options": [
+            "Traffic keeps flowing over the other three links",
+            "The whole port-channel goes down",
+            "STP (Spanning Tree Protocol) blocks the other three links",
+            "The switches fall back to a single trunk on VLAN (Virtual LAN) 1"
+          ],
+          "answer": 0,
+          "explanation": "EtherChannel tetap jalan selama masih ada anggota yang aktif; trafik pindah ke link yang tersisa.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-why",
+            "ccna-f-u11-ec-stp"
+          ]
+        },
+        {
+          "id": "ccna-u11-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "ec-load"
+          ],
+          "title": "Pembagian beban",
+          "body": "EtherChannel tidak membagi trafik per paket. Switch menghitung hash dari alamat, misalnya MAC (Media Access Control) atau IP (Internet Protocol) sumber dan tujuan, lalu memilih satu link. Akibatnya satu aliran selalu lewat link yang sama, dan satu aliran besar tidak lebih cepat dari satu link. Metodenya diatur global dengan port-channel load-balance, misalnya src-dst-ip.",
+          "keyPoints": [
+            "Hash alamat, bukan per paket",
+            "Satu aliran: satu link",
+            "port-channel load-balance"
+          ],
+          "teaches": [
+            "ccna-f-u11-ec-hash",
+            "ccna-f-u11-ec-lb-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u11-l1-e3",
+          "type": "truefalse",
+          "concept": "ec-load",
+          "prompt": "An EtherChannel of four 1 Gbps links lets a single file transfer between two hosts run at 4 Gbps.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Satu aliran dipetakan ke satu link lewat hash, jadi tetap maksimal 1 Gbps. Totalnya baru terasa saat ada banyak aliran.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-hash"
+          ]
+        },
+        {
+          "id": "ccna-u11-l1-e4",
+          "type": "ios",
+          "concept": "ec-load",
+          "prompt": "Most traffic through SW1 goes between many hosts and a few servers. Make the EtherChannels of SW1 balance traffic on source and destination IP (Internet Protocol) addresses.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "port-channel load-balance src-dst-ip"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "port-channel load-balance src-dst-ip",
+            "end"
+          ],
+          "explanation": "port-channel load-balance src-dst-ip memakai alamat IP (Internet Protocol) sumber dan tujuan untuk memilih link, jadi aliran yang berbeda menyebar ke link yang berbeda.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-lb-cmd",
+            "ccna-f-u11-ec-hash"
+          ]
+        },
+        {
+          "id": "ccna-u11-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "ec-rules"
+          ],
+          "title": "Syarat anggota",
+          "body": "Semua port anggota harus punya setelan yang sama: speed, duplex, mode akses atau trunk, VLAN (Virtual LAN) akses, native VLAN, dan allowed VLAN. Port yang berbeda tidak masuk bundle. PAgP (Port Aggregation Protocol) mendukung sampai 8 port, sedangkan LACP (Link Aggregation Control Protocol) sampai 16 port, dengan 8 aktif dan 8 standby.",
+          "keyPoints": [
+            "Setelan anggota harus sama",
+            "PAgP: sampai 8 port",
+            "LACP: 8 aktif, 8 standby"
+          ],
+          "teaches": [
+            "ccna-f-u11-ec-compat",
+            "ccna-f-u11-ec-max"
+          ]
+        },
+        {
+          "id": "ccna-u11-l1-e5",
+          "type": "multi",
+          "concept": "ec-rules",
+          "prompt": "Which two settings must match on all member ports of an EtherChannel? (Choose two.)",
+          "options": [
+            "Speed and duplex",
+            "Allowed VLANs (Virtual LANs) on the trunk",
+            "The port description",
+            "The cable color"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Speed, duplex, dan setelan VLAN (Virtual LAN) harus sama. Deskripsi dan warna kabel tidak berpengaruh.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-compat"
+          ]
+        },
+        {
+          "id": "ccna-u11-l1-e6",
+          "type": "choice",
+          "concept": "ec-rules",
+          "prompt": "How many ports can be active at the same time in one LACP (Link Aggregation Control Protocol) EtherChannel?",
+          "options": [
+            "8",
+            "2",
+            "4",
+            "16"
+          ],
+          "answer": 0,
+          "explanation": "LACP (Link Aggregation Control Protocol) menerima sampai 16 port, tapi hanya 8 yang aktif; 8 lainnya standby.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-max"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u11-l2",
+      "title": "LACP dan mode negosiasi",
+      "items": [
+        {
+          "id": "ccna-u11-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "lacp-modes"
+          ],
+          "title": "LACP dan PAgP",
+          "body": "Dua switch bisa menegosiasikan EtherChannel. LACP (Link Aggregation Control Protocol) adalah standar IEEE (Institute of Electrical and Electronics Engineers) 802.3ad: mode active memulai, passive hanya menjawab. PAgP (Port Aggregation Protocol) milik Cisco: desirable memulai, auto hanya menjawab. Mode on memaksa bundle tanpa protokol, jadi seberangnya juga harus on.",
+          "keyPoints": [
+            "LACP: active dan passive",
+            "PAgP: desirable dan auto",
+            "on: tanpa negosiasi"
+          ],
+          "visual": "LacpModes",
+          "teaches": [
+            "ccna-f-u11-lacp",
+            "ccna-f-u11-pagp",
+            "ccna-f-u11-mode-on"
+          ]
+        },
+        {
+          "id": "ccna-u11-l2-e1",
+          "type": "match",
+          "concept": "lacp-modes",
+          "prompt": "Match each channel-group mode to its behavior.",
+          "pairs": [
+            [
+              "active",
+              "LACP (Link Aggregation Control Protocol), starts negotiation"
+            ],
+            [
+              "passive",
+              "LACP, only answers"
+            ],
+            [
+              "desirable",
+              "PAgP (Port Aggregation Protocol), starts negotiation"
+            ],
+            [
+              "auto",
+              "PAgP, only answers"
+            ],
+            [
+              "on",
+              "No negotiation protocol"
+            ]
+          ],
+          "explanation": "active dan passive untuk LACP (Link Aggregation Control Protocol), desirable dan auto untuk PAgP (Port Aggregation Protocol), dan on tanpa protokol.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-lacp",
+            "ccna-f-u11-pagp",
+            "ccna-f-u11-mode-on"
+          ]
+        },
+        {
+          "id": "ccna-u11-l2-e2",
+          "type": "choice",
+          "concept": "lacp-modes",
+          "prompt": "Which protocol should you use for an EtherChannel between a Cisco switch and a server from another vendor?",
+          "options": [
+            "LACP (Link Aggregation Control Protocol)",
+            "PAgP (Port Aggregation Protocol)",
+            "DTP (Dynamic Trunking Protocol)",
+            "CDP (Cisco Discovery Protocol)"
+          ],
+          "answer": 0,
+          "explanation": "LACP (Link Aggregation Control Protocol) adalah standar IEEE (Institute of Electrical and Electronics Engineers), jadi didukung banyak vendor. PAgP (Port Aggregation Protocol) milik Cisco.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-lacp",
+            "ccna-f-u11-pagp"
+          ]
+        },
+        {
+          "id": "ccna-u11-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "mode-pairs"
+          ],
+          "title": "Pasangan mode",
+          "body": "EtherChannel terbentuk kalau minimal satu sisi memulai negosiasi: active-active, active-passive, desirable-desirable, atau desirable-auto. passive-passive dan auto-auto tidak terbentuk, karena keduanya hanya menunggu. on hanya cocok dengan on. LACP (Link Aggregation Control Protocol) dan PAgP (Port Aggregation Protocol) tidak bisa saling berpasangan.",
+          "keyPoints": [
+            "Minimal satu sisi memulai",
+            "passive-passive, auto-auto: gagal",
+            "on hanya dengan on"
+          ],
+          "teaches": [
+            "ccna-f-u11-mode-pairs",
+            "ccna-f-u11-mode-on"
+          ]
+        },
+        {
+          "id": "ccna-u11-l2-e3",
+          "type": "multi",
+          "concept": "mode-pairs",
+          "prompt": "Which two mode pairs form an EtherChannel? (Choose two.)",
+          "options": [
+            "active and passive",
+            "desirable and auto",
+            "passive and passive",
+            "active and desirable"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "active-passive (LACP (Link Aggregation Control Protocol)) dan desirable-auto (PAgP (Port Aggregation Protocol)) terbentuk. passive-passive tidak ada yang memulai, dan active-desirable mencampur dua protokol.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-mode-pairs"
+          ]
+        },
+        {
+          "id": "ccna-u11-l2-e4",
+          "type": "truefalse",
+          "concept": "mode-pairs",
+          "prompt": "Two ports set to auto form a PAgP (Port Aggregation Protocol) EtherChannel.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. auto hanya menjawab, jadi kalau kedua sisi auto tidak ada yang memulai negosiasi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-mode-pairs",
+            "ccna-f-u11-pagp"
+          ]
+        },
+        {
+          "id": "ccna-u11-l2-e5",
+          "type": "choice",
+          "concept": "mode-pairs",
+          "prompt": "SW1 uses channel-group 1 mode active, and SW2 uses channel-group 1 mode on. What happens?",
+          "options": [
+            "No working bundle forms, because mode on does not run LACP (Link Aggregation Control Protocol)",
+            "A normal LACP (Link Aggregation Control Protocol) bundle forms on both switches right away",
+            "A PAgP (Port Aggregation Protocol) bundle forms",
+            "SW2 switches itself to passive mode and the bundle forms"
+          ],
+          "answer": 0,
+          "explanation": "Mode on tidak menjalankan protokol apa pun, jadi hanya cocok dengan on. active menunggu jawaban LACP (Link Aggregation Control Protocol) yang tidak pernah datang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-mode-on",
+            "ccna-f-u11-mode-pairs"
+          ]
+        },
+        {
+          "id": "ccna-u11-l2-e6",
+          "type": "sort",
+          "concept": "mode-pairs",
+          "prompt": "Sort each pair of channel-group modes by the result.",
+          "buckets": [
+            "Forms",
+            "Does not form"
+          ],
+          "items": [
+            {
+              "text": "active and active",
+              "bucket": 0
+            },
+            {
+              "text": "desirable and auto",
+              "bucket": 0
+            },
+            {
+              "text": "on and on",
+              "bucket": 0
+            },
+            {
+              "text": "passive and passive",
+              "bucket": 1
+            },
+            {
+              "text": "auto and auto",
+              "bucket": 1
+            },
+            {
+              "text": "on and active",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Minimal satu sisi harus memulai negosiasi, dan mode on hanya cocok dengan on.",
+          "requires": [
+            "ccna-f-u11-mode-pairs",
+            "ccna-f-u11-mode-on"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u11-l3",
+      "title": "Konfigurasi EtherChannel Layer 2 dan Layer 3",
+      "items": [
+        {
+          "id": "ccna-u11-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "ec-config"
+          ],
+          "title": "Membuat EtherChannel layer 2",
+          "body": "Pilih port anggota, misalnya dengan interface range, lalu pasang channel-group diikuti nomor dan mode. IOS otomatis membuat interface Port-channel dengan nomor yang sama. Setelan seperti switchport mode trunk dipasang di interface Port-channel, dan IOS menerapkannya ke semua anggota supaya tetap sama.",
+          "keyPoints": [
+            "channel-group <nomor> mode <mode>",
+            "Port-channel dibuat otomatis",
+            "Setelan di Port-channel"
+          ],
+          "teaches": [
+            "ccna-f-u11-ec-cmd",
+            "ccna-f-u11-po-config",
+            "ccna-f-u09-range"
+          ]
+        },
+        {
+          "id": "ccna-u11-l3-e1",
+          "type": "ios",
+          "concept": "ec-config",
+          "prompt": "Bundle GigabitEthernet0/1 and GigabitEthernet0/2 of SW1 into EtherChannel 1 with LACP (Link Aggregation Control Protocol), starting the negotiation from SW1.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "channel-group 1 mode active"
+              },
+              {
+                "context": "interface GigabitEthernet0/2",
+                "line": "channel-group 1 mode active"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface range g0/1 - 2",
+            "channel-group 1 mode active",
+            "end"
+          ],
+          "explanation": "Mode active menjalankan LACP (Link Aggregation Control Protocol) dan memulai negosiasi. IOS membuat Port-channel1 secara otomatis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-cmd",
+            "ccna-f-u11-lacp"
+          ]
+        },
+        {
+          "id": "ccna-u11-l3-e2",
+          "type": "ios",
+          "concept": "ec-config",
+          "prompt": "EtherChannel 1 on SW1 already bundles GigabitEthernet0/1 and 0/2. Make the bundle a trunk.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/1",
+              "lines": [
+                "channel-group 1 mode active"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/2",
+              "lines": [
+                "channel-group 1 mode active"
+              ]
+            },
+            {
+              "context": "interface Port-channel1",
+              "lines": []
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface Port-channel1",
+                "line": "switchport mode trunk"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface port-channel 1",
+            "switchport mode trunk",
+            "end"
+          ],
+          "explanation": "Setelan trunk dipasang di interface Port-channel, dan IOS menerapkannya ke anggotanya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-po-config",
+            "ccna-f-u10-trunk-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u11-l3-e3",
+          "type": "choice",
+          "concept": "ec-config",
+          "prompt": "After channel-group 3 mode passive is entered on two ports, which logical interface does IOS create?",
+          "options": [
+            "Port-channel3",
+            "Port-channel1",
+            "Vlan3",
+            "EtherChannel0"
+          ],
+          "answer": 0,
+          "explanation": "IOS membuat interface Port-channel dengan nomor yang sama dengan channel-group.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u11-l3-e4",
+          "type": "match",
+          "concept": "ec-config",
+          "prompt": "Match each command to what it does.",
+          "pairs": [
+            [
+              "interface range g0/1 - 2",
+              "Selects both member ports at once"
+            ],
+            [
+              "channel-group 1 mode active",
+              "Adds a port to bundle 1 with LACP (Link Aggregation Control Protocol)"
+            ],
+            [
+              "interface port-channel 1",
+              "Enters the logical bundle interface"
+            ],
+            [
+              "port-channel load-balance src-dst-ip",
+              "Sets how traffic is spread over the links"
+            ]
+          ],
+          "explanation": "interface range memilih anggota, channel-group membuat bundle, interface port-channel masuk ke interface logisnya, dan load-balance mengatur pembagian beban.",
+          "requires": [
+            "ccna-f-u09-range",
+            "ccna-f-u11-ec-cmd",
+            "ccna-f-u11-lacp",
+            "ccna-f-u11-po-config",
+            "ccna-f-u11-ec-lb-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u11-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "l3-etherchannel"
+          ],
+          "title": "EtherChannel layer 3",
+          "body": "Di switch layer 3, EtherChannel juga bisa menjadi link routed. Jadikan port anggota no switchport, lalu masukkan ke channel-group. Alamat IP (Internet Protocol) dipasang di interface Port-channel, bukan di port anggotanya. Hasilnya satu link layer 3 yang lebih lebar dan tahan putus, misalnya ke router atau switch inti.",
+          "keyPoints": [
+            "Anggota: no switchport",
+            "Alamat IP di Port-channel",
+            "Satu link routed yang lebar"
+          ],
+          "teaches": [
+            "ccna-f-u11-l3-ec",
+            "ccna-f-u10-routed-port"
+          ]
+        },
+        {
+          "id": "ccna-u11-l3-e5",
+          "type": "ios",
+          "concept": "l3-etherchannel",
+          "prompt": "On layer 3 switch SW1, bundle GigabitEthernet1/0/1 and 1/0/2 into routed EtherChannel 2 with LACP (Link Aggregation Control Protocol) active, and give the bundle 10.0.0.1/30.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c3650"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet1/0/1",
+                "line": "no switchport"
+              },
+              {
+                "context": "interface GigabitEthernet1/0/1",
+                "line": "channel-group 2 mode active"
+              },
+              {
+                "context": "interface GigabitEthernet1/0/2",
+                "line": "no switchport"
+              },
+              {
+                "context": "interface GigabitEthernet1/0/2",
+                "line": "channel-group 2 mode active"
+              },
+              {
+                "context": "interface Port-channel2",
+                "line": "ip address 10.0.0.1 255.255.255.252"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface range g1/0/1 - 2",
+            "no switchport",
+            "channel-group 2 mode active",
+            "interface port-channel 2",
+            "ip address 10.0.0.1 255.255.255.252",
+            "end"
+          ],
+          "explanation": "Anggota dijadikan routed port lalu dimasukkan ke channel-group, dan alamat IP (Internet Protocol) dipasang di Port-channel2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-l3-ec",
+            "ccna-f-u11-ec-cmd",
+            "ccna-f-u11-lacp"
+          ]
+        },
+        {
+          "id": "ccna-u11-l3-e6",
+          "type": "truefalse",
+          "concept": "l3-etherchannel",
+          "prompt": "In a layer 3 EtherChannel, the IP (Internet Protocol) address goes on each member port.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Alamat IP (Internet Protocol) dipasang di interface Port-channel, bukan di port anggota.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-l3-ec"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u11-l4",
+      "title": "Verifikasi dan troubleshoot",
+      "items": [
+        {
+          "id": "ccna-u11-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "ec-verify"
+          ],
+          "title": "show etherchannel summary",
+          "body": "show etherchannel summary menampilkan setiap port-channel dan anggotanya, lengkap dengan flag. Untuk port-channel: S berarti layer 2, R layer 3, U in use. Untuk anggota: P berarti bundled (sehat), s suspended, I stand-alone, dan D down. Port-channel yang sehat tampil (SU) atau (RU) dengan anggota (P).",
+          "keyPoints": [
+            "Sehat: (SU) atau (RU), anggota (P)",
+            "s: suspended",
+            "I: stand-alone, D: down"
+          ],
+          "teaches": [
+            "ccna-f-u11-ec-summary",
+            "ccna-f-u11-suspended"
+          ]
+        },
+        {
+          "id": "ccna-u11-l4-e1",
+          "type": "exhibit",
+          "concept": "ec-verify",
+          "prompt": "Refer to the exhibit. What is the state of Gi0/2?",
+          "outputs": [
+            {
+              "title": "SW1# show etherchannel summary",
+              "text": "Flags:  D - down        P - bundled in port-channel\n        I - stand-alone s - suspended\n        R - Layer3      S - Layer2\n        U - in use\n<output omitted>\nGroup  Port-channel  Protocol    Ports\n------+-------------+-----------+-----------------------------------------------\n1      Po1(SU)         LACP      Gi0/1(P)    Gi0/2(s)"
+            }
+          ],
+          "options": [
+            "It is suspended and not part of the bundle",
+            "It is bundled and forwarding traffic",
+            "It is a layer 3 port",
+            "It is administratively down after a shutdown command"
+          ],
+          "answer": 0,
+          "explanation": "Flag (s) berarti suspended: port tidak masuk bundle. Gi0/1 dengan (P) yang bundled. Po1(SU) berarti layer 2 dan in use.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-summary",
+            "ccna-f-u11-suspended"
+          ]
+        },
+        {
+          "id": "ccna-u11-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "ec-troubleshoot"
+          ],
+          "title": "Mencari masalah EtherChannel",
+          "body": "Port suspended biasanya punya setelan yang berbeda dari anggota lain, misalnya allowed VLAN (Virtual LAN), speed, atau duplex. Samakan setelannya. Flag I (stand-alone) biasanya berarti negosiasi dari seberang tidak cocok, misalnya satu sisi LACP (Link Aggregation Control Protocol) dan sisi lain PAgP (Port Aggregation Protocol), atau pasangan passive-passive.",
+          "keyPoints": [
+            "s: setelan beda dari anggota lain",
+            "I: negosiasi tidak cocok",
+            "Cek mode di kedua sisi"
+          ],
+          "teaches": [
+            "ccna-f-u11-suspended",
+            "ccna-f-u11-standalone",
+            "ccna-f-u11-ec-compat",
+            "ccna-f-u11-mode-pairs"
+          ]
+        },
+        {
+          "id": "ccna-u11-l4-e2",
+          "type": "exhibit",
+          "concept": "ec-troubleshoot",
+          "prompt": "Refer to the exhibit. Gi0/2 on SW1 shows (s) in its port-channel. What is the most likely cause?",
+          "outputs": [
+            {
+              "title": "SW1# show running-config | section GigabitEthernet0/[12]",
+              "text": "interface GigabitEthernet0/1\n switchport trunk allowed vlan 10,20\n switchport mode trunk\n channel-group 1 mode active\ninterface GigabitEthernet0/2\n switchport trunk allowed vlan 10\n switchport mode trunk\n channel-group 1 mode active"
+            }
+          ],
+          "options": [
+            "Gi0/2 allows a different VLAN (Virtual LAN) list from Gi0/1",
+            "Gi0/2 uses LACP (Link Aggregation Control Protocol) mode active",
+            "Gi0/1 and Gi0/2 are both trunks",
+            "Port-channel1 is a layer 2 interface"
+          ],
+          "answer": 0,
+          "explanation": "Gi0/2 hanya mengizinkan VLAN (Virtual LAN) 10, sedangkan Gi0/1 mengizinkan 10 dan 20. Setelan anggota harus sama, jadi Gi0/2 suspended.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-suspended",
+            "ccna-f-u11-ec-compat"
+          ]
+        },
+        {
+          "id": "ccna-u11-l4-e3",
+          "type": "choice",
+          "concept": "ec-troubleshoot",
+          "prompt": "SW1 uses channel-group 1 mode passive, and SW2 also uses passive. What do the member ports show?",
+          "options": [
+            "Stand-alone (I), because neither side starts LACP (Link Aggregation Control Protocol)",
+            "Bundled (P), because both sides run LACP (Link Aggregation Control Protocol)",
+            "Suspended (s), because their speeds differ",
+            "Down (D), because passive mode shuts the member ports down"
+          ],
+          "answer": 0,
+          "explanation": "passive hanya menjawab. Kalau kedua sisi passive, negosiasi tidak pernah dimulai dan port tetap stand-alone.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-mode-pairs",
+            "ccna-f-u11-standalone",
+            "ccna-f-u11-ec-summary"
+          ]
+        },
+        {
+          "id": "ccna-u11-l4-e4",
+          "type": "ios",
+          "concept": "ec-troubleshoot",
+          "prompt": "SW2 uses LACP (Link Aggregation Control Protocol) in passive mode on its side of EtherChannel 1. On SW1, GigabitEthernet0/1 and 0/2 are also in passive mode. Fix SW1 so the bundle forms.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/1",
+              "lines": [
+                "channel-group 1 mode passive"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/2",
+              "lines": [
+                "channel-group 1 mode passive"
+              ]
+            },
+            {
+              "context": "interface Port-channel1",
+              "lines": []
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "channel-group 1 mode active"
+              },
+              {
+                "context": "interface GigabitEthernet0/2",
+                "line": "channel-group 1 mode active"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface range g0/1 - 2",
+            "channel-group 1 mode active",
+            "end"
+          ],
+          "explanation": "Salah satu sisi harus active supaya LACP (Link Aggregation Control Protocol) mulai bernegosiasi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-mode-pairs",
+            "ccna-f-u11-lacp",
+            "ccna-f-u11-ec-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u11-l4-e5",
+          "type": "multi",
+          "concept": "ec-troubleshoot",
+          "prompt": "Which two problems can leave a member port suspended? (Choose two.)",
+          "options": [
+            "Its duplex differs from the other members",
+            "Its native VLAN (Virtual LAN) differs from the other members",
+            "It has a different description",
+            "The bundle uses LACP (Link Aggregation Control Protocol)"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Setelan seperti duplex dan native VLAN (Virtual LAN) harus sama di semua anggota. Deskripsi tidak berpengaruh, dan LACP (Link Aggregation Control Protocol) adalah protokol yang normal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-compat",
+            "ccna-f-u11-suspended",
+            "ccna-f-u11-lacp"
+          ]
+        },
+        {
+          "id": "ccna-u11-l4-e6",
+          "type": "truefalse",
+          "concept": "ec-troubleshoot",
+          "prompt": "A member port with a different speed from the others is left out of the bundle.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Setelan anggota harus sama; port yang berbeda tidak di-bundle.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-compat",
+            "ccna-f-u11-suspended"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u11-l5",
+      "title": "Lab: EtherChannel",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u11-l4"
+      },
+      "items": [
+        {
+          "id": "ccna-u11-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "ec-lab"
+          ],
+          "title": "Alur kerja EtherChannel",
+          "body": "Samakan dulu setelan port anggota di kedua switch. Pasang channel-group dengan nomor yang sama, LACP (Link Aggregation Control Protocol) active minimal di satu sisi. Pasang setelan trunk di interface Port-channel. Cek dengan show etherchannel summary sampai port-channel tampil (SU) dengan anggota (P).",
+          "keyPoints": [
+            "Samakan setelan anggota",
+            "channel-group, minimal satu active",
+            "Cek (SU) dan (P)"
+          ],
+          "teaches": [
+            "ccna-f-u11-ec-compat",
+            "ccna-f-u11-ec-cmd",
+            "ccna-f-u11-po-config",
+            "ccna-f-u11-ec-summary"
+          ]
+        },
+        {
+          "id": "ccna-u11-l5-e1",
+          "type": "ios",
+          "concept": "ec-lab",
+          "prompt": "On SW1, bundle FastEthernet0/23 and 0/24 into EtherChannel 1 with LACP (Link Aggregation Control Protocol) active, make the bundle a trunk, and save the configuration.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/23",
+                "line": "channel-group 1 mode active"
+              },
+              {
+                "context": "interface FastEthernet0/24",
+                "line": "channel-group 1 mode active"
+              },
+              {
+                "context": "interface Port-channel1",
+                "line": "switchport mode trunk"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface range fa0/23 - 24",
+            "channel-group 1 mode active",
+            "interface port-channel 1",
+            "switchport mode trunk",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "channel-group membuat bundle dan Port-channel1, setelan trunk dipasang di Port-channel1, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-cmd",
+            "ccna-f-u11-po-config",
+            "ccna-f-u11-lacp",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u11-l5-e2",
+          "type": "ios",
+          "concept": "ec-lab",
+          "prompt": "On SW2, the other end of the same two links, join EtherChannel 1 using LACP (Link Aggregation Control Protocol) passive mode and make the bundle a trunk.",
+          "device": {
+            "hostname": "SW2",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/23",
+                "line": "channel-group 1 mode passive"
+              },
+              {
+                "context": "interface FastEthernet0/24",
+                "line": "channel-group 1 mode passive"
+              },
+              {
+                "context": "interface Port-channel1",
+                "line": "switchport mode trunk"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface range fa0/23 - 24",
+            "channel-group 1 mode passive",
+            "interface port-channel 1",
+            "switchport mode trunk",
+            "end"
+          ],
+          "explanation": "passive cukup karena SW1 active. Setelan trunk tetap dipasang di Port-channel1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-mode-pairs",
+            "ccna-f-u11-ec-cmd",
+            "ccna-f-u11-po-config"
+          ]
+        },
+        {
+          "id": "ccna-u11-l5-e3",
+          "type": "exhibit",
+          "concept": "ec-lab",
+          "prompt": "Refer to the exhibit. After the lab, is the EtherChannel healthy?",
+          "outputs": [
+            {
+              "title": "SW1# show etherchannel summary",
+              "text": "<output omitted>\nGroup  Port-channel  Protocol    Ports\n------+-------------+-----------+-----------------------------------------------\n1      Po1(SU)         LACP      Fa0/23(P)   Fa0/24(P)"
+            }
+          ],
+          "options": [
+            "Yes: Po1 is (SU) and both members are bundled",
+            "No: Po1 is layer 3",
+            "No: both members are suspended",
+            "No: the protocol should be PAgP (Port Aggregation Protocol)"
+          ],
+          "answer": 0,
+          "explanation": "Po1(SU) berarti layer 2 dan in use, dan kedua anggota bertanda (P), bundled. LACP (Link Aggregation Control Protocol) adalah pilihan yang benar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u11-ec-summary",
+            "ccna-f-u11-lacp"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u11-ec-why",
+      "statement": "EtherChannel menggabungkan beberapa link fisik menjadi satu link logis (port-channel), sehingga bandwidth bertambah dan link tetap jalan kalau salah satu anggotanya putus.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-ec-stp",
+      "statement": "STP (Spanning Tree Protocol) memperlakukan EtherChannel sebagai satu link, jadi link anggotanya tidak diblokir satu per satu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u11-ec-hash",
+      "statement": "Trafik dibagi ke link anggota berdasarkan hash alamat, misalnya MAC atau IP sumber dan tujuan, jadi satu aliran tetap lewat satu link yang sama.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-ec-lb-cmd",
+      "statement": "Metode pembagian beban diatur di global configuration dengan port-channel load-balance, misalnya port-channel load-balance src-dst-ip.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-ec-max",
+      "statement": "EtherChannel PAgP berisi sampai 8 port, sedangkan LACP sampai 16 port dengan 8 aktif dan 8 standby.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-ec-compat",
+      "statement": "Port anggota harus punya setelan yang sama, misalnya speed, duplex, mode akses atau trunk, VLAN akses, native VLAN, dan allowed VLAN; port yang berbeda tidak masuk bundle.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-lacp",
+      "statement": "LACP (Link Aggregation Control Protocol) adalah standar IEEE 802.3ad; mode active memulai negosiasi dan mode passive hanya menjawab.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-pagp",
+      "statement": "PAgP (Port Aggregation Protocol) adalah protokol milik Cisco; mode desirable memulai negosiasi dan mode auto hanya menjawab.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-mode-on",
+      "statement": "Mode on memaksa port masuk EtherChannel tanpa protokol negosiasi, jadi sisi seberang juga harus on.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-mode-pairs",
+      "statement": "EtherChannel terbentuk dengan active-active, active-passive, desirable-desirable, desirable-auto, atau on-on; passive-passive dan auto-auto tidak membentuknya karena tidak ada yang memulai.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-ec-cmd",
+      "statement": "channel-group <nomor> mode <mode> di interface menjadikan port anggota EtherChannel, dan IOS otomatis membuat interface Port-channel dengan nomor yang sama.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html"
+    },
+    {
+      "id": "ccna-f-u11-po-config",
+      "statement": "Setelan port seperti switchport mode trunk dipasang di interface Port-channel, dan IOS menerapkannya ke semua anggotanya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u11-l3-ec",
+      "statement": "Untuk EtherChannel layer 3, port anggota dijadikan no switchport, dan alamat IP dipasang di interface Port-channel, bukan di port anggota.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9500/software/release/16-6/configuration_guide/b_166_lyr2_lyr3_9500_cg/b_166_lyr2_lyr3_9500_cg_chapter_011.html"
+    },
+    {
+      "id": "ccna-f-u11-ec-summary",
+      "statement": "show etherchannel summary menampilkan port-channel dan anggotanya dengan flag, misalnya P (bundled), s (suspended), I (stand-alone), D (down), S (layer 2), R (layer 3), dan U (in use).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9500/software/release/16-6/configuration_guide/b_166_lyr2_lyr3_9500_cg/b_166_lyr2_lyr3_9500_cg_chapter_011.html"
+    },
+    {
+      "id": "ccna-f-u11-suspended",
+      "statement": "Port berstatus suspended tidak menjadi bagian EtherChannel dan trafik datanya diblokir, biasanya karena setelannya tidak sama dengan anggota lain.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9500/software/release/16-6/configuration_guide/b_166_lyr2_lyr3_9500_cg/b_166_lyr2_lyr3_9500_cg_chapter_011.html"
+    },
+    {
+      "id": "ccna-f-u11-standalone",
+      "statement": "Flag I (stand-alone) biasanya berarti port tidak menerima negosiasi yang cocok dari seberang, misalnya satu sisi LACP dan sisi lain tidak menjalankan LACP.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-9300-series-switches/220367-troubleshoot-etherchannels-on-catalyst-9.html",
+      "verify": true
+    }
+  ]
+}

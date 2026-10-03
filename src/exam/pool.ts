@@ -11,11 +11,12 @@ function poolOf(course: CourseId): ExamQuestion[] {
     .map((r) => ({ exercise: r.exercise, path: r.path }))
 }
 
-export const EXAM_POOLS: Record<CourseId, ExamQuestion[]> = { az900: poolOf('az900'), az104: poolOf('az104') }
+export const EXAM_POOLS: Record<CourseId, ExamQuestion[]> = { az900: poolOf('az900'), az104: poolOf('az104'), ccna: poolOf('ccna') }
 
 /** Case studies per course, for the full simulation (AZ-104 only). */
 export const CASE_POOLS: Record<CourseId, CasePool[]> = {
   az900: [],
+  ccna: [],
   az104: CASE_STUDIES.map((cs) => ({
     id: cs.id,
     questions: cs.questions.flatMap((exercise) => {

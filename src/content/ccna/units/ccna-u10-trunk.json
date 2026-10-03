@@ -1,0 +1,1514 @@
+{
+  "id": "ccna-u10-trunk",
+  "path": 2,
+  "title": "Trunk dan routing antar-VLAN",
+  "lessons": [
+    {
+      "id": "ccna-u10-l1",
+      "title": "Trunk 802.1Q",
+      "items": [
+        {
+          "id": "ccna-u10-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "dot1q-trunk"
+          ],
+          "title": "Trunk",
+          "body": "Port akses hanya membawa satu VLAN (Virtual LAN). Kalau dua switch sama-sama punya VLAN 10 dan 20, tidak perlu satu kabel per VLAN: pakai satu trunk. Trunk membawa banyak VLAN dalam satu link, misalnya antar switch atau antara switch dan router. Supaya switch di seberang tahu VLAN setiap frame, frame diberi tag. Port dijadikan trunk dengan switchport mode trunk.",
+          "keyPoints": [
+            "Satu link, banyak VLAN",
+            "Frame diberi tag VLAN",
+            "switchport mode trunk"
+          ],
+          "teaches": [
+            "ccna-f-u10-trunk",
+            "ccna-f-u10-trunk-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-e1",
+          "type": "choice",
+          "concept": "dot1q-trunk",
+          "prompt": "Two switches each have VLANs (Virtual LANs) 10, 20, and 30. What is the simplest way to carry all three between them?",
+          "options": [
+            "One trunk link",
+            "Three access links, one per VLAN",
+            "One access link in VLAN 1",
+            "A router between every VLAN pair"
+          ],
+          "answer": 0,
+          "explanation": "Trunk membawa banyak VLAN (Virtual LAN) dalam satu link. Port akses hanya membawa satu VLAN.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-trunk",
+            "ccna-f-u09-access-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-e2",
+          "type": "ios",
+          "concept": "dot1q-trunk",
+          "prompt": "GigabitEthernet0/1 on SW1 connects to SW2 and must carry all VLANs (Virtual LANs). Make it a trunk.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "switchport mode trunk"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/1",
+            "switchport mode trunk",
+            "end"
+          ],
+          "explanation": "switchport mode trunk menjadikan port trunk secara permanen.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-trunk-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "dot1q-tag"
+          ],
+          "title": "Tag 802.1Q",
+          "body": "Di trunk, 802.1Q menyisipkan tag 4 byte setelah MAC (Media Access Control) sumber, lalu menghitung ulang FCS (Frame Check Sequence). Tag berisi TPID (Tag Protocol Identifier) 0x8100 sepanjang 16 bit sebagai penanda, priority 3 bit (802.1p), CFI (Canonical Format Indicator) 1 bit, dan VLAN (Virtual LAN) ID (identifier) 12 bit. Karena VLAN ID 12 bit, nilainya 0 sampai 4095.",
+          "keyPoints": [
+            "Tag 4 byte setelah MAC sumber",
+            "TPID 0x8100",
+            "VLAN ID 12 bit"
+          ],
+          "visual": "Dot1qTag",
+          "teaches": [
+            "ccna-f-u10-tag",
+            "ccna-f-u10-tag-fields"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-e3",
+          "type": "choice",
+          "concept": "dot1q-tag",
+          "prompt": "How long is the tag that 802.1Q inserts into a frame?",
+          "options": [
+            "4 bytes",
+            "2 bytes",
+            "12 bytes",
+            "26 bytes"
+          ],
+          "answer": 0,
+          "explanation": "802.1Q menyisipkan tag 4 byte.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-tag"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-e4",
+          "type": "truefalse",
+          "concept": "dot1q-tag",
+          "prompt": "The VLAN (Virtual LAN) ID (identifier) field in an 802.1Q tag is 12 bits long.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. 12 bit memberi nilai 0 sampai 4095.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-tag-fields",
+            "ccna-f-u04-power2"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-e5",
+          "type": "multi",
+          "concept": "dot1q-tag",
+          "prompt": "Which two things happen when a switch sends a frame over an 802.1Q trunk? (Choose two.)",
+          "options": [
+            "A 4-byte tag is inserted",
+            "The FCS (Frame Check Sequence) is recalculated",
+            "The source MAC (Media Access Control) address is replaced",
+            "The IP (Internet Protocol) header gets the VLAN (Virtual LAN) number"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Switch menyisipkan tag dan menghitung ulang FCS (Frame Check Sequence) karena isi frame berubah. MAC (Media Access Control) sumber tetap, dan header IP (Internet Protocol) tidak disentuh.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-tag"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "dtp"
+          ],
+          "title": "DTP",
+          "body": "Port Cisco juga bisa bernegosiasi menjadi trunk dengan DTP (Dynamic Trunking Protocol). dynamic desirable aktif mengajak menjadi trunk. dynamic auto, setelan bawaan, hanya menjadi trunk kalau sisi seberang trunk atau desirable, jadi dua port auto tetap port akses. Untuk link yang pasti trunk, set switchport mode trunk dan matikan DTP dengan switchport nonegotiate.",
+          "keyPoints": [
+            "desirable: mengajak",
+            "auto (bawaan): menunggu",
+            "auto + auto: tidak jadi trunk"
+          ],
+          "teaches": [
+            "ccna-f-u10-dtp-modes",
+            "ccna-f-u10-auto-auto",
+            "ccna-f-u10-nonegotiate"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-e6",
+          "type": "sort",
+          "concept": "dtp",
+          "prompt": "Sort each pair of port modes by the link it forms.",
+          "buckets": [
+            "Trunk",
+            "Access link"
+          ],
+          "items": [
+            {
+              "text": "trunk and dynamic auto",
+              "bucket": 0
+            },
+            {
+              "text": "dynamic desirable and dynamic auto",
+              "bucket": 0
+            },
+            {
+              "text": "dynamic desirable and dynamic desirable",
+              "bucket": 0
+            },
+            {
+              "text": "dynamic auto and dynamic auto",
+              "bucket": 1
+            },
+            {
+              "text": "access and dynamic desirable",
+              "bucket": 1
+            }
+          ],
+          "explanation": "auto hanya menjadi trunk kalau seberangnya trunk atau desirable. Dua auto tidak membentuk trunk, dan port access tidak pernah menjadi trunk.",
+          "requires": [
+            "ccna-f-u10-dtp-modes",
+            "ccna-f-u10-auto-auto"
+          ]
+        },
+        {
+          "id": "ccna-u10-l1-e7",
+          "type": "choice",
+          "concept": "dtp",
+          "prompt": "Two new Catalyst 2960 switches are cabled together with default port settings. What does the link become?",
+          "options": [
+            "An access link, because both ports are dynamic auto",
+            "A trunk, because DTP (Dynamic Trunking Protocol) always forms one",
+            "A routed link",
+            "An EtherChannel"
+          ],
+          "answer": 0,
+          "explanation": "Bawaannya dynamic auto. Dua port auto saling menunggu, jadi link tetap akses.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-dtp-modes",
+            "ccna-f-u10-auto-auto"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u10-l2",
+      "title": "Allowed VLAN dan native VLAN",
+      "items": [
+        {
+          "id": "ccna-u10-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "allowed-vlan"
+          ],
+          "title": "VLAN yang diizinkan",
+          "body": "Secara bawaan semua VLAN (Virtual LAN) boleh lewat trunk. switchport trunk allowed vlan diikuti daftar membatasinya, tapi hati-hati: perintah itu mengganti seluruh daftar lama. Untuk menambah atau mengurangi, pakai kata kunci add atau remove, misalnya switchport trunk allowed vlan add 30. show interfaces trunk menampilkan VLAN yang diizinkan dan yang aktif.",
+          "keyPoints": [
+            "Bawaan: semua VLAN",
+            "Tanpa add: daftar diganti",
+            "add dan remove mengubah daftar"
+          ],
+          "teaches": [
+            "ccna-f-u10-allowed",
+            "ccna-f-u10-show-trunk"
+          ]
+        },
+        {
+          "id": "ccna-u10-l2-e1",
+          "type": "ios",
+          "concept": "allowed-vlan",
+          "prompt": "The trunk on GigabitEthernet0/1 of SW1 allows VLANs (Virtual LANs) 10 and 20. Add VLAN 30 without removing the others.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/1",
+              "lines": [
+                "switchport mode trunk",
+                "switchport trunk allowed vlan 10,20"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "switchport trunk allowed vlan 10,20,30"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/1",
+            "switchport trunk allowed vlan add 30",
+            "end"
+          ],
+          "explanation": "Kata kunci add menambahkan VLAN (Virtual LAN) 30 ke daftar yang sudah ada. Tanpa add, daftarnya hanya berisi 30.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-allowed"
+          ]
+        },
+        {
+          "id": "ccna-u10-l2-e2",
+          "type": "choice",
+          "concept": "allowed-vlan",
+          "prompt": "A trunk allows VLANs (Virtual LANs) 10 and 20. An engineer enters switchport trunk allowed vlan 30. Which VLANs are allowed now?",
+          "options": [
+            "Only 30",
+            "10, 20, and 30",
+            "10 and 20",
+            "All VLANs"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa add, perintah itu mengganti seluruh daftar, jadi hanya VLAN (Virtual LAN) 30 yang diizinkan. Ini kesalahan yang sering memutus VLAN lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-allowed"
+          ]
+        },
+        {
+          "id": "ccna-u10-l2-e3",
+          "type": "exhibit",
+          "concept": "allowed-vlan",
+          "prompt": "Refer to the exhibit. Hosts in VLAN (Virtual LAN) 20 on SW2 cannot reach VLAN 20 on SW1. What is the cause?",
+          "outputs": [
+            {
+              "title": "SW1# show interfaces trunk",
+              "text": "Port        Mode             Encapsulation  Status        Native vlan\nGi0/1       on               802.1q         trunking      1\n\nPort        Vlans allowed on trunk\nGi0/1       10,30\n\nPort        Vlans allowed and active in management domain\nGi0/1       10,30"
+            }
+          ],
+          "options": [
+            "VLAN 20 is not allowed on the trunk",
+            "The native VLAN is 1",
+            "The trunk uses 802.1Q",
+            "Gi0/1 is in desirable mode"
+          ],
+          "answer": 0,
+          "explanation": "Daftar Vlans allowed on trunk hanya berisi 10 dan 30, jadi VLAN (Virtual LAN) 20 tidak lewat. Native VLAN 1 dan 802.1Q adalah hal normal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-show-trunk",
+            "ccna-f-u10-allowed"
+          ]
+        },
+        {
+          "id": "ccna-u10-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "native-vlan"
+          ],
+          "title": "Native VLAN",
+          "body": "Di trunk 802.1Q, satu VLAN (Virtual LAN) dikirim tanpa tag: native VLAN. Bawaannya VLAN 1, dan diubah dengan switchport trunk native vlan diikuti nomornya. Native VLAN di kedua ujung harus sama. Kalau berbeda, frame tanpa tag dari satu sisi masuk ke VLAN yang salah di sisi lain, dan CDP (Cisco Discovery Protocol) melaporkan native VLAN mismatch.",
+          "keyPoints": [
+            "Native: tanpa tag",
+            "Bawaan VLAN 1",
+            "Harus sama di kedua ujung"
+          ],
+          "visual": "TrunkNative",
+          "teaches": [
+            "ccna-f-u10-native",
+            "ccna-f-u10-native-match"
+          ]
+        },
+        {
+          "id": "ccna-u10-l2-e4",
+          "type": "truefalse",
+          "concept": "native-vlan",
+          "prompt": "On an 802.1Q trunk, frames in the native VLAN (Virtual LAN) are sent without a tag.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Native VLAN (Virtual LAN) adalah satu-satunya VLAN yang dikirim tanpa tag.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-native"
+          ]
+        },
+        {
+          "id": "ccna-u10-l2-e5",
+          "type": "ios",
+          "concept": "native-vlan",
+          "prompt": "Change the native VLAN (Virtual LAN) of the trunk on GigabitEthernet0/1 of SW1 to VLAN 99.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/1",
+              "lines": [
+                "switchport mode trunk"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "switchport trunk native vlan 99"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/1",
+            "switchport trunk native vlan 99",
+            "end"
+          ],
+          "explanation": "switchport trunk native vlan 99 mengganti native VLAN (Virtual LAN). Lakukan hal yang sama di switch seberang supaya tidak mismatch.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-native",
+            "ccna-f-u10-native-match"
+          ]
+        },
+        {
+          "id": "ccna-u10-l2-e6",
+          "type": "choice",
+          "concept": "native-vlan",
+          "prompt": "SW1 uses native VLAN (Virtual LAN) 99 on a trunk, and SW2 still uses native VLAN 1. What happens?",
+          "options": [
+            "Untagged frames land in the wrong VLAN, and CDP (Cisco Discovery Protocol) reports a mismatch",
+            "The trunk carries no VLANs at all",
+            "Both switches change to VLAN 99 by themselves",
+            "Nothing, because the native VLAN does not need to match"
+          ],
+          "answer": 0,
+          "explanation": "Native VLAN (Virtual LAN) harus sama. Kalau berbeda, frame tanpa tag masuk ke VLAN yang salah, dan CDP (Cisco Discovery Protocol) melaporkan native VLAN mismatch.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-native-match"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u10-l3",
+      "title": "Interface Layer 2 dan Layer 3",
+      "items": [
+        {
+          "id": "ccna-u10-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "l2-l3-interfaces"
+          ],
+          "title": "Interface layer 2 dan layer 3",
+          "body": "Port switch biasa adalah switchport: bekerja di layer 2, meneruskan frame berdasarkan MAC (Media Access Control), dan tidak punya alamat IP (Internet Protocol). Interface router adalah interface layer 3: punya alamat IP dan merutekan paket. Switch layer 3 bisa keduanya. no switchport mengubah port fisiknya menjadi routed port, yang diberi alamat IP seperti interface router.",
+          "keyPoints": [
+            "switchport: layer 2, tanpa IP",
+            "Interface router: layer 3, punya IP",
+            "no switchport: routed port"
+          ],
+          "teaches": [
+            "ccna-f-u10-l2-l3",
+            "ccna-f-u10-routed-port"
+          ]
+        },
+        {
+          "id": "ccna-u10-l3-e1",
+          "type": "choice",
+          "concept": "l2-l3-interfaces",
+          "prompt": "On a layer 3 switch, which command turns GigabitEthernet1/0/1 into a port that can take an IP (Internet Protocol) address like a router interface?",
+          "options": [
+            "no switchport",
+            "switchport mode trunk",
+            "switchport mode access",
+            "switchport nonegotiate"
+          ],
+          "answer": 0,
+          "explanation": "no switchport mengubah port menjadi routed port. Ketiga perintah lain tetap membuat port bekerja di layer 2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-routed-port",
+            "ccna-f-u10-trunk-cmd",
+            "ccna-f-u10-nonegotiate",
+            "ccna-f-u09-access-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l3-e2",
+          "type": "ios",
+          "concept": "l2-l3-interfaces",
+          "prompt": "GigabitEthernet1/0/24 on the layer 3 switch SW1 links to router R1. Make it a routed port with the address 10.0.0.1/30.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c3650"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet1/0/24",
+                "line": "no switchport"
+              },
+              {
+                "context": "interface GigabitEthernet1/0/24",
+                "line": "ip address 10.0.0.1 255.255.255.252"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g1/0/24",
+            "no switchport",
+            "ip address 10.0.0.1 255.255.255.252",
+            "end"
+          ],
+          "explanation": "no switchport dulu, baru port bisa diberi alamat IP (Internet Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-routed-port",
+            "ccna-f-u04-ip-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l3-e3",
+          "type": "truefalse",
+          "concept": "l2-l3-interfaces",
+          "prompt": "After no switchport, a port on a layer 3 switch can be given an IP (Internet Protocol) address.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. no switchport mengubah port menjadi routed port yang bisa diberi alamat IP (Internet Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-routed-port"
+          ]
+        },
+        {
+          "id": "ccna-u10-l3-e4",
+          "type": "truefalse",
+          "concept": "l2-l3-interfaces",
+          "prompt": "A normal switchport on a Catalyst switch routes packets between subnets by itself.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Switchport bekerja di layer 2; routing antar-subnet butuh interface layer 3.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-l2-l3"
+          ]
+        },
+        {
+          "id": "ccna-u10-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "ip-routing"
+          ],
+          "title": "ip routing",
+          "body": "Switch layer 3 tidak otomatis merutekan. Routing antar-VLAN (Virtual LAN) baru jalan setelah ip routing diaktifkan di global configuration. Tanpa itu, switch hanya meneruskan di layer 2 walaupun interface-nya punya alamat. Router tidak butuh perintah ini untuk IPv4, karena routing sudah aktif.",
+          "keyPoints": [
+            "Switch layer 3: aktifkan ip routing",
+            "Tanpa itu: hanya layer 2",
+            "Router: routing sudah aktif"
+          ],
+          "teaches": [
+            "ccna-f-u10-ip-routing"
+          ]
+        },
+        {
+          "id": "ccna-u10-l3-e5",
+          "type": "choice",
+          "concept": "ip-routing",
+          "prompt": "A layer 3 switch has interfaces in VLANs (Virtual LANs) 10 and 20, but hosts cannot reach the other VLAN. All interfaces are up. What is missing?",
+          "options": [
+            "The ip routing command",
+            "A trunk to a router",
+            "A native VLAN on each port",
+            "The no switchport command on every access port"
+          ],
+          "answer": 0,
+          "explanation": "Switch layer 3 baru merutekan setelah ip routing diaktifkan. Router terpisah tidak dibutuhkan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-ip-routing",
+            "ccna-f-u10-routed-port"
+          ]
+        },
+        {
+          "id": "ccna-u10-l3-e6",
+          "type": "sort",
+          "concept": "ip-routing",
+          "prompt": "Sort each item by the layer it works at.",
+          "buckets": [
+            "Layer 2",
+            "Layer 3"
+          ],
+          "items": [
+            {
+              "text": "An access port",
+              "bucket": 0
+            },
+            {
+              "text": "A trunk port",
+              "bucket": 0
+            },
+            {
+              "text": "A routed port (no switchport)",
+              "bucket": 1
+            },
+            {
+              "text": "A router subinterface",
+              "bucket": 1
+            },
+            {
+              "text": "Forwarding by MAC (Media Access Control) address",
+              "bucket": 0
+            },
+            {
+              "text": "Forwarding by IP (Internet Protocol) address",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Port akses dan trunk bekerja di layer 2 berdasarkan MAC (Media Access Control). Routed port dan subinterface router bekerja di layer 3 berdasarkan IP (Internet Protocol).",
+          "requires": [
+            "ccna-f-u10-l2-l3",
+            "ccna-f-u10-routed-port",
+            "ccna-f-u10-trunk"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u10-l4",
+      "title": "SVI",
+      "items": [
+        {
+          "id": "ccna-u10-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "svi"
+          ],
+          "title": "SVI",
+          "body": "SVI (switched virtual interface) adalah interface virtual untuk satu VLAN (Virtual LAN), misalnya interface vlan 10. Di switch layer 3, alamat SVI menjadi gateway VLAN itu, dan setelah ip routing aktif switch merutekan antar-VLAN di dalam dirinya. SVI baru up kalau VLAN-nya ada dan minimal satu port di VLAN itu up, termasuk trunk yang membawanya.",
+          "keyPoints": [
+            "interface vlan <id>",
+            "Alamat SVI: gateway VLAN",
+            "Up kalau ada port aktif di VLAN-nya"
+          ],
+          "visual": "SviRouting",
+          "teaches": [
+            "ccna-f-u10-svi",
+            "ccna-f-u10-svi-up",
+            "ccna-f-u10-ip-routing"
+          ]
+        },
+        {
+          "id": "ccna-u10-l4-e1",
+          "type": "ios",
+          "concept": "svi",
+          "prompt": "Layer 3 switch SW1 already has VLANs (Virtual LANs) 10 and 20. Enable routing and create SVIs (switched virtual interfaces) 192.168.10.1/24 for VLAN 10 and 192.168.20.1/24 for VLAN 20.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c3650"
+          },
+          "given": [
+            {
+              "context": "vlan 10",
+              "lines": [
+                "name Staf"
+              ]
+            },
+            {
+              "context": "vlan 20",
+              "lines": [
+                "name Tamu"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip routing"
+              },
+              {
+                "context": "interface Vlan10",
+                "line": "ip address 192.168.10.1 255.255.255.0"
+              },
+              {
+                "context": "interface Vlan10",
+                "line": "no shutdown"
+              },
+              {
+                "context": "interface Vlan20",
+                "line": "ip address 192.168.20.1 255.255.255.0"
+              },
+              {
+                "context": "interface Vlan20",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip routing",
+            "interface vlan 10",
+            "ip address 192.168.10.1 255.255.255.0",
+            "no shutdown",
+            "interface vlan 20",
+            "ip address 192.168.20.1 255.255.255.0",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "ip routing mengaktifkan routing, lalu setiap VLAN (Virtual LAN) mendapat satu SVI (switched virtual interface) dengan alamat gateway-nya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-ip-routing",
+            "ccna-f-u10-svi"
+          ]
+        },
+        {
+          "id": "ccna-u10-l4-e2",
+          "type": "choice",
+          "concept": "svi",
+          "prompt": "interface Vlan30 on a layer 3 switch shows down/down. VLAN (Virtual LAN) 30 exists. What is the most likely cause?",
+          "options": [
+            "No port in VLAN 30 is up",
+            "ip routing is enabled",
+            "The SVI (switched virtual interface) has an IP (Internet Protocol) address",
+            "VLAN 30 has a name"
+          ],
+          "answer": 0,
+          "explanation": "SVI (switched virtual interface) baru up kalau ada minimal satu port aktif di VLAN (Virtual LAN)-nya. Alamat IP (Internet Protocol), nama VLAN, dan ip routing tidak membuatnya down.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-svi-up"
+          ]
+        },
+        {
+          "id": "ccna-u10-l4-e3",
+          "type": "choice",
+          "concept": "svi",
+          "prompt": "Which command creates the SVI (switched virtual interface) for VLAN (Virtual LAN) 50?",
+          "options": [
+            "interface vlan 50",
+            "vlan 50",
+            "switchport access vlan 50",
+            "interface g1/0/50"
+          ],
+          "answer": 0,
+          "explanation": "interface vlan 50 membuat SVI (switched virtual interface). vlan 50 hanya membuat VLAN (Virtual LAN)-nya, dan switchport access vlan 50 memasukkan port ke VLAN itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-svi",
+            "ccna-f-u09-vlan-cmd",
+            "ccna-f-u09-access-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "svi-mgmt"
+          ],
+          "title": "SVI di switch layer 2",
+          "body": "Switch layer 2 seperti Catalyst 2960 juga punya SVI (switched virtual interface), tapi bukan untuk routing. SVI di sana dipakai untuk manajemen, misalnya supaya switch bisa diakses lewat SSH (Secure Shell). Karena switch itu tidak merutekan, ia butuh ip default-gateway untuk menjangkau subnet lain, seperti PC.",
+          "keyPoints": [
+            "Switch layer 2: SVI untuk manajemen",
+            "Tidak merutekan",
+            "ip default-gateway untuk keluar subnet"
+          ],
+          "teaches": [
+            "ccna-f-u10-svi-mgmt"
+          ]
+        },
+        {
+          "id": "ccna-u10-l4-e4",
+          "type": "ios",
+          "concept": "svi-mgmt",
+          "prompt": "Give the layer 2 switch SW2 the management address 192.168.99.12/24 on VLAN (Virtual LAN) 99, with gateway 192.168.99.1.",
+          "device": {
+            "hostname": "SW2",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "vlan 99",
+              "lines": [
+                "name Manajemen"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface Vlan99",
+                "line": "ip address 192.168.99.12 255.255.255.0"
+              },
+              {
+                "context": "interface Vlan99",
+                "line": "no shutdown"
+              },
+              {
+                "line": "ip default-gateway 192.168.99.1"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface vlan 99",
+            "ip address 192.168.99.12 255.255.255.0",
+            "no shutdown",
+            "exit",
+            "ip default-gateway 192.168.99.1",
+            "end"
+          ],
+          "explanation": "SVI (switched virtual interface) VLAN (Virtual LAN) 99 memberi switch alamat manajemen, dan ip default-gateway dipakai karena switch layer 2 tidak merutekan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-svi-mgmt",
+            "ccna-f-u10-svi"
+          ]
+        },
+        {
+          "id": "ccna-u10-l4-e5",
+          "type": "truefalse",
+          "concept": "svi-mgmt",
+          "prompt": "A Catalyst 2960 uses its SVI (switched virtual interface) to route traffic between user VLANs (Virtual LANs).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Di switch layer 2, SVI (switched virtual interface) hanya untuk manajemen; routing antar-VLAN (Virtual LAN) butuh router atau switch layer 3.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-svi-mgmt"
+          ]
+        },
+        {
+          "id": "ccna-u10-l4-e6",
+          "type": "multi",
+          "concept": "svi-mgmt",
+          "prompt": "Which two statements about SVIs (switched virtual interfaces) are true? (Choose two.)",
+          "options": [
+            "An SVI is the gateway of its VLAN (Virtual LAN) on a layer 3 switch",
+            "A layer 2 switch uses an SVI for management access",
+            "An SVI is a physical port with no switchport",
+            "An SVI stays up even when its VLAN (Virtual LAN) does not exist"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "SVI (switched virtual interface) menjadi gateway di switch layer 3 dan alamat manajemen di switch layer 2. Routed port adalah port fisik dengan no switchport, dan SVI butuh VLAN (Virtual LAN)-nya ada.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-svi",
+            "ccna-f-u10-svi-mgmt",
+            "ccna-f-u10-routed-port",
+            "ccna-f-u10-svi-up"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u10-l5",
+      "title": "Router-on-a-stick",
+      "items": [
+        {
+          "id": "ccna-u10-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "router-on-a-stick"
+          ],
+          "title": "Router-on-a-stick",
+          "body": "Kalau tidak ada switch layer 3, router bisa merutekan antar-VLAN (Virtual LAN) lewat satu kabel. Port switch ke router dijadikan trunk, dan interface router dibagi menjadi subinterface, satu per VLAN. Contoh untuk VLAN 10: interface g0/0/1.10, lalu encapsulation dot1Q 10 dan ip address 192.168.10.1 255.255.255.0. Alamat itu menjadi gateway VLAN 10. Interface fisiknya juga harus no shutdown.",
+          "keyPoints": [
+            "Switch ke router: trunk",
+            "Satu subinterface per VLAN",
+            "encapsulation dot1Q, lalu ip address"
+          ],
+          "visual": "RouterOnAStick",
+          "teaches": [
+            "ccna-f-u10-roas",
+            "ccna-f-u10-subif-cmd",
+            "ccna-f-u10-roas-parent"
+          ]
+        },
+        {
+          "id": "ccna-u10-l5-e1",
+          "type": "ios",
+          "concept": "router-on-a-stick",
+          "prompt": "R1 GigabitEthernet0/0/1 connects to a trunk. Create subinterfaces for VLAN (Virtual LAN) 10 (192.168.10.1/24) and VLAN 20 (192.168.20.1/24), and enable the physical interface.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "cabled": [
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no shutdown"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1.10",
+                "line": "encapsulation dot1Q 10"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1.10",
+                "line": "ip address 192.168.10.1 255.255.255.0"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1.20",
+                "line": "encapsulation dot1Q 20"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1.20",
+                "line": "ip address 192.168.20.1 255.255.255.0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "no shutdown",
+            "interface g0/0/1.10",
+            "encapsulation dot1Q 10",
+            "ip address 192.168.10.1 255.255.255.0",
+            "interface g0/0/1.20",
+            "encapsulation dot1Q 20",
+            "ip address 192.168.20.1 255.255.255.0",
+            "end"
+          ],
+          "explanation": "Interface fisik dinyalakan, lalu setiap VLAN (Virtual LAN) mendapat subinterface dengan encapsulation dot1Q dan alamat gateway-nya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-subif-cmd",
+            "ccna-f-u10-roas-parent"
+          ]
+        },
+        {
+          "id": "ccna-u10-l5-e2",
+          "type": "choice",
+          "concept": "router-on-a-stick",
+          "prompt": "Which command on subinterface g0/0/1.30 tells the router which VLAN (Virtual LAN) the subinterface belongs to?",
+          "options": [
+            "encapsulation dot1Q 30",
+            "switchport access vlan 30",
+            "switchport trunk native vlan 30",
+            "vlan 30"
+          ],
+          "answer": 0,
+          "explanation": "Subinterface router memakai encapsulation dot1Q diikuti nomor VLAN (Virtual LAN). Perintah switchport hanya ada di switch.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-subif-cmd",
+            "ccna-f-u09-access-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l5-e3",
+          "type": "truefalse",
+          "concept": "router-on-a-stick",
+          "prompt": "The switch port that connects to a router-on-a-stick must be an access port.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Port itu harus trunk, karena membawa semua VLAN (Virtual LAN) ke router.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-roas",
+            "ccna-f-u10-trunk"
+          ]
+        },
+        {
+          "id": "ccna-u10-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "roas-details"
+          ],
+          "title": "Native VLAN dan induk interface",
+          "body": "Subinterface untuk native VLAN (Virtual LAN) memakai encapsulation dot1Q diikuti nomor dan kata native, karena frame VLAN itu datang tanpa tag. Hanya satu subinterface per interface fisik yang boleh native. Subinterface ikut mati kalau interface induknya shutdown. Karena semua trafik antar-VLAN lewat satu link, link itu bisa menjadi bottleneck; switch layer 3 merutekannya di dalam switch.",
+          "keyPoints": [
+            "Native: encapsulation dot1Q <id> native",
+            "Induk shutdown: semua subinterface mati",
+            "Satu link bisa jadi bottleneck"
+          ],
+          "teaches": [
+            "ccna-f-u10-subif-native",
+            "ccna-f-u10-roas-parent",
+            "ccna-f-u10-roas-scale"
+          ]
+        },
+        {
+          "id": "ccna-u10-l5-e4",
+          "type": "exhibit",
+          "concept": "roas-details",
+          "prompt": "Refer to the exhibit. Hosts in VLANs (Virtual LANs) 10 and 20 cannot reach their gateways. What is the problem?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | section GigabitEthernet0/0/1",
+              "text": "interface GigabitEthernet0/0/1\n no ip address\n shutdown\ninterface GigabitEthernet0/0/1.10\n encapsulation dot1Q 10\n ip address 192.168.10.1 255.255.255.0\ninterface GigabitEthernet0/0/1.20\n encapsulation dot1Q 20\n ip address 192.168.20.1 255.255.255.0"
+            }
+          ],
+          "options": [
+            "The physical interface G0/0/1 is shut down",
+            "The subinterfaces need switchport mode trunk",
+            "VLAN 20 needs the native keyword",
+            "The subinterface numbers must start at 1"
+          ],
+          "answer": 0,
+          "explanation": "Interface induk G0/0/1 masih shutdown, jadi semua subinterface-nya ikut mati. Nomor subinterface bebas dipilih, dan native hanya untuk VLAN (Virtual LAN) tanpa tag.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-roas-parent",
+            "ccna-f-u10-subif-native",
+            "ccna-f-u10-subif-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l5-e5",
+          "type": "choice",
+          "concept": "roas-details",
+          "prompt": "A company routes eight busy VLANs (Virtual LANs) over one router-on-a-stick link, and traffic between VLANs is slow. What is a better design?",
+          "options": [
+            "Route the VLANs on a layer 3 switch with SVIs (switched virtual interfaces)",
+            "Add a native VLAN to every subinterface",
+            "Turn the trunk into an access port",
+            "Use VLAN 1 for all users"
+          ],
+          "answer": 0,
+          "explanation": "Satu link router-on-a-stick bisa menjadi bottleneck. Switch layer 3 merutekan antar-VLAN (Virtual LAN) di dalam switch. Hanya satu subinterface yang boleh native.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-roas-scale",
+            "ccna-f-u10-svi",
+            "ccna-f-u10-subif-native"
+          ]
+        },
+        {
+          "id": "ccna-u10-l5-e6",
+          "type": "match",
+          "concept": "roas-details",
+          "prompt": "Match each router command to what it does.",
+          "pairs": [
+            [
+              "interface g0/0/1.10",
+              "Creates a subinterface"
+            ],
+            [
+              "encapsulation dot1Q 10",
+              "Ties the subinterface to VLAN (Virtual LAN) 10"
+            ],
+            [
+              "encapsulation dot1Q 99 native",
+              "Handles untagged frames"
+            ],
+            [
+              "ip address 192.168.10.1 255.255.255.0",
+              "Sets the gateway for VLAN 10"
+            ]
+          ],
+          "explanation": "interface dengan titik membuat subinterface, encapsulation menentukan VLAN (Virtual LAN), native untuk frame tanpa tag, dan ip address menjadi gateway.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-subif-cmd",
+            "ccna-f-u10-subif-native"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u10-l6",
+      "title": "Lab: trunk dan router-on-a-stick",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u10-l5"
+      },
+      "items": [
+        {
+          "id": "ccna-u10-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "roas-lab"
+          ],
+          "title": "Alur kerja router-on-a-stick",
+          "body": "Di switch, buat VLAN (Virtual LAN), pasang port akses, lalu jadikan port ke router trunk. Di router, nyalakan interface fisik dan buat satu subinterface per VLAN dengan encapsulation dot1Q dan alamat gateway. Cek dengan show interfaces trunk di switch dan ping antar-VLAN dari PC.",
+          "keyPoints": [
+            "Switch: VLAN, akses, trunk ke router",
+            "Router: subinterface per VLAN",
+            "Cek trunk, lalu ping"
+          ],
+          "teaches": [
+            "ccna-f-u10-trunk-cmd",
+            "ccna-f-u10-subif-cmd",
+            "ccna-f-u10-show-trunk"
+          ]
+        },
+        {
+          "id": "ccna-u10-l6-e1",
+          "type": "ios",
+          "concept": "roas-lab",
+          "prompt": "Prepare SW1 for router-on-a-stick: make GigabitEthernet0/1 (to R1) a trunk that allows only VLANs (Virtual LANs) 10 and 20, and put FastEthernet0/1 in VLAN 10 and FastEthernet0/2 in VLAN 20 as access ports.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "vlan 10",
+              "lines": [
+                "name Staf"
+              ]
+            },
+            {
+              "context": "vlan 20",
+              "lines": [
+                "name Tamu"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "switchport mode trunk"
+              },
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "switchport trunk allowed vlan 10,20"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "switchport access vlan 20"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/1",
+            "switchport mode trunk",
+            "switchport trunk allowed vlan 10,20",
+            "interface fa0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "interface fa0/2",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "end"
+          ],
+          "explanation": "Port ke router menjadi trunk yang hanya membawa VLAN (Virtual LAN) 10 dan 20, dan port PC menjadi port akses.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-trunk-cmd",
+            "ccna-f-u10-allowed",
+            "ccna-f-u09-access-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u10-l6-e2",
+          "type": "ios",
+          "concept": "roas-lab",
+          "prompt": "Now configure R1: enable GigabitEthernet0/0/1 and route VLAN (Virtual LAN) 10 (gateway 192.168.10.1/24) and VLAN 20 (gateway 192.168.20.1/24) on subinterfaces. Save the configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "cabled": [
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "no shutdown"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1.10",
+                "line": "encapsulation dot1Q 10"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1.10",
+                "line": "ip address 192.168.10.1 255.255.255.0"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1.20",
+                "line": "encapsulation dot1Q 20"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1.20",
+                "line": "ip address 192.168.20.1 255.255.255.0"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/1",
+            "no shutdown",
+            "interface g0/0/1.10",
+            "encapsulation dot1Q 10",
+            "ip address 192.168.10.1 255.255.255.0",
+            "interface g0/0/1.20",
+            "encapsulation dot1Q 20",
+            "ip address 192.168.20.1 255.255.255.0",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Induk dinyalakan, setiap VLAN (Virtual LAN) mendapat subinterface, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-subif-cmd",
+            "ccna-f-u10-roas-parent",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u10-l6-e3",
+          "type": "exhibit",
+          "concept": "roas-lab",
+          "prompt": "Refer to the exhibit. PCs in VLAN (Virtual LAN) 20 cannot reach their gateway, but VLAN 10 works. What should you fix?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | section GigabitEthernet0/0/1",
+              "text": "interface GigabitEthernet0/0/1\n no ip address\ninterface GigabitEthernet0/0/1.10\n encapsulation dot1Q 10\n ip address 192.168.10.1 255.255.255.0\ninterface GigabitEthernet0/0/1.20\n encapsulation dot1Q 30\n ip address 192.168.20.1 255.255.255.0"
+            }
+          ],
+          "options": [
+            "Change encapsulation on G0/0/1.20 to dot1Q 20",
+            "Add the native keyword to G0/0/1.10",
+            "Shut down G0/0/1.10",
+            "Change the trunk to allow VLAN 1 only"
+          ],
+          "answer": 0,
+          "explanation": "Subinterface .20 memakai encapsulation dot1Q 30, jadi frame VLAN (Virtual LAN) 20 tidak sampai ke sana. Nomor subinterface hanya nama; yang menentukan VLAN adalah encapsulation.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-subif-cmd"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u10-l7",
+      "title": "Lab: SVI di switch Layer 3",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u10-l6"
+      },
+      "items": [
+        {
+          "id": "ccna-u10-l7-m1",
+          "type": "learn",
+          "concepts": [
+            "svi-lab"
+          ],
+          "title": "Dari router-on-a-stick ke switch layer 3",
+          "body": "Topologi yang sama bisa dirutekan oleh switch layer 3. Aktifkan ip routing, buat VLAN (Virtual LAN) dan SVI (switched virtual interface) untuk setiap VLAN, lalu jadikan port ke router routed port dengan no switchport untuk jalur ke luar. Gateway PC sekarang alamat SVI.",
+          "keyPoints": [
+            "ip routing",
+            "SVI per VLAN",
+            "Uplink: routed port"
+          ],
+          "teaches": [
+            "ccna-f-u10-ip-routing",
+            "ccna-f-u10-svi",
+            "ccna-f-u10-routed-port"
+          ]
+        },
+        {
+          "id": "ccna-u10-l7-e1",
+          "type": "ios",
+          "concept": "svi-lab",
+          "prompt": "On layer 3 switch SW1, enable routing, create SVIs (switched virtual interfaces) 192.168.10.1/24 for VLAN (Virtual LAN) 10 and 192.168.20.1/24 for VLAN 20, and make GigabitEthernet1/0/24 a routed port with 10.0.0.1/30. Save the configuration.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c3650"
+          },
+          "given": [
+            {
+              "context": "vlan 10",
+              "lines": [
+                "name Staf"
+              ]
+            },
+            {
+              "context": "vlan 20",
+              "lines": [
+                "name Tamu"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip routing"
+              },
+              {
+                "context": "interface Vlan10",
+                "line": "ip address 192.168.10.1 255.255.255.0"
+              },
+              {
+                "context": "interface Vlan10",
+                "line": "no shutdown"
+              },
+              {
+                "context": "interface Vlan20",
+                "line": "ip address 192.168.20.1 255.255.255.0"
+              },
+              {
+                "context": "interface Vlan20",
+                "line": "no shutdown"
+              },
+              {
+                "context": "interface GigabitEthernet1/0/24",
+                "line": "no switchport"
+              },
+              {
+                "context": "interface GigabitEthernet1/0/24",
+                "line": "ip address 10.0.0.1 255.255.255.252"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "ip routing",
+            "interface vlan 10",
+            "ip address 192.168.10.1 255.255.255.0",
+            "no shutdown",
+            "interface vlan 20",
+            "ip address 192.168.20.1 255.255.255.0",
+            "no shutdown",
+            "interface g1/0/24",
+            "no switchport",
+            "ip address 10.0.0.1 255.255.255.252",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "ip routing, satu SVI (switched virtual interface) per VLAN (Virtual LAN), dan routed port untuk uplink, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-ip-routing",
+            "ccna-f-u10-svi",
+            "ccna-f-u10-routed-port",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u10-l7-e2",
+          "type": "choice",
+          "concept": "svi-lab",
+          "prompt": "After moving from router-on-a-stick to SVIs (switched virtual interfaces), what should the PCs use as their default gateway?",
+          "options": [
+            "The SVI address of their VLAN (Virtual LAN)",
+            "The router subinterface address",
+            "The routed port address 10.0.0.1",
+            "The address of the trunk port"
+          ],
+          "answer": 0,
+          "explanation": "SVI (switched virtual interface) sekarang menjadi gateway setiap VLAN (Virtual LAN). Routed port adalah jalur ke router, bukan gateway PC.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-svi",
+            "ccna-f-u10-routed-port"
+          ]
+        },
+        {
+          "id": "ccna-u10-l7-e3",
+          "type": "ios",
+          "concept": "svi-lab",
+          "prompt": "Hosts in VLAN (Virtual LAN) 30 were added on SW1, which already routes. Create the gateway 192.168.30.1/24 for them.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c3650"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ip routing"
+              ]
+            },
+            {
+              "context": "vlan 30",
+              "lines": [
+                "name Lab"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface Vlan30",
+                "line": "ip address 192.168.30.1 255.255.255.0"
+              },
+              {
+                "context": "interface Vlan30",
+                "line": "no shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface vlan 30",
+            "ip address 192.168.30.1 255.255.255.0",
+            "no shutdown",
+            "end"
+          ],
+          "explanation": "SVI (switched virtual interface) baru menjadi gateway VLAN (Virtual LAN) 30; ip routing sudah aktif.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u10-svi"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u10-trunk",
+      "statement": "Trunk membawa trafik banyak VLAN dalam satu link, misalnya antar switch atau antara switch dan router.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+    },
+    {
+      "id": "ccna-f-u10-tag",
+      "statement": "802.1Q menyisipkan tag 4 byte ke frame dan menghitung ulang FCS sebelum frame dikirim lewat trunk.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/8021q/17056-741-4.html"
+    },
+    {
+      "id": "ccna-f-u10-tag-fields",
+      "statement": "Tag 802.1Q berisi TPID 0x8100 (16 bit), priority 3 bit (802.1p), CFI 1 bit, dan VLAN ID 12 bit.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/8021q/17056-741-4.html"
+    },
+    {
+      "id": "ccna-f-u10-trunk-cmd",
+      "statement": "switchport mode trunk menjadikan port trunk secara permanen.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+    },
+    {
+      "id": "ccna-f-u10-dtp-modes",
+      "statement": "Dengan DTP (Dynamic Trunking Protocol), dynamic desirable aktif mengajak menjadi trunk, sedangkan dynamic auto hanya menjadi trunk kalau sisi seberang trunk atau desirable; dynamic auto adalah setelan bawaan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+    },
+    {
+      "id": "ccna-f-u10-auto-auto",
+      "statement": "Dua port yang sama-sama dynamic auto tidak membentuk trunk, jadi keduanya tetap port akses.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u10-nonegotiate",
+      "statement": "switchport nonegotiate menghentikan pengiriman frame DTP dari port itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+    },
+    {
+      "id": "ccna-f-u10-allowed",
+      "statement": "Secara bawaan semua VLAN diizinkan di trunk; switchport trunk allowed vlan <daftar> mengganti daftar itu, sedangkan add dan remove menambah atau mengurangi daftar yang ada.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+    },
+    {
+      "id": "ccna-f-u10-native",
+      "statement": "Native VLAN adalah VLAN yang frame-nya dikirim tanpa tag di trunk; bawaannya VLAN 1, dan diubah dengan switchport trunk native vlan <id>.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+    },
+    {
+      "id": "ccna-f-u10-native-match",
+      "statement": "Native VLAN di kedua ujung trunk harus sama; kalau berbeda, frame tanpa tag masuk ke VLAN yang salah, dan CDP melaporkan native VLAN mismatch.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u10-show-trunk",
+      "statement": "show interfaces trunk menampilkan port trunk beserta mode, encapsulation, status, native VLAN, dan VLAN yang diizinkan dan aktif.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+    },
+    {
+      "id": "ccna-f-u10-l2-l3",
+      "statement": "Port switch biasa (switchport) bekerja di layer 2 dan meneruskan frame berdasarkan MAC, sedangkan interface layer 3 punya alamat IP dan merutekan paket.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html"
+    },
+    {
+      "id": "ccna-f-u10-routed-port",
+      "statement": "Di switch layer 3, no switchport mengubah port fisik menjadi routed port yang bisa diberi alamat IP.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html"
+    },
+    {
+      "id": "ccna-f-u10-ip-routing",
+      "statement": "Switch layer 3 baru merutekan antar-VLAN setelah ip routing diaktifkan di global configuration.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html"
+    },
+    {
+      "id": "ccna-f-u10-svi",
+      "statement": "SVI (switched virtual interface) adalah interface virtual, misalnya interface vlan 10, yang menjadi gateway layer 3 untuk VLAN itu.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html"
+    },
+    {
+      "id": "ccna-f-u10-svi-up",
+      "statement": "SVI baru berstatus up kalau VLAN-nya ada dan minimal satu port di VLAN itu up, termasuk trunk yang membawa VLAN itu.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u10-svi-mgmt",
+      "statement": "Switch layer 2 seperti Catalyst 2960 memakai SVI hanya untuk manajemen, misalnya SSH, dan memakai ip default-gateway untuk menjangkau subnet lain.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u10-roas",
+      "statement": "Router-on-a-stick merutekan antar-VLAN lewat satu interface fisik router yang tersambung ke trunk, dengan satu subinterface per VLAN.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/14976-50.html"
+    },
+    {
+      "id": "ccna-f-u10-subif-cmd",
+      "statement": "Subinterface dibuat dengan interface diikuti titik dan nomor, misalnya interface g0/0/1.10, lalu encapsulation dot1Q 10 dan ip address; alamat itu menjadi gateway VLAN 10.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/lan-wan/b-lan-wan/m_lnsw-conf-vlan-ieee.html"
+    },
+    {
+      "id": "ccna-f-u10-subif-native",
+      "statement": "encapsulation dot1Q <id> native membuat subinterface menangani frame tanpa tag; hanya satu subinterface per interface fisik yang boleh native.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/lan-wan/b-lan-wan/m_lnsw-conf-vlan-ieee.html"
+    },
+    {
+      "id": "ccna-f-u10-roas-parent",
+      "statement": "Subinterface ikut mati kalau interface fisik induknya shutdown, jadi induknya harus no shutdown.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/lan-wan/b-lan-wan/m_lnsw-conf-vlan-ieee.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u10-roas-scale",
+      "statement": "Semua trafik antar-VLAN di router-on-a-stick lewat satu link, jadi link itu bisa menjadi bottleneck; switch layer 3 merutekan antar-VLAN di dalam switch.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html",
+      "verify": true
+    }
+  ]
+}

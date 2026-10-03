@@ -25,7 +25,7 @@ const RULES = [
  */
 export const BlobLifecycleTimeline: FC = () => (
   <svg
-    viewBox="0 0 300 244"
+    viewBox="0 0 300 250"
     role="img"
     aria-label="Timeline lifecycle management berdasarkan hari sejak blob terakhir diubah. Hari 0 sampai 30 blob di tier Hot. Setelah 30 hari, aturan tierToCool memindahkannya ke Cool. Setelah 90 hari, tierToArchive memindahkannya ke Archive. Setelah 365 hari, aturan delete menghapusnya. Policy dijalankan sekali sehari, dan perubahan aturan bisa butuh sampai 24 jam untuk berlaku. Lifecycle management tidak bisa me-rehydrate blob dari Archive."
     className="w-full font-display"

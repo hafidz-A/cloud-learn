@@ -2,15 +2,15 @@ import { COURSE_IDS, COURSES } from '../content/course'
 import { useCourse } from '../store/course'
 
 /**
- * AZ-900 or AZ-104 (LANGIT_AZ104_PLAN.md section 3). Neither course needs the
- * other, so both can be opened at any time; the path map, practice, stats, and
+ * AZ-900, AZ-104, or CCNA (LANGIT_AZ104_PLAN.md and LANGIT_CCNA_PLAN.md section 3). No course needs the
+ * others, so each can be opened at any time; the path map, practice, stats, and
  * exam page follow the choice.
  */
 export function CoursePicker() {
   const active = useCourse((s) => s.active)
   const setActive = useCourse((s) => s.setActive)
   return (
-    <div role="group" aria-label="Pilih course" className="mx-4 mt-4 grid grid-cols-2 gap-2">
+    <div role="group" aria-label="Pilih course" className="mx-4 mt-4 grid grid-cols-3 gap-2">
       {COURSE_IDS.map((id) => {
         const course = COURSES[id]
         const on = id === active

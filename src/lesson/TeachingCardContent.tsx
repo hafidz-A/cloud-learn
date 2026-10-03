@@ -3,6 +3,23 @@ import { GlossaryText } from '../components/GlossaryText'
 import type { TeachingCard } from '../lib/types'
 import { Visual } from '../visuals/Visual'
 
+/** Where a "read more" link goes, in words: Microsoft Learn for the Azure courses, the source site for CCNA. */
+function linkSite(url: string): string {
+  const host = (() => {
+    try {
+      return new URL(url).hostname
+    } catch {
+      return ''
+    }
+  })()
+  if (host.endsWith('learn.microsoft.com')) return 'Microsoft Learn'
+  if (host.endsWith('cisco.com') || host.endsWith('netacad.com')) return 'situs Cisco'
+  if (host.endsWith('rfc-editor.org') || host.endsWith('ietf.org')) return 'RFC (IETF)'
+  if (host.endsWith('ieee.org')) return 'situs IEEE'
+  if (host.endsWith('ansible.com') || host === 'github.com') return 'dokumentasi Ansible'
+  return host || 'sumber resmi'
+}
+
 /**
  * The inside of a learn card (LANGIT_AZ900_PERBAIKAN_MATERI.md section 3):
  * visual on top, then the text. Older intro cards show their title, visual,
@@ -67,7 +84,7 @@ export function TeachingCardContent({ card, titleId, heading = 'h2' }: { card: T
           rel="noopener noreferrer"
           className="mt-3 inline-flex min-h-11 items-center gap-1.5 font-display text-15 font-bold text-biru-dalam underline underline-offset-4"
         >
-          Baca lebih lanjut di Microsoft Learn
+          Baca lebih lanjut di {linkSite(learn.link)}
           <ExternalLink size={15} aria-hidden="true" />
           <span className="sr-only">(membuka tab baru)</span>
         </a>

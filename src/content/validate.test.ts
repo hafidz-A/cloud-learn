@@ -226,7 +226,7 @@ describe('material coverage (perbaikan materi section 4)', () => {
   it('needs a Microsoft Learn source unless the fact is marked verify', () => {
     const items = [learn('u99-l1-m1', ['f-u99-a', 'f-u99-b']), tf('u99-l1-e1', 'zones', ['f-u99-a', 'f-u99-b'])]
     const u = unitWith(items, [fact('f-u99-a', { source: 'https://example.com/blog' }), fact('f-u99-b', { source: '', verify: true })])
-    expect(errors(u)).toEqual(['fact "f-u99-a" needs a Microsoft Learn source, or verify: true'])
+    expect(errors(u)).toEqual(['fact "f-u99-a" needs an official source (Microsoft Learn; for CCNA Cisco, IETF, IEEE, or Ansible), or verify: true'])
   })
 
   it('requires a visual for concepts in the visual catalog', () => {
@@ -322,5 +322,23 @@ describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
     )
     const kql = { ...base, id: 'u99-l1-e5', type: 'kql', examReady: true, tokens: ['T'], answer: ['T', '| take'], sampleResult: [['C'], ['1']] } as LessonItem
     expect(shapeErrors(kql)).toEqual(expect.arrayContaining(['answer token "| take" is not available in tokens', 'type "kql" cannot be examReady']))
+  })
+})
+
+describe('CCNA abbreviation patterns (LANGIT_CCNA_PLAN.md section 2)', () => {
+  it('treats words inside an expansion as part of the name', () => {
+    expect(unexpandedAbbreviations(['A WLC (Wireless LAN Controller) manages access points.'])).toEqual([])
+    expect(unexpandedAbbreviations(['A WLC (Wireless LAN Controller) on the LAN.'])).toEqual(['LAN'])
+  })
+
+  it('accepts one expansion for slash-joined abbreviations', () => {
+    expect(unexpandedAbbreviations(['The TCP/IP (Transmission Control Protocol/Internet Protocol) model.'])).toEqual([])
+    expect(unexpandedAbbreviations(['The TCP/IP model.'])).toEqual(['TCP', 'IP'])
+  })
+
+  it('does not flag device and interface names', () => {
+    expect(unexpandedAbbreviations(['R1 sends the packet to SW1 on G0/0/0, then PC2 answers.'])).toEqual([])
+    expect(unexpandedAbbreviations(['HQ-R1 and BDG-SW1 are branch devices.'])).toEqual([])
+    expect(unexpandedAbbreviations(['Use a 1000BASE-SX or 1000BASE-LX/LH module.'])).toEqual([])
   })
 })

@@ -28,7 +28,7 @@ function Box({ x, y, name, gone = false, added = false }: { x: number; y: number
  */
 export const IncrementalVsComplete: FC = () => (
   <svg
-    viewBox="0 0 300 244"
+    viewBox="0 0 300 250"
     role="img"
     aria-label="Resource group berisi resource A, B, dan C. Template berisi A, B, dan D. Dengan mode incremental, hasilnya A, B, C, dan D: C yang tidak ada di template dibiarkan. Dengan mode complete, hasilnya A, B, dan D: C dihapus. Mode default adalah incremental. Jalankan what-if sebelum mode complete. Microsoft tidak lagi merekomendasikan mode complete; untuk menghapus lewat template, pakai deployment stacks."
     className="w-full font-display"

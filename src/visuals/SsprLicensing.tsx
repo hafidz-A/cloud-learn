@@ -20,7 +20,7 @@ export const SsprLicensing: FC = () => (
     className="w-full font-display"
   >
     {FEATURES.map((f, i) => (
-      <text key={f} x={174 + i * 50} y={16} fontSize={12} textAnchor="middle" {...label}>
+      <text key={f} x={i === 2 ? 296 : 174 + i * 50} y={16} fontSize={12} textAnchor={i === 2 ? 'end' : 'middle'} {...label}>
         {f}
       </text>
     ))}

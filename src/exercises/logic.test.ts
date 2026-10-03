@@ -178,3 +178,29 @@ describe('admin exercise types (LANGIT_AZ104_PLAN.md section 6)', () => {
     expect(correctAnswerText(e)).toBe('Event | where Level == 1')
   })
 })
+
+describe('ios exercises (LANGIT_CCNA_PLAN.md section 7)', () => {
+  const ios: Exercise = {
+    id: 'ccna-u99-l1-e1',
+    type: 'ios',
+    concept: 'ipv4-interface',
+    prompt: 'Configure G0/0/0 with 192.168.10.1/24 and enable it.',
+    explanation: 'e',
+    device: { hostname: 'R1', model: 'isr4331' },
+    goal: {
+      config: [
+        { context: 'interface GigabitEthernet0/0/0', line: 'ip address 192.168.10.1 255.255.255.0' },
+        { context: 'interface GigabitEthernet0/0/0', line: 'no shutdown' },
+      ],
+    },
+    solution: ['configure terminal', 'interface g0/0/0', 'ip address 192.168.10.1 255.255.255.0', 'no shutdown', 'end'],
+  }
+
+  it('judges the end state of the typed session', () => {
+    expect(isComplete(ios, [])).toBe(false)
+    expect(isComplete(ios, [''])).toBe(false)
+    expect(judge(ios, ['conf t', 'int g0/0/0', 'ip add 192.168.10.1 255.255.255.0', 'no shut']).correct).toBe(true)
+    expect(judge(ios, ['conf t', 'int g0/0/0', 'ip add 192.168.10.1 255.255.255.0']).correct).toBe(false)
+    expect(correctAnswerText(ios)).toBe('configure terminal ⏎ interface g0/0/0 ⏎ ip address 192.168.10.1 255.255.255.0 ⏎ no shutdown ⏎ end')
+  })
+})

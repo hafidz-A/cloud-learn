@@ -1,0 +1,635 @@
+{
+  "id": "ccna-u07-virtualisasi",
+  "path": 1,
+  "title": "Virtualisasi",
+  "lessons": [
+    {
+      "id": "ccna-u07-l1",
+      "title": "Hypervisor dan VM",
+      "items": [
+        {
+          "id": "ccna-u07-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "virtualization"
+          ],
+          "title": "Virtualisasi dan VM",
+          "body": "Virtualisasi memisahkan sumber daya fisik seperti CPU (central processing unit), memori, dan storage menjadi pool yang bisa dibagi. VM (virtual machine) adalah komputer yang didefinisikan software: punya guest OS (operating system) sendiri, dikelola hypervisor, dan memakai sumber daya host. Banyak VM bisa berjalan di satu server fisik, dan VM bisa dipindah ke host lain.",
+          "keyPoints": [
+            "Sumber daya fisik jadi pool",
+            "VM punya guest OS sendiri",
+            "Banyak VM di satu server"
+          ],
+          "teaches": [
+            "ccna-f-u07-virt",
+            "ccna-f-u07-vm",
+            "ccna-f-u07-vm-portable"
+          ]
+        },
+        {
+          "id": "ccna-u07-l1-e1",
+          "type": "truefalse",
+          "concept": "virtualization",
+          "prompt": "Each VM (virtual machine) runs its own guest operating system.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Setiap VM (virtual machine) punya guest OS (operating system) sendiri di atas hypervisor.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-vm"
+          ]
+        },
+        {
+          "id": "ccna-u07-l1-e2",
+          "type": "choice",
+          "concept": "virtualization",
+          "prompt": "A company runs ten lightly used physical servers. What is the main benefit of moving them to VMs (virtual machines) on two hosts?",
+          "options": [
+            "Better use of the hardware, because many VMs share each host",
+            "Each VM gets its own dedicated physical CPU (central processing unit) chip",
+            "The servers no longer need any operating system",
+            "Network cables between the servers become faster"
+          ],
+          "answer": 0,
+          "explanation": "VM (virtual machine) berbagi sumber daya host, jadi hardware terpakai lebih efisien. VM tetap butuh guest OS (operating system) dan tidak mendapat CPU (central processing unit) fisik khusus.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-virt",
+            "ccna-f-u07-vm",
+            "ccna-f-u07-vm-portable"
+          ]
+        },
+        {
+          "id": "ccna-u07-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "hypervisor-types"
+          ],
+          "title": "Hypervisor type 1 dan type 2",
+          "body": "Hypervisor mengelola VM (virtual machine) dan menghubungkannya ke dunia luar. Type 1 (bare metal) berjalan langsung di hardware, misalnya VMware ESXi; karena aksesnya langsung, performanya lebih baik dan biasa dipakai di data center. Type 2 (hosted) berjalan sebagai aplikasi di atas OS (operating system) biasa, misalnya di laptop, sehingga performanya lebih rendah.",
+          "keyPoints": [
+            "Type 1: langsung di hardware",
+            "Type 2: aplikasi di atas OS",
+            "Data center: type 1"
+          ],
+          "visual": "HypervisorTypes",
+          "teaches": [
+            "ccna-f-u07-hypervisor",
+            "ccna-f-u07-type1",
+            "ccna-f-u07-type2"
+          ]
+        },
+        {
+          "id": "ccna-u07-l1-e3",
+          "type": "choice",
+          "concept": "hypervisor-types",
+          "prompt": "Which hypervisor type runs directly on the server hardware?",
+          "options": [
+            "Type 1",
+            "Type 2",
+            "A container runtime",
+            "A guest OS (operating system)"
+          ],
+          "answer": 0,
+          "explanation": "Type 1 (bare metal) berjalan langsung di hardware. Type 2 berjalan di atas OS (operating system).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-type1",
+            "ccna-f-u07-type2"
+          ]
+        },
+        {
+          "id": "ccna-u07-l1-e4",
+          "type": "truefalse",
+          "concept": "hypervisor-types",
+          "prompt": "A type 2 hypervisor usually performs better than a type 1 hypervisor, because it runs on top of a full operating system.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Type 2 berjalan di atas OS (operating system), jadi ada lapisan tambahan; type 1 punya akses langsung ke hardware dan performanya lebih baik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-type1",
+            "ccna-f-u07-type2"
+          ]
+        },
+        {
+          "id": "ccna-u07-l1-e5",
+          "type": "match",
+          "concept": "hypervisor-types",
+          "prompt": "Match each item to its description.",
+          "pairs": [
+            [
+              "Type 1 hypervisor",
+              "Runs on bare metal, common in data centers"
+            ],
+            [
+              "Type 2 hypervisor",
+              "Runs as an application on a host OS (operating system)"
+            ],
+            [
+              "Guest OS",
+              "The operating system inside a VM (virtual machine)"
+            ],
+            [
+              "Host",
+              "The physical server that gives its resources to the VMs"
+            ]
+          ],
+          "explanation": "Type 1 di bare metal, type 2 di atas OS (operating system), guest OS di dalam VM (virtual machine), dan host adalah server fisiknya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-type1",
+            "ccna-f-u07-type2",
+            "ccna-f-u07-vm"
+          ]
+        },
+        {
+          "id": "ccna-u07-l1-e6",
+          "type": "sort",
+          "concept": "hypervisor-types",
+          "prompt": "Sort each setup by hypervisor type.",
+          "buckets": [
+            "Type 1",
+            "Type 2"
+          ],
+          "items": [
+            {
+              "text": "VMware ESXi installed on a new server",
+              "bucket": 0
+            },
+            {
+              "text": "A hypervisor that boots directly on the hardware",
+              "bucket": 0
+            },
+            {
+              "text": "A hypervisor app installed on a Windows laptop",
+              "bucket": 1
+            },
+            {
+              "text": "A hypervisor that needs a host operating system first",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Type 1 dipasang langsung di hardware, misalnya ESXi. Type 2 dipasang sebagai aplikasi di atas OS (operating system).",
+          "requires": [
+            "ccna-f-u07-type1",
+            "ccna-f-u07-type2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u07-l2",
+      "title": "Container",
+      "items": [
+        {
+          "id": "ccna-u07-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "vm-vs-container"
+          ],
+          "title": "Container",
+          "body": "Container adalah paket mandiri berisi aplikasi dan semua dependensinya. Berbeda dari VM (virtual machine), container tidak membawa OS (operating system) sendiri: semua container di satu host berbagi kernel OS host. Hasilnya container lebih ringan, menyala dalam hitungan detik, dan memakai lebih sedikit CPU (central processing unit) dan memori.",
+          "keyPoints": [
+            "Aplikasi dan dependensinya",
+            "Berbagi kernel host",
+            "Ringan dan cepat menyala"
+          ],
+          "visual": "VmVsContainer",
+          "teaches": [
+            "ccna-f-u07-container",
+            "ccna-f-u07-container-kernel"
+          ]
+        },
+        {
+          "id": "ccna-u07-l2-e1",
+          "type": "truefalse",
+          "concept": "vm-vs-container",
+          "prompt": "Each container includes its own full guest operating system, just like a VM (virtual machine).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Container berbagi kernel OS (operating system) host; yang membawa guest OS sendiri adalah VM (virtual machine).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-container-kernel",
+            "ccna-f-u07-vm"
+          ]
+        },
+        {
+          "id": "ccna-u07-l2-e2",
+          "type": "choice",
+          "concept": "vm-vs-container",
+          "prompt": "Why does a container usually start faster than a VM (virtual machine)?",
+          "options": [
+            "It shares the host OS (operating system) kernel instead of booting its own OS",
+            "It runs on a type 2 hypervisor",
+            "It has its own dedicated hardware",
+            "It skips loading the application dependencies"
+          ],
+          "answer": 0,
+          "explanation": "Container tidak perlu menyalakan OS (operating system) sendiri karena berbagi kernel host. Dependensi aplikasi justru ikut di dalam container.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-container-kernel",
+            "ccna-f-u07-container",
+            "ccna-f-u07-type2"
+          ]
+        },
+        {
+          "id": "ccna-u07-l2-e3",
+          "type": "multi",
+          "concept": "vm-vs-container",
+          "prompt": "Which two statements describe containers compared with VMs (virtual machines)? (Choose two.)",
+          "options": [
+            "They use less memory",
+            "They share the kernel of the host",
+            "Each needs its own hypervisor",
+            "Each must be installed on bare metal"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Container lebih hemat memori karena berbagi kernel host. Container tidak butuh hypervisor sendiri dan tidak dipasang langsung di hardware.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-container-kernel",
+            "ccna-f-u07-type1"
+          ]
+        },
+        {
+          "id": "ccna-u07-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "container-use"
+          ],
+          "title": "Kapan VM, kapan container",
+          "body": "Karena berbagi kernel host, container memakai OS (operating system) yang sama dengan host-nya. Kalau butuh OS lain, misalnya Windows di host Linux, pakai VM (virtual machine). Untuk banyak salinan aplikasi yang harus cepat dibuat dan dihapus, container cocok. Saat jumlah container banyak, container orchestration seperti Kubernetes mengotomatiskan deployment, scaling, dan pengelolaannya.",
+          "keyPoints": [
+            "OS berbeda: VM",
+            "Banyak salinan cepat: container",
+            "Banyak container: orchestration"
+          ],
+          "teaches": [
+            "ccna-f-u07-container-os",
+            "ccna-f-u07-orchestration"
+          ]
+        },
+        {
+          "id": "ccna-u07-l2-e4",
+          "type": "choice",
+          "concept": "container-use",
+          "prompt": "A team must run an old application that only works on Windows, on a Linux server. Which option fits?",
+          "options": [
+            "A VM (virtual machine) running Windows",
+            "A container on the Linux kernel",
+            "Container orchestration with Kubernetes",
+            "A second Linux container image"
+          ],
+          "answer": 0,
+          "explanation": "Container berbagi kernel host Linux, jadi tidak bisa menjalankan Windows. VM (virtual machine) membawa OS (operating system) sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-container-os",
+            "ccna-f-u07-vm"
+          ]
+        },
+        {
+          "id": "ccna-u07-l2-e5",
+          "type": "choice",
+          "concept": "container-use",
+          "prompt": "What does a container orchestration tool such as Kubernetes do?",
+          "options": [
+            "It automates deploying, scaling, and managing many containers",
+            "It turns a type 2 hypervisor into a type 1 hypervisor",
+            "It gives each container its own guest operating system",
+            "It replaces the virtual switch inside the hypervisor"
+          ],
+          "answer": 0,
+          "explanation": "Orchestration mengotomatiskan deployment, scaling, dan pengelolaan container. Ia tidak memberi container OS (operating system) sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-orchestration",
+            "ccna-f-u07-container-kernel"
+          ]
+        },
+        {
+          "id": "ccna-u07-l2-e6",
+          "type": "sort",
+          "concept": "container-use",
+          "prompt": "Sort each need by the better fit.",
+          "buckets": [
+            "VM (virtual machine)",
+            "Container"
+          ],
+          "items": [
+            {
+              "text": "Run Windows on a Linux host",
+              "bucket": 0
+            },
+            {
+              "text": "Test a different operating system kernel",
+              "bucket": 0
+            },
+            {
+              "text": "Start many copies of a web app in seconds",
+              "bucket": 1
+            },
+            {
+              "text": "Package an app with its libraries for any host with the same kernel",
+              "bucket": 1
+            }
+          ],
+          "explanation": "OS (operating system) atau kernel yang berbeda butuh VM (virtual machine). Banyak salinan cepat dan paket aplikasi beserta dependensinya cocok untuk container.",
+          "requires": [
+            "ccna-f-u07-container-os",
+            "ccna-f-u07-container",
+            "ccna-f-u07-container-kernel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u07-l3",
+      "title": "Jaringan virtual",
+      "items": [
+        {
+          "id": "ccna-u07-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "virtual-switch"
+          ],
+          "title": "Virtual switch",
+          "body": "VM (virtual machine) tidak punya port fisik. Hypervisor menyediakan virtual switch: setiap VM punya NIC (network interface card) virtual yang tersambung ke virtual switch itu, dan NIC fisik server menjadi uplink ke switch sungguhan. Port VM bisa diberi VLAN (Virtual LAN), dan uplink ke switch fisik biasanya trunk supaya beberapa VLAN bisa lewat.",
+          "keyPoints": [
+            "NIC virtual ke virtual switch",
+            "NIC fisik: uplink",
+            "Uplink biasanya trunk"
+          ],
+          "visual": "VirtualSwitch",
+          "teaches": [
+            "ccna-f-u07-vswitch",
+            "ccna-f-u07-vswitch-trunk"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-e1",
+          "type": "choice",
+          "concept": "virtual-switch",
+          "prompt": "Inside a hypervisor host, what connects the VMs (virtual machines) to each other and to the physical network?",
+          "options": [
+            "A virtual switch",
+            "A container orchestration tool",
+            "The guest OS (operating system) of the first VM",
+            "A crossover cable between the VMs"
+          ],
+          "answer": 0,
+          "explanation": "Virtual switch menghubungkan NIC (network interface card) virtual VM (virtual machine) dan memakai NIC fisik sebagai uplink. Orchestration mengelola container, bukan koneksi jaringan VM.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-vswitch",
+            "ccna-f-u07-orchestration",
+            "ccna-f-u07-vm"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-e2",
+          "type": "truefalse",
+          "concept": "virtual-switch",
+          "prompt": "VMs (virtual machines) in two different VLANs (Virtual LANs) on one host usually reach the physical switch over a trunk uplink.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Uplink trunk membawa beberapa VLAN (Virtual LAN) dari virtual switch ke switch fisik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-vswitch-trunk"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "vrf"
+          ],
+          "title": "VRF",
+          "body": "VRF (virtual routing and forwarding) membuat lebih dari satu tabel routing di satu router. Setiap interface layer 3 dimasukkan ke satu VRF, dan paketnya hanya memakai tabel VRF itu. Karena tabelnya terpisah, alamat IP (Internet Protocol) yang sama boleh dipakai di VRF berbeda, misalnya untuk dua pelanggan. VRF tanpa MPLS (Multiprotocol Label Switching) disebut VRF-lite.",
+          "keyPoints": [
+            "Banyak tabel routing di satu router",
+            "Alamat sama boleh di VRF berbeda",
+            "Tanpa MPLS: VRF-lite"
+          ],
+          "visual": "VrfTables",
+          "teaches": [
+            "ccna-f-u07-vrf",
+            "ccna-f-u07-vrf-overlap",
+            "ccna-f-u07-vrf-lite",
+            "ccna-f-u07-vrf-one"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-e3",
+          "type": "choice",
+          "concept": "vrf",
+          "prompt": "Two customers on one router both use 10.1.1.0/24. What lets the router keep their routes apart?",
+          "options": [
+            "A separate VRF (virtual routing and forwarding) for each customer",
+            "A secondary IP (Internet Protocol) address on one interface",
+            "A virtual switch inside the router",
+            "A type 1 hypervisor on the router"
+          ],
+          "answer": 0,
+          "explanation": "Setiap VRF (virtual routing and forwarding) punya tabel routing sendiri, jadi subnet yang sama tidak bentrok. Secondary address di satu interface justru membuat overlap di tabel yang sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-vrf",
+            "ccna-f-u07-vrf-overlap",
+            "ccna-f-u04-secondary"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-e4",
+          "type": "truefalse",
+          "concept": "vrf",
+          "prompt": "One layer 3 interface can belong to two VRFs (virtual routing and forwarding instances) at the same time.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Satu interface layer 3 hanya boleh masuk satu VRF (virtual routing and forwarding) pada satu waktu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-vrf-one"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-m3",
+          "type": "learn",
+          "concepts": [
+            "vrf-config"
+          ],
+          "title": "Memasang VRF di IOS",
+          "body": "Di IOS, VRF (virtual routing and forwarding) dibuat dengan vrf definition diikuti nama, lalu interface dimasukkan dengan vrf forwarding diikuti nama yang sama. Saat vrf forwarding dipasang, IOS menghapus alamat IP (Internet Protocol) interface itu, jadi alamatnya harus diisi ulang. Satu interface hanya bisa masuk satu VRF.",
+          "keyPoints": [
+            "vrf definition <nama>",
+            "vrf forwarding <nama> di interface",
+            "Alamat IP diisi ulang"
+          ],
+          "teaches": [
+            "ccna-f-u07-vrf-cmd",
+            "ccna-f-u07-vrf-one"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-e5",
+          "type": "choice",
+          "concept": "vrf-config",
+          "prompt": "An engineer adds vrf forwarding Staf to an interface that already had an IP (Internet Protocol) address. What must they do next?",
+          "options": [
+            "Configure the IP address again",
+            "Reload the router",
+            "Remove the VRF (virtual routing and forwarding) definition",
+            "Nothing, the address stays"
+          ],
+          "answer": 0,
+          "explanation": "IOS menghapus alamat IP (Internet Protocol) saat vrf forwarding dipasang, jadi alamatnya harus diisi ulang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-vrf-cmd"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-e6",
+          "type": "match",
+          "concept": "vrf-config",
+          "prompt": "Match each term to its meaning.",
+          "pairs": [
+            [
+              "VRF (virtual routing and forwarding)",
+              "A separate routing table inside one router"
+            ],
+            [
+              "VRF-lite",
+              "VRFs used without MPLS (Multiprotocol Label Switching)"
+            ],
+            [
+              "Virtual switch",
+              "Connects VMs (virtual machines) inside a hypervisor host"
+            ],
+            [
+              "Container orchestration",
+              "Automates many containers, for example with Kubernetes"
+            ]
+          ],
+          "explanation": "VRF (virtual routing and forwarding) adalah tabel routing terpisah, VRF-lite adalah VRF tanpa MPLS (Multiprotocol Label Switching), virtual switch menghubungkan VM (virtual machine), dan orchestration mengelola banyak container.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u07-vrf",
+            "ccna-f-u07-vrf-lite",
+            "ccna-f-u07-vswitch",
+            "ccna-f-u07-orchestration"
+          ]
+        },
+        {
+          "id": "ccna-u07-l3-e7",
+          "type": "order",
+          "concept": "vrf-config",
+          "prompt": "Put the steps to place GigabitEthernet0/0/1 in a new VRF (virtual routing and forwarding) named Tamu in order.",
+          "items": [
+            "Create the VRF with vrf definition Tamu",
+            "Enter interface GigabitEthernet0/0/1",
+            "Enter vrf forwarding Tamu",
+            "Enter the ip address again"
+          ],
+          "explanation": "Buat VRF (virtual routing and forwarding) dulu, masuk ke interface, pasang vrf forwarding, lalu isi ulang alamat karena IOS menghapusnya.",
+          "requires": [
+            "ccna-f-u07-vrf-cmd"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u07-virt",
+      "statement": "Virtualisasi memisahkan sumber daya fisik menjadi pool yang bisa dibagi ke banyak tugas terpisah; jenisnya antara lain server, storage, desktop, aplikasi, dan jaringan.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-virtualization.html"
+    },
+    {
+      "id": "ccna-f-u07-vm",
+      "statement": "VM (virtual machine) adalah lingkungan komputasi yang didefinisikan software, dikelola hypervisor, memakai sumber daya host, dan punya guest OS sendiri.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/computing/what-is-a-virtual-machine.html"
+    },
+    {
+      "id": "ccna-f-u07-hypervisor",
+      "statement": "Hypervisor mengelola VM dan menghubungkan layanan virtual dengan interface di luarnya.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-virtualization.html"
+    },
+    {
+      "id": "ccna-f-u07-type1",
+      "statement": "Hypervisor type 1 berjalan langsung di hardware (bare metal), misalnya VMware ESXi, sehingga punya akses langsung ke hardware dan performa lebih baik.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-virtualization.html"
+    },
+    {
+      "id": "ccna-f-u07-type2",
+      "statement": "Hypervisor type 2 berjalan di atas sistem operasi sebagai lingkungan hosted, sehingga performanya lebih rendah daripada type 1.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-virtualization.html"
+    },
+    {
+      "id": "ccna-f-u07-vm-portable",
+      "statement": "Banyak VM bisa berjalan di satu server fisik, dan VM bersifat portable sehingga bisa dipindah ke host lain.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/computing/what-is-a-virtual-machine.html"
+    },
+    {
+      "id": "ccna-f-u07-container",
+      "statement": "Container adalah paket mandiri yang berisi aplikasi beserta semua dependensinya.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-virtualization.html"
+    },
+    {
+      "id": "ccna-f-u07-container-kernel",
+      "statement": "Container berbagi kernel OS host, jadi lebih ringan, lebih cepat menyala, dan memakai lebih sedikit CPU dan memori daripada VM yang masing-masing membawa OS sendiri.",
+      "source": "https://learningnetwork.cisco.com/s/article/time-to-talk-about-containers-in-cisco-modeling-labs"
+    },
+    {
+      "id": "ccna-f-u07-container-os",
+      "statement": "Karena berbagi kernel host, container memakai OS yang sama dengan host-nya; kalau butuh OS yang berbeda, misalnya Windows di host Linux, pakai VM.",
+      "source": "https://learningnetwork.cisco.com/s/article/time-to-talk-about-containers-in-cisco-modeling-labs",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u07-orchestration",
+      "statement": "Container orchestration, misalnya Kubernetes, mengotomatiskan deployment, scaling, dan pengelolaan banyak container.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/computing/what-is-container-orchestration.html"
+    },
+    {
+      "id": "ccna-f-u07-vswitch",
+      "statement": "Hypervisor menyediakan virtual switch yang menghubungkan NIC virtual milik VM satu sama lain dan ke NIC fisik server sebagai uplink ke jaringan.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-virtualization.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u07-vswitch-trunk",
+      "statement": "Port VM di virtual switch bisa diberi VLAN, dan uplink NIC fisik ke switch biasanya trunk supaya beberapa VLAN VM bisa lewat.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/networking/what-is-virtualization.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u07-vrf",
+      "statement": "VRF (virtual routing and forwarding) membuat lebih dari satu tabel routing dan forwarding di satu perangkat; setiap interface layer 3 dimasukkan ke satu VRF.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-routing/b-ip-routing/m_mp-multi-vrf-vrf-lite.html"
+    },
+    {
+      "id": "ccna-f-u07-vrf-overlap",
+      "statement": "Karena setiap VRF punya tabel sendiri, alamat IP yang sama boleh dipakai di VRF yang berbeda.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-routing/b-ip-routing/m_mp-multi-vrf-vrf-lite.html"
+    },
+    {
+      "id": "ccna-f-u07-vrf-one",
+      "statement": "Satu interface layer 3, fisik maupun SVI, tidak boleh masuk lebih dari satu VRF pada saat yang sama.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-routing/b-ip-routing/m_mp-multi-vrf-vrf-lite.html"
+    },
+    {
+      "id": "ccna-f-u07-vrf-lite",
+      "statement": "VRF yang dipakai tanpa MPLS (Multiprotocol Label Switching) disebut VRF-lite.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-routing/b-ip-routing/m_mp-multi-vrf-vrf-lite.html"
+    },
+    {
+      "id": "ccna-f-u07-vrf-cmd",
+      "statement": "VRF dibuat dengan vrf definition <nama>, lalu interface dimasukkan dengan vrf forwarding <nama>; IOS menghapus alamat IP interface saat VRF dipasang, jadi alamat harus diisi ulang.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-routing/b-ip-routing/m_mp-multi-vrf-vrf-lite.html",
+      "verify": true
+    }
+  ]
+}

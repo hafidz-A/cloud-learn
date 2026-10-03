@@ -1,0 +1,3257 @@
+{
+  "labs": [
+    {
+      "lesson": "ccna-u02-l5",
+      "title": "Konfigurasi awal router dan switch",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Memberi router ISR4331 dan switch 2960 konfigurasi awal yang aman lewat kabel console, lalu menyimpannya dan membuktikan konfigurasi bertahan setelah reload.",
+      "topology": {
+        "devices": [
+          {
+            "id": "pc",
+            "kind": "pc",
+            "label": "PC0",
+            "x": 2,
+            "y": 0,
+            "note": "terminal console"
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "HQ-R1",
+            "x": 0,
+            "y": 1,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "HQ-SW1",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          }
+        ],
+        "links": [
+          {
+            "from": "pc",
+            "to": "r1",
+            "toPort": "Console",
+            "style": "dashed"
+          },
+          {
+            "from": "pc",
+            "to": "sw1",
+            "toPort": "Console",
+            "style": "dashed"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "text": "Letakkan router ISR4331, switch 2960-24TT, dan satu PC. Sambungkan kabel console (biru muda) dari PC ke port Console router. Untuk switch, pindahkan kabel yang sama setelah router selesai, atau pakai PC kedua."
+        },
+        {
+          "text": "Di PC, buka Desktop lalu Terminal, dan pastikan pengaturannya 9600 bps, 8 data bit, tanpa parity, 1 stop bit, tanpa flow control. Kalau muncul pertanyaan initial configuration dialog, jawab no."
+        },
+        {
+          "text": "Beri nama router dan enable secret.",
+          "device": "HQ-R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname HQ-R1",
+            "enable secret Cisc0Lab"
+          ]
+        },
+        {
+          "text": "Pasang password dan login di console serta lima line vty pertama.",
+          "device": "HQ-R1",
+          "commands": [
+            "line console 0",
+            "password Konsol1",
+            "login",
+            "exit",
+            "line vty 0 4",
+            "password Remote1",
+            "login",
+            "exit"
+          ]
+        },
+        {
+          "text": "Tambahkan banner, sandikan password teks biasa, lalu simpan. Tekan Enter saat ditanya nama tujuan.",
+          "device": "HQ-R1",
+          "commands": [
+            "banner motd #Akses terbatas#",
+            "service password-encryption",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ]
+        },
+        {
+          "text": "Ulangi di switch dengan nama HQ-SW1. Switch 2960 punya 16 line vty, jadi pakai line vty 0 15.",
+          "device": "HQ-SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname HQ-SW1",
+            "enable secret Cisc0Lab",
+            "line vty 0 15",
+            "password Remote1",
+            "login",
+            "end",
+            "write memory"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Lihat konfigurasi yang tersimpan di router.",
+          "device": "HQ-R1",
+          "command": "show startup-config",
+          "expect": "Ada hostname HQ-R1, enable secret dalam bentuk hash, password line yang diawali angka 7, dan banner motd."
+        },
+        {
+          "text": "Buktikan konfigurasi bertahan: jalankan reload di privileged EXEC, konfirmasi, lalu tunggu router menyala lagi.",
+          "expect": "Banner Akses terbatas muncul, console menanyakan password, dan prompt kembali menjadi HQ-R1>."
+        },
+        {
+          "text": "Coba masuk privileged EXEC.",
+          "device": "HQ-R1",
+          "command": "enable",
+          "expect": "IOS menanyakan Password, dan hanya Cisc0Lab yang diterima."
+        }
+      ],
+      "notes": [
+        "Packet Tracer dan IOS XE asli sama-sama menanyakan initial configuration dialog saat startup-config kosong. Jawab no untuk masuk CLI (Command-Line Interface) biasa.",
+        "Di IOS XE asli, enable secret biasanya tampil sebagai type 9 (scrypt). Packet Tracer bisa menampilkan tipe lain. Yang penting: tidak terbaca sebagai teks biasa.",
+        "Perintah reload tidak ada di simulator Langit, jadi langkah pembuktian ini hanya bisa dicoba di Packet Tracer atau perangkat asli."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_cfg/configuration/15-mt/sec-usr-cfg-15-mt-book/sec-cfg-sec-4cli.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-8/configuration_guide/sec/b_168_sec_9400_cg/controlling_switch_access_with_passwords_and_privilege_levels.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/command/cf_command_ref/A_through_B.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3850/software/release/16-9/configuration_guide/sys_mgmt/b_169_sys_mgmt_3850_cg/m-169-fm-config-cg.html",
+        "https://www.cisco.com/c/en/us/support/docs/storage-networking/management/217970-troubleshoot-and-apply-correct-terminal.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u03-l5",
+      "title": "Menemukan dan memperbaiki masalah interface",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Menyalakan interface router yang mati, lalu membuat dan memperbaiki speed dan duplex yang tidak cocok antara switch dan PC.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 0,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "Fa0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24, gateway .1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.10.12/24, gateway .1"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through sesuai topologi, lalu isi alamat IP (Internet Protocol) PC1 dan PC2 lewat Desktop > IP Configuration."
+        },
+        {
+          "text": "Beri alamat ke interface router. Perhatikan status port sebelum dan sesudah no shutdown.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.10.1 255.255.255.0",
+            "no shutdown",
+            "end",
+            "show ip interface brief"
+          ]
+        },
+        {
+          "text": "Buat masalah dengan sengaja: set Fa0/1 manual ke 100 dan full, lalu di PC1 buka Config > FastEthernet0 dan biarkan Auto.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface fa0/1",
+            "speed 100",
+            "duplex full",
+            "end"
+          ]
+        },
+        {
+          "text": "Lihat status dan setelan semua port.",
+          "device": "SW1",
+          "commands": [
+            "show interfaces status"
+          ]
+        },
+        {
+          "text": "Perbaiki dengan mengembalikan port ke autonegotiation, lalu simpan.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "interface fa0/1",
+            "speed auto",
+            "duplex auto",
+            "end",
+            "write memory"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Status interface router.",
+          "device": "R1",
+          "command": "show ip interface brief",
+          "expect": "GigabitEthernet0/0/0 berstatus up dan protocol up dengan alamat 192.168.10.1."
+        },
+        {
+          "text": "Setelah perbaikan, setelan port switch.",
+          "device": "SW1",
+          "command": "show interfaces status",
+          "expect": "Fa0/1 connected dengan a-full dan a-100, tanda bahwa nilainya hasil autonegotiation."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.10.1 di Command Prompt.",
+          "expect": "Ping berhasil tanpa timeout."
+        }
+      ],
+      "notes": [
+        "Packet Tracer tidak meniru counter error fisik seperti CRC (cyclic redundancy check) dan late collision secara lengkap, jadi gejala duplex mismatch mungkin tidak terlihat. Yang bisa dipelajari di sini: setelan speed dan duplex serta cara membacanya di show interfaces status.",
+        "Di Packet Tracer, kabel salah jenis (crossover antara switch dan PC) bisa membuat link mati kalau auto-MDIX (automatic medium-dependent interface crossover) tidak berlaku pada port itu. Coba ganti jenis kabel dan lihat hasilnya."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/12027-53.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html",
+        "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-6500-series-switches/17053-46.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3650/hardware/installation/guide/Cat3650hig_book/HIGCABLE.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u04-l8",
+      "title": "Merencanakan dan memasang alamat IPv4",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Membagi 192.168.50.0/24 menjadi subnet /26, memasang alamat di dua interface router, mengisi alamat PC, lalu membuktikan setiap PC bisa ping gateway-nya.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "r1",
+            "to": "sw2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw2",
+            "to": "pc2",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.50.1/26"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "192.168.50.65/26"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.50.10/26, gateway 192.168.50.1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.50.70/26, gateway 192.168.50.65"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Di kertas, bagi 192.168.50.0/24 menjadi empat subnet /26 dan tulis network, host pertama, host terakhir, dan broadcast tiap subnet. Pakai subnet pertama untuk LAN (Local Area Network) SW1 dan subnet kedua untuk LAN SW2."
+        },
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through sesuai topologi."
+        },
+        {
+          "text": "Pasang alamat di kedua interface router dan nyalakan.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.50.1 255.255.255.192",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 192.168.50.65 255.255.255.192",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Coba kesalahan yang umum: di G0/0/1, ketik ip address 192.168.50.64 255.255.255.192 (alamat network) dan baca pesan yang muncul. Setelah itu pasang lagi alamat yang benar, 192.168.50.65."
+        },
+        {
+          "text": "Isi alamat IP (Internet Protocol), mask 255.255.255.192, dan default gateway PC1 dan PC2 lewat Desktop > IP Configuration sesuai tabel alamat."
+        },
+        {
+          "text": "Periksa dan simpan.",
+          "device": "R1",
+          "commands": [
+            "show ip interface brief",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Ringkasan interface router.",
+          "device": "R1",
+          "command": "show ip interface brief",
+          "expect": "G0/0/0 192.168.50.1 dan G0/0/1 192.168.50.65, keduanya up dan protocol up."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.50.1, lalu ping 192.168.50.70.",
+          "expect": "Kedua ping berhasil. Ping ke PC2 lewat router, jadi itu juga membuktikan gateway kedua PC benar."
+        },
+        {
+          "text": "Ubah gateway PC2 menjadi 192.168.50.1, lalu ping 192.168.50.10 dari PC2.",
+          "expect": "Ping gagal, karena gateway berada di luar subnet PC2. Kembalikan gateway ke 192.168.50.65."
+        }
+      ],
+      "notes": [
+        "Pesan Bad mask pada langkah 4 dicatat dari perangkat IOS asli. Pesan di Packet Tracer bisa berbeda; catat apa yang kamu lihat.",
+        "Di beberapa versi Packet Tracer, PC mungkin menolak gateway yang berada di luar subnet-nya saat diisi. Kalau begitu, catat pesannya; pelajarannya tetap sama."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_ipv4/configuration/xe-16-7/ipv4-xe-16-7-book/configuring_ipv4_addresses.html",
+        "https://www.cisco.com/E-Learning/bulk/public/tac/cim/cib/using_cisco_ios_software/cmdrefs/show_ip_interface.htm",
+        "https://datatracker.ietf.org/doc/html/rfc1122"
+      ]
+    },
+    {
+      "lesson": "ccna-u05-l6",
+      "title": "IPv6 di router dan SLAAC",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Mengaktifkan IPv6 routing, memasang alamat global dan link-local di dua LAN (Local Area Network), lalu membuktikan PC mendapat alamat lewat SLAAC (Stateless Address Autoconfiguration) dan bisa ping antar-LAN.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "r1",
+            "to": "sw2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw2",
+            "to": "pc2",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "2001:db8:acad:1::1/64, fe80::1"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "2001:db8:acad:2::1/64, fe80::1"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "SLAAC dari 2001:db8:acad:1::/64"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "SLAAC dari 2001:db8:acad:2::/64"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through sesuai topologi."
+        },
+        {
+          "text": "Aktifkan IPv6 routing dan pasang alamat di kedua interface.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "ipv6 unicast-routing",
+            "interface g0/0/0",
+            "ipv6 address 2001:db8:acad:1::1/64",
+            "ipv6 address fe80::1 link-local",
+            "no shutdown",
+            "interface g0/0/1",
+            "ipv6 address 2001:db8:acad:2::1/64",
+            "ipv6 address fe80::1 link-local",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Di PC1 dan PC2, buka Desktop > IP Configuration, lalu di bagian IPv6 pilih Automatic. Catat alamat yang didapat dan gateway-nya."
+        },
+        {
+          "text": "Periksa interface dan simpan.",
+          "device": "R1",
+          "commands": [
+            "show ipv6 interface brief",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Ringkasan interface IPv6.",
+          "device": "R1",
+          "command": "show ipv6 interface brief",
+          "expect": "G0/0/0 dan G0/0/1 [up/up], masing-masing dengan FE80::1 dan alamat global 2001:DB8:ACAD:1::1 serta 2001:DB8:ACAD:2::1."
+        },
+        {
+          "text": "Alamat PC1 di IP Configuration.",
+          "expect": "Alamat IPv6 diawali 2001:db8:acad:1: dan gateway fe80::1, alamat link-local router."
+        },
+        {
+          "text": "Uji dari PC1: ping alamat IPv6 PC2.",
+          "expect": "Ping berhasil."
+        },
+        {
+          "text": "Matikan IPv6 routing dengan no ipv6 unicast-routing, lalu minta alamat lagi di PC1 (pilih Static lalu Automatic).",
+          "expect": "PC1 tidak lagi mendapat prefix global, karena router berhenti mengirim Router Advertisement. Aktifkan lagi ipv6 unicast-routing."
+        }
+      ],
+      "notes": [
+        "Interface ID yang dibuat PC di Packet Tracer bisa EUI-64 (Extended Unique Identifier) atau acak, tergantung versinya. Keduanya sah.",
+        "Langkah terakhir pada checks menguji efek ipv6 unicast-routing pada Router Advertisement. Tandai hasilnya kalau Packet Tracer berperilaku lain."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_ip6-add-basic-conn-xe.html",
+        "https://datatracker.ietf.org/doc/html/rfc4861",
+        "https://datatracker.ietf.org/doc/html/rfc4862"
+      ]
+    },
+    {
+      "lesson": "ccna-u08-l6",
+      "title": "Server DHCP dan relay",
+      "minutes": 35,
+      "tool": "packet-tracer",
+      "goal": "Menjadikan R1 server DHCP untuk LAN (Local Area Network) pertama, lalu memakai relay supaya LAN kedua mendapat alamat dari server di LAN pertama.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "SRV1",
+            "x": 1,
+            "y": 2,
+            "note": "Server-PT"
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "r1",
+            "to": "sw2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "srv",
+            "fromPort": "Fa0/2"
+          },
+          {
+            "from": "sw2",
+            "to": "pc2",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "192.168.20.1/24"
+        },
+        {
+          "device": "SRV1",
+          "port": "NIC",
+          "address": "192.168.10.5/24, gateway 192.168.10.1"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "DHCP dari R1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "DHCP dari SRV1 lewat relay"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through sesuai topologi. Isi alamat statis SRV1."
+        },
+        {
+          "text": "Pasang alamat interface R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.10.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 192.168.20.1 255.255.255.0",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Jadikan R1 server DHCP untuk LAN 192.168.10.0/24.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "ip dhcp excluded-address 192.168.10.1 192.168.10.9",
+            "ip dhcp pool Kantor",
+            "network 192.168.10.0 255.255.255.0",
+            "default-router 192.168.10.1",
+            "dns-server 192.168.10.5",
+            "end"
+          ]
+        },
+        {
+          "text": "Di SRV1, buka Services > DHCP. Nyalakan service, lalu buat pool untuk LAN kedua: Default Gateway 192.168.20.1, Start IP Address 192.168.20.10, Subnet Mask 255.255.255.0. Simpan pool itu. Matikan pool bawaan serverPool kalau ada supaya tidak bentrok dengan R1."
+        },
+        {
+          "text": "Pasang relay di interface sisi PC2, lalu simpan.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "interface g0/0/1",
+            "ip helper-address 192.168.10.5",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Di PC1 dan PC2, buka Desktop > IP Configuration dan pilih DHCP."
+        }
+      ],
+      "checks": [
+        {
+          "text": "Alamat PC1.",
+          "expect": "Alamat 192.168.10.10 atau lebih tinggi (bukan .1 sampai .9), gateway 192.168.10.1, DNS 192.168.10.5."
+        },
+        {
+          "text": "Alamat PC2.",
+          "expect": "Alamat 192.168.20.10 atau lebih tinggi dengan gateway 192.168.20.1, dari pool di SRV1."
+        },
+        {
+          "text": "Pinjaman alamat di R1.",
+          "device": "R1",
+          "command": "show ip dhcp binding",
+          "expect": "Hanya alamat PC1 yang tercatat; alamat PC2 diberikan SRV1, bukan R1."
+        },
+        {
+          "text": "Hapus ip helper-address dari G0/0/1, lalu minta alamat lagi di PC2.",
+          "expect": "PC2 gagal mendapat alamat dan memakai 169.254.x.x. Pasang lagi helper-address."
+        }
+      ],
+      "notes": [
+        "Format output show ip dhcp binding di Packet Tracer lebih sederhana daripada di IOS XE asli.",
+        "Server-PT di Packet Tracer memakai field Start IP Address dan Maximum Number of Users, bukan perintah IOS."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_dhcp/configuration/xe-16-6/dhcp-xe-16-6-book/dhcp-relay-agent-xe.html",
+        "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig"
+      ]
+    },
+    {
+      "lesson": "ccna-u09-l6",
+      "title": "VLAN, port akses, dan voice VLAN",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Membuat VLAN Staf, Tamu, dan Suara, memasang port akses dan voice VLAN, lalu membuktikan PC di VLAN berbeda tidak bisa saling ping tanpa router.",
+      "topology": {
+        "devices": [
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 0,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "ph1",
+            "kind": "phone",
+            "label": "PHONE1",
+            "x": 0,
+            "y": 1,
+            "note": "IP Phone 7960"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "id": "pc3",
+            "kind": "pc",
+            "label": "PC3",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "sw1",
+            "to": "ph1",
+            "fromPort": "Fa0/1",
+            "toPort": "Switch"
+          },
+          {
+            "from": "ph1",
+            "to": "pc1",
+            "fromPort": "PC"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "Fa0/2"
+          },
+          {
+            "from": "sw1",
+            "to": "pc3",
+            "fromPort": "Fa0/11"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.10.12/24"
+        },
+        {
+          "device": "PC3",
+          "port": "NIC",
+          "address": "192.168.10.13/24 (sengaja satu subnet, tapi beda VLAN)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat sesuai topologi. Di Packet Tracer, IP Phone 7960 butuh adaptor daya: buka tab Physical pada phone dan colokkan Power Adapter ke phone, karena 2960-24TT tidak memberi PoE (Power over Ethernet)."
+        },
+        {
+          "text": "Buat VLAN dan beri nama.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "vlan 10",
+            "name Staf",
+            "vlan 20",
+            "name Tamu",
+            "vlan 150",
+            "name Suara",
+            "end"
+          ]
+        },
+        {
+          "text": "Pasang port akses dan voice VLAN.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "interface range fa0/1 - 10",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "switchport voice vlan 150",
+            "interface range fa0/11 - 20",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "end"
+          ]
+        },
+        {
+          "text": "Isi alamat statis ketiga PC sesuai tabel alamat."
+        },
+        {
+          "text": "Periksa tabel VLAN dan simpan.",
+          "device": "SW1",
+          "commands": [
+            "show vlan brief",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Tabel VLAN.",
+          "device": "SW1",
+          "command": "show vlan brief",
+          "expect": "VLAN 10 Staf berisi Fa0/1 sampai Fa0/10, VLAN 20 Tamu berisi Fa0/11 sampai Fa0/20, dan VLAN 150 Suara ada di daftar."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.10.12 (PC2).",
+          "expect": "Ping berhasil karena PC1 dan PC2 di VLAN 10."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.10.13 (PC3).",
+          "expect": "Ping gagal. PC3 ada di VLAN 20, broadcast domain lain, walaupun alamatnya satu subnet."
+        },
+        {
+          "text": "Pindahkan Fa0/11 ke VLAN 10, lalu ulangi ping ke PC3.",
+          "expect": "Ping berhasil."
+        }
+      ],
+      "notes": [
+        "Pesan \"% Access VLAN does not exist. Creating vlan\" baru muncul kalau port dimasukkan ke VLAN yang belum dibuat. Coba switchport access vlan 30 di port kosong untuk melihatnya.",
+        "Di Packet Tracer, informasi voice VLAN dari switch ke phone bisa tidak terlihat sejelas di perangkat asli."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/dam/en/us/td/docs/switches/lan/catalyst9200/software/release/16-11/configuration_guide/vlan/configuring_vlans.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/m_1522e_vlan_voice_2960s_cg.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01000.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u10-l6",
+      "title": "Trunk dan router-on-a-stick",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Merutekan VLAN 10 dan 20 lewat satu kabel trunk ke R1, lalu membuktikan PC di VLAN berbeda bisa saling ping.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1",
+            "label": "trunk"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "Fa0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/1.10",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1.20",
+          "address": "192.168.20.1/24"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24, gateway .1 (VLAN 10)"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.20.12/24, gateway .1 (VLAN 20)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat dengan kabel Copper Straight-Through dan isi alamat PC."
+        },
+        {
+          "text": "Buat VLAN, port akses, dan trunk ke router.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "vlan 10",
+            "name Staf",
+            "vlan 20",
+            "name Tamu",
+            "interface fa0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "interface fa0/2",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "interface g0/1",
+            "switchport mode trunk",
+            "switchport trunk allowed vlan 10,20",
+            "end"
+          ]
+        },
+        {
+          "text": "Buat subinterface di router.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/1",
+            "no shutdown",
+            "interface g0/0/1.10",
+            "encapsulation dot1Q 10",
+            "ip address 192.168.10.1 255.255.255.0",
+            "interface g0/0/1.20",
+            "encapsulation dot1Q 20",
+            "ip address 192.168.20.1 255.255.255.0",
+            "end"
+          ]
+        },
+        {
+          "text": "Periksa trunk dan simpan kedua perangkat.",
+          "device": "SW1",
+          "commands": [
+            "show interfaces trunk",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Simpan konfigurasi router.",
+          "device": "R1",
+          "commands": [
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Status trunk.",
+          "device": "SW1",
+          "command": "show interfaces trunk",
+          "expect": "Gi0/1 trunking dengan encapsulation 802.1q, native VLAN 1, dan VLAN yang diizinkan 10,20."
+        },
+        {
+          "text": "Ringkasan interface router.",
+          "device": "R1",
+          "command": "show ip interface brief",
+          "expect": "G0/0/1.10 dan G0/0/1.20 up/up dengan alamat gateway masing-masing."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.20.12.",
+          "expect": "Ping berhasil: paket naik ke R1 lewat VLAN 10 dan turun lagi lewat VLAN 20."
+        },
+        {
+          "text": "Hapus VLAN 20 dari daftar allowed di trunk (switchport trunk allowed vlan remove 20), lalu ulangi ping.",
+          "expect": "Ping gagal. Kembalikan dengan switchport trunk allowed vlan add 20."
+        }
+      ],
+      "notes": [
+        "Di beberapa versi Packet Tracer, perubahan trunk butuh beberapa detik sebelum ping berhasil. Ulangi ping kalau yang pertama timeout."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html",
+        "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/14976-50.html",
+        "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/lan-wan/b-lan-wan/m_lnsw-conf-vlan-ieee.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u10-l7",
+      "title": "Routing antar-VLAN dengan SVI",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Memindahkan routing antar-VLAN dari router ke switch layer 3 dengan SVI, lalu menyambungkan switch ke router lewat routed port.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "l3switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "3650-24PS"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G1/0/24",
+            "label": "10.0.0.0/30"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "G1/0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "G1/0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "SW1",
+          "port": "Vlan10",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "SW1",
+          "port": "Vlan20",
+          "address": "192.168.20.1/24"
+        },
+        {
+          "device": "SW1",
+          "port": "G1/0/24",
+          "address": "10.0.0.1/30"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "10.0.0.2/30"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24, gateway .1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.20.12/24, gateway .1"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pakai switch 3650-24PS. Di Packet Tracer, 3650 baru butuh power supply: buka tab Physical dan pasang AC-POWER-SUPPLY ke slot kosong. Sambungkan perangkat dan isi alamat PC."
+        },
+        {
+          "text": "Buat VLAN dan port akses.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "vlan 10",
+            "name Staf",
+            "vlan 20",
+            "name Tamu",
+            "interface g1/0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "interface g1/0/2",
+            "switchport mode access",
+            "switchport access vlan 20",
+            "end"
+          ]
+        },
+        {
+          "text": "Aktifkan routing, buat SVI, dan routed port ke R1.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "ip routing",
+            "interface vlan 10",
+            "ip address 192.168.10.1 255.255.255.0",
+            "no shutdown",
+            "interface vlan 20",
+            "ip address 192.168.20.1 255.255.255.0",
+            "no shutdown",
+            "interface g1/0/24",
+            "no switchport",
+            "ip address 10.0.0.1 255.255.255.252",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Pasang alamat R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 10.0.0.2 255.255.255.252",
+            "no shutdown",
+            "end"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Interface layer 3 di switch.",
+          "device": "SW1",
+          "command": "show ip interface brief",
+          "expect": "Vlan10, Vlan20, dan GigabitEthernet1/0/24 up/up dengan alamatnya."
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.20.12.",
+          "expect": "Ping berhasil; kali ini paket dirutekan di dalam SW1, tidak lewat R1."
+        },
+        {
+          "text": "Uji dari SW1: ping 10.0.0.2.",
+          "expect": "Ping berhasil lewat routed port. PC belum bisa ping R1 sampai routing ke R1 diatur (Unit 16)."
+        }
+      ],
+      "notes": [
+        "Di switch yang hanya mendukung 802.1Q, perintah switchport trunk encapsulation dot1q tidak dibutuhkan. Lab ini tidak memakai trunk, jadi perintah itu tidak muncul."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/41860-howto-L3-intervlanrouting.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_2_e/configuration/guide/b_1522e_2960_2960c_2960s_2960sf_2960p_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_01101.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u11-l5",
+      "title": "EtherChannel LACP antar switch",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Menggabungkan dua link antar switch menjadi satu EtherChannel LACP (Link Aggregation Control Protocol) yang menjadi trunk, lalu membuktikan link tetap jalan saat satu kabel dicabut.",
+      "topology": {
+        "devices": [
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 0,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 0,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 1
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 1
+          }
+        ],
+        "links": [
+          {
+            "from": "sw1",
+            "to": "sw2",
+            "fromPort": "Fa0/23",
+            "toPort": "Fa0/23"
+          },
+          {
+            "from": "sw1",
+            "to": "sw2",
+            "fromPort": "Fa0/24",
+            "toPort": "Fa0/24"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw2",
+            "to": "pc2",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.10.12/24"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan dua kabel Copper Crossover (atau Straight-Through kalau auto-MDIX aktif) antara Fa0/23 dan Fa0/24 kedua switch, lalu sambungkan PC dan isi alamatnya."
+        },
+        {
+          "text": "Konfigurasi SW1.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface range fa0/23 - 24",
+            "channel-group 1 mode active",
+            "interface port-channel 1",
+            "switchport mode trunk",
+            "end"
+          ]
+        },
+        {
+          "text": "Konfigurasi SW2.",
+          "device": "SW2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface range fa0/23 - 24",
+            "channel-group 1 mode passive",
+            "interface port-channel 1",
+            "switchport mode trunk",
+            "end"
+          ]
+        },
+        {
+          "text": "Periksa EtherChannel dan simpan.",
+          "device": "SW1",
+          "commands": [
+            "show etherchannel summary",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Ringkasan EtherChannel.",
+          "device": "SW1",
+          "command": "show etherchannel summary",
+          "expect": "Po1(SU) dengan protokol LACP dan anggota Fa0/23(P) serta Fa0/24(P)."
+        },
+        {
+          "text": "Jalankan ping -t 192.168.10.12 dari PC1, lalu hapus satu kabel antar switch.",
+          "expect": "Ping tetap berjalan; paling banyak satu atau dua yang hilang."
+        },
+        {
+          "text": "Ganti mode SW2 menjadi passive juga di SW1 (channel-group 1 mode passive), lalu lihat summary.",
+          "expect": "Port tidak lagi (P), karena tidak ada sisi yang memulai negosiasi. Kembalikan SW1 ke active."
+        }
+      ],
+      "notes": [
+        "Packet Tracer butuh beberapa detik untuk menegosiasikan LACP. Tunggu sebentar sebelum membaca show etherchannel summary."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960xr/software/15_2_7_e/configuration_guide/b_1527e_consolidated_2960xr_cg/m_1522e_layer2_etherchanl_2960xr_xcg.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9500/software/release/16-6/configuration_guide/b_166_lyr2_lyr3_9500_cg/b_166_lyr2_lyr3_9500_cg_chapter_011.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u12-l4",
+      "title": "Memetakan tetangga dengan CDP dan LLDP",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Menggambar ulang topologi hanya dari output CDP (Cisco Discovery Protocol) dan LLDP (Link Layer Discovery Protocol), lalu menemukan satu kabel yang tidak sesuai dokumentasi.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "sw2",
+            "fromPort": "G0/2",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "Dokumentasi",
+          "port": "SW1 G0/2",
+          "address": "tertulis ke SW2 G0/2 (sengaja salah, cari dengan CDP)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat sesuai topologi. Pastikan kabel SW1-SW2 memakai SW2 G0/1, bukan G0/2 seperti dokumentasi."
+        },
+        {
+          "text": "Lihat tetangga R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "show cdp neighbors"
+          ]
+        },
+        {
+          "text": "Lihat tetangga SW1, termasuk detailnya.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "show cdp neighbors",
+            "show cdp neighbors detail"
+          ]
+        },
+        {
+          "text": "Nyalakan LLDP di kedua switch dan bandingkan.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "lldp run",
+            "end",
+            "show lldp neighbors"
+          ]
+        },
+        {
+          "text": "Nyalakan LLDP di SW2.",
+          "device": "SW2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "lldp run",
+            "end",
+            "show lldp neighbors"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Tetangga R1.",
+          "device": "R1",
+          "command": "show cdp neighbors",
+          "expect": "Hanya SW1 yang tampil, di port lokal G0/0/0. SW2 tidak tampil karena bukan tetangga langsung."
+        },
+        {
+          "text": "Tetangga SW1.",
+          "device": "SW1",
+          "command": "show cdp neighbors",
+          "expect": "R1 dan SW2. Baris SW2 menunjukkan Port ID G0/1, berbeda dari dokumentasi (G0/2)."
+        },
+        {
+          "text": "Tetangga LLDP SW1.",
+          "device": "SW1",
+          "command": "show lldp neighbors",
+          "expect": "SW2 tampil setelah LLDP aktif di kedua switch. R1 baru tampil kalau LLDP juga dinyalakan di R1."
+        }
+      ],
+      "notes": [
+        "PC di Packet Tracer tidak mengirim CDP atau LLDP, jadi PC1 tidak tampil sebagai tetangga."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-cdp.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/configure-lldp.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u13-l8",
+      "title": "Rapid PVST+, root bridge, dan pelindung port",
+      "minutes": 35,
+      "tool": "packet-tracer",
+      "goal": "Memilih root bridge dengan sengaja di segitiga tiga switch, melihat port mana yang diblokir, lalu melindungi port akses dengan PortFast dan BPDU guard.",
+      "topology": {
+        "devices": [
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 0,
+            "note": "2960-24TT, inti"
+          },
+          {
+            "id": "sw2",
+            "kind": "switch",
+            "label": "SW2",
+            "x": 0,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "sw3",
+            "kind": "switch",
+            "label": "SW3",
+            "x": 4,
+            "y": 1,
+            "note": "2960-24TT, akses"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "sw1",
+            "to": "sw2",
+            "fromPort": "G0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "sw3",
+            "fromPort": "G0/2",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "sw2",
+            "to": "sw3",
+            "fromPort": "G0/2",
+            "toPort": "G0/2"
+          },
+          {
+            "from": "sw3",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.11/24 (VLAN 1)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan tiga switch membentuk segitiga dengan kabel Copper Cross-Over, lalu sambungkan PC1. Tunggu sampai semua lampu link hijau atau oranye stabil."
+        },
+        {
+          "text": "Sebelum konfigurasi, lihat siapa root di setiap switch dan catat port yang BLK.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "show spanning-tree"
+          ]
+        },
+        {
+          "text": "Jadikan SW1 root dan aktifkan Rapid PVST+.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "spanning-tree vlan 1 root primary",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Jadikan SW2 cadangan root.",
+          "device": "SW2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "spanning-tree vlan 1 root secondary",
+            "end"
+          ]
+        },
+        {
+          "text": "Lindungi port PC di SW3.",
+          "device": "SW3",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "spanning-tree mode rapid-pvst",
+            "interface range fa0/1 - 10",
+            "spanning-tree portfast",
+            "spanning-tree bpduguard enable",
+            "end"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Root bridge setelah konfigurasi.",
+          "device": "SW3",
+          "command": "show spanning-tree",
+          "expect": "Root ID menunjukkan MAC SW1 dengan priority 24577 (24576 + VLAN 1). Satu port SW3 berperan Altn dan BLK."
+        },
+        {
+          "text": "Cabut kabel SW1-SW3, lalu lihat lagi SW3.",
+          "device": "SW3",
+          "command": "show spanning-tree",
+          "expect": "Port yang tadinya Altn menjadi Root dan FWD dalam beberapa detik."
+        },
+        {
+          "text": "Ganti PC1 dengan sebuah switch (sambungkan switch keempat ke Fa0/1).",
+          "device": "SW3",
+          "command": "show interfaces status",
+          "expect": "Fa0/1 berstatus err-disabled karena BPDU guard. Pulihkan dengan shutdown lalu no shutdown setelah switch itu dicabut."
+        }
+      ],
+      "notes": [
+        "Packet Tracer menampilkan nilai root priority dan MAC yang berbeda di setiap file. Yang penting: setelah root primary, SW1 harus menjadi root."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9200/software/release/16-12/configuration_guide/lyr2/b_1612_lyr2_9200_cg/configuring_spanning_tree_protocol.html",
+        "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/24062-146.html",
+        "https://www.cisco.com/c/en/us/support/docs/lan-switching/spanning-tree-protocol/10586-65.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u14-l5",
+      "title": "Mencari tiga kerusakan",
+      "minutes": 40,
+      "tool": "packet-tracer",
+      "goal": "Membuat tiga kerusakan dengan sengaja, lalu menemukan dan memperbaikinya hanya dengan show, ping, dan traceroute, mengikuti urutan dari bawah ke atas.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1",
+            "label": "trunk"
+          },
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          },
+          {
+            "from": "sw1",
+            "to": "pc2",
+            "fromPort": "Fa0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/1.10",
+          "address": "192.168.10.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1.20",
+          "address": "192.168.20.1/24"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.10.11/24, gateway .1 (VLAN 10)"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.20.12/24, gateway .1 (VLAN 20)"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Bangun ulang topologi router-on-a-stick dari lab Unit 10 dan pastikan PC1 bisa ping PC2."
+        },
+        {
+          "text": "Minta teman membuat tiga kerusakan tanpa memberitahumu, atau buat sendiri: matikan Fa0/2, hapus VLAN 20 dari trunk, dan ubah gateway PC1 menjadi 192.168.10.254.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface fa0/2",
+            "shutdown",
+            "interface g0/1",
+            "switchport trunk allowed vlan remove 20",
+            "end"
+          ]
+        },
+        {
+          "text": "Mulai dari layer 1.",
+          "device": "SW1",
+          "commands": [
+            "show interfaces status",
+            "show ip interface brief"
+          ]
+        },
+        {
+          "text": "Lanjut ke layer 2.",
+          "device": "SW1",
+          "commands": [
+            "show vlan brief",
+            "show interfaces trunk",
+            "show mac address-table"
+          ]
+        },
+        {
+          "text": "Lanjut ke layer 3: dari router, uji ke kedua PC.",
+          "device": "R1",
+          "commands": [
+            "ping 192.168.10.11",
+            "ping 192.168.20.12"
+          ]
+        },
+        {
+          "text": "Periksa gateway PC1 dengan ipconfig di Command Prompt, lalu perbaiki ketiga kerusakan satu per satu."
+        }
+      ],
+      "checks": [
+        {
+          "text": "Status port PC2.",
+          "device": "SW1",
+          "command": "show interfaces status",
+          "expect": "Fa0/2 kembali connected setelah no shutdown."
+        },
+        {
+          "text": "VLAN di trunk.",
+          "device": "SW1",
+          "command": "show interfaces trunk",
+          "expect": "VLAN 10 dan 20 kembali diizinkan dan aktif di Gi0/1."
+        },
+        {
+          "text": "Uji akhir dari PC1: ping 192.168.20.12 dan tracert 192.168.20.12.",
+          "expect": "Ping berhasil, dan tracert menunjukkan 192.168.10.1 sebagai hop pertama."
+        }
+      ],
+      "notes": [
+        "Packet Tracer punya mode Simulation yang menampilkan paket per langkah, mirip packet capture sederhana. Coba lihat ping PC1 ke PC2 di mode itu."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-software-releases-121-mainline/12778-ping-traceroute.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13730-ext-ping-trace.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u16-l6",
+      "title": "Static routing dua arah",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Menghubungkan dua LAN (Local Area Network) lewat dua router hanya dengan static route, melihat kegagalan karena route balik belum ada, lalu menambahkan floating default route.",
+      "topology": {
+        "devices": [
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 1,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "r2",
+            "kind": "router",
+            "label": "R2",
+            "x": 3,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC2",
+            "x": 4,
+            "y": 0
+          }
+        ],
+        "links": [
+          {
+            "from": "pc1",
+            "to": "r1",
+            "toPort": "G0/0/0"
+          },
+          {
+            "from": "r1",
+            "to": "r2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/0/1",
+            "label": "10.0.12.0/30"
+          },
+          {
+            "from": "r2",
+            "to": "pc2",
+            "fromPort": "G0/0/0"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.1.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "10.0.12.1/30"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/0",
+          "address": "192.168.2.1/24"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/1",
+          "address": "10.0.12.2/30"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.10/24, gateway .1"
+        },
+        {
+          "device": "PC2",
+          "port": "NIC",
+          "address": "192.168.2.10/24, gateway .1"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan perangkat (PC ke router dengan Copper Cross-Over, router ke router dengan Copper Cross-Over atau Straight-Through), lalu isi alamat PC."
+        },
+        {
+          "text": "Pasang alamat R1 dan route ke LAN R2.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.1.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 10.0.12.1 255.255.255.252",
+            "no shutdown",
+            "exit",
+            "ip route 192.168.2.0 255.255.255.0 10.0.12.2",
+            "end"
+          ]
+        },
+        {
+          "text": "Pasang alamat R2 saja, tanpa route dulu.",
+          "device": "R2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "interface g0/0/0",
+            "ip address 192.168.2.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 10.0.12.2 255.255.255.252",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Uji dari PC1: ping 192.168.2.10. Catat hasilnya, lalu tambahkan route balik di R2.",
+          "device": "R2",
+          "commands": [
+            "configure terminal",
+            "ip route 192.168.1.0 255.255.255.0 10.0.12.1",
+            "end",
+            "show ip route"
+          ]
+        },
+        {
+          "text": "Tambahkan floating default route di R1 dan simpan.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "ip route 0.0.0.0 0.0.0.0 10.0.12.2 250",
+            "end",
+            "show ip route",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Ping pertama dari PC1 ke PC2 (sebelum route balik).",
+          "expect": "Gagal (timeout). Paket sampai ke PC2, tapi R2 tidak tahu jalan pulang ke 192.168.1.0/24."
+        },
+        {
+          "text": "Tabel routing R2 setelah route balik.",
+          "device": "R2",
+          "command": "show ip route",
+          "expect": "S 192.168.1.0/24 [1/0] via 10.0.12.1."
+        },
+        {
+          "text": "Ping kedua dari PC1 ke PC2.",
+          "expect": "Berhasil."
+        },
+        {
+          "text": "Tabel routing R1.",
+          "device": "R1",
+          "command": "show ip route",
+          "expect": "S* 0.0.0.0/0 [250/0] via 10.0.12.2, karena tidak ada default route lain dengan AD lebih rendah."
+        }
+      ],
+      "notes": [
+        "Di Packet Tracer, kode di show ip route bisa lebih sedikit dari IOS XE asli; yang penting baris S dan S* sama."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/dial-access/floating-static-route/118263-technote-nexthop-00.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-3e/iri-xe-3e-book/iri_iprouting.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/15986-admin-distance.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u17-l8",
+      "title": "OSPFv2 single area",
+      "minutes": 40,
+      "tool": "packet-tracer",
+      "goal": "Menghubungkan tiga LAN (Local Area Network) dengan OSPFv2 di area 0, memilih router ID sendiri, menjadikan LAN passive, menyebarkan default route, dan melihat OSPF memilih jalur cadangan saat link putus.",
+      "topology": {
+        "devices": [
+          {
+            "id": "isp",
+            "kind": "cloud",
+            "label": "ISP",
+            "x": 2,
+            "y": 0
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 1,
+            "note": "ISR4331"
+          },
+          {
+            "id": "r2",
+            "kind": "router",
+            "label": "R2",
+            "x": 0,
+            "y": 2,
+            "note": "ISR4331"
+          },
+          {
+            "id": "r3",
+            "kind": "router",
+            "label": "R3",
+            "x": 4,
+            "y": 2,
+            "note": "ISR4331"
+          }
+        ],
+        "links": [
+          {
+            "from": "isp",
+            "to": "r1",
+            "toPort": "G0/0/2"
+          },
+          {
+            "from": "r1",
+            "to": "r2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/0/1",
+            "label": "10.0.12.0/30"
+          },
+          {
+            "from": "r1",
+            "to": "r3",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/0/1",
+            "label": "10.0.13.0/30"
+          },
+          {
+            "from": "r2",
+            "to": "r3",
+            "fromPort": "G0/0/2",
+            "toPort": "G0/0/2",
+            "label": "10.0.23.0/30"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "10.0.12.1/30"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "10.0.13.1/30"
+        },
+        {
+          "device": "R1",
+          "port": "Loopback0",
+          "address": "192.168.1.1/24 (LAN tiruan)"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/1",
+          "address": "10.0.12.2/30"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/2",
+          "address": "10.0.23.2/30"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/0",
+          "address": "192.168.2.1/24"
+        },
+        {
+          "device": "R3",
+          "port": "G0/0/1",
+          "address": "10.0.13.2/30"
+        },
+        {
+          "device": "R3",
+          "port": "G0/0/2",
+          "address": "10.0.23.3/30"
+        },
+        {
+          "device": "R3",
+          "port": "G0/0/0",
+          "address": "192.168.3.1/24"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan tiga router membentuk segitiga. ISP boleh diganti satu router tambahan dengan alamat 203.0.113.1/30, atau dilewati; default route di R1 tetap bisa dibuat ke interface G0/0/2."
+        },
+        {
+          "text": "Pasang alamat semua interface sesuai tabel alamat, termasuk interface loopback 0 di R1 (interface loopback 0, lalu ip address 192.168.1.1 255.255.255.0), dan nyalakan interface fisik dengan no shutdown."
+        },
+        {
+          "text": "Konfigurasi OSPF di R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "router ospf 1",
+            "router-id 1.1.1.1",
+            "network 10.0.12.0 0.0.0.3 area 0",
+            "network 10.0.13.0 0.0.0.3 area 0",
+            "network 192.168.1.0 0.0.0.255 area 0",
+            "default-information originate",
+            "end"
+          ]
+        },
+        {
+          "text": "Konfigurasi OSPF di R2 dengan cara per interface.",
+          "device": "R2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "router ospf 1",
+            "router-id 2.2.2.2",
+            "passive-interface g0/0/0",
+            "interface g0/0/0",
+            "ip ospf 1 area 0",
+            "interface g0/0/1",
+            "ip ospf 1 area 0",
+            "interface g0/0/2",
+            "ip ospf 1 area 0",
+            "end"
+          ]
+        },
+        {
+          "text": "Konfigurasi R3 dengan cara yang kamu pilih sendiri, router ID 3.3.3.3, LAN passive."
+        },
+        {
+          "text": "Periksa tetangga dan tabel routing.",
+          "device": "R2",
+          "commands": [
+            "show ip ospf neighbor",
+            "show ip route"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Tetangga R2.",
+          "device": "R2",
+          "command": "show ip ospf neighbor",
+          "expect": "1.1.1.1 dan 3.3.3.3 berstatus FULL."
+        },
+        {
+          "text": "Route ke LAN R3 di R2.",
+          "device": "R2",
+          "command": "show ip route",
+          "expect": "O 192.168.3.0/24 via 10.0.23.3, dan O*E2 0.0.0.0/0 dari R1 kalau R1 punya default route."
+        },
+        {
+          "text": "Matikan G0/0/2 di R2 (shutdown), lalu lihat lagi tabel routing.",
+          "device": "R2",
+          "command": "show ip route",
+          "expect": "192.168.3.0/24 sekarang lewat 10.0.12.1 (melalui R1), dengan cost lebih besar."
+        }
+      ],
+      "notes": [
+        "Packet Tracer menampilkan kode O*E2 untuk default route dari default-information originate, sama seperti IOS asli. Sebagian kolom show ip ospf neighbor bisa berbeda."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/iro-cfg.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/9237-9.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13699-29.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u17-l9",
+      "title": "OSPFv3 di topologi yang sama",
+      "minutes": 25,
+      "tool": "packet-tracer",
+      "goal": "Menambahkan IPv6 dan OSPFv3 ke topologi lab OSPFv2, lalu membuktikan kedua protokol berjalan berdampingan.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "r2",
+            "kind": "router",
+            "label": "R2",
+            "x": 0,
+            "y": 1,
+            "note": "ISR4331"
+          },
+          {
+            "id": "r3",
+            "kind": "router",
+            "label": "R3",
+            "x": 4,
+            "y": 1,
+            "note": "ISR4331"
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "r2",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/0/1"
+          },
+          {
+            "from": "r1",
+            "to": "r3",
+            "fromPort": "G0/0/0",
+            "toPort": "G0/0/1"
+          },
+          {
+            "from": "r2",
+            "to": "r3",
+            "fromPort": "G0/0/2",
+            "toPort": "G0/0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "2001:db8:acad:12::1/64"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "2001:db8:acad:13::1/64"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/1",
+          "address": "2001:db8:acad:12::2/64"
+        },
+        {
+          "device": "R2",
+          "port": "G0/0/2",
+          "address": "2001:db8:acad:23::2/64"
+        },
+        {
+          "device": "R3",
+          "port": "G0/0/1",
+          "address": "2001:db8:acad:13::3/64"
+        },
+        {
+          "device": "R3",
+          "port": "G0/0/2",
+          "address": "2001:db8:acad:23::3/64"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Mulai dari file lab OSPFv2 yang sudah berjalan."
+        },
+        {
+          "text": "Aktifkan IPv6 dan OSPFv3 di R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "ipv6 unicast-routing",
+            "ipv6 router ospf 1",
+            "router-id 1.1.1.1",
+            "interface g0/0/1",
+            "ipv6 address 2001:db8:acad:12::1/64",
+            "ipv6 ospf 1 area 0",
+            "interface g0/0/0",
+            "ipv6 address 2001:db8:acad:13::1/64",
+            "ipv6 ospf 1 area 0",
+            "end"
+          ]
+        },
+        {
+          "text": "Lakukan hal yang sama di R2 dan R3 dengan router ID 2.2.2.2 dan 3.3.3.3."
+        },
+        {
+          "text": "Periksa tetangga dan route IPv6.",
+          "device": "R1",
+          "commands": [
+            "show ipv6 ospf neighbor",
+            "show ipv6 route"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Tetangga OSPFv3 di R1.",
+          "device": "R1",
+          "command": "show ipv6 ospf neighbor",
+          "expect": "2.2.2.2 dan 3.3.3.3 berstatus FULL."
+        },
+        {
+          "text": "Route IPv6 di R1.",
+          "device": "R1",
+          "command": "show ipv6 route",
+          "expect": "Route O ke 2001:DB8:ACAD:23::/64 dengan next hop alamat FE80:: milik tetangga."
+        },
+        {
+          "text": "Tetangga OSPFv2 di R1.",
+          "device": "R1",
+          "command": "show ip ospf neighbor",
+          "expect": "Masih FULL. OSPFv2 dan OSPFv3 berjalan berdampingan."
+        }
+      ],
+      "notes": [
+        "Kalau Packet Tracer meminta router-id saat ipv6 router ospf dibuat, itu karena router ID wajib diset ketika tidak bisa diambil otomatis."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_ospf/configuration/xe-16/iro-xe-16-book/ip6-route-ospfv3-xe.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/ip-version-6-ipv6/112100-ospfv3-config-guide.html",
+        "https://www.rfc-editor.org/rfc/rfc5340.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u19-l7",
+      "title": "Akses manajemen yang aman",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Mengganti akses Telnet dengan SSH (Secure Shell) versi 2 dan user lokal di switch, lalu membuktikan dari PC bahwa SSH berhasil dan Telnet ditolak.",
+      "topology": {
+        "devices": [
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 0,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 1
+          }
+        ],
+        "links": [
+          {
+            "from": "sw1",
+            "to": "pc1",
+            "fromPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "SW1",
+          "port": "Vlan1",
+          "address": "192.168.1.2/24"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.10/24"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Sambungkan PC1 ke SW1 dan isi alamat PC1."
+        },
+        {
+          "text": "Beri switch alamat manajemen.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname SW1",
+            "interface vlan 1",
+            "ip address 192.168.1.2 255.255.255.0",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Nyalakan SSH dan user lokal.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "ip domain name kantor.local",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "username admin privilege 15 secret Kopi-2026",
+            "line vty 0 15",
+            "login local",
+            "transport input ssh",
+            "exec-timeout 10 0",
+            "end",
+            "show ip ssh",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Status SSH.",
+          "device": "SW1",
+          "command": "show ip ssh",
+          "expect": "SSH Enabled - version 2.0."
+        },
+        {
+          "text": "Dari PC1, buka Command Prompt dan ketik ssh -l admin 192.168.1.2.",
+          "expect": "Diminta password; setelah Kopi-2026, prompt SW1# muncul (privilege 15)."
+        },
+        {
+          "text": "Dari PC1, ketik telnet 192.168.1.2.",
+          "expect": "Koneksi ditolak, karena line vty hanya menerima SSH."
+        }
+      ],
+      "notes": [
+        "Packet Tracer bisa menampilkan pesan pembuatan kunci RSA yang sedikit berbeda dari IOS asli."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html",
+        "https://www.cisco.com/c/en/us/about/trust-center/resilient-infrastructure/protecting-secrets.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u20-l6",
+      "title": "NAT dan PAT",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Membuat semua PC di LAN (local area network) keluar dengan PAT (Port Address Translation) dan menerbitkan satu server dengan static NAT (Network Address Translation), lalu membuktikannya dari tabel terjemahan.",
+      "topology": {
+        "devices": [
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "Server",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 1,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 1,
+            "note": "ISR4331"
+          },
+          {
+            "id": "isp",
+            "kind": "router",
+            "label": "ISP",
+            "x": 4,
+            "y": 1,
+            "note": "ISR4331"
+          }
+        ],
+        "links": [
+          {
+            "from": "pc1",
+            "to": "sw1",
+            "toPort": "Fa0/1"
+          },
+          {
+            "from": "srv",
+            "to": "sw1",
+            "toPort": "Fa0/2"
+          },
+          {
+            "from": "sw1",
+            "to": "r1",
+            "fromPort": "G0/1",
+            "toPort": "G0/0/0"
+          },
+          {
+            "from": "r1",
+            "to": "isp",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/0/0"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.10/24, gateway 192.168.1.1"
+        },
+        {
+          "device": "Server",
+          "port": "NIC",
+          "address": "192.168.1.20/24, gateway 192.168.1.1"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.1.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "203.0.113.1/29"
+        },
+        {
+          "device": "ISP",
+          "port": "G0/0/0",
+          "address": "203.0.113.2/29"
+        },
+        {
+          "device": "ISP",
+          "port": "Loopback0",
+          "address": "198.51.100.1/32"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pasang perangkat, sambungkan kabel, dan isi alamat PC1 dan Server."
+        },
+        {
+          "text": "Alamat router ISP. ISP tidak diberi route ke 192.168.1.0/24, jadi balasan hanya sampai kalau NAT bekerja.",
+          "device": "ISP",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname ISP",
+            "interface g0/0/0",
+            "ip address 203.0.113.2 255.255.255.248",
+            "no shutdown",
+            "interface loopback 0",
+            "ip address 198.51.100.1 255.255.255.255",
+            "end"
+          ]
+        },
+        {
+          "text": "Alamat R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R1",
+            "interface g0/0/0",
+            "ip address 192.168.1.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 203.0.113.1 255.255.255.248",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "NAT, PAT, dan default route.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip nat inside",
+            "interface g0/0/1",
+            "ip nat outside",
+            "exit",
+            "ip nat inside source static 192.168.1.20 203.0.113.5",
+            "access-list 1 permit 192.168.1.0 0.0.0.255",
+            "ip nat inside source list 1 interface g0/0/1 overload",
+            "ip route 0.0.0.0 0.0.0.0 203.0.113.2",
+            "end",
+            "show ip nat translations",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Sebelum ada lalu lintas.",
+          "device": "R1",
+          "command": "show ip nat translations",
+          "expect": "Hanya satu baris static: inside global 203.0.113.5, inside local 192.168.1.20."
+        },
+        {
+          "text": "Dari PC1, ping 198.51.100.1, lalu ulangi perintah di R1.",
+          "device": "R1",
+          "command": "show ip nat translations",
+          "expect": "Ping berhasil, dan muncul entri icmp dengan inside global 203.0.113.1 dan inside local 192.168.1.10."
+        },
+        {
+          "text": "Dari ISP, ping alamat global server.",
+          "device": "ISP",
+          "command": "ping 203.0.113.5",
+          "expect": "Berhasil, karena static NAT membolehkan koneksi dimulai dari luar."
+        },
+        {
+          "text": "Ringkasan NAT.",
+          "device": "R1",
+          "command": "show ip nat statistics",
+          "expect": "GigabitEthernet0/0/0 tercatat sebagai inside dan GigabitEthernet0/0/1 sebagai outside."
+        }
+      ],
+      "notes": [
+        "Entri icmp hilang sendiri setelah timeout pendek; kalau tabel kosong, ping lagi lalu segera periksa."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html",
+        "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/221481-8605-13.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u23-l6",
+      "title": "ACL extended",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Membatasi LAN (local area network) staf dengan satu ACL (access control list) extended bernama: web dan ping ke server boleh, Telnet ke server ditolak, lalu membuktikannya dari PC dan dari jumlah cocok di setiap baris.",
+      "topology": {
+        "devices": [
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 0,
+            "y": 1
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 1,
+            "note": "ISR4331"
+          },
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "Server",
+            "x": 4,
+            "y": 1
+          }
+        ],
+        "links": [
+          {
+            "from": "pc1",
+            "to": "r1",
+            "toPort": "G0/0/0"
+          },
+          {
+            "from": "r1",
+            "to": "srv",
+            "fromPort": "G0/0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "192.168.1.10/24, gateway 192.168.1.1"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/0",
+          "address": "192.168.1.1/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "10.0.0.1/24"
+        },
+        {
+          "device": "Server",
+          "port": "NIC",
+          "address": "10.0.0.10/24, gateway 10.0.0.1"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pasang perangkat, sambungkan PC1 dan Server ke R1 dengan kabel straight-through, dan isi alamat PC1 dan Server. Di Server, pastikan layanan HTTP menyala."
+        },
+        {
+          "text": "Alamat R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R1",
+            "interface g0/0/0",
+            "ip address 192.168.1.1 255.255.255.0",
+            "no shutdown",
+            "interface g0/0/1",
+            "ip address 10.0.0.1 255.255.255.0",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Uji dulu tanpa ACL: dari PC1, ping 10.0.0.10 dan buka http://10.0.0.10 di Web Browser. Keduanya harus berhasil."
+        },
+        {
+          "text": "Buat dan pasang ACL Staf.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "ip access-list extended Staf",
+            "deny tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 23",
+            "permit tcp 192.168.1.0 0.0.0.255 host 10.0.0.10 eq 80",
+            "permit icmp 192.168.1.0 0.0.0.255 any",
+            "exit",
+            "interface g0/0/0",
+            "ip access-group Staf in",
+            "end",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Dari PC1, ping 10.0.0.10 dan buka http://10.0.0.10.",
+          "expect": "Keduanya berhasil."
+        },
+        {
+          "text": "Dari PC1, ketik telnet 10.0.0.10 di Command Prompt.",
+          "expect": "Gagal; koneksi tidak terbentuk."
+        },
+        {
+          "text": "Jumlah cocok di setiap baris.",
+          "device": "R1",
+          "command": "show access-lists Staf",
+          "expect": "Baris 10 (deny telnet), 20 (permit www), dan 30 (permit icmp) masing-masing menunjukkan jumlah cocok sesuai uji tadi."
+        }
+      ],
+      "notes": [
+        "Server di Packet Tracer tidak menjalankan layanan Telnet, jadi telnet bisa gagal juga tanpa ACL. Bandingkan jumlah cocok di baris 10 sebelum dan sesudah mencoba telnet untuk melihat ACL bekerja."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_data_acl/configuration/15-e/sec-data-acl-15-e-book/sec-acl-seq-num.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u24-l6",
+      "title": "Keamanan Layer 2",
+      "minutes": 35,
+      "tool": "packet-tracer",
+      "goal": "Mengamankan port pengguna dengan port security, menyaring DHCP (Dynamic Host Configuration Protocol) dan ARP (Address Resolution Protocol) palsu dengan DHCP snooping dan DAI (Dynamic ARP Inspection), lalu memicu dan memulihkan pelanggaran port security.",
+      "topology": {
+        "devices": [
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "DHCP",
+            "x": 2,
+            "y": 0
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "pc1",
+            "kind": "pc",
+            "label": "PC1",
+            "x": 1,
+            "y": 2
+          },
+          {
+            "id": "pc2",
+            "kind": "pc",
+            "label": "PC asing",
+            "x": 3,
+            "y": 2
+          }
+        ],
+        "links": [
+          {
+            "from": "srv",
+            "to": "sw1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "pc1",
+            "to": "sw1",
+            "toPort": "Fa0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "DHCP",
+          "port": "NIC",
+          "address": "192.168.10.2/24, layanan DHCP pool 192.168.10.100 sampai .150, gateway 192.168.10.1"
+        },
+        {
+          "device": "PC1",
+          "port": "NIC",
+          "address": "DHCP"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pasang perangkat. Sambungkan server DHCP ke G0/1 dan PC1 ke Fa0/1. PC asing belum disambungkan. Di server, nyalakan layanan DHCP sesuai tabel alamat."
+        },
+        {
+          "text": "VLAN dan uplink.",
+          "device": "SW1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname SW1",
+            "vlan 10",
+            "name Pengguna",
+            "exit",
+            "interface g0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "end"
+          ]
+        },
+        {
+          "text": "Port security, DHCP snooping, dan DAI.",
+          "device": "SW1",
+          "commands": [
+            "configure terminal",
+            "interface fa0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "switchport port-security",
+            "switchport port-security mac-address sticky",
+            "exit",
+            "ip dhcp snooping",
+            "ip dhcp snooping vlan 10",
+            "no ip dhcp snooping information option",
+            "ip arp inspection vlan 10",
+            "interface g0/1",
+            "ip dhcp snooping trust",
+            "ip arp inspection trust",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Di PC1, pilih DHCP di IP Configuration, lalu ping 192.168.10.2."
+        }
+      ],
+      "checks": [
+        {
+          "text": "Tabel binding.",
+          "device": "SW1",
+          "command": "show ip dhcp snooping binding",
+          "expect": "Satu baris untuk MAC PC1 dengan alamat dari pool, VLAN 10, di FastEthernet0/1."
+        },
+        {
+          "text": "Alamat sticky.",
+          "device": "SW1",
+          "command": "show port-security interface fa0/1",
+          "expect": "Port Status Secure-up, Sticky MAC Addresses 1."
+        },
+        {
+          "text": "Lepas kabel PC1 dari Fa0/1, sambungkan PC asing ke Fa0/1, lalu ping 192.168.10.2 dari PC asing.",
+          "device": "SW1",
+          "command": "show port-security interface fa0/1",
+          "expect": "Port Status Secure-shutdown dan Security Violation Count 1; ping gagal."
+        },
+        {
+          "text": "Kembalikan PC1 ke Fa0/1, lalu pulihkan port dengan shutdown dan no shutdown di Fa0/1.",
+          "device": "SW1",
+          "command": "show ip interface brief",
+          "expect": "FastEthernet0/1 kembali up/up."
+        }
+      ],
+      "notes": [
+        "no ip dhcp snooping information option dipakai karena server DHCP di lab tidak menerima option 82 yang disisipkan switch; tanpa itu klien bisa gagal mendapat alamat.",
+        "Dukungan DAI dan DHCP snooping di Packet Tracer bergantung versinya; kalau perintah ditolak, catat versinya dan lanjutkan bagian port security."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-4SY/config_guide/sup6T/15_3_sy_swcg_6T/dhcp_snooping.html",
+        "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750x_3560x/software/release/15-0_1_se/configuration/guide/3750xcg/swdynarp.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u26-l4",
+      "title": "SNMP dan syslog",
+      "minutes": 30,
+      "tool": "packet-tracer",
+      "goal": "Mengirim log R1 ke server syslog dengan waktu dari NTP (Network Time Protocol), membuka SNMP (Simple Network Management Protocol) baca saja, lalu melihat pesan perubahan interface tiba di server.",
+      "topology": {
+        "devices": [
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 2,
+            "y": 0,
+            "note": "ISR4331"
+          },
+          {
+            "id": "sw1",
+            "kind": "switch",
+            "label": "SW1",
+            "x": 2,
+            "y": 1,
+            "note": "2960-24TT"
+          },
+          {
+            "id": "srv",
+            "kind": "server",
+            "label": "Server",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "id": "r2",
+            "kind": "router",
+            "label": "R2",
+            "x": 4,
+            "y": 2,
+            "note": "ISR4331"
+          }
+        ],
+        "links": [
+          {
+            "from": "r1",
+            "to": "sw1",
+            "fromPort": "G0/0/1",
+            "toPort": "G0/1"
+          },
+          {
+            "from": "srv",
+            "to": "sw1",
+            "toPort": "Fa0/1"
+          },
+          {
+            "from": "r2",
+            "to": "sw1",
+            "fromPort": "G0/0/0",
+            "toPort": "Fa0/2"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "R2",
+          "port": "G0/0/0",
+          "address": "192.168.1.1/24, sumber NTP"
+        },
+        {
+          "device": "R1",
+          "port": "G0/0/1",
+          "address": "192.168.1.2/24"
+        },
+        {
+          "device": "Server",
+          "port": "NIC",
+          "address": "192.168.1.60/24, layanan Syslog menyala"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Pasang perangkat dan kabel. Di Server, buka Services, nyalakan Syslog."
+        },
+        {
+          "text": "R2 sebagai sumber waktu.",
+          "device": "R2",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R2",
+            "interface g0/0/0",
+            "ip address 192.168.1.1 255.255.255.0",
+            "no shutdown",
+            "exit",
+            "ntp master 3",
+            "end"
+          ]
+        },
+        {
+          "text": "Alamat R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R1",
+            "interface g0/0/1",
+            "ip address 192.168.1.2 255.255.255.0",
+            "no shutdown",
+            "end"
+          ]
+        },
+        {
+          "text": "Syslog, NTP, dan SNMP di R1, lalu matikan dan nyalakan G0/0/1 untuk memicu pesan sebelum menyimpan.",
+          "device": "R1",
+          "commands": [
+            "configure terminal",
+            "logging host 192.168.1.60",
+            "logging trap notifications",
+            "logging buffered informational",
+            "service timestamps log datetime msec",
+            "ntp server 192.168.1.1",
+            "snmp-server community Pantau ro",
+            "snmp-server host 192.168.1.60 version 2c Pantau",
+            "snmp-server enable traps",
+            "interface g0/0/1",
+            "shutdown",
+            "no shutdown",
+            "end",
+            "copy running-config startup-config"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "text": "Sinkronisasi waktu.",
+          "device": "R1",
+          "command": "show ntp status",
+          "expect": "Clock is synchronized, dengan reference 192.168.1.1 (bisa butuh satu sampai dua menit)."
+        },
+        {
+          "text": "Isi buffer.",
+          "device": "R1",
+          "command": "show logging",
+          "expect": "Ada pesan %LINK-3-UPDOWN dan %LINEPROTO-5-UPDOWN untuk GigabitEthernet0/0/1, dengan waktu bermilidetik."
+        },
+        {
+          "text": "Di Server, buka Services lalu Syslog.",
+          "expect": "Pesan yang sama tercatat dari 192.168.1.2."
+        }
+      ],
+      "notes": [
+        "ntp master hanya dipakai di lab untuk menjadikan R2 sumber waktu; di jaringan sungguhan, gunakan server NTP yang dikelola.",
+        "Saat G0/0/1 dimatikan, pesannya tidak bisa terkirim ke server; yang tiba di server adalah pesan saat interface menyala lagi, sedangkan buffer menyimpan keduanya."
+      ],
+      "sources": [
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/bsm/configuration/15-mt/bsm-15-mt-book/bsm-troubleshooting.html",
+        "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/snmp/configuration/xe-16/snmp-xe-16-book/nm-snmp-cfg-snmp-support.html"
+      ]
+    },
+    {
+      "lesson": "ccna-u27-l5",
+      "title": "Ansible ke router",
+      "minutes": 45,
+      "tool": "cml-free",
+      "goal": "Menyiapkan R1 supaya bisa dikelola Ansible lewat SSH (Secure Shell), lalu menjalankan playbook dari control node Linux dan membuktikan bahwa playbook idempotent.",
+      "topology": {
+        "devices": [
+          {
+            "id": "ctl",
+            "kind": "server",
+            "label": "Ansible",
+            "x": 0,
+            "y": 1,
+            "note": "Ubuntu"
+          },
+          {
+            "id": "r1",
+            "kind": "router",
+            "label": "R1",
+            "x": 3,
+            "y": 1,
+            "note": "IOSv"
+          }
+        ],
+        "links": [
+          {
+            "from": "ctl",
+            "to": "r1",
+            "fromPort": "ens2",
+            "toPort": "G0/1"
+          }
+        ]
+      },
+      "addressing": [
+        {
+          "device": "Ansible",
+          "port": "ens2",
+          "address": "192.168.27.10/24"
+        },
+        {
+          "device": "R1",
+          "port": "G0/1",
+          "address": "192.168.27.1/24"
+        }
+      ],
+      "steps": [
+        {
+          "text": "Di CML (Cisco Modeling Labs) Free, buat node Ubuntu dan node IOSv, lalu sambungkan."
+        },
+        {
+          "text": "Beri R1 alamat: interface g0/1, ip address 192.168.27.1 255.255.255.0, no shutdown."
+        },
+        {
+          "text": "Siapkan SSH dan user di R1.",
+          "device": "R1",
+          "commands": [
+            "enable",
+            "configure terminal",
+            "hostname R1",
+            "ip domain name lab.local",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "username otomasi secret Rahasia-27",
+            "enable secret Enable-27",
+            "line vty 0 4",
+            "login local",
+            "transport input ssh",
+            "end",
+            "copy running-config startup-config"
+          ]
+        },
+        {
+          "text": "Di node Ubuntu: beri alamat 192.168.27.10/24 ke ens2, pasang Ansible dan koleksi cisco.ios (ansible-galaxy collection install cisco.ios), lalu uji ssh otomasi@192.168.27.1."
+        },
+        {
+          "text": "Buat file inventory.ini berisi [routers] lalu baris R1 ansible_host=192.168.27.1, dan group_vars/routers.yml berisi ansible_connection: ansible.netcommon.network_cli, ansible_network_os: cisco.ios.ios, ansible_user: otomasi, ansible_become: true, ansible_become_method: enable, serta password yang dienkripsi dengan ansible-vault."
+        },
+        {
+          "text": "Buat rapikan.yml seperti di soal terakhir lesson ini, lalu jalankan ansible-playbook -i inventory.ini rapikan.yml --check --ask-vault-pass."
+        },
+        {
+          "text": "Jalankan lagi tanpa --check, lalu jalankan sekali lagi."
+        }
+      ],
+      "checks": [
+        {
+          "text": "Hasil --check.",
+          "expect": "Task Deskripsi uplink dilaporkan changed, tetapi deskripsi belum ada di R1."
+        },
+        {
+          "text": "Status SSH sebelum menjalankan playbook.",
+          "device": "R1",
+          "command": "show ip ssh",
+          "expect": "SSH Enabled - version 2.0."
+        },
+        {
+          "text": "Hasil jalan pertama: di R1 ketik show running-config interface g0/1.",
+          "expect": "Ada baris description Ke ISP."
+        },
+        {
+          "text": "Hasil jalan kedua.",
+          "expect": "PLAY RECAP menunjukkan changed=0 untuk R1, karena konfigurasi sudah sesuai."
+        }
+      ],
+      "notes": [
+        "Packet Tracer tidak bisa menjalankan Ansible, jadi lab ini memakai CML (Cisco Modeling Labs) Free dengan image IOSv.",
+        "Nama interface IOSv adalah GigabitEthernet0/1, bukan GigabitEthernet0/0/1; sesuaikan parents di playbook menjadi interface GigabitEthernet0/1."
+      ],
+      "sources": [
+        "https://docs.ansible.com/projects/ansible/latest/network/user_guide/platform_ios.html",
+        "https://docs.ansible.com/projects/ansible/latest/collections/cisco/ios/ios_config_module.html",
+        "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_checkmode.html"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,6 @@
+import { judgeSession, runSession, type IosSetup } from '../ios/engine'
 import { shuffle } from '../lib/shuffle'
-import type { ConfigExercise, ConfigValue, Exercise, PlaceExercise } from '../lib/types'
+import type { ConfigExercise, ConfigValue, Exercise, IosExercise, PlaceExercise } from '../lib/types'
 
 // Answers ("responses") and judging for every exercise type, kept apart from
 // the UI so lessons, practice, and the exam page all judge the same way.
@@ -22,6 +23,8 @@ export type Responses = {
   topology: number | null
   config: (ConfigValue | null)[] // value per field index
   kql: number[] // token indices in the order they were tapped
+  ios: string[] // every line typed into the terminal, in order
+  exhibit: number | null
 }
 
 export type Response = Responses[keyof Responses]
@@ -47,6 +50,7 @@ function shuffledLength(e: Exercise): number {
     case 'rules':
     case 'template':
     case 'topology':
+    case 'exhibit':
       return e.options.length
     case 'match':
       return e.pairs.length
@@ -87,10 +91,12 @@ export function initialResponse(e: Exercise, layout: number[]): Response {
     case 'rules':
     case 'template':
     case 'topology':
+    case 'exhibit':
       return null
     case 'multi':
     case 'shell':
     case 'kql':
+    case 'ios':
       return []
     case 'config':
       return e.fields.map((f) => f.value ?? (f.kind === 'toggle' ? false : null))
@@ -118,7 +124,10 @@ export function isComplete(e: Exercise, r: Response): boolean {
     case 'rules':
     case 'template':
     case 'topology':
+    case 'exhibit':
       return r !== null && r !== undefined
+    case 'ios':
+      return Array.isArray(r) && r.some((line) => typeof line === 'string' && line.trim() !== '')
     case 'multi':
       return Array.isArray(r) && r.length === e.answers.length
     case 'shell':
@@ -206,6 +215,16 @@ export function sameCommand(typed: string[], answer: string[]): boolean {
   return a.head === b.head && a.params.join('\n') === b.params.join('\n')
 }
 
+/** The simulator setup of an IOS exercise. */
+export function iosSetup(e: IosExercise): IosSetup {
+  return { hostname: e.device.hostname, model: e.device.model, start: e.start, given: e.given, outputs: e.outputs, cabled: e.cabled }
+}
+
+/** Replays what the player typed and checks the end state against the goal. */
+export function judgeIos(e: IosExercise, lines: string[]): { correct: boolean; missing: string[] } {
+  return judgeSession(runSession(iosSetup(e), lines).state, e.goal)
+}
+
 export function judge(e: Exercise, r: Response): Judgement {
   const one = (correct: boolean): Judgement => ({ correct, points: correct ? 1 : 0, maxPoints: 1 })
   switch (e.type) {
@@ -214,7 +233,10 @@ export function judge(e: Exercise, r: Response): Judgement {
     case 'rules':
     case 'template':
     case 'topology':
+    case 'exhibit':
       return one(r === e.answer)
+    case 'ios':
+      return one(Array.isArray(r) && judgeIos(e, r as string[]).correct)
     case 'truefalse':
       return one(r === e.answer)
     case 'multi':
@@ -256,7 +278,10 @@ export function correctAnswerText(e: Exercise): string | undefined {
     case 'rules':
     case 'template':
     case 'topology':
+    case 'exhibit':
       return e.options[e.answer]
+    case 'ios':
+      return e.solution.join(' ⏎ ')
     case 'config':
       return Object.entries(e.answer)
         .map(([label, v]) => `${label}: ${configValueText(v)}`)

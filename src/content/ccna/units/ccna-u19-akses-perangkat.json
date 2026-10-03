@@ -1,0 +1,1327 @@
+{
+  "id": "ccna-u19-akses-perangkat",
+  "path": 4,
+  "title": "Akses manajemen perangkat",
+  "lessons": [
+    {
+      "id": "ccna-u19-l1",
+      "title": "User lokal dan password",
+      "items": [
+        {
+          "id": "ccna-u19-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "local-users"
+          ],
+          "title": "User lokal",
+          "body": "Password line yang sama untuk semua orang tidak menunjukkan siapa yang login. Lebih baik buat user lokal: username diikuti nama, lalu secret dan password-nya. Kata kunci secret menyimpan password sebagai hash. Lalu pasang login local di line console dan vty, supaya perangkat meminta username dan password dari daftar itu.",
+          "keyPoints": [
+            "username <nama> secret <password>",
+            "secret: disimpan sebagai hash",
+            "login local di line"
+          ],
+          "teaches": [
+            "ccna-f-u19-local-user",
+            "ccna-f-u19-secret-kw",
+            "ccna-f-u19-login-local"
+          ]
+        },
+        {
+          "id": "ccna-u19-l1-e1",
+          "type": "ios",
+          "concept": "local-users",
+          "prompt": "Create a local user named admin with the secret Kopi-2026 on R1, and make the vty lines 0 to 4 ask for local usernames.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "username admin secret Kopi-2026"
+              },
+              {
+                "context": "line vty 0 4",
+                "line": "login local"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "username admin secret Kopi-2026",
+            "line vty 0 4",
+            "login local",
+            "end"
+          ],
+          "explanation": "username dengan secret membuat user lokal, dan login local membuat line vty memakai daftar user itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-local-user",
+            "ccna-f-u19-login-local"
+          ]
+        },
+        {
+          "id": "ccna-u19-l1-e2",
+          "type": "truefalse",
+          "concept": "local-users",
+          "prompt": "With login local on the vty lines, a user must enter a username and a password.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. login local memakai daftar user lokal, jadi username dan password diminta.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-login-local"
+          ]
+        },
+        {
+          "id": "ccna-u19-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "password-types"
+          ],
+          "title": "Jenis penyimpanan password",
+          "body": "Tidak semua password tersimpan sama kuat. Type 7, hasil service password-encryption, hanya penyandian lemah yang mudah dibalik. Type 5 (MD5) juga sudah dianggap lemah. Type 8 memakai PBKDF2 (Password-Based Key Derivation Function 2) dengan SHA-256 (Secure Hash Algorithm), dan type 9 memakai scrypt; keduanya dianggap kuat. Jadi pakai secret, bukan password, untuk enable dan user lokal.",
+          "keyPoints": [
+            "Type 7: mudah dibalik",
+            "Type 5: lemah",
+            "Type 8 dan 9: kuat"
+          ],
+          "teaches": [
+            "ccna-f-u19-pw-types",
+            "ccna-f-u19-secret-kw",
+            "ccna-f-u02-type7"
+          ]
+        },
+        {
+          "id": "ccna-u19-l1-e3",
+          "type": "match",
+          "concept": "password-types",
+          "prompt": "Match each password type to its description.",
+          "pairs": [
+            [
+              "Type 0",
+              "Plain text"
+            ],
+            [
+              "Type 7",
+              "Weak, easily reversed encoding"
+            ],
+            [
+              "Type 5",
+              "MD5 (Message Digest 5) hash, now considered weak"
+            ],
+            [
+              "Type 9",
+              "scrypt hash, considered strong"
+            ]
+          ],
+          "explanation": "Type 0 teks biasa, type 7 penyandian lemah, type 5 hash MD5 (Message Digest 5) yang lemah, dan type 9 hash scrypt yang kuat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-pw-types"
+          ]
+        },
+        {
+          "id": "ccna-u19-l1-e4",
+          "type": "choice",
+          "concept": "password-types",
+          "prompt": "Which line in a running configuration shows the strongest stored password?",
+          "options": [
+            "username admin secret 9 $9$...",
+            "username admin password 7 0822455D0A16",
+            "enable password Cisco123",
+            "username admin secret 5 $1$..."
+          ],
+          "answer": 0,
+          "explanation": "Type 9 (scrypt) adalah yang terkuat di sini. Type 7 mudah dibalik, enable password tersimpan sebagai teks, dan type 5 (MD5) dianggap lemah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-pw-types",
+            "ccna-f-u19-secret-kw"
+          ]
+        },
+        {
+          "id": "ccna-u19-l1-e5",
+          "type": "truefalse",
+          "concept": "password-types",
+          "prompt": "service password-encryption makes stored passwords strong enough against attackers who can read the configuration.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Hasilnya type 7, yang mudah dibalik; pakai secret supaya tersimpan sebagai hash yang kuat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-pw-types",
+            "ccna-f-u02-type7"
+          ]
+        },
+        {
+          "id": "ccna-u19-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "session-limits"
+          ],
+          "title": "Privilege dan timeout",
+          "body": "username diikuti privilege 15 membuat user langsung masuk privileged EXEC setelah login. Sesi yang ditinggal terbuka juga berbahaya: exec-timeout di line memutus sesi yang diam terlalu lama, misalnya exec-timeout 5 0 untuk lima menit. Bawaannya 10 menit.",
+          "keyPoints": [
+            "privilege 15: langsung privileged EXEC",
+            "exec-timeout <menit> <detik>",
+            "Bawaan 10 menit"
+          ],
+          "teaches": [
+            "ccna-f-u19-priv15",
+            "ccna-f-u19-exec-timeout"
+          ]
+        },
+        {
+          "id": "ccna-u19-l1-e6",
+          "type": "ios",
+          "concept": "session-limits",
+          "prompt": "On R1, disconnect idle vty sessions after 5 minutes.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "line vty 0 4",
+                "line": "exec-timeout 5 0"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "line vty 0 4",
+            "exec-timeout 5 0",
+            "end"
+          ],
+          "explanation": "exec-timeout 5 0 memutus sesi yang diam lima menit.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-exec-timeout"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u19-l2",
+      "title": "Dasar kriptografi",
+      "branch": {
+        "kind": "prereq",
+        "from": "ccna-u19-l1"
+      },
+      "items": [
+        {
+          "id": "ccna-u19-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "crypto-basics"
+          ],
+          "title": "Hash, simetris, asimetris",
+          "body": "Hash adalah fungsi satu arah: dari data apa pun keluar ringkasan dengan panjang tetap, dan tidak bisa dibalik. Kalau hash-nya sama, data tidak berubah. Enkripsi simetris memakai satu kunci yang sama untuk mengunci dan membuka, misalnya AES (Advanced Encryption Standard), dan cepat. Enkripsi asimetris memakai pasangan kunci publik dan privat, misalnya RSA (Rivest-Shamir-Adleman).",
+          "keyPoints": [
+            "Hash: satu arah, integritas",
+            "Simetris: satu kunci, cepat",
+            "Asimetris: kunci publik dan privat"
+          ],
+          "visual": "CryptoBasics",
+          "teaches": [
+            "ccna-f-u19-hash",
+            "ccna-f-u19-symmetric",
+            "ccna-f-u19-asymmetric"
+          ]
+        },
+        {
+          "id": "ccna-u19-l2-e1",
+          "type": "choice",
+          "concept": "crypto-basics",
+          "prompt": "Which method lets a router check that a file was not changed, without being able to recover the original data from the result?",
+          "options": [
+            "A hash",
+            "Symmetric encryption",
+            "Asymmetric encryption",
+            "Type 7 encoding"
+          ],
+          "answer": 0,
+          "explanation": "Hash satu arah cocok untuk memeriksa keutuhan. Enkripsi bisa dibuka dengan kuncinya, dan type 7 mudah dibalik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-hash",
+            "ccna-f-u19-symmetric",
+            "ccna-f-u19-asymmetric",
+            "ccna-f-u19-pw-types"
+          ]
+        },
+        {
+          "id": "ccna-u19-l2-e2",
+          "type": "truefalse",
+          "concept": "crypto-basics",
+          "prompt": "Symmetric encryption uses the same key to encrypt and decrypt.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Itu sebabnya kunci simetris harus dibagikan dengan aman.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-symmetric"
+          ]
+        },
+        {
+          "id": "ccna-u19-l2-e3",
+          "type": "match",
+          "concept": "crypto-basics",
+          "prompt": "Match each item to its description.",
+          "pairs": [
+            [
+              "Hash",
+              "One-way summary used to check integrity"
+            ],
+            [
+              "AES (Advanced Encryption Standard)",
+              "Symmetric cipher with one shared key"
+            ],
+            [
+              "RSA (Rivest-Shamir-Adleman)",
+              "Asymmetric algorithm with a key pair"
+            ],
+            [
+              "Public key",
+              "Can be shared with anyone"
+            ]
+          ],
+          "explanation": "Hash untuk integritas, AES (Advanced Encryption Standard) simetris, RSA (Rivest-Shamir-Adleman) asimetris, dan kunci publik boleh dibagikan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-hash",
+            "ccna-f-u19-symmetric",
+            "ccna-f-u19-asymmetric"
+          ]
+        },
+        {
+          "id": "ccna-u19-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "crypto-use"
+          ],
+          "title": "Tanda tangan dan kombinasi",
+          "body": "Tanda tangan digital dibuat dengan kunci privat dan diperiksa dengan kunci publik, jadi membuktikan siapa pengirimnya dan bahwa datanya utuh. Protokol seperti SSH (Secure Shell) dan IPsec menggabungkan keduanya: asimetris untuk autentikasi dan pertukaran kunci, lalu simetris yang cepat untuk mengenkripsi data.",
+          "keyPoints": [
+            "Tanda tangan: kunci privat",
+            "Diperiksa: kunci publik",
+            "SSH: asimetris lalu simetris"
+          ],
+          "teaches": [
+            "ccna-f-u19-signature",
+            "ccna-f-u19-crypto-combo"
+          ]
+        },
+        {
+          "id": "ccna-u19-l2-e4",
+          "type": "choice",
+          "concept": "crypto-use",
+          "prompt": "Which key does a sender use to create a digital signature?",
+          "options": [
+            "Its own private key",
+            "Its own public key",
+            "The public key of the receiver",
+            "A shared symmetric key"
+          ],
+          "answer": 0,
+          "explanation": "Tanda tangan dibuat dengan kunci privat pengirim dan diperiksa dengan kunci publiknya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-signature"
+          ]
+        },
+        {
+          "id": "ccna-u19-l2-e5",
+          "type": "truefalse",
+          "concept": "crypto-use",
+          "prompt": "SSH (Secure Shell) encrypts the whole session with asymmetric encryption because it is faster than symmetric encryption.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Asimetris dipakai untuk autentikasi dan pertukaran kunci; data dienkripsi secara simetris karena lebih cepat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-crypto-combo",
+            "ccna-f-u19-symmetric"
+          ]
+        },
+        {
+          "id": "ccna-u19-l2-e6",
+          "type": "multi",
+          "concept": "crypto-use",
+          "prompt": "Which two statements about an asymmetric key pair are true? (Choose two.)",
+          "options": [
+            "Data encrypted with the public key is opened with the private key",
+            "The private key must stay secret",
+            "Both keys are the same",
+            "The public key must never be shared"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Kunci publik boleh dibagikan, dan pasangannya, kunci privat, harus dirahasiakan. Kedua kunci berbeda.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-asymmetric"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u19-l3",
+      "title": "SSH",
+      "items": [
+        {
+          "id": "ccna-u19-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "telnet-ssh"
+          ],
+          "title": "Telnet dan SSH",
+          "body": "Telnet (TCP (Transmission Control Protocol) 23) mengirim semua yang diketik, termasuk password, sebagai teks biasa. Siapa pun yang menangkap paketnya bisa membacanya. SSH (Secure Shell, TCP 22) mengenkripsi seluruh sesi. Jadi untuk akses remote, pakai SSH dan tolak Telnet dengan transport input ssh di line vty.",
+          "keyPoints": [
+            "Telnet 23: teks biasa",
+            "SSH 22: terenkripsi",
+            "transport input ssh"
+          ],
+          "teaches": [
+            "ccna-f-u19-telnet",
+            "ccna-f-u19-transport",
+            "ccna-f-u01-ports-tcp"
+          ]
+        },
+        {
+          "id": "ccna-u19-l3-e1",
+          "type": "choice",
+          "concept": "telnet-ssh",
+          "prompt": "Why should Telnet not be used to manage routers over a network?",
+          "options": [
+            "It sends usernames and passwords in plain text",
+            "It cannot reach routers in another subnet",
+            "It needs RSA (Rivest-Shamir-Adleman) keys on every router",
+            "It only works on the console port"
+          ],
+          "answer": 0,
+          "explanation": "Telnet tidak mengenkripsi apa pun, jadi password bisa dibaca dari paketnya. Kunci RSA (Rivest-Shamir-Adleman) justru dibutuhkan SSH (Secure Shell).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-telnet"
+          ]
+        },
+        {
+          "id": "ccna-u19-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "ssh"
+          ],
+          "title": "Menyalakan SSH",
+          "body": "SSH (Secure Shell) di IOS butuh empat bahan. Hostname selain bawaan dan ip domain name, karena keduanya menjadi nama kunci. Lalu kunci RSA (Rivest-Shamir-Adleman) dari crypto key generate rsa modulus 2048; SSH versi 2 butuh minimal 768 bit. Setelah itu ip ssh version 2, user lokal, dan di line vty: login local dan transport input ssh. show ip ssh memastikan SSH aktif.",
+          "keyPoints": [
+            "Hostname dan domain dulu",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2, login local, transport input ssh"
+          ],
+          "visual": "SshSetup",
+          "teaches": [
+            "ccna-f-u19-ssh-steps",
+            "ccna-f-u19-ssh-modulus",
+            "ccna-f-u19-show-ssh"
+          ]
+        },
+        {
+          "id": "ccna-u19-l3-e2",
+          "type": "ios",
+          "concept": "ssh",
+          "prompt": "Enable SSH (Secure Shell) version 2 on R1 for remote management: domain kantor.local, a 2048-bit RSA (Rivest-Shamir-Adleman) key, local user admin with secret Kopi-2026, and vty lines 0 to 4 that accept SSH only with local login.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "ip domain name kantor.local"
+              },
+              {
+                "line": "ip ssh version 2"
+              },
+              {
+                "line": "username admin secret Kopi-2026"
+              },
+              {
+                "context": "line vty 0 4",
+                "line": "login local"
+              },
+              {
+                "context": "line vty 0 4",
+                "line": "transport input ssh"
+              }
+            ],
+            "rsaKeys": true
+          },
+          "solution": [
+            "configure terminal",
+            "ip domain name kantor.local",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "username admin secret Kopi-2026",
+            "line vty 0 4",
+            "login local",
+            "transport input ssh",
+            "end"
+          ],
+          "explanation": "Domain dan hostname dipakai untuk nama kunci, lalu kunci RSA (Rivest-Shamir-Adleman) dibuat. Setelah itu versi 2, user lokal, login local, dan transport input ssh.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-ssh-steps",
+            "ccna-f-u19-login-local",
+            "ccna-f-u19-transport",
+            "ccna-f-u19-local-user"
+          ]
+        },
+        {
+          "id": "ccna-u19-l3-e3",
+          "type": "exhibit",
+          "concept": "ssh",
+          "prompt": "Refer to the exhibit. Why is SSH (Secure Shell) still disabled?",
+          "outputs": [
+            {
+              "title": "R1# show ip ssh",
+              "text": "SSH Disabled - version 1.99\n%Please create RSA keys to enable SSH (and of atleast 768 bits for SSH v2).\nAuthentication methods:publickey,keyboard-interactive,password"
+            }
+          ],
+          "options": [
+            "No RSA (Rivest-Shamir-Adleman) keys have been generated",
+            "The vty lines use transport input ssh",
+            "ip ssh version 2 was entered",
+            "The domain name is set"
+          ],
+          "answer": 0,
+          "explanation": "Baris kedua meminta kunci RSA (Rivest-Shamir-Adleman) dibuat; tanpa kunci, SSH (Secure Shell) mati.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-show-ssh",
+            "ccna-f-u19-ssh-steps"
+          ]
+        },
+        {
+          "id": "ccna-u19-l3-e4",
+          "type": "truefalse",
+          "concept": "ssh",
+          "prompt": "IOS can generate RSA (Rivest-Shamir-Adleman) keys for SSH (Secure Shell) while the hostname is still the default Router.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Hostname bawaan harus diganti dulu, karena hostname dan domain menjadi nama kunci.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-ssh-steps"
+          ]
+        },
+        {
+          "id": "ccna-u19-l3-e5",
+          "type": "order",
+          "concept": "ssh",
+          "prompt": "Put the SSH (Secure Shell) setup steps in order.",
+          "items": [
+            "Set a hostname and ip domain name",
+            "Generate the RSA (Rivest-Shamir-Adleman) key",
+            "Enter ip ssh version 2",
+            "Allow only SSH on the vty lines"
+          ],
+          "explanation": "Hostname dan domain dulu, lalu kunci RSA (Rivest-Shamir-Adleman), versi 2, dan terakhir batasi line vty ke SSH (Secure Shell).",
+          "requires": [
+            "ccna-f-u19-ssh-steps",
+            "ccna-f-u19-transport"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u19-l4",
+      "title": "AAA: TACACS+ dan RADIUS",
+      "items": [
+        {
+          "id": "ccna-u19-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "aaa"
+          ],
+          "title": "AAA",
+          "body": "Membuat user lokal di setiap router tidak praktis kalau ada ratusan perangkat. AAA (authentication, authorization, and accounting) memusatkannya: authentication memeriksa siapa pengguna, authorization menentukan apa yang boleh dilakukan, dan accounting mencatat apa yang dilakukan. Akun admin cukup dikelola di satu server.",
+          "keyPoints": [
+            "Authentication: siapa",
+            "Authorization: boleh apa",
+            "Accounting: mencatat"
+          ],
+          "visual": "AaaFlow",
+          "teaches": [
+            "ccna-f-u19-aaa-def",
+            "ccna-f-u19-aaa-central"
+          ]
+        },
+        {
+          "id": "ccna-u19-l4-e1",
+          "type": "match",
+          "concept": "aaa",
+          "prompt": "Match each part of AAA (authentication, authorization, and accounting) to its job.",
+          "pairs": [
+            [
+              "Authentication",
+              "Checks who the user is"
+            ],
+            [
+              "Authorization",
+              "Decides which commands the user may run"
+            ],
+            [
+              "Accounting",
+              "Records what the user did"
+            ],
+            [
+              "Central AAA server",
+              "Holds the admin accounts for many devices"
+            ]
+          ],
+          "explanation": "Authentication memeriksa identitas, authorization menentukan izin, accounting mencatat, dan server pusat menyimpan akun.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-aaa-def",
+            "ccna-f-u19-aaa-central"
+          ]
+        },
+        {
+          "id": "ccna-u19-l4-e2",
+          "type": "choice",
+          "concept": "aaa",
+          "prompt": "An auditor asks which commands an admin ran on a router last week. Which part of AAA (authentication, authorization, and accounting) answers this?",
+          "options": [
+            "Accounting",
+            "Authentication",
+            "Authorization",
+            "None of them"
+          ],
+          "answer": 0,
+          "explanation": "Accounting mencatat apa yang dilakukan pengguna.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-aaa-def"
+          ]
+        },
+        {
+          "id": "ccna-u19-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "tacacs-radius"
+          ],
+          "title": "TACACS+ dan RADIUS",
+          "body": "Dua protokol AAA (authentication, authorization, and accounting) yang umum. TACACS+ (Terminal Access Controller Access-Control System Plus) memakai TCP (Transmission Control Protocol) 49, mengenkripsi seluruh isi paket, dan memisahkan ketiga bagian AAA, jadi cocok untuk administrasi perangkat. RADIUS (Remote Authentication Dial-In User Service) adalah standar terbuka di UDP (User Datagram Protocol) 1812 dan 1813, hanya mengenkripsi password, dan menggabungkan authentication dengan authorization; umum untuk akses pengguna seperti 802.1X dan VPN (virtual private network).",
+          "keyPoints": [
+            "TACACS+: TCP 49, enkripsi penuh",
+            "RADIUS: UDP 1812/1813, password saja",
+            "TACACS+ untuk admin, RADIUS untuk pengguna"
+          ],
+          "visual": "TacacsRadius",
+          "teaches": [
+            "ccna-f-u19-tacacs",
+            "ccna-f-u19-radius"
+          ]
+        },
+        {
+          "id": "ccna-u19-l4-e3",
+          "type": "choice",
+          "concept": "tacacs-radius",
+          "prompt": "Which protocol encrypts the whole packet body between the device and the AAA (authentication, authorization, and accounting) server?",
+          "options": [
+            "TACACS+ (Terminal Access Controller Access-Control System Plus)",
+            "RADIUS (Remote Authentication Dial-In User Service)",
+            "Telnet",
+            "TFTP (Trivial File Transfer Protocol)"
+          ],
+          "answer": 0,
+          "explanation": "TACACS+ (Terminal Access Controller Access-Control System Plus) mengenkripsi seluruh isi paket; RADIUS (Remote Authentication Dial-In User Service) hanya password.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-tacacs",
+            "ccna-f-u19-radius"
+          ]
+        },
+        {
+          "id": "ccna-u19-l4-e4",
+          "type": "multi",
+          "concept": "tacacs-radius",
+          "prompt": "Which two statements about RADIUS (Remote Authentication Dial-In User Service) are true? (Choose two.)",
+          "options": [
+            "It uses UDP (User Datagram Protocol)",
+            "It combines authentication and authorization",
+            "It uses TCP (Transmission Control Protocol) port 49",
+            "It encrypts the whole packet body"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "RADIUS (Remote Authentication Dial-In User Service) memakai UDP (User Datagram Protocol) 1812 dan 1813 dan menggabungkan authentication dengan authorization. TCP (Transmission Control Protocol) 49 dan enkripsi penuh adalah ciri TACACS+ (Terminal Access Controller Access-Control System Plus).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-radius",
+            "ccna-f-u19-tacacs"
+          ]
+        },
+        {
+          "id": "ccna-u19-l4-e5",
+          "type": "truefalse",
+          "concept": "tacacs-radius",
+          "prompt": "TACACS+ (Terminal Access Controller Access-Control System Plus) is a good fit for controlling which commands each admin may run on routers.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. TACACS+ (Terminal Access Controller Access-Control System Plus) memisahkan authorization, jadi izin per perintah bisa diatur.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-tacacs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u19-l5",
+      "title": "Perangkat sebagai klien AAA",
+      "items": [
+        {
+          "id": "ccna-u19-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "aaa-client"
+          ],
+          "title": "Router sebagai klien AAA",
+          "body": "aaa new-model mengaktifkan AAA (authentication, authorization, and accounting). Server didefinisikan dengan tacacs server diikuti nama, lalu address ipv4 dan key yang sama dengan di server. Daftar metode menentukan urutan: aaa authentication login default group tacacs+ local mencoba server TACACS+ (Terminal Access Controller Access-Control System Plus) dulu, lalu user lokal. Daftar bernama default berlaku otomatis di semua line.",
+          "keyPoints": [
+            "aaa new-model",
+            "tacacs server: address dan key",
+            "default group tacacs+ local"
+          ],
+          "teaches": [
+            "ccna-f-u19-aaa-new-model",
+            "ccna-f-u19-tacacs-server",
+            "ccna-f-u19-method-list",
+            "ccna-f-u19-default-list"
+          ]
+        },
+        {
+          "id": "ccna-u19-l5-e1",
+          "type": "ios",
+          "concept": "aaa-client",
+          "prompt": "Make R1 a TACACS+ (Terminal Access Controller Access-Control System Plus) client: enable AAA (authentication, authorization, and accounting), define server pusat at 10.0.0.10 with key Rahasia-1, and authenticate logins with TACACS+ first and local users as backup.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "username admin secret Kopi-2026"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "aaa new-model"
+              },
+              {
+                "context": "tacacs server pusat",
+                "line": "address ipv4 10.0.0.10"
+              },
+              {
+                "context": "tacacs server pusat",
+                "line": "key Rahasia-1"
+              },
+              {
+                "line": "aaa authentication login default group tacacs+ local"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "aaa new-model",
+            "tacacs server pusat",
+            "address ipv4 10.0.0.10",
+            "key Rahasia-1",
+            "exit",
+            "aaa authentication login default group tacacs+ local",
+            "end"
+          ],
+          "explanation": "AAA (authentication, authorization, and accounting) diaktifkan, server didefinisikan dengan alamat dan key, lalu daftar metode default memakai TACACS+ (Terminal Access Controller Access-Control System Plus) dengan cadangan local.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-aaa-new-model",
+            "ccna-f-u19-tacacs-server",
+            "ccna-f-u19-method-list"
+          ]
+        },
+        {
+          "id": "ccna-u19-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "aaa-fallback"
+          ],
+          "title": "Kapan cadangan local dipakai",
+          "body": "Metode berikutnya di daftar, misalnya local, hanya dipakai kalau server tidak menjawab sama sekali. Kalau server menjawab dan menolak password, login gagal, dan router tidak mencoba user lokal. Jadi user lokal adalah jalan masuk darurat saat server mati, bukan cara mengakali penolakan server.",
+          "keyPoints": [
+            "local: saat server tidak menjawab",
+            "Ditolak server: login gagal",
+            "User lokal untuk darurat"
+          ],
+          "teaches": [
+            "ccna-f-u19-fallback",
+            "ccna-f-u19-method-list"
+          ]
+        },
+        {
+          "id": "ccna-u19-l5-e2",
+          "type": "choice",
+          "concept": "aaa-fallback",
+          "prompt": "R1 uses aaa authentication login default group tacacs+ local. The TACACS+ (Terminal Access Controller Access-Control System Plus) server is up and rejects the password of admin. What happens?",
+          "options": [
+            "The login fails",
+            "R1 tries the local user database next",
+            "R1 lets the admin in with privilege 1",
+            "R1 switches to RADIUS (Remote Authentication Dial-In User Service)"
+          ],
+          "answer": 0,
+          "explanation": "Server menjawab dengan penolakan, jadi login gagal. local hanya dipakai kalau server tidak menjawab.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-fallback"
+          ]
+        },
+        {
+          "id": "ccna-u19-l5-e3",
+          "type": "truefalse",
+          "concept": "aaa-fallback",
+          "prompt": "With group tacacs+ local, local users can log in when every TACACS+ (Terminal Access Controller Access-Control System Plus) server is unreachable.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Itulah fungsi local sebagai metode cadangan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-fallback",
+            "ccna-f-u19-method-list"
+          ]
+        },
+        {
+          "id": "ccna-u19-l5-e4",
+          "type": "exhibit",
+          "concept": "aaa-fallback",
+          "prompt": "Refer to the exhibit. Which method does R1 try first for console and vty logins?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | include aaa",
+              "text": "aaa new-model\naaa authentication login default group tacacs+ local"
+            }
+          ],
+          "options": [
+            "The TACACS+ (Terminal Access Controller Access-Control System Plus) server group",
+            "The local user database",
+            "The line password",
+            "No authentication"
+          ],
+          "answer": 0,
+          "explanation": "Daftar default berlaku di semua line, dan urutannya group tacacs+ lalu local.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-method-list",
+            "ccna-f-u19-default-list"
+          ]
+        },
+        {
+          "id": "ccna-u19-l5-e5",
+          "type": "multi",
+          "concept": "aaa-fallback",
+          "prompt": "Which two commands are needed before a router can use a TACACS+ (Terminal Access Controller Access-Control System Plus) server for logins? (Choose two.)",
+          "options": [
+            "aaa new-model",
+            "A tacacs server definition with address and key",
+            "ip ssh version 1",
+            "service password-encryption"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "AAA (authentication, authorization, and accounting) harus diaktifkan dan server harus didefinisikan. Versi SSH (Secure Shell) dan service password-encryption tidak berhubungan dengan TACACS+ (Terminal Access Controller Access-Control System Plus).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-aaa-new-model",
+            "ccna-f-u19-tacacs-server"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u19-l6",
+      "title": "Transfer file dengan SCP dan SFTP",
+      "items": [
+        {
+          "id": "ccna-u19-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "secure-transfer"
+          ],
+          "title": "Menyalin file dengan aman",
+          "body": "TFTP (Trivial File Transfer Protocol, UDP 69) tidak punya login dan tidak mengenkripsi apa pun. FTP (File Transfer Protocol) juga mengirim password sebagai teks. SCP (Secure Copy) dan SFTP (SSH File Transfer Protocol) berjalan di atas SSH (Secure Shell), jadi file dan password terenkripsi.",
+          "keyPoints": [
+            "TFTP: tanpa login, tanpa enkripsi",
+            "FTP: password teks biasa",
+            "SCP dan SFTP: lewat SSH"
+          ],
+          "teaches": [
+            "ccna-f-u19-tftp",
+            "ccna-f-u19-scp",
+            "ccna-f-u19-sftp",
+            "ccna-f-u01-ports-tcp"
+          ]
+        },
+        {
+          "id": "ccna-u19-l6-e1",
+          "type": "choice",
+          "concept": "secure-transfer",
+          "prompt": "Which protocol should you use to copy a configuration file off a router securely?",
+          "options": [
+            "SCP (Secure Copy)",
+            "TFTP (Trivial File Transfer Protocol)",
+            "FTP (File Transfer Protocol)",
+            "Telnet"
+          ],
+          "answer": 0,
+          "explanation": "SCP (Secure Copy) berjalan di atas SSH (Secure Shell), jadi terenkripsi. TFTP (Trivial File Transfer Protocol) dan FTP (File Transfer Protocol) tidak.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-scp",
+            "ccna-f-u19-tftp"
+          ]
+        },
+        {
+          "id": "ccna-u19-l6-e2",
+          "type": "truefalse",
+          "concept": "secure-transfer",
+          "prompt": "TFTP (Trivial File Transfer Protocol) asks for a username and password before it sends a file.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. TFTP (Trivial File Transfer Protocol) tidak punya login sama sekali.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-tftp"
+          ]
+        },
+        {
+          "id": "ccna-u19-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "scp-server"
+          ],
+          "title": "Router sebagai server SCP",
+          "body": "Supaya router bisa menerima atau mengirim file lewat SCP (Secure Copy), SSH (Secure Shell) harus sudah jalan, lalu ip scp server enable. SCP juga butuh AAA (authentication, authorization, and accounting) authorization, misalnya aaa authorization exec default local, supaya level privilege pengguna bisa diperiksa. Dari router sendiri, copy running-config scp: menyalin konfigurasi ke server SCP.",
+          "keyPoints": [
+            "SSH dulu",
+            "ip scp server enable",
+            "Butuh aaa authorization exec"
+          ],
+          "teaches": [
+            "ccna-f-u19-scp",
+            "ccna-f-u19-copy-scp"
+          ]
+        },
+        {
+          "id": "ccna-u19-l6-e3",
+          "type": "ios",
+          "concept": "scp-server",
+          "prompt": "SSH (Secure Shell) and AAA (authentication, authorization, and accounting) with local users already run on R1. Allow privilege checks with local exec authorization and enable the SCP (Secure Copy) server.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "aaa new-model",
+                "aaa authentication login default local",
+                "username admin privilege 15 secret Kopi-2026",
+                "ip domain name kantor.local"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "aaa authorization exec default local"
+              },
+              {
+                "line": "ip scp server enable"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "aaa authorization exec default local",
+            "ip scp server enable",
+            "end"
+          ],
+          "explanation": "SCP (Secure Copy) butuh authorization exec supaya privilege pengguna diperiksa, lalu ip scp server enable menyalakan servernya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-scp"
+          ]
+        },
+        {
+          "id": "ccna-u19-l6-e4",
+          "type": "choice",
+          "concept": "scp-server",
+          "prompt": "Which command copies the running configuration of a router to an SCP (Secure Copy) server?",
+          "options": [
+            "copy running-config scp:",
+            "copy running-config tftp:",
+            "ip scp server enable",
+            "copy scp: running-config"
+          ],
+          "answer": 0,
+          "explanation": "copy running-config scp: mengirim konfigurasi ke server SCP (Secure Copy). tftp: tidak aman, ip scp server enable menyalakan server di router, dan copy scp: running-config menyalin ke arah sebaliknya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-copy-scp",
+            "ccna-f-u19-scp",
+            "ccna-f-u19-tftp"
+          ]
+        },
+        {
+          "id": "ccna-u19-l6-e5",
+          "type": "match",
+          "concept": "scp-server",
+          "prompt": "Match each protocol to its transport and security.",
+          "pairs": [
+            [
+              "SCP (Secure Copy)",
+              "Runs over SSH (Secure Shell), encrypted"
+            ],
+            [
+              "SFTP (SSH File Transfer Protocol)",
+              "Also runs over SSH, encrypted"
+            ],
+            [
+              "TFTP (Trivial File Transfer Protocol)",
+              "UDP (User Datagram Protocol) 69, no login, no encryption"
+            ],
+            [
+              "FTP (File Transfer Protocol)",
+              "TCP (Transmission Control Protocol) 20 and 21, plain-text password"
+            ]
+          ],
+          "explanation": "SCP (Secure Copy) dan SFTP (SSH File Transfer Protocol) lewat SSH (Secure Shell), TFTP (Trivial File Transfer Protocol) tanpa login di UDP (User Datagram Protocol) 69, dan FTP (File Transfer Protocol) mengirim password sebagai teks di TCP (Transmission Control Protocol) 20 dan 21.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-scp",
+            "ccna-f-u19-sftp",
+            "ccna-f-u19-tftp",
+            "ccna-f-u01-ports-tcp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u19-l7",
+      "title": "Lab: manajemen yang aman",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u19-l6"
+      },
+      "items": [
+        {
+          "id": "ccna-u19-l7-m1",
+          "type": "learn",
+          "concepts": [
+            "secure-mgmt-lab"
+          ],
+          "title": "Alur kerja manajemen yang aman",
+          "body": "Buat user lokal dengan secret, nyalakan SSH (Secure Shell) versi 2, batasi line vty ke SSH dengan login local, pasang exec-timeout, lalu simpan. Uji dari PC dengan klien SSH, dan pastikan Telnet ditolak.",
+          "keyPoints": [
+            "User lokal dengan secret",
+            "SSH v2 saja di vty",
+            "Uji SSH, pastikan Telnet ditolak"
+          ],
+          "teaches": [
+            "ccna-f-u19-local-user",
+            "ccna-f-u19-ssh-steps",
+            "ccna-f-u19-transport",
+            "ccna-f-u19-exec-timeout"
+          ]
+        },
+        {
+          "id": "ccna-u19-l7-e1",
+          "type": "ios",
+          "concept": "secure-mgmt-lab",
+          "prompt": "Lock down remote access on SW1: domain kantor.local, a 2048-bit RSA (Rivest-Shamir-Adleman) key, SSH (Secure Shell) version 2, local user admin (privilege 15, secret Kopi-2026), vty lines 0 to 15 with local login, SSH only, and a 10-minute idle timeout. Save the configuration.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "ip domain name kantor.local"
+              },
+              {
+                "line": "ip ssh version 2"
+              },
+              {
+                "line": "username admin privilege 15 secret Kopi-2026"
+              },
+              {
+                "context": "line vty 0 15",
+                "line": "login local"
+              },
+              {
+                "context": "line vty 0 15",
+                "line": "transport input ssh"
+              },
+              {
+                "context": "line vty 0 15",
+                "line": "exec-timeout 10 0"
+              }
+            ],
+            "rsaKeys": true,
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "ip domain name kantor.local",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "username admin privilege 15 secret Kopi-2026",
+            "line vty 0 15",
+            "login local",
+            "transport input ssh",
+            "exec-timeout 10 0",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Switch Catalyst punya 16 line vty, jadi 0 sampai 15. Semua langkah SSH (Secure Shell) dipasang, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-ssh-steps",
+            "ccna-f-u19-local-user",
+            "ccna-f-u19-priv15",
+            "ccna-f-u19-login-local",
+            "ccna-f-u19-transport",
+            "ccna-f-u19-exec-timeout",
+            "ccna-f-u02-vty-lines",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u19-l7-e2",
+          "type": "ios",
+          "concept": "secure-mgmt-lab",
+          "prompt": "Check that SSH (Secure Shell) is enabled on SW1 after the configuration.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ip domain name kantor.local"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip ssh version 2"
+              }
+            ],
+            "run": [
+              "show ip ssh"
+            ],
+            "rsaKeys": true
+          },
+          "solution": [
+            "configure terminal",
+            "crypto key generate rsa modulus 2048",
+            "ip ssh version 2",
+            "end",
+            "show ip ssh"
+          ],
+          "explanation": "show ip ssh menunjukkan SSH (Secure Shell) Enabled - version 2.0 setelah kunci RSA (Rivest-Shamir-Adleman) dibuat dan versi 2 dipaksa.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-show-ssh",
+            "ccna-f-u19-ssh-steps"
+          ]
+        },
+        {
+          "id": "ccna-u19-l7-e3",
+          "type": "truefalse",
+          "concept": "secure-mgmt-lab",
+          "prompt": "After this lab, a Telnet attempt to SW1 is refused.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. transport input ssh hanya mengizinkan SSH (Secure Shell) di line vty.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u19-transport"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u19-local-user",
+      "statement": "username <nama> secret <password> membuat user lokal yang password-nya disimpan sebagai hash.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html"
+    },
+    {
+      "id": "ccna-f-u19-priv15",
+      "statement": "username <nama> privilege 15 secret <password> membuat user yang langsung masuk privileged EXEC setelah login.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u19-login-local",
+      "statement": "login local di line console atau vty membuat perangkat meminta username dan password dari daftar user lokal.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html"
+    },
+    {
+      "id": "ccna-f-u19-pw-types",
+      "statement": "Type 7 hanya penyandian lemah yang mudah dibalik dan type 5 (MD5) dianggap lemah, sedangkan type 8 (PBKDF2 dengan SHA-256) dan type 9 (scrypt) dianggap kuat.",
+      "source": "https://www.cisco.com/c/en/us/about/trust-center/resilient-infrastructure/protecting-secrets.html"
+    },
+    {
+      "id": "ccna-f-u19-secret-kw",
+      "statement": "Kata kunci secret menyimpan password sebagai hash, sedangkan kata kunci password menyimpannya sebagai teks biasa atau, dengan service password-encryption, sebagai type 7.",
+      "source": "https://www.cisco.com/c/en/us/about/trust-center/resilient-infrastructure/protecting-secrets.html"
+    },
+    {
+      "id": "ccna-f-u19-exec-timeout",
+      "statement": "exec-timeout <menit> [detik] di line memutus sesi yang diam terlalu lama; bawaannya 10 menit.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u19-hash",
+      "statement": "Hash adalah fungsi satu arah yang menghasilkan ringkasan dengan panjang tetap; hash yang sama membuktikan data tidak berubah, dan password disimpan sebagai hash.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/17584-16.html"
+    },
+    {
+      "id": "ccna-f-u19-symmetric",
+      "statement": "Enkripsi simetris memakai satu kunci yang sama untuk mengenkripsi dan mendekripsi, misalnya AES, dan cepat untuk data dalam jumlah besar.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/17584-16.html"
+    },
+    {
+      "id": "ccna-f-u19-asymmetric",
+      "statement": "Enkripsi asimetris memakai pasangan kunci publik dan privat, misalnya RSA: data yang dienkripsi dengan kunci publik hanya bisa dibuka dengan kunci privat pasangannya.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/17584-16.html"
+    },
+    {
+      "id": "ccna-f-u19-signature",
+      "statement": "Tanda tangan digital dibuat dengan kunci privat dan diperiksa dengan kunci publik, sehingga membuktikan pengirim dan keutuhan data.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/17584-16.html"
+    },
+    {
+      "id": "ccna-f-u19-crypto-combo",
+      "statement": "Protokol seperti SSH dan IPsec memakai kriptografi asimetris untuk autentikasi dan pertukaran kunci, lalu enkripsi simetris untuk data.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/17584-16.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u19-telnet",
+      "statement": "Telnet (TCP 23) mengirim semua data, termasuk password, sebagai teks biasa, sedangkan SSH (TCP 22) mengenkripsi seluruh sesi.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html"
+    },
+    {
+      "id": "ccna-f-u19-ssh-steps",
+      "statement": "SSH di IOS butuh hostname selain bawaan, ip domain name, dan kunci RSA dari crypto key generate rsa; ip ssh version 2 memaksa SSH versi 2.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html"
+    },
+    {
+      "id": "ccna-f-u19-ssh-modulus",
+      "statement": "SSH versi 2 butuh kunci RSA minimal 768 bit; 2048 bit adalah ukuran yang umum dipakai.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u19-transport",
+      "statement": "transport input ssh di line vty hanya mengizinkan SSH, jadi Telnet ditolak.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html"
+    },
+    {
+      "id": "ccna-f-u19-show-ssh",
+      "statement": "show ip ssh menampilkan apakah SSH aktif dan versinya.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html"
+    },
+    {
+      "id": "ccna-f-u19-aaa-def",
+      "statement": "AAA terdiri dari authentication (siapa pengguna), authorization (apa yang boleh dilakukan), dan accounting (catatan apa yang dilakukan).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_tacacs/configuration/xe-17/sec-usr-tacacs-xe-17-book/sec-cfg-tacacs.html"
+    },
+    {
+      "id": "ccna-f-u19-aaa-central",
+      "statement": "Dengan server AAA pusat, akun admin dikelola di satu tempat, bukan di setiap perangkat.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_tacacs/configuration/xe-17/sec-usr-tacacs-xe-17-book/sec-cfg-tacacs.html"
+    },
+    {
+      "id": "ccna-f-u19-tacacs",
+      "statement": "TACACS+ memakai TCP 49, mengenkripsi seluruh isi paket, dan memisahkan authentication, authorization, dan accounting, sehingga cocok untuk administrasi perangkat.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/SecurityRadiusTacacs_1.html"
+    },
+    {
+      "id": "ccna-f-u19-radius",
+      "statement": "RADIUS adalah standar terbuka yang memakai UDP 1812 dan 1813, hanya mengenkripsi password, dan menggabungkan authentication dengan authorization; umum untuk akses pengguna seperti 802.1X dan VPN.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/SecurityRadiusTacacs_1.html"
+    },
+    {
+      "id": "ccna-f-u19-aaa-new-model",
+      "statement": "aaa new-model mengaktifkan AAA di perangkat; setelah itu login diatur oleh daftar metode AAA.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_tacacs/configuration/xe-17/sec-usr-tacacs-xe-17-book/sec-cfg-tacacs.html"
+    },
+    {
+      "id": "ccna-f-u19-tacacs-server",
+      "statement": "Server TACACS+ didefinisikan dengan tacacs server <nama>, lalu address ipv4 <alamat> dan key <kunci> yang sama dengan di server.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_tacacs/configuration/xe-17/sec-usr-tacacs-xe-17-book/sec-cfg-tacacs.html"
+    },
+    {
+      "id": "ccna-f-u19-method-list",
+      "statement": "aaa authentication login default group tacacs+ local memakai server TACACS+ lebih dulu, dan user lokal hanya kalau server tidak bisa dihubungi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_tacacs/configuration/xe-17/sec-usr-tacacs-xe-17-book/sec-cfg-tacacs.html"
+    },
+    {
+      "id": "ccna-f-u19-fallback",
+      "statement": "Metode berikutnya, misalnya local, hanya dipakai kalau server tidak menjawab; kalau server menjawab dan menolak password, login gagal.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_tacacs/configuration/xe-17/sec-usr-tacacs-xe-17-book/sec-cfg-tacacs.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u19-default-list",
+      "statement": "Daftar metode bernama default berlaku otomatis di semua line yang tidak memakai daftar lain.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_tacacs/configuration/xe-17/sec-usr-tacacs-xe-17-book/sec-cfg-tacacs.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u19-scp",
+      "statement": "SCP (Secure Copy) menyalin file lewat SSH; di IOS, ip scp server enable mengaktifkan server SCP, dan AAA authorization dibutuhkan supaya level privilege pengguna bisa diperiksa.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_ssh/configuration/xe-16/sec-usr-ssh-xe-16-book/sec-usr-ssh-sec-copy.html"
+    },
+    {
+      "id": "ccna-f-u19-sftp",
+      "statement": "SFTP (SSH File Transfer Protocol) juga berjalan di atas SSH, jadi isi file dan password terenkripsi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_ssh/configuration/xe-16/sec-usr-ssh-xe-16-book/sec-usr-ssh-sec-copy.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u19-tftp",
+      "statement": "TFTP (UDP 69) mengirim file tanpa login dan tanpa enkripsi.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1350.html"
+    },
+    {
+      "id": "ccna-f-u19-copy-scp",
+      "statement": "copy scp: flash: menyalin file dari server SCP ke flash, dan copy running-config scp: menyimpan konfigurasi ke server SCP.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_ssh/configuration/xe-16/sec-usr-ssh-xe-16-book/sec-usr-ssh-sec-copy.html"
+    }
+  ]
+}

@@ -1,0 +1,858 @@
+{
+  "id": "ccna-u25-manajemen",
+  "path": 5,
+  "title": "Pendekatan manajemen jaringan",
+  "lessons": [
+    {
+      "id": "ccna-u25-l1",
+      "title": "Manajemen per perangkat",
+      "items": [
+        {
+          "id": "ccna-u25-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "mgmt-models"
+          ],
+          "title": "Manajemen per perangkat",
+          "body": "Cara tradisional: administrator membuka SSH (Secure Shell) ke setiap router dan switch, lalu mengetik perintah CLI (command-line interface) satu per satu. Setiap perangkat menjalankan control plane-nya sendiri dan mengambil keputusan sendiri. Untuk sepuluh perangkat ini masih wajar, tetapi untuk ratusan perangkat menjadi lambat.",
+          "keyPoints": [
+            "SSH ke setiap perangkat",
+            "Control plane di setiap perangkat",
+            "Lambat untuk ratusan perangkat"
+          ],
+          "visual": "MgmtModels",
+          "teaches": [
+            "ccna-f-u25-per-device",
+            "ccna-f-u19-telnet"
+          ]
+        },
+        {
+          "id": "ccna-u25-l1-e1",
+          "type": "choice",
+          "concept": "mgmt-models",
+          "prompt": "An administrator must change the NTP (Network Time Protocol) server on 300 switches with per-device management. What does that mean?",
+          "options": [
+            "Typing the change on each switch",
+            "Changing one policy in a controller",
+            "Changing one setting in a cloud dashboard",
+            "The switches learn the change from each other"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa controller atau otomasi, setiap perangkat diubah sendiri-sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-per-device"
+          ]
+        },
+        {
+          "id": "ccna-u25-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "manual-risk"
+          ],
+          "title": "Risiko perubahan manual",
+          "body": "Mengetik perubahan yang sama ratusan kali lambat dan mudah salah: satu salah ketik di satu perangkat membuat konfigurasinya berbeda dari yang lain. Otomasi menjalankan langkah yang sama dengan cara yang sama setiap kali, jadi hasilnya konsisten. Itulah dasar pendekatan controller, cloud, dan infrastructure as code di lesson berikutnya.",
+          "keyPoints": [
+            "Manual: lambat, mudah salah",
+            "Otomasi: konsisten",
+            "Dasar semua pendekatan modern"
+          ],
+          "teaches": [
+            "ccna-f-u25-manual-risk"
+          ]
+        },
+        {
+          "id": "ccna-u25-l1-e2",
+          "type": "truefalse",
+          "concept": "manual-risk",
+          "prompt": "Automation helps keep configurations consistent because the same input produces the same change every time.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Otomasi mengurangi kesalahan manusia dan menjaga konsistensi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-manual-risk"
+          ]
+        },
+        {
+          "id": "ccna-u25-l1-e3",
+          "type": "multi",
+          "concept": "manual-risk",
+          "prompt": "Which two problems are typical of making the same change by hand on many devices? (Choose two.)",
+          "options": [
+            "It is slow",
+            "Typing mistakes make devices inconsistent",
+            "Devices stop forwarding packets during every change",
+            "It requires a cloud subscription"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Perubahan manual lambat dan rawan salah ketik. Perangkat tidak berhenti meneruskan hanya karena diubah, dan tidak butuh langganan cloud.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-manual-risk"
+          ]
+        },
+        {
+          "id": "ccna-u25-l1-e4",
+          "type": "choice",
+          "concept": "manual-risk",
+          "prompt": "Two switches that should be identical have different settings because one was changed by hand. What is the main cause?",
+          "options": [
+            "Human error in manual changes",
+            "A broken data plane",
+            "A faulty power supply",
+            "The switches use different VLANs (Virtual LAN)"
+          ],
+          "answer": 0,
+          "explanation": "Perubahan manual yang tidak sama di setiap perangkat membuat konfigurasi berbeda.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-manual-risk"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u25-l2",
+      "title": "Manajemen berbasis controller",
+      "items": [
+        {
+          "id": "ccna-u25-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "planes"
+          ],
+          "title": "Control plane dan data plane",
+          "body": "Setiap perangkat jaringan punya dua tugas. Control plane memutuskan cara meneruskan, misalnya OSPF (Open Shortest Path First) membangun tabel routing. Data plane meneruskan setiap paket sesuai keputusan itu, secepat mungkin. Pada manajemen tradisional, kedua plane ada di setiap perangkat.",
+          "keyPoints": [
+            "Control plane: memutuskan",
+            "Data plane: meneruskan",
+            "Tradisional: keduanya di setiap perangkat"
+          ],
+          "teaches": [
+            "ccna-f-u25-planes",
+            "ccna-f-u25-per-device"
+          ]
+        },
+        {
+          "id": "ccna-u25-l2-e1",
+          "type": "sort",
+          "concept": "planes",
+          "prompt": "Sort each task into the plane that does it.",
+          "buckets": [
+            "Control plane",
+            "Data plane"
+          ],
+          "items": [
+            {
+              "text": "Building the routing table with OSPF (Open Shortest Path First)",
+              "bucket": 0
+            },
+            {
+              "text": "Forwarding a frame out the right port",
+              "bucket": 1
+            },
+            {
+              "text": "Exchanging spanning tree BPDUs (bridge protocol data units)",
+              "bucket": 0
+            },
+            {
+              "text": "Rewriting the destination MAC (Media Access Control) address while forwarding",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Protokol yang memutuskan jalur ada di control plane; meneruskan dan menulis ulang header ada di data plane.",
+          "requires": [
+            "ccna-f-u25-planes"
+          ]
+        },
+        {
+          "id": "ccna-u25-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "sdn"
+          ],
+          "title": "SDN dan controller",
+          "body": "SDN (software-defined networking) memisahkan control plane dari data plane dan memusatkan kecerdasannya di controller. Aplikasi, misalnya skrip atau dashboard, bicara ke controller lewat northbound API (application programming interface), sering berupa REST (Representational State Transfer). Controller bicara ke perangkat lewat southbound API, misalnya OpenFlow. Perangkat tinggal meneruskan sesuai arahan.",
+          "keyPoints": [
+            "Control plane terpusat di controller",
+            "Northbound API: aplikasi ke controller",
+            "Southbound API: controller ke perangkat"
+          ],
+          "visual": "SdnLayers",
+          "teaches": [
+            "ccna-f-u25-sdn",
+            "ccna-f-u25-nbi",
+            "ccna-f-u25-sbi"
+          ]
+        },
+        {
+          "id": "ccna-u25-l2-e2",
+          "type": "choice",
+          "concept": "sdn",
+          "prompt": "A Python script asks the SDN (software-defined networking) controller for a list of devices. Which interface does it use?",
+          "options": [
+            "The northbound API (application programming interface)",
+            "The southbound API (application programming interface)",
+            "The data plane",
+            "The console port"
+          ],
+          "answer": 0,
+          "explanation": "Aplikasi bicara ke controller lewat northbound API (application programming interface).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-nbi",
+            "ccna-f-u25-sbi"
+          ]
+        },
+        {
+          "id": "ccna-u25-l2-e3",
+          "type": "truefalse",
+          "concept": "sdn",
+          "prompt": "In SDN (software-defined networking), the controller uses a southbound API (application programming interface) such as OpenFlow to talk to network devices.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Southbound API (application programming interface) menghubungkan controller dengan perangkat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-sbi"
+          ]
+        },
+        {
+          "id": "ccna-u25-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "catalyst-center"
+          ],
+          "title": "Cisco Catalyst Center",
+          "body": "Cisco Catalyst Center, dulu bernama Cisco DNA (Digital Network Architecture) Center, adalah controller untuk jaringan kampus. Ia mengotomasi penerapan dan konfigurasi perangkat, menerapkan kebijakan, dan memantau jaringan dengan analitik. Ini disebut intent-based networking: administrator menyatakan apa yang diinginkan, dan controller menerjemahkannya menjadi konfigurasi setiap perangkat.",
+          "keyPoints": [
+            "Controller jaringan kampus",
+            "Otomasi, kebijakan, pemantauan",
+            "Intent: nyatakan tujuan, controller menerjemahkan"
+          ],
+          "teaches": [
+            "ccna-f-u25-catc",
+            "ccna-f-u25-intent"
+          ]
+        },
+        {
+          "id": "ccna-u25-l2-e4",
+          "type": "choice",
+          "concept": "catalyst-center",
+          "prompt": "An administrator states that guest users must never reach the finance servers, and the controller creates the device configurations. What is this approach called?",
+          "options": [
+            "Intent-based networking",
+            "Per-device management with SSH (Secure Shell)",
+            "Out-of-band management over the console",
+            "Spanning tree with root guard"
+          ],
+          "answer": 0,
+          "explanation": "Menyatakan tujuan lalu membiarkan controller menerjemahkannya adalah intent-based networking.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-intent"
+          ]
+        },
+        {
+          "id": "ccna-u25-l2-e5",
+          "type": "sort",
+          "concept": "sdn",
+          "prompt": "Sort each item into the API (application programming interface) it describes.",
+          "buckets": [
+            "Northbound",
+            "Southbound"
+          ],
+          "items": [
+            {
+              "text": "Script asks the controller for device health",
+              "bucket": 0
+            },
+            {
+              "text": "Controller pushes configuration to a switch",
+              "bucket": 1
+            },
+            {
+              "text": "Dashboard app reads data from the controller",
+              "bucket": 0
+            },
+            {
+              "text": "OpenFlow between controller and switch",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Aplikasi ke controller adalah northbound; controller ke perangkat adalah southbound.",
+          "requires": [
+            "ccna-f-u25-nbi",
+            "ccna-f-u25-sbi"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u25-l3",
+      "title": "Manajemen berbasis cloud",
+      "items": [
+        {
+          "id": "ccna-u25-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "cloud-mgmt"
+          ],
+          "title": "Manajemen berbasis cloud",
+          "body": "Pada manajemen berbasis cloud seperti Cisco Meraki, controller-nya berada di cloud. Administrator mengonfigurasi dan memantau perangkat dari dashboard web, dan perubahan dikirim dari cloud ke perangkat. Hanya lalu lintas manajemen yang pergi ke cloud; lalu lintas data pengguna tetap mengalir langsung di jaringan.",
+          "keyPoints": [
+            "Controller di cloud",
+            "Dashboard web dari mana saja",
+            "Data pengguna tidak lewat cloud"
+          ],
+          "teaches": [
+            "ccna-f-u25-cloud",
+            "ccna-f-u25-cloud-oob"
+          ]
+        },
+        {
+          "id": "ccna-u25-l3-e1",
+          "type": "choice",
+          "concept": "cloud-mgmt",
+          "prompt": "Where does an administrator change the settings of Meraki switches?",
+          "options": [
+            "In the web dashboard in the cloud",
+            "Only in the CLI (command-line interface) of each switch",
+            "In a controller that must be installed on site",
+            "In the switch BIOS (basic input/output system)"
+          ],
+          "answer": 0,
+          "explanation": "Perangkat Meraki diatur dari dashboard di cloud, lalu perubahan dikirim ke perangkat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-cloud"
+          ]
+        },
+        {
+          "id": "ccna-u25-l3-e2",
+          "type": "truefalse",
+          "concept": "cloud-mgmt",
+          "prompt": "With cloud-managed Meraki devices, all user data traffic is sent through the Meraki cloud.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Hanya lalu lintas manajemen yang pergi ke cloud.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-cloud-oob"
+          ]
+        },
+        {
+          "id": "ccna-u25-l3-e3",
+          "type": "match",
+          "concept": "cloud-mgmt",
+          "prompt": "Match each management approach to where it is controlled from.",
+          "pairs": [
+            [
+              "Per-device",
+              "The CLI (command-line interface) of each device"
+            ],
+            [
+              "Controller-based",
+              "A controller in the company network"
+            ],
+            [
+              "Cloud-based",
+              "A web dashboard hosted on the internet"
+            ]
+          ],
+          "explanation": "Per perangkat dari CLI (command-line interface), controller dari server di jaringan sendiri, dan cloud dari dashboard di internet.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-per-device",
+            "ccna-f-u25-catc",
+            "ccna-f-u25-cloud"
+          ]
+        },
+        {
+          "id": "ccna-u25-l3-e4",
+          "type": "choice",
+          "concept": "cloud-mgmt",
+          "prompt": "A company has 40 small branches with no IT (information technology) staff and wants to manage them all from one web page without hosting a controller. Which approach fits best?",
+          "options": [
+            "Cloud-based management",
+            "Per-device management",
+            "A controller in each branch",
+            "Console cables to every device"
+          ],
+          "answer": 0,
+          "explanation": "Dashboard cloud tidak butuh controller di lokasi dan bisa dibuka dari mana saja.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-cloud",
+            "ccna-f-u25-per-device"
+          ]
+        },
+        {
+          "id": "ccna-u25-l3-e5",
+          "type": "multi",
+          "concept": "cloud-mgmt",
+          "prompt": "Which two statements compare controller-based and cloud-based management correctly? (Choose two.)",
+          "options": [
+            "Catalyst Center runs on an appliance the company operates",
+            "The Meraki dashboard is hosted in the cloud",
+            "Cloud management requires typing CLI (command-line interface) on each device",
+            "Controller-based management cannot automate configuration"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Catalyst Center berjalan di appliance milik perusahaan, sedangkan dashboard Meraki ada di cloud. Keduanya mengotomasi konfigurasi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-catc",
+            "ccna-f-u25-cloud"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u25-l4",
+      "title": "Otomasi dan infrastructure as code",
+      "items": [
+        {
+          "id": "ccna-u25-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "iac"
+          ],
+          "title": "Infrastructure as code",
+          "body": "IaC (infrastructure as code) mengelola infrastruktur lewat file definisi yang bisa dibaca mesin, bukan dengan mengetik konfigurasi manual. Keadaan jaringan yang diinginkan ditulis di file, disimpan di repositori Git yang berversi, lalu diterapkan oleh alat seperti Ansible atau Terraform. Repositori itu menjadi sumber kebenaran tunggal.",
+          "keyPoints": [
+            "Keadaan yang diinginkan di file",
+            "Disimpan dan diversikan di Git",
+            "Diterapkan oleh Ansible atau Terraform"
+          ],
+          "teaches": [
+            "ccna-f-u25-iac",
+            "ccna-f-u25-ssot"
+          ]
+        },
+        {
+          "id": "ccna-u25-l4-e1",
+          "type": "choice",
+          "concept": "iac",
+          "prompt": "In network as code, what is the single source of truth for the desired configuration?",
+          "options": [
+            "A version-controlled Git repository",
+            "The running configuration of the core switch",
+            "The notes of the senior engineer",
+            "The last backup on a TFTP (Trivial File Transfer Protocol) server"
+          ],
+          "answer": 0,
+          "explanation": "Repositori Git yang berversi menyimpan keadaan yang diinginkan, dan alat otomasi menerapkannya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-ssot"
+          ]
+        },
+        {
+          "id": "ccna-u25-l4-e2",
+          "type": "truefalse",
+          "concept": "iac",
+          "prompt": "Infrastructure as code means typing configuration changes faster in the CLI (command-line interface).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. IaC (infrastructure as code) memakai file definisi yang diterapkan alat otomasi, bukan mengetik di CLI (command-line interface).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-iac"
+          ]
+        },
+        {
+          "id": "ccna-u25-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "drift"
+          ],
+          "title": "Configuration drift",
+          "body": "Configuration drift terjadi saat keadaan jaringan yang sebenarnya menyimpang dari yang tertulis di repositori, misalnya karena seseorang mengubah satu switch secara manual. Alat IaC (infrastructure as code) bisa mendeteksi perbedaan itu dan mengembalikan keadaan yang diinginkan. Karena itu, di tim yang memakai IaC, perubahan seharusnya lewat repositori, bukan langsung di perangkat.",
+          "keyPoints": [
+            "Drift: kenyataan beda dari repositori",
+            "Penyebab umum: perubahan manual",
+            "Ubah lewat repositori"
+          ],
+          "teaches": [
+            "ccna-f-u25-drift",
+            "ccna-f-u25-ssot"
+          ]
+        },
+        {
+          "id": "ccna-u25-l4-e3",
+          "type": "choice",
+          "concept": "drift",
+          "prompt": "An engineer fixes a problem by typing a command directly on one router. The Git repository is not updated. What does this create?",
+          "options": [
+            "Configuration drift",
+            "A southbound API (application programming interface)",
+            "Intent-based networking",
+            "A data plane loop"
+          ],
+          "answer": 0,
+          "explanation": "Keadaan router kini berbeda dari repositori, dan itulah configuration drift.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-drift"
+          ]
+        },
+        {
+          "id": "ccna-u25-l4-e4",
+          "type": "multi",
+          "concept": "drift",
+          "prompt": "Which two are benefits of infrastructure as code? (Choose two.)",
+          "options": [
+            "Changes are repeatable and consistent",
+            "The change history is kept in version control",
+            "Devices no longer need an operating system",
+            "No one ever needs to review changes"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "IaC (infrastructure as code) membuat perubahan bisa diulang dan riwayatnya tersimpan di Git. Perangkat tetap butuh sistem operasi, dan perubahan tetap perlu ditinjau.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-iac",
+            "ccna-f-u25-ssot"
+          ]
+        },
+        {
+          "id": "ccna-u25-l4-e5",
+          "type": "order",
+          "concept": "iac",
+          "prompt": "Put the network-as-code workflow in order.",
+          "items": [
+            "Edit the desired state in a file",
+            "Commit the change to the Git repository",
+            "Run the automation tool",
+            "The tool updates the devices"
+          ],
+          "explanation": "Ubah file, simpan di Git, jalankan alat, lalu alat memperbarui perangkat.",
+          "requires": [
+            "ccna-f-u25-ssot",
+            "ccna-f-u25-iac"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u25-l5",
+      "title": "REST API dan JSON",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u25-l4"
+      },
+      "items": [
+        {
+          "id": "ccna-u25-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "rest-api"
+          ],
+          "title": "REST API",
+          "body": "REST (Representational State Transfer) API (application programming interface) memakai model permintaan dan jawaban HTTP (Hypertext Transfer Protocol). Klien mengirim metode ke sebuah alamat, dan server menjawab dengan kode status dan data. Metode dipetakan ke CRUD (create, read, update, delete): POST untuk create, GET untuk read, PUT atau PATCH untuk update, dan DELETE untuk delete. GET hanya membaca dan tidak mengubah apa pun.",
+          "keyPoints": [
+            "POST create, GET read",
+            "PUT/PATCH update, DELETE delete",
+            "GET tidak mengubah apa pun"
+          ],
+          "visual": "RestCrud",
+          "teaches": [
+            "ccna-f-u25-rest",
+            "ccna-f-u25-crud",
+            "ccna-f-u25-get-safe"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-e1",
+          "type": "match",
+          "concept": "rest-api",
+          "prompt": "Match each HTTP (Hypertext Transfer Protocol) method to its usual CRUD (create, read, update, delete) action.",
+          "pairs": [
+            [
+              "POST",
+              "Create"
+            ],
+            [
+              "GET",
+              "Read"
+            ],
+            [
+              "PUT",
+              "Update"
+            ],
+            [
+              "DELETE",
+              "Delete"
+            ]
+          ],
+          "explanation": "POST membuat, GET membaca, PUT memperbarui, dan DELETE menghapus.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-crud"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-e2",
+          "type": "choice",
+          "concept": "rest-api",
+          "prompt": "A script must read the list of devices from a controller without changing anything. Which HTTP (Hypertext Transfer Protocol) method should it use?",
+          "options": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE"
+          ],
+          "answer": 0,
+          "explanation": "GET hanya membaca.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-get-safe",
+            "ccna-f-u25-crud"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "http-status"
+          ],
+          "title": "Kode status",
+          "body": "Jawaban server membawa kode status. 2xx berarti berhasil: 200 OK, 201 Created, 204 No Content. 4xx berarti kesalahan di sisi klien: 400 Bad Request, 401 Unauthorized untuk kredensial yang tidak ada atau salah, 403 Forbidden untuk akses yang ditolak, dan 404 Not Found. 5xx berarti kesalahan di sisi server, misalnya 500 Internal Server Error.",
+          "keyPoints": [
+            "2xx: berhasil",
+            "4xx: kesalahan klien",
+            "5xx: kesalahan server"
+          ],
+          "teaches": [
+            "ccna-f-u25-status",
+            "ccna-f-u25-status-codes"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-e3",
+          "type": "choice",
+          "concept": "http-status",
+          "prompt": "A script sends a request without its API (application programming interface) token. Which status code does the controller most likely return?",
+          "options": [
+            "401 Unauthorized",
+            "201 Created",
+            "500 Internal Server Error",
+            "204 No Content"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa kredensial yang sah, server menjawab 401. 201 dan 204 berarti berhasil, dan 500 kesalahan server.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-status-codes"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-e4",
+          "type": "truefalse",
+          "concept": "http-status",
+          "prompt": "A 404 status code means the server itself crashed.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. 404 Not Found adalah kesalahan sisi klien: alamat yang diminta tidak ada. Kesalahan server memakai 5xx.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-status-codes",
+            "ccna-f-u25-status"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-m3",
+          "type": "learn",
+          "concepts": [
+            "json"
+          ],
+          "title": "JSON",
+          "body": "Data REST (Representational State Transfer) API (application programming interface) umumnya berformat JSON (JavaScript Object Notation). Objek ditulis di dalam kurung kurawal sebagai pasangan nama dan nilai, dan array di dalam kurung siku. Nama selalu string dalam tanda kutip ganda. Nilai bisa berupa string, angka, true, false, null, objek, atau array.",
+          "keyPoints": [
+            "Objek: { \"nama\": nilai }",
+            "Array: [ ... ]",
+            "Nama selalu dalam kutip ganda"
+          ],
+          "teaches": [
+            "ccna-f-u25-json",
+            "ccna-f-u25-json-values"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-e5",
+          "type": "exhibit",
+          "concept": "json",
+          "prompt": "Refer to the exhibit. What is the value of the interface name in the second element of the interfaces array?",
+          "outputs": [
+            {
+              "title": "GET /devices/R1",
+              "text": "{\n  \"hostname\": \"R1\",\n  \"interfaces\": [\n    { \"name\": \"GigabitEthernet0/0/0\", \"enabled\": true },\n    { \"name\": \"GigabitEthernet0/0/1\", \"enabled\": false }\n  ]\n}"
+            }
+          ],
+          "options": [
+            "\"GigabitEthernet0/0/1\"",
+            "\"GigabitEthernet0/0/0\"",
+            "\"R1\"",
+            "false"
+          ],
+          "answer": 0,
+          "explanation": "Array dihitung dari elemen pertama; elemen kedua adalah objek dengan name GigabitEthernet0/0/1.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-json"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-e6",
+          "type": "choice",
+          "concept": "json",
+          "prompt": "Which line is valid JSON (JavaScript Object Notation)?",
+          "options": [
+            "{ \"vlan\": 10, \"name\": \"Staf\" }",
+            "{ 'vlan': 10, 'name': 'Staf' }",
+            "{ vlan: 10, name: Staf }",
+            "( \"vlan\" = 10 )"
+          ],
+          "answer": 0,
+          "explanation": "Nama dan string harus memakai tanda kutip ganda, dan objek memakai kurung kurawal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-json"
+          ]
+        },
+        {
+          "id": "ccna-u25-l5-e7",
+          "type": "multi",
+          "concept": "json",
+          "prompt": "Which two are valid JSON (JavaScript Object Notation) values? (Choose two.)",
+          "options": [
+            "true",
+            "null",
+            "undefined",
+            "True"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "true dan null adalah nilai JSON (JavaScript Object Notation). undefined tidak ada di JSON, dan True dengan huruf besar tidak sah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u25-json-values"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u25-per-device",
+      "statement": "Pada manajemen per perangkat, setiap router dan switch dikonfigurasi satu per satu, biasanya lewat CLI dengan SSH, dan setiap perangkat menjalankan control plane-nya sendiri.",
+      "source": "https://www.cisco.com/c/en/us/solutions/software-defined-networking/overview.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u25-manual-risk",
+      "statement": "Perubahan manual satu per satu lambat dan rawan tidak konsisten; otomasi memberi hasil yang sama setiap kali untuk masukan yang sama.",
+      "source": "https://www.cisco.com/c/en/us/solutions/collateral/executive-perspectives/technology-perspectives/automate-network-infrastructure-code-wp.html"
+    },
+    {
+      "id": "ccna-f-u25-planes",
+      "statement": "Control plane memutuskan cara meneruskan, misalnya membangun tabel routing, sedangkan data plane meneruskan paket sesuai keputusan itu.",
+      "source": "https://www.cisco.com/c/en/us/solutions/software-defined-networking/overview.html"
+    },
+    {
+      "id": "ccna-f-u25-sdn",
+      "statement": "SDN memisahkan control plane dari data plane dan memusatkan kecerdasan jaringan di controller yang bisa diprogram.",
+      "source": "https://www.cisco.com/c/en/us/solutions/software-defined-networking/overview.html"
+    },
+    {
+      "id": "ccna-f-u25-nbi",
+      "statement": "Northbound API menghubungkan aplikasi dengan controller, dan sering berupa REST API.",
+      "source": "https://www.cisco.com/c/en/us/solutions/software-defined-networking/overview.html"
+    },
+    {
+      "id": "ccna-f-u25-sbi",
+      "statement": "Southbound API menghubungkan controller dengan perangkat jaringan; contohnya OpenFlow.",
+      "source": "https://www.cisco.com/c/en/us/solutions/software-defined-networking/overview.html"
+    },
+    {
+      "id": "ccna-f-u25-catc",
+      "statement": "Cisco Catalyst Center, dulu Cisco DNA Center, adalah controller jaringan kampus untuk otomasi penerapan dan konfigurasi perangkat, kebijakan, serta pemantauan dan analitik.",
+      "source": "https://www.cisco.com/c/en/us/products/collateral/cloud-systems-management/dna-center/nb-06-dna-center-data-sheet-cte-en.html"
+    },
+    {
+      "id": "ccna-f-u25-intent",
+      "statement": "Pada intent-based networking, administrator menyatakan apa yang diinginkan, dan Catalyst Center menerjemahkannya menjadi konfigurasi perangkat.",
+      "source": "https://www.cisco.com/c/en/us/products/collateral/cloud-systems-management/dna-center/guide-c07-744044.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u25-cloud",
+      "statement": "Pada manajemen berbasis cloud seperti Cisco Meraki, perangkat dikonfigurasi dan dipantau dari dashboard web di cloud, dan perubahan dikirim dari cloud ke perangkat.",
+      "source": "https://www.cisco.com/site/us/en/products/networking/meraki-cloud-management-dashboard/index.html"
+    },
+    {
+      "id": "ccna-f-u25-cloud-oob",
+      "statement": "Di Meraki, hanya lalu lintas manajemen yang pergi ke cloud; lalu lintas data pengguna tidak melewati cloud.",
+      "source": "https://www.cisco.com/site/us/en/products/networking/meraki-cloud-management-dashboard/index.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u25-iac",
+      "statement": "Infrastructure as code mengelola infrastruktur lewat file definisi yang bisa dibaca mesin, bukan konfigurasi manual, sehingga hasilnya konsisten dan bisa diulang.",
+      "source": "https://www.cisco.com/site/us/en/learn/topics/computing/what-is-iac.html"
+    },
+    {
+      "id": "ccna-f-u25-ssot",
+      "statement": "Pada network as code, repositori Git yang berversi menjadi sumber kebenaran tunggal tentang keadaan yang diinginkan, dan alat seperti Ansible atau Terraform menerapkannya.",
+      "source": "https://netascode.cisco.com/docs/guides/concepts/managing_drift/"
+    },
+    {
+      "id": "ccna-f-u25-drift",
+      "statement": "Configuration drift terjadi saat keadaan jaringan yang sebenarnya menyimpang dari keadaan yang diinginkan di repositori, misalnya karena perubahan manual.",
+      "source": "https://netascode.cisco.com/docs/guides/concepts/managing_drift/"
+    },
+    {
+      "id": "ccna-f-u25-rest",
+      "statement": "REST API bekerja dengan model permintaan dan jawaban HTTP: klien mengirim metode ke sebuah URI dan server menjawab dengan kode status serta data.",
+      "source": "https://developer.cisco.com/docs/cisco-meeting-server/"
+    },
+    {
+      "id": "ccna-f-u25-crud",
+      "statement": "Di REST API, POST biasa dipakai untuk create, GET untuk read, PUT atau PATCH untuk update, dan DELETE untuk delete.",
+      "source": "https://developer.cisco.com/docs/cisco-meeting-server/"
+    },
+    {
+      "id": "ccna-f-u25-get-safe",
+      "statement": "GET hanya membaca dan tidak mengubah apa pun di server.",
+      "source": "https://www.rfc-editor.org/rfc/rfc9110.html"
+    },
+    {
+      "id": "ccna-f-u25-status",
+      "statement": "Kode status HTTP 2xx berarti berhasil, 4xx berarti kesalahan di sisi klien, dan 5xx berarti kesalahan di sisi server.",
+      "source": "https://www.rfc-editor.org/rfc/rfc9110.html"
+    },
+    {
+      "id": "ccna-f-u25-status-codes",
+      "statement": "200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, dan 500 Internal Server Error adalah kode yang umum.",
+      "source": "https://www.rfc-editor.org/rfc/rfc9110.html"
+    },
+    {
+      "id": "ccna-f-u25-json",
+      "statement": "JSON memakai objek di dalam kurung kurawal berisi pasangan nama dan nilai, dan array di dalam kurung siku; nama selalu string dalam tanda kutip ganda.",
+      "source": "https://www.rfc-editor.org/rfc/rfc8259.html"
+    },
+    {
+      "id": "ccna-f-u25-json-values",
+      "statement": "Nilai JSON bisa berupa string, angka, true, false, null, objek, atau array.",
+      "source": "https://www.rfc-editor.org/rfc/rfc8259.html"
+    }
+  ]
+}
