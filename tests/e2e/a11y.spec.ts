@@ -102,6 +102,7 @@ test('the CCNA screens have no accessibility violations', async ({ page }) => {
     ['home CCNA (tree)', '/'],
     ['ujian CCNA', '/#/ujian'],
     ['lab CCNA', '/#/lab/ccna-u20-l6'],
+    ['panduan unit CCNA (contoh console)', '/#/guide/ccna-u04-ipv4'],
   ] as const) {
     await page.goto(hash)
     await page.waitForTimeout(300)

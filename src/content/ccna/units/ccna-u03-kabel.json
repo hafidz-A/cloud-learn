@@ -396,7 +396,35 @@
           "teaches": [
             "ccna-f-u03-autoneg",
             "ccna-f-u03-autoneg-fallback"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/24",
+                "note": "Masuk ke mode konfigurasi interface fa0/24; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "speed 100",
+                "note": "Mengatur kecepatan port menjadi 100."
+              },
+              {
+                "command": "duplex full",
+                "note": "Mengatur duplex port menjadi full."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u03-l3-e1",
@@ -494,7 +522,44 @@
           ],
           "teaches": [
             "ccna-f-u03-speed-duplex-cmd"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "context": "interface FastEthernet0/24",
+                "lines": [
+                  "speed 100",
+                  "duplex full"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/24",
+                "note": "Masuk ke mode konfigurasi interface fa0/24; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "speed auto",
+                "note": "Mengatur kecepatan port menjadi auto."
+              },
+              {
+                "command": "duplex auto",
+                "note": "Mengatur duplex port menjadi auto."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u03-l3-e5",
@@ -830,7 +895,46 @@
             "ccna-f-u03-if-states",
             "ccna-f-u03-mismatch-symptoms",
             "ccna-f-u03-speed-duplex-cmd"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "given": [
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "lines": [
+                  "ip address 203.0.113.2 255.255.255.252"
+                ]
+              }
+            ],
+            "cabled": [
+              "GigabitEthernet0/0/1"
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface g0/0/1",
+                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "no shutdown",
+                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              },
+              {
+                "command": "show ip interface brief",
+                "note": "Ringkasan semua interface: alamat, status, dan protocol."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u03-l5-e1",

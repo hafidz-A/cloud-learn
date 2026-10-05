@@ -186,7 +186,27 @@
           "teaches": [
             "ccna-f-u13-root-election",
             "ccna-f-u13-priority"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW2",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "spanning-tree vlan 130 priority 4096",
+                "note": "Memasang bridge priority 4096 untuk VLAN (Virtual LAN) 130; nilai lebih kecil lebih berpeluang jadi root."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l2-e1",
@@ -294,7 +314,27 @@
           "teaches": [
             "ccna-f-u13-root-cmd",
             "ccna-f-u13-priority"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "spanning-tree vlan 110,120 root primary",
+                "note": "Menjadikan switch ini root bridge untuk VLAN (Virtual LAN) 110,120 dengan menurunkan priority-nya."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l2-e5",
@@ -730,7 +770,27 @@
             "ccna-f-u13-mode-cmd",
             "ccna-f-u13-show-stp",
             "ccna-f-u13-pvst"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "spanning-tree mode rapid-pvst",
+                "note": "Mengganti mode spanning tree menjadi rapid-pvst."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l5-e1",
@@ -857,7 +917,31 @@
           "teaches": [
             "ccna-f-u13-cost-cmd",
             "ccna-f-u13-root-cmd"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW3",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface g0/2",
+                "note": "Masuk ke mode konfigurasi interface g0/2; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "spanning-tree cost 2",
+                "note": "Mengubah cost spanning tree port ini menjadi 2."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l5-e5",
@@ -925,7 +1009,40 @@
             "ccna-f-u13-stp-timers",
             "ccna-f-u13-portfast-cmd",
             "ccna-f-u13-portfast-edge"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "context": "interface FastEthernet0/5",
+                "lines": [
+                  "switchport mode access",
+                  "switchport access vlan 110"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/5",
+                "note": "Masuk ke mode konfigurasi interface fa0/5; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "spanning-tree portfast",
+                "note": "Menyalakan PortFast: port access langsung forwarding tanpa menunggu listening dan learning."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l6-e1",
@@ -1013,7 +1130,27 @@
           "teaches": [
             "ccna-f-u13-portfast-cmd",
             "ccna-f-u13-portfast-edge"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "spanning-tree portfast default",
+                "note": "Menyalakan PortFast di semua port access."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l6-e4",
@@ -1107,7 +1244,40 @@
             "ccna-f-u13-bpduguard",
             "ccna-f-u13-bpduguard-cmd",
             "ccna-f-u03-err-disabled"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "context": "interface FastEthernet0/5",
+                "lines": [
+                  "switchport mode access",
+                  "spanning-tree portfast"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/5",
+                "note": "Masuk ke mode konfigurasi interface fa0/5; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "spanning-tree bpduguard enable",
+                "note": "Menyalakan BPDU (bridge protocol data unit) Guard: port mati kalau menerima BPDU."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l7-e1",
@@ -1183,7 +1353,31 @@
             "ccna-f-u13-rootguard",
             "ccna-f-u13-loopguard",
             "ccna-f-u13-guard-cmds"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface g0/2",
+                "note": "Masuk ke mode konfigurasi interface g0/2; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "spanning-tree guard root",
+                "note": "Menyalakan Root Guard: port ini tidak boleh mengarah ke root bridge baru."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l7-e3",
@@ -1307,7 +1501,39 @@
             "ccna-f-u13-mode-cmd",
             "ccna-f-u13-portfast-cmd",
             "ccna-f-u13-bpduguard-cmd"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "spanning-tree mode rapid-pvst",
+                "note": "Mengganti mode spanning tree menjadi rapid-pvst."
+              },
+              {
+                "command": "spanning-tree vlan 1,110 root primary",
+                "note": "Menjadikan switch ini root bridge untuk VLAN (Virtual LAN) 1,110 dengan menurunkan priority-nya."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              },
+              {
+                "command": "copy running-config startup-config",
+                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+              },
+              {
+                "command": "",
+                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u13-l8-e1",

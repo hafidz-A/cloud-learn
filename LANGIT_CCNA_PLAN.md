@@ -505,6 +505,11 @@ pernah menampilkan perilaku palsu sebagai perilaku IOS:
   Di kata berikutnya, keunikan dihitung dari perintah yang dikenal simulator saja, jadi singkatan sangat pendek
   di posisi itu bisa diterima simulator walau ambigu di IOS asli. Nama interface tetap memakai singkatan baku
   (`g0/0/0`, `fa0/1`, `lo0`, `vl10`, `po1`).
+- **Contoh di console** (`cli` di kartu materi): kartu yang perintahnya dipakai soal `ios` di lesson yang sama
+  menampilkan contoh pengetikannya. Langkahnya diputar oleh simulator yang sama, jadi prompt dan output persis
+  seperti terminal soal, dan setiap baris punya penjelasan singkat. Nilainya dibuat berbeda dari soal (alamat IP
+  dan nomor VLAN digeser) supaya contoh tidak sekadar kunci jawaban. Validator menolak contoh yang menghasilkan
+  galat IOS atau pesan Langit, dan baris tanpa penjelasan.
 - `?` dan Tab tidak didukung. Output `show` ditulis per soal mengikuti format perangkat asli, atau dibangun dari
   konfigurasi yang diketik (`show running-config` hanya menampilkan bagian yang relevan dan diberi catatan Langit).
 - Setiap soal `ios` punya `solution` (urutan perintah contoh). Validator menjalankannya di simulator dan

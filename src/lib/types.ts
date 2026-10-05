@@ -68,6 +68,21 @@ export type LearnCard = {
   trap?: string // what the exam likes to mix up, one sentence
   link?: string // a Microsoft Learn page for further reading
   teaches: string[] // Fact ids
+  /** CCNA: the commands of this card typed on the CLI simulator, each with what it does. */
+  cli?: CliExample
+}
+
+/**
+ * A worked example on the IOS simulator. The steps are replayed by the same
+ * engine as the `ios` questions, so prompts and output look exactly like the
+ * terminal the player will type in; `note` says in Indonesian what each line does.
+ */
+export type CliExample = {
+  device: { hostname: string; model: Model }
+  start?: 'user' | 'priv' | 'config'
+  given?: { context?: string; lines: string[] }[]
+  cabled?: string[]
+  steps: { command: string; note: string }[]
 }
 
 /** The older, smaller teaching card (plan section 11.1). Still playable; new material uses learn cards. */

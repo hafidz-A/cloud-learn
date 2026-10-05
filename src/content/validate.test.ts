@@ -342,3 +342,30 @@ describe('CCNA abbreviation patterns (LANGIT_CCNA_PLAN.md section 2)', () => {
     expect(unexpandedAbbreviations(['Use a 1000BASE-SX or 1000BASE-LX/LH module.'])).toEqual([])
   })
 })
+
+describe('CLI examples on learn cards (LANGIT_CCNA_PLAN.md section 7)', () => {
+  const fact = (id: string): Fact => ({ id, statement: 'Fakta.', source: 'https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html' })
+  const card = (cli: LearnCard['cli']): LearnCard => ({
+    id: 'u99-l1-m1',
+    type: 'learn',
+    concepts: ['cli'],
+    title: 'CLI',
+    body: 'Satu kalimat. Dua kalimat. Tiga kalimat.',
+    keyPoints: ['Satu', 'Dua'],
+    teaches: ['f-u99-a'],
+    cli,
+  })
+  const device = { hostname: 'R1', model: 'isr4331' as const }
+
+  it('accepts an example that replays cleanly, with a note on every line', () => {
+    const cli = { device, steps: [{ command: 'configure terminal', note: 'Masuk ke mode konfigurasi.' }, { command: 'hostname R2', note: 'Mengganti nama.' }] }
+    expect(messages(unitWith([card(cli)], [fact('f-u99-a')])).filter((m) => m.startsWith('CLI example'))).toEqual([])
+  })
+
+  it('rejects a line the simulator answers with an error, and a line without a note', () => {
+    const cli = { device, steps: [{ command: 'configure terminal', note: '' }, { command: 'ip address 300.1.1.1 255.255.255.0', note: 'Salah.' }] }
+    const found = errors(unitWith([card(cli)], [fact('f-u99-a')]))
+    expect(found.some((m) => m.includes('needs a note'))).toBe(true)
+    expect(found.some((m) => m.startsWith('CLI example gets errors'))).toBe(true)
+  })
+})

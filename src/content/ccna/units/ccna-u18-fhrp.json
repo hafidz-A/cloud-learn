@@ -374,7 +374,51 @@
           ],
           "teaches": [
             "ccna-f-u18-hsrp-cmds"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "given": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "lines": [
+                  "ip address 192.168.41.2 255.255.255.0",
+                  "no shutdown"
+                ]
+              }
+            ],
+            "cabled": [
+              "GigabitEthernet0/0/0"
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface g0/0/0",
+                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "standby 1 ip 192.168.41.1",
+                "note": "Ikut grup HSRP (Hot Standby Router Protocol) 1 dengan alamat virtual 192.168.41.1, gateway yang dipakai host."
+              },
+              {
+                "command": "standby 1 priority 110",
+                "note": "Memasang priority 110 di grup 1; yang tertinggi menjadi router aktif."
+              },
+              {
+                "command": "standby 1 preempt",
+                "note": "Membolehkan router ini merebut peran aktif di grup 1 saat priority-nya lebih tinggi."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u18-l3-e1",
@@ -511,7 +555,47 @@
           "teaches": [
             "ccna-f-u18-hsrp-v2",
             "ccna-f-u18-hsrp-cmds"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "given": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "lines": [
+                  "ip address 192.168.41.2 255.255.255.0",
+                  "no shutdown"
+                ]
+              }
+            ],
+            "cabled": [
+              "GigabitEthernet0/0/0"
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface g0/0/0",
+                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "standby version 2",
+                "note": "Memakai HSRP (Hot Standby Router Protocol) versi 2."
+              },
+              {
+                "command": "standby 300 ip 192.168.41.1",
+                "note": "Ikut grup HSRP (Hot Standby Router Protocol) 300 dengan alamat virtual 192.168.41.1, gateway yang dipakai host."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u18-l3-e4",

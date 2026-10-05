@@ -167,7 +167,39 @@
           "teaches": [
             "ccna-f-u09-vlan-cmd",
             "ccna-f-u09-show-vlan"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "vlan 110",
+                "note": "Membuat VLAN 110 dan masuk ke mode konfigurasinya."
+              },
+              {
+                "command": "name Staf",
+                "note": "Memberi nama Staf pada VLAN ini."
+              },
+              {
+                "command": "vlan 120",
+                "note": "Membuat VLAN 120 dan masuk ke mode konfigurasinya."
+              },
+              {
+                "command": "name Tamu",
+                "note": "Memberi nama Tamu pada VLAN ini."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u09-l2-e1",
@@ -233,7 +265,43 @@
             "ccna-f-u09-access-cmd",
             "ccna-f-u09-auto-create",
             "ccna-f-u09-range"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "context": "vlan 110",
+                "lines": [
+                  "name Staf"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/5",
+                "note": "Masuk ke mode konfigurasi interface fa0/5; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "switchport mode access",
+                "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+              },
+              {
+                "command": "switchport access vlan 110",
+                "note": "Memasukkan port ini ke VLAN 110."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u09-l2-e3",
@@ -461,7 +529,53 @@
             "ccna-f-u09-voice-why",
             "ccna-f-u09-voice-cmd",
             "ccna-f-u09-voice-off"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "context": "vlan 110",
+                "lines": [
+                  "name Staf"
+                ]
+              },
+              {
+                "context": "vlan 250",
+                "lines": [
+                  "name Suara"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/7",
+                "note": "Masuk ke mode konfigurasi interface fa0/7; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "switchport mode access",
+                "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+              },
+              {
+                "command": "switchport access vlan 110",
+                "note": "Memasukkan port ini ke VLAN 110."
+              },
+              {
+                "command": "switchport voice vlan 250",
+                "note": "Memakai VLAN 250 untuk telepon IP di port ini."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u09-l3-e1",
@@ -688,7 +802,43 @@
           "teaches": [
             "ccna-f-u09-iot-segment",
             "ccna-f-u09-appliance"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "vlan 140",
+                "note": "Membuat VLAN 140 dan masuk ke mode konfigurasinya."
+              },
+              {
+                "command": "name IoT",
+                "note": "Memberi nama IoT pada VLAN ini."
+              },
+              {
+                "command": "interface fa0/15",
+                "note": "Masuk ke mode konfigurasi interface fa0/15; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "switchport mode access",
+                "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+              },
+              {
+                "command": "switchport access vlan 140",
+                "note": "Memasukkan port ini ke VLAN 140."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u09-l4-e3",
@@ -888,7 +1038,31 @@
             "ccna-f-u09-poe-cmd",
             "ccna-f-u09-poe-budget",
             "ccna-f-u09-poe-show"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c3650"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface g1/0/24",
+                "note": "Masuk ke mode konfigurasi interface g1/0/24; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "power inline never",
+                "note": "Mematikan PoE (Power over Ethernet) di port ini."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u09-l5-e4",
@@ -994,7 +1168,79 @@
             "ccna-f-u09-access-cmd",
             "ccna-f-u09-voice-cmd",
             "ccna-f-u09-show-vlan"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "vlan 110",
+                "note": "Membuat VLAN 110 dan masuk ke mode konfigurasinya."
+              },
+              {
+                "command": "name Staf",
+                "note": "Memberi nama Staf pada VLAN ini."
+              },
+              {
+                "command": "vlan 120",
+                "note": "Membuat VLAN 120 dan masuk ke mode konfigurasinya."
+              },
+              {
+                "command": "name Tamu",
+                "note": "Memberi nama Tamu pada VLAN ini."
+              },
+              {
+                "command": "vlan 250",
+                "note": "Membuat VLAN 250 dan masuk ke mode konfigurasinya."
+              },
+              {
+                "command": "name Suara",
+                "note": "Memberi nama Suara pada VLAN ini."
+              },
+              {
+                "command": "interface range fa0/1 - 10",
+                "note": "Masuk ke beberapa interface sekaligus (fa0/1 - 10); perintah berikutnya berlaku untuk semuanya."
+              },
+              {
+                "command": "switchport mode access",
+                "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+              },
+              {
+                "command": "switchport access vlan 110",
+                "note": "Memasukkan port ini ke VLAN 110."
+              },
+              {
+                "command": "switchport voice vlan 250",
+                "note": "Memakai VLAN 250 untuk telepon IP di port ini."
+              },
+              {
+                "command": "interface range fa0/11 - 20",
+                "note": "Masuk ke beberapa interface sekaligus (fa0/11 - 20); perintah berikutnya berlaku untuk semuanya."
+              },
+              {
+                "command": "switchport mode access",
+                "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+              },
+              {
+                "command": "switchport access vlan 120",
+                "note": "Memasukkan port ini ke VLAN 120."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              },
+              {
+                "command": "show vlan brief",
+                "note": "Menampilkan VLAN dan port anggotanya."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u09-l6-e1",

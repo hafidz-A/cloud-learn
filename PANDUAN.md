@@ -161,6 +161,9 @@ Untuk CCNA (pilih course CCNA di home):
   dengan lebih dari satu perintah, muncul `% Ambiguous command`. Panah atas/bawah memanggil perintah sebelumnya. Bantuan `?` dan Tab
   tidak ada. Pesan yang diawali **Langit:** berasal dari simulator, bukan dari IOS asli, misalnya untuk output yang
   tidak disimulasikan. Yang dinilai adalah hasil konfigurasinya, jadi urutan atau cara mengetik boleh berbeda.
+- **Contoh di console (CCNA)**: kartu materi yang perintahnya dipakai di soal console menampilkan contoh
+  pengetikannya langkah demi langkah, lengkap dengan prompt, jawaban perangkat, dan arti setiap baris. Nilainya
+  sengaja berbeda dari soal, jadi tetap pahami perintahnya, jangan hanya disalin.
 - **Lab (CCNA)**: setiap cabang hands-on punya kartu lab berisi topologi, tabel alamat, langkah, perintah, cara
   membuktikan, dan sumber resmi. Label kuning **Belum dicoba langsung** berarti langkahnya baru dicek ke dokumentasi
   Cisco dan simulator Langit, belum dicoba di Packet Tracer. Kalau hasilmu berbeda, catat supaya bisa diperbaiki.

@@ -24,7 +24,35 @@
             "ccna-f-u19-local-user",
             "ccna-f-u19-secret-kw",
             "ccna-f-u19-login-local"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "username admin secret Kopi-2026",
+                "note": "Membuat user lokal admin, password-nya disimpan sebagai hash."
+              },
+              {
+                "command": "line vty 0 4",
+                "note": "Masuk ke pengaturan line vty 0 sampai 4, jalur akses remote seperti SSH (Secure Shell)."
+              },
+              {
+                "command": "login local",
+                "note": "Meminta username dan password dari daftar user lokal."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u19-l1-e1",
@@ -168,7 +196,31 @@
           "teaches": [
             "ccna-f-u19-priv15",
             "ccna-f-u19-exec-timeout"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "line vty 0 4",
+                "note": "Masuk ke pengaturan line vty 0 sampai 4, jalur akses remote seperti SSH (Secure Shell)."
+              },
+              {
+                "command": "exec-timeout 5 0",
+                "note": "Memutus sesi yang diam selama 5 menit."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u19-l1-e6",
@@ -386,7 +438,51 @@
             "ccna-f-u19-telnet",
             "ccna-f-u19-transport",
             "ccna-f-u01-ports-tcp"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "ip domain name kantor.local",
+                "note": "Memasang nama domain kantor.local; dibutuhkan untuk membuat kunci RSA (Rivest-Shamir-Adleman)."
+              },
+              {
+                "command": "crypto key generate rsa modulus 2048",
+                "note": "Membuat pasangan kunci RSA (Rivest-Shamir-Adleman) 2048 bit, syarat SSH (Secure Shell) aktif."
+              },
+              {
+                "command": "ip ssh version 2",
+                "note": "Hanya menerima SSH (Secure Shell) versi 2."
+              },
+              {
+                "command": "username admin secret Kopi-2026",
+                "note": "Membuat user lokal admin, password-nya disimpan sebagai hash."
+              },
+              {
+                "command": "line vty 0 4",
+                "note": "Masuk ke pengaturan line vty 0 sampai 4, jalur akses remote seperti SSH (Secure Shell)."
+              },
+              {
+                "command": "login local",
+                "note": "Meminta username dan password dari daftar user lokal."
+              },
+              {
+                "command": "transport input ssh",
+                "note": "Hanya mengizinkan SSH (Secure Shell) di line ini, jadi Telnet ditolak."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u19-l3-e1",
@@ -700,7 +796,54 @@
             "ccna-f-u19-tacacs-server",
             "ccna-f-u19-method-list",
             "ccna-f-u19-default-list"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "given": [
+              {
+                "lines": [
+                  "username admin secret Kopi-2026"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "aaa new-model",
+                "note": "Mengaktifkan AAA (authentication, authorization, and accounting)."
+              },
+              {
+                "command": "tacacs server pusat",
+                "note": "Membuat definisi server TACACS+ (Terminal Access Controller Access-Control System Plus) bernama pusat."
+              },
+              {
+                "command": "address ipv4 10.0.40.10",
+                "note": "Alamat server itu 10.0.40.10."
+              },
+              {
+                "command": "key Rahasia-1",
+                "note": "Kunci bersama yang harus sama dengan di server."
+              },
+              {
+                "command": "exit",
+                "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
+              },
+              {
+                "command": "aaa authentication login default group tacacs+ local",
+                "note": "Daftar metode login bawaan untuk semua line: group tacacs+ local, dicoba berurutan."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u19-l5-e1",
@@ -875,7 +1018,41 @@
             "ccna-f-u19-scp",
             "ccna-f-u19-sftp",
             "ccna-f-u01-ports-tcp"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "given": [
+              {
+                "lines": [
+                  "aaa new-model",
+                  "aaa authentication login default local",
+                  "username admin privilege 15 secret Kopi-2026",
+                  "ip domain name kantor.local"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "aaa authorization exec default local",
+                "note": "Memeriksa izin EXEC pengguna lewat AAA (authentication, authorization, and accounting)."
+              },
+              {
+                "command": "ip scp server enable",
+                "note": "Menyalakan server SCP (Secure Copy) di perangkat."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u19-l6-e1",
@@ -1048,7 +1225,63 @@
             "ccna-f-u19-ssh-steps",
             "ccna-f-u19-transport",
             "ccna-f-u19-exec-timeout"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "ip domain name kantor.local",
+                "note": "Memasang nama domain kantor.local; dibutuhkan untuk membuat kunci RSA (Rivest-Shamir-Adleman)."
+              },
+              {
+                "command": "crypto key generate rsa modulus 2048",
+                "note": "Membuat pasangan kunci RSA (Rivest-Shamir-Adleman) 2048 bit, syarat SSH (Secure Shell) aktif."
+              },
+              {
+                "command": "ip ssh version 2",
+                "note": "Hanya menerima SSH (Secure Shell) versi 2."
+              },
+              {
+                "command": "username admin privilege 15 secret Kopi-2026",
+                "note": "Membuat user lokal admin dengan privilege 15, password-nya disimpan sebagai hash."
+              },
+              {
+                "command": "line vty 0 15",
+                "note": "Masuk ke pengaturan line vty 0 sampai 15, jalur akses remote seperti SSH (Secure Shell)."
+              },
+              {
+                "command": "login local",
+                "note": "Meminta username dan password dari daftar user lokal."
+              },
+              {
+                "command": "transport input ssh",
+                "note": "Hanya mengizinkan SSH (Secure Shell) di line ini, jadi Telnet ditolak."
+              },
+              {
+                "command": "exec-timeout 10 0",
+                "note": "Memutus sesi yang diam selama 10 menit."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              },
+              {
+                "command": "copy running-config startup-config",
+                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+              },
+              {
+                "command": "",
+                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u19-l7-e1",
