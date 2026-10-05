@@ -147,7 +147,7 @@ export function IosInput({ exercise, response, onChange, reveal, locked }: Input
       )}
       {!isLocked && (
         <p className="mt-2 text-13 text-tinta-lembut">
-          Simulator Langit mengenal perintah untuk latihan CCNA dan singkatan baku seperti conf t, int g0/0/0, dan sh ip int br. Bantuan ? dan Tab tidak ada.
+          Setiap kata boleh disingkat selama unik, seperti di IOS asli: conf t, int g0/0/0, ip add, no shut, sh ip int br. Bantuan ? dan Tab tidak ada.
         </p>
       )}
 

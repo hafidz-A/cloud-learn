@@ -156,8 +156,9 @@ Untuk CCNA (pilih course CCNA di home):
 - **Pohon lesson CCNA**: lesson utama ada di batang. Cabang yang tumbuh dari sebuah lesson berarti
   **prasyarat** (wajib, bisa dilewati dengan tes lompat), **hands-on** (opsional, simulator CLI lalu lab), atau
   **pendukung** (opsional, materi tambahan). Cabang bisa bercabang lagi, misalnya lab kedua yang tumbuh dari lab pertama.
-- **Soal simulator CLI (CCNA)**: ketik perintah IOS seperti di terminal router atau switch. Singkatan baku seperti
-  `conf t` dan `sh ip int br` dikenal, dan panah atas/bawah memanggil perintah sebelumnya. Bantuan `?` dan Tab
+- **Soal simulator CLI (CCNA)**: ketik perintah IOS seperti di terminal router atau switch. Seperti IOS asli, setiap kata boleh
+  disingkat selama unik, misalnya `hostn R2`, `ip add`, `no shut`, atau `switchp mo acc`; kalau singkatannya cocok
+  dengan lebih dari satu perintah, muncul `% Ambiguous command`. Panah atas/bawah memanggil perintah sebelumnya. Bantuan `?` dan Tab
   tidak ada. Pesan yang diawali **Langit:** berasal dari simulator, bukan dari IOS asli, misalnya untuk output yang
   tidak disimulasikan. Yang dinilai adalah hasil konfigurasinya, jadi urutan atau cara mengetik boleh berbeda.
 - **Lab (CCNA)**: setiap cabang hands-on punya kartu lab berisi topologi, tabel alamat, langkah, perintah, cara

@@ -497,10 +497,14 @@ pernah menampilkan perilaku palsu sebagai perilaku IOS:
   untuk perintah yang dikenal simulator dengan argumen yang salah atau kurang.
 - Perintah yang tidak dikenal simulator dijawab dengan pesan berlabel **Langit**, bukan pesan IOS, karena di
   perangkat asli perintah itu belum tentu salah.
-- Singkatan: simulator menerima kata lengkap dan singkatan baku yang dipakai luas di dokumentasi Cisco
-  (`en`, `conf t`, `int g0/0/0`, `sh ip int br`, `no shut`, `sh run`, `copy run start`, `wr`, dan sejenisnya).
-  IOS asli menerima singkatan apa pun yang unik; singkatan lain di simulator dijawab dengan pesan Langit yang
-  menyebut kata lengkapnya, bukan dianggap salah.
+- Singkatan: seperti IOS asli, setiap kata kunci boleh disingkat selama unik di posisi itu (`hostn R2`,
+  `ip add`, `desc`, `switchp mo acc`, `sh ip int br`). Singkatan yang cocok dengan lebih dari satu kata kunci
+  dijawab `% Ambiguous command: "..."`, dan kata yang diketik lengkap menang atas kata lain yang diawalinya
+  (`ip` dan `ipv6`). Untuk kata pertama, simulator juga menghitung perintah tingkat atas IOS asli yang tidak
+  disimulasikan (`send`, `setup`, `connect`, dan lain-lain), jadi `s` dan `con` tetap ambigu seperti di router.
+  Di kata berikutnya, keunikan dihitung dari perintah yang dikenal simulator saja, jadi singkatan sangat pendek
+  di posisi itu bisa diterima simulator walau ambigu di IOS asli. Nama interface tetap memakai singkatan baku
+  (`g0/0/0`, `fa0/1`, `lo0`, `vl10`, `po1`).
 - `?` dan Tab tidak didukung. Output `show` ditulis per soal mengikuti format perangkat asli, atau dibangun dari
   konfigurasi yang diketik (`show running-config` hanya menampilkan bagian yang relevan dan diberi catatan Langit).
 - Setiap soal `ios` punya `solution` (urutan perintah contoh). Validator menjalankannya di simulator dan

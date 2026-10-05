@@ -79,13 +79,30 @@ describe('abbreviations and errors (LANGIT_CCNA_PLAN.md section 7)', () => {
     expect(state.saved).toContain('ip address 192.168.1.1 255.255.255.0')
   })
 
-  it('answers a too-short abbreviation with a Langit message, not an IOS error', () => {
-    const st = newDevice(R1)
-    const lines = step(st, 's ip int br')
-    expect(kinds(lines)).toEqual(['langit'])
-    expect(text(lines)).toContain('"sh"')
+  it('accepts any abbreviation that is unique, like IOS', () => {
     const conf = newDevice({ ...R1, start: 'config' })
-    expect(text(step(conf, 'hostnam R2'))).toContain('Ketik "hostname"')
+    expect(kinds(step(conf, 'hostn R2'))).toEqual([])
+    expect(conf.hostname).toBe('R2')
+    step(conf, 'inter g0/0/0')
+    expect(kinds(step(conf, 'ip add 192.168.1.1 255.255.255.0'))).toEqual([])
+    expect(kinds(step(conf, 'desc Ke LAN'))).toEqual([])
+    expect(text(step(conf, 'no shut'))).toContain('changed state to up')
+    expect(conf.config.get('interface GigabitEthernet0/0/0')?.get('ip address')).toBe('ip address 192.168.1.1 255.255.255.0')
+    const sw = newDevice({ hostname: 'SW1', model: 'c2960', start: 'config' })
+    step(sw, 'int fa0/1')
+    expect(kinds(step(sw, 'switchp mo acc'))).toEqual([])
+    expect(sw.config.get('interface FastEthernet0/1')?.get('switchport mode')).toBe('switchport mode access')
+  })
+
+  it('calls an abbreviation of more than one command ambiguous, counting real IOS commands too', () => {
+    const st = newDevice(R1)
+    // "s" is send, setup, show, ssh on a real router; "con" is configure and connect.
+    expect(text(step(st, 's ip int br'))).toBe('% Ambiguous command: "s"')
+    expect(text(step(st, 'con t'))).toBe('% Ambiguous command: "con"')
+    const conf = newDevice({ ...R1, start: 'config' })
+    expect(text(step(conf, 'ip ro 0.0.0.0 0.0.0.0 10.0.0.1'))).toBe('% Ambiguous command: "ip ro"')
+    // A word typed in full wins over longer keywords that start with it ("ip" and "ipv6").
+    expect(kinds(step(conf, 'ip route 0.0.0.0 0.0.0.0 10.0.0.1'))).toEqual([])
   })
 
   it('points at a bad value with the IOS caret, under the right column', () => {
