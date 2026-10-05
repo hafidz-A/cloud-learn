@@ -73,7 +73,27 @@
           "teaches": [
             "ccna-f-u11-ec-hash",
             "ccna-f-u11-ec-lb-cmd"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "port-channel load-balance src-dst-ip",
+                "note": "Mengatur cara EtherChannel membagi lalu lintas: src-dst-ip."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u11-l1-e3",
@@ -387,7 +407,31 @@
             "ccna-f-u11-ec-cmd",
             "ccna-f-u11-po-config",
             "ccna-f-u09-range"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface range g0/1 - 2",
+                "note": "Masuk ke beberapa interface sekaligus (g0/1 - 2); perintah berikutnya berlaku untuk semuanya."
+              },
+              {
+                "command": "channel-group 1 mode active",
+                "note": "Memasukkan port ke EtherChannel 1 dengan mode active."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u11-l3-e1",
@@ -537,7 +581,43 @@
           "teaches": [
             "ccna-f-u11-l3-ec",
             "ccna-f-u10-routed-port"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c3650"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface range g1/0/1 - 2",
+                "note": "Masuk ke beberapa interface sekaligus (g1/0/1 - 2); perintah berikutnya berlaku untuk semuanya."
+              },
+              {
+                "command": "no switchport",
+                "note": "Mengubah port switch menjadi port routed, yang bisa diberi alamat IP."
+              },
+              {
+                "command": "channel-group 2 mode active",
+                "note": "Memasukkan port ke EtherChannel 2 dengan mode active."
+              },
+              {
+                "command": "interface port-channel 2",
+                "note": "Masuk ke interface EtherChannel Port-channel 2."
+              },
+              {
+                "command": "ip address 10.0.40.1 255.255.255.252",
+                "note": "Memberi alamat 10.0.40.1 dengan mask 255.255.255.252 ke interface ini."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u11-l3-e5",
@@ -668,7 +748,49 @@
             "ccna-f-u11-standalone",
             "ccna-f-u11-ec-compat",
             "ccna-f-u11-mode-pairs"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "context": "interface GigabitEthernet0/1",
+                "lines": [
+                  "channel-group 1 mode passive"
+                ]
+              },
+              {
+                "context": "interface GigabitEthernet0/2",
+                "lines": [
+                  "channel-group 1 mode passive"
+                ]
+              },
+              {
+                "context": "interface Port-channel1",
+                "lines": []
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface range g0/1 - 2",
+                "note": "Masuk ke beberapa interface sekaligus (g0/1 - 2); perintah berikutnya berlaku untuk semuanya."
+              },
+              {
+                "command": "channel-group 1 mode active",
+                "note": "Memasukkan port ke EtherChannel 1 dengan mode active."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u11-l4-e2",
@@ -832,7 +954,47 @@
             "ccna-f-u11-ec-cmd",
             "ccna-f-u11-po-config",
             "ccna-f-u11-ec-summary"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface range fa0/23 - 24",
+                "note": "Masuk ke beberapa interface sekaligus (fa0/23 - 24); perintah berikutnya berlaku untuk semuanya."
+              },
+              {
+                "command": "channel-group 1 mode active",
+                "note": "Memasukkan port ke EtherChannel 1 dengan mode active."
+              },
+              {
+                "command": "interface port-channel 1",
+                "note": "Masuk ke interface EtherChannel Port-channel 1."
+              },
+              {
+                "command": "switchport mode trunk",
+                "note": "Menjadikan port ini trunk yang membawa banyak VLAN (Virtual LAN) dengan tag 802.1Q."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              },
+              {
+                "command": "copy running-config startup-config",
+                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+              },
+              {
+                "command": "",
+                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u11-l5-e1",

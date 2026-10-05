@@ -1,17 +1,17 @@
-import type { FC } from "react";
-import { label, quiet } from "./styles";
+import type { FC } from 'react'
+import { label, quiet } from './styles'
 
 const FIELDS = [
-  { name: "MAC tujuan", w: 52, fill: "var(--color-kabut)" },
-  { name: "MAC sumber", w: 52, fill: "var(--color-kabut)" },
-  { name: "Tag 4 byte", w: 62, fill: "var(--color-koral-muda)" },
-  { name: "Type", w: 34, fill: "var(--color-kabut)" },
-  { name: "Data", w: 50, fill: "var(--color-biru-muda)" },
-  { name: "FCS", w: 36, fill: "var(--color-kabut)" },
+  { name: 'MAC tujuan', w: 52, fill: 'var(--color-kabut)' },
+  { name: 'MAC sumber', w: 52, fill: 'var(--color-kabut)' },
+  { name: 'Tag 4 byte', w: 62, fill: 'var(--color-koral-muda)' },
+  { name: 'Type', w: 34, fill: 'var(--color-kabut)' },
+  { name: 'Data', w: 50, fill: 'var(--color-biru-muda)' },
+  { name: 'FCS', w: 36, fill: 'var(--color-kabut)' },
 ].map((f, i, all) => ({
   ...f,
   x: 4 + all.slice(0, i).reduce((sum, p) => sum + p.w, 0),
-}));
+}))
 
 /** 802.1Q inserts a 4-byte tag after the source MAC; the tag carries a 12-bit VLAN ID. */
 export const Dot1qTag: FC = () => {
@@ -110,5 +110,5 @@ export const Dot1qTag: FC = () => {
         Satu bit CFI di antara PRI dan VLAN ID
       </text>
     </svg>
-  );
-};
+  )
+}

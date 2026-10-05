@@ -72,7 +72,43 @@
             "ccna-f-u24-psec-mode",
             "ccna-f-u24-psec-default",
             "ccna-f-u24-sticky"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/5",
+                "note": "Masuk ke mode konfigurasi interface fa0/5; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "switchport mode access",
+                "note": "Menjadikan port ini port access, anggota satu VLAN (Virtual LAN) saja."
+              },
+              {
+                "command": "switchport port-security",
+                "note": "Menyalakan port security di port ini."
+              },
+              {
+                "command": "switchport port-security maximum 2",
+                "note": "Membolehkan paling banyak 2 alamat MAC (Media Access Control) di port ini."
+              },
+              {
+                "command": "switchport port-security mac-address sticky",
+                "note": "Mempelajari alamat MAC (Media Access Control) yang datang dan menyimpannya ke running-config."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u24-l1-e2",
@@ -175,7 +211,40 @@
             "ccna-f-u24-psec-restrict",
             "ccna-f-u24-psec-shutdown",
             "ccna-f-u24-errdisable"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "context": "interface FastEthernet0/5",
+                "lines": [
+                  "switchport mode access",
+                  "switchport port-security"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/5",
+                "note": "Masuk ke mode konfigurasi interface fa0/5; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "switchport port-security violation restrict",
+                "note": "Mode pelanggaran restrict: menentukan apa yang terjadi saat alamat asing datang."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u24-l1-e5",
@@ -283,7 +352,39 @@
             "ccna-f-u24-snoop",
             "ccna-f-u24-snoop-trust",
             "ccna-f-u24-snoop-enable"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "ip dhcp snooping",
+                "note": "Menyalakan DHCP (Dynamic Host Configuration Protocol) snooping secara global."
+              },
+              {
+                "command": "ip dhcp snooping vlan 110",
+                "note": "Menerapkan DHCP (Dynamic Host Configuration Protocol) snooping di VLAN (Virtual LAN) 110."
+              },
+              {
+                "command": "interface g0/1",
+                "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "ip dhcp snooping trust",
+                "note": "Mempercayai port ini, misalnya uplink ke server DHCP (Dynamic Host Configuration Protocol) yang sah."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u24-l2-e1",
@@ -370,7 +471,39 @@
           "teaches": [
             "ccna-f-u24-snoop-binding",
             "ccna-f-u24-snoop-rate"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "lines": [
+                  "ip dhcp snooping",
+                  "ip dhcp snooping vlan 110"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/3",
+                "note": "Masuk ke mode konfigurasi interface fa0/3; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "ip dhcp snooping limit rate 15",
+                "note": "Membatasi pesan DHCP (Dynamic Host Configuration Protocol) di port ini menjadi 15 per detik."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u24-l2-e4",
@@ -455,7 +588,49 @@
             "ccna-f-u24-dai-enable",
             "ccna-f-u24-dai-trust",
             "ccna-f-u24-snoop-binding"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "lines": [
+                  "ip dhcp snooping",
+                  "ip dhcp snooping vlan 110"
+                ]
+              },
+              {
+                "context": "interface GigabitEthernet0/1",
+                "lines": [
+                  "ip dhcp snooping trust"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "ip arp inspection vlan 110",
+                "note": "Menyalakan DAI (Dynamic ARP Inspection) di VLAN 110."
+              },
+              {
+                "command": "interface g0/1",
+                "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "ip arp inspection trust",
+                "note": "Mempercayai port ini untuk DAI (Dynamic ARP Inspection), biasanya port antar switch."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u24-l3-e1",
@@ -627,7 +802,35 @@
           "teaches": [
             "ccna-f-u24-storm",
             "ccna-f-u24-storm-action"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/8",
+                "note": "Masuk ke mode konfigurasi interface fa0/8; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "storm-control broadcast level 20",
+                "note": "Membatasi lalu lintas broadcast di port ini sampai 20 persen bandwidth."
+              },
+              {
+                "command": "storm-control action shutdown",
+                "note": "Saat badai terjadi, lakukan shutdown."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u24-l4-e1",
@@ -772,7 +975,43 @@
             "ccna-f-u24-rag-policy",
             "ccna-f-u24-rag-host",
             "ccna-f-u05-slaac"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "ipv6 nd raguard policy Klien",
+                "note": "Membuat policy RA (Router Advertisement) guard bernama Klien."
+              },
+              {
+                "command": "device-role host",
+                "note": "Peran perangkat di port: host."
+              },
+              {
+                "command": "exit",
+                "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
+              },
+              {
+                "command": "interface fa0/2",
+                "note": "Masuk ke mode konfigurasi interface fa0/2; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "ipv6 nd raguard attach-policy Klien",
+                "note": "Memasang policy Klien di interface ini."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u24-l5-e1",
@@ -921,7 +1160,87 @@
             "ccna-f-u24-snoop",
             "ccna-f-u24-dai",
             "ccna-f-u24-errdisable"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "SW1",
+              "model": "c2960"
+            },
+            "given": [
+              {
+                "context": "vlan 110",
+                "lines": [
+                  "name Pengguna"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "interface fa0/1",
+                "note": "Masuk ke mode konfigurasi interface fa0/1; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "switchport mode access",
+                "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+              },
+              {
+                "command": "switchport access vlan 110",
+                "note": "Memasukkan port ini ke VLAN 110."
+              },
+              {
+                "command": "switchport port-security",
+                "note": "Menyalakan port security di port ini."
+              },
+              {
+                "command": "switchport port-security mac-address sticky",
+                "note": "Mempelajari alamat MAC (Media Access Control) yang datang dan menyimpannya ke running-config."
+              },
+              {
+                "command": "exit",
+                "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
+              },
+              {
+                "command": "ip dhcp snooping",
+                "note": "Menyalakan DHCP (Dynamic Host Configuration Protocol) snooping secara global."
+              },
+              {
+                "command": "ip dhcp snooping vlan 110",
+                "note": "Menerapkan DHCP (Dynamic Host Configuration Protocol) snooping di VLAN 110."
+              },
+              {
+                "command": "ip arp inspection vlan 110",
+                "note": "Menyalakan DAI (Dynamic ARP Inspection) di VLAN 110."
+              },
+              {
+                "command": "interface g0/1",
+                "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+              },
+              {
+                "command": "ip dhcp snooping trust",
+                "note": "Mempercayai port ini, misalnya uplink ke server DHCP (Dynamic Host Configuration Protocol) yang sah."
+              },
+              {
+                "command": "ip arp inspection trust",
+                "note": "Mempercayai port ini untuk DAI (Dynamic ARP Inspection), biasanya port antar switch."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              },
+              {
+                "command": "copy running-config startup-config",
+                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+              },
+              {
+                "command": "",
+                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u24-l6-e1",

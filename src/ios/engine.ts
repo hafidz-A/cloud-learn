@@ -142,7 +142,8 @@ function tokenize(raw: string): InTok[] {
 }
 
 type Value = string
-type Partial = { ii: number; words: Value[] }
+/** `kws`: the keywords matched, as [input token index, path key, keyword]. */
+type Partial = { ii: number; words: Value[]; kws: [number, string, string][] }
 
 type Trace = {
   /** Furthest input token where a keyword did not fit, or a word was left over. */
@@ -153,6 +154,12 @@ type Trace = {
   incomplete: boolean
   /** A keyword typed shorter than the simulator accepts: token index and the keyword. */
   short?: { at: number; full: string; min: number }
+  /**
+   * Every keyword an input word was the start of, per position and the words before it
+   * (shared by all commands of a lookup). IOS calls a word ambiguous when it
+   * abbreviates more than one keyword there.
+   */
+  seen: Map<string, Set<string>>
 }
 
 function matchParam(st: Pick<DeviceState, 'model'>, kind: PatToken & { t: 'param' }, toks: InTok[], ii: number, raw: string): { n: number; value: string } | null | 'short' {
@@ -256,15 +263,19 @@ function parseRange(st: Pick<DeviceState, 'model'>, text: string): string[] | nu
 }
 
 /** Every way `pat` (from `pi`) can match the input (from `ii`), with what failed along the way. */
-function matchSeq(st: Pick<DeviceState, 'model'>, pat: PatToken[], pi: number, toks: InTok[], ii: number, raw: string, trace: Trace): Partial[] {
+function matchSeq(st: Pick<DeviceState, 'model'>, pat: PatToken[], pi: number, toks: InTok[], ii: number, raw: string, trace: Trace, path = ''): Partial[] {
   if (pi === pat.length) {
     // Words left over after a complete pattern: the simulator does not know them.
     if (ii < toks.length) trace.failAt = Math.max(trace.failAt, ii)
-    return [{ ii, words: [] }]
+    return [{ ii, words: [], kws: [] }]
   }
   const p = pat[pi]
-  const rest = (n: number, word: string | null): Partial[] =>
-    matchSeq(st, pat, pi + 1, toks, ii + n, raw, trace).map((r) => ({ ii: r.ii, words: word === null ? r.words : [word, ...r.words] }))
+  const rest = (n: number, word: string | null, kw = false): Partial[] =>
+    matchSeq(st, pat, pi + 1, toks, ii + n, raw, trace, word === null ? path : `${path} ${word}`).map((r) => ({
+      ii: r.ii,
+      words: word === null ? r.words : [word, ...r.words],
+      kws: kw ? [[ii, path, word!] as [number, string, string], ...r.kws] : r.kws,
+    }))
 
   if (ii >= toks.length) {
     // Optional groups may be skipped at the end; anything else is missing.
@@ -278,10 +289,12 @@ function matchSeq(st: Pick<DeviceState, 'model'>, pat: PatToken[], pi: number, t
   }
   switch (p.t) {
     case 'kw': {
+      // Like IOS, any abbreviation fits here; lookup() rejects the ones that are ambiguous.
       const t = toks[ii].text.toLowerCase()
-      if (p.full.startsWith(t) && t.length >= p.min) return rest(1, p.full)
-      if (p.full.startsWith(t) && t.length < p.min && (!trace.short || ii >= trace.short.at)) trace.short = { at: ii, full: p.full, min: p.min }
-      return fail()
+      if (!p.full.startsWith(t)) return fail()
+      const key = `${ii}|${path}`
+      trace.seen.set(key, (trace.seen.get(key) ?? new Set()).add(p.full))
+      return rest(1, p.full, true)
     }
     case 'param': {
       const m = matchParam(st, p, toks, ii, raw)
@@ -296,9 +309,9 @@ function matchSeq(st: Pick<DeviceState, 'model'>, pat: PatToken[], pi: number, t
       return rest(m.n, m.value)
     }
     case 'alt':
-      return p.options.flatMap((opt) => matchSeq(st, [...opt, ...pat.slice(pi + 1)], 0, toks, ii, raw, trace))
+      return p.options.flatMap((opt) => matchSeq(st, [...opt, ...pat.slice(pi + 1)], 0, toks, ii, raw, trace, path))
     case 'opt':
-      return [...matchSeq(st, [...p.seq, ...pat.slice(pi + 1)], 0, toks, ii, raw, trace), ...rest(0, null)]
+      return [...matchSeq(st, [...p.seq, ...pat.slice(pi + 1)], 0, toks, ii, raw, trace, path), ...rest(0, null)]
   }
 }
 
@@ -312,23 +325,63 @@ type Lookup =
   | { err: 'unsupported'; at: number }
   | { err: 'incomplete'; def: CmdDef; words: string[] }
   | { err: 'short'; at: number; full: string; min: number }
+  /** An abbreviation that fits more than one keyword at that point. */
+  | { err: 'ambiguous'; at: number }
   | { err: 'unknown' }
 
+/**
+ * First words of real IOS commands, including ones the simulator does not
+ * implement. They only count when checking abbreviations, so "s" stays
+ * ambiguous (send, setup, show, ssh) as on a real device, while "sh" means show.
+ */
+const REAL_FIRST_WORDS: { [M in Mode]?: string[] } = {
+  user: ['connect', 'disable', 'disconnect', 'enable', 'exit', 'logout', 'ping', 'send', 'show', 'ssh', 'telnet', 'terminal', 'traceroute'],
+  priv: [
+    ...['clear', 'clock', 'configure', 'connect', 'copy', 'debug', 'delete', 'dir', 'disable', 'disconnect', 'enable', 'erase', 'exit', 'logout'],
+    ...['mkdir', 'more', 'ping', 'reload', 'rename', 'send', 'setup', 'show', 'ssh', 'telnet', 'terminal', 'traceroute', 'undebug', 'verify', 'write'],
+  ],
+  config: [
+    ...['aaa', 'access-list', 'alias', 'archive', 'banner', 'boot', 'cdp', 'class-map', 'clock', 'config-register', 'control-plane', 'crypto'],
+    ...['default', 'do', 'enable', 'end', 'exit', 'hostname', 'interface', 'ip', 'ipv6', 'key', 'license', 'line', 'lldp', 'logging', 'mac'],
+    ...['monitor', 'ntp', 'policy-map', 'privilege', 'router', 'service', 'snmp-server', 'spanning-tree', 'username', 'vlan'],
+  ],
+  if: [
+    ...['bandwidth', 'cdp', 'channel-group', 'default', 'delay', 'description', 'duplex', 'encapsulation', 'exit', 'ip', 'ipv6', 'keepalive'],
+    ...['lldp', 'mtu', 'shutdown', 'spanning-tree', 'speed', 'standby', 'storm-control', 'switchport', 'vrrp'],
+  ],
+}
+
 /** The command `toks` is, among `defs`; or what went wrong, IOS style where the simulator is sure. */
-function lookup(st: Pick<DeviceState, 'model'>, defs: CmdDef[], toks: InTok[], raw: string, { allowPrefix = false } = {}): Lookup {
+function lookup(st: Pick<DeviceState, 'model'>, defs: CmdDef[], toks: InTok[], raw: string, { allowPrefix = false, mode }: { allowPrefix?: boolean; mode?: Mode } = {}): Lookup {
   let failAt = -1
   let valueFailAt = -1
   let incomplete: CmdDef | undefined
   let short: Trace['short']
+  const firstWords = REAL_FIRST_WORDS[mode === 'subif' || mode === 'ifrange' ? 'if' : (mode ?? 'priv')] ?? []
+  const seen: Trace['seen'] = new Map([['0|', new Set(firstWords)]])
+  const fulls: { def: CmdDef; match: Partial }[] = []
   for (const def of defs) {
-    const trace: Trace = { failAt: -1, valueFailAt: -1, incomplete: false }
-    const full = matchSeq(st, def.tokens, 0, toks, 0, raw, trace).find((r) => r.ii === toks.length)
-    if (full) return { ok: { def, words: full.words } }
+    const trace: Trace = { failAt: -1, valueFailAt: -1, incomplete: false, seen }
+    for (const match of matchSeq(st, def.tokens, 0, toks, 0, raw, trace)) if (match.ii === toks.length) fulls.push({ def, match })
     failAt = Math.max(failAt, trace.failAt)
     valueFailAt = Math.max(valueFailAt, trace.valueFailAt)
     if (trace.incomplete && !incomplete) incomplete = def
     if (trace.short && (!short || trace.short.at > short.at)) short = trace.short
   }
+  // The first command (in definition order) whose every abbreviation is unambiguous.
+  // A word typed in full wins over longer keywords it is also the start of ("ip" and "ipv6").
+  let ambiguousAt = -1
+  for (const { def, match } of fulls) {
+    const clash = match.kws.find(([ii, path, full]) => {
+      const typed = toks[ii].text.toLowerCase()
+      if (typed === full) return false
+      const options = [...seen.get(`${ii}|${path}`)!].filter((o) => o.startsWith(typed))
+      return options.includes(typed) || options.length > 1
+    })
+    if (!clash) return { ok: { def, words: match.words } }
+    ambiguousAt = Math.max(ambiguousAt, clash[0])
+  }
+  if (ambiguousAt >= 0) return { err: 'ambiguous', at: ambiguousAt }
   // Everything typed fits the start of a command: IOS calls that incomplete.
   if (incomplete) return { err: 'incomplete', def: incomplete, words: allowPrefix ? prefixWords(incomplete, toks) : [] }
   if (short && short.at >= Math.max(failAt, valueFailAt)) return { err: 'short', ...short }
@@ -456,7 +509,7 @@ export function step(st: DeviceState, raw: string): TermLine[] {
   const prompt = promptOf(st)
 
   if (st.mode === 'user' || st.mode === 'priv') {
-    const found = lookup(st, EXEC_DEFS, toks, line)
+    const found = lookup(st, EXEC_DEFS, toks, line, { mode: st.mode })
     if (!('ok' in found)) return reportError(found, line, prompt, toks, st)
     const { def, words } = found.ok
     if (st.mode === 'user' && def.privOnly) {
@@ -490,7 +543,7 @@ export function step(st: DeviceState, raw: string): TermLine[] {
   }
   for (const mode of tryModes) {
     const defs = configDefs(mode)
-    const found = lookup(st, negate ? defs.filter((d) => !d.noNo) : defs, body, line, { allowPrefix: negate })
+    const found = lookup(st, negate ? defs.filter((d) => !d.noNo) : defs, body, line, { allowPrefix: negate, mode })
     if ('ok' in found) {
       const { def } = found.ok
       if (def.only && !def.only.includes(st.model)) return [notOnModel(st)]
@@ -520,7 +573,7 @@ export function step(st: DeviceState, raw: string): TermLine[] {
 const MODEL_NAMES: Record<Model, string> = { isr4331: 'router ISR4331', c2960: 'switch 2960', c3650: 'switch 3650' }
 const notOnModel = (st: DeviceState) => langit(`Langit: perintah ini tidak tersedia untuk ${MODEL_NAMES[st.model]} di simulator ini.`)
 
-const rank = (l: Lookup) => ('ok' in l ? 9 : l.err === 'short' ? 4 : l.err === 'incomplete' ? 3 : l.err === 'invalid' || l.err === 'unsupported' ? 1 + l.at / 1000 : 0)
+const rank = (l: Lookup) => ('ok' in l ? 9 : l.err === 'ambiguous' ? 5 : l.err === 'short' ? 4 : l.err === 'incomplete' ? 3 : l.err === 'invalid' || l.err === 'unsupported' ? 1 + l.at / 1000 : 0)
 
 function reportError(found: Lookup, raw: string, prompt: string, toks: InTok[], _st: DeviceState, offset = 0): TermLine[] {
   if ('ok' in found) return []
@@ -529,6 +582,11 @@ function reportError(found: Lookup, raw: string, prompt: string, toks: InTok[], 
       return invalid(raw, prompt, found.at + offset, toks)
     case 'incomplete':
       return [out('% Incomplete command.')]
+    case 'ambiguous': {
+      // IOS quotes the line up to the ambiguous word.
+      const tok = toks[found.at + offset]
+      return [out(`% Ambiguous command: "${raw.slice(0, tok.start + tok.text.length).trim()}"`)]
+    }
     case 'unsupported':
       return [langit(`Langit: kata "${toks[found.at + offset]?.text}" tidak dikenal simulator di perintah ini. Di perangkat asli bisa saja valid, tapi latihan ini tidak membutuhkannya.`)]
     case 'short':
@@ -1410,7 +1468,7 @@ export function judgeSession(state: DeviceState, goal: IosGoal): { correct: bool
 /** Lines that mean a typed command went wrong: IOS errors and Langit notes (not the routine % log messages). */
 export function errorLines(transcript: TermLine[]): string[] {
   return transcript
-    .filter((l) => l.kind === 'langit' || (l.kind === 'out' && /^(% (Invalid input|Incomplete command|Please define|Bad secrets|Duplicate)|Bad mask|% .* overlaps with|% Bridge Priority|% Interface has to be specified|Command rejected)/.test(l.text)))
+    .filter((l) => l.kind === 'langit' || (l.kind === 'out' && /^(% (Invalid input|Incomplete command|Please define|Bad secrets|Duplicate)|Bad mask|% .* overlaps with|% Bridge Priority|% Interface has to be specified|Command rejected|% Ambiguous command)/.test(l.text)))
     .map((l) => ('text' in l ? l.text : ''))
 }
 

@@ -71,7 +71,24 @@
           "teaches": [
             "ccna-f-u02-user-exec",
             "ccna-f-u02-mode-moves"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "start": "user",
+            "steps": [
+              {
+                "command": "enable",
+                "note": "Masuk ke privileged EXEC; prompt berubah dari > menjadi #."
+              },
+              {
+                "command": "show running-config",
+                "note": "Menampilkan konfigurasi yang sedang berjalan."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u02-l1-e3",
@@ -163,7 +180,20 @@
           "teaches": [
             "ccna-f-u02-exit-end",
             "ccna-f-u02-do"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "start": "config",
+            "steps": [
+              {
+                "command": "do show ip interface brief",
+                "note": "Menjalankan perintah EXEC \"show ip interface brief\" tanpa keluar dari mode konfigurasi."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u02-l1-e6",
@@ -259,7 +289,31 @@
           "teaches": [
             "ccna-f-u02-hostname",
             "ccna-f-u02-secret"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "Router",
+              "model": "isr4331"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "hostname BDG-R1",
+                "note": "Mengganti nama perangkat menjadi BDG-R1; prompt langsung ikut berubah."
+              },
+              {
+                "command": "enable secret Langit#26",
+                "note": "Memasang password untuk masuk privileged EXEC, disimpan sebagai hash."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u02-l2-e1",
@@ -340,7 +394,35 @@
           "teaches": [
             "ccna-f-u02-line-login",
             "ccna-f-u02-vty-lines"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "line console 0",
+                "note": "Masuk ke pengaturan port console."
+              },
+              {
+                "command": "password Konsol123",
+                "note": "Memasang password untuk line ini."
+              },
+              {
+                "command": "login",
+                "note": "Meminta password line saat seseorang masuk."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u02-l2-e4",
@@ -422,7 +504,31 @@
           "teaches": [
             "ccna-f-u02-banner",
             "ccna-f-u02-type7"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "banner motd #Authorized access only#",
+                "note": "Memasang pesan yang tampil sebelum login."
+              },
+              {
+                "command": "service password-encryption",
+                "note": "Menyandikan password teks biasa di konfigurasi (type 7, lemah, hanya mencegah orang membaca sekilas)."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u02-l2-e7",
@@ -526,7 +632,31 @@
           "teaches": [
             "ccna-f-u02-run-ram",
             "ccna-f-u02-save"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "given": [
+              {
+                "lines": [
+                  "hostname R1",
+                  "banner motd #Lab Langit#"
+                ]
+              }
+            ],
+            "steps": [
+              {
+                "command": "copy running-config startup-config",
+                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+              },
+              {
+                "command": "",
+                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u02-l3-e1",
@@ -896,7 +1026,36 @@
             "ccna-f-u02-secret",
             "ccna-f-u02-line-login",
             "ccna-f-u02-save"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "Router",
+              "model": "isr4331"
+            },
+            "start": "user",
+            "steps": [
+              {
+                "command": "enable",
+                "note": "Masuk ke privileged EXEC; prompt berubah dari > menjadi #."
+              },
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "hostname HQ-R1",
+                "note": "Mengganti nama perangkat menjadi HQ-R1; prompt langsung ikut berubah."
+              },
+              {
+                "command": "enable secret Cisc0Lab",
+                "note": "Memasang password untuk masuk privileged EXEC, disimpan sebagai hash."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u02-l5-e1",

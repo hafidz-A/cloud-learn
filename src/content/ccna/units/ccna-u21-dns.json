@@ -507,7 +507,35 @@
             "ccna-f-u21-name-server",
             "ccna-f-u21-ip-host",
             "ccna-f-u21-domain-name"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "ip name-server 192.0.2.53",
+                "note": "Memakai 192.0.2.53 sebagai server DNS (Domain Name System) perangkat."
+              },
+              {
+                "command": "ip domain name kantor.local",
+                "note": "Memasang nama domain kantor.local; dibutuhkan untuk membuat kunci RSA (Rivest-Shamir-Adleman)."
+              },
+              {
+                "command": "ip host srv1 192.168.41.20",
+                "note": "Memetakan nama srv1 ke 192.168.41.20 di perangkat ini."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u21-l4-e1",
@@ -582,7 +610,27 @@
             "ccna-f-u21-translating",
             "ccna-f-u21-no-lookup",
             "ccna-f-u21-domain-lookup"
-          ]
+          ],
+          "cli": {
+            "device": {
+              "hostname": "R1",
+              "model": "isr4331"
+            },
+            "steps": [
+              {
+                "command": "configure terminal",
+                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+              },
+              {
+                "command": "no ip domain lookup",
+                "note": "Mematikan resolusi DNS (Domain Name System), supaya salah ketik tidak membuat perangkat menunggu."
+              },
+              {
+                "command": "end",
+                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+              }
+            ]
+          }
         },
         {
           "id": "ccna-u21-l4-e3",

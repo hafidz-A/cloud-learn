@@ -497,10 +497,19 @@ pernah menampilkan perilaku palsu sebagai perilaku IOS:
   untuk perintah yang dikenal simulator dengan argumen yang salah atau kurang.
 - Perintah yang tidak dikenal simulator dijawab dengan pesan berlabel **Langit**, bukan pesan IOS, karena di
   perangkat asli perintah itu belum tentu salah.
-- Singkatan: simulator menerima kata lengkap dan singkatan baku yang dipakai luas di dokumentasi Cisco
-  (`en`, `conf t`, `int g0/0/0`, `sh ip int br`, `no shut`, `sh run`, `copy run start`, `wr`, dan sejenisnya).
-  IOS asli menerima singkatan apa pun yang unik; singkatan lain di simulator dijawab dengan pesan Langit yang
-  menyebut kata lengkapnya, bukan dianggap salah.
+- Singkatan: seperti IOS asli, setiap kata kunci boleh disingkat selama unik di posisi itu (`hostn R2`,
+  `ip add`, `desc`, `switchp mo acc`, `sh ip int br`). Singkatan yang cocok dengan lebih dari satu kata kunci
+  dijawab `% Ambiguous command: "..."`, dan kata yang diketik lengkap menang atas kata lain yang diawalinya
+  (`ip` dan `ipv6`). Untuk kata pertama, simulator juga menghitung perintah tingkat atas IOS asli yang tidak
+  disimulasikan (`send`, `setup`, `connect`, dan lain-lain), jadi `s` dan `con` tetap ambigu seperti di router.
+  Di kata berikutnya, keunikan dihitung dari perintah yang dikenal simulator saja, jadi singkatan sangat pendek
+  di posisi itu bisa diterima simulator walau ambigu di IOS asli. Nama interface tetap memakai singkatan baku
+  (`g0/0/0`, `fa0/1`, `lo0`, `vl10`, `po1`).
+- **Contoh di console** (`cli` di kartu materi): kartu yang perintahnya dipakai soal `ios` di lesson yang sama
+  menampilkan contoh pengetikannya. Langkahnya diputar oleh simulator yang sama, jadi prompt dan output persis
+  seperti terminal soal, dan setiap baris punya penjelasan singkat. Nilainya dibuat berbeda dari soal (alamat IP
+  dan nomor VLAN digeser) supaya contoh tidak sekadar kunci jawaban. Validator menolak contoh yang menghasilkan
+  galat IOS atau pesan Langit, dan baris tanpa penjelasan.
 - `?` dan Tab tidak didukung. Output `show` ditulis per soal mengikuti format perangkat asli, atau dibangun dari
   konfigurasi yang diketik (`show running-config` hanya menampilkan bagian yang relevan dan diberi catatan Langit).
 - Setiap soal `ios` punya `solution` (urutan perintah contoh). Validator menjalankannya di simulator dan

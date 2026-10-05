@@ -2,6 +2,7 @@ import { Check, ExternalLink, Lightbulb, TriangleAlert } from 'lucide-react'
 import { GlossaryText } from '../components/GlossaryText'
 import type { TeachingCard } from '../lib/types'
 import { Visual } from '../visuals/Visual'
+import { CliExampleView } from './CliExampleView'
 
 /** Where a "read more" link goes, in words: Microsoft Learn for the Azure courses, the source site for CCNA. */
 function linkSite(url: string): string {
@@ -55,6 +56,7 @@ export function TeachingCardContent({ card, titleId, heading = 'h2' }: { card: T
           ))}
         </ul>
       )}
+      {learn?.cli && <CliExampleView cli={learn.cli} />}
       {learn?.example && (
         <div className="mt-4 rounded-xl bg-langit p-3">
           <p className="flex items-center gap-1.5 font-display text-13 font-bold text-tinta-lembut">
