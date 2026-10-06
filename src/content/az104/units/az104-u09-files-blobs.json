@@ -1166,6 +1166,543 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u09-l6",
+      "title": "Membuat file share, container, dan versi",
+      "items": [
+        {
+          "id": "az104-u09-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "file-share-tiers"
+          ],
+          "title": "Billing model file share",
+          "body": "File share punya tiga billing model. Provisioned v2, yang disarankan untuk deployment baru, bisa SSD (solid-state drive) atau HDD (hard disk drive) dan berada di akun FileStorage. Provisioned v1 hanya SSD, sedangkan pay-as-you-go hanya HDD dan berada di akun general-purpose v2. Dengan provisioned v2, kamu menentukan kapasitas, IOPS (input/output operations per second), dan throughput, dan kapasitas itu yang ditagih berapa pun pemakaiannya. File share SMB (Server Message Block) memakai port 445, yang sering diblokir ISP (internet service provider) untuk trafik keluar.",
+          "keyPoints": [
+            "Provisioned v2: disarankan, SSD atau HDD",
+            "Kapasitas provisioned yang ditagih",
+            "SMB lewat port 445"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/files/create-classic-file-share",
+          "teaches": [
+            "az104-f-u09-share-billing",
+            "az104-f-u09-share-provisioned",
+            "az104-f-u09-share-445"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e1",
+          "type": "choice",
+          "concept": "file-share-tiers",
+          "prompt": "A company creates a new Azure file share. It wants the billing model that Microsoft recommends for new deployments, where it sets the storage, IOPS (input/output operations per second), and throughput itself. Which billing model should the company choose?",
+          "options": [
+            "Pay-as-you-go in a general-purpose v2 account",
+            "Provisioned v2",
+            "Provisioned v1 on the HDD (hard disk drive) media tier",
+            "The Archive access tier"
+          ],
+          "answer": 1,
+          "explanation": "Microsoft menyarankan provisioned v2 untuk semua deployment baru, dan di model itu kamu menentukan kapasitas, IOPS (input/output operations per second), dan throughput. Provisioned v1 hanya SSD (solid-state drive), dan Archive adalah tier blob, bukan file share.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-share-billing",
+            "az104-f-u09-share-provisioned",
+            "az104-f-u09-tiers"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e2",
+          "type": "yesno",
+          "concept": "file-share-tiers",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso creates a provisioned v2 file share with 1,024 GiB of provisioned storage, but stores only 100 GiB of files in it.",
+          "statements": [
+            {
+              "text": "Contoso is billed for the 1,024 GiB that it provisioned.",
+              "answer": true
+            },
+            {
+              "text": "Contoso can override the IOPS (input/output operations per second) and throughput that Azure recommends.",
+              "answer": true
+            },
+            {
+              "text": "Provisioned v2 is available only on the SSD (solid-state drive) media tier.",
+              "answer": false
+            }
+          ],
+          "explanation": "Dengan provisioned v2, kapasitas yang di-provision ditagih berapa pun pemakaiannya, dan rekomendasi IOPS (input/output operations per second) serta throughput bisa diganti. Provisioned v2 tersedia untuk SSD (solid-state drive) maupun HDD (hard disk drive).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-share-provisioned",
+            "az104-f-u09-share-billing"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e3",
+          "type": "choice",
+          "concept": "file-share-tiers",
+          "prompt": "Employees can mount a company's SMB (Server Message Block) file share from the office, but not from home over their own internet connections. The share settings are correct. What is the most likely cause?",
+          "options": [
+            "The file share is in the hot access tier",
+            "The internet providers of the employees block outbound port 445",
+            "The file share uses the provisioned v2 billing model",
+            "SMB file shares can be mounted only from virtual machines that run inside Azure"
+          ],
+          "answer": 1,
+          "explanation": "File share SMB (Server Message Block) berkomunikasi lewat port 445, yang sering diblokir organisasi dan ISP (internet service provider) untuk trafik keluar. Billing model tidak memengaruhi cara mount.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-share-445",
+            "az104-f-u09-files-paygo",
+            "az104-f-u09-share-billing"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "blob-container"
+          ],
+          "title": "Aturan nama",
+          "body": "Nama container menjadi bagian URI (Uniform Resource Identifier), jadi aturannya ketat: 3 sampai 63 karakter, diawali huruf atau angka, dan hanya huruf kecil, angka, serta tanda hubung, tanpa dua tanda hubung berurutan. Nama file share juga hanya huruf kecil, angka, dan tanda hubung tunggal, diawali dan diakhiri huruf atau angka. Nama storage account lebih ketat lagi: 3 sampai 24 huruf kecil dan angka saja.",
+          "keyPoints": [
+            "Container: 3 sampai 63, huruf kecil, angka, tanda hubung",
+            "File share: huruf kecil, angka, tanda hubung tunggal",
+            "Storage account: 3 sampai 24, tanpa tanda hubung"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction",
+          "teaches": [
+            "az104-f-u09-container-name",
+            "az104-f-u09-share-name",
+            "az104-f-u07-name"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e4",
+          "type": "choice",
+          "concept": "blob-container",
+          "prompt": "A company creates containers for its invoices. Which name can the company use for a new container?",
+          "options": [
+            "Invoices2026",
+            "invoices--2026",
+            "invoices-2026",
+            "in"
+          ],
+          "answer": 2,
+          "explanation": "Nama container 3 sampai 63 karakter, hanya huruf kecil, angka, dan tanda hubung, tanpa dua tanda hubung berurutan. Invoices2026 punya huruf besar, invoices--2026 punya dua tanda hubung berurutan, dan in terlalu pendek.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-container-name"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e5",
+          "type": "yesno",
+          "concept": "blob-container",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso enables Allow Blob anonymous access on contosodata and creates a container named web-assets with the anonymous access level Blob.",
+          "statements": [
+            {
+              "text": "Anyone who has the URL (Uniform Resource Locator) of a blob in web-assets can read the blob.",
+              "answer": true
+            },
+            {
+              "text": "Anonymous users can list the blobs in web-assets.",
+              "answer": false
+            },
+            {
+              "text": "web-assets is a valid container name.",
+              "answer": true
+            }
+          ],
+          "explanation": "Level Blob mengizinkan baca anonim lewat URL (Uniform Resource Locator) blob, tapi isi container tidak bisa di-list. web-assets memenuhi aturan nama: huruf kecil dan tanda hubung tunggal.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-anon-levels",
+            "az104-f-u09-container-name"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e6",
+          "type": "match",
+          "concept": "blob-container",
+          "prompt": "A company names its storage resources. Match each resource with its naming rule.",
+          "pairs": [
+            [
+              "Storage account",
+              "3 to 24 lowercase letters and numbers only"
+            ],
+            [
+              "Container",
+              "3 to 63 characters: lowercase letters, numbers, and dashes"
+            ],
+            [
+              "File share",
+              "Lowercase letters, numbers, and single hyphens, starting and ending with a letter or number"
+            ],
+            [
+              "Blob version ID (identifier)",
+              "The timestamp of the write that created the version"
+            ]
+          ],
+          "explanation": "Nama storage account 3 sampai 24 huruf kecil dan angka. Container 3 sampai 63 karakter dengan huruf kecil, angka, dan tanda hubung. File share memakai huruf kecil, angka, dan tanda hubung tunggal. Version ID (identifier) adalah timestamp.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-name",
+            "az104-f-u09-container-name",
+            "az104-f-u09-share-name",
+            "az104-f-u09-versioning"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-m3",
+          "type": "learn",
+          "concepts": [
+            "blob-versioning"
+          ],
+          "title": "Mengelola versi blob",
+          "body": "Versi blob immutable: isinya tidak bisa diubah, dan versi tertentu dibaca atau dihapus dengan version ID (identifier)-nya. Menghapus blob tanpa version ID hanya membuat versi saat ini menjadi versi sebelumnya; semua versi tetap ada. Kalau blob soft delete juga aktif, versi yang dihapus disimpan sampai retention habis. Mematikan versioning tidak menghapus versi lama, tapi penulisan berikutnya menimpa tanpa menyimpan keadaan sebelumnya, dan versioning tidak bisa dimatikan selama ada policy object replication.",
+          "keyPoints": [
+            "Versi immutable, diakses dengan version ID",
+            "Hapus blob: versi saat ini jadi versi sebelumnya",
+            "Matikan versioning: versi lama tetap ada"
+          ],
+          "visual": "SoftDeleteVsVersioning",
+          "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview",
+          "teaches": [
+            "az104-f-u09-ver-immutable",
+            "az104-f-u09-ver-delete",
+            "az104-f-u09-ver-disable"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e7",
+          "type": "choice",
+          "concept": "blob-versioning",
+          "prompt": "Blob versioning is on for a company's storage account, but blob soft delete is off. A user deletes report.docx without a version ID (identifier). What happened, and how can you get the file back?",
+          "options": [
+            "The blob and every one of its versions were deleted for good, because blob soft delete is off on the account",
+            "The blob is in the recycle bin of the container; undelete the container",
+            "The blob moved to the Archive tier; rehydrate it",
+            "The current version became a previous version; copy that version to make it the current version"
+          ],
+          "answer": 3,
+          "explanation": "Delete Blob tanpa version ID (identifier) membuat versi saat ini menjadi versi sebelumnya, dan semua versi lama tetap ada. Blob dipulihkan dengan menyalin versi sebelumnya menjadi versi saat ini.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-ver-delete",
+            "az104-f-u09-ver-restore",
+            "az104-f-u09-container-sd"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e8",
+          "type": "yesno",
+          "concept": "blob-versioning",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to turn off blob versioning on contosodata.",
+          "statements": [
+            {
+              "text": "The existing versions are deleted when versioning is turned off.",
+              "answer": false
+            },
+            {
+              "text": "After versioning is off, writes overwrite blobs without keeping their previous state.",
+              "answer": true
+            },
+            {
+              "text": "If contosodata has an object replication policy, Contoso must delete the policy first.",
+              "answer": true
+            }
+          ],
+          "explanation": "Mematikan versioning tidak menghapus versi lama, tapi penulisan berikutnya menimpa tanpa menyimpan keadaan sebelumnya. Versioning tidak bisa dimatikan selama ada policy object replication.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-ver-disable",
+            "az104-f-u07-or-versioning-lock"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e9",
+          "type": "choice",
+          "concept": "blob-versioning",
+          "prompt": "An auditor at a company wants to correct the metadata of an older version of a blob, without changing the current version. What can the auditor do?",
+          "options": [
+            "Edit the metadata of the older version by using its version ID (identifier)",
+            "Turn off versioning, edit the version, and then turn versioning on again",
+            "Nothing, because blob versions are immutable",
+            "Rehydrate the version to the Hot tier, and then edit it"
+          ],
+          "answer": 2,
+          "explanation": "Versi blob immutable: isi dan metadata versi yang sudah ada tidak bisa diubah. Version ID (identifier) hanya dipakai untuk membaca atau menghapus versi tertentu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-ver-immutable",
+            "az104-f-u09-ver-disable"
+          ]
+        },
+        {
+          "id": "az104-u09-l6-e10",
+          "type": "multi",
+          "concept": "blob-versioning",
+          "prompt": "A company must protect the blobs in a storage account without a hierarchical namespace from accidental overwrites and deletions. Microsoft recommends two features for important data. Which two should the company enable? Choose two.",
+          "options": [
+            "Lifecycle management",
+            "Share snapshots",
+            "Blob soft delete",
+            "Blob versioning"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Microsoft menyarankan data penting memakai soft delete dan versioning sekaligus. Lifecycle management memindahkan atau menghapus blob, dan share snapshot hanya untuk Azure Files.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-both",
+            "az104-f-u09-versioning",
+            "az104-f-u09-blob-sd",
+            "az104-f-u09-lc-what",
+            "az104-f-u09-snap"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "az104-u09-l7",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u09-l7-e1",
+          "type": "choice",
+          "concept": "blob-soft-delete",
+          "prompt": "A company's storage account has a hierarchical namespace. The company must be able to recover blobs that were deleted in the last 30 days. What should the company enable?",
+          "options": [
+            "Blob versioning with a lifecycle rule that keeps versions for 30 days",
+            "Blob soft delete with a retention period of 30 days",
+            "Container soft delete only",
+            "Share snapshots"
+          ],
+          "answer": 1,
+          "explanation": "Blob versioning tidak tersedia di akun dengan hierarchical namespace, tapi blob soft delete tetap melindungi dari penghapusan. Container soft delete hanya memulihkan container utuh.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-blob-sd",
+            "az104-f-u09-ver-hns",
+            "az104-f-u09-container-sd-limits",
+            "az104-f-u09-lc-versions"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e2",
+          "type": "yesno",
+          "concept": "container-soft-delete",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso enabled container soft delete with the default retention. Someone deleted the container logs five days ago.",
+          "statements": [
+            {
+              "text": "Contoso can restore logs together with the blobs in it.",
+              "answer": true
+            },
+            {
+              "text": "Restoring logs requires blob soft delete to be enabled too.",
+              "answer": false
+            },
+            {
+              "text": "Ten days after the deletion, Contoso can still restore logs.",
+              "answer": false
+            }
+          ],
+          "explanation": "Memulihkan container juga memulihkan blob, versi, dan snapshot di dalamnya, tanpa butuh blob soft delete. Retention default container soft delete 7 hari, jadi setelah 10 hari container itu sudah hilang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-container-sd"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e3",
+          "type": "choice",
+          "concept": "blob-tiers",
+          "prompt": "A company stores yearly backups that are read about once a year, kept for three years, and can wait hours when they are read. The storage account uses ZRS (zone-redundant storage). Which access tier has the lowest storage cost that the account supports?",
+          "options": [
+            "Archive",
+            "Hot",
+            "Cold, because Archive is not supported in ZRS accounts",
+            "Cool, because neither Cold nor Archive is supported in ZRS accounts"
+          ],
+          "answer": 2,
+          "explanation": "Makin dingin tier-nya, makin murah biaya simpannya. Tier Archive didukung di akun LRS (locally redundant storage), GRS (geo-redundant storage), dan RA-GRS (read-access geo-redundant storage), tapi tidak di ZRS (zone-redundant storage), jadi tier termurah yang tersedia adalah Cold.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-archive-redundancy",
+            "az104-f-u09-tiers"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e4",
+          "type": "choice",
+          "concept": "share-snapshots",
+          "prompt": "A company needs snapshots of the file share finance every day, kept for 30 days, and created and deleted on a schedule. What should the company use?",
+          "options": [
+            "Blob versioning on the storage account",
+            "Container soft delete",
+            "Azure Backup for the file share",
+            "A lifecycle management rule"
+          ],
+          "answer": 2,
+          "explanation": "Azure Backup bisa mengambil dan mengelola share snapshot secara terjadwal. Versioning, container soft delete, dan lifecycle management berlaku untuk Blob Storage, bukan Azure Files.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-snap-backup",
+            "az104-f-u09-versioning",
+            "az104-f-u09-container-sd",
+            "az104-f-u09-lc-what"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e5",
+          "type": "choice",
+          "concept": "blob-versioning",
+          "prompt": "Blob versioning is on. An app at a company must read config.json as it was yesterday at 10:00, without changing the current version. What should the app do?",
+          "options": [
+            "Restore the container from container soft delete to yesterday at 10:00",
+            "Read the version of config.json whose version ID (identifier) matches that time",
+            "Turn off versioning, and then read the blob",
+            "Undelete the blob with Undelete Blob"
+          ],
+          "answer": 1,
+          "explanation": "Version ID (identifier) adalah timestamp penulisan, dan versi tertentu dibaca dengan version ID-nya tanpa mengubah versi saat ini.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-ver-immutable",
+            "az104-f-u09-versioning"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e6",
+          "type": "choice",
+          "concept": "file-share-tiers",
+          "prompt": "Linux servers at a company need an NFS (Network File System) file share. The company tries to create it in a pay-as-you-go general-purpose v2 account. What should the company do?",
+          "options": [
+            "Create the share with the HDD (hard disk drive) media tier in the same pay-as-you-go general-purpose v2 account",
+            "Create the share in a FileStorage account on the SSD (solid-state drive) media tier, because NFS shares need SSD",
+            "Enable both SMB (Server Message Block) and NFS on the same share",
+            "Change the account to the Cool access tier"
+          ],
+          "answer": 1,
+          "explanation": "File share NFS (Network File System) hanya tersedia di SSD (solid-state drive), dan pay-as-you-go hanya HDD (hard disk drive). Satu file share tidak bisa memakai SMB (Server Message Block) dan NFS sekaligus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-files-media",
+            "az104-f-u09-files-protocol",
+            "az104-f-u09-share-billing"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e7",
+          "type": "choice",
+          "concept": "container-access-level",
+          "prompt": "Anyone must be able to list and read the blobs in the container public-docs without credentials. Allow Blob anonymous access is Disabled on the storage account. What should the company do?",
+          "options": [
+            "Set the access level of public-docs to Container, and leave the setting of the storage account as it is today",
+            "Set the access level of public-docs to Blob",
+            "Enable Allow Blob anonymous access on the account, and set the access level of public-docs to Container",
+            "Create a stored access policy on public-docs"
+          ],
+          "answer": 2,
+          "explanation": "Kalau akses anonim dimatikan di storage account, pengaturan itu mengalahkan semua container. Level Container mengizinkan baca dan list anonim, sedangkan level Blob tidak mengizinkan list.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-anon-override",
+            "az104-f-u09-anon-levels",
+            "az104-f-u08-sap-what"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e8",
+          "type": "yesno",
+          "concept": "share-soft-delete",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso deleted the file share projects yesterday. File share soft delete is on with the default retention, and projects had daily snapshots.",
+          "statements": [
+            {
+              "text": "Undeleting projects also brings back its snapshots.",
+              "answer": true
+            },
+            {
+              "text": "File share soft delete can restore a single file that was deleted from a share that still exists.",
+              "answer": false
+            },
+            {
+              "text": "Contoso has 30 days from the deletion to undelete projects.",
+              "answer": false
+            }
+          ],
+          "explanation": "File share soft delete menyimpan share yang dihapus beserta isi dan snapshot-nya, default 7 hari. Soft delete hanya bekerja di level share; file yang terhapus dipulihkan dari snapshot atau Azure Backup.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-share-sd"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e9",
+          "type": "match",
+          "concept": "blob-soft-delete",
+          "prompt": "A company plans data protection for blobs and file shares. Match each need with the feature that meets it.",
+          "pairs": [
+            [
+              "Restore one deleted blob within the retention period",
+              "Blob soft delete"
+            ],
+            [
+              "Restore a deleted container with its blobs",
+              "Container soft delete"
+            ],
+            [
+              "Go back to the content from before an overwrite",
+              "Blob versioning"
+            ],
+            [
+              "Restore one file of a file share from yesterday",
+              "Share snapshot"
+            ]
+          ],
+          "explanation": "Blob soft delete memulihkan blob yang dihapus, container soft delete memulihkan container utuh, versioning menyimpan keadaan sebelum ditimpa, dan share snapshot memulihkan file di Azure Files.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-blob-sd",
+            "az104-f-u09-container-sd",
+            "az104-f-u09-versioning",
+            "az104-f-u09-snap"
+          ]
+        },
+        {
+          "id": "az104-u09-l7-e10",
+          "type": "multi",
+          "concept": "default-tier",
+          "prompt": "A company plans the access tiers of its blobs. Which two statements about blob access tiers are true? Choose two.",
+          "options": [
+            "Access tiers can be set only for block blobs",
+            "Cold has a minimum storage period of 30 days",
+            "Archived blobs can be read without rehydration",
+            "The default access tier of a storage account cannot be Archive"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Default access tier akun bisa Hot, Cool, atau Cold, tidak bisa Archive, dan access tier hanya untuk block blob. Cold minimal 90 hari, dan blob Archive harus di-rehydrate sebelum bisa dibaca.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u09-default-tier",
+            "az104-f-u09-block-only",
+            "az104-f-u09-tiers",
+            "az104-f-u09-archive-offline"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
@@ -1373,6 +1910,46 @@
       "id": "az104-f-u09-share-sd-default",
       "statement": "File share soft delete aktif secara default di storage account baru, dan berlaku untuk semua file share di akun itu.",
       "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-prevent-file-share-deletion#how-soft-delete-works"
+    },
+    {
+      "id": "az104-f-u09-share-billing",
+      "statement": "File share punya tiga billing model: provisioned v2 (SSD (solid-state drive) atau HDD (hard disk drive), di akun FileStorage), provisioned v1 (SSD, di akun FileStorage), dan pay-as-you-go (HDD, di akun general-purpose v2). Microsoft menyarankan provisioned v2 untuk semua deployment baru.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/create-classic-file-share"
+    },
+    {
+      "id": "az104-f-u09-share-provisioned",
+      "statement": "Dengan billing model provisioned v2, kamu menentukan provisioned storage (GiB), IOPS (input/output operations per second), dan throughput; Azure memberi rekomendasi IOPS dan throughput yang bisa diganti. Kapasitas yang di-provision ditagih berapa pun pemakaian sebenarnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/create-classic-file-share"
+    },
+    {
+      "id": "az104-f-u09-share-name",
+      "statement": "Nama file share hanya berisi huruf kecil, angka, dan tanda hubung tunggal, harus diawali dan diakhiri huruf kecil atau angka, dan tidak boleh berisi dua tanda hubung berurutan.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/create-classic-file-share"
+    },
+    {
+      "id": "az104-f-u09-share-445",
+      "statement": "File share SMB (Server Message Block) berkomunikasi lewat port 445, yang sering diblokir organisasi dan ISP (internet service provider) untuk trafik keluar ke internet.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-planning"
+    },
+    {
+      "id": "az104-f-u09-container-name",
+      "statement": "Nama container 3 sampai 63 karakter, diawali huruf atau angka, hanya berisi huruf kecil, angka, dan tanda hubung, dan tidak boleh berisi dua tanda hubung berurutan, karena nama itu menjadi bagian URI (Uniform Resource Identifier) container.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction"
+    },
+    {
+      "id": "az104-f-u09-ver-immutable",
+      "statement": "Versi blob immutable: isi dan metadata versi yang sudah ada tidak bisa diubah. Versi tertentu dibaca atau dihapus dengan version ID-nya; tanpa version ID, operasi berlaku untuk versi saat ini.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview"
+    },
+    {
+      "id": "az104-f-u09-ver-delete",
+      "statement": "Delete Blob tanpa version ID membuat versi saat ini menjadi versi sebelumnya, dan semua versi lama tetap ada. Kalau blob soft delete juga aktif, versi yang dihapus dengan version ID-nya disimpan sampai retention period habis.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview"
+    },
+    {
+      "id": "az104-f-u09-ver-disable",
+      "statement": "Mematikan blob versioning tidak menghapus versi yang sudah ada, tapi versi baru tidak dibuat lagi dan penulisan berikutnya menimpa blob tanpa menyimpan keadaan sebelumnya. Versioning tidak bisa dimatikan selama ada policy object replication.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview"
     }
   ]
 }

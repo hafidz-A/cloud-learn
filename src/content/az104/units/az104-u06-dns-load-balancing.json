@@ -889,6 +889,293 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u06-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u06-l5-e1",
+          "type": "rules",
+          "concept": "lb-troubleshoot",
+          "prompt": "Users at a company cannot reach the website behind the Standard load balancer lb-web. Based on the metrics, what is the most likely cause?",
+          "tables": [
+            {
+              "title": "Metrics of lb-web (Average, last 30 minutes)",
+              "columns": [
+                "Metric",
+                "Value"
+              ],
+              "rows": [
+                [
+                  "Data Path Availability",
+                  "100%"
+                ],
+                [
+                  "Health Probe Status",
+                  "0%"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "The frontend IP (Internet Protocol) address of lb-web is down",
+            "lb-web uses the retired Basic SKU (stock-keeping unit)",
+            "The DNS (Domain Name System) record of the website points to the wrong address",
+            "Every backend instance fails the health probe"
+          ],
+          "answer": 3,
+          "explanation": "Data Path Availability 100% berarti jalur data ke frontend sehat. Health Probe Status 0% berarti tidak ada instance backend yang lolos health probe, jadi load balancer tidak mengirim flow baru.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-metrics",
+            "az104-f-u06-probe-all-down",
+            "az104-f-u06-lb-skus"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e2",
+          "type": "rules",
+          "concept": "probe-blocked-by-nsg",
+          "prompt": "After an administrator at a company added the rule at priority 120, every virtual machine behind the load balancer is marked unhealthy. Based on the table, what should you do?",
+          "tables": [
+            {
+              "title": "NSG (network security group) on the backend subnet, inbound",
+              "columns": [
+                "Priority",
+                "Port",
+                "Source",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "443",
+                  "Internet",
+                  "Allow"
+                ],
+                [
+                  "120",
+                  "Any",
+                  "Any",
+                  "Deny"
+                ],
+                [
+                  "65001",
+                  "Any",
+                  "AzureLoadBalancer",
+                  "Allow"
+                ],
+                [
+                  "65500",
+                  "Any",
+                  "Any",
+                  "Deny"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Add public IP (Internet Protocol) addresses to the backend virtual machines",
+            "Delete the default rule AllowAzureLoadBalancerInBound",
+            "Add a rule that allows Internet at priority 4000",
+            "Add a rule that allows the AzureLoadBalancer service tag at a priority number lower than 120"
+          ],
+          "answer": 3,
+          "explanation": "Health probe datang dari 168.63.129.16, yang diwakili service tag AzureLoadBalancer. Aturan deny 120 diproses sebelum AllowAzureLoadBalancerInBound (65001), jadi probe terblokir. Izinkan AzureLoadBalancer dengan angka prioritas lebih kecil dari 120.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-probe-source",
+            "az104-f-u06-probe-blocked",
+            "az104-f-u05-service-tags",
+            "az104-f-u05-nsg-priority",
+            "az104-f-u05-default-fixed"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e3",
+          "type": "yesno",
+          "concept": "probe-behavior",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso's Standard load balancer has three backend virtual machines and a TCP (Transmission Control Protocol) health probe on port 8080. The app on the virtual machines listens only on port 80.",
+          "statements": [
+            {
+              "text": "Every backend instance fails the health probe.",
+              "answer": true
+            },
+            {
+              "text": "The load balancer keeps sending new flows to the instances.",
+              "answer": false
+            },
+            {
+              "text": "TCP connections that already exist to the instances keep running.",
+              "answer": true
+            }
+          ],
+          "explanation": "Probe TCP (Transmission Control Protocol) gagal kalau tidak ada listener di port probe, jadi semua instance gagal. Load balancer tidak mengirim flow baru, tapi Standard Load Balancer membiarkan koneksi TCP yang sudah ada tetap berjalan kalau backend punya lebih dari satu instance.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-probe-fail",
+            "az104-f-u06-probe-all-down"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e4",
+          "type": "choice",
+          "concept": "lb-components",
+          "prompt": "A company needs to load-balance HTTPS (Hypertext Transfer Protocol Secure) traffic to three virtual machines. The virtual machines must also reach the internet through the public IP (Internet Protocol) address of the load balancer. What should the company configure?",
+          "options": [
+            "An inbound NAT (network address translation) rule for each virtual machine only",
+            "A load-balancing rule with a health probe, and an outbound rule",
+            "Session persistence Client IP on a load-balancing rule without a health probe",
+            "A Basic load balancer, which gives outbound access automatically"
+          ],
+          "answer": 1,
+          "explanation": "Load-balancing rule memetakan frontend ke semua instance backend dan butuh health probe. Outbound rule memberi NAT (network address translation) keluar untuk instance di backend pool. Inbound NAT rule hanya meneruskan satu port ke satu VM (virtual machine), dan SKU (stock-keeping unit) Basic sudah pensiun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-rule",
+            "az104-f-u06-outbound-rule",
+            "az104-f-u06-inbound-nat",
+            "az104-f-u06-lb-skus"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e5",
+          "type": "choice",
+          "concept": "record-sets",
+          "prompt": "In the Azure DNS (Domain Name System) zone contoso.com, the name www.contoso.com must be an alias of contoso.azurewebsites.net. What should you create?",
+          "options": [
+            "A CNAME (canonical name) record set at the zone apex (@)",
+            "An MX (mail exchange) record set named www",
+            "A CNAME (canonical name) record set named www",
+            "An NS (name server) record set named www"
+          ],
+          "answer": 2,
+          "explanation": "CNAME (canonical name) menjadikan sebuah nama alias untuk nama lain, tapi tidak bisa dibuat di apex zone. MX (mail exchange) untuk server email, dan NS (name server) untuk name server.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-record-types",
+            "az104-f-u06-cname-rules"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e6",
+          "type": "choice",
+          "concept": "private-dns-zone",
+          "prompt": "VNet1 and VNet2 at a company use the private DNS (Domain Name System) zone contoso.internal. Virtual machines in VNet1 must be registered in the zone automatically. Virtual machines in VNet2 must only resolve names in the zone. How should you link the VNets (virtual networks)?",
+          "options": [
+            "Link both VNets with auto registration enabled",
+            "Link VNet2 with auto registration enabled, and do not link VNet1",
+            "Link VNet1 with auto registration enabled, and link VNet2 without auto registration",
+            "Link neither VNet, because private zones resolve for every VNet in the subscription"
+          ],
+          "answer": 2,
+          "explanation": "Link dengan auto registration menjadikan VNet (virtual network) itu registration virtual network, dan link tanpa auto registration hanya resolution virtual network. Tanpa link, VM (virtual machine) di VNet itu tidak bisa memakai nama di zone.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-registration-resolution",
+            "az104-f-u06-private-link",
+            "az104-f-u06-autoreg-records"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e7",
+          "type": "choice",
+          "concept": "lb-public-vs-internal",
+          "prompt": "A company's web tier must be reachable from the internet. Its app tier must be reachable only from the web tier, inside the VNet (virtual network). Which load balancers should the company create?",
+          "options": [
+            "A public load balancer for both tiers",
+            "An internal load balancer for both tiers",
+            "An internal load balancer for the web tier, and a public load balancer for the app tier",
+            "A public load balancer for the web tier, and an internal load balancer for the app tier"
+          ],
+          "answer": 3,
+          "explanation": "Frontend dengan public IP (Internet Protocol) membuat public load balancer, sedangkan frontend dengan IP privat membuat internal load balancer untuk trafik di dalam VNet (virtual network).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-types"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e8",
+          "type": "match",
+          "concept": "lb-troubleshoot",
+          "prompt": "An administrator at a company is troubleshooting a load balancer. Match each item with what it tells or does.",
+          "pairs": [
+            [
+              "Health Probe Status",
+              "Shows whether the backend instances pass the probe"
+            ],
+            [
+              "Data Path Availability",
+              "Shows whether the data path to the frontend works"
+            ],
+            [
+              "168.63.129.16",
+              "Source address of the health probes"
+            ],
+            [
+              "Inbound NAT (network address translation) rule",
+              "Forwards one frontend port to one virtual machine"
+            ]
+          ],
+          "explanation": "Health Probe Status untuk kesehatan backend, Data Path Availability untuk jalur data ke frontend, 168.63.129.16 adalah sumber probe, dan inbound NAT (network address translation) rule meneruskan satu port ke satu VM (virtual machine).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-lb-metrics",
+            "az104-f-u06-probe-source",
+            "az104-f-u06-inbound-nat"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e9",
+          "type": "choice",
+          "concept": "probe-behavior",
+          "prompt": "A company uses an HTTP (Hypertext Transfer Protocol) health probe on /health. After a deployment, /health on vm2 returns a 302 redirect to the login page. What happens to vm2?",
+          "options": [
+            "vm2 is marked down, because an HTTP probe needs a 200 response",
+            "vm2 stays up, because a 302 response shows that the app answers",
+            "vm2 stays up until it returns three 500 errors",
+            "vm2 is removed from the backend pool automatically"
+          ],
+          "answer": 0,
+          "explanation": "Probe HTTP (Hypertext Transfer Protocol) atau HTTPS (Hypertext Transfer Protocol Secure) langsung menandai instance down untuk respons selain 200, termasuk redirect 302. Instance yang gagal probe tidak menerima koneksi baru, tapi tetap ada di backend pool.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-probe-fail",
+            "az104-f-u06-health-probe"
+          ]
+        },
+        {
+          "id": "az104-u06-l5-e10",
+          "type": "yesno",
+          "concept": "dns-alias",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso wants contoso.com, the zone apex in Azure DNS (Domain Name System), to point to the public IP (Internet Protocol) address of a load balancer.",
+          "statements": [
+            {
+              "text": "An alias A record set at the apex can point directly to the public IP resource.",
+              "answer": true
+            },
+            {
+              "text": "If the public IP address changes, the alias record set must be updated by hand.",
+              "answer": false
+            },
+            {
+              "text": "A CNAME (canonical name) record set at the apex is another valid way to do this.",
+              "answer": false
+            }
+          ],
+          "explanation": "Alias record set menunjuk langsung ke resource Azure, bisa dipakai di apex zone, dan ikut berubah saat alamat resource berubah. CNAME (canonical name) tidak bisa dibuat di apex zone.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u06-alias",
+            "az104-f-u06-cname-rules"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

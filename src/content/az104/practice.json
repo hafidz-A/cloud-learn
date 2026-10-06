@@ -299,6 +299,9 @@
         },
         "az104-u09-l5": {
           "text": "Buat share snapshot, hapus satu file di share, lalu pulihkan dari Snapshots dengan Restore dan Overwrite original file."
+        },
+        "az104-u09-l6": {
+          "text": "Aktifkan blob versioning di storage account latihan, upload file yang sama dua kali, lalu lihat tab Versions dan jadikan versi lama sebagai versi saat ini. Coba juga membuat container bernama Data_Lama: nama itu ditolak karena huruf besar dan garis bawah."
         }
       }
     },

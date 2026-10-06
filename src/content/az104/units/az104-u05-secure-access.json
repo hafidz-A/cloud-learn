@@ -1396,6 +1396,431 @@
           "requires": [
             "az104-f-u05-pe-dns"
           ]
+        },
+        {
+          "id": "az104-u05-l5-m4",
+          "type": "learn",
+          "concepts": [
+            "service-endpoint"
+          ],
+          "title": "Mengaktifkan service endpoint",
+          "body": "Service endpoint diaktifkan per subnet, jadi setiap subnet yang perlu akses harus diaktifkan sendiri; satu subnet bisa punya endpoint untuk beberapa layanan. Setelah itu, tambahkan virtual network rule di firewall layanan supaya hanya subnet itu yang diterima. Saat diaktifkan, sumber trafik berubah ke IP (Internet Protocol) privat, koneksi TCP (Transmission Control Protocol) yang terbuka ke layanan itu ditutup, dan aturan firewall berbasis IP publik Azure berhenti berlaku. Trafik dari on-premises tetap butuh aturan IP firewall untuk IP publik on-premises.",
+          "keyPoints": [
+            "Aktifkan per subnet, lalu tambah virtual network rule",
+            "Sumber trafik berubah ke IP privat",
+            "On-premises: izinkan IP publiknya di IP firewall"
+          ],
+          "visual": "ServiceVsPrivateEndpoint",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview",
+          "teaches": [
+            "az104-f-u05-se-rule",
+            "az104-f-u05-se-per-subnet",
+            "az104-f-u05-se-switch",
+            "az104-f-u05-se-onprem"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e9",
+          "type": "choice",
+          "concept": "service-endpoint",
+          "prompt": "A company enabled the Microsoft.Storage service endpoint on snet-app. The storage account st1 must accept traffic only from snet-app. What else must the company do?",
+          "options": [
+            "Create the private DNS (Domain Name System) zone privatelink.blob.core.windows.net",
+            "Assign a public IP (Internet Protocol) address to each virtual machine in snet-app",
+            "Add a virtual network rule for snet-app in the networking settings of st1",
+            "Approve a private endpoint connection on st1"
+          ],
+          "answer": 2,
+          "explanation": "Service endpoint saja belum membatasi akses. Setelah diaktifkan di subnet, tambahkan virtual network rule di firewall st1 supaya hanya snet-app yang diterima. Private DNS (Domain Name System) zone dan persetujuan koneksi milik private endpoint.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-se-rule",
+            "az104-f-u05-pe-dns",
+            "az104-f-u05-pe-approved"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e10",
+          "type": "yesno",
+          "concept": "service-endpoint",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to enable the Microsoft.Sql service endpoint on snet-db while apps on the subnet are running.",
+          "statements": [
+            {
+              "text": "Open TCP (Transmission Control Protocol) connections from snet-db to the SQL (Structured Query Language) service are closed during the switch.",
+              "answer": true
+            },
+            {
+              "text": "After the switch, the SQL service still sees a public IP (Internet Protocol) address as the source of the traffic.",
+              "answer": false
+            },
+            {
+              "text": "After the switch, the DNS (Domain Name System) name of the SQL server resolves to a private IP address.",
+              "answer": false
+            }
+          ],
+          "explanation": "Saat service endpoint diaktifkan, sumber trafik berubah ke IP (Internet Protocol) privat dan koneksi TCP (Transmission Control Protocol) yang terbuka ditutup. DNS (Domain Name System) layanan tetap mengarah ke alamat publiknya; yang memberi IP privat di DNS adalah private endpoint.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-se-switch",
+            "az104-f-u05-se-limits"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e11",
+          "type": "choice",
+          "concept": "service-endpoint",
+          "prompt": "Virtual machines in snet-a and snet-b of VNet1 must reach the storage account st1 through service endpoints, and st1 must accept only these two subnets. What should you do?",
+          "options": [
+            "Enable the service endpoint on both subnets, and add a virtual network rule for each subnet in st1",
+            "Enable the service endpoint on snet-a only, because snet-b inherits it from the address space of VNet1",
+            "Enable the service endpoint once on the VNet (virtual network) instead of on the subnets",
+            "Add a virtual network rule for VNet1 without enabling any service endpoint"
+          ],
+          "answer": 0,
+          "explanation": "Service endpoint diaktifkan per subnet, jadi kedua subnet harus diaktifkan, lalu setiap subnet ditambahkan sebagai virtual network rule di firewall st1.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-se-per-subnet",
+            "az104-f-u05-se-rule"
+          ]
+        },
+        {
+          "id": "az104-u05-l5-e12",
+          "type": "choice",
+          "concept": "service-endpoint",
+          "prompt": "The storage account st1 accepts traffic only from snet-app through a service endpoint. Users on-premises, who connect through ExpressRoute Microsoft peering with public NAT (network address translation) IP (Internet Protocol) addresses, must also reach st1. What should you do?",
+          "options": [
+            "Allow the public NAT IP addresses of the on-premises network in the IP firewall of st1",
+            "Nothing, because service endpoints also apply to traffic from on-premises",
+            "Add a virtual network rule for the on-premises network in st1",
+            "Point the on-premises DNS (Domain Name System) servers to the private IP address of st1 so that the traffic stays private"
+          ],
+          "answer": 0,
+          "explanation": "Service endpoint tidak berlaku untuk trafik dari on-premises. Resource yang diamankan ke VNet (virtual network) baru bisa dijangkau dari on-premises kalau IP (Internet Protocol) publiknya, biasanya IP NAT (network address translation), diizinkan di IP firewall layanan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-se-onprem",
+            "az104-f-u05-se-limits",
+            "az104-f-u05-se-rule"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "az104-u05-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u05-l6-e1",
+          "type": "rules",
+          "concept": "nsg-priority",
+          "prompt": "A user at 203.0.113.10 connects to a web server in snet-web on TCP (Transmission Control Protocol) port 443. Based on the table, what happens?",
+          "tables": [
+            {
+              "title": "NSG (network security group) on snet-web, inbound",
+              "columns": [
+                "Priority",
+                "Port",
+                "Source",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "443",
+                  "Internet",
+                  "Allow"
+                ],
+                [
+                  "200",
+                  "443",
+                  "203.0.113.0/24",
+                  "Deny"
+                ],
+                [
+                  "65500",
+                  "Any",
+                  "Any",
+                  "Deny"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "It is allowed by the rule at priority 100",
+            "It is denied by the rule at priority 200, because a more specific source wins",
+            "It is denied by the rule at priority 65500",
+            "It is denied, because a deny rule always wins over an allow rule"
+          ],
+          "answer": 0,
+          "explanation": "Aturan diproses dari angka prioritas terkecil, dan pemrosesan berhenti di aturan pertama yang cocok. Aturan 100 cocok lebih dulu, jadi aturan 200 tidak pernah dievaluasi untuk paket ini.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-priority",
+            "az104-f-u05-default-in"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e2",
+          "type": "choice",
+          "concept": "nsg-rules",
+          "prompt": "Admins at a company must connect to the virtual machines in snet-app by RDP (Remote Desktop Protocol) only from the office range 198.51.100.0/24. All other inbound RDP from the internet must be blocked. The NSG (network security group) on snet-app has only the default rules. What should you add?",
+          "options": [
+            "An inbound rule that allows TCP (Transmission Control Protocol) 3389 from Internet, at priority 100",
+            "An outbound rule that allows TCP 3389 to 198.51.100.0/24",
+            "Delete the default DenyAllInBound rule, and then add an allow rule for 198.51.100.0/24 at priority 100",
+            "An inbound rule that allows TCP (Transmission Control Protocol) 3389 from 198.51.100.0/24, at a priority lower than 65500"
+          ],
+          "answer": 3,
+          "explanation": "Aturan allow dari rentang kantor dengan angka prioritas lebih kecil dari 65500 mengalahkan DenyAllInBound, dan DenyAllInBound tetap memblokir RDP (Remote Desktop Protocol) dari sumber lain. Aturan default tidak bisa dihapus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-def",
+            "az104-f-u05-default-in",
+            "az104-f-u05-default-fixed",
+            "az104-f-u05-nsg-priority"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e3",
+          "type": "yesno",
+          "concept": "asg-rules",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso uses the ASGs (application security groups) AsgWeb, with the network interfaces of web1 and web2, and AsgDb, with the network interface of db1. An NSG (network security group) rule at priority 100 allows AsgWeb to AsgDb on TCP (Transmission Control Protocol) 1433.",
+          "statements": [
+            {
+              "text": "web2 can reach db1 on TCP 1433.",
+              "answer": true
+            },
+            {
+              "text": "The rule also applies to network interfaces that are not members of AsgDb.",
+              "answer": false
+            },
+            {
+              "text": "The network interface of web1 can also be a member of another ASG.",
+              "answer": true
+            }
+          ],
+          "explanation": "Aturan yang menyebut ASG (application security group) hanya berlaku untuk network interface anggotanya, dan satu network interface bisa menjadi anggota beberapa ASG.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-asg-apply",
+            "az104-f-u05-asg-members"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e4",
+          "type": "rules",
+          "concept": "effective-security-rules",
+          "prompt": "At a company, vm1 in snet-app sends outbound traffic to a website on the internet on TCP (Transmission Control Protocol) port 443. Based on the tables, what happens?",
+          "tables": [
+            {
+              "title": "NSG (network security group) on the network interface of vm1, outbound",
+              "columns": [
+                "Priority",
+                "Port",
+                "Destination",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "443",
+                  "Internet",
+                  "Deny"
+                ],
+                [
+                  "65001",
+                  "Any",
+                  "Internet",
+                  "Allow"
+                ]
+              ]
+            },
+            {
+              "title": "NSG on snet-app, outbound",
+              "columns": [
+                "Priority",
+                "Port",
+                "Destination",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "443",
+                  "Internet",
+                  "Allow"
+                ],
+                [
+                  "65001",
+                  "Any",
+                  "Internet",
+                  "Allow"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "It is allowed, because the subnet NSG (network security group) allows it at priority 100",
+            "It is allowed, because AllowInternetOutBound applies to both NSGs",
+            "It is denied by the subnet NSG, which is processed first for outbound traffic",
+            "It is denied by the network interface NSG, which is processed first for outbound traffic"
+          ],
+          "answer": 3,
+          "explanation": "Untuk trafik keluar, NSG (network security group) network interface diproses dulu, lalu NSG subnet. Trafik harus diizinkan keduanya, dan yang sudah ditolak NSG pertama tidak diproses NSG kedua.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-nsg-order",
+            "az104-f-u05-default-out"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e5",
+          "type": "choice",
+          "concept": "effective-security-rules",
+          "prompt": "You need to find out why vm2 cannot receive traffic on TCP (Transmission Control Protocol) 8080. You want to see the rules of the subnet NSG (network security group) and of the network interface NSG combined in one view. What should you use?",
+          "options": [
+            "Next hop for vm2",
+            "Virtual network flow logs for the VNet (virtual network)",
+            "The NSG on the subnet only, because it is processed first",
+            "Effective security rules for the network interface of vm2"
+          ],
+          "answer": 3,
+          "explanation": "Effective security rules menampilkan gabungan aturan masuk dan keluar yang berlaku di sebuah network interface, dari NSG (network security group) subnet maupun NSG network interface. Next hop memeriksa route.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-effective-rules",
+            "az104-f-u04-next-hop",
+            "az104-f-u04-flow-logs",
+            "az104-f-u05-nsg-order"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e6",
+          "type": "yesno",
+          "concept": "effective-security-rules",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso wants to troubleshoot vm1. It associated one NSG (network security group) with snet-app and another NSG with the network interface of vm1. A user reports that vm1 cannot be reached on TCP (Transmission Control Protocol) 443.",
+          "statements": [
+            {
+              "text": "IP (Internet Protocol) flow verify checks the rules of both NSGs for the packet.",
+              "answer": true
+            },
+            {
+              "text": "Effective security rules show the rules of both NSGs together.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft recommends associating NSGs with both the subnet and the network interface.",
+              "answer": false
+            }
+          ],
+          "explanation": "IP (Internet Protocol) flow verify memeriksa semua NSG (network security group) yang berlaku untuk network interface, dan effective security rules menampilkan gabungannya. Microsoft menyarankan memasang NSG di subnet atau di network interface, bukan keduanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-ipflow-both",
+            "az104-f-u04-effective-rules",
+            "az104-f-u05-nsg-avoid-both"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e7",
+          "type": "choice",
+          "concept": "service-endpoint",
+          "prompt": "A company must connect to the storage account st1 through a private IP (Internet Protocol) address in its VNet (virtual network), and users on-premises must reach st1 over a VPN (virtual private network). Should the company use a service endpoint or a private endpoint?",
+          "options": [
+            "A service endpoint, because it gives st1 a private IP address in the subnet",
+            "A private endpoint, because it gives st1 a private IP address that on-premises users can reach",
+            "A service endpoint, because it also works for traffic from on-premises",
+            "Either one, because both a service endpoint and a private endpoint give st1 a private IP address and support on-premises users"
+          ],
+          "answer": 1,
+          "explanation": "Private endpoint adalah network interface dengan IP (Internet Protocol) privat yang bisa dipakai dari VNet (virtual network), VNet peering, dan on-premises lewat VPN (virtual private network) atau ExpressRoute. Service endpoint tidak memberi IP privat dan tidak berlaku untuk trafik on-premises.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-se-def",
+            "az104-f-u05-se-limits",
+            "az104-f-u05-pe-def",
+            "az104-f-u05-pe-reach"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e8",
+          "type": "multi",
+          "concept": "service-endpoint",
+          "prompt": "A company plans to use service endpoints. Which two statements about service endpoints are true? Choose two.",
+          "options": [
+            "They are enabled on each subnet that needs them",
+            "The service gets a private IP (Internet Protocol) address in your VNet (virtual network)",
+            "They also apply to traffic that comes from on-premises",
+            "Traffic to the service uses the private IP (Internet Protocol) address of the virtual machine as its source"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Service endpoint diaktifkan per subnet, dan sumber trafiknya menjadi IP (Internet Protocol) privat VM (virtual machine). Layanan tetap memakai alamat publik, dan service endpoint tidak berlaku untuk trafik on-premises.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-se-per-subnet",
+            "az104-f-u05-se-def",
+            "az104-f-u05-se-limits"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e9",
+          "type": "choice",
+          "concept": "bastion-skus",
+          "prompt": "A company needs Azure Bastion to connect to virtual machines in VNet (virtual network)-A and in the peered VNet-B. The solution must use the lowest-cost SKU (stock-keeping unit) that supports this. Which SKU should the company choose?",
+          "options": [
+            "Basic",
+            "Developer",
+            "Standard",
+            "Premium"
+          ],
+          "answer": 0,
+          "explanation": "Bastion Developer gratis tapi tidak mendukung VNet (virtual network) peering. Basic ke atas bisa menyambung ke VM (virtual machine) di VNet yang di-peering, dan Basic adalah yang paling murah di antaranya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-bastion-developer",
+            "az104-f-u05-bastion-peering",
+            "az104-f-u05-bastion-skus"
+          ]
+        },
+        {
+          "id": "az104-u05-l6-e10",
+          "type": "match",
+          "concept": "nsg-rules",
+          "prompt": "Contoso is designing its NSG (network security group) rules. Match each term with its meaning.",
+          "pairs": [
+            [
+              "AllowVNetInBound",
+              "Default inbound rule at priority 65000"
+            ],
+            [
+              "Service tag",
+              "Group of IP (Internet Protocol) prefixes that Microsoft maintains"
+            ],
+            [
+              "Application security group",
+              "Group of network interfaces that rules can name"
+            ],
+            [
+              "Stateful",
+              "Replies to an allowed connection are allowed automatically"
+            ]
+          ],
+          "explanation": "AllowVNetInBound adalah aturan default di prioritas 65000. Service tag mewakili prefix IP (Internet Protocol) sebuah layanan yang dikelola Microsoft, ASG (application security group) mengelompokkan network interface, dan NSG (network security group) stateful mengizinkan balasan otomatis.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u05-default-in",
+            "az104-f-u05-service-tags",
+            "az104-f-u05-asg-def",
+            "az104-f-u05-nsg-stateful"
+          ]
         }
       ]
     }
@@ -1565,6 +1990,26 @@
       "id": "az104-f-u05-pe-dns",
       "statement": "Supaya nama layanan mengarah ke IP (Internet Protocol) privat private endpoint, pakai private DNS (Domain Name System) zone yang di-link ke VNet, misalnya privatelink.blob.core.windows.net untuk blob Storage.",
       "source": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns"
+    },
+    {
+      "id": "az104-f-u05-se-rule",
+      "statement": "Setelah service endpoint diaktifkan di subnet, tambahkan virtual network rule di pengaturan jaringan (firewall) layanan, misalnya storage account, supaya resource itu hanya menerima trafik dari subnet tersebut.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview"
+    },
+    {
+      "id": "az104-f-u05-se-per-subnet",
+      "statement": "Service endpoint diaktifkan per subnet: untuk beberapa subnet atau VNet (virtual network), aktifkan di setiap subnet. Satu subnet bisa punya service endpoint untuk beberapa layanan, misalnya Microsoft.Storage dan Microsoft.Sql.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview"
+    },
+    {
+      "id": "az104-f-u05-se-switch",
+      "statement": "Saat service endpoint diaktifkan, sumber trafik dari subnet ke layanan berubah dari IP (Internet Protocol) publik ke IP privat, koneksi TCP (Transmission Control Protocol) yang sedang terbuka ke layanan itu ditutup, dan aturan firewall layanan yang memakai IP publik Azure berhenti berlaku.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview"
+    },
+    {
+      "id": "az104-f-u05-se-onprem",
+      "statement": "Resource yang diamankan ke VNet (virtual network) dengan service endpoint tidak bisa dijangkau dari on-premises secara default; untuk itu izinkan IP publik on-premises (biasanya IP NAT) di IP firewall layanan.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview"
     }
   ]
 }

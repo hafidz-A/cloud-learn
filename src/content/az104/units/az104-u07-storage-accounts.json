@@ -1521,6 +1521,261 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u07-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u07-l6-e1",
+          "type": "choice",
+          "concept": "object-replication",
+          "prompt": "A company must copy blobs from the container invoices in the account stEU (West Europe) to a container in the account stUS (East US), automatically and asynchronously. The blobs that already exist must be copied too. What should the company configure?",
+          "options": [
+            "An object replication rule whose copy scope includes existing blobs",
+            "GRS (geo-redundant storage) on stEU, with East US as the secondary region",
+            "RA-GRS (read-access geo-redundant storage) on stEU",
+            "An object replication rule with the default settings"
+          ],
+          "answer": 0,
+          "explanation": "Object replication menyalin block blob secara asinkron ke akun lain di region mana pun. Secara default hanya blob baru yang disalin, jadi copy scope harus diatur untuk blob yang sudah ada. Region kedua GRS (geo-redundant storage) ditentukan dari region utama dan tidak bisa dipilih.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-what",
+            "az104-f-u07-or-existing",
+            "az104-f-u07-paired",
+            "az104-f-u07-read-access"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e2",
+          "type": "yesno",
+          "concept": "blob-versioning-prereq",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans object replication from the account stA to the account stB. Both accounts are Standard general-purpose v2.",
+          "statements": [
+            {
+              "text": "Blob versioning must be on in both stA and stB.",
+              "answer": true
+            },
+            {
+              "text": "Change feed must be on in stB.",
+              "answer": false
+            },
+            {
+              "text": "After the policy is created, Contoso can turn off blob versioning on stA.",
+              "answer": false
+            }
+          ],
+          "explanation": "Object replication butuh blob versioning di kedua akun dan change feed di akun sumber saja. Selama ada policy, versioning tidak bisa dimatikan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-prereq",
+            "az104-f-u07-or-versioning-lock"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e3",
+          "type": "choice",
+          "concept": "or-policy-rules",
+          "prompt": "A company wants the account stSource to replicate blobs to three destination accounts by using object replication. Which statement is true?",
+          "options": [
+            "It works with one policy that lists all three destination accounts",
+            "It works when stSource is linked to three policies, one created on each of the three destination accounts",
+            "It works only if the three destination accounts are in the same region",
+            "This is not possible, because one source account can replicate to at most two destination accounts"
+          ],
+          "answer": 3,
+          "explanation": "Satu akun sumber bisa mereplikasi ke paling banyak dua akun tujuan, dengan satu policy untuk setiap akun tujuan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-limits",
+            "az104-f-u07-or-policy"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e4",
+          "type": "multi",
+          "concept": "or-policy-rules",
+          "prompt": "A company plans object replication for its containers. Which two statements about object replication are true? Choose two.",
+          "options": [
+            "Writes to the destination container are rejected while a rule is active",
+            "Append blobs and page blobs are replicated too",
+            "Only block blobs are replicated",
+            "The rule creates the destination container automatically"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Hanya block blob yang direplikasi. Container sumber dan tujuan harus sudah ada sebelum rule dibuat, dan selama rule aktif, penulisan ke container tujuan ditolak dengan error 409.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-or-accounts",
+            "az104-f-u07-or-readonly"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e5",
+          "type": "choice",
+          "concept": "read-access-secondary",
+          "prompt": "A company stores only Azure Files shares in a storage account. The data must survive a zone failure in the primary region and also be copied to a second region. Which redundancy option should the company choose?",
+          "options": [
+            "RA-GZRS (read-access geo-zone-redundant storage)",
+            "RA-GRS (read-access geo-redundant storage)",
+            "ZRS (zone-redundant storage)",
+            "GZRS (geo-zone-redundant storage)"
+          ],
+          "answer": 3,
+          "explanation": "GZRS (geo-zone-redundant storage) memakai ZRS (zone-redundant storage) di region utama dan menyalin ke region kedua. Azure Files tidak mendukung RA-GRS (read-access geo-redundant storage) maupun RA-GZRS (read-access geo-zone-redundant storage), dan ZRS tidak punya salinan di region kedua.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-files-no-ra",
+            "az104-f-u07-geo",
+            "az104-f-u07-zrs"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e6",
+          "type": "yesno",
+          "concept": "storage-failover",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "The primary region of the GRS (geo-redundant storage) account st1 is down. Contoso wants st1 back online and starts a customer-managed unplanned failover.",
+          "statements": [
+            {
+              "text": "Data written after the Last Sync Time might be lost.",
+              "answer": true
+            },
+            {
+              "text": "After the failover, st1 is LRS (locally redundant storage) in the new primary region.",
+              "answer": true
+            },
+            {
+              "text": "Geo-redundancy comes back automatically when the old primary region recovers.",
+              "answer": false
+            }
+          ],
+          "explanation": "Salinan ke region kedua asinkron, jadi data setelah Last Sync Time bisa hilang. Setelah unplanned failover, region kedua menjadi primary dan akun menjadi LRS (locally redundant storage); geo-redundancy harus diaktifkan lagi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-last-sync",
+            "az104-f-u07-unplanned-result"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e7",
+          "type": "choice",
+          "concept": "storage-account-types",
+          "prompt": "A company needs one storage account for blobs, queues, and tables. The account must use RA-GZRS (read-access geo-zone-redundant storage). Which account type should the company choose?",
+          "options": [
+            "Premium block blobs",
+            "Premium file shares",
+            "Standard general-purpose v2",
+            "Premium page blobs"
+          ],
+          "answer": 2,
+          "explanation": "Standard general-purpose v2 mendukung blob, queue, dan table, serta semua opsi redundancy termasuk RA-GZRS (read-access geo-zone-redundant storage). Akun premium hanya mendukung LRS (locally redundant storage) atau ZRS (zone-redundant storage), tanpa geo-redundancy.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-gpv2",
+            "az104-f-u07-types",
+            "az104-f-u07-premium-ssd",
+            "az104-f-u07-read-access"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e8",
+          "type": "choice",
+          "concept": "microsoft-vs-customer-managed-keys",
+          "prompt": "A company's compliance team must be able to block all access to the data in a storage account immediately in an emergency, by using a key that the company controls. What should you configure?",
+          "options": [
+            "A customer-managed key in Azure Key Vault, which the team can disable when needed",
+            "Microsoft-managed keys, and ask Microsoft to delete the storage account in an emergency",
+            "Turn off service-side encryption, and turn it on again in an emergency",
+            "Infrastructure encryption with Microsoft-managed keys"
+          ],
+          "answer": 0,
+          "explanation": "Dengan customer-managed key, pelanggan mengendalikan kuncinya. Kalau kunci dinonaktifkan di key vault, baca dan tulis data gagal dengan error 403 untuk semua pengguna. Enkripsi Azure Storage tidak bisa dimatikan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-cmk",
+            "az104-f-u07-cmk-revoke",
+            "az104-f-u07-sse",
+            "az104-f-u07-infra"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e9",
+          "type": "choice",
+          "concept": "storage-explorer",
+          "prompt": "A company's support staff will use Azure Storage Explorer to manage blobs. The company wants the easiest and most secure way to connect. What should the staff use?",
+          "options": [
+            "The storage account name and account key",
+            "Sign in with Microsoft Entra ID",
+            "A SAS (shared access signature) with every permission and a one-year expiry",
+            "A connection string that contains the account key"
+          ],
+          "answer": 1,
+          "explanation": "Login dengan Microsoft Entra ID adalah cara paling mudah dan paling aman untuk Storage Explorer. Account key memberi akses tanpa batas ke seluruh layanan di akun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-se-entra",
+            "az104-f-u07-se-keys",
+            "az104-f-u07-se-connect"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e10",
+          "type": "choice",
+          "concept": "change-redundancy",
+          "prompt": "A storage account at a company uses GRS (geo-redundant storage). The company now needs read access to the secondary region. What should the company do?",
+          "options": [
+            "Change the redundancy to RA-GRS (read-access geo-redundant storage) directly",
+            "Create a new RA-GRS account, and then copy all of the data to it with AzCopy",
+            "Start a failover, and then turn on read access",
+            "Open a support request for a conversion"
+          ],
+          "answer": 0,
+          "explanation": "Menambah atau menghapus geo-replication dan akses baca bisa langsung lewat portal, PowerShell, atau CLI (command-line interface). Hanya perubahan yang menyangkut zone yang butuh proses lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-change-redundancy",
+            "az104-f-u07-read-access"
+          ]
+        },
+        {
+          "id": "az104-u07-l6-e11",
+          "type": "match",
+          "concept": "storage-redundancy",
+          "prompt": "A company compares the redundancy options of a storage account. Match each option with where the copies live.",
+          "pairs": [
+            [
+              "LRS (locally redundant storage)",
+              "One datacenter in the primary region"
+            ],
+            [
+              "ZRS (zone-redundant storage)",
+              "Availability zones in the primary region"
+            ],
+            [
+              "GRS (geo-redundant storage)",
+              "One datacenter in the primary region, plus the secondary region"
+            ],
+            [
+              "GZRS (geo-zone-redundant storage)",
+              "Availability zones in the primary region, plus the secondary region"
+            ]
+          ],
+          "explanation": "LRS (locally redundant storage) menyimpan tiga salinan di satu datacenter, ZRS (zone-redundant storage) di beberapa availability zone. GRS (geo-redundant storage) memakai LRS di region utama dan GZRS (geo-zone-redundant storage) memakai ZRS, lalu keduanya menyalin ke region kedua.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u07-lrs",
+            "az104-f-u07-zrs",
+            "az104-f-u07-geo"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

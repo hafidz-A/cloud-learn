@@ -1361,6 +1361,295 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u04-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u04-l6-e1",
+          "type": "choice",
+          "concept": "subnet-sizing",
+          "prompt": "A company needs a subnet for 60 virtual machines, each with one private IP (Internet Protocol) address. The subnet must be as small as possible. Which prefix should you use?",
+          "options": [
+            "/26",
+            "/27",
+            "/24",
+            "/25"
+          ],
+          "answer": 3,
+          "explanation": "Azure mencadangkan 5 alamat di setiap subnet. /26 punya 64 alamat, jadi hanya 59 yang bisa dipakai, kurang dari 60. /25 punya 128 alamat, jadi 123 bisa dipakai. /24 juga cukup, tapi lebih besar dari yang dibutuhkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-reserved-5",
+            "az104-f-u04-subnet-limits"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e2",
+          "type": "choice",
+          "concept": "vnet-address-space",
+          "prompt": "Contoso uses 10.0.0.0/16 on-premises and will connect its office to a new VNet (virtual network) through a VPN (virtual private network). The address space of the VNet must follow the Microsoft recommendation. Which address space should you use?",
+          "options": [
+            "10.0.0.0/16",
+            "10.0.128.0/17",
+            "8.8.0.0/16",
+            "10.1.0.0/16"
+          ],
+          "answer": 3,
+          "explanation": "VNet (virtual network) hanya bisa dihubungkan ke jaringan on-premises kalau address space-nya tidak tumpang tindih. 10.0.0.0/16 dan 10.0.128.0/17 tumpang tindih dengan jaringan kantor, dan 8.8.0.0/16 bukan rentang privat yang disarankan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-vnet-cidr",
+            "az104-f-u04-private-ranges"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e3",
+          "type": "rules",
+          "concept": "vnet-address-space",
+          "prompt": "You need to add a subnet to VNet1. Based on the table, which address range can you use for the new subnet?",
+          "tables": [
+            {
+              "title": "VNet1",
+              "columns": [
+                "Item",
+                "Address range"
+              ],
+              "rows": [
+                [
+                  "Address space",
+                  "10.10.0.0/16"
+                ],
+                [
+                  "Subnet snet-web",
+                  "10.10.1.0/24"
+                ],
+                [
+                  "Subnet snet-db",
+                  "10.10.2.0/24"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "10.10.1.128/25",
+            "10.11.0.0/24",
+            "10.10.4.0/30",
+            "10.10.3.0/24"
+          ],
+          "answer": 3,
+          "explanation": "10.10.1.128/25 tumpang tindih dengan snet-web, 10.11.0.0/24 di luar address space VNet1, dan /30 lebih kecil dari subnet IPv4 terkecil, yaitu /29. Hanya 10.10.3.0/24 yang valid.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-subnets-no-overlap",
+            "az104-f-u04-subnet-limits",
+            "az104-f-u04-vnet-cidr"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e4",
+          "type": "choice",
+          "concept": "public-ip-zones",
+          "prompt": "A company needs a public IP (Internet Protocol) address for the frontend of a load balancer. The address must keep working if any single availability zone fails, and it must never change. What should you create?",
+          "options": [
+            "A zonal Standard public IP address in zone 1",
+            "A Basic public IP address with dynamic allocation",
+            "A zone-redundant Standard public IP address",
+            "A Basic public IP address with static allocation"
+          ],
+          "answer": 2,
+          "explanation": "Public IP (Internet Protocol) Standard selalu static, dan yang zone-redundant bertahan saat satu zona gagal. Zonal hanya hidup di satu zona, dan SKU (stock-keeping unit) Basic sudah pensiun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-ip-zones",
+            "az104-f-u04-standard-static",
+            "az104-f-u04-basic-retired"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e5",
+          "type": "choice",
+          "concept": "network-diagnosis",
+          "prompt": "vm1 cannot connect to a database server at 10.0.3.4 on port 1433. You need one test that checks the NSGs (network security groups), the routes, and blocked ports between them, and that suggests a cause. Which Network Watcher tool should you use?",
+          "options": [
+            "IP (Internet Protocol) flow verify, which checks only NSG rules",
+            "Connection troubleshoot",
+            "Next hop, which checks only routes",
+            "Effective security rules"
+          ],
+          "answer": 1,
+          "explanation": "Connection troubleshoot menguji koneksi dari VM (virtual machine) ke tujuan dan memeriksa NSG (network security group), UDR (user-defined route), dan port yang diblokir, lalu memberi penyebabnya. IP (Internet Protocol) flow verify hanya memeriksa aturan NSG, dan Next hop hanya route.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-connection-troubleshoot",
+            "az104-f-u04-ip-flow-verify",
+            "az104-f-u04-next-hop",
+            "az104-f-u04-effective-rules"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e6",
+          "type": "yesno",
+          "concept": "ip-flow-verify",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Users cannot reach the website on vm1. An administrator at Contoso runs IP (Internet Protocol) flow verify for inbound TCP (Transmission Control Protocol) port 443 to vm1. The result is Access denied, with the rule DenyAllInBound.",
+          "statements": [
+            {
+              "text": "IP flow verify checked the NSG (network security group) rules for this packet.",
+              "answer": true
+            },
+            {
+              "text": "The result shows the name of the rule that denied the packet.",
+              "answer": true
+            },
+            {
+              "text": "IP flow verify also tested the routes and the DNS (Domain Name System) settings of vm1.",
+              "answer": false
+            }
+          ],
+          "explanation": "IP (Internet Protocol) flow verify mengecek apakah paket diizinkan oleh aturan NSG (network security group), berdasarkan arah, protokol, IP, dan port, lalu memberi hasil beserta nama aturan dan NSG-nya. Route diperiksa dengan Next hop, bukan IP flow verify.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-ip-flow-verify",
+            "az104-f-u04-next-hop"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e7",
+          "type": "choice",
+          "concept": "next-hop",
+          "prompt": "Traffic from vm1 to 10.20.0.4 in a peered VNet (virtual network) goes through a firewall instead of going directly. You need to confirm which next hop type and route table are used. Which Network Watcher tool should you use?",
+          "options": [
+            "IP (Internet Protocol) flow verify",
+            "Effective security rules",
+            "Next hop",
+            "Virtual network flow logs"
+          ],
+          "answer": 2,
+          "explanation": "Next hop memberi next hop type, alamat IP (Internet Protocol), dan route table untuk sebuah tujuan. IP flow verify dan effective security rules memeriksa aturan keamanan, dan flow logs mencatat trafik.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-next-hop",
+            "az104-f-u04-ip-flow-verify",
+            "az104-f-u04-effective-rules",
+            "az104-f-u04-flow-logs"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e8",
+          "type": "choice",
+          "concept": "flow-logs",
+          "prompt": "For an audit, a company must record the IP (Internet Protocol) traffic that flows through VNet1 and analyze it later. What should the company create?",
+          "options": [
+            "New NSG (network security group) flow logs for every NSG in VNet1",
+            "A Connection troubleshoot test from each virtual machine",
+            "A Next hop check for each subnet",
+            "Virtual network flow logs for VNet1"
+          ],
+          "answer": 3,
+          "explanation": "NSG (network security group) flow logs sudah tidak bisa dibuat baru dan pensiun 30 September 2027; penggantinya virtual network flow logs. Connection troubleshoot dan Next hop adalah pengecekan sekali jalan, bukan catatan trafik.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-flow-logs",
+            "az104-f-u04-connection-troubleshoot",
+            "az104-f-u04-next-hop"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e9",
+          "type": "yesno",
+          "concept": "vnet-peering",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to peer VNetA (10.1.0.0/16) with VNetB (10.2.0.0/16), and VNetB with VNetC (10.3.0.0/16). So far, only the link from VNetA to VNetB has been created.",
+          "statements": [
+            {
+              "text": "The status of the VNetA to VNetB peering is Initiated.",
+              "answer": true
+            },
+            {
+              "text": "After all links are created, virtual machines in VNetA can reach VNetC through VNetB.",
+              "answer": false
+            },
+            {
+              "text": "Data that is transferred over a peering is charged.",
+              "answer": true
+            }
+          ],
+          "explanation": "Peering butuh link dari kedua arah; kalau baru satu, statusnya Initiated. Peering tidak transitif, jadi VNetA tidak otomatis terhubung ke VNetC. Membuat peering gratis, tapi transfer datanya ditagih.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-peering-links",
+            "az104-f-u04-non-transitive",
+            "az104-f-u04-peering-cost"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e10",
+          "type": "choice",
+          "concept": "udr",
+          "prompt": "Traffic from snet-app to snet-db, two subnets in the same VNet (virtual network), must pass through a firewall virtual machine at 10.0.100.4. Which route should you add to the route table of snet-app?",
+          "options": [
+            "The prefix 0.0.0.0/0, with the next hop type Internet",
+            "The address prefix of snet-db, with the next hop type Virtual network gateway and the address 10.0.100.4 of the firewall",
+            "The address prefix of snet-db, with the next hop type Virtual appliance and the address 10.0.100.4",
+            "The address prefix of snet-db, with the next hop type None"
+          ],
+          "answer": 2,
+          "explanation": "UDR (user-defined route) dengan prefix snet-db lebih spesifik dari system route untuk address space VNet (virtual network), jadi menang lewat longest prefix match, dan next hop Virtual appliance mengirim trafik ke firewall. Next hop None membuang trafik.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-route-table",
+            "az104-f-u04-udr-next-hops",
+            "az104-f-u04-route-selection",
+            "az104-f-u04-system-routes"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e11",
+          "type": "choice",
+          "concept": "default-outbound",
+          "prompt": "A company creates a new VNet (virtual network) with an API (Application Programming Interface) version released after March 31, 2026. vm1 in its subnet has no public IP (Internet Protocol) address, and Windows Update on vm1 fails. What should the company do?",
+          "options": [
+            "Add an explicit outbound method, such as a NAT (network address translation) gateway, for the subnet",
+            "Restart vm1 several times until Azure assigns it a default outbound IP (Internet Protocol) address from the Microsoft pool",
+            "Change the private IP address of vm1 from dynamic to static",
+            "Peer the VNet with another VNet in the same region"
+          ],
+          "answer": 0,
+          "explanation": "Subnet di VNet (virtual network) baru bersifat privat, jadi VM (virtual machine) butuh metode outbound eksplisit, misalnya NAT (network address translation) gateway, load balancer dengan outbound rule, atau public IP (Internet Protocol). Mengubah IP privat atau peering tidak memberi akses internet.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-private-subnet",
+            "az104-f-u04-private-static",
+            "az104-f-u04-peering-def"
+          ]
+        },
+        {
+          "id": "az104-u04-l6-e12",
+          "type": "multi",
+          "concept": "vnet-peering",
+          "prompt": "A company plans to connect several VNets (virtual networks) with peering. Which two statements about VNet peering are true? Choose two.",
+          "options": [
+            "Peering is transitive, so peering A with B and B with C connects A with C",
+            "Two VNets whose address spaces overlap can be peered",
+            "Traffic between peered VNets uses private addresses on the Microsoft backbone",
+            "Peering can connect VNets in different regions and in different Microsoft Entra tenants"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Peering bisa local atau global, juga antar subscription dan tenant, dan trafiknya lewat backbone Microsoft dengan alamat privat. Peering tidak transitif dan tidak bisa dibuat kalau address space tumpang tindih.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u04-peering-def",
+            "az104-f-u04-non-transitive",
+            "az104-f-u04-peering-overlap"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

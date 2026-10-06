@@ -1176,6 +1176,270 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u08-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u08-l6-e1",
+          "type": "choice",
+          "concept": "stored-access-policy",
+          "prompt": "A company gives partners SAS (shared access signature) tokens for the container contracts. Later, the company must be able to change the expiry time of the tokens that it already gave out, without issuing new tokens. What should the company do?",
+          "options": [
+            "Issue user delegation SAS tokens with a long expiry time",
+            "Issue account SAS tokens, and regenerate key1 when the expiry must change",
+            "Issue service SAS tokens without a policy, and edit each token later",
+            "Create a stored access policy on the container, and issue service SAS tokens that reference it"
+          ],
+          "answer": 3,
+          "explanation": "SAS (shared access signature) yang merujuk ke stored access policy mengikuti start time, expiry time, dan izin dari policy, dan policy itu bisa diubah untuk SAS yang sudah diterbitkan. Stored access policy hanya bisa dipakai dengan service SAS.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sap-what",
+            "az104-f-u08-sap-change",
+            "az104-f-u08-sap-service-only",
+            "az104-f-u08-bare-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e2",
+          "type": "choice",
+          "concept": "revoke-sas",
+          "prompt": "A user delegation SAS (shared access signature) for a container at a company was posted on a public website. It must stop working now. What should you do?",
+          "options": [
+            "Regenerate key1 of the storage account",
+            "Delete the stored access policy of the container",
+            "Revoke the user delegation keys of the storage account",
+            "Set Allow storage account key access to Disabled"
+          ],
+          "answer": 2,
+          "explanation": "User delegation SAS (shared access signature) dicabut dengan mencabut user delegation key akun, misalnya lewat az storage account revoke-delegation-keys. Membuat ulang access key dan mematikan Shared Key tidak memengaruhi user delegation SAS, dan stored access policy hanya untuk service SAS.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-ud-revoke",
+            "az104-f-u08-keys-rotate-sas",
+            "az104-f-u08-sap-service-only",
+            "az104-f-u08-shared-key-off"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e3",
+          "type": "yesno",
+          "concept": "stored-access-policy",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso created five stored access policies on the container kontrak in contosodata.",
+          "statements": [
+            {
+              "text": "Contoso can add a sixth stored access policy to kontrak.",
+              "answer": false
+            },
+            {
+              "text": "An account SAS (shared access signature) can reference one of these policies.",
+              "answer": false
+            },
+            {
+              "text": "Deleting one of the policies revokes the service SAS tokens that reference it.",
+              "answer": true
+            }
+          ],
+          "explanation": "Satu container maksimal punya lima stored access policy, dan policy hanya bisa dipakai dengan service SAS (shared access signature). Menghapus atau mengubah policy mencabut service SAS yang merujuk ke policy itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-sap-revoke",
+            "az104-f-u08-sap-service-only",
+            "az104-f-u08-sap-change"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e4",
+          "type": "rules",
+          "concept": "selected-networks",
+          "prompt": "The storage firewall of contosodata at a company is configured as shown. Which request succeeds?",
+          "tables": [
+            {
+              "title": "Networking settings of contosodata",
+              "columns": [
+                "Setting",
+                "Value"
+              ],
+              "rows": [
+                [
+                  "Public network access",
+                  "Enabled from selected networks"
+                ],
+                [
+                  "Virtual network rule",
+                  "snet-app (with the Microsoft.Storage service endpoint)"
+                ],
+                [
+                  "IP (Internet Protocol) network rule",
+                  "203.0.113.0/24"
+                ],
+                [
+                  "Exceptions",
+                  "None"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "A virtual machine in snet-app reads a blob without any credential",
+            "A home user at 198.51.100.7 reads a blob with the account key",
+            "Azure Monitor writes resource logs to contosodata",
+            "A virtual machine in snet-app reads a blob with a valid user delegation SAS (shared access signature)"
+          ],
+          "answer": 3,
+          "explanation": "Request dari sumber yang diizinkan firewall tetap harus lolos otorisasi, jadi VM (virtual machine) di snet-app tanpa kredensial ditolak. 198.51.100.7 bukan sumber yang diizinkan, dan Azure Monitor butuh pengecualian layanan tepercaya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-fw-auth",
+            "az104-f-u08-vnet-rule",
+            "az104-f-u08-fw-sources",
+            "az104-f-u08-trusted"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e5",
+          "type": "choice",
+          "concept": "sas-types",
+          "prompt": "An app at a company must list and create containers and queues by using one token. The operations are at the service level, across Blob Storage and Queue Storage. Which SAS (shared access signature) type should the app use?",
+          "options": [
+            "Service SAS",
+            "Account SAS",
+            "User delegation SAS for one container",
+            "A stored access policy"
+          ],
+          "answer": 1,
+          "explanation": "Account SAS (shared access signature) bisa untuk satu atau lebih layanan storage, termasuk operasi di level layanan. Service SAS hanya untuk satu layanan, dan stored access policy bukan token.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-account-sas",
+            "az104-f-u08-service-sas",
+            "az104-f-u08-sap-what"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e6",
+          "type": "yesno",
+          "concept": "key-rotation",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to rotate key1 of contosodata. Partners use service SAS (shared access signature) tokens signed with key1, and staff use user delegation SAS tokens.",
+          "statements": [
+            {
+              "text": "The service SAS tokens signed with key1 stop working after key1 is regenerated.",
+              "answer": true
+            },
+            {
+              "text": "The user delegation SAS tokens stop working after key1 is regenerated.",
+              "answer": false
+            },
+            {
+              "text": "Apps that use key1 should switch to key2 before key1 is regenerated.",
+              "answer": true
+            }
+          ],
+          "explanation": "Membuat ulang access key membatalkan service SAS (shared access signature) dan account SAS yang ditandatangani key itu, tapi tidak user delegation SAS. Untuk rotasi tanpa gangguan, aplikasi dipindah ke key2 dulu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-keys-rotate-sas",
+            "az104-f-u08-keys-rotate"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e7",
+          "type": "choice",
+          "concept": "disallow-shared-key",
+          "prompt": "A company sets Allow storage account key access to Disabled on contosodata. Which way of reaching Blob Storage still works?",
+          "options": [
+            "A service SAS (shared access signature) signed with key1",
+            "An account SAS signed with key2",
+            "A user delegation SAS (shared access signature)",
+            "A connection string that contains key1"
+          ],
+          "answer": 2,
+          "explanation": "Saat akses key dimatikan, request dengan Shared Key ditolak, termasuk service SAS (shared access signature) dan account SAS ke Blob Storage. User delegation SAS diamankan dengan kredensial Microsoft Entra, jadi tetap bisa.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-shared-key-off",
+            "az104-f-u08-ud-sas"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e8",
+          "type": "choice",
+          "concept": "files-identity-auth",
+          "prompt": "A company uses a managed domain in Microsoft Entra Domain Services. Its virtual machines are joined to the managed domain. Users must open an Azure file share with their own identities. Which identity source should the company configure?",
+          "options": [
+            "Active Directory Domain Services on-premises",
+            "Microsoft Entra Kerberos",
+            "Microsoft Entra Domain Services",
+            "The storage account key, shared with every user"
+          ],
+          "answer": 2,
+          "explanation": "Microsoft Entra Domain Services cocok untuk organisasi yang memakai managed domain di Azure, dengan klien yang bergabung ke managed domain itu. Satu storage account hanya memakai satu identity source.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-files-entra-ds",
+            "az104-f-u08-files-sources",
+            "az104-f-u08-files-entra-kerberos",
+            "az104-f-u08-keys-reco"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e9",
+          "type": "choice",
+          "concept": "share-vs-file-permissions",
+          "prompt": "Ani has the Storage File Data SMB (Server Message Block) Share Reader role on a file share. The Windows ACL (access control list) of a folder in the share gives her Full control. What can Ani do in that folder?",
+          "options": [
+            "Read, change, and delete files, because the folder ACL gives Full control",
+            "Change the ACL of the folder, because she has Full control",
+            "Nothing, because share roles and ACLs cannot be combined",
+            "Only read files, because the most restrictive permission applies"
+          ],
+          "answer": 3,
+          "explanation": "Izin level share dan izin folder serta file sama-sama dicek, dan yang paling ketat yang berlaku. Share Reader hanya mengizinkan baca.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-most-restrictive",
+            "az104-f-u08-share-roles",
+            "az104-f-u08-file-acl"
+          ]
+        },
+        {
+          "id": "az104-u08-l6-e10",
+          "type": "match",
+          "concept": "sas-types",
+          "prompt": "A company is choosing how to share access to storage. Match each requirement with what meets it.",
+          "pairs": [
+            [
+              "Sign the token without any account key",
+              "User delegation SAS (shared access signature)"
+            ],
+            [
+              "One service, revocable through a policy",
+              "Service SAS"
+            ],
+            [
+              "Several services and service-level operations",
+              "Account SAS"
+            ],
+            [
+              "Change the expiry of tokens already given out",
+              "Stored access policy"
+            ]
+          ],
+          "explanation": "User delegation SAS (shared access signature) diamankan dengan kredensial Microsoft Entra, service SAS untuk satu layanan dan bisa merujuk stored access policy, account SAS untuk beberapa layanan, dan stored access policy bisa mengubah SAS yang sudah diterbitkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u08-ud-sas",
+            "az104-f-u08-service-sas",
+            "az104-f-u08-account-sas",
+            "az104-f-u08-sap-change"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

@@ -440,6 +440,11 @@
     "description": "Nama login user di Microsoft Entra ID: nama unik plus domain tenant, misalnya adele@contoso.com."
   },
   {
+    "term": "URI",
+    "expansion": "Uniform Resource Identifier",
+    "description": "Alamat yang mengenali sebuah resource, misalnya alamat container atau blob di storage account."
+  },
+  {
     "term": "URL",
     "expansion": "Uniform Resource Locator",
     "description": "Alamat lengkap sebuah halaman atau resource di web, misalnya https://contoso.com."
