@@ -26,13 +26,14 @@ for (const { course, unit, n, lessons } of COURSE_UNITS) {
       await expect(main(page)).toHaveAttribute('data-item-id', exercise.id)
 
       await play(page)
-      // AZ-104 lessons end with what to try in a real subscription (plan section 8).
-      if (course === 'AZ-104') await expect(page.getByRole('complementary', { name: 'Coba di Azure' })).toBeVisible()
+      // AZ-104 lessons end with what to try in a real subscription (plan section 8);
+      // exam practice lessons teach nothing new, so they have no tip.
+      if (course === 'AZ-104') await expect(page.getByRole('complementary', { name: 'Coba di Azure' })).toHaveCount(lesson.review ? 0 : 1)
 
       await page.goto(`/#/guide/${unit.id}`)
       await expect(page.getByText(`Panduan unit ${n}`)).toBeVisible()
       if (course === 'AZ-104') {
-        await expect(page.getByRole('complementary', { name: 'Coba di Azure' })).toHaveCount(unit.lessons.length)
+        await expect(page.getByRole('complementary', { name: 'Coba di Azure' })).toHaveCount(unit.lessons.filter((l) => !l.review).length)
         await expect(page.locator('[data-mission]')).toHaveCount(1)
       }
       const cards = unit.lessons.flatMap((l) => l.items.filter(isCard)) as unknown as { visual?: string }[]

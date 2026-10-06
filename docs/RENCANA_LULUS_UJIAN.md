@@ -18,7 +18,8 @@ dijadwalkan; tanda itu tidak ada untuk kedua ujian.
 
 Kisi-kisi disimpan sebagai data di `src/content/objectives/az900.json` dan `az104.json`, lengkap dengan tanggal
 versi dan tanggal terakhir dicek. **Cara memperbarui** kalau Microsoft mengumumkan versi baru: ubah butir di file
-itu, jalankan `npx vitest run src/content/objectives.test.ts`, lalu tambal butir yang gagal.
+itu, jalankan `npx vitest run src/content/objectives.test.ts`, lalu tambal butir yang gagal. Tes itu juga
+mengecek standar di bagian 2 untuk setiap butir, jadi butir baru langsung terlihat kalau soalnya belum cukup.
 
 Perubahan dari versi lama yang memengaruhi materi:
 - AZ-900: *Service Trust Portal* dan *TCO Calculator* tidak ada di kisi-kisi 20 Juli 2026 (cost management hanya
@@ -62,8 +63,8 @@ dan diajarkan kartu materi sebelum diuji.
 |---|---|
 | 1. Data kisi-kisi, peta, dan perubahan aplikasi | Selesai |
 | 2. AZ-900 | Selesai (6 Oktober 2026): 57 dari 57 butir memenuhi standar. 42 fakta baru, 204 soal baru, dan lesson "Latihan soal ujian" di akhir setiap unit |
-| 3. AZ-104 | Sedang dikerjakan |
-| 4. Tes cakupan wajib dan cek akhir | Belum |
+| 3. AZ-104 | Selesai (6 Oktober 2026): 82 dari 82 butir memenuhi standar. 48 fakta baru, 215 soal baru, 4 lesson materi baru (Unit 3, 9, 13, 15), dan lesson "Latihan soal ujian" di akhir setiap unit |
+| 4. Tes cakupan wajib dan cek akhir | Selesai (6 Oktober 2026): `src/content/objectives.test.ts` gagal kalau ada butir AZ-900 atau AZ-104 di bawah standar bagian 2 |
 
 Lesson "Latihan soal ujian" (`review: true` di data lesson) selalu menjadi lesson terakhir unit, tidak
 punya kartu materi, berisi 8–15 soal siap ujian, dan tidak dihitung sebagai lesson pengajaran. Di peta

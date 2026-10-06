@@ -103,7 +103,7 @@ Ketuk ikon **gerigi** di kanan atas:
 
 Rencana kasar sampai siap ujian:
 
-1. **Minggu 1**: selesaikan jalur 1–3 (48 lesson) dan tiga checkpoint.
+1. **Minggu 1**: selesaikan jalur 1–3 (48 lesson materi dan 12 lesson **Latihan soal ujian**) dan tiga checkpoint.
 2. **Minggu 2**: satu **Simulasi penuh** (50 soal, 45 menit) per hari, diselingi **Ujian titik lemah**.
 3. Daftar ujian AZ-900 setelah indikator **Siap ujian** menyala: rata-rata 3 simulasi penuh terakhir minimal 800 dan semua butir kisi-kisi dikuasai.
 
@@ -133,7 +133,11 @@ Untuk CCNA (pilih course CCNA di home):
   **Latihan** (setiap jawaban benar di percobaan pertama mengisi 1 heart, maksimal 5), tunggu besok saat
   hearts terisi penuh, atau matikan hearts di **Pengaturan**. Checkpoint dan Ujian tidak memakai hearts.
 - **Streak**: bertambah setiap hari kamu menyelesaikan minimal satu lesson atau latihan.
-- **Level unit (mahkota 0/3)**: naik setiap kali semua lesson di unit itu diulang.
+- **Level unit (mahkota 0/3)**: naik setiap kali semua lesson di unit itu diulang. Level tidak pernah turun
+  saat unit mendapat lesson baru.
+- **Latihan soal ujian**: lesson terakhir setiap unit AZ-900 dan AZ-104 (ikon papan klip). Isinya 8–15 soal
+  bergaya ujian asli tentang semua lesson di unit itu, tanpa kartu materi baru. Kerjakan setelah lesson materi
+  unit itu selesai; soal yang salah masuk Latihan seperti biasa.
 - **Checkpoint**: 20 soal campuran di akhir jalur, lulus kalau skornya minimal 80%. Checkpoint bisa dicoba
   lebih awal untuk melompat ke jalur berikutnya.
 - **Glosarium**: di dalam soal, **tahan tap** pada singkatan yang bergaris titik, misalnya NSG, untuk
@@ -153,7 +157,7 @@ Untuk CCNA (pilih course CCNA di home):
 - **Siap ujian** menyala kalau rata-rata 3 simulasi penuh terakhir minimal 800 **dan** semua butir kisi-kisi dikuasai.
 - **Placement test AZ-104 (opsional)**: 30 soal, 2 dari setiap unit, ditawarkan di home sebelum lesson AZ-104
   pertama. Unit yang skornya minimal 80% boleh ditandai selesai. Jawabannya tidak masuk statistik maupun Latihan.
-- **Coba di Azure dan misi unit (AZ-104)**: setiap lesson AZ-104 punya satu tips praktik di layar selesai lesson
+- **Coba di Azure dan misi unit (AZ-104)**: setiap lesson materi AZ-104 punya satu tips praktik di layar selesai lesson
   dan di Panduan unit. Di akhir Panduan unit ada misi 20–40 menit yang menggabungkan semua lesson unit itu.
   Label **Hati-hati biaya** menandai yang bisa memakan biaya (Bastion selain SKU Developer, Standard Load
   Balancer, Site Recovery, tier App Service berbayar, lisensi Microsoft Entra ID P1/P2). Buat resource misi di

@@ -456,7 +456,7 @@ Tidak ada fakta bertanda `verify`.
 | Tiga cara scale out: manual (Basic+), autoscale aturan dan jadwal (Standard+), automatic scaling trafik HTTP (Premium v2–v4) dengan instance prewarmed default 1 | Soal config jadwal jam kerja, soal match | `manage-automatic-scaling.md` (16 April 2026) |
 | Custom domain butuh tier berbayar (bukan F1); A untuk root, CNAME untuk subdomain; TXT `asuid`/`asuid.<sub>`; TXT untuk CNAME "highly recommended" demi mencegah subdomain takeover | Fakta rencana terkonfirmasi, soal order | `app-service-web-tutorial-custom-domain.md` (7 April 2026) |
 | Managed certificate gratis, diperbarui otomatis, butuh Basic+, tanpa wildcard | Diajarkan | `configure-ssl-certificate.md` (4 Juni 2026) |
-| Backup di Basic, Standard, Premium, Isolated; di Basic hanya slot production; automatic backup tanpa storage account, simpan 30 hari; custom backup butuh storage account, maksimal 10 GB. Backup linked database berhenti didukung mulai 31 Maret 2028 | Diajarkan (catatan 2028 tidak diuji) | `manage-backup.md` |
+| Backup di Basic, Standard, Premium, Isolated; di Basic hanya slot production; automatic backup tanpa storage account, simpan 30 hari; custom backup butuh storage account, maksimal 10 GB. Backup linked database berhenti didukung mulai 31 Maret 2028 | Diajarkan. Sejak 6 Oktober 2026 juga diuji, karena opsinya sudah dihapus untuk konfigurasi baru (lihat bagian tambahan AZ-104 di bawah) | `manage-backup.md` |
 | VNet integration Basic+ dan hanya trafik keluar; private endpoint hanya trafik masuk; access restriction berprioritas dengan deny all implisit dan HTTP 403 | Soal sort rencana dan soal fix | `overview-vnet-integration.md`, `networking-features.md`, `app-service-ip-restrictions.md` |
 | Slot butuh Standard, Premium, Isolated; tanpa biaya tambahan; swap tanpa downtime dan bisa diulang; swap with preview; app setting dan connection string ikut swap kecuali ditandai slot setting; custom domain, TLS, scale, managed identity, VNet integration tetap di slot | Soal fix rencana (database staging) | `deploy-staging-slots.md`, include `app-service-deployment-slots-settings.md` |
 
@@ -562,6 +562,85 @@ tidak berlabel, tapi langkah bersih-bersihnya selalu mengingatkan bahwa VM ditag
 Dua hal yang sengaja ditulis di tips karena sering membuat bingung saat membersihkan: vault Recovery Services
 yang berisi data soft delete baru bisa dihapus setelah masa soft delete lewat, dan blob Archive yang dihapus
 sebelum 180 hari kena biaya early deletion.
+
+## AZ-104: tambahan untuk kisi-kisi 17 April 2026 (6 Oktober 2026)
+
+Semua 82 butir kisi-kisi AZ-104 dibawa ke standar di `docs/RENCANA_LULUS_UJIAN.md` bagian 2: setiap butir
+punya kartu materi, minimal 8 soal, 6 soal siap ujian, dan 3 soal skenario, dengan soal benar/salah paling
+banyak sepertiga. Hasilnya 48 fakta baru, 14 kartu materi baru, 215 soal baru, 4 lesson pengajaran baru
+(Unit 3, 9, 13, dan 15), dan satu lesson "Latihan soal ujian" di akhir setiap unit (164 soal bergaya ujian).
+
+Setiap fakta baru dicocokkan ke kalimat di file Markdown resmi (repo `MicrosoftDocs`), kecuali
+`az104-f-u11-avset-create`, yang dicocokkan lewat pencarian terbatas ke learn.microsoft.com karena halamannya
+tidak ada di salinan lokal. Konsep baru `vm-create` dipetakan ke butir 3.2.1, serta `disk-backup` dan
+`blob-backup` ke butir 5.2.2 (Backup vault).
+
+| Unit | Fakta | Sumber (learn.microsoft.com/en-us/...) |
+|---|---|---|
+| 3 | `az104-f-u03-rg-metadata` | azure/azure-resource-manager/management/manage-resource-groups-portal |
+| 3 | `az104-f-u03-rg-lifecycle` | azure/azure-resource-manager/management/overview |
+| 3 | `az104-f-u03-rg-rename` | azure/azure-resource-manager/management/frequently-asked-questions |
+| 3 | `az104-f-u03-rg-delete-perm` | azure/azure-resource-manager/management/delete-resource-group |
+| 3 | `az104-f-u03-rg-delete-fail` | azure/azure-resource-manager/management/delete-resource-group |
+| 3 | `az104-f-u03-rg-no-recover` | azure/azure-resource-manager/management/delete-resource-group |
+| 3 | `az104-f-u03-sub-directory` | entra/fundamentals/how-subscriptions-associated-directory |
+| 3 | `az104-f-u03-sub-cancel` | azure/cost-management-billing/manage/cancel-azure-subscription |
+| 3 | `az104-f-u03-sub-rename` | azure/cost-management-billing/manage/change-azure-account-profile |
+| 3 | `az104-f-u03-mg-move-perm` | azure/governance/management-groups/manage |
+| 3 | `az104-f-u03-mg-delete` | azure/governance/management-groups/manage |
+| 3 | `az104-f-u03-mg-cli` | azure/governance/management-groups/manage |
+| 5 | `az104-f-u05-se-rule` | azure/virtual-network/virtual-network-service-endpoints-overview |
+| 5 | `az104-f-u05-se-per-subnet` | azure/virtual-network/virtual-network-service-endpoints-overview |
+| 5 | `az104-f-u05-se-switch` | azure/virtual-network/virtual-network-service-endpoints-overview |
+| 5 | `az104-f-u05-se-onprem` | azure/virtual-network/virtual-network-service-endpoints-overview |
+| 9 | `az104-f-u09-share-billing` | azure/storage/files/create-classic-file-share |
+| 9 | `az104-f-u09-share-provisioned` | azure/storage/files/create-classic-file-share |
+| 9 | `az104-f-u09-share-name` | azure/storage/files/create-classic-file-share |
+| 9 | `az104-f-u09-share-445` | azure/storage/files/storage-files-planning |
+| 9 | `az104-f-u09-container-name` | azure/storage/blobs/storage-blobs-introduction |
+| 9 | `az104-f-u09-ver-immutable` | azure/storage/blobs/versioning-overview |
+| 9 | `az104-f-u09-ver-delete` | azure/storage/blobs/versioning-overview |
+| 9 | `az104-f-u09-ver-disable` | azure/storage/blobs/versioning-overview |
+| 11 | `az104-f-u11-vm-vnet-region` | azure/virtual-network/virtual-network-vnet-plan-design-arm |
+| 11 | `az104-f-u11-avset-create` | azure/virtual-machines/windows/change-availability-set |
+| 13 | `az104-f-u13-webapp-create` | azure/app-service/quickstart-dotnetcore |
+| 13 | `az104-f-u13-app-move-plan` | azure/app-service/app-service-plan-manage |
+| 13 | `az104-f-u13-app-region` | azure/app-service/app-service-plan-manage |
+| 13 | `az104-f-u13-cert-options` | azure/app-service/configure-ssl-certificate |
+| 13 | `az104-f-u13-cert-pfx` | azure/app-service/configure-ssl-certificate |
+| 13 | `az104-f-u13-binding-types` | azure/app-service/configure-ssl-bindings |
+| 13 | `az104-f-u13-tls-min` | azure/app-service/overview-tls |
+| 13 | `az104-f-u13-https-only` | azure/app-service/configure-common |
+| 13 | `az104-f-u13-backup-restore` | azure/app-service/manage-backup |
+| 13 | `az104-f-u13-backup-auto-detail` | azure/app-service/manage-backup |
+| 13 | `az104-f-u13-backup-storage` | azure/app-service/manage-backup |
+| 13 | `az104-f-u13-backup-linked-db` | azure/app-service/manage-backup |
+| 15 | `az104-f-u15-bv-create` | azure/backup/create-manage-backup-vault |
+| 15 | `az104-f-u15-bv-delete` | azure/backup/create-manage-backup-vault |
+| 15 | `az104-f-u15-bv-identity` | azure/backup/backup-vault-overview |
+| 15 | `az104-f-u15-disk-backup-operational` | azure/backup/disk-backup-overview |
+| 15 | `az104-f-u15-disk-backup-rules` | azure/backup/disk-backup-support-matrix |
+| 15 | `az104-f-u15-disk-backup-roles` | azure/backup/backup-managed-disks |
+| 15 | `az104-f-u15-disk-vs-vm-backup` | azure/backup/disk-backup-overview |
+| 15 | `az104-f-u15-blob-backup-tiers` | azure/backup/blob-backup-overview |
+| 15 | `az104-f-u15-blob-backup-req` | azure/backup/blob-backup-support-matrix |
+| 15 | `az104-f-u15-blob-backup-role` | azure/backup/blob-backup-configure-manage |
+
+Yang perlu diketahui untuk ujian dan pekerjaan:
+- **Backup linked database di App Service.** Opsi *Include database* di custom backup sudah dihapus untuk
+  konfigurasi baru (MySQL dan PostgreSQL sejak November 2025, Azure SQL sejak April 2026), dan mulai 31 Maret
+  2028 linked database tidak di-backup sama sekali. Materi dan soal lama yang menyuruh memilih *Include
+  database* sudah tidak berlaku; pakai backup bawaan layanan database.
+- **TLS di App Service.** Minimum TLS default untuk app baru adalah 1.2, dan TLS 1.3 didukung penuh. IP based
+  SSL memberi app IP dedicated baru, jadi A record harus diperbarui.
+- **Managed certificate App Service.** Sejak November 2025, validasi domain tidak lagi butuh app yang bisa
+  diakses publik, tapi tetap butuh record DNS publik. Tidak ada di kisi-kisi, jadi tidak diuji.
+- **Azure Disk Backup** menyimpan incremental snapshot di resource group snapshot di subscription sendiri,
+  bukan di storage vault, jadi pengaturan redundancy Backup vault tidak berlaku untuk disk.
+- **Backup blob.** Policy baru selalu menyertakan vaulted backup; policy yang hanya operational backup tidak
+  bisa dibuat lagi.
+- **VM dan availability set.** VM hanya bisa dimasukkan ke availability set saat dibuat, dan hanya bisa
+  memakai virtual network di region dan subscription yang sama.
 
 ## CCNA 200-301 v2.0 (3 Oktober 2026)
 
