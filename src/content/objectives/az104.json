@@ -1,0 +1,914 @@
+{
+  "course": "az104",
+  "exam": "AZ-104",
+  "version": "2026-04-17",
+  "checkedAt": "2026-10-06",
+  "source": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-104",
+  "domains": [
+    {
+      "path": 1,
+      "title": "Manage Azure identities and governance",
+      "weight": [
+        20,
+        25
+      ],
+      "groups": [
+        {
+          "id": "az104-1.1",
+          "title": "Manage Microsoft Entra users and groups",
+          "items": [
+            {
+              "id": "az104-1.1.1",
+              "text": "Create users and groups",
+              "concepts": [
+                "entra-users",
+                "member-vs-guest",
+                "security-vs-m365-group",
+                "assigned-vs-dynamic-membership",
+                "dynamic-membership"
+              ]
+            },
+            {
+              "id": "az104-1.1.2",
+              "text": "Manage user and group properties",
+              "concepts": [
+                "user-properties",
+                "user-lifecycle",
+                "default-user-permissions",
+                "user-admin-roles",
+                "nested-groups",
+                "dynamic-membership-license"
+              ]
+            },
+            {
+              "id": "az104-1.1.3",
+              "text": "Manage licenses in Microsoft Entra ID",
+              "concepts": [
+                "usage-location",
+                "license-assignment",
+                "group-based-licensing",
+                "group-based-licensing-rules",
+                "license-errors"
+              ]
+            },
+            {
+              "id": "az104-1.1.4",
+              "text": "Manage external users",
+              "concepts": [
+                "b2b-guest-invite",
+                "external-collaboration-settings",
+                "guest-invite-settings",
+                "collaboration-restrictions"
+              ]
+            },
+            {
+              "id": "az104-1.1.5",
+              "text": "Configure self-service password reset (SSPR)",
+              "concepts": [
+                "sspr",
+                "sspr-licensing",
+                "sspr-scope",
+                "sspr-methods",
+                "password-writeback"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-1.2",
+          "title": "Manage access to Azure resources",
+          "items": [
+            {
+              "id": "az104-1.2.1",
+              "text": "Manage built-in Azure roles",
+              "concepts": [
+                "azure-rbac",
+                "owner-contributor-reader",
+                "user-access-admin",
+                "job-function-roles",
+                "azure-vs-entra-roles",
+                "entra-roles",
+                "classic-admins"
+              ]
+            },
+            {
+              "id": "az104-1.2.2",
+              "text": "Assign roles at different scopes",
+              "concepts": [
+                "rbac-scope",
+                "rbac-least-privilege",
+                "rbac-inheritance",
+                "rbac-cli",
+                "elevate-access",
+                "rbac-groups-timing"
+              ]
+            },
+            {
+              "id": "az104-1.2.3",
+              "text": "Interpret access assignments",
+              "concepts": [
+                "effective-permissions",
+                "check-access",
+                "role-definitions",
+                "control-vs-data-plane"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-1.3",
+          "title": "Manage Azure subscriptions and governance",
+          "items": [
+            {
+              "id": "az104-1.3.1",
+              "text": "Implement and manage Azure Policy",
+              "concepts": [
+                "initiative",
+                "policy-assignment",
+                "policy-vs-rbac",
+                "policy-scope-exclusion",
+                "policy-enforcement",
+                "policy-effects",
+                "policy-effects-change",
+                "policy-evaluation-order",
+                "remediation-task",
+                "policy-definition"
+              ]
+            },
+            {
+              "id": "az104-1.3.2",
+              "text": "Configure resource locks",
+              "concepts": [
+                "resource-locks",
+                "lock-side-effects",
+                "lock-permissions"
+              ]
+            },
+            {
+              "id": "az104-1.3.3",
+              "text": "Apply and manage tags on resources",
+              "concepts": [
+                "tags",
+                "tag-inheritance-policy"
+              ]
+            },
+            {
+              "id": "az104-1.3.4",
+              "text": "Manage resource groups",
+              "concepts": [
+                "move-resources",
+                "resource-group-lifecycle"
+              ]
+            },
+            {
+              "id": "az104-1.3.5",
+              "text": "Manage subscriptions",
+              "concepts": [
+                "move-rules",
+                "subscription-management"
+              ]
+            },
+            {
+              "id": "az104-1.3.6",
+              "text": "Manage costs by using alerts, budgets, and Azure Advisor recommendations",
+              "concepts": [
+                "budgets",
+                "cost-alerts",
+                "advisor-cost"
+              ]
+            },
+            {
+              "id": "az104-1.3.7",
+              "text": "Configure management groups",
+              "concepts": [
+                "management-groups"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": 3,
+      "title": "Implement and manage storage",
+      "weight": [
+        15,
+        20
+      ],
+      "groups": [
+        {
+          "id": "az104-2.1",
+          "title": "Configure access to storage",
+          "items": [
+            {
+              "id": "az104-2.1.1",
+              "text": "Configure Azure Storage firewalls and virtual networks",
+              "concepts": [
+                "storage-firewall",
+                "selected-networks",
+                "trusted-services"
+              ]
+            },
+            {
+              "id": "az104-2.1.2",
+              "text": "Create and use shared access signature (SAS) tokens",
+              "concepts": [
+                "sas-types",
+                "user-delegation-sas",
+                "sas-permissions-expiry"
+              ]
+            },
+            {
+              "id": "az104-2.1.3",
+              "text": "Configure stored access policies",
+              "concepts": [
+                "stored-access-policy",
+                "revoke-sas"
+              ]
+            },
+            {
+              "id": "az104-2.1.4",
+              "text": "Manage access keys",
+              "concepts": [
+                "access-keys",
+                "key-rotation",
+                "disallow-shared-key"
+              ]
+            },
+            {
+              "id": "az104-2.1.5",
+              "text": "Configure identity-based access for Azure Files",
+              "concepts": [
+                "files-identity-auth",
+                "share-vs-file-permissions"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-2.2",
+          "title": "Configure and manage storage accounts",
+          "items": [
+            {
+              "id": "az104-2.2.1",
+              "text": "Create and configure storage accounts",
+              "concepts": [
+                "storage-account-types",
+                "standard-vs-premium",
+                "account-type-fixed",
+                "account-name-endpoints"
+              ]
+            },
+            {
+              "id": "az104-2.2.2",
+              "text": "Configure Azure Storage redundancy",
+              "concepts": [
+                "storage-redundancy",
+                "read-access-secondary",
+                "storage-failover",
+                "change-redundancy"
+              ]
+            },
+            {
+              "id": "az104-2.2.3",
+              "text": "Configure object replication",
+              "concepts": [
+                "object-replication",
+                "blob-versioning-prereq",
+                "or-policy-rules"
+              ]
+            },
+            {
+              "id": "az104-2.2.4",
+              "text": "Configure storage account encryption",
+              "concepts": [
+                "storage-encryption",
+                "microsoft-vs-customer-managed-keys",
+                "key-vault",
+                "infrastructure-encryption"
+              ]
+            },
+            {
+              "id": "az104-2.2.5",
+              "text": "Manage data by using Azure Storage Explorer and AzCopy",
+              "concepts": [
+                "storage-explorer",
+                "azcopy",
+                "azcopy-auth",
+                "azcopy-sync"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-2.3",
+          "title": "Configure Azure Files and Azure Blob Storage",
+          "items": [
+            {
+              "id": "az104-2.3.1",
+              "text": "Create and configure a file share in Azure Files",
+              "concepts": [
+                "file-share-tiers"
+              ]
+            },
+            {
+              "id": "az104-2.3.2",
+              "text": "Create and configure a container in Blob Storage",
+              "concepts": [
+                "container-access-level",
+                "blob-container"
+              ]
+            },
+            {
+              "id": "az104-2.3.3",
+              "text": "Configure storage tiers",
+              "concepts": [
+                "blob-tiers",
+                "rehydrate-priority",
+                "default-tier"
+              ]
+            },
+            {
+              "id": "az104-2.3.4",
+              "text": "Configure soft delete for blobs and containers",
+              "concepts": [
+                "blob-soft-delete",
+                "container-soft-delete"
+              ]
+            },
+            {
+              "id": "az104-2.3.5",
+              "text": "Configure snapshots and soft delete for Azure Files",
+              "concepts": [
+                "share-snapshots",
+                "share-soft-delete",
+                "share-protection"
+              ]
+            },
+            {
+              "id": "az104-2.3.6",
+              "text": "Configure blob lifecycle management",
+              "concepts": [
+                "lifecycle-rules",
+                "lifecycle-actions",
+                "lifecycle-limits"
+              ]
+            },
+            {
+              "id": "az104-2.3.7",
+              "text": "Configure blob versioning",
+              "concepts": [
+                "blob-versioning"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": 4,
+      "title": "Deploy and manage Azure compute resources",
+      "weight": [
+        20,
+        25
+      ],
+      "groups": [
+        {
+          "id": "az104-3.1",
+          "title": "Automate deployment of resources by using Azure Resource Manager (ARM) templates or Bicep files",
+          "items": [
+            {
+              "id": "az104-3.1.1",
+              "text": "Interpret an Azure Resource Manager template or a Bicep file",
+              "concepts": [
+                "arm-structure",
+                "parameters-variables-outputs",
+                "arm-resources",
+                "bicep-syntax"
+              ]
+            },
+            {
+              "id": "az104-3.1.2",
+              "text": "Modify an existing Azure Resource Manager template",
+              "concepts": [
+                "arm-resources",
+                "parameters-variables-outputs"
+              ]
+            },
+            {
+              "id": "az104-3.1.3",
+              "text": "Modify an existing Bicep file",
+              "concepts": [
+                "bicep-params",
+                "bicep-modules",
+                "bicep-syntax"
+              ]
+            },
+            {
+              "id": "az104-3.1.4",
+              "text": "Deploy resources by using an Azure Resource Manager template or a Bicep file",
+              "concepts": [
+                "deployment-scope",
+                "incremental-vs-complete",
+                "what-if"
+              ]
+            },
+            {
+              "id": "az104-3.1.5",
+              "text": "Export a deployment as an Azure Resource Manager template or convert an Azure Resource Manager template to a Bicep file",
+              "concepts": [
+                "export-template",
+                "export-limits",
+                "arm-to-bicep"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-3.2",
+          "title": "Create and configure virtual machines",
+          "items": [
+            {
+              "id": "az104-3.2.1",
+              "text": "Create a virtual machine",
+              "concepts": [
+                "vm-sizes",
+                "vm-disk-roles"
+              ]
+            },
+            {
+              "id": "az104-3.2.2",
+              "text": "Configure encryption at host",
+              "concepts": [
+                "disk-encryption-options",
+                "encryption-at-host",
+                "temp-disk-encryption"
+              ]
+            },
+            {
+              "id": "az104-3.2.3",
+              "text": "Move a virtual machine to another resource group, subscription, or region",
+              "concepts": [
+                "move-vm-rg-sub",
+                "move-vm-limits",
+                "move-vm-region"
+              ]
+            },
+            {
+              "id": "az104-3.2.4",
+              "text": "Manage virtual machine sizes",
+              "concepts": [
+                "vm-size-choice",
+                "vm-resize"
+              ]
+            },
+            {
+              "id": "az104-3.2.5",
+              "text": "Manage virtual machine disks",
+              "concepts": [
+                "disk-types",
+                "vm-disk-roles"
+              ]
+            },
+            {
+              "id": "az104-3.2.6",
+              "text": "Deploy virtual machines to availability zones and availability sets",
+              "concepts": [
+                "availability-set",
+                "availability-zones-vm"
+              ]
+            },
+            {
+              "id": "az104-3.2.7",
+              "text": "Deploy and configure an Azure Virtual Machine Scale Sets",
+              "concepts": [
+                "vmss",
+                "vmss-autoscale",
+                "upgrade-policy"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-3.3",
+          "title": "Provision and manage containers in the Azure portal",
+          "items": [
+            {
+              "id": "az104-3.3.1",
+              "text": "Create and manage an Azure container registry",
+              "concepts": [
+                "acr-sku",
+                "acr-geo-replication",
+                "acr-access",
+                "acr-tasks",
+                "acr"
+              ]
+            },
+            {
+              "id": "az104-3.3.2",
+              "text": "Provision a container by using Azure Container Instances",
+              "concepts": [
+                "aci",
+                "container-group",
+                "aci-networking",
+                "restart-policy"
+              ]
+            },
+            {
+              "id": "az104-3.3.3",
+              "text": "Provision a container by using Azure Container Apps",
+              "concepts": [
+                "revisions",
+                "ingress",
+                "container-choice"
+              ]
+            },
+            {
+              "id": "az104-3.3.4",
+              "text": "Manage sizing and scaling for containers, including Azure Container Instances and Azure Container Apps",
+              "concepts": [
+                "aci-sizing",
+                "scale-to-zero",
+                "scale-rules",
+                "container-scaling"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-3.4",
+          "title": "Create and configure Azure App Service",
+          "items": [
+            {
+              "id": "az104-3.4.1",
+              "text": "Provision an App Service plan",
+              "concepts": [
+                "app-service-plan",
+                "plan-tiers"
+              ]
+            },
+            {
+              "id": "az104-3.4.2",
+              "text": "Configure scaling for an App Service plan",
+              "concepts": [
+                "scale-up-vs-out",
+                "app-autoscale",
+                "scale-metric-vs-traffic"
+              ]
+            },
+            {
+              "id": "az104-3.4.3",
+              "text": "Create an App Service",
+              "concepts": [
+                "web-app-create"
+              ]
+            },
+            {
+              "id": "az104-3.4.4",
+              "text": "Configure certificates and Transport Layer Security (TLS) for an App Service",
+              "concepts": [
+                "app-certificates"
+              ]
+            },
+            {
+              "id": "az104-3.4.5",
+              "text": "Map an existing custom DNS name to an App Service",
+              "concepts": [
+                "custom-domain",
+                "domain-verification"
+              ]
+            },
+            {
+              "id": "az104-3.4.6",
+              "text": "Configure backup for an App Service",
+              "concepts": [
+                "app-backup"
+              ]
+            },
+            {
+              "id": "az104-3.4.7",
+              "text": "Configure networking settings for an App Service",
+              "concepts": [
+                "vnet-integration",
+                "app-private-endpoint",
+                "access-restrictions"
+              ]
+            },
+            {
+              "id": "az104-3.4.8",
+              "text": "Configure deployment slots for an App Service",
+              "concepts": [
+                "deployment-slots",
+                "slot-swap",
+                "slot-settings"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": 2,
+      "title": "Implement and manage virtual networking",
+      "weight": [
+        15,
+        20
+      ],
+      "groups": [
+        {
+          "id": "az104-4.1",
+          "title": "Configure and manage virtual networks in Azure",
+          "items": [
+            {
+              "id": "az104-4.1.1",
+              "text": "Create and configure virtual networks and subnets",
+              "concepts": [
+                "vnet-address-space",
+                "subnet-sizing",
+                "default-outbound",
+                "private-ip-allocation"
+              ]
+            },
+            {
+              "id": "az104-4.1.2",
+              "text": "Create and configure virtual network peering",
+              "concepts": [
+                "vnet-peering",
+                "peering-non-transitive",
+                "peering-status",
+                "gateway-transit"
+              ]
+            },
+            {
+              "id": "az104-4.1.3",
+              "text": "Configure public IP addresses",
+              "concepts": [
+                "public-ip-sku",
+                "static-vs-dynamic-ip",
+                "public-ip-zones"
+              ]
+            },
+            {
+              "id": "az104-4.1.4",
+              "text": "Configure user-defined network routes",
+              "concepts": [
+                "system-routes",
+                "next-hop-types",
+                "udr",
+                "route-selection"
+              ]
+            },
+            {
+              "id": "az104-4.1.5",
+              "text": "Troubleshoot network connectivity",
+              "concepts": [
+                "network-diagnosis",
+                "ip-flow-verify",
+                "next-hop",
+                "flow-logs"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-4.2",
+          "title": "Configure secure access to virtual networks",
+          "items": [
+            {
+              "id": "az104-4.2.1",
+              "text": "Create and configure network security groups (NSGs) and application security groups",
+              "concepts": [
+                "nsg-priority",
+                "nsg-defaults",
+                "nsg-stateful",
+                "service-tags",
+                "nsg-subnet-vs-nic",
+                "nsg-placement",
+                "asg",
+                "asg-rules",
+                "asg-limits",
+                "nsg-rules"
+              ]
+            },
+            {
+              "id": "az104-4.2.2",
+              "text": "Evaluate effective security rules in NSGs",
+              "concepts": [
+                "effective-security-rules",
+                "nsg-subnet-vs-nic"
+              ]
+            },
+            {
+              "id": "az104-4.2.3",
+              "text": "Implement Azure Bastion",
+              "concepts": [
+                "bastion",
+                "bastion-requirements",
+                "bastion-skus",
+                "bastion-sku-changes"
+              ]
+            },
+            {
+              "id": "az104-4.2.4",
+              "text": "Configure service endpoints for Azure platform as a service (PaaS)",
+              "concepts": [
+                "service-endpoint"
+              ]
+            },
+            {
+              "id": "az104-4.2.5",
+              "text": "Configure private endpoints for Azure PaaS",
+              "concepts": [
+                "private-endpoint",
+                "private-dns-zone",
+                "private-endpoint-details"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-4.3",
+          "title": "Configure name resolution and load balancing",
+          "items": [
+            {
+              "id": "az104-4.3.1",
+              "text": "Configure Azure DNS",
+              "concepts": [
+                "dns-zone",
+                "record-sets",
+                "dns-alias",
+                "dns-delegation",
+                "private-dns-zone",
+                "auto-registration",
+                "private-dns-manual"
+              ]
+            },
+            {
+              "id": "az104-4.3.2",
+              "text": "Configure an internal or public load balancer",
+              "concepts": [
+                "lb-public-vs-internal",
+                "lb-components",
+                "lb-outbound-distribution"
+              ]
+            },
+            {
+              "id": "az104-4.3.3",
+              "text": "Troubleshoot load balancing",
+              "concepts": [
+                "lb-troubleshoot",
+                "probe-blocked-by-nsg",
+                "probe-behavior"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": 5,
+      "title": "Monitor and maintain Azure resources",
+      "weight": [
+        10,
+        15
+      ],
+      "groups": [
+        {
+          "id": "az104-5.1",
+          "title": "Monitor resources in Azure",
+          "items": [
+            {
+              "id": "az104-5.1.1",
+              "text": "Interpret metrics in Azure Monitor",
+              "concepts": [
+                "metrics",
+                "metric-aggregation",
+                "metric-granularity",
+                "metrics-vs-logs"
+              ]
+            },
+            {
+              "id": "az104-5.1.2",
+              "text": "Configure log settings in Azure Monitor",
+              "concepts": [
+                "activity-log",
+                "diagnostic-settings",
+                "log-analytics-workspace"
+              ]
+            },
+            {
+              "id": "az104-5.1.3",
+              "text": "Query and analyze logs in Azure Monitor",
+              "concepts": [
+                "kql-basics",
+                "kql-where-summarize",
+                "kql-sort-project"
+              ]
+            },
+            {
+              "id": "az104-5.1.4",
+              "text": "Set up alert rules, action groups, and alert processing rules in Azure Monitor",
+              "concepts": [
+                "alert-rules",
+                "action-groups",
+                "alert-processing-rules"
+              ]
+            },
+            {
+              "id": "az104-5.1.5",
+              "text": "Configure and interpret monitoring of virtual machines, storage accounts, and networks by using Azure Monitor Insights",
+              "concepts": [
+                "vm-insights",
+                "storage-insights",
+                "network-insights"
+              ]
+            },
+            {
+              "id": "az104-5.1.6",
+              "text": "Use Azure Network Watcher and Connection Monitor",
+              "concepts": [
+                "connection-monitor",
+                "flow-logs"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "az104-5.2",
+          "title": "Implement backup and recovery",
+          "items": [
+            {
+              "id": "az104-5.2.1",
+              "text": "Create a Recovery Services vault",
+              "concepts": [
+                "vault-types",
+                "recovery-services-vault",
+                "vault-region",
+                "soft-delete",
+                "immutable-vault"
+              ]
+            },
+            {
+              "id": "az104-5.2.2",
+              "text": "Create an Azure Backup vault",
+              "concepts": [
+                "backup-vault",
+                "vault-types"
+              ]
+            },
+            {
+              "id": "az104-5.2.3",
+              "text": "Create and configure a backup policy",
+              "concepts": [
+                "backup-policy",
+                "retention",
+                "instant-restore",
+                "enhanced-policy",
+                "on-premises-backup"
+              ]
+            },
+            {
+              "id": "az104-5.2.4",
+              "text": "Perform backup and restore operations by using Azure Backup",
+              "concepts": [
+                "vm-backup",
+                "restore-options",
+                "cross-region-restore",
+                "file-recovery",
+                "files-backup"
+              ]
+            },
+            {
+              "id": "az104-5.2.5",
+              "text": "Configure Azure Site Recovery for Azure resources",
+              "concepts": [
+                "site-recovery",
+                "asr-recovery-points",
+                "recovery-plan"
+              ]
+            },
+            {
+              "id": "az104-5.2.6",
+              "text": "Perform a failover to a secondary region by using Site Recovery",
+              "concepts": [
+                "test-failover",
+                "failover-commit-reprotect"
+              ]
+            },
+            {
+              "id": "az104-5.2.7",
+              "text": "Configure and interpret reports and alerts for backups",
+              "concepts": [
+                "backup-jobs",
+                "backup-alerts",
+                "backup-reports",
+                "backup-roles"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "outOfScope": {}
+}

@@ -15,6 +15,7 @@ export type Route =
   | { name: 'exam-review'; attemptId: string }
   | { name: 'guide'; unitId: string }
   | { name: 'placement' }
+  | { name: 'outline' }
 
 const TABS: readonly Tab[] = ['home', 'latihan', 'ujian', 'statistik', 'glosarium', 'pengaturan']
 
@@ -32,6 +33,8 @@ export function parseHash(hash: string): Route {
       return { name: 'practice' }
     case 'placement':
       return { name: 'placement' }
+    case 'kisi':
+      return { name: 'outline' }
     case 'guide':
       if (arg) return { name: 'guide', unitId: arg }
       break
@@ -54,6 +57,8 @@ export function hrefFor(route: Route): string {
       return '#/practice'
     case 'placement':
       return '#/placement'
+    case 'outline':
+      return '#/kisi'
     case 'exam':
       return '#/exam'
     case 'exam-result':

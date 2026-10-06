@@ -1,10 +1,28 @@
-import { BookOpen, ChevronLeft } from 'lucide-react'
+import { BookOpen, ChevronLeft, ListChecks } from 'lucide-react'
 import { MissionCard, TipBox } from '../components/PracticeBlocks'
-import { cardsByLesson, findUnit, unitNumber } from '../content/course'
+import { cardConcepts, cardsByLesson, courseOf, findUnit, isExercise, unitNumber } from '../content/course'
+import { itemsForConcept } from '../content/objectives'
 import { missionFor, tipFor } from '../content/practice'
 import { TeachingCardContent } from '../lesson/TeachingCardContent'
 import { Unavailable } from '../lesson/LessonScreen'
 import { leaveFlow } from '../lib/router'
+import type { CourseId } from '../lib/types'
+
+/** The official outline items a lesson covers, so the guide doubles as a map of the exam. */
+function OutlineChips({ concepts, course }: { concepts: string[]; course: CourseId }) {
+  const items = [...new Map(concepts.flatMap((c) => itemsForConcept(course, c)).map((i) => [i.id, i])).values()]
+  if (!items.length) return null
+  return (
+    <ul className="mt-2 space-y-1" aria-label="Kisi-kisi ujian">
+      {items.map((item) => (
+        <li key={item.id} className="flex items-start gap-1.5 text-13 text-tinta-lembut">
+          <ListChecks size={14} className="mt-0.5 shrink-0 text-biru-dalam" aria-hidden="true" />
+          <span lang="en">{item.text}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 /**
  * Unit guide (LANGIT_AZ900_PERBAIKAN_MATERI.md section 7): every learn card of
@@ -53,6 +71,7 @@ export function GuideScreen({ unitId }: { unitId: string }) {
               <h2 id={`guide-${lesson.id}`} className="font-display text-17 font-bold text-tinta-lembut">
                 Lesson {i + 1} · {lesson.title}
               </h2>
+              <OutlineChips concepts={[...cards.flatMap(cardConcepts), ...lesson.items.filter(isExercise).map((e) => e.concept)]} course={courseOf(unit.id)} />
               <div className="mt-3 space-y-4">
                 {cards.map((card) => (
                   <article key={card.id} aria-labelledby={`guide-${card.id}`} className="rounded-2xl border-2 border-kabut bg-white p-4 shadow-[0_4px_0_var(--color-kabut)]">

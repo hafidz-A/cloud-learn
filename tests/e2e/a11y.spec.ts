@@ -20,6 +20,7 @@ for (const [name, hash] of [
   ['glosarium', '/#/glosarium'],
   ['pengaturan', '/#/pengaturan'],
   ['panduan unit', '/#/guide/u01-cloud-computing'],
+  ['peta kisi-kisi', '/#/kisi'],
 ] as const) {
   test(`${name} has no accessibility violations`, async ({ page }) => {
     await page.goto(hash)
@@ -36,6 +37,7 @@ test('the AZ-104 course screens have no accessibility violations', async ({ page
     ['ujian AZ-104', '/#/ujian'],
     ['statistik AZ-104', '/#/statistik'],
     ['panduan unit AZ-104', '/#/guide/az104-u01-identity'],
+    ['peta kisi-kisi AZ-104', '/#/kisi'],
   ] as const) {
     await page.goto(hash)
     await page.waitForTimeout(300)

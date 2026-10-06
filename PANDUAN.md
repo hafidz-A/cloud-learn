@@ -105,7 +105,7 @@ Rencana kasar sampai siap ujian:
 
 1. **Minggu 1**: selesaikan jalur 1–3 (48 lesson) dan tiga checkpoint.
 2. **Minggu 2**: satu **Simulasi penuh** (50 soal, 45 menit) per hari, diselingi **Ujian titik lemah**.
-3. Daftar ujian AZ-900 setelah indikator **Siap ujian** menyala, yaitu rata-rata 3 simulasi penuh terakhir minimal 800.
+3. Daftar ujian AZ-900 setelah indikator **Siap ujian** menyala: rata-rata 3 simulasi penuh terakhir minimal 800 dan semua butir kisi-kisi dikuasai.
 
 Untuk AZ-104, halaman Ujian memakai soal dan riwayat AZ-104 saja (pilih course AZ-104 di home): mini ujian
 per domain 15 soal dalam 30 menit, ujian titik lemah 20 soal dalam 40 menit, dan simulasi penuh 50 soal
@@ -133,6 +133,11 @@ dalam 100 menit yang ditutup satu studi kasus. Indikator **Siap ujian** memakai 
   (Overview, Existing environment, Requirements), soalnya lewat tab **Soal**. Seperti ujian asli, setelah
   kamu lanjut ke studi kasus, soal di bagian sebelumnya terkunci, jadi periksa dulu soal yang ditandai.
   Soal studi kasus yang salah juga masuk Latihan, lengkap dengan skenarionya.
+- **Peta kisi-kisi**: daftar semua butir kisi-kisi resmi ujian (AZ-900 versi 20 Juli 2026, AZ-104 versi 17 April
+  2026) dengan status masing-masing: belum dijawab, perlu latihan, atau dikuasai (minimal 3 jawaban dan 80% benar).
+  Buka dari halaman Ujian atau Statistik. Panduan unit juga menunjukkan butir kisi-kisi setiap lesson. Simulasi
+  ujian hanya memakai soal yang ada di kisi-kisi, dan mengambil soal merata dari semua butir.
+- **Siap ujian** menyala kalau rata-rata 3 simulasi penuh terakhir minimal 800 **dan** semua butir kisi-kisi dikuasai.
 - **Placement test AZ-104 (opsional)**: 30 soal, 2 dari setiap unit, ditawarkan di home sebelum lesson AZ-104
   pertama. Unit yang skornya minimal 80% boleh ditandai selesai. Jawabannya tidak masuk statistik maupun Latihan.
 - **Coba di Azure dan misi unit (AZ-104)**: setiap lesson AZ-104 punya satu tips praktik di layar selesai lesson

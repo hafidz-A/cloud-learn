@@ -5,8 +5,11 @@ import type { CourseId, ExamAttempt, ExamMode, Exercise, PathId, Progress } from
 
 // Exam page rules from LANGIT_AZ900_PLAN.md section 12 and LANGIT_AZ104_PLAN.md section 9.
 
-/** `caseStudy`: the case study the question belongs to (AZ-104 full simulation only). */
-export type ExamQuestion = { exercise: Exercise; path: PathId; caseStudy?: string }
+/**
+ * `caseStudy`: the case study the question belongs to (AZ-104 full simulation only).
+ * `item`: the outline item it tests, so a simulation spreads over the whole outline.
+ */
+export type ExamQuestion = { exercise: Exercise; path: PathId; caseStudy?: string; item?: string }
 
 /** A case study as the picker sees it: its questions, in the order they are asked. */
 export type CasePool = { id: string; questions: ExamQuestion[] }
@@ -68,6 +71,23 @@ function freshFirst(pool: ExamQuestion[], recent: Set<string>, random: () => num
   return [...all.filter((q) => !recent.has(q.exercise.id)), ...all.filter((q) => recent.has(q.exercise.id))]
 }
 
+/**
+ * Freshest questions first, taken in turns from every outline item (items in
+ * random order), so a short exam touches as many items as it can instead of
+ * piling up on the items with the most questions.
+ */
+function acrossItems(pool: ExamQuestion[], recent: Set<string>, random: () => number): ExamQuestion[] {
+  const queues = new Map<string, ExamQuestion[]>()
+  for (const q of freshFirst(pool, recent, random)) {
+    const key = q.item ?? ''
+    queues.set(key, [...(queues.get(key) ?? []), q])
+  }
+  const order = shuffle([...queues.values()], random)
+  const out: ExamQuestion[] = []
+  for (let round = 0; out.length < pool.length; round++) for (const queue of order) if (queue[round]) out.push(queue[round])
+  return out
+}
+
 /** The first `n` of an ordered list, with at most the course's share of true/false questions when there are enough others. */
 function take(list: ExamQuestion[], n: number, course: CourseId): ExamQuestion[] {
   const share = TRUEFALSE_SHARE[course]
@@ -114,7 +134,7 @@ export function pickFull(
 
   const picked: ExamQuestion[] = []
   for (const path of Object.keys(split).map(Number)) {
-    picked.push(...take(freshFirst(pool.filter((q) => q.path === path), recent, random), split[path], course))
+    picked.push(...take(acrossItems(pool.filter((q) => q.path === path), recent, random), split[path], course))
   }
   // A thin domain is topped up from the others so the simulation keeps its length.
   const missing = count - caseQuestions.length - picked.length
@@ -127,7 +147,7 @@ export function pickFull(
 
 export function pickDomain(pool: ExamQuestion[], path: PathId, history: ExamAttempt[], random = Math.random, course: CourseId = 'az900'): ExamQuestion[] {
   const recent = recentIds(history, ['domain', 'full'])
-  return take(freshFirst(pool.filter((q) => q.path === path), recent, random), EXAM_MODES[course].domain.count, course)
+  return take(acrossItems(pool.filter((q) => q.path === path), recent, random), EXAM_MODES[course].domain.count, course)
 }
 
 /**

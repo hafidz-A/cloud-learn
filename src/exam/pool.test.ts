@@ -18,6 +18,13 @@ describe('exam pools (LANGIT_AZ104_PLAN.md section 9.3)', () => {
     expect(CASE_POOLS.az104.length).toBeGreaterThanOrEqual(5)
   })
 
+  it('only uses questions on the current outline', () => {
+    const concepts = new Set(EXAM_POOLS.az900.map((q) => q.exercise.concept))
+    expect(concepts.has('service-trust-portal')).toBe(false)
+    expect(concepts.has('tco-calculator')).toBe(false)
+    expect([...EXAM_POOLS.az900, ...EXAM_POOLS.az104].every((q) => q.item)).toBe(true)
+  })
+
   it('keeps case study questions out of the other modes', () => {
     const caseIds = new Set(CASE_POOLS.az104.flatMap((c) => c.questions.map((q) => q.exercise.id)))
     expect(EXAM_POOLS.az104.filter((q) => caseIds.has(q.exercise.id))).toEqual([])

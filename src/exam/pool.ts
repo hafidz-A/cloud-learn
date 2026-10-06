@@ -2,13 +2,18 @@ import { CASE_STUDIES, EXERCISES, caseStudyOf, courseOf } from '../content/cours
 import { navigate } from '../lib/router'
 import type { CourseId, ExamAttempt } from '../lib/types'
 import { useProgress } from '../store/progress'
+import { inOutline, itemsForConcept } from '../content/objectives'
 import { isExamQuestion, scoreAttempt, type CasePool, type ExamQuestion } from './examLogic'
 
-/** Every examReady question of a course outside the case studies, which only come as a whole section. */
+/**
+ * Every examReady question of a course that the current outline covers
+ * (docs/RENCANA_LULUS_UJIAN.md), outside the case studies, which only come as a
+ * whole section. Each question carries its outline item.
+ */
 function poolOf(course: CourseId): ExamQuestion[] {
   return [...EXERCISES.values()]
-    .filter((r) => courseOf(r.unit.id) === course && !caseStudyOf(r.exercise.id) && isExamQuestion(r.exercise))
-    .map((r) => ({ exercise: r.exercise, path: r.path }))
+    .filter((r) => courseOf(r.unit.id) === course && !caseStudyOf(r.exercise.id) && isExamQuestion(r.exercise) && inOutline(course, r.exercise.concept))
+    .map((r) => ({ exercise: r.exercise, path: r.path, item: itemsForConcept(course, r.exercise.concept)[0]?.id }))
 }
 
 export const EXAM_POOLS: Record<CourseId, ExamQuestion[]> = { az900: poolOf('az900'), az104: poolOf('az104') }

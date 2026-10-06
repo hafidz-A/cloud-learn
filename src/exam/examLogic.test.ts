@@ -100,6 +100,19 @@ describe('AZ-104 (LANGIT_AZ104_PLAN.md section 9)', () => {
   })
 })
 
+describe('spreading over the outline', () => {
+  it('takes questions from every outline item before taking a second one from any item', () => {
+    // Item A has 30 questions, items B to E only 2 each.
+    const many = [
+      ...Array.from({ length: 30 }, (_, i) => ({ ...q(`a${i}`, 1), item: 'A' })),
+      ...['B', 'C', 'D', 'E'].flatMap((item) => [0, 1].map((i) => ({ ...q(`${item}${i}`, 1), item }))),
+    ]
+    const picked = pickDomain(many, 1, [])
+    expect(new Set(picked.map((x) => x.item))).toEqual(new Set(['A', 'B', 'C', 'D', 'E']))
+    expect(picked.filter((x) => x.item !== 'A')).toHaveLength(8)
+  })
+})
+
 describe('isAnswered', () => {
   it('does not count a config question as answered until a field changes', () => {
     const config: Exercise = {

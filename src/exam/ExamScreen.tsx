@@ -3,6 +3,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react'
 import { LineChart } from '../charts/LineChart'
 import { Button } from '../components/Button'
 import { COURSES } from '../content/course'
+import { itemStatus, outlineItems } from '../content/objectives'
 import { hrefFor, navigate } from '../lib/router'
 import type { CourseId, ExamMode, PathId } from '../lib/types'
 import { useActiveCourse } from '../store/course'
@@ -70,7 +71,11 @@ function CourseExamScreen({ course }: { course: CourseId }) {
     navigate({ name: 'exam' })
   }
 
-  const ready = readiness(history)
+  const scores = readiness(history)
+  const items = outlineItems(course)
+  const mastered = items.filter((i) => itemStatus(i, conceptStats).status === 'mastered').length
+  // "Siap ujian" (docs/RENCANA_LULUS_UJIAN.md): good simulation scores and every outline item mastered.
+  const ready = { ...scores, ready: scores.ready && mastered === items.length }
   const weakest = weakestDomain(history.slice(-5))
   const fullRuns = history.filter((a) => a.mode === 'full' && a.score !== undefined)
   const poolByPath = (p: PathId) => pool.filter((q) => q.path === p).length
@@ -176,8 +181,15 @@ function CourseExamScreen({ course }: { course: CourseId }) {
         <p className="mt-1 text-15">
           {ready.fullCount < 3
             ? `Butuh 3 simulasi penuh dengan rata-rata minimal ${READY_SCORE}. Sudah ${ready.fullCount}.`
-            : `Rata-rata 3 simulasi penuh terakhir: ${ready.average}. ${ready.ready ? 'Mantap, pertahankan!' : `Target ${READY_SCORE}.`}`}
+            : `Rata-rata 3 simulasi penuh terakhir: ${ready.average}. ${scores.ready ? 'Sudah mencapai target.' : `Target ${READY_SCORE}.`}`}
         </p>
+        <p className="mt-1 text-15">
+          Kisi-kisi dikuasai: <span className="font-bold tabular-nums">{mastered}</span> dari {items.length} butir.
+          {ready.ready && ' Mantap, pertahankan!'}
+        </p>
+        <a href={hrefFor({ name: 'outline' })} className="mt-2 inline-flex min-h-11 items-center font-display text-15 font-bold text-biru-dalam underline underline-offset-4">
+          Lihat peta kisi-kisi
+        </a>
         {!ready.ready && weakest && (
           <p className="mt-2 text-15 text-tinta-lembut">
             Saran: latih jalur {weakest} ({paths[weakest - 1]?.title}), domain dengan skor terendahmu belakangan ini.

@@ -15,6 +15,7 @@ import { useRoute, type Route, type Tab } from './lib/router'
 import { GlossaryScreen } from './screens/GlossaryScreen'
 import { GuideScreen } from './screens/GuideScreen'
 import { HomeScreen } from './screens/HomeScreen'
+import { OutlineScreen } from './screens/OutlineScreen'
 import { PracticeScreen } from './screens/PracticeScreen'
 import { SettingsScreen } from './screens/SettingsScreen'
 import { StatsScreen } from './screens/StatsScreen'
@@ -56,6 +57,8 @@ function FullScreen({ route }: { route: Exclude<Route, { name: 'tab' }> }) {
       return <GuideScreen unitId={route.unitId} />
     case 'placement':
       return <PlacementRun />
+    case 'outline':
+      return <OutlineScreen />
   }
 }
 
