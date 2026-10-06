@@ -621,6 +621,59 @@
             "ccna-f-u28-injection",
             "ccna-f-u28-human-loop"
           ]
+        },
+        {
+          "id": "ccna-u28-l4-e6",
+          "type": "choice",
+          "concept": "data-class",
+          "prompt": "Which prompt is the best one to send to the company-approved AI (artificial intelligence) assistant?",
+          "options": [
+            "\"You are a senior network engineer. OSPF (Open Shortest Path First) between R1 and R2 never gets past the Init state. Here is show ip ospf interface from both, passwords and public addresses removed. List the three likely causes as a numbered list.\"",
+            "\"OSPF is broken, fix it.\" followed by the full running configuration, passwords included",
+            "\"You are a senior network engineer. OSPF between R1 and R2 never gets past the Init state. Here is the full running configuration of both routers, including the enable secret and the SNMP (Simple Network Management Protocol) community. List the three likely causes as a numbered list.\"",
+            "\"Tell me everything you know about how OSPF works, from the beginning.\""
+          ],
+          "answer": 0,
+          "explanation": "Prompt pertama punya persona, konteks, data yang sudah dibersihkan sesuai klasifikasi, instruksi yang jelas, dan format output. Prompt lain tidak spesifik atau membocorkan rahasia.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u28-prompt-role",
+            "ccna-f-u28-prompt-format",
+            "ccna-f-u28-no-secrets",
+            "ccna-f-u28-prompt-context"
+          ]
+        },
+        {
+          "id": "ccna-u28-l4-e7",
+          "type": "match",
+          "concept": "data-class",
+          "prompt": "Match each part of a prompt to an example.",
+          "pairs": [
+            [
+              "Persona",
+              "You are a network engineer who knows Cisco IOS XE."
+            ],
+            [
+              "Instructions",
+              "Find why VLAN (Virtual LAN) 20 cannot reach its gateway."
+            ],
+            [
+              "Output format",
+              "Answer as a table with the columns Cause and Check."
+            ],
+            [
+              "Data classification",
+              "Hostnames and addresses replaced, no passwords included."
+            ]
+          ],
+          "explanation": "Persona memberi peran, instruksi menyebut tugas, format output menentukan bentuk jawaban, dan klasifikasi data memastikan hanya data yang boleh dibagikan yang masuk ke prompt.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u28-prompt-role",
+            "ccna-f-u28-prompt-format",
+            "ccna-f-u28-classify",
+            "ccna-f-u28-prompt-context"
+          ]
         }
       ]
     },

@@ -78,6 +78,7 @@ exec('sh[ow] clock')
 exec('sh[ow] users')
 exec('sh[ow] flash:')
 exec('dir ?( flash: )', { privOnly: true })
+exec('verify /md5 <word>', { privOnly: true })
 exec('sh[ow] ip int[erface] br[ief]')
 exec('sh[ow] ip int[erface]')
 exec('sh[ow] ip int[erface] <if>')
@@ -155,6 +156,7 @@ defs.push({ pattern: 'do <line>', modes: ALL_CONFIG, kind: 'nav', nav: 'do', noN
 // ---------------------------------------------------------------- global configuration
 const G: Mode[] = ['config']
 cfg(G, 'hostname <word>', { slot: 'hostname' })
+cfg(G, 'boot system <word>')
 cfg(G, 'enable secret <word>', { slot: 'enable secret' })
 cfg(G, 'enable password <word>', { slot: 'enable password' })
 cfg(G, 'service password-encryption', { slot: 'service password-encryption', noStore: true })

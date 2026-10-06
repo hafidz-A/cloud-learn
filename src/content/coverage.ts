@@ -39,9 +39,9 @@ export function isMicrosoftLearnUrl(url: string | undefined): boolean {
  * IETF and RFC Editor, IANA (port numbers), IEEE, Ansible's documentation and
  * official repositories, and, for client operating systems (exam topic 1.6), the
  * vendor's own command reference: Microsoft's Windows commands, Apple's Mac User
- * Guide, and the Linux man-pages project.
+ * Guide, the Linux man-pages project, and NetworkManager's own nmcli reference.
  */
-const CCNA_SOURCE = /^https:\/\/(([a-z0-9-]+\.)*cisco\.com|www\.netacad\.com|(www\.)?rfc-editor\.org|datatracker\.ietf\.org|(www\.)?iana\.org|([a-z0-9-]+\.)*ieee\.org|docs\.ansible\.com|github\.com\/ansible-collections|learn\.microsoft\.com\/en-us\/windows-server\/administration\/windows-commands|support\.apple\.com\/guide\/mac-help|(www\.)?man7\.org\/linux\/man-pages)\/\S*$/
+const CCNA_SOURCE = /^https:\/\/(([a-z0-9-]+\.)*cisco\.com|www\.netacad\.com|(www\.)?rfc-editor\.org|datatracker\.ietf\.org|(www\.)?iana\.org|([a-z0-9-]+\.)*ieee\.org|docs\.ansible\.com|github\.com\/ansible-collections|learn\.microsoft\.com\/en-us\/windows-server\/administration\/windows-commands|support\.apple\.com\/guide\/mac-help|(www\.)?man7\.org\/linux\/man-pages|networkmanager\.dev\/docs)\/\S*$/
 
 export function isCiscoCourseSource(url: string | undefined): boolean {
   return !!url && CCNA_SOURCE.test(url)

@@ -482,3 +482,16 @@ describe('port security', () => {
     expect(judgeSession(run.state, { config: [{ context: 'interface FastEthernet0/1', line: 'switchport port-security' }] }).correct).toBe(true)
   })
 })
+
+describe('IOS software files', () => {
+  it('runs verify /md5 with prepared output, keeps boot system, and needs the save', () => {
+    const file = 'flash:c2960-lanbasek9-mz.152-7.E10.bin'
+    const outputs = { [`verify /md5 ${file}`]: `verify /md5 (${file}) = 0123` }
+    const run = runSession({ ...SW1, start: 'priv', outputs }, [`verify /md5 ${file}`, 'conf t', `boot system ${file}`, 'end', 'copy run start', ''])
+    expect(run.transcript.map((l) => l.text).join('\n')).toContain(`verify /md5 (${file}) = 0123`)
+    const goal = { run: [`verify /md5 ${file}`], config: [{ line: `boot system ${file}` }], saved: true }
+    expect(judgeSession(run.state, goal).correct).toBe(true)
+    const unsaved = runSession({ ...SW1, start: 'priv', outputs }, [`verify /md5 ${file}`, 'conf t', `boot system ${file}`, 'end'])
+    expect(judgeSession(unsaved.state, goal).correct).toBe(false)
+  })
+})

@@ -567,7 +567,7 @@ function checkCli(cli: NonNullable<LearnCard['cli']>[number], push: (message: st
   if (!PHYSICAL[cli.device?.model]) return push(`unknown model "${cli.device?.model}" in the CLI example`)
   if (!cli.steps?.length) return push('a CLI example needs steps')
   for (const s of cli.steps) if (!s.note?.trim()) push(`CLI example line "${s.command}" needs a note`)
-  const setup = { hostname: cli.device.hostname, model: cli.device.model, start: cli.start, given: cli.given, cabled: cli.cabled }
+  const setup = { hostname: cli.device.hostname, model: cli.device.model, start: cli.start, given: cli.given, outputs: cli.outputs, cabled: cli.cabled }
   for (const problem of givenProblems(setup)) push(`CLI example: ${problem}`)
   const errors = errorLines(runSession(setup, cli.steps.map((s) => s.command)).transcript)
   if (errors.length) push(`CLI example gets errors in the simulator: ${errors.join(' | ')}`)

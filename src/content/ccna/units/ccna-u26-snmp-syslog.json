@@ -680,6 +680,43 @@
           "requires": [
             "ccna-f-u26-buffered"
           ]
+        },
+        {
+          "id": "ccna-u26-l3-e7",
+          "type": "choice",
+          "concept": "syslog-format",
+          "prompt": "Which syslog facility does Cisco IOS use by default for messages sent to a syslog server?",
+          "options": [
+            "local7",
+            "local0",
+            "daemon",
+            "syslog"
+          ],
+          "answer": 0,
+          "explanation": "IOS memakai facility local7 secara bawaan. local0 sampai local7 disediakan untuk penggunaan lokal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u26-facility"
+          ]
+        },
+        {
+          "id": "ccna-u26-l3-e8",
+          "type": "choice",
+          "concept": "syslog-format",
+          "prompt": "A syslog server stores this message: %OSPF-5-ADJCHG. What do OSPF (Open Shortest Path First) and 5 tell you?",
+          "options": [
+            "OSPF is the facility, and 5 is the severity (notifications)",
+            "OSPF is the mnemonic, and 5 is the process number",
+            "OSPF is the facility, and 5 is the number of neighbors lost",
+            "OSPF is the severity, and 5 is the facility"
+          ],
+          "answer": 0,
+          "explanation": "Formatnya %FACILITY-SEVERITY-MNEMONIC: OSPF (Open Shortest Path First) bagian yang mengirim pesan, 5 berarti notifications, dan bagian terakhir (mnemonic) nama singkat kejadiannya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-msg-format",
+            "ccna-f-u26-levels"
+          ]
         }
       ]
     },

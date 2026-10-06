@@ -403,6 +403,108 @@
             "ccna-f-u06-personal-ent",
             "ccna-f-u08-nslookup"
           ]
+        },
+        {
+          "id": "ccna-u08-l2-m4",
+          "type": "learn",
+          "concepts": [
+            "wireless-os"
+          ],
+          "title": "Detail Wi-Fi di Windows, macOS, dan Linux",
+          "body": "Windows: netsh wlan show interfaces menampilkan SSID (Service Set Identifier), BSSID (Basic Service Set Identifier), radio type, authentication (misalnya WPA2 (Wi-Fi Protected Access 2) yang tampil sebagai WPA2-Personal), cipher, channel, dan signal dalam persen; netsh wlan show networks menampilkan jaringan yang terlihat. macOS: tahan Option lalu klik ikon Wi-Fi di menu bar untuk melihat alamat IP (Internet Protocol), router, channel, band, keamanan, dan protokol 802.11; dari menu itu juga Wireless Diagnostics dibuka. Linux: nmcli device wifi list menampilkan setiap jaringan yang terlihat beserta channel, kekuatan sinyal, dan jenis keamanannya; tanda * menandai jaringan yang dipakai.",
+          "keyPoints": [
+            "Windows: netsh wlan show interfaces",
+            "macOS: Option-klik ikon Wi-Fi",
+            "Linux: nmcli device wifi list"
+          ],
+          "teaches": [
+            "ccna-f-u08-netsh-wlan",
+            "ccna-f-u08-mac-wifi-menu",
+            "ccna-f-u08-nmcli-wifi"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e9",
+          "type": "exhibit",
+          "concept": "wireless-os",
+          "prompt": "Refer to the exhibit. The user says Wi-Fi is very slow and drops often. What is the most likely cause?",
+          "outputs": [
+            {
+              "title": "C:\\> netsh wlan show interfaces",
+              "text": "There is 1 interface on the system:\n\n    Name                   : Wi-Fi\n    Description            : Intel(R) Wi-Fi 6 AX201 160MHz\n    State                  : connected\n    SSID                   : Kantor-Staf\n    BSSID                  : 70:7d:b9:4a:11:22\n    Network type           : Infrastructure\n    Radio type             : 802.11ax\n    Authentication         : WPA2-Personal\n    Cipher                 : CCMP\n    Connection mode        : Auto Connect\n    Band                   : 2.4 GHz\n    Channel                : 11\n    Receive rate (Mbps)    : 8.6\n    Transmit rate (Mbps)   : 6.5\n    Signal                 : 22%\n    Profile                : Kantor-Staf"
+            }
+          ],
+          "options": [
+            "The signal is weak",
+            "The laptop joined the wrong SSID (Service Set Identifier)",
+            "The security settings do not match the network",
+            "The adapter is disconnected"
+          ],
+          "answer": 0,
+          "explanation": "Laptop tersambung ke SSID (Service Set Identifier) yang benar dengan WPA2 (Wi-Fi Protected Access 2) Personal, jadi keamanannya cocok. Signal 22% dan rate di bawah 10 Mbps menunjukkan sinyal lemah, misalnya terlalu jauh dari AP (access point).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-netsh-wlan",
+            "ccna-f-u06-dbm",
+            "ccna-f-u06-ssid"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e10",
+          "type": "exhibit",
+          "concept": "wireless-os",
+          "prompt": "Refer to the exhibit. A Linux laptop has an address but cannot reach company servers. Coworkers on Kantor-Staf can. What is the problem?",
+          "outputs": [
+            {
+              "title": "$ nmcli device wifi list",
+              "text": "IN-USE  BSSID              SSID         MODE   CHAN  RATE        SIGNAL  SECURITY\n*       70:7D:B9:4A:11:30  Kantor-Tamu  Infra  6     270 Mbit/s  81      WPA2\n        70:7D:B9:4A:11:31  Kantor-Staf  Infra  6     270 Mbit/s  79      WPA2 802.1X\n        A4:2B:B0:10:20:30  Rumah-7      Infra  1     130 Mbit/s  35      WPA2"
+            }
+          ],
+          "options": [
+            "The laptop is on the guest network Kantor-Tamu",
+            "The signal of Kantor-Tamu is too weak",
+            "Kantor-Staf uses an open network with no security",
+            "The laptop is on channel 1"
+          ],
+          "answer": 0,
+          "explanation": "Tanda * ada di Kantor-Tamu, jaringan tamu. Sinyalnya 81, kuat. Kantor-Staf memakai WPA2 (Wi-Fi Protected Access 2) 802.1X, yaitu WPA2-Enterprise, jadi laptop perlu login dengan akun perusahaan untuk masuk ke sana.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-nmcli-wifi",
+            "ccna-f-u06-ssid",
+            "ccna-f-u06-personal-ent"
+          ]
+        },
+        {
+          "id": "ccna-u08-l2-e11",
+          "type": "match",
+          "concept": "wireless-os",
+          "prompt": "Match each client OS (operating system) to the way you see the details of its Wi-Fi connection.",
+          "pairs": [
+            [
+              "Windows",
+              "netsh wlan show interfaces"
+            ],
+            [
+              "macOS",
+              "Option-click the Wi-Fi icon in the menu bar"
+            ],
+            [
+              "Linux with NetworkManager",
+              "nmcli device wifi list"
+            ],
+            [
+              "Windows, to list the networks in range",
+              "netsh wlan show networks"
+            ]
+          ],
+          "explanation": "Windows memakai netsh wlan, macOS Option-klik ikon Wi-Fi, dan Linux dengan NetworkManager memakai nmcli.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u08-netsh-wlan",
+            "ccna-f-u08-mac-wifi-menu",
+            "ccna-f-u08-nmcli-wifi"
+          ]
         }
       ]
     },
@@ -1481,6 +1583,24 @@
       "id": "ccna-f-u08-dhcp-client",
       "statement": "ip address dhcp membuat interface router menjadi klien DHCP, misalnya di interface yang menghadap ISP.",
       "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ip-addressing/b-ip-addressing/m_config-dhcp-server-xe.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u08-netsh-wlan",
+      "statement": "Di Windows, netsh wlan show interfaces menampilkan detail koneksi wireless, antara lain SSID, BSSID, radio type, authentication, cipher, channel, dan signal; netsh wlan show networks menampilkan jaringan yang terlihat.",
+      "source": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netsh-wlan",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u08-mac-wifi-menu",
+      "statement": "Di Mac, Option-klik ikon Wi-Fi di menu bar menampilkan detail koneksi seperti alamat IP, alamat router, channel, band, standar keamanan, dan protokol 802.11; menu yang sama membuka Wireless Diagnostics.",
+      "source": "https://support.apple.com/guide/mac-help/use-the-wi-fi-status-menu-on-mac-mchlfad426fa/mac",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u08-nmcli-wifi",
+      "statement": "Di Linux dengan NetworkManager, nmcli device wifi list menampilkan jaringan Wi-Fi yang terlihat dengan kolom seperti SSID, CHAN, SIGNAL, dan SECURITY; tanda * di kolom IN-USE menunjukkan jaringan yang sedang dipakai.",
+      "source": "https://networkmanager.dev/docs/api/latest/nmcli.html",
       "verify": true
     }
   ]

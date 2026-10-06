@@ -1444,6 +1444,43 @@
             "ccna-f-u13-loopguard",
             "ccna-f-u13-rootguard"
           ]
+        },
+        {
+          "id": "ccna-u13-l7-e7",
+          "type": "choice",
+          "concept": "root-loop-guard",
+          "prompt": "Which interface command enables loop guard on one port?",
+          "options": [
+            "spanning-tree guard loop",
+            "spanning-tree guard root",
+            "spanning-tree bpduguard enable",
+            "spanning-tree portfast"
+          ],
+          "answer": 0,
+          "explanation": "spanning-tree guard loop menyalakan loop guard di satu interface; spanning-tree loopguard default menyalakannya secara global. guard root adalah root guard.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-guard-cmds"
+          ]
+        },
+        {
+          "id": "ccna-u13-l7-e8",
+          "type": "choice",
+          "concept": "root-loop-guard",
+          "prompt": "Which port should get root guard, and which should get loop guard?",
+          "options": [
+            "Root guard: designated ports facing switches that must not become root. Loop guard: root and alternate ports",
+            "Root guard on root ports toward the root bridge; loop guard on PortFast access ports toward PCs",
+            "Both features on every access port toward PCs, printers, and other end devices",
+            "Root guard on alternate ports toward the root bridge; loop guard on designated ports toward PCs and printers"
+          ],
+          "answer": 0,
+          "explanation": "Root guard menjaga port tetap designated, jadi dipasang di port ke switch yang tidak boleh jadi root. Loop guard menjaga root port dan alternate port yang berhenti menerima BPDU (bridge protocol data unit).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u13-rootguard",
+            "ccna-f-u13-loopguard"
+          ]
         }
       ]
     },

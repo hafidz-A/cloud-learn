@@ -82,6 +82,8 @@ export type CliExample = {
   start?: 'user' | 'priv' | 'config'
   given?: { context?: string; lines: string[] }[]
   cabled?: string[]
+  /** Prepared output of show commands, keyed by the command in full, as on `ios` questions. */
+  outputs?: Record<string, string>
   steps: { command: string; note: string }[]
 }
 

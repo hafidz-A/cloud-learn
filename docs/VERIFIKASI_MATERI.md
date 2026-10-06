@@ -500,8 +500,8 @@ sebelum 180 hari kena biaya early deletion.
 
 ## CCNA 200-301 v2.0 (3 Oktober 2026)
 
-Course CCNA (rencana: `LANGIT_CCNA_PLAN.md`) punya 28 unit, 156 lesson, 918 soal, 333 kartu materi, 21 lab, dan
-609 fakta bersumber. Bagian ini mencatat cara faktanya dicek dan apa yang masih harus dicek ulang.
+Course CCNA (rencana: `LANGIT_CCNA_PLAN.md`) punya 28 unit, 156 lesson, 940 soal, 338 kartu materi, 21 lab, dan
+623 fakta bersumber. Bagian ini mencatat cara faktanya dicek dan apa yang masih harus dicek ulang.
 
 ### Versi ujian
 
@@ -514,7 +514,7 @@ yang keluar adalah v1.1, jadi sebagian materi (misalnya Unit 28 tentang AI) tida
 - **Domain resmi tidak bisa dibuka langsung.** Dari lingkungan pengembangan, cisco.com, rfc-editor.org,
   docs.ansible.com, dan sejenisnya diblokir kebijakan jaringan. Setiap fakta dicek lewat **pencarian web yang
   dibatasi ke domain resmi** (cisco.com dan subdomainnya, rfc-editor.org, docs.ansible.com, learn.microsoft.com
-  untuk perintah Windows, man7.org untuk perintah Linux). `source` setiap fakta adalah URL resmi dari hasil
+  untuk perintah Windows, man7.org untuk perintah Linux, networkmanager.dev untuk nmcli). `source` setiap fakta adalah URL resmi dari hasil
   pencarian itu, dan validator menolak sumber di luar daftar domain tersebut.
 - **Kalimat yang tidak bisa dipastikan** dari ringkasan hasil pencarian diberi `verify: true`. Fakta ini tetap
   dipakai karena sesuai praktik umum, tetapi belum dicocokkan kalimat per kalimat. Daftarnya ada di bawah.
@@ -532,20 +532,21 @@ yang keluar adalah v1.1, jadi sebagian materi (misalnya Unit 28 tentang AI) tida
 
 | Domain | Fakta |
 |---|---|
-| cisco.com | 464 |
-| rfc-editor.org | 53 |
+| cisco.com | 472 |
+| rfc-editor.org | 56 |
 | datatracker.ietf.org | 31 |
 | docs.ansible.com | 22 |
+| learn.microsoft.com | 8 |
 | learningnetwork.cisco.com | 7 |
-| learn.microsoft.com | 7 |
-| iana.org | 5 |
 | blogs.cisco.com | 5 |
+| iana.org | 5 |
 | outshift.cisco.com | 4 |
 | man7.org | 3 |
-| standards.ieee.org | 2 |
-| support.apple.com | 2 |
-| netascode.cisco.com | 2 |
+| support.apple.com | 3 |
 | developer.cisco.com | 2 |
+| netascode.cisco.com | 2 |
+| standards.ieee.org | 2 |
+| networkmanager.dev | 1 |
 
 ### Lab
 
@@ -561,7 +562,7 @@ catatan lab karena bisa berbeda di alatnya:
 Setelah lab dicoba, isi `testedIn` di `src/content/ccna/labs.json` dengan alat dan versinya, dan catat
 perbedaan di `docs/BUGS_LOG.md`.
 
-### Masih bertanda `verify` (109 fakta)
+### Masih bertanda `verify` (118 fakta)
 
 Fakta ini perlu dicocokkan kalimat per kalimat setelah domain resmi bisa dibuka.
 
@@ -627,6 +628,9 @@ Fakta ini perlu dicocokkan kalimat per kalimat setelah domain resmi bisa dibuka.
 
 - `ccna-f-u08-conflict`: Server DHCP IOS memeriksa alamat dengan ping sebelum memberikannya; alamat yang ternyata dipakai dicatat di show ip dhcp conflict dan tidak dibagikan.
 - `ccna-f-u08-dhcp-client`: ip address dhcp membuat interface router menjadi klien DHCP, misalnya di interface yang menghadap ISP.
+- `ccna-f-u08-netsh-wlan`: Di Windows, netsh wlan show interfaces menampilkan detail koneksi wireless, antara lain SSID, BSSID, radio type, authentication, cipher, channel, dan signal; netsh wlan show networks menampilkan jaringan yang terlihat.
+- `ccna-f-u08-mac-wifi-menu`: Di Mac, Option-klik ikon Wi-Fi di menu bar menampilkan detail koneksi seperti alamat IP, alamat router, channel, band, standar keamanan, dan protokol 802.11; menu yang sama membuka Wireless Diagnostics.
+- `ccna-f-u08-nmcli-wifi`: Di Linux dengan NetworkManager, nmcli device wifi list menampilkan jaringan Wi-Fi yang terlihat dengan kolom seperti SSID, CHAN, SIGNAL, dan SECURITY; tanda * di kolom IN-USE menunjukkan jaringan yang sedang dipakai.
 
 **VLAN dan port akses**
 
@@ -666,6 +670,12 @@ Fakta ini perlu dicocokkan kalimat per kalimat setelah domain resmi bisa dibuka.
 **Troubleshoot Layer 2 dan Layer 3**
 
 - `ccna-f-u14-link-msgs`: %LINK-3-UPDOWN melaporkan perubahan status interface (layer 1), sedangkan %LINEPROTO-5-UPDOWN melaporkan perubahan status line protocol (layer 2).
+- `ccna-f-u14-config-i`: %SYS-5-CONFIG_I mencatat bahwa konfigurasi diubah, beserta user dan sumbernya, misalnya console atau vty dengan alamat IP pengirimnya.
+- `ccna-f-u14-adjchg`: %OSPF-5-ADJCHG mencatat perubahan state tetangga OSPF; alasan Dead timer expired berarti tidak ada hello dari tetangga itu selama dead interval.
+- `ccna-f-u14-duplex-msg`: %CDP-4-DUPLEX_MISMATCH dilaporkan CDP saat setting duplex dua ujung link tidak sama.
+- `ccna-f-u14-arp-capture`: Di capture, ARP request tampil sebagai Who has <alamat>? Tell <alamat pengirim> dengan tujuan broadcast; request yang berulang tanpa reply berarti tidak ada perangkat yang menjawab untuk alamat itu.
+- `ccna-f-u14-nxdomain`: Jawaban DNS dengan RCODE 3 (Name Error, disebut NXDOMAIN) berarti nama yang ditanyakan tidak ada; Wireshark menampilkannya sebagai No such name.
+- `ccna-f-u14-syn-retrans`: SYN yang dikirim ulang tanpa jawaban berarti segmen hilang atau dibuang diam-diam di jalan, misalnya oleh ACL atau firewall; ini berbeda dengan RST, yang berarti host tujuan menolak koneksi.
 
 **Tabel routing**
 
