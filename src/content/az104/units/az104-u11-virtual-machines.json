@@ -219,6 +219,88 @@
           "requires": [
             "az104-f-u11-os-disk"
           ]
+        },
+        {
+          "id": "az104-u11-l1-m4",
+          "type": "learn",
+          "concepts": [
+            "vm-create"
+          ],
+          "title": "Pilihan yang ditentukan saat membuat VM",
+          "body": "Beberapa pilihan saat membuat VM (virtual machine) harus benar sejak awal. VM hanya bisa dihubungkan ke virtual network di region dan subscription yang sama, jadi VM di West Europe tidak bisa memakai virtual network di North Europe; jaringan di region lain dihubungkan lewat peering. Availability set juga hanya bisa dipilih saat VM dibuat. Untuk memasukkan VM yang sudah ada ke availability set, atau mengganti availability set-nya, VM harus dihapus lalu dibuat ulang dari disk-nya.",
+          "keyPoints": [
+            "VNet (virtual network) harus di region dan subscription yang sama",
+            "Availability set dipilih saat VM dibuat",
+            "Ganti availability set: hapus dan buat ulang VM"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/windows/change-availability-set",
+          "teaches": [
+            "az104-f-u11-vm-vnet-region",
+            "az104-f-u11-avset-create"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e9",
+          "type": "choice",
+          "concept": "vm-create",
+          "prompt": "A company creates vm1 in West Europe. The company's only virtual network, VNet1, is in North Europe in the same subscription. vm1 must have its network interface in VNet1. What should the company do?",
+          "options": [
+            "Create vm1 in West Europe, and select VNet1 on the Networking tab",
+            "Create vm1 in West Europe with a public IP (Internet Protocol) address that reaches VNet1",
+            "Create vm1 in North Europe instead",
+            "Create vm1 in West Europe in the resource group of VNet1"
+          ],
+          "answer": 2,
+          "explanation": "VM (virtual machine) hanya bisa dihubungkan ke virtual network di region dan subscription yang sama. Karena VNet1 ada di North Europe, vm1 harus dibuat di North Europe, atau dibuat virtual network baru di West Europe lalu di-peering ke VNet1.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-vm-vnet-region"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e10",
+          "type": "yesno",
+          "concept": "vm-create",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to create vm2 in East US in the subscription Prod.",
+          "statements": [
+            {
+              "text": "vm2 can use a virtual network in East US in the subscription Prod.",
+              "answer": true
+            },
+            {
+              "text": "vm2 can use a virtual network in West US in the subscription Prod.",
+              "answer": false
+            },
+            {
+              "text": "After vm2 is created, Contoso can add it to an existing availability set.",
+              "answer": false
+            }
+          ],
+          "explanation": "VM (virtual machine) hanya bisa memakai virtual network di region dan subscription yang sama. Availability set hanya bisa dipilih saat VM dibuat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-vm-vnet-region",
+            "az104-f-u11-avset-create"
+          ]
+        },
+        {
+          "id": "az104-u11-l1-e11",
+          "type": "choice",
+          "concept": "vm-create",
+          "prompt": "The running VM (virtual machine) vm3 is not in an availability set. A company wants vm3 and vm4 in the availability set avset-web. What must the company do with vm3?",
+          "options": [
+            "Stop (deallocate) vm3, and then select avset-web under Availability + scale",
+            "Delete vm3, and create it again in avset-web from its disks",
+            "Resize vm3 to a size that avset-web supports, which moves it into the set",
+            "Move vm3 to the resource group that holds avset-web"
+          ],
+          "answer": 1,
+          "explanation": "VM (virtual machine) hanya bisa dimasukkan ke availability set saat dibuat. VM yang sudah ada harus dihapus lalu dibuat ulang di availability set itu, dengan disk yang dilepas, bukan ikut dihapus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-avset-create"
+          ]
         }
       ]
     },
@@ -1341,6 +1423,297 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u11-l7",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u11-l7-e1",
+          "type": "choice",
+          "concept": "vm-size-choice",
+          "prompt": "A company runs SQL (Structured Query Language) Server on a VM (virtual machine) with the size Standard_E4_v3. Its data disks must move to Premium SSD (solid-state drive), and the VM must keep the same CPU (central processing unit) and memory. Which size should the company choose?",
+          "options": [
+            "Standard_E4s_v3",
+            "Standard_E8_v3, because larger sizes support every disk type",
+            "Standard_F4s_v2, because compute optimized sizes are faster",
+            "No new size, because the disk type alone decides"
+          ],
+          "answer": 0,
+          "explanation": "Untuk Premium Storage, pilih versi ukuran dengan huruf s. Standard_E4s_v3 adalah versi s dari Standard_E4_v3, jadi CPU (central processing unit) dan memorinya sama. Ukuran F adalah compute optimized, bukan memory optimized.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-size-s",
+            "az104-f-u11-families"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e2",
+          "type": "choice",
+          "concept": "vm-resize",
+          "prompt": "A company must resize vm1, which runs its production app, to a larger size from the same family. The new size is available on the current hardware cluster. What should the company plan for?",
+          "options": [
+            "vm1 keeps running without a restart, because the new size is in the same family",
+            "vm1 restarts during the resize",
+            "vm1 must be deleted and created again with the new size",
+            "vm1 must first be moved to another resource group"
+          ],
+          "answer": 1,
+          "explanation": "Mengubah ukuran VM (virtual machine) yang berjalan selalu membuat VM restart, jadi lakukan di jendela maintenance. Deallocate baru dibutuhkan kalau ukuran baru tidak tersedia di cluster hardware saat ini.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-resize"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e3",
+          "type": "choice",
+          "concept": "disk-types",
+          "prompt": "A company needs a new production VM (virtual machine). Its OS (operating system) disk must be an SSD (solid-state drive) with low latency, and its data disk must have the highest IOPS (input/output operations per second). Which disk types should the company choose?",
+          "options": [
+            "Ultra Disk for both the OS disk and the data disk",
+            "Premium SSD v2 for the OS disk, and Ultra Disk for the data disk",
+            "Premium SSD for the OS disk, and Ultra Disk for the data disk",
+            "Standard HDD (hard disk drive) for the OS disk, and Premium SSD for the data disk"
+          ],
+          "answer": 2,
+          "explanation": "Ultra Disk dan Premium SSD (solid-state drive) v2 hanya bisa menjadi data disk, bukan OS (operating system) disk. Premium SSD cocok untuk OS disk production, dan Ultra Disk untuk data disk dengan IOPS (input/output operations per second) tertinggi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-disk-os",
+            "az104-f-u11-disk-types"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e4",
+          "type": "yesno",
+          "concept": "disk-types",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to create vm5 with one OS (operating system) disk and two data disks.",
+          "statements": [
+            {
+              "text": "The OS disk can be a Standard SSD (solid-state drive).",
+              "answer": true
+            },
+            {
+              "text": "The OS disk can be a Premium SSD v2.",
+              "answer": false
+            },
+            {
+              "text": "The size of vm5 limits how many data disks it can have.",
+              "answer": true
+            }
+          ],
+          "explanation": "Premium SSD (solid-state drive) v2 dan Ultra Disk hanya bisa menjadi data disk. Standard SSD bisa menjadi OS (operating system) disk, dan jumlah data disk dibatasi ukuran VM (virtual machine).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-disk-os",
+            "az104-f-u11-disk-types",
+            "az104-f-u11-data-disk"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e5",
+          "type": "choice",
+          "concept": "disk-encryption-options",
+          "prompt": "A company's security policy requires that the temporary disk and disk caches of new VMs (virtual machines) are encrypted. The company plans to use Azure Disk Encryption. What should you recommend?",
+          "options": [
+            "Encryption at host instead of Azure Disk Encryption",
+            "Azure Disk Encryption, because it is the recommended option for all new VMs",
+            "Server-side encryption only, because it already covers the temporary disk",
+            "A customer-managed key on a storage account for the temporary disk"
+          ],
+          "answer": 0,
+          "explanation": "ADE (Azure Disk Encryption) pensiun 15 September 2028, dan untuk VM (virtual machine) baru Microsoft menyarankan encryption at host, yang mengenkripsi temporary disk dan cache disk. Server-side encryption tidak mengenkripsi temporary disk dan cache disk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-ade-retire",
+            "az104-f-u11-enc-host",
+            "az104-f-u11-sse-disks"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e6",
+          "type": "rules",
+          "concept": "encryption-at-host",
+          "prompt": "You need to turn on encryption at host for the VMs (virtual machines) in the table. The feature EncryptionAtHost is registered for the subscription. On which VMs can you turn it on now, without any other change?",
+          "tables": [
+            {
+              "title": "Virtual machines",
+              "columns": [
+                "VM",
+                "State",
+                "Azure Disk Encryption"
+              ],
+              "rows": [
+                [
+                  "vm1",
+                  "Running",
+                  "Never used"
+                ],
+                [
+                  "vm2",
+                  "Stopped (deallocated)",
+                  "Never used"
+                ],
+                [
+                  "vm3",
+                  "Stopped (deallocated)",
+                  "Used last year, now off"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "vm2 only",
+            "vm1 and vm2",
+            "vm2 and vm3",
+            "vm1, vm2, and vm3"
+          ],
+          "answer": 0,
+          "explanation": "Encryption at host tidak bisa diaktifkan di VM (virtual machine) yang sedang atau pernah memakai ADE (Azure Disk Encryption), jadi vm3 tidak bisa. VM yang sudah ada harus di-deallocate dulu, jadi vm1 harus dihentikan dulu. Hanya vm2 yang bisa sekarang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-enc-host-limits",
+            "az104-f-u11-enc-host-register"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e7",
+          "type": "choice",
+          "concept": "move-vm-limits",
+          "prompt": "A company must move vm1 to another subscription in the same Microsoft Entra tenant. vm1 is connected to VNet1, which vm2 also uses. What must the company move?",
+          "options": [
+            "Only vm1, and then connect it back to VNet1 by using virtual network peering",
+            "Only vm1, because the move keeps its connection to VNet1",
+            "vm1, VNet1, and every resource that depends on VNet1, including vm2",
+            "Only VNet1, because vm1 follows its virtual network automatically"
+          ],
+          "answer": 2,
+          "explanation": "VM (virtual machine) di virtual network yang ada hanya bisa dipindah ke subscription baru bersama virtual network dan semua resource yang bergantung padanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-move-vm-limits"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e8",
+          "type": "choice",
+          "concept": "move-vm-rg-sub",
+          "prompt": "A company plans to move vm1 from rg-a to rg-b in the same subscription. rg-b has a read-only lock. What happens?",
+          "options": [
+            "The move succeeds, because locks apply only to deletion",
+            "vm1 moves, but it becomes read-only in rg-b",
+            "The move fails until the read-only lock is removed",
+            "vm1 moves after it is deallocated"
+          ],
+          "answer": 2,
+          "explanation": "Resource tidak bisa dipindah kalau ada read-only lock di resource group sumber, resource group tujuan, atau subscription.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-move-readonly",
+            "az104-f-u11-move-basics"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e9",
+          "type": "choice",
+          "concept": "availability-set",
+          "prompt": "A company runs web1 and web2 in an availability set with 2 fault domains. The company now wants 3 fault domains. What should the company do?",
+          "options": [
+            "Deallocate web1 and web2, change the fault domain count to 3, and then start them again",
+            "Create a new availability set with 3 fault domains, and re-create web1 and web2 in it",
+            "Change the fault domain count of the availability set to 3 in the portal",
+            "Add a third VM (virtual machine) to the set, which adds a third fault domain automatically"
+          ],
+          "answer": 1,
+          "explanation": "Jumlah fault domain dan update domain tidak bisa diubah setelah availability set dibuat, dan VM (virtual machine) hanya bisa dimasukkan ke availability set saat dibuat. Jadi buat availability set baru, lalu buat ulang VM di dalamnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-avset-limits",
+            "az104-f-u11-avset-create"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e10",
+          "type": "choice",
+          "concept": "availability-zones-vm",
+          "prompt": "A company's app runs on two VMs (virtual machines) in an availability set in West Europe, which supports availability zones. The app must keep running if a whole datacenter fails. What should the company do?",
+          "options": [
+            "Add a third VM to the availability set",
+            "Deploy the VMs across availability zones",
+            "Raise the update domain count to 20",
+            "Move the availability set to a paired region"
+          ],
+          "answer": 1,
+          "explanation": "Availability set melindungi dari kerusakan rak, listrik, atau switch, tapi tidak dari hilangnya satu datacenter. VM (virtual machine) yang disebar di beberapa availability zone tahan terhadap hilangnya satu datacenter.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-zones",
+            "az104-f-u11-avset"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e11",
+          "type": "yesno",
+          "concept": "availability-set",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to place vm1 to vm8 in an availability set with 3 fault domains and 5 update domains.",
+          "statements": [
+            {
+              "text": "vm6 is in the same update domain as vm1.",
+              "answer": true
+            },
+            {
+              "text": "During planned maintenance, all update domains are restarted at the same time.",
+              "answer": false
+            },
+            {
+              "text": "The availability set keeps the app running if a whole datacenter fails.",
+              "answer": false
+            }
+          ],
+          "explanation": "Dengan lima update domain, VM (virtual machine) keenam masuk update domain yang sama dengan VM pertama. Saat maintenance terencana, hanya satu update domain yang di-restart dalam satu waktu. Untuk hilangnya satu datacenter, pakai availability zone.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-update-domain",
+            "az104-f-u11-zones"
+          ]
+        },
+        {
+          "id": "az104-u11-l7-e12",
+          "type": "match",
+          "concept": "availability-zones-vm",
+          "prompt": "A company has several VM (virtual machine) requirements. Match each requirement with the option that meets it.",
+          "pairs": [
+            [
+              "Survive the loss of one datacenter",
+              "Availability zones"
+            ],
+            [
+              "Survive a rack power failure, at no extra cost",
+              "Availability set"
+            ],
+            [
+              "Encrypt the temporary disk and disk caches",
+              "Encryption at host"
+            ],
+            [
+              "Move a VM to another region",
+              "Azure Resource Mover"
+            ]
+          ],
+          "explanation": "Availability zone tahan terhadap hilangnya satu datacenter, availability set gratis dan melindungi dari kerusakan rak, encryption at host mengenkripsi temporary disk dan cache disk, dan Azure Resource Mover memindahkan resource ke region lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u11-zones",
+            "az104-f-u11-avset",
+            "az104-f-u11-enc-host",
+            "az104-f-u11-move-region"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
@@ -1543,6 +1916,16 @@
       "id": "az104-f-u11-scale-in",
       "statement": "Scale-in policy default menyeimbangkan VM (virtual machine) di availability zone, lalu di fault domain, lalu menghapus VM dengan instance ID tertinggi. Pilihan lain: NewestVM dan OldestVM.",
       "source": "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-scale-in-policy"
+    },
+    {
+      "id": "az104-f-u11-vm-vnet-region",
+      "statement": "VM (virtual machine) hanya bisa dihubungkan ke virtual network yang ada di region dan subscription yang sama dengan VM. Virtual network di region atau subscription lain bisa dihubungkan lewat peering.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-vnet-plan-design-arm"
+    },
+    {
+      "id": "az104-f-u11-avset-create",
+      "statement": "VM (virtual machine) hanya bisa dimasukkan ke availability set saat VM dibuat. Untuk memasukkan VM yang sudah ada ke availability set, atau mengganti availability set-nya, VM harus dihapus lalu dibuat ulang; disk-nya bisa dipakai lagi kalau diatur untuk dilepas, bukan ikut dihapus.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/windows/change-availability-set"
     }
   ]
 }

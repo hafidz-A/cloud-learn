@@ -1056,6 +1056,671 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u13-l6",
+      "title": "Web app, sertifikat, dan restore",
+      "items": [
+        {
+          "id": "az104-u13-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "web-app-create"
+          ],
+          "title": "Membuat web app",
+          "body": "Saat membuat web app, kamu memilih Publish (Code atau Container), runtime stack, OS (operating system) Linux atau Windows, region, dan App Service plan. Region app mengikuti plan-nya, dan region plan tidak bisa diubah; untuk region lain, clone app ke plan di region itu. App hanya bisa dipindah ke plan lain di resource group, region, dan jenis OS yang sama. Di Azure CLI (command-line interface), buat plan dengan az appservice plan create, lalu app dengan az webapp create --plan.",
+          "keyPoints": [
+            "Publish: Code atau Container",
+            "Pindah plan: resource group, region, OS sama",
+            "Region lain: clone app"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/app-service-plan-manage",
+          "teaches": [
+            "az104-f-u13-webapp-create",
+            "az104-f-u13-app-move-plan",
+            "az104-f-u13-app-region"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e1",
+          "type": "choice",
+          "concept": "web-app-create",
+          "prompt": "A company will deploy its app as a container image instead of source code. Which setting on the Basics tab of Create Web App should you change?",
+          "options": [
+            "Runtime stack",
+            "Publish",
+            "Pricing plan",
+            "Region"
+          ],
+          "answer": 1,
+          "explanation": "Publish menentukan apakah app di-deploy sebagai Code atau Container. Runtime stack dipilih untuk app berbentuk kode.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-webapp-create"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e2",
+          "type": "rules",
+          "concept": "web-app-create",
+          "prompt": "At a company, app1 runs in plan-a. Based on the table, to which plans can you move app1?",
+          "tables": [
+            {
+              "title": "App Service plans",
+              "columns": [
+                "Plan",
+                "Resource group",
+                "Region",
+                "OS (operating system)"
+              ],
+              "rows": [
+                [
+                  "plan-a (current)",
+                  "rg-web",
+                  "West Europe",
+                  "Windows"
+                ],
+                [
+                  "plan-b",
+                  "rg-web",
+                  "West Europe",
+                  "Linux"
+                ],
+                [
+                  "plan-c",
+                  "rg-web",
+                  "North Europe",
+                  "Windows"
+                ],
+                [
+                  "plan-d",
+                  "rg-other",
+                  "West Europe",
+                  "Windows"
+                ],
+                [
+                  "plan-e",
+                  "rg-web",
+                  "West Europe",
+                  "Windows"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "plan-b and plan-e",
+            "plan-d and plan-e",
+            "plan-e only",
+            "plan-c, plan-d, and plan-e"
+          ],
+          "answer": 2,
+          "explanation": "App hanya bisa dipindah ke plan di resource group, region, dan jenis OS (operating system) yang sama. plan-b berbeda OS, plan-c berbeda region, dan plan-d berbeda resource group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-app-move-plan"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e3",
+          "type": "choice",
+          "concept": "web-app-create",
+          "prompt": "app1 runs in an App Service plan in West Europe. A company must run app1 in East US. What should the company do?",
+          "options": [
+            "Change the region of the current plan to East US",
+            "Move app1 to a resource group that is in East US",
+            "Clone app1 to a plan in East US",
+            "Scale up the plan to Premium, which allows a region change"
+          ],
+          "answer": 2,
+          "explanation": "Region app mengikuti plan-nya, dan region plan tidak bisa diubah. Clone app membuat salinan app di plan di region mana pun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-app-region",
+            "az104-f-u13-app-move-plan"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e4",
+          "type": "yesno",
+          "concept": "web-app-create",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to create app2 in the Windows plan plan-a, which is in rg-web in West Europe.",
+          "statements": [
+            {
+              "text": "app2 will run in West Europe.",
+              "answer": true
+            },
+            {
+              "text": "Contoso can later move app2 to a Linux plan in rg-web in West Europe.",
+              "answer": false
+            },
+            {
+              "text": "Contoso can later change the region of plan-a.",
+              "answer": false
+            }
+          ],
+          "explanation": "Region app mengikuti plan-nya, dan region plan tidak bisa diubah. Pindah ke plan dengan OS (operating system) lain tidak didukung.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-app-region",
+            "az104-f-u13-app-move-plan"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "app-certificates"
+          ],
+          "title": "Sertifikat dan pengaturan TLS",
+          "body": "Sertifikat custom domain bisa berupa App Service Managed Certificate gratis, App Service certificate, sertifikat Azure Key Vault, atau sertifikat privat yang di-upload; semuanya butuh tier Basic ke atas. Sertifikat privat harus berupa file PFX (Personal Information Exchange) berpassword dengan rantai sertifikat lengkap. SNI (Server Name Indication) SSL (Secure Sockets Layer) bisa banyak binding di satu IP (Internet Protocol) bersama; IP based SSL hanya satu, dengan IP dedicated, di Standard ke atas. Minimum TLS (Transport Layer Security) default-nya 1.2 dan bisa dinaikkan ke 1.3. HTTPS (Hypertext Transfer Protocol Secure) Only mengalihkan HTTP (Hypertext Transfer Protocol) ke HTTPS.",
+          "keyPoints": [
+            "Sertifikat privat: PFX berpassword, rantai lengkap",
+            "SNI SSL: banyak domain, satu IP",
+            "IP based SSL: IP dedicated, Standard ke atas"
+          ],
+          "trap": "IP based SSL memberi app alamat IP baru. Kalau domain memakai A record, record itu harus diperbarui ke IP dedicated yang baru.",
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-bindings",
+          "teaches": [
+            "az104-f-u13-cert-options",
+            "az104-f-u13-cert-pfx",
+            "az104-f-u13-binding-types",
+            "az104-f-u13-tls-min",
+            "az104-f-u13-https-only"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e5",
+          "type": "choice",
+          "concept": "app-certificates",
+          "prompt": "A company has a certificate for www.contoso.com from a non-Microsoft provider, exported as a PFX (Personal Information Exchange) file. What must the file meet before the company uploads it to App Service?",
+          "options": [
+            "It has no password, so that App Service can read it",
+            "It includes only the server certificate, without intermediate certificates",
+            "It is password-protected and includes the whole certificate chain",
+            "It is issued by Microsoft, because other providers are not supported"
+          ],
+          "answer": 2,
+          "explanation": "Sertifikat privat harus berupa file PFX (Personal Information Exchange) yang dilindungi password dan berisi semua intermediate certificate dan root certificate. Sertifikat dari penyedia lain boleh di-upload.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-cert-pfx",
+            "az104-f-u13-cert-options"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e6",
+          "type": "choice",
+          "concept": "app-certificates",
+          "prompt": "A company must secure www.contoso.com and shop.contoso.com on one app, which uses the shared IP (Internet Protocol) address of App Service. Which TLS (Transport Layer Security)/SSL (Secure Sockets Layer) type should you choose for the bindings?",
+          "options": [
+            "IP based SSL, with one binding for each domain",
+            "SNI (Server Name Indication) SSL",
+            "IP based SSL for one domain, and no binding for the other",
+            "No binding, because a managed certificate binds itself"
+          ],
+          "answer": 1,
+          "explanation": "SNI (Server Name Indication) SSL (Secure Sockets Layer) bisa dibuat banyak untuk beberapa domain di satu alamat IP (Internet Protocol). IP based SSL hanya bisa satu binding per app, dengan IP dedicated.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-binding-types"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e7",
+          "type": "truefalse",
+          "concept": "app-certificates",
+          "prompt": "IP (Internet Protocol) based SSL (Secure Sockets Layer) bindings are supported in the Basic tier.",
+          "answer": false,
+          "explanation": "IP (Internet Protocol) based SSL (Secure Sockets Layer) butuh tier Standard ke atas. SNI (Server Name Indication) SSL sudah bisa di Basic.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-binding-types",
+            "az104-f-u13-cert-options"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e8",
+          "type": "choice",
+          "concept": "app-certificates",
+          "prompt": "A company's security team requires that a web app rejects TLS (Transport Layer Security) 1.2 and older, and that HTTP (Hypertext Transfer Protocol) requests are sent on to HTTPS (Hypertext Transfer Protocol Secure). What should you configure?",
+          "options": [
+            "Minimum Inbound TLS Version 1.2, and HTTPS Only on",
+            "Minimum Inbound TLS Version 1.3, and HTTPS Only on",
+            "An IP (Internet Protocol) based SSL (Secure Sockets Layer) binding, and HTTPS Only off",
+            "A managed certificate, which sets both automatically"
+          ],
+          "answer": 1,
+          "explanation": "Minimum TLS (Transport Layer Security) default-nya 1.2, jadi untuk menolak TLS 1.2 naikkan ke 1.3. HTTPS (Hypertext Transfer Protocol Secure) Only mengalihkan semua trafik HTTP (Hypertext Transfer Protocol) ke HTTPS.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-tls-min",
+            "az104-f-u13-https-only"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-m3",
+          "type": "learn",
+          "concepts": [
+            "app-backup"
+          ],
+          "title": "Restore dan detail backup",
+          "body": "Backup bisa di-restore dengan menimpa app yang ada, atau ke app atau slot baru. Selama restore, app atau slot tujuan dihentikan, jadi untuk production restore dulu ke deployment slot lalu swap. Automatic backup dibuat setiap jam, sampai 30 GB (gigabyte), disimpan 30 hari, dan tidak bisa diatur. Custom backup butuh storage account dengan otorisasi SAS (shared access signature), bisa dijadwalkan paling sering setiap 2 jam, retensinya sampai tanpa batas, dan mendukung partial backup.",
+          "keyPoints": [
+            "Production: restore ke slot, lalu swap",
+            "Automatic: tiap jam, 30 hari",
+            "Custom: storage account, retensi bisa tanpa batas"
+          ],
+          "trap": "Materi lama sering menyebut opsi Include database di custom backup. Opsi itu sudah dihapus untuk konfigurasi baru, jadi database dilindungi dengan backup bawaan layanan database.",
+          "link": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup",
+          "teaches": [
+            "az104-f-u13-backup-restore",
+            "az104-f-u13-backup-auto-detail",
+            "az104-f-u13-backup-storage",
+            "az104-f-u13-backup-linked-db"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e9",
+          "type": "choice",
+          "concept": "app-backup",
+          "prompt": "A company must restore a production app from a backup with the least downtime. What should the company do?",
+          "options": [
+            "Restore over the production app directly, during business hours",
+            "Restore to a deployment slot, and then swap it into production",
+            "Restore to a new storage account, and then point the app to it",
+            "Delete the app, and then restore to a new app with the same name"
+          ],
+          "answer": 1,
+          "explanation": "Selama restore, app atau slot tujuan dihentikan. Untuk production, restore dulu ke deployment slot, lalu swap ke production tanpa downtime.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-backup-restore",
+            "az104-f-u13-swap"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e10",
+          "type": "yesno",
+          "concept": "app-backup",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company's app contoso-web runs in the Standard tier and uses automatic backups only.",
+          "statements": [
+            {
+              "text": "A backup is made every hour.",
+              "answer": true
+            },
+            {
+              "text": "The company can change the backup frequency to every 6 hours.",
+              "answer": false
+            },
+            {
+              "text": "Each backup is kept for 30 days.",
+              "answer": true
+            }
+          ],
+          "explanation": "Automatic backup dibuat setiap jam, frekuensinya tidak bisa diatur, dan disimpan 30 hari. Untuk jadwal sendiri, pakai custom backup.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-backup-auto-detail"
+          ]
+        },
+        {
+          "id": "az104-u13-l6-e11",
+          "type": "choice",
+          "concept": "app-backup",
+          "prompt": "A company wants backups of its web app that are kept indefinitely and that leave out the folder /logs. What should the company use?",
+          "options": [
+            "Automatic backups with a longer retention",
+            "Automatic backups with a filter for /logs",
+            "A deployment slot that holds the old version",
+            "A custom backup to a storage account"
+          ],
+          "answer": 3,
+          "explanation": "Automatic backup disimpan 30 hari dan tidak mendukung partial backup. Custom backup ke storage account bisa disimpan tanpa batas dan mendukung partial backup.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-backup-auto-detail",
+            "az104-f-u13-backup-storage",
+            "az104-f-u13-backup-types"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "az104-u13-l7",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u13-l7-e1",
+          "type": "choice",
+          "concept": "app-service-plan",
+          "prompt": "A company runs three apps in one Standard App Service plan with 3 instances. What does the company pay for in compute?",
+          "options": [
+            "3 instances of the plan",
+            "9 instances, 3 for each app",
+            "3 apps, each at the price of one instance",
+            "Only the instances that the busiest app uses"
+          ],
+          "answer": 0,
+          "explanation": "Di tier dedicated, yang ditagih adalah setiap instance VM (virtual machine) di plan, bukan setiap app. Ketiga app berbagi 3 instance yang sama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-billing",
+            "az104-f-u13-plan-share"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e2",
+          "type": "choice",
+          "concept": "plan-tiers",
+          "prompt": "A company needs a web app with a custom domain, a free managed certificate, and up to 3 instances, at the lowest cost. Which tier should the company choose?",
+          "options": [
+            "Shared",
+            "Free",
+            "Basic",
+            "Standard"
+          ],
+          "answer": 2,
+          "explanation": "Custom domain butuh Shared ke atas, managed certificate butuh Basic ke atas, dan Basic bisa scale out sampai 3 instance. Standard juga bisa, tapi lebih mahal.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-tier-features",
+            "az104-f-u13-managed-cert",
+            "az104-f-u13-scale-up-out"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e3",
+          "type": "choice",
+          "concept": "web-app-create",
+          "prompt": "A company must run a new app on Linux. Its only App Service plan, plan-win, runs Windows. What should the company do?",
+          "options": [
+            "Create the app in plan-win, and choose Linux on the Basics tab",
+            "Change the OS (operating system) of plan-win to Linux",
+            "Create the app in plan-win, and move it to a Linux plan later",
+            "Create a Linux App Service plan, and create the app in it"
+          ],
+          "answer": 3,
+          "explanation": "Plan menentukan OS (operating system) untuk semua app di dalamnya, dan app tidak bisa dipindah ke plan dengan OS lain. Buat plan Linux, lalu buat app di plan itu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-plan",
+            "az104-f-u13-app-move-plan",
+            "az104-f-u13-webapp-create"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e4",
+          "type": "multi",
+          "concept": "web-app-create",
+          "prompt": "A company must create the web app contoso-api in rg-web by using the Azure CLI (command-line interface). rg-web has no App Service plan yet. Which two commands should the company run? Choose two.",
+          "options": [
+            "az appservice plan create",
+            "az webapp create with --plan",
+            "az webapp deployment slot create",
+            "az storage account create"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Plan dibuat dulu dengan az appservice plan create, lalu app dibuat di plan itu dengan az webapp create --plan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-webapp-create"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e5",
+          "type": "yesno",
+          "concept": "app-certificates",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso wants HTTPS (Hypertext Transfer Protocol Secure) for www.contoso.com and *.contoso.com on an app in the Standard tier.",
+          "statements": [
+            {
+              "text": "Contoso can import a wildcard certificate for *.contoso.com from Azure Key Vault.",
+              "answer": true
+            },
+            {
+              "text": "A free App Service Managed Certificate can secure *.contoso.com.",
+              "answer": false
+            },
+            {
+              "text": "The app can have only one SNI (Server Name Indication) SSL (Secure Sockets Layer) binding.",
+              "answer": false
+            }
+          ],
+          "explanation": "Sertifikat, termasuk wildcard, bisa di-import dari Azure Key Vault. Managed certificate gratis tidak mendukung wildcard. SNI (Server Name Indication) SSL (Secure Sockets Layer) bisa dibuat banyak; yang hanya satu adalah IP (Internet Protocol) based SSL.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-cert-options",
+            "az104-f-u13-managed-cert",
+            "az104-f-u13-binding-types"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e6",
+          "type": "choice",
+          "concept": "app-certificates",
+          "prompt": "A company changes the TLS (Transport Layer Security) binding of www.contoso.com from SNI (Server Name Indication) SSL (Secure Sockets Layer) to IP (Internet Protocol) based SSL. www.contoso.com is mapped with an A record. What must the company do next?",
+          "options": [
+            "Nothing, because the IP address of the app stays the same",
+            "Delete the asuid TXT (text) record, because IP based SSL does not need it",
+            "Update the A record to the new dedicated IP address of the app",
+            "Scale the plan down to the Basic tier"
+          ],
+          "answer": 2,
+          "explanation": "IP (Internet Protocol) based SSL (Secure Sockets Layer) membuat alamat IP dedicated baru untuk app. Karena domain memakai A record, record itu harus diarahkan ke IP baru.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-binding-types",
+            "az104-f-u13-domain-records"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e7",
+          "type": "choice",
+          "concept": "domain-verification",
+          "prompt": "A company maps shop.contoso.com to its web app by using a CNAME (canonical name) record. The company must prevent another App Service app from taking over the subdomain. What else should the company create?",
+          "options": [
+            "A TXT (text) record named asuid.shop with the verification ID (identifier)",
+            "An A record named shop that holds the IP (Internet Protocol) address of the app",
+            "A TXT record named shop that holds the name of the app",
+            "A CNAME record named asuid that points to the app"
+          ],
+          "answer": 0,
+          "explanation": "Untuk subdomain dengan CNAME (canonical name), record TXT (text) asuid.<subdomain> berisi domain verification ID (identifier) tidak wajib, tapi sangat disarankan untuk mencegah subdomain takeover.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-txt",
+            "az104-f-u13-domain-records"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e8",
+          "type": "choice",
+          "concept": "custom-domain",
+          "prompt": "A company maps the root domain contoso.com to its web app. Which records should the company create at the domain provider?",
+          "options": [
+            "A CNAME (canonical name) record for @ that points to the default host name of the web app",
+            "An A record for www only, because the root domain then follows the www record automatically",
+            "An A record for @, and a TXT (text) record asuid with the verification ID (identifier)",
+            "An MX (mail exchange) record for @, and a TXT record named asuid.www"
+          ],
+          "answer": 2,
+          "explanation": "Root domain dipetakan dengan A record, ditambah TXT (text) asuid berisi domain verification ID (identifier). CNAME (canonical name) dipakai untuk subdomain seperti www.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-records"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e9",
+          "type": "choice",
+          "concept": "custom-domain",
+          "prompt": "A company's app runs in the Free (F1) tier. The company must use the custom domain www.contoso.com at the lowest cost. What should the company do first?",
+          "options": [
+            "Scale up the plan to the Shared tier or higher",
+            "Add the domain in the Free tier, because custom domains are free",
+            "Create an App Service Managed Certificate",
+            "Move the app to a plan in another region"
+          ],
+          "answer": 0,
+          "explanation": "Custom domain butuh plan berbayar, bukan Free (F1). Shared adalah tier berbayar terendah yang mendukungnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-domain-tier",
+            "az104-f-u13-tier-features"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e10",
+          "type": "choice",
+          "concept": "app-backup",
+          "prompt": "A company configures a new custom backup for a web app that uses an Azure SQL (Structured Query Language) database. The database must also be protected. What should you recommend?",
+          "options": [
+            "Select Include database in the new custom backup",
+            "Use the backup features of Azure SQL Database itself",
+            "Use automatic backups, which include the linked database",
+            "Add the connection string as a deployment slot setting"
+          ],
+          "answer": 1,
+          "explanation": "Opsi menyertakan linked database sudah dihapus dari konfigurasi custom backup baru, dan automatic backup tidak pernah mem-backup linked database. Pakai backup bawaan Azure SQL (Structured Query Language) Database.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-backup-linked-db",
+            "az104-f-u13-backup-auto-detail"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e11",
+          "type": "choice",
+          "concept": "app-backup",
+          "prompt": "A company configures a custom backup of its web app to the storage account stbackup, and wants App Service to reach the account only through a managed identity. Why can't this work?",
+          "options": [
+            "The storage account must be in a different region from the app for backups",
+            "App Service backup needs SAS (shared access signature) authorization",
+            "Custom backups to a storage account are available only in the Premium tier",
+            "The storage account must hold only Premium file shares"
+          ],
+          "answer": 1,
+          "explanation": "Custom backup butuh storage account yang mendukung otorisasi SAS (shared access signature). Autentikasi managed identity ke storage account tidak didukung untuk backup dan restore App Service.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-backup-storage",
+            "az104-f-u13-backup"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e12",
+          "type": "rules",
+          "concept": "access-restrictions",
+          "prompt": "A company configured the access restrictions of its web app as shown. A user at 203.0.113.50 opens the app. What happens?",
+          "tables": [
+            {
+              "title": "Access restrictions",
+              "columns": [
+                "Priority",
+                "Name",
+                "Source",
+                "Action"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "allow-office",
+                  "203.0.113.0/24",
+                  "Allow"
+                ],
+                [
+                  "200",
+                  "deny-host",
+                  "203.0.113.50/32",
+                  "Deny"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "The request is denied by the rule at priority 200, because it is more specific",
+            "The request is denied with HTTP (Hypertext Transfer Protocol) 403 by the implicit deny",
+            "The request is allowed, because App Service skips /32 rules",
+            "The request is allowed by the rule at priority 100"
+          ],
+          "answer": 3,
+          "explanation": "Aturan diproses dari angka prioritas terkecil, dan aturan pertama yang cocok yang berlaku. 203.0.113.50 cocok dengan aturan 100, jadi diizinkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-access-restrictions"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e13",
+          "type": "choice",
+          "concept": "vnet-integration",
+          "prompt": "A company's web app must call an API (Application Programming Interface) on a virtual machine with a private IP (Internet Protocol) address in VNet1. Users in VNet1 must also open the app on a private IP address. What should the company configure?",
+          "options": [
+            "A private endpoint only, because it handles traffic in both directions",
+            "VNet (virtual network) integration only, because it handles traffic in both directions",
+            "Access restrictions that allow VNet1, for both directions",
+            "VNet integration for the calls, and a private endpoint for the users"
+          ],
+          "answer": 3,
+          "explanation": "VNet (virtual network) integration hanya untuk trafik keluar dari app ke VNet, dan private endpoint hanya untuk trafik masuk ke app. Kebutuhan dua arah butuh keduanya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-vnet-integration",
+            "az104-f-u13-private-endpoint"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e14",
+          "type": "yesno",
+          "concept": "access-restrictions",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to add one access restriction rule to contoso-web that allows 198.51.100.0/24 at priority 100.",
+          "statements": [
+            {
+              "text": "A request from 198.51.100.7 is allowed.",
+              "answer": true
+            },
+            {
+              "text": "A request from 203.0.113.9 is allowed, because no rule denies it.",
+              "answer": false
+            },
+            {
+              "text": "A request from 203.0.113.9 gets HTTP (Hypertext Transfer Protocol) 403.",
+              "answer": true
+            }
+          ],
+          "explanation": "Begitu ada satu aturan, ada deny all implisit di akhir, dan request yang ditolak mendapat HTTP (Hypertext Transfer Protocol) 403.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-access-restrictions"
+          ]
+        },
+        {
+          "id": "az104-u13-l7-e15",
+          "type": "choice",
+          "concept": "slot-settings",
+          "prompt": "A company's staging slot has the app setting FEATURE_X=on, which must never move to production during a swap. What should the company do?",
+          "options": [
+            "Mark FEATURE_X as a deployment slot setting",
+            "Use swap with preview for every swap",
+            "Add FEATURE_X as a connection string",
+            "Turn FEATURE_X off in production after each swap"
+          ],
+          "answer": 0,
+          "explanation": "App setting dan connection string ikut di-swap, kecuali ditandai sebagai deployment slot setting. Swap with preview hanya menunda langkah kedua.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u13-swapped-settings",
+            "az104-f-u13-swap-preview"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
@@ -1168,6 +1833,66 @@
       "id": "az104-f-u13-slots-downscale",
       "statement": "App dengan lebih dari 5 slot tidak bisa diturunkan ke tier Standard, karena Standard hanya mendukung 5 slot.",
       "source": "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots"
+    },
+    {
+      "id": "az104-f-u13-webapp-create",
+      "statement": "Saat membuat web app di portal, kamu memilih Publish (Code atau Container), runtime stack, OS (operating system) Linux atau Windows, region, dan App Service plan. Di Azure CLI (command-line interface), plan dibuat dengan az appservice plan create, lalu app dengan az webapp create --plan.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore"
+    },
+    {
+      "id": "az104-f-u13-app-move-plan",
+      "statement": "App bisa dipindah ke App Service plan lain hanya kalau kedua plan ada di resource group, region, dan jenis OS (operating system) yang sama. Pindah jenis, misalnya dari Windows ke Linux, tidak didukung.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/app-service-plan-manage"
+    },
+    {
+      "id": "az104-f-u13-app-region",
+      "statement": "Region app sama dengan region App Service plan-nya, dan region plan tidak bisa diubah. Untuk menjalankan app di region lain, salah satu caranya adalah clone app ke plan di region itu.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/app-service-plan-manage"
+    },
+    {
+      "id": "az104-f-u13-cert-options",
+      "statement": "Sertifikat untuk custom domain di App Service bisa berupa App Service Managed Certificate yang gratis, App Service certificate yang di-import, sertifikat dari Azure Key Vault, atau sertifikat privat yang di-upload. Semuanya butuh tier Basic, Standard, Premium, atau Isolated.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-certificate"
+    },
+    {
+      "id": "az104-f-u13-cert-pfx",
+      "statement": "Sertifikat privat yang di-upload atau di-import harus berupa file PFX (Personal Information Exchange) yang dilindungi password dan berisi semua intermediate certificate dan root certificate. Untuk TLS (Transport Layer Security) binding, sertifikat juga harus untuk server authentication dan ditandatangani certificate authority tepercaya.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-certificate"
+    },
+    {
+      "id": "az104-f-u13-binding-types",
+      "statement": "TLS (Transport Layer Security) binding ada dua jenis. SNI (Server Name Indication) SSL bisa dibuat banyak, untuk beberapa domain di satu alamat IP (Internet Protocol) bersama. IP based SSL hanya satu binding dengan IP publik dedicated, dan butuh tier Standard ke atas; setelah itu A record domain harus diarahkan ke IP dedicated yang baru.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-bindings"
+    },
+    {
+      "id": "az104-f-u13-tls-min",
+      "statement": "Minimum TLS (Transport Layer Security) version untuk app baru default-nya TLS 1.2, dan bisa dinaikkan ke TLS 1.3 untuk semua request masuk. TLS 1.0 dan 1.1 tidak lagi dianggap aman.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/overview-tls"
+    },
+    {
+      "id": "az104-f-u13-https-only",
+      "statement": "Pengaturan HTTPS Only mengalihkan semua trafik HTTP (Hypertext Transfer Protocol) ke HTTPS.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/configure-common"
+    },
+    {
+      "id": "az104-f-u13-backup-restore",
+      "statement": "Backup bisa di-restore dengan menimpa app yang ada, atau ke app baru atau slot baru. Selama restore, app atau slot tujuan dihentikan, jadi untuk app production, restore dulu ke deployment slot lalu swap.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup"
+    },
+    {
+      "id": "az104-f-u13-backup-auto-detail",
+      "statement": "Automatic backup dibuat setiap jam (tidak bisa diatur), sampai 30 GB (gigabyte), disimpan 30 hari, dan tidak mem-backup linked database. Custom backup bisa dijadwalkan paling sering setiap 2 jam (maksimal 12 backup per hari), retensinya 0 sampai 30 hari atau tanpa batas, dan mendukung partial backup.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup"
+    },
+    {
+      "id": "az104-f-u13-backup-storage",
+      "statement": "Custom backup butuh storage account di subscription yang sama yang mendukung otorisasi SAS (shared access signature). Autentikasi managed identity ke storage account tidak didukung untuk backup dan restore App Service.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup"
+    },
+    {
+      "id": "az104-f-u13-backup-linked-db",
+      "statement": "Opsi menyertakan linked database di konfigurasi custom backup baru sudah dihapus (MySQL dan PostgreSQL sejak November 2025, Azure SQL sejak April 2026), dan mulai 31 Maret 2028 linked database tidak di-backup sama sekali. Pakai backup bawaan layanan database.",
+      "source": "https://learn.microsoft.com/en-us/azure/app-service/manage-backup"
     }
   ]
 }

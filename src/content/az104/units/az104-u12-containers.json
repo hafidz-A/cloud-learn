@@ -886,6 +886,257 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u12-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u12-l5-e1",
+          "type": "choice",
+          "concept": "acr-sku",
+          "prompt": "A company's registry contosoacr uses the Premium tier with a geo-replication to East US. To cut costs, the company wants to move it to the Standard tier. What must the company do first?",
+          "options": [
+            "Remove the geo-replication to East US",
+            "Delete the registry, and create a new one in the Standard tier",
+            "Turn off zone redundancy on the registry",
+            "Stop every container app that pulls images from it"
+          ],
+          "answer": 0,
+          "explanation": "Mengganti tier ACR (Azure Container Registry) tidak menimbulkan downtime, tapi untuk turun dari Premium, geo-replication harus dihapus dulu karena hanya ada di Premium.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-change-sku",
+            "az104-f-u12-acr-premium",
+            "az104-f-u12-acr-zone"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e2",
+          "type": "yesno",
+          "concept": "acr-access",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans how its developers and apps sign in to the registry contosoacr.",
+          "statements": [
+            {
+              "text": "az acr login uses the Microsoft Entra identity from az login.",
+              "answer": true
+            },
+            {
+              "text": "The token from az acr login is valid for 24 hours.",
+              "answer": false
+            },
+            {
+              "text": "Contoso should turn on one admin user for each developer.",
+              "answer": false
+            }
+          ],
+          "explanation": "az acr login memakai identitas Microsoft Entra dari az login, dan tokennya berlaku 3 jam. Admin user hanya satu per registry dan punya izin penuh, jadi aktifkan hanya kalau perlu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-login",
+            "az104-f-u12-acr-admin"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e3",
+          "type": "choice",
+          "concept": "aci-networking",
+          "prompt": "A company deploys an Azure Container Instances container group into a virtual network. The containers must download updates from the internet. What must the company configure?",
+          "options": [
+            "A DNS (Domain Name System) name label on the container group",
+            "The restart policy Always on the container group",
+            "A public IP (Internet Protocol) address on each container in the group",
+            "A NAT (network address translation) gateway for outbound traffic"
+          ],
+          "answer": 3,
+          "explanation": "Container group yang di-deploy ke virtual network wajib memakai NAT (network address translation) gateway untuk koneksi keluar. DNS (Domain Name System) name label untuk akses masuk lewat nama, bukan untuk koneksi keluar.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci-vnet-nat",
+            "az104-f-u12-aci-dns"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e4",
+          "type": "rules",
+          "concept": "restart-policy",
+          "prompt": "A company runs three Azure Container Instances container groups, each with one container. Based on the table, the container in which groups is restarted after its last run?",
+          "tables": [
+            {
+              "title": "Container groups",
+              "columns": [
+                "Container group",
+                "Restart policy",
+                "Exit code of the last run"
+              ],
+              "rows": [
+                [
+                  "cg1",
+                  "Always",
+                  "0"
+                ],
+                [
+                  "cg2",
+                  "OnFailure",
+                  "0"
+                ],
+                [
+                  "cg3",
+                  "OnFailure",
+                  "1"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "cg3 only",
+            "cg1 only",
+            "cg2 and cg3",
+            "cg1 and cg3"
+          ],
+          "answer": 3,
+          "explanation": "Always selalu me-restart container, apa pun exit code-nya. OnFailure me-restart hanya kalau proses gagal dengan exit code bukan nol, jadi cg2 tidak di-restart dan cg3 di-restart.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-restart-policies"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e5",
+          "type": "choice",
+          "concept": "revisions",
+          "prompt": "A company updates the image of a container app that uses the default revision mode. What happens?",
+          "options": [
+            "The current revision is updated in place, without a new revision",
+            "The old and new revisions each get 50% of the traffic until you choose",
+            "A new revision takes all traffic once it is ready",
+            "The app stops until you activate the new revision by hand"
+          ],
+          "answer": 2,
+          "explanation": "Mengubah image membuat revision baru, karena revision tidak bisa diubah. Di mode Single (default), trafik pindah ke revision baru setelah siap.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-revisions"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e6",
+          "type": "choice",
+          "concept": "ingress",
+          "prompt": "A company's container app must be reachable from the internet. Its Container Apps environment has a public IP (Internet Protocol) address. What should the company configure?",
+          "options": [
+            "Internal ingress, plus a public load balancer in front of it",
+            "A public IP address on each replica of the app",
+            "External ingress",
+            "Ingress disabled, with minimum replicas set to 1"
+          ],
+          "answer": 2,
+          "explanation": "Ingress external membuka app ke internet kalau environment punya IP (Internet Protocol) publik, tanpa load balancer atau public IP tambahan. Ingress internal hanya bisa dijangkau dari dalam environment.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-ingress",
+            "az104-f-u12-no-ingress-zero"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e7",
+          "type": "choice",
+          "concept": "scale-rules",
+          "prompt": "A company's container app has an HTTP (Hypertext Transfer Protocol) scale rule and a custom CPU (central processing unit) scale rule. CPU use is above its threshold, but HTTP traffic is low. What happens?",
+          "options": [
+            "The app does not scale, because every rule must be met",
+            "The app scales out, because one rule is met",
+            "Only the HTTP rule counts, because it is checked first",
+            "The app scales in to zero replicas, because traffic is low"
+          ],
+          "answer": 1,
+          "explanation": "Kalau ada beberapa scale rule, container app mulai scale begitu salah satu rule terpenuhi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-scale-rules"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e8",
+          "type": "choice",
+          "concept": "aci-sizing",
+          "prompt": "At a company, a container group has a web container that requests 1 CPU (central processing unit) and a sidecar that requests 0.5 CPU. During peaks, the web container must be able to use up to 1.5 CPUs. What should you set?",
+          "options": [
+            "A CPU request of 1.5 on the sidecar",
+            "A CPU limit of 1.5 on the web container",
+            "A CPU limit of 2 on the web container",
+            "Nothing, because each container can use the whole group by default"
+          ],
+          "answer": 1,
+          "explanation": "Group mendapat total request, yaitu 1,5 CPU (central processing unit). Limit harus lebih besar atau sama dengan request dan paling besar sebesar total group, jadi 1,5 boleh dan 2 tidak. Tanpa limit, pemakaian maksimal sama dengan request.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-aci-limit",
+            "az104-f-u12-aci-resources"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e9",
+          "type": "yesno",
+          "concept": "scale-to-zero",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso's container app has external ingress, an HTTP (Hypertext Transfer Protocol) scale rule, and the default replica settings.",
+          "statements": [
+            {
+              "text": "The app can scale in to zero replicas when there is no traffic.",
+              "answer": true
+            },
+            {
+              "text": "The app can scale out to 50 replicas without any change to its settings.",
+              "answer": false
+            },
+            {
+              "text": "Contoso pays no usage charges while the app is at zero replicas.",
+              "answer": true
+            }
+          ],
+          "explanation": "Replica minimal default 0 dan maksimal default 10, jadi untuk 50 replica batas maksimal harus dinaikkan. Saat di 0 replica tidak ada biaya pemakaian.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-replicas",
+            "az104-f-u12-zero-cost"
+          ]
+        },
+        {
+          "id": "az104-u12-l5-e10",
+          "type": "match",
+          "concept": "container-choice",
+          "prompt": "A company has several container requirements. Match each requirement with what meets it.",
+          "pairs": [
+            [
+              "Keep one registry in several regions",
+              "Geo-replication in ACR (Azure Container Registry) Premium"
+            ],
+            [
+              "Run a short task with no orchestrator, billed by the second",
+              "Azure Container Instances"
+            ],
+            [
+              "Split traffic between two versions of an app",
+              "The Multiple revision mode in Container Apps"
+            ],
+            [
+              "Add replicas when an Azure Service Bus queue grows",
+              "A custom scale rule in Container Apps"
+            ]
+          ],
+          "explanation": "Geo-replication hanya ada di ACR (Azure Container Registry) Premium, ACI (Azure Container Instances) menjalankan container tanpa orchestrator dan ditagih per detik, mode Multiple bisa membagi trafik antar-revision, dan scale rule custom bisa berbasis event Azure Service Bus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u12-acr-premium",
+            "az104-f-u12-aci",
+            "az104-f-u12-revisions",
+            "az104-f-u12-scale-rules"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

@@ -435,6 +435,10 @@
         "az104-u13-l5": {
           "text": "Di plan Standard, buat slot staging, tandai satu app setting sebagai deployment slot setting, lalu swap dan lihat setting itu tetap di slot-nya.",
           "careful": true
+        },
+        "az104-u13-l6": {
+          "text": "Di plan Basic, buka Configuration > General settings dan lihat Minimum Inbound TLS (Transport Layer Security) Version serta HTTPS (Hypertext Transfer Protocol Secure) Only, lalu buka Backups untuk melihat automatic backup per jam. Coba juga Change App Service plan: hanya plan di resource group, region, dan OS (operating system) yang sama yang muncul.",
+          "careful": true
         }
       }
     },
@@ -503,6 +507,10 @@
         },
         "az104-u15-l5": {
           "text": "Buka Backup Jobs di vault dan filter status Failed, lalu lihat alert backup di Resiliency."
+        },
+        "az104-u15-l6": {
+          "text": "Buat Backup vault locally redundant di region yang sama dengan disk uji, beri managed identity vault role Disk Backup Reader di disk dan Disk Snapshot Contributor di resource group snapshot, lalu jalankan backup on-demand. Setelah selesai, hapus backup instance dan policy-nya, lalu hapus vault.",
+          "careful": true
         }
       }
     }

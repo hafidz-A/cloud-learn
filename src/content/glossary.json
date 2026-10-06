@@ -290,6 +290,11 @@
     "description": "Model layanan di mana cloud mengelola infrastruktur dan sistem operasi; kamu fokus pada aplikasi dan data."
   },
   {
+    "term": "PFX",
+    "expansion": "Personal Information Exchange",
+    "description": "Format file sertifikat (PKCS #12) yang berisi sertifikat dan private key-nya, biasanya dilindungi password."
+  },
+  {
     "term": "PIN",
     "expansion": "Personal Identification Number",
     "description": "Kode angka rahasia, termasuk faktor 'sesuatu yang kamu tahu'."
@@ -378,6 +383,11 @@
     "term": "SQL",
     "expansion": "Structured Query Language",
     "description": "Bahasa untuk mengelola dan membaca data di database relasional."
+  },
+  {
+    "term": "SNI",
+    "expansion": "Server Name Indication",
+    "description": "Ekstensi TLS yang mengirim nama host saat koneksi dibuka, sehingga banyak sertifikat bisa dipakai di satu alamat IP."
   },
   {
     "term": "SSD",

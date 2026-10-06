@@ -1212,6 +1212,304 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u14-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u14-l6-e1",
+          "type": "rules",
+          "concept": "metric-aggregation",
+          "prompt": "A company charts the Percentage CPU (central processing unit) metric of vm1 with a 5-minute granularity. Based on the one-minute values in the table, what does the chart show for the interval 10:00 to 10:05?",
+          "tables": [
+            {
+              "title": "Percentage CPU of vm1",
+              "columns": [
+                "Time",
+                "Value (%)"
+              ],
+              "rows": [
+                [
+                  "10:00",
+                  "20"
+                ],
+                [
+                  "10:01",
+                  "30"
+                ],
+                [
+                  "10:02",
+                  "100"
+                ],
+                [
+                  "10:03",
+                  "30"
+                ],
+                [
+                  "10:04",
+                  "20"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Average 40, and Max 100",
+            "Average 100, and Max 100",
+            "Average 40, and Max 200",
+            "Average 20, and Max 100"
+          ],
+          "answer": 0,
+          "explanation": "Average merata-ratakan nilai dalam interval: (20 + 30 + 100 + 30 + 20) / 5 = 40. Max mengambil nilai terbesar, yaitu 100. Granularity besar menghaluskan lonjakan di Average, tapi Max tetap menunjukkannya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-aggregations",
+            "az104-f-u14-granularity"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e2",
+          "type": "choice",
+          "concept": "metrics",
+          "prompt": "A company needs the CPU (central processing unit) chart of vm1 for the last 60 days in Metrics explorer. No diagnostic setting exists. What is true?",
+          "options": [
+            "The data is kept, but one chart shows at most 30 days at a time",
+            "The data is gone, because platform metrics are kept for only 30 days",
+            "The company must first create a diagnostic setting for the metric",
+            "One chart can show all 60 days with a larger granularity"
+          ],
+          "answer": 0,
+          "explanation": "Platform metrics dikumpulkan otomatis dan disimpan 93 hari, tapi satu grafik di Metrics explorer hanya bisa menampilkan paling banyak 30 hari sekaligus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-metrics-retention",
+            "az104-f-u14-metrics-auto"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e3",
+          "type": "choice",
+          "concept": "diagnostic-settings",
+          "prompt": "A company's security team must stream the audit logs of the key vault kv-prod, in West Europe, to a security tool through Event Hubs, and also keep them in the workspace law-ops. What should you create?",
+          "options": [
+            "An activity log alert with an action group for each destination",
+            "Two diagnostic settings, each sending the logs to law-ops only",
+            "A data collection rule on kv-prod that sends the audit logs to Event Hubs and to law-ops",
+            "One diagnostic setting with an event hub in West Europe and law-ops as destinations"
+          ],
+          "answer": 3,
+          "explanation": "Resource logs dikumpulkan lewat diagnostic setting. Satu setting bisa punya satu tujuan untuk setiap jenis tujuan, jadi event hub dan workspace bisa di setting yang sama. Untuk resource regional, Event Hubs harus di region yang sama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-resource-logs",
+            "az104-f-u14-diag-destinations",
+            "az104-f-u14-diag-limits"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e4",
+          "type": "yesno",
+          "concept": "activity-log",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso must keep a record of who changed resources in its subscription for two years.",
+          "statements": [
+            {
+              "text": "The activity log records these changes without any configuration.",
+              "answer": true
+            },
+            {
+              "text": "The activity log keeps these records for two years by default.",
+              "answer": false
+            },
+            {
+              "text": "Contoso must create a diagnostic setting before the activity log records any change.",
+              "answer": false
+            }
+          ],
+          "explanation": "Activity log mencatat operasi manajemen secara otomatis, tanpa diagnostic setting, dan menyimpannya 90 hari. Untuk dua tahun, kirim lewat diagnostic setting ke Log Analytics workspace atau storage account.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-activity-log",
+            "az104-f-u14-activity-export"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e5",
+          "type": "choice",
+          "concept": "kql-where-summarize",
+          "prompt": "You need a query that shows how many Heartbeat records each computer sent in the last 24 hours. Which query should you use?",
+          "options": [
+            "Heartbeat | summarize count() by Computer | where TimeGenerated > ago(24h) | take 100",
+            "Heartbeat | where TimeGenerated > ago(24h) | summarize count() by Computer",
+            "Heartbeat | where TimeGenerated > ago(24h) | project Computer",
+            "Heartbeat | take 24 | summarize count() by Computer"
+          ],
+          "answer": 1,
+          "explanation": "where menyaring 24 jam terakhir lebih dulu, lalu summarize count() by Computer menghitung per komputer. Setelah summarize, kolom TimeGenerated tidak ada lagi, jadi where sesudahnya gagal. take 24 hanya mengambil 24 baris sembarang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-where",
+            "az104-f-u14-kql-summarize",
+            "az104-f-u14-kql-pipe",
+            "az104-f-u14-kql-take"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e6",
+          "type": "choice",
+          "concept": "kql-sort-project",
+          "prompt": "You need the 20 most recent records from AzureActivity, showing only TimeGenerated, Caller, and OperationNameValue. Which query should you use?",
+          "options": [
+            "AzureActivity | top 20 by TimeGenerated | project TimeGenerated, Caller, OperationNameValue",
+            "AzureActivity | take 20 | project TimeGenerated, Caller, OperationNameValue",
+            "AzureActivity | where TimeGenerated > ago(20d) | project TimeGenerated, Caller, OperationNameValue",
+            "AzureActivity | summarize count() by Caller | top 20 by TimeGenerated"
+          ],
+          "answer": 0,
+          "explanation": "top 20 by TimeGenerated mengurutkan descending secara default, jadi mengambil 20 record terbaru, lalu project memilih kolomnya. take mengambil baris tanpa urutan tertentu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-kql-take",
+            "az104-f-u14-kql-project"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e7",
+          "type": "choice",
+          "concept": "vm-insights",
+          "prompt": "A company has 300 virtual machines. Performance counters from inside the guest OS (operating system) must be collected from every existing and new virtual machine automatically. What should the company use?",
+          "options": [
+            "Azure Policy that deploys Azure Monitor Agent and a data collection rule",
+            "A diagnostic setting on the subscription that sends the activity log to a workspace",
+            "Platform metrics, which already include every guest performance counter",
+            "Storage insights for the disks of the virtual machines"
+          ],
+          "answer": 0,
+          "explanation": "Data dari dalam OS (operating system) butuh Azure Monitor Agent dan data collection rule, dan monitoring VM (virtual machine) dalam skala besar bisa diaktifkan dengan Azure Policy. Platform metrics hanya metrik host.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-vm-guest",
+            "az104-f-u14-vm-policy"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e8",
+          "type": "choice",
+          "concept": "storage-insights",
+          "prompt": "A company's operations team must check the capacity and availability of 40 storage accounts from one place, without any setup. What should the team use?",
+          "options": [
+            "The activity log of each storage account",
+            "A diagnostic setting on each storage account",
+            "Storage insights in Azure Monitor",
+            "Connection monitor in Network Watcher"
+          ],
+          "answer": 2,
+          "explanation": "Storage insights menampilkan kapasitas, performa, dan ketersediaan banyak storage account sekaligus, tanpa konfigurasi tambahan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-storage-insights"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e9",
+          "type": "yesno",
+          "concept": "vm-insights",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to monitor vm1 and its virtual network.",
+          "statements": [
+            {
+              "text": "Host metrics of vm1, such as Percentage CPU (central processing unit), are collected without an agent.",
+              "answer": true
+            },
+            {
+              "text": "Performance counters from inside the OS (operating system) of vm1 are collected without an agent.",
+              "answer": false
+            },
+            {
+              "text": "Network insights can show the health of the resources in the virtual network.",
+              "answer": true
+            }
+          ],
+          "explanation": "Host metrics dan activity log VM (virtual machine) dikumpulkan otomatis. Data dari dalam OS (operating system) butuh Azure Monitor Agent dan data collection rule. Network insights menampilkan kesehatan dan metrik resource jaringan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-vm-guest",
+            "az104-f-u14-network-insights"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e10",
+          "type": "choice",
+          "concept": "network-insights",
+          "prompt": "An administrator at a company needs a diagram of how the virtual networks, subnets, and network interfaces in two subscriptions and three regions are connected. What should the administrator use?",
+          "options": [
+            "Topology in Network Watcher",
+            "IP (Internet Protocol) flow verify",
+            "Next hop",
+            "Connection troubleshoot"
+          ],
+          "answer": 0,
+          "explanation": "Topology menggambarkan hubungan resource jaringan lintas subscription dan region. IP (Internet Protocol) flow verify, Next hop, dan Connection troubleshoot menguji satu jalur trafik.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-network-insights",
+            "az104-f-u14-nw-tools"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e11",
+          "type": "choice",
+          "concept": "alert-rules",
+          "prompt": "A company must get an email when the average CPU (central processing unit) of vm1 stays above 90% for 15 minutes. What should you create?",
+          "options": [
+            "An activity log alert on vm1, with an action group that sends email",
+            "A log search alert on the AzureActivity table, with no action group",
+            "A metric alert rule with an action group that sends email",
+            "An alert processing rule that adds an email to vm1"
+          ],
+          "answer": 2,
+          "explanation": "Metric alert memantau nilai metrik seperti Percentage CPU (central processing unit), dan action group menentukan tindakan seperti email. Activity log alert memantau operasi manajemen, bukan nilai CPU.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-alert-rule",
+            "az104-f-u14-alert-types",
+            "az104-f-u14-action-group"
+          ]
+        },
+        {
+          "id": "az104-u14-l6-e12",
+          "type": "match",
+          "concept": "activity-log",
+          "prompt": "A company needs several kinds of monitoring data. Match each need with where the data comes from.",
+          "pairs": [
+            [
+              "Who deleted a resource group",
+              "The activity log"
+            ],
+            [
+              "Audit logs of a key vault",
+              "Resource logs, through a diagnostic setting"
+            ],
+            [
+              "Event logs from inside a virtual machine",
+              "Azure Monitor Agent with a data collection rule"
+            ],
+            [
+              "Capacity of many storage accounts",
+              "Storage insights"
+            ]
+          ],
+          "explanation": "Activity log mencatat operasi manajemen, resource logs butuh diagnostic setting, log dari dalam OS (operating system) butuh Azure Monitor Agent dan data collection rule, dan Storage insights menampilkan kapasitas banyak storage account.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u14-activity-log",
+            "az104-f-u14-resource-logs",
+            "az104-f-u14-vm-guest",
+            "az104-f-u14-storage-insights"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

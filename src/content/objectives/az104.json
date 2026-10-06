@@ -433,7 +433,8 @@
               "text": "Create a virtual machine",
               "concepts": [
                 "vm-sizes",
-                "vm-disk-roles"
+                "vm-disk-roles",
+                "vm-create"
               ]
             },
             {
@@ -853,7 +854,9 @@
               "text": "Create an Azure Backup vault",
               "concepts": [
                 "backup-vault",
-                "vault-types"
+                "vault-types",
+                "disk-backup",
+                "blob-backup"
               ]
             },
             {

@@ -957,6 +957,244 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u10-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u10-l5-e1",
+          "type": "template",
+          "concept": "parameters-variables-outputs",
+          "prompt": "A company must change this template so that skuName accepts only Standard_LRS or Standard_GRS. Any other value must fail before deployment. What should you change?",
+          "language": "json",
+          "fileName": "storage.json",
+          "code": "{\n  \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\",\n  \"contentVersion\": \"1.0.0.0\",\n  \"parameters\": {\n    \"storageName\": {\n      \"type\": \"string\"\n    },\n    \"skuName\": {\n      \"type\": \"string\",\n      \"defaultValue\": \"Standard_LRS\"\n    }\n  },\n  \"resources\": [\n    {\n      \"type\": \"Microsoft.Storage/storageAccounts\",\n      \"apiVersion\": \"2025-06-01\",\n      \"name\": \"[parameters('storageName')]\",\n      \"location\": \"westeurope\",\n      \"sku\": {\n        \"name\": \"[parameters('skuName')]\"\n      },\n      \"kind\": \"StorageV2\"\n    }\n  ]\n}",
+          "options": [
+            "Add allowedValues with Standard_LRS and Standard_GRS to the skuName parameter",
+            "Add a variable named skuName with the two values",
+            "Add an output that returns the value of skuName",
+            "Change the defaultValue of skuName to Standard_GRS"
+          ],
+          "answer": 0,
+          "explanation": "Parameter bisa punya allowedValues opsional, jadi nilai lain ditolak. Variable menyederhanakan ekspresi, output mengembalikan nilai setelah deploy, dan defaultValue hanya dipakai kalau nilainya tidak diisi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-params",
+            "az104-f-u10-arm-vars",
+            "az104-f-u10-arm-outputs"
+          ]
+        },
+        {
+          "id": "az104-u10-l5-e2",
+          "type": "template",
+          "concept": "arm-resources",
+          "prompt": "You must change this template so that the storage account is created in the region of the resource group that you deploy it to, instead of always in West Europe. What should you change?",
+          "language": "json",
+          "fileName": "storage.json",
+          "code": "{\n  \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\",\n  \"contentVersion\": \"1.0.0.0\",\n  \"parameters\": {\n    \"storageName\": {\n      \"type\": \"string\"\n    },\n    \"skuName\": {\n      \"type\": \"string\",\n      \"defaultValue\": \"Standard_LRS\"\n    }\n  },\n  \"resources\": [\n    {\n      \"type\": \"Microsoft.Storage/storageAccounts\",\n      \"apiVersion\": \"2025-06-01\",\n      \"name\": \"[parameters('storageName')]\",\n      \"location\": \"westeurope\",\n      \"sku\": {\n        \"name\": \"[parameters('skuName')]\"\n      },\n      \"kind\": \"StorageV2\"\n    }\n  ]\n}",
+          "options": [
+            "Set location to \"[resourceGroup().location]\"",
+            "Add a variable named location with the value westeurope",
+            "Move location from the resource to the outputs section",
+            "Set location to \"resourceGroup\""
+          ],
+          "answer": 0,
+          "explanation": "Nilai [resourceGroup().location] membuat resource dibuat di region resource group-nya. Teks \"resourceGroup\" tanpa tanda kurung siku bukan ekspresi, dan output tidak menentukan lokasi resource.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-location",
+            "az104-f-u10-arm-vars",
+            "az104-f-u10-arm-outputs"
+          ]
+        },
+        {
+          "id": "az104-u10-l5-e3",
+          "type": "choice",
+          "concept": "parameters-variables-outputs",
+          "prompt": "After a template creates a public IP (Internet Protocol) address, a company's deployment pipeline must receive its FQDN (fully qualified domain name). What should you add to the template?",
+          "options": [
+            "An outputs entry that returns the FQDN",
+            "A parameter named fqdn that the pipeline reads after the deployment",
+            "A variable that holds the FQDN",
+            "A secureString parameter for the FQDN"
+          ],
+          "answer": 0,
+          "explanation": "Outputs mengembalikan nilai setelah deploy, misalnya FQDN (fully qualified domain name) public IP (Internet Protocol). Parameter diisi saat deploy, dan variable hanya menyederhanakan ekspresi di dalam template.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-arm-outputs",
+            "az104-f-u10-arm-params",
+            "az104-f-u10-arm-vars",
+            "az104-f-u10-arm-secure"
+          ]
+        },
+        {
+          "id": "az104-u10-l5-e4",
+          "type": "choice",
+          "concept": "bicep-params",
+          "prompt": "A company deploys the same main.bicep file to dev and prod, each with different parameter values. What should the company create?",
+          "options": [
+            "A copy of main.bicep for each environment, with the values for that environment written directly in the file",
+            "Two parameter files, main.dev.bicepparam and main.prod.bicepparam, each starting with using 'main.bicep'",
+            "One variable for each environment in main.bicep",
+            "One output for each environment in main.bicep"
+          ],
+          "answer": 1,
+          "explanation": "File parameter Bicep berekstensi .bicepparam dan diawali using 'main.bicep'. Untuk beberapa lingkungan, buat satu file per lingkungan, jadi main.bicep tetap satu.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-bicep-paramfile",
+            "az104-f-u10-bicep-elements"
+          ]
+        },
+        {
+          "id": "az104-u10-l5-e5",
+          "type": "choice",
+          "concept": "deployment-scope",
+          "prompt": "A Bicep file at a company must create a new resource group. Which targetScope should the file use, and which Azure CLI (command-line interface) command deploys it?",
+          "options": [
+            "The default targetScope, with az deployment group create --resource-group rg-new",
+            "targetScope = 'resourceGroup', with az group create",
+            "targetScope = 'subscription', with az deployment sub create",
+            "targetScope = 'tenant', with az deployment group create"
+          ],
+          "answer": 2,
+          "explanation": "Resource group dibuat lewat deployment di level subscription. targetScope default adalah resourceGroup, jadi file harus memakai subscription dan di-deploy dengan az deployment sub create.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-rg-in-template",
+            "az104-f-u10-bicep-scope",
+            "az104-f-u10-scopes"
+          ]
+        },
+        {
+          "id": "az104-u10-l5-e6",
+          "type": "rules",
+          "concept": "incremental-vs-complete",
+          "prompt": "You deploy a template to rg-app in complete mode by using the Azure CLI (command-line interface). rg-app has no locks. Based on the tables, which resources does rg-app hold after the deployment?",
+          "tables": [
+            {
+              "title": "Resources in rg-app before the deployment",
+              "columns": [
+                "Resource",
+                "Type"
+              ],
+              "rows": [
+                [
+                  "storage1",
+                  "Storage account"
+                ],
+                [
+                  "vm1",
+                  "Virtual machine"
+                ],
+                [
+                  "vnet1",
+                  "Virtual network"
+                ]
+              ]
+            },
+            {
+              "title": "Resources defined in the template",
+              "columns": [
+                "Resource",
+                "Type"
+              ],
+              "rows": [
+                [
+                  "vnet1",
+                  "Virtual network"
+                ],
+                [
+                  "storage2",
+                  "Storage account"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "vnet1 and storage2",
+            "storage1, vm1, vnet1, and storage2",
+            "vnet1 only",
+            "storage2 only"
+          ],
+          "answer": 0,
+          "explanation": "Mode complete menghapus resource di resource group yang tidak ada di template, jadi storage1 dan vm1 dihapus, sedangkan vnet1 dan storage2 dibuat atau dipertahankan. Mode incremental akan membiarkan storage1 dan vm1.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-mode-default",
+            "az104-f-u10-complete-limits"
+          ]
+        },
+        {
+          "id": "az104-u10-l5-e7",
+          "type": "yesno",
+          "concept": "incremental-vs-complete",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso redeploys a template to rg-web in the default mode. The template does not set the tags of vm1, but vm1 has tags that an admin added by hand.",
+          "statements": [
+            {
+              "text": "Resources in rg-web that are not in the template are deleted.",
+              "answer": false
+            },
+            {
+              "text": "The properties of vm1 that are not in the template keep their current values.",
+              "answer": false
+            },
+            {
+              "text": "What-if can show the changes before Contoso deploys.",
+              "answer": true
+            }
+          ],
+          "explanation": "Mode default adalah incremental, jadi resource lain dibiarkan. Tapi semua properti resource yang di-deploy ulang diterapkan ulang, dan yang tidak ditulis di template kembali ke default. What-if menampilkan perubahan tanpa mengubah apa pun.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-mode-default",
+            "az104-f-u10-mode-props",
+            "az104-f-u10-whatif"
+          ]
+        },
+        {
+          "id": "az104-u10-l5-e8",
+          "type": "choice",
+          "concept": "what-if",
+          "prompt": "An administrator at a company deploys templates with Azure PowerShell. Before a deployment, the administrator wants to see the changes it would make, without changing anything. What should the administrator use?",
+          "options": [
+            "Export template from the resource group, and compare it with the file",
+            "The -WhatIf parameter on the deployment command",
+            "az bicep build",
+            "A deployment in complete mode"
+          ],
+          "answer": 1,
+          "explanation": "What-if menampilkan perubahan tanpa mengubah apa pun: az deployment group what-if di Azure CLI (command-line interface), atau -WhatIf di PowerShell. Export template dan az bicep build tidak menampilkan perubahan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-whatif",
+            "az104-f-u10-export-rg",
+            "az104-f-u10-build"
+          ]
+        },
+        {
+          "id": "az104-u10-l5-e9",
+          "type": "choice",
+          "concept": "what-if",
+          "prompt": "A company changes the location of an existing virtual network in its template from westeurope to northeurope, and then redeploys the template. What happens?",
+          "options": [
+            "The virtual network moves to North Europe with all of its subnets",
+            "A copy of the virtual network is created in North Europe, and the one in West Europe is kept as it is",
+            "The location change is ignored, and the deployment succeeds",
+            "The deployment fails; the company must deploy a new virtual network in North Europe instead"
+          ],
+          "answer": 3,
+          "explanation": "Mengubah location atau type resource yang sudah ada lewat template membuat deployment gagal. Untuk region lain, deploy resource baru dengan location yang dibutuhkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u10-location-change"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

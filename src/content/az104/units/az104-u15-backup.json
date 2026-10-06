@@ -1537,6 +1537,562 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u15-l6",
+      "title": "Backup vault",
+      "items": [
+        {
+          "id": "az104-u15-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "backup-vault"
+          ],
+          "title": "Membuat dan menghapus Backup vault",
+          "body": "Backup vault dipakai untuk Azure Disks, Azure Blobs, Azure Database for PostgreSQL, dan Kubernetes. Saat membuatnya, pilih subscription, resource group, nama, region, dan storage redundancy: geo-redundant (default) atau locally redundant yang lebih murah. Storage redundancy tidak bisa diubah setelah ada item yang dilindungi. Vault memakai managed identity untuk mengakses resource yang di-backup. Vault baru bisa dihapus setelah semua backup instance dan backup policy di dalamnya dihapus.",
+          "keyPoints": [
+            "Redundancy dipilih sebelum ada item",
+            "Akses lewat managed identity vault",
+            "Hapus instance dan policy sebelum vault"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/create-manage-backup-vault",
+          "teaches": [
+            "az104-f-u15-bv-create",
+            "az104-f-u15-bv-delete",
+            "az104-f-u15-bv-identity",
+            "az104-f-u15-bv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e1",
+          "type": "choice",
+          "concept": "backup-vault",
+          "prompt": "A company creates a Backup vault for blob backups. Azure is not its primary backup storage, and the company wants the lowest storage cost. Which storage redundancy should the company choose?",
+          "options": [
+            "Geo-redundant",
+            "Locally redundant",
+            "Read-access geo-redundant",
+            "Any option, because it can be changed after the first backup"
+          ],
+          "answer": 1,
+          "explanation": "Locally redundant lebih murah dan cocok kalau Azure bukan penyimpanan backup utama. Storage redundancy tidak bisa diubah setelah ada item yang dilindungi, jadi pilih dengan benar sejak awal.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-bv-create"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e2",
+          "type": "truefalse",
+          "concept": "backup-vault",
+          "prompt": "You can change the storage redundancy of a Backup vault after items are protected in it.",
+          "answer": false,
+          "explanation": "Storage redundancy Backup vault tidak bisa diubah setelah ada item yang dilindungi di vault.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-bv-create"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e3",
+          "type": "choice",
+          "concept": "backup-vault",
+          "prompt": "Deleting the Backup vault bv-old fails with an error about existing backup instances or backup policies. What should you do?",
+          "options": [
+            "Change the storage redundancy of bv-old to locally redundant, and then try again",
+            "Delete every backup instance and backup policy in bv-old first",
+            "Move bv-old to another resource group, and then delete it",
+            "Turn off the managed identity of bv-old"
+          ],
+          "answer": 1,
+          "explanation": "Backup vault tidak bisa dihapus selama masih berisi backup instance atau backup policy. Hapus semuanya dulu, lalu hapus vault.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-bv-delete"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "disk-backup"
+          ],
+          "title": "Backup managed disk",
+          "body": "Azure Disk Backup membuat incremental snapshot tanpa agen, setiap 1 sampai 12 jam atau harian. Snapshot disimpan di resource group snapshot di subscription kamu (operational tier), bukan di storage vault, jadi redundancy vault tidak berlaku. Vault dan disk harus satu region, tapi boleh beda subscription; resource group snapshot harus satu subscription dengan disk. Managed identity vault butuh Disk Backup Reader di disk dan Disk Snapshot Contributor di resource group snapshot.",
+          "keyPoints": [
+            "Snapshot di resource group kamu",
+            "Vault dan disk: region sama",
+            "Disk Backup Reader dan Disk Snapshot Contributor"
+          ],
+          "trap": "Untuk backup app-consistent seluruh VM (virtual machine), restore file, atau restore ke region lain, pakai Azure VM backup di Recovery Services vault, bukan Disk Backup.",
+          "link": "https://learn.microsoft.com/en-us/azure/backup/disk-backup-overview",
+          "teaches": [
+            "az104-f-u15-disk-backup-operational",
+            "az104-f-u15-disk-backup-rules",
+            "az104-f-u15-disk-backup-roles",
+            "az104-f-u15-disk-vs-vm-backup"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e4",
+          "type": "choice",
+          "concept": "disk-backup",
+          "prompt": "Only the data disk of vm-db must be backed up every 4 hours, without installing any agent and without touching the rest of the VM (virtual machine). What should the company use?",
+          "options": [
+            "Azure Disk Backup in a Backup vault",
+            "Azure VM backup with the Standard policy",
+            "The MARS (Microsoft Azure Recovery Services) agent on vm-db",
+            "Azure Site Recovery replication of vm-db"
+          ],
+          "answer": 0,
+          "explanation": "Azure Disk Backup membuat incremental snapshot per disk tanpa agen, dan bisa dijadwalkan setiap 4 jam. Standard policy VM (virtual machine) backup hanya harian atau mingguan dan mem-backup seluruh VM.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-disk-backup-operational",
+            "az104-f-u15-disk-vs-vm-backup",
+            "az104-f-u15-bv-workloads",
+            "az104-f-u15-policy-retention"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e5",
+          "type": "rules",
+          "concept": "disk-backup",
+          "prompt": "A company's Backup vault bv1 is in West Europe, in the subscription Sub-A. Based on the table, which disks can bv1 back up with Azure Disk Backup?",
+          "tables": [
+            {
+              "title": "Managed disks",
+              "columns": [
+                "Disk",
+                "Region",
+                "Subscription"
+              ],
+              "rows": [
+                [
+                  "disk1",
+                  "West Europe",
+                  "Sub-A"
+                ],
+                [
+                  "disk2",
+                  "West Europe",
+                  "Sub-B"
+                ],
+                [
+                  "disk3",
+                  "North Europe",
+                  "Sub-A"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "disk1 only",
+            "disk1 and disk3",
+            "disk1 and disk2",
+            "disk1, disk2, and disk3"
+          ],
+          "answer": 2,
+          "explanation": "Vault dan disk harus di region yang sama, tapi boleh di subscription berbeda, jadi disk1 dan disk2 bisa. disk3 ada di region lain. Di portal hanya disk di subscription yang sama yang bisa dipilih; disk di subscription lain diatur lewat PowerShell atau CLI (command-line interface).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-disk-backup-rules"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e6",
+          "type": "choice",
+          "concept": "disk-backup",
+          "prompt": "Configuring Azure Disk Backup for disk1 fails because of missing permissions. Which roles should the managed identity of the Backup vault have?",
+          "options": [
+            "Disk Backup Reader on disk1, and Disk Snapshot Contributor on the snapshot resource group",
+            "Disk Snapshot Contributor on disk1, and Disk Backup Reader on the snapshot resource group",
+            "Backup Contributor on the Backup vault only, which covers every disk",
+            "Owner on the subscription, because no narrower role exists"
+          ],
+          "answer": 0,
+          "explanation": "Managed identity vault butuh Disk Backup Reader di disk sumber dan Disk Snapshot Contributor di resource group snapshot.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-disk-backup-roles",
+            "az104-f-u15-bv-identity"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e7",
+          "type": "yesno",
+          "concept": "disk-backup",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to protect disk1 with Azure Disk Backup in bv1, which uses geo-redundant storage.",
+          "statements": [
+            {
+              "text": "The backups are incremental snapshots in a resource group in Contoso's subscription.",
+              "answer": true
+            },
+            {
+              "text": "The geo-redundant setting of bv1 copies the snapshots to the paired region.",
+              "answer": false
+            },
+            {
+              "text": "The snapshot resource group can be in a different subscription from disk1.",
+              "answer": false
+            }
+          ],
+          "explanation": "Disk Backup menyimpan incremental snapshot di resource group snapshot di subscription kamu, bukan di storage vault, jadi redundancy vault tidak berlaku. Resource group snapshot harus satu subscription dengan disk.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-disk-backup-operational",
+            "az104-f-u15-disk-backup-rules"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-m3",
+          "type": "learn",
+          "concepts": [
+            "blob-backup"
+          ],
+          "title": "Backup blob",
+          "body": "Backup blob punya dua tier. Operational backup bersifat kontinu: datanya tetap di storage account sumber dan dipulihkan dengan point-in-time restore. Vaulted backup terjadwal dan menyalin data ke Backup vault, jadi data tetap ada meskipun storage account-nya terhapus; policy baru selalu menyertakan vaulted backup. Keduanya hanya untuk block blob di storage account standard general-purpose v2, dan managed identity vault butuh role Storage Account Backup Contributor di storage account itu.",
+          "keyPoints": [
+            "Operational: kontinu, di storage account sumber",
+            "Vaulted: terjadwal, disalin ke vault",
+            "Storage Account Backup Contributor"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/backup/blob-backup-overview",
+          "teaches": [
+            "az104-f-u15-blob-backup-tiers",
+            "az104-f-u15-blob-backup-req",
+            "az104-f-u15-blob-backup-role",
+            "az104-f-u15-bv-identity"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e8",
+          "type": "choice",
+          "concept": "blob-backup",
+          "prompt": "A company must be able to recover its blobs even if someone deletes the whole storage account. Which blob backup tier protects against this?",
+          "options": [
+            "Operational backup, which keeps the data in the storage account",
+            "Blob soft delete in the storage account",
+            "Blob snapshots in the same container",
+            "Vaulted backup"
+          ],
+          "answer": 3,
+          "explanation": "Operational backup menyimpan data di storage account sumber. Vaulted backup menyalin data ke Backup vault, jadi tetap ada meskipun storage account-nya terhapus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-blob-backup-tiers"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e9",
+          "type": "choice",
+          "concept": "blob-backup",
+          "prompt": "A company plans to protect several storage accounts with Azure Blob backup. Which account can it protect?",
+          "options": [
+            "A standard general-purpose v2 account that holds block blobs",
+            "A premium block blob account",
+            "A standard account that holds only page blobs",
+            "Any storage account that has a lifecycle management policy configured"
+          ],
+          "answer": 0,
+          "explanation": "Backup blob, operational maupun vaulted, hanya untuk block blob di storage account standard general-purpose v2.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-blob-backup-req"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e10",
+          "type": "choice",
+          "concept": "blob-backup",
+          "prompt": "Configuring blob backup for the storage account stdata fails with a permission error. What should you assign to the managed identity of the Backup vault?",
+          "options": [
+            "Storage Blob Data Reader on stdata",
+            "Storage Account Backup Contributor on stdata",
+            "Backup Contributor on the Backup vault and on its resource group",
+            "Disk Backup Reader on stdata"
+          ],
+          "answer": 1,
+          "explanation": "Managed identity vault butuh role Storage Account Backup Contributor di storage account yang dilindungi. Backup Contributor mengatur siapa yang boleh mengelola backup, bukan izin vault ke storage account.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-blob-backup-role",
+            "az104-f-u15-bv-identity",
+            "az104-f-u15-backup-roles"
+          ]
+        },
+        {
+          "id": "az104-u15-l6-e11",
+          "type": "match",
+          "concept": "blob-backup",
+          "prompt": "A company compares the ways that Azure Backup protects data. Match each solution with how it works.",
+          "pairs": [
+            [
+              "Operational blob backup",
+              "Continuous, kept in the source storage account"
+            ],
+            [
+              "Vaulted blob backup",
+              "Scheduled, copied to the Backup vault"
+            ],
+            [
+              "Azure Disk Backup",
+              "Incremental snapshots in a snapshot resource group"
+            ],
+            [
+              "Azure VM (virtual machine) backup",
+              "App-consistent backup of a whole VM (virtual machine) in a Recovery Services vault"
+            ]
+          ],
+          "explanation": "Operational blob backup tetap di storage account sumber, vaulted backup disalin ke Backup vault, Disk Backup memakai snapshot di resource group snapshot, dan VM (virtual machine) backup melindungi seluruh VM di Recovery Services vault.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-blob-backup-tiers",
+            "az104-f-u15-disk-backup-operational",
+            "az104-f-u15-disk-vs-vm-backup"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "az104-u15-l7",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u15-l7-e1",
+          "type": "multi",
+          "concept": "vault-types",
+          "prompt": "A company must back up Azure virtual machines, Azure file shares, Azure managed disks with Azure Disk Backup, and Azure Blobs. Which two workloads need a Backup vault? Choose two.",
+          "options": [
+            "Azure managed disks with Azure Disk Backup",
+            "Azure virtual machines",
+            "Azure Blobs",
+            "Azure file shares"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Backup vault melindungi Azure Disks, Azure Blobs, Azure Database for PostgreSQL, dan Kubernetes. VM (virtual machine) dan Azure Files di-backup ke Recovery Services vault.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-rsv-workloads",
+            "az104-f-u15-bv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e2",
+          "type": "yesno",
+          "concept": "recovery-services-vault",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to create rsv-prod in West Europe to back up virtual machines in West Europe that are in two subscriptions of the same tenant.",
+          "statements": [
+            {
+              "text": "rsv-prod can back up the virtual machines in both subscriptions.",
+              "answer": true
+            },
+            {
+              "text": "rsv-prod can also back up virtual machines in North Europe.",
+              "answer": false
+            },
+            {
+              "text": "Contoso can change rsv-prod from GRS (geo-redundant storage) to LRS (locally redundant storage) before it configures any backup.",
+              "answer": true
+            }
+          ],
+          "explanation": "VM (virtual machine) dan vault harus satu region, tapi boleh beda subscription dalam tenant yang sama. Replikasi storage vault hanya bisa diubah sebelum backup dikonfigurasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-vault-region",
+            "az104-f-u15-vault-redundancy"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e3",
+          "type": "choice",
+          "concept": "soft-delete",
+          "prompt": "An administrator at a company deleted the backup data of vm-hr 20 days ago. The vault uses soft delete with the default 14-day retention. What is true?",
+          "options": [
+            "The data can still be undeleted, because soft delete keeps deleted data for 30 days",
+            "The data can be restored from the activity log of the vault",
+            "The data can no longer be undeleted, because the soft delete period has ended",
+            "The data can be undeleted at any time, because soft delete never expires"
+          ],
+          "answer": 2,
+          "explanation": "Data yang dihapus disimpan 14 hari tambahan dalam status soft delete. Setelah 20 hari, masa itu sudah lewat. Masa simpan bisa diatur 14 sampai 180 hari sebelumnya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-soft-delete"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e4",
+          "type": "choice",
+          "concept": "backup-vault",
+          "prompt": "A company needs a vault for the backups of Azure Database for PostgreSQL and Azure Blobs. What should the company create?",
+          "options": [
+            "A Recovery Services vault",
+            "A Backup vault",
+            "A key vault with soft delete",
+            "A Log Analytics workspace"
+          ],
+          "answer": 1,
+          "explanation": "Backup vault melindungi Azure Database for PostgreSQL dan Azure Blobs. Recovery Services vault untuk VM (virtual machine), Azure Files, on-premises, dan Site Recovery.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-bv-workloads",
+            "az104-f-u15-rsv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e5",
+          "type": "rules",
+          "concept": "disk-backup",
+          "prompt": "You need to protect disk-app, in East US, with Azure Disk Backup. Based on the table, which vault should you use?",
+          "tables": [
+            {
+              "title": "Vaults of the company",
+              "columns": [
+                "Vault",
+                "Type",
+                "Region"
+              ],
+              "rows": [
+                [
+                  "rsv-eus",
+                  "Recovery Services vault",
+                  "East US"
+                ],
+                [
+                  "bv-weu",
+                  "Backup vault",
+                  "West Europe"
+                ],
+                [
+                  "bv-eus",
+                  "Backup vault",
+                  "East US"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "rsv-eus",
+            "bv-weu",
+            "Any of the three vaults",
+            "bv-eus"
+          ],
+          "answer": 3,
+          "explanation": "Azure Disk Backup memakai Backup vault, dan vault harus di region yang sama dengan disk. rsv-eus adalah Recovery Services vault, dan bv-weu ada di region lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-disk-backup-rules",
+            "az104-f-u15-bv-workloads"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e6",
+          "type": "choice",
+          "concept": "restore-options",
+          "prompt": "vm-app was deleted by mistake. A company wants it back from yesterday's recovery point in the vault. Which restore option should the company use?",
+          "options": [
+            "Replace existing",
+            "Backup Now on vm-app, and then restore",
+            "File Recovery, run once for each of its disks",
+            "Create a new VM (virtual machine)"
+          ],
+          "answer": 3,
+          "explanation": "Replace existing hanya untuk VM (virtual machine) yang masih ada. Create a new VM membuat VM baru dari recovery point.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-restore-create-vm",
+            "az104-f-u15-replace-existing"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e7",
+          "type": "choice",
+          "concept": "test-failover",
+          "prompt": "After a regional outage, a company must fail over vm-web to the secondary region as fast as possible. A few minutes of data loss is acceptable. Which recovery point should the company choose?",
+          "options": [
+            "Latest",
+            "Latest app-consistent",
+            "Latest processed",
+            "Custom, for every virtual machine in a recovery plan"
+          ],
+          "answer": 2,
+          "explanation": "Latest processed memberi RTO (recovery time objective) terendah karena recovery point-nya sudah diproses. Latest memberi RPO (recovery point objective) terendah tapi butuh waktu lebih lama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-recovery-point-options"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e8",
+          "type": "choice",
+          "concept": "failover-commit-reprotect",
+          "prompt": "A company failed over vm1 to West US 2, and the app works. The company now wants vm1 to replicate back to the primary region. What should the company do?",
+          "options": [
+            "Run a test failover, and then clean it up",
+            "Fail back to the primary region right away",
+            "Commit the failover, and then re-protect vm1",
+            "Turn off replication, and then create a recovery plan"
+          ],
+          "answer": 2,
+          "explanation": "Commit menyelesaikan failover. Setelah itu, Re-protect membuat VM (virtual machine) di region target mereplikasi balik ke region primer, dan baru setelahnya failback.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-commit",
+            "az104-f-u15-reprotect"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e9",
+          "type": "choice",
+          "concept": "failover-commit-reprotect",
+          "prompt": "After a failover of vm1, a company finds that the chosen recovery point holds corrupted data. The failover is not committed yet. What should the company do?",
+          "options": [
+            "Commit the failover first, and then change the recovery point to an earlier one",
+            "Change the recovery point to an earlier one, and then commit",
+            "Re-protect vm1, and then fail over again",
+            "Run Cleanup test failover on vm1"
+          ],
+          "answer": 1,
+          "explanation": "Sebelum commit, recovery point masih bisa diganti. Commit menghapus recovery point lain, jadi setelah commit recovery point tidak bisa diganti lagi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-commit"
+          ]
+        },
+        {
+          "id": "az104-u15-l7-e10",
+          "type": "yesno",
+          "concept": "test-failover",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans a test failover of vm1 to the secondary region.",
+          "statements": [
+            {
+              "text": "The test failover stops replication of vm1 to the secondary region.",
+              "answer": false
+            },
+            {
+              "text": "Contoso should connect the test VM (virtual machine) to the production virtual network.",
+              "answer": false
+            },
+            {
+              "text": "After the test, Contoso should run Cleanup test failover to delete the test VM.",
+              "answer": true
+            }
+          ],
+          "explanation": "Test failover tidak mengganggu produksi maupun replikasi. Pilih VNet (virtual network) non-produksi, lalu jalankan Cleanup test failover untuk menghapus VM (virtual machine) uji.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u15-test-failover"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
@@ -1734,6 +2290,56 @@
       "id": "az104-f-u15-backup-roles",
       "statement": "Role bawaan Azure Backup: Backup Contributor bisa semua operasi backup kecuali menghapus vault dan memberi akses; Backup Operator sama tapi tidak bisa menghapus backup atau mengelola backup policy; Backup Reader hanya melihat.",
       "source": "https://learn.microsoft.com/en-us/azure/backup/backup-rbac-rs-vault"
+    },
+    {
+      "id": "az104-f-u15-bv-create",
+      "statement": "Backup vault dibuat dengan memilih subscription, resource group, nama, region, dan storage redundancy. Geo-redundant (default) disarankan kalau Azure adalah penyimpanan backup utama; locally redundant lebih murah. Storage redundancy tidak bisa diubah setelah ada item yang dilindungi di vault.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/create-manage-backup-vault"
+    },
+    {
+      "id": "az104-f-u15-bv-delete",
+      "statement": "Backup vault tidak bisa dihapus selama masih berisi backup instance atau backup policy. Hapus dulu semua backup instance dan backup policy, lalu hapus vault-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/create-manage-backup-vault"
+    },
+    {
+      "id": "az104-f-u15-bv-identity",
+      "statement": "Backup vault memakai managed identity, system-assigned yang dibuat otomatis atau user-assigned, untuk mengakses resource yang di-backup. Identity itu diberi role Azure RBAC (role-based access control) yang dibutuhkan setiap workload.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-vault-overview"
+    },
+    {
+      "id": "az104-f-u15-disk-backup-operational",
+      "statement": "Azure Disk Backup tanpa agen dan crash-consistent: Azure Backup membuat incremental snapshot di resource group snapshot di subscription kamu (operational tier), bukan di storage vault, jadi storage redundancy vault tidak berlaku. Jadwalnya setiap 1, 2, 4, 6, 8, atau 12 jam, atau harian.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/disk-backup-overview"
+    },
+    {
+      "id": "az104-f-u15-disk-backup-rules",
+      "statement": "Untuk Azure Disk Backup, Backup vault dan disk harus di region yang sama, tapi boleh di subscription berbeda. Resource group snapshot harus di subscription yang sama dengan disk-nya.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/disk-backup-support-matrix"
+    },
+    {
+      "id": "az104-f-u15-disk-backup-roles",
+      "statement": "Untuk Azure Disk Backup, managed identity Backup vault butuh role Disk Backup Reader di disk sumber dan Disk Snapshot Contributor di resource group snapshot.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/backup-managed-disks"
+    },
+    {
+      "id": "az104-f-u15-disk-vs-vm-backup",
+      "statement": "Untuk backup app-consistent seluruh VM (virtual machine), restore file atau folder, atau restore ke region lain, pakai Azure VM backup. Azure Disk Backup cocok untuk backup beberapa kali sehari per disk tanpa agen dan tanpa mengganggu aplikasi.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/disk-backup-overview"
+    },
+    {
+      "id": "az104-f-u15-blob-backup-tiers",
+      "statement": "Backup blob punya dua tier. Operational backup bersifat kontinu, datanya tetap di storage account sumber, dan dipulihkan dengan point-in-time restore. Vaulted backup terjadwal dan menyalin data ke Backup vault, jadi melindungi juga dari terhapusnya storage account. Policy baru selalu menyertakan vaulted backup.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/blob-backup-overview"
+    },
+    {
+      "id": "az104-f-u15-blob-backup-req",
+      "statement": "Backup blob, operational maupun vaulted, hanya untuk block blob di storage account standard general-purpose v2.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/blob-backup-support-matrix"
+    },
+    {
+      "id": "az104-f-u15-blob-backup-role",
+      "statement": "Untuk backup blob, managed identity Backup vault butuh role Storage Account Backup Contributor di storage account yang dilindungi.",
+      "source": "https://learn.microsoft.com/en-us/azure/backup/blob-backup-configure-manage"
     }
   ]
 }
