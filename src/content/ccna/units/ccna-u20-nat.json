@@ -1,0 +1,1471 @@
+{
+  "id": "ccna-u20-nat",
+  "path": 4,
+  "title": "NAT dan PAT",
+  "lessons": [
+    {
+      "id": "ccna-u20-l1",
+      "title": "Kenapa NAT dan istilahnya",
+      "items": [
+        {
+          "id": "ccna-u20-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "why-nat"
+          ],
+          "title": "Kenapa NAT",
+          "body": "Alamat privat seperti 192.168.1.0/24 tidak dirutekan di internet. Alamat IPv4 publik juga terbatas. NAT (Network Address Translation) di router tepi menerjemahkan alamat privat ke alamat publik saat paket keluar, lalu membaliknya saat balasan datang. Dengan begitu banyak host bisa keluar memakai sedikit alamat publik.",
+          "keyPoints": [
+            "Alamat privat tidak dirutekan di internet",
+            "NAT menerjemahkan di router tepi",
+            "Menghemat alamat publik"
+          ],
+          "teaches": [
+            "ccna-f-u04-private-nat",
+            "ccna-f-u20-conserve",
+            "ccna-f-u04-private"
+          ]
+        },
+        {
+          "id": "ccna-u20-l1-e1",
+          "type": "choice",
+          "concept": "why-nat",
+          "prompt": "Why does a company router translate 192.168.1.10 before sending packets to the internet?",
+          "options": [
+            "Private addresses are not routed on the internet",
+            "The internet only accepts IPv6",
+            "Private addresses are too long",
+            "Switches cannot forward private addresses"
+          ],
+          "answer": 0,
+          "explanation": "Alamat privat RFC (Request for Comments) 1918 tidak dirutekan di internet, jadi NAT (Network Address Translation) menggantinya dengan alamat publik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u04-private-nat",
+            "ccna-f-u04-private"
+          ]
+        },
+        {
+          "id": "ccna-u20-l1-e2",
+          "type": "truefalse",
+          "concept": "why-nat",
+          "prompt": "NAT (Network Address Translation) helps an office with 200 hosts reach the internet with only a few public IPv4 addresses.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Menghemat alamat publik adalah tujuan utama NAT (Network Address Translation).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-conserve"
+          ]
+        },
+        {
+          "id": "ccna-u20-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "nat-terms"
+          ],
+          "title": "Empat istilah alamat",
+          "body": "Inside local adalah alamat yang dipasang di host dalam, misalnya 192.168.1.10. Inside global adalah alamat publik yang mewakili host itu di internet. Outside global adalah alamat asli host di luar, misalnya server web. Outside local adalah alamat host luar seperti terlihat dari dalam, dan biasanya sama dengan outside global. Ingat: local terlihat dari dalam, global terlihat dari luar.",
+          "keyPoints": [
+            "Inside local: alamat host dalam",
+            "Inside global: wakil publiknya",
+            "Outside global: alamat asli host luar"
+          ],
+          "visual": "NatTerms",
+          "teaches": [
+            "ccna-f-u20-inside-local",
+            "ccna-f-u20-inside-global",
+            "ccna-f-u20-outside-global",
+            "ccna-f-u20-local-global"
+          ]
+        },
+        {
+          "id": "ccna-u20-l1-e3",
+          "type": "match",
+          "concept": "nat-terms",
+          "prompt": "A PC at 192.168.1.10 reaches a web server at 198.51.100.7 through a NAT (Network Address Translation) router that uses 203.0.113.5. Match each address to its NAT term.",
+          "pairs": [
+            [
+              "192.168.1.10",
+              "Inside local"
+            ],
+            [
+              "203.0.113.5",
+              "Inside global"
+            ],
+            [
+              "198.51.100.7 as seen from the internet",
+              "Outside global"
+            ],
+            [
+              "198.51.100.7 as seen from the PC",
+              "Outside local"
+            ]
+          ],
+          "explanation": "Alamat PC adalah inside local, wakil publiknya inside global, dan alamat server adalah outside global; karena host luar tidak diterjemahkan, outside local-nya sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-inside-local",
+            "ccna-f-u20-inside-global",
+            "ccna-f-u20-outside-global"
+          ]
+        },
+        {
+          "id": "ccna-u20-l1-e4",
+          "type": "choice",
+          "concept": "nat-terms",
+          "prompt": "Which NAT (Network Address Translation) term describes the public address that represents an inside host to the internet?",
+          "options": [
+            "Inside global",
+            "Inside local",
+            "Outside local",
+            "Outside global"
+          ],
+          "answer": 0,
+          "explanation": "Inside global adalah alamat yang dilihat jaringan luar untuk host dalam.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-inside-global",
+            "ccna-f-u20-local-global"
+          ]
+        },
+        {
+          "id": "ccna-u20-l1-e5",
+          "type": "truefalse",
+          "concept": "nat-terms",
+          "prompt": "An inside local address is usually a public address assigned by the ISP (Internet Service Provider).",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Inside local adalah alamat yang dipasang di host dalam, biasanya alamat privat; alamat dari penyedia layanan menjadi inside global.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-inside-local",
+            "ccna-f-u20-inside-global"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u20-l2",
+      "title": "Static NAT",
+      "items": [
+        {
+          "id": "ccna-u20-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "nat-types"
+          ],
+          "title": "Tiga jenis NAT",
+          "body": "Ada tiga cara menerjemahkan. Static NAT (Network Address Translation) memetakan satu alamat dalam ke satu alamat global secara tetap. Dynamic NAT mengambil alamat dari pool untuk setiap host yang keluar. PAT (Port Address Translation) membuat banyak host berbagi satu alamat global dengan nomor port berbeda. Unit ini membahas ketiganya satu per satu.",
+          "keyPoints": [
+            "Static: 1 ke 1, tetap",
+            "Dynamic: dari pool",
+            "PAT: banyak ke 1 dengan port"
+          ],
+          "visual": "NatTypes",
+          "teaches": [
+            "ccna-f-u20-static",
+            "ccna-f-u20-dynamic",
+            "ccna-f-u20-pat"
+          ]
+        },
+        {
+          "id": "ccna-u20-l2-e1",
+          "type": "match",
+          "concept": "nat-types",
+          "prompt": "Match each NAT (Network Address Translation) type to how it maps addresses.",
+          "pairs": [
+            [
+              "Static NAT",
+              "One inside address to one fixed global address"
+            ],
+            [
+              "Dynamic NAT",
+              "Inside hosts take global addresses from a pool"
+            ],
+            [
+              "PAT (Port Address Translation)",
+              "Many inside hosts share one global address by port"
+            ]
+          ],
+          "explanation": "Static memetakan satu ke satu, dynamic memakai pool, dan PAT (Port Address Translation) berbagi satu alamat dengan port.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-static",
+            "ccna-f-u20-dynamic",
+            "ccna-f-u20-pat"
+          ]
+        },
+        {
+          "id": "ccna-u20-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "static-nat"
+          ],
+          "title": "Static NAT",
+          "body": "Pertama tandai interface: ip nat inside di sisi LAN (local area network), ip nat outside di sisi internet. Tanpa tanda itu NAT (Network Address Translation) tidak bekerja. Lalu ip nat inside source static diikuti alamat local dan alamat global. Pemetaan ini selalu ada, jadi host di internet bisa memulai koneksi ke alamat global itu. Karena itu static NAT dipakai untuk server di dalam.",
+          "keyPoints": [
+            "ip nat inside dan ip nat outside",
+            "ip nat inside source static <local> <global>",
+            "Host luar bisa memulai koneksi"
+          ],
+          "teaches": [
+            "ccna-f-u20-in-out",
+            "ccna-f-u20-static",
+            "ccna-f-u20-static-inbound"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 203.0.113.1 255.255.255.248"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip nat inside",
+                  "note": "Menandai interface ini sebagai sisi dalam NAT (Network Address Translation)."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip nat outside",
+                  "note": "Menandai interface ini sebagai sisi luar NAT (Network Address Translation)."
+                },
+                {
+                  "command": "exit",
+                  "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
+                },
+                {
+                  "command": "ip nat inside source static 192.168.41.20 203.0.113.5",
+                  "note": "Memetakan alamat dalam 192.168.41.20 ke alamat global 203.0.113.5 secara tetap (static NAT)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u20-l2-e2",
+          "type": "ios",
+          "concept": "static-nat",
+          "prompt": "On R1, G0/0/0 faces the LAN (local area network) and G0/0/1 faces the ISP (Internet Service Provider). Publish the web server 192.168.1.20 as 203.0.113.5 with static NAT (Network Address Translation).",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 203.0.113.1 255.255.255.248"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip nat inside"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip nat outside"
+              },
+              {
+                "line": "ip nat inside source static 192.168.1.20 203.0.113.5"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip nat inside",
+            "interface g0/0/1",
+            "ip nat outside",
+            "exit",
+            "ip nat inside source static 192.168.1.20 203.0.113.5",
+            "end"
+          ],
+          "explanation": "Interface ditandai inside dan outside, lalu pemetaan static menghubungkan alamat local server dengan alamat global-nya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-in-out",
+            "ccna-f-u20-static"
+          ]
+        },
+        {
+          "id": "ccna-u20-l2-e3",
+          "type": "choice",
+          "concept": "static-nat",
+          "prompt": "A web server inside the company must be reachable from the internet at a fixed address. Which NAT (Network Address Translation) type fits?",
+          "options": [
+            "Static NAT",
+            "Dynamic NAT",
+            "PAT (Port Address Translation) on the outside interface",
+            "No NAT is needed for private servers"
+          ],
+          "answer": 0,
+          "explanation": "Static NAT (Network Address Translation) selalu ada, jadi host luar bisa memulai koneksi ke alamat global server.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-static-inbound",
+            "ccna-f-u20-static"
+          ]
+        },
+        {
+          "id": "ccna-u20-l2-e4",
+          "type": "truefalse",
+          "concept": "static-nat",
+          "prompt": "NAT (Network Address Translation) translates traffic even if no interface is marked ip nat inside or ip nat outside.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Interface yang ikut NAT (Network Address Translation) harus ditandai inside atau outside.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-in-out"
+          ]
+        },
+        {
+          "id": "ccna-u20-l2-e5",
+          "type": "exhibit",
+          "concept": "static-nat",
+          "prompt": "Refer to the exhibit. Which address does an internet host use to reach the server 192.168.1.20?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | include ip nat",
+              "text": " ip nat inside\n ip nat outside\nip nat inside source static 192.168.1.20 203.0.113.5"
+            }
+          ],
+          "options": [
+            "203.0.113.5",
+            "192.168.1.20",
+            "203.0.113.1",
+            "192.168.1.1"
+          ],
+          "answer": 0,
+          "explanation": "Inside global 203.0.113.5 adalah alamat yang terlihat dari luar untuk inside local 192.168.1.20.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-static",
+            "ccna-f-u20-inside-global",
+            "ccna-f-u20-inside-local"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u20-l3",
+      "title": "Dynamic NAT",
+      "items": [
+        {
+          "id": "ccna-u20-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "dynamic-nat"
+          ],
+          "title": "Dynamic NAT",
+          "body": "Dynamic NAT (Network Address Translation) butuh tiga bagian. Pool berisi alamat global: ip nat pool diikuti nama, alamat awal, alamat akhir, dan netmask. Access list standar memilih alamat dalam yang boleh diterjemahkan. Lalu ip nat inside source list diikuti nomor ACL (access control list), kata pool, dan nama pool. Setiap host yang keluar mendapat satu alamat dari pool.",
+          "keyPoints": [
+            "ip nat pool <nama> <awal> <akhir> netmask",
+            "ACL standar memilih host dalam",
+            "ip nat inside source list <acl> pool <nama>"
+          ],
+          "teaches": [
+            "ccna-f-u20-dynamic",
+            "ccna-f-u20-pool",
+            "ccna-f-u20-acl-select",
+            "ccna-f-u17-wildcard"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "ip nat inside"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 203.0.113.1 255.255.255.240",
+                    "ip nat outside"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip nat pool Publik 203.0.113.10 203.0.113.14 netmask 255.255.255.240",
+                  "note": "Membuat pool alamat global Publik: 203.0.113.10 sampai 203.0.113.14."
+                },
+                {
+                  "command": "access-list 1 permit 192.168.41.0 0.0.0.255",
+                  "note": "Menambahkan baris permit ke ACL (access control list) nomor 1; baris dibaca dari atas."
+                },
+                {
+                  "command": "ip nat inside source list 1 pool Publik",
+                  "note": "Menerjemahkan alamat yang cocok dengan ACL (access control list) 1 ke alamat dari pool Publik."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u20-l3-e1",
+          "type": "ios",
+          "concept": "dynamic-nat",
+          "prompt": "Interfaces on R1 are already marked inside and outside. Translate hosts in 192.168.1.0/24 to addresses from pool Publik, 203.0.113.10 to 203.0.113.14 with mask 255.255.255.240, using access list 1.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "ip nat inside"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 203.0.113.1 255.255.255.240",
+                "ip nat outside"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip nat pool Publik 203.0.113.10 203.0.113.14 netmask 255.255.255.240"
+              },
+              {
+                "line": "access-list 1 permit 192.168.1.0 0.0.0.255"
+              },
+              {
+                "line": "ip nat inside source list 1 pool Publik"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip nat pool Publik 203.0.113.10 203.0.113.14 netmask 255.255.255.240",
+            "access-list 1 permit 192.168.1.0 0.0.0.255",
+            "ip nat inside source list 1 pool Publik",
+            "end"
+          ],
+          "explanation": "Pool menyediakan alamat global, access list 1 memilih 192.168.1.0/24 dengan wildcard 0.0.0.255, dan perintah terakhir menghubungkan keduanya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-pool",
+            "ccna-f-u20-acl-select",
+            "ccna-f-u17-wildcard"
+          ]
+        },
+        {
+          "id": "ccna-u20-l3-e2",
+          "type": "choice",
+          "concept": "dynamic-nat",
+          "prompt": "In dynamic NAT (Network Address Translation), what does the access list in ip nat inside source list 1 pool Publik decide?",
+          "options": [
+            "Which inside addresses get translated",
+            "Which outside hosts may reply",
+            "Which global addresses are in the pool",
+            "Which interfaces are inside"
+          ],
+          "answer": 0,
+          "explanation": "Access list menentukan alamat dalam yang diterjemahkan; isi pool diatur ip nat pool, dan interface ditandai ip nat inside.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-acl-select",
+            "ccna-f-u20-pool",
+            "ccna-f-u20-in-out"
+          ]
+        },
+        {
+          "id": "ccna-u20-l3-e3",
+          "type": "truefalse",
+          "concept": "dynamic-nat",
+          "prompt": "With dynamic NAT (Network Address Translation), each translated inside host uses its own global address from the pool.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Tanpa overload, satu alamat pool dipakai satu host selama terjemahannya ada.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-dynamic"
+          ]
+        },
+        {
+          "id": "ccna-u20-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "pool-limits"
+          ],
+          "title": "Batas pool",
+          "body": "Pool lima alamat hanya cukup untuk lima host sekaligus. Kalau semuanya sedang dipakai, host keenam tidak diterjemahkan dan paketnya dibuang. Alamat kembali ke pool saat terjemahannya habis waktu; bawaannya 24 jam kalau tidak dipakai, atau lebih cepat dengan clear ip nat translation *.",
+          "keyPoints": [
+            "Satu alamat pool per host",
+            "Pool habis: host baru gagal",
+            "Timeout bawaan 24 jam"
+          ],
+          "teaches": [
+            "ccna-f-u20-exhaust",
+            "ccna-f-u20-timeout",
+            "ccna-f-u20-clear"
+          ]
+        },
+        {
+          "id": "ccna-u20-l3-e4",
+          "type": "choice",
+          "concept": "pool-limits",
+          "prompt": "A dynamic NAT (Network Address Translation) pool has five addresses, and five hosts already hold translations. What happens when a sixth host sends traffic to the internet?",
+          "options": [
+            "Its packets are not translated and are dropped",
+            "It shares an address with the first host",
+            "The router adds a sixth address to the pool",
+            "The router uses its own outside address"
+          ],
+          "answer": 0,
+          "explanation": "Tanpa overload tidak ada berbagi alamat, jadi host keenam gagal sampai ada alamat yang kembali ke pool.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-exhaust",
+            "ccna-f-u20-dynamic"
+          ]
+        },
+        {
+          "id": "ccna-u20-l3-e5",
+          "type": "order",
+          "concept": "dynamic-nat",
+          "prompt": "Put the dynamic NAT (Network Address Translation) setup in a working order.",
+          "items": [
+            "Mark ip nat inside and ip nat outside",
+            "Create the pool with ip nat pool",
+            "Permit inside addresses in a standard access list",
+            "Link them with ip nat inside source list"
+          ],
+          "explanation": "Interface ditandai, pool dan access list dibuat, lalu dihubungkan. Urutan tiga langkah pertama bisa ditukar, tetapi perintah penghubung paling akhir supaya pool dan list sudah ada.",
+          "requires": [
+            "ccna-f-u20-in-out",
+            "ccna-f-u20-pool",
+            "ccna-f-u20-acl-select"
+          ]
+        },
+        {
+          "id": "ccna-u20-l3-e6",
+          "type": "truefalse",
+          "concept": "pool-limits",
+          "prompt": "clear ip nat translation * removes dynamic entries before their timeout.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Perintah ini mengosongkan entri dinamis sehingga alamat pool bisa dipakai lagi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-clear"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u20-l4",
+      "title": "PAT",
+      "items": [
+        {
+          "id": "ccna-u20-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "pat"
+          ],
+          "title": "PAT",
+          "body": "PAT (Port Address Translation), di IOS disebut overload, membuat banyak host berbagi satu alamat global. Router mencatat nomor port setiap sesi, jadi balasan bisa dikembalikan ke host yang benar. Inilah yang dipakai hampir setiap kantor dan rumah. Bentuk paling umum memakai alamat interface outside: ip nat inside source list 1 interface G0/0/1 overload.",
+          "keyPoints": [
+            "Banyak host, satu alamat",
+            "Sesi dibedakan nomor port",
+            "list <acl> interface <if> overload"
+          ],
+          "visual": "PatPorts",
+          "teaches": [
+            "ccna-f-u20-pat",
+            "ccna-f-u20-pat-if"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "ip nat inside"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 203.0.113.1 255.255.255.248",
+                    "ip nat outside"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "access-list 1 permit 192.168.41.0 0.0.0.255",
+                  "note": "Menambahkan baris permit ke ACL (access control list) nomor 1; baris dibaca dari atas."
+                },
+                {
+                  "command": "ip nat inside source list 1 interface g0/0/1 overload",
+                  "note": "Menerjemahkan alamat yang cocok dengan ACL (access control list) 1 ke alamat g0/0/1 dengan PAT (Port Address Translation)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u20-l4-e1",
+          "type": "ios",
+          "concept": "pat",
+          "prompt": "Interfaces on R1 are already marked inside and outside. Let all hosts in 192.168.1.0/24 reach the internet with PAT (Port Address Translation) on the address of G0/0/1, using access list 1.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "ip nat inside"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 203.0.113.1 255.255.255.248",
+                "ip nat outside"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "access-list 1 permit 192.168.1.0 0.0.0.255"
+              },
+              {
+                "line": "ip nat inside source list 1 interface GigabitEthernet0/0/1 overload"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "access-list 1 permit 192.168.1.0 0.0.0.255",
+            "ip nat inside source list 1 interface g0/0/1 overload",
+            "end"
+          ],
+          "explanation": "Access list memilih host dalam, lalu overload pada alamat G0/0/1 membuat semuanya berbagi alamat itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-acl-select",
+            "ccna-f-u20-pat-if"
+          ]
+        },
+        {
+          "id": "ccna-u20-l4-e2",
+          "type": "choice",
+          "concept": "pat",
+          "prompt": "How does a PAT (Port Address Translation) router know which inside host should get a reply that arrives at its single public address?",
+          "options": [
+            "It tracks the port number of each session",
+            "It sends the reply to every inside host",
+            "It reads the MAC (Media Access Control) address in the reply",
+            "It keeps one public address per host"
+          ],
+          "answer": 0,
+          "explanation": "Setiap sesi punya nomor port sendiri di tabel PAT (Port Address Translation), jadi balasan dikembalikan ke host yang tepat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-pat"
+          ]
+        },
+        {
+          "id": "ccna-u20-l4-e3",
+          "type": "truefalse",
+          "concept": "pat",
+          "prompt": "PAT (Port Address Translation) needs one public address for every inside host.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. PAT (Port Address Translation) membuat banyak host berbagi satu alamat global.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-pat"
+          ]
+        },
+        {
+          "id": "ccna-u20-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "pat-pool"
+          ],
+          "title": "PAT dengan pool",
+          "body": "Kalau satu alamat tidak cukup, overload juga bisa dipakai dengan pool: tambahkan overload di akhir ip nat inside source list 1 pool Publik. Tanpa kata overload, perintah yang sama adalah dynamic NAT (Network Address Translation) biasa. Jadi satu kata itu membedakan satu alamat per host dengan banyak host per alamat.",
+          "keyPoints": [
+            "pool <nama> overload",
+            "Tanpa overload: dynamic NAT",
+            "Dengan overload: PAT (Port Address Translation)"
+          ],
+          "teaches": [
+            "ccna-f-u20-pat-pool",
+            "ccna-f-u20-dynamic"
+          ]
+        },
+        {
+          "id": "ccna-u20-l4-e4",
+          "type": "multi",
+          "concept": "pat-pool",
+          "prompt": "Which two commands configure PAT (Port Address Translation)? (Choose two.)",
+          "options": [
+            "ip nat inside source list 1 interface GigabitEthernet0/0/1 overload",
+            "ip nat inside source list 1 pool Publik overload",
+            "ip nat inside source list 1 pool Publik",
+            "ip nat inside source static 192.168.1.20 203.0.113.5"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Kata overload menjadikannya PAT (Port Address Translation), baik dengan alamat interface maupun pool. Tanpa overload itu dynamic NAT (Network Address Translation), dan static adalah pemetaan satu ke satu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-pat-if",
+            "ccna-f-u20-pat-pool",
+            "ccna-f-u20-static"
+          ]
+        },
+        {
+          "id": "ccna-u20-l4-e5",
+          "type": "sort",
+          "concept": "nat-types",
+          "prompt": "Sort each command by the NAT (Network Address Translation) type it configures.",
+          "buckets": [
+            "Static NAT",
+            "Dynamic NAT",
+            "PAT (Port Address Translation)"
+          ],
+          "items": [
+            {
+              "text": "ip nat inside source static 192.168.1.20 203.0.113.5",
+              "bucket": 0
+            },
+            {
+              "text": "ip nat inside source list 1 pool Publik",
+              "bucket": 1
+            },
+            {
+              "text": "ip nat inside source list 1 interface GigabitEthernet0/0/1 overload",
+              "bucket": 2
+            },
+            {
+              "text": "ip nat inside source list 2 pool Kantor overload",
+              "bucket": 2
+            },
+            {
+              "text": "ip nat inside source static 192.168.1.21 203.0.113.6",
+              "bucket": 0
+            }
+          ],
+          "explanation": "static memetakan satu ke satu, pool tanpa overload adalah dynamic NAT (Network Address Translation), dan overload berarti PAT (Port Address Translation).",
+          "requires": [
+            "ccna-f-u20-static",
+            "ccna-f-u20-dynamic",
+            "ccna-f-u20-pat-pool",
+            "ccna-f-u20-pat-if"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u20-l5",
+      "title": "Verifikasi dan troubleshoot NAT",
+      "items": [
+        {
+          "id": "ccna-u20-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "nat-verify"
+          ],
+          "title": "Memeriksa NAT",
+          "body": "show ip nat translations menampilkan tabel terjemahan dengan kolom inside global, inside local, outside local, dan outside global. Entri static selalu ada; entri dinamis baru muncul setelah ada lalu lintas. show ip nat statistics menampilkan jumlah terjemahan, interface inside dan outside, serta hit dan miss. debug ip nat menampilkan setiap paket yang diterjemahkan.",
+          "keyPoints": [
+            "show ip nat translations: tabel",
+            "show ip nat statistics: ringkasan",
+            "debug ip nat: per paket"
+          ],
+          "teaches": [
+            "ccna-f-u20-show-trans",
+            "ccna-f-u20-show-stats",
+            "ccna-f-u20-debug"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "start": "priv",
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "ip nat inside"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 203.0.113.1 255.255.255.248",
+                    "ip nat outside"
+                  ]
+                },
+                {
+                  "lines": [
+                    "ip nat inside source static 192.168.41.20 203.0.113.5"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "show ip nat translations",
+                  "note": "Menampilkan tabel terjemahan NAT (Network Address Translation)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u20-l5-e1",
+          "type": "ios",
+          "concept": "nat-verify",
+          "prompt": "Static NAT (Network Address Translation) is configured on R1. Display the NAT translation table.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "start": "priv",
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "ip nat inside"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 203.0.113.1 255.255.255.248",
+                "ip nat outside"
+              ]
+            },
+            {
+              "context": "",
+              "lines": [
+                "ip nat inside source static 192.168.1.20 203.0.113.5"
+              ]
+            }
+          ],
+          "goal": {
+            "run": [
+              "show ip nat translations"
+            ]
+          },
+          "solution": [
+            "show ip nat translations"
+          ],
+          "explanation": "Entri static 203.0.113.5 ke 192.168.1.20 muncul walaupun belum ada lalu lintas.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-show-trans"
+          ]
+        },
+        {
+          "id": "ccna-u20-l5-e2",
+          "type": "exhibit",
+          "concept": "nat-verify",
+          "prompt": "Refer to the exhibit. Which inside host is talking to the web server?",
+          "outputs": [
+            {
+              "title": "R1# show ip nat translations",
+              "text": "Pro  Inside global         Inside local          Outside local         Outside global\ntcp  203.0.113.1:51000     192.168.1.10:51000    198.51.100.7:443      198.51.100.7:443"
+            }
+          ],
+          "options": [
+            "192.168.1.10",
+            "203.0.113.1",
+            "198.51.100.7",
+            "192.168.1.1"
+          ],
+          "answer": 0,
+          "explanation": "Kolom inside local menunjukkan host dalam, 192.168.1.10. 203.0.113.1 adalah inside global, dan 198.51.100.7 server di luar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-show-trans",
+            "ccna-f-u20-inside-local",
+            "ccna-f-u20-pat"
+          ]
+        },
+        {
+          "id": "ccna-u20-l5-e3",
+          "type": "choice",
+          "concept": "nat-verify",
+          "prompt": "Which command shows how many translations exist and which interfaces are marked inside and outside?",
+          "options": [
+            "show ip nat statistics",
+            "show ip nat translations",
+            "debug ip nat",
+            "show ip interface brief"
+          ],
+          "answer": 0,
+          "explanation": "show ip nat statistics merangkum jumlah terjemahan dan interface inside serta outside.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-show-stats",
+            "ccna-f-u20-show-trans",
+            "ccna-f-u20-debug"
+          ]
+        },
+        {
+          "id": "ccna-u20-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "nat-faults"
+          ],
+          "title": "Kalau NAT tidak jalan",
+          "body": "Periksa tiga hal. Apakah ip nat inside dan ip nat outside ada di interface yang benar dan tidak tertukar? Apakah access list benar-benar mencocokkan alamat host dalam, misalnya wildcard-nya benar? Apakah router punya route keluar, biasanya default route ke ISP (Internet Service Provider)? Setelah memperbaiki, clear ip nat translation * membuang entri lama.",
+          "keyPoints": [
+            "Inside dan outside tertukar",
+            "ACL (access control list) tidak cocok",
+            "Tidak ada route keluar"
+          ],
+          "teaches": [
+            "ccna-f-u20-faults",
+            "ccna-f-u20-in-out",
+            "ccna-f-u20-clear"
+          ]
+        },
+        {
+          "id": "ccna-u20-l5-e4",
+          "type": "exhibit",
+          "concept": "nat-faults",
+          "prompt": "Refer to the exhibit. Hosts in 192.168.1.0/24 cannot reach the internet, and the translation table stays empty. What is wrong?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | include nat|access-list",
+              "text": " ip nat inside\n ip nat outside\nip nat inside source list 1 interface GigabitEthernet0/0/1 overload\naccess-list 1 permit 192.168.10.0 0.0.0.255"
+            }
+          ],
+          "options": [
+            "The access list matches 192.168.10.0 instead of 192.168.1.0",
+            "G0/0/1 should be ip nat inside",
+            "overload is not allowed with an interface",
+            "Access list 1 must be extended"
+          ],
+          "answer": 0,
+          "explanation": "Access list 1 mencocokkan 192.168.10.0/24, jadi host 192.168.1.0/24 tidak pernah diterjemahkan. Tanda inside dan outside sudah benar.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-faults",
+            "ccna-f-u20-acl-select",
+            "ccna-f-u20-pat-if"
+          ]
+        },
+        {
+          "id": "ccna-u20-l5-e5",
+          "type": "truefalse",
+          "concept": "nat-faults",
+          "prompt": "Swapping ip nat inside and ip nat outside between the LAN (local area network) and internet interfaces stops NAT (Network Address Translation) from working for inside hosts.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. NAT (Network Address Translation) menerjemahkan source dari interface inside ke outside, jadi arah yang tertukar membuatnya gagal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-faults",
+            "ccna-f-u20-in-out"
+          ]
+        },
+        {
+          "id": "ccna-u20-l5-e6",
+          "type": "multi",
+          "concept": "nat-faults",
+          "prompt": "Which two problems can stop PAT (Port Address Translation) from working? (Choose two.)",
+          "options": [
+            "No default route toward the ISP (Internet Service Provider)",
+            "The NAT (Network Address Translation) access list does not match the inside subnet",
+            "The pool has only one address",
+            "The inside interface has a private address"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Tanpa route keluar paket tidak sampai, dan ACL (access control list) yang tidak cocok membuat host tidak diterjemahkan. PAT (Port Address Translation) bisa berjalan dengan satu alamat, dan interface inside memang beralamat privat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-faults",
+            "ccna-f-u20-pat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u20-l6",
+      "title": "Lab: NAT dan PAT",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u20-l5"
+      },
+      "items": [
+        {
+          "id": "ccna-u20-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "nat-lab"
+          ],
+          "title": "Rencana lab",
+          "body": "R1 menghubungkan LAN (local area network) 192.168.1.0/24 ke router ISP (Internet Service Provider) lewat 203.0.113.0/29. Semua PC keluar dengan PAT (Port Address Translation) memakai alamat G0/0/1. Server 192.168.1.20 diterbitkan dengan static NAT (Network Address Translation) sebagai 203.0.113.5. Setelah ping dari PC, tabel terjemahan diperiksa.",
+          "keyPoints": [
+            "PAT untuk PC",
+            "Static NAT untuk server",
+            "Ping lalu periksa tabel"
+          ],
+          "teaches": [
+            "ccna-f-u20-pat-if",
+            "ccna-f-u20-static",
+            "ccna-f-u20-show-trans"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 203.0.113.1 255.255.255.248"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip nat inside",
+                  "note": "Menandai interface ini sebagai sisi dalam NAT (Network Address Translation)."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip nat outside",
+                  "note": "Menandai interface ini sebagai sisi luar NAT (Network Address Translation)."
+                },
+                {
+                  "command": "exit",
+                  "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
+                },
+                {
+                  "command": "ip nat inside source static 192.168.41.20 203.0.113.5",
+                  "note": "Memetakan alamat dalam 192.168.41.20 ke alamat global 203.0.113.5 secara tetap (static NAT)."
+                },
+                {
+                  "command": "access-list 1 permit 192.168.41.0 0.0.0.255",
+                  "note": "Menambahkan baris permit ke ACL (access control list) nomor 1; baris dibaca dari atas."
+                },
+                {
+                  "command": "ip nat inside source list 1 interface g0/0/1 overload",
+                  "note": "Menerjemahkan alamat yang cocok dengan ACL (access control list) 1 ke alamat g0/0/1 dengan PAT (Port Address Translation)."
+                },
+                {
+                  "command": "ip route 0.0.0.0 0.0.0.0 203.0.113.2",
+                  "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 203.0.113.2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            },
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "start": "priv",
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "ip nat inside"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 203.0.113.1 255.255.255.248",
+                    "ip nat outside"
+                  ]
+                },
+                {
+                  "lines": [
+                    "ip nat inside source static 192.168.41.20 203.0.113.5",
+                    "access-list 1 permit 192.168.41.0 0.0.0.255",
+                    "ip nat inside source list 1 interface GigabitEthernet0/0/1 overload"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "show ip nat translations",
+                  "note": "Menampilkan tabel terjemahan NAT (Network Address Translation)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u20-l6-e1",
+          "type": "ios",
+          "concept": "nat-lab",
+          "prompt": "Configure NAT (Network Address Translation) on R1: G0/0/0 inside, G0/0/1 outside, static 192.168.1.20 to 203.0.113.5, PAT (Port Address Translation) for 192.168.1.0/24 on the address of G0/0/1 with access list 1, and a default route to 203.0.113.2. Save the configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 203.0.113.1 255.255.255.248"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "ip nat inside"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/1",
+                "line": "ip nat outside"
+              },
+              {
+                "line": "ip nat inside source static 192.168.1.20 203.0.113.5"
+              },
+              {
+                "line": "access-list 1 permit 192.168.1.0 0.0.0.255"
+              },
+              {
+                "line": "ip nat inside source list 1 interface GigabitEthernet0/0/1 overload"
+              },
+              {
+                "line": "ip route 0.0.0.0 0.0.0.0 203.0.113.2"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "ip nat inside",
+            "interface g0/0/1",
+            "ip nat outside",
+            "exit",
+            "ip nat inside source static 192.168.1.20 203.0.113.5",
+            "access-list 1 permit 192.168.1.0 0.0.0.255",
+            "ip nat inside source list 1 interface g0/0/1 overload",
+            "ip route 0.0.0.0 0.0.0.0 203.0.113.2",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Interface ditandai, server mendapat static NAT (Network Address Translation), LAN (Local Area Network) mendapat PAT (Port Address Translation), default route menuju ISP (Internet Service Provider), lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-in-out",
+            "ccna-f-u20-static",
+            "ccna-f-u20-acl-select",
+            "ccna-f-u20-pat-if",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u20-l6-e2",
+          "type": "ios",
+          "concept": "nat-lab",
+          "prompt": "Before any PC sends traffic, check the translation table on R1.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "start": "priv",
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "ip nat inside"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 203.0.113.1 255.255.255.248",
+                "ip nat outside"
+              ]
+            },
+            {
+              "context": "",
+              "lines": [
+                "ip nat inside source static 192.168.1.20 203.0.113.5",
+                "access-list 1 permit 192.168.1.0 0.0.0.255",
+                "ip nat inside source list 1 interface GigabitEthernet0/0/1 overload"
+              ]
+            }
+          ],
+          "goal": {
+            "run": [
+              "show ip nat translations"
+            ]
+          },
+          "solution": [
+            "show ip nat translations"
+          ],
+          "explanation": "Baru entri static server yang terlihat; entri PAT (Port Address Translation) muncul setelah PC mengirim lalu lintas.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-show-trans"
+          ]
+        },
+        {
+          "id": "ccna-u20-l6-e3",
+          "type": "choice",
+          "concept": "nat-lab",
+          "prompt": "After PC1 (192.168.1.10) pings 198.51.100.1, which inside global address appears in its PAT (Port Address Translation) entry?",
+          "options": [
+            "203.0.113.1",
+            "203.0.113.5",
+            "192.168.1.10",
+            "198.51.100.1"
+          ],
+          "answer": 0,
+          "explanation": "PAT (Port Address Translation) memakai alamat G0/0/1, 203.0.113.1. 203.0.113.5 milik static NAT (Network Address Translation) server.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u20-pat-if",
+            "ccna-f-u20-inside-global"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u20-conserve",
+      "statement": "NAT dipakai untuk menghemat alamat IPv4 publik: banyak host beralamat privat bisa keluar memakai sedikit alamat publik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-inside-local",
+      "statement": "Inside local adalah alamat yang dipasang di host jaringan dalam, biasanya alamat privat.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/4606-8.html"
+    },
+    {
+      "id": "ccna-f-u20-inside-global",
+      "statement": "Inside global adalah alamat sah, biasanya publik, yang mewakili host dalam di mata jaringan luar.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/4606-8.html"
+    },
+    {
+      "id": "ccna-f-u20-outside-global",
+      "statement": "Outside global adalah alamat asli host di jaringan luar, sedangkan outside local adalah alamat host luar itu seperti terlihat dari dalam; tanpa NAT untuk host luar, keduanya sama.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/4606-8.html"
+    },
+    {
+      "id": "ccna-f-u20-local-global",
+      "statement": "Alamat local adalah alamat yang terlihat di sisi dalam, dan alamat global adalah alamat yang terlihat di sisi luar.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/4606-8.html"
+    },
+    {
+      "id": "ccna-f-u20-in-out",
+      "statement": "Setiap interface yang ikut NAT harus ditandai ip nat inside atau ip nat outside; tanpa tanda itu, NAT tidak menerjemahkan lalu lintasnya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-static",
+      "statement": "Static NAT, ip nat inside source static <local> <global>, memetakan satu alamat dalam ke satu alamat global secara tetap.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-static-inbound",
+      "statement": "Karena pemetaan static selalu ada, host luar bisa memulai koneksi ke alamat global itu, jadi static NAT cocok untuk server di dalam.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-dynamic",
+      "statement": "Dynamic NAT memetakan host dalam ke alamat dari pool, satu alamat global per host selama terjemahannya ada.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-pool",
+      "statement": "Pool dibuat dengan ip nat pool <nama> <awal> <akhir> netmask <mask> atau prefix-length <panjang>.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-acl-select",
+      "statement": "Access list standar dengan permit menentukan alamat dalam mana yang diterjemahkan, lalu ip nat inside source list <acl> pool <nama> menghubungkannya ke pool.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-exhaust",
+      "statement": "Kalau semua alamat di pool sedang dipakai dan tidak ada overload, host baru tidak diterjemahkan dan paketnya dibuang.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u20-timeout",
+      "statement": "Terjemahan dinamis yang tidak dipakai dihapus setelah timeout; bawaannya 24 jam.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u20-pat",
+      "statement": "PAT (overload) memetakan banyak alamat dalam ke satu alamat global dan membedakan sesi lewat nomor port.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-pat-if",
+      "statement": "ip nat inside source list <acl> interface <interface> overload memakai alamat interface outside sebagai alamat global PAT.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-pat-pool",
+      "statement": "Kata overload di akhir ip nat inside source list <acl> pool <nama> membuat pool dipakai dengan PAT.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_nat/configuration/15-mt/nat-15-mt-book/iadnat-addr-consv.html"
+    },
+    {
+      "id": "ccna-f-u20-show-trans",
+      "statement": "show ip nat translations menampilkan tabel terjemahan; entri static selalu ada, sedangkan entri dinamis baru muncul setelah ada lalu lintas.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/221481-8605-13.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u20-show-stats",
+      "statement": "show ip nat statistics menampilkan jumlah terjemahan, interface inside dan outside, serta hit dan miss.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/221481-8605-13.html"
+    },
+    {
+      "id": "ccna-f-u20-clear",
+      "statement": "clear ip nat translation * menghapus entri dinamis dari tabel sebelum timeout.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/221481-8605-13.html"
+    },
+    {
+      "id": "ccna-f-u20-debug",
+      "statement": "debug ip nat menampilkan setiap paket yang diterjemahkan, berguna saat menguji dengan ping.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/221481-8605-13.html"
+    },
+    {
+      "id": "ccna-f-u20-faults",
+      "statement": "Penyebab NAT gagal yang umum: interface inside dan outside tertukar atau tidak ditandai, access list tidak cocok dengan alamat dalam, dan tidak ada route keluar.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/network-address-translation-nat/221481-8605-13.html",
+      "verify": true
+    }
+  ]
+}

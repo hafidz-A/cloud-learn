@@ -1,11 +1,13 @@
 import { Fragment } from 'react'
 import { TERM_PATTERN, findTerm } from '../content/glossary'
+import { useActiveCourse } from '../store/course'
 
 /**
  * Text with glossary abbreviations marked up as <abbr>. The expansion shows as
  * a tooltip on desktop; a long press opens the glossary card (see useGlossaryPress).
  */
 export function GlossaryText({ text }: { text: string }) {
+  const course = useActiveCourse()
   const parts: (string | { word: string; term: string })[] = []
   let last = 0
   for (const m of text.matchAll(TERM_PATTERN)) {
@@ -26,7 +28,7 @@ export function GlossaryText({ text }: { text: string }) {
           <abbr
             key={i}
             data-term={p.term}
-            title={findTerm(p.term)?.expansion}
+            title={findTerm(p.term, course)?.expansion}
             className="cursor-help decoration-tinta-lembut decoration-dotted underline-offset-4 [text-decoration-line:underline] [-webkit-touch-callout:none]"
           >
             {p.word}

@@ -1,0 +1,1441 @@
+{
+  "id": "ccna-u24-keamanan-l2",
+  "path": 4,
+  "title": "Keamanan Layer 2",
+  "lessons": [
+    {
+      "id": "ccna-u24-l1",
+      "title": "Port security",
+      "items": [
+        {
+          "id": "ccna-u24-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "l2-threats"
+          ],
+          "title": "Ancaman di Layer 2",
+          "body": "Penyerang yang tersambung ke port switch bisa membanjiri tabel MAC (Media Access Control), memasang server DHCP (Dynamic Host Configuration Protocol) palsu, mengirim ARP (Address Resolution Protocol) palsu, atau mengirim Router Advertisement IPv6 palsu. Switch Cisco punya pertahanan untuk masing-masing. Unit ini membahasnya satu per satu, mulai dari port security.",
+          "keyPoints": [
+            "Banjir MAC: port security",
+            "DHCP palsu: DHCP snooping",
+            "ARP palsu: DAI (Dynamic ARP Inspection)"
+          ],
+          "visual": "L2Defenses",
+          "teaches": [
+            "ccna-f-u24-psec-flood",
+            "ccna-f-u24-snoop",
+            "ccna-f-u24-dai"
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-e1",
+          "type": "match",
+          "concept": "l2-threats",
+          "prompt": "Match each attack to the switch feature that stops it.",
+          "pairs": [
+            [
+              "MAC (Media Access Control) flooding",
+              "Port security"
+            ],
+            [
+              "Rogue DHCP (Dynamic Host Configuration Protocol) server",
+              "DHCP snooping"
+            ],
+            [
+              "ARP (Address Resolution Protocol) spoofing",
+              "Dynamic ARP Inspection"
+            ]
+          ],
+          "explanation": "Port security membatasi MAC (Media Access Control) per port, DHCP (Dynamic Host Configuration Protocol) snooping menyaring server palsu, dan DAI (Dynamic ARP Inspection) memeriksa ARP (Address Resolution Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-psec-flood",
+            "ccna-f-u24-snoop",
+            "ccna-f-u24-dai"
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "port-security"
+          ],
+          "title": "Port security",
+          "body": "Port security membatasi alamat MAC (Media Access Control) yang boleh mengirim lewat sebuah port. Port harus access atau trunk yang statis; di port dinamis perintahnya ditolak. Bawaannya hanya satu alamat dan pelanggaran membuat port mati. sticky mempelajari alamat pertama secara dinamis lalu menuliskannya ke running-config.",
+          "keyPoints": [
+            "switchport mode access dulu",
+            "Bawaan: 1 MAC, shutdown",
+            "sticky: pelajari dan simpan"
+          ],
+          "teaches": [
+            "ccna-f-u24-psec",
+            "ccna-f-u24-psec-mode",
+            "ccna-f-u24-psec-default",
+            "ccna-f-u24-sticky"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface fa0/5",
+                  "note": "Masuk ke mode konfigurasi interface fa0/5; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "switchport mode access",
+                  "note": "Menjadikan port ini port access, anggota satu VLAN (Virtual LAN) saja."
+                },
+                {
+                  "command": "switchport port-security",
+                  "note": "Menyalakan port security di port ini."
+                },
+                {
+                  "command": "switchport port-security maximum 2",
+                  "note": "Membolehkan paling banyak 2 alamat MAC (Media Access Control) di port ini."
+                },
+                {
+                  "command": "switchport port-security mac-address sticky",
+                  "note": "Mempelajari alamat MAC (Media Access Control) yang datang dan menyimpannya ke running-config."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-e2",
+          "type": "ios",
+          "concept": "port-security",
+          "prompt": "On SW1, make Fa0/5 an access port with port security that allows two MAC (Media Access Control) addresses, learned with sticky.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport port-security"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport port-security maximum 2"
+              },
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport port-security mac-address sticky"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/5",
+            "switchport mode access",
+            "switchport port-security",
+            "switchport port-security maximum 2",
+            "switchport port-security mac-address sticky",
+            "end"
+          ],
+          "explanation": "Port dibuat access dulu, lalu port security diaktifkan dengan maksimum dua alamat sticky.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-psec-mode",
+            "ccna-f-u24-psec",
+            "ccna-f-u24-sticky"
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-e3",
+          "type": "exhibit",
+          "concept": "port-security",
+          "prompt": "Refer to the exhibit. Why was the command rejected?",
+          "outputs": [
+            {
+              "title": "SW1(config-if)# switchport port-security",
+              "text": "Command rejected: FastEthernet0/7 is a dynamic port."
+            }
+          ],
+          "options": [
+            "The port is still in a dynamic switchport mode",
+            "Port security is not supported on FastEthernet ports",
+            "The maximum must be set first",
+            "The port is shut down"
+          ],
+          "answer": 0,
+          "explanation": "Port security butuh port access atau trunk yang statis; port bawaan 2960 masih dinamis.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-psec-mode"
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-e4",
+          "type": "truefalse",
+          "concept": "port-security",
+          "prompt": "Without extra settings, port security allows one MAC (Media Access Control) address and shuts the port down on a violation.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Itu nilai bawaan port security.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-psec-default"
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "psec-violation"
+          ],
+          "title": "Mode pelanggaran",
+          "body": "Saat alamat ke sekian datang melebihi batas, ada tiga pilihan. protect membuang frame-nya tanpa pemberitahuan. restrict juga membuang, tetapi mencatat syslog, mengirim trap SNMP (Simple Network Management Protocol), dan menaikkan penghitung. shutdown, bawaannya, membuat port err-disabled. Port itu dipulihkan dengan shutdown lalu no shutdown, atau otomatis dengan errdisable recovery.",
+          "keyPoints": [
+            "protect: buang diam-diam",
+            "restrict: buang dan catat",
+            "shutdown: err-disabled"
+          ],
+          "visual": "PsecModes",
+          "teaches": [
+            "ccna-f-u24-psec-protect",
+            "ccna-f-u24-psec-restrict",
+            "ccna-f-u24-psec-shutdown",
+            "ccna-f-u24-errdisable"
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-e5",
+          "type": "ios",
+          "concept": "psec-violation",
+          "prompt": "Port security is on for Fa0/5. Change the violation mode so unknown frames are dropped and logged, but the port stays up.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "interface FastEthernet0/5",
+              "lines": [
+                "switchport mode access",
+                "switchport port-security"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/5",
+                "line": "switchport port-security violation restrict"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/5",
+            "switchport port-security violation restrict",
+            "end"
+          ],
+          "explanation": "restrict membuang dan mencatat tanpa mematikan port.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-psec-restrict"
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-e6",
+          "type": "choice",
+          "concept": "psec-violation",
+          "prompt": "Which violation mode drops frames from unknown addresses without any log message?",
+          "options": [
+            "protect",
+            "restrict",
+            "shutdown",
+            "sticky"
+          ],
+          "answer": 0,
+          "explanation": "protect membuang tanpa pemberitahuan. restrict mencatat, shutdown mematikan port, dan sticky bukan mode pelanggaran.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-psec-protect",
+            "ccna-f-u24-psec-restrict"
+          ]
+        },
+        {
+          "id": "ccna-u24-l1-e7",
+          "type": "exhibit",
+          "concept": "psec-violation",
+          "prompt": "Refer to the exhibit. How can the administrator bring Fa0/5 back up after removing the unknown device?",
+          "outputs": [
+            {
+              "title": "SW1#",
+              "text": "%PORT_SECURITY-2-PSECURE_VIOLATION: Security violation occurred, caused by MAC address 0050.7966.6801 on port FastEthernet0/5.\n%PM-4-ERR_DISABLE: psecure-violation error detected on Fa0/5, putting Fa0/5 in err-disable state"
+            }
+          ],
+          "options": [
+            "Enter shutdown and then no shutdown on the interface",
+            "Change the mode with switchport port-security violation protect",
+            "Reload the switch, because nothing else clears err-disabled",
+            "Clear the MAC (Media Access Control) address table with clear mac address-table"
+          ],
+          "answer": 0,
+          "explanation": "Port err-disabled dipulihkan dengan shutdown lalu no shutdown, atau otomatis dengan errdisable recovery.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-errdisable",
+            "ccna-f-u24-psec-shutdown"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u24-l2",
+      "title": "DHCP snooping",
+      "items": [
+        {
+          "id": "ccna-u24-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "dhcp-snooping"
+          ],
+          "title": "DHCP snooping",
+          "body": "Server DHCP (Dynamic Host Configuration Protocol) palsu di port pengguna bisa memberi gateway palsu ke klien. DHCP snooping menyaring pesan DHCP: semua port bawaannya untrusted, dan pesan dari sisi server, seperti offer dan ack, dibuang di port untrusted. Port menuju server yang sah ditandai ip dhcp snooping trust. Aktifkan dengan ip dhcp snooping dan ip dhcp snooping vlan.",
+          "keyPoints": [
+            "Bawaan: semua port untrusted",
+            "Offer di port untrusted dibuang",
+            "trust di uplink ke server sah"
+          ],
+          "visual": "SnoopTrust",
+          "teaches": [
+            "ccna-f-u24-snoop",
+            "ccna-f-u24-snoop-trust",
+            "ccna-f-u24-snoop-enable"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip dhcp snooping",
+                  "note": "Menyalakan DHCP (Dynamic Host Configuration Protocol) snooping secara global."
+                },
+                {
+                  "command": "ip dhcp snooping vlan 110",
+                  "note": "Menerapkan DHCP (Dynamic Host Configuration Protocol) snooping di VLAN (Virtual LAN) 110."
+                },
+                {
+                  "command": "interface g0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip dhcp snooping trust",
+                  "note": "Mempercayai port ini, misalnya uplink ke server DHCP (Dynamic Host Configuration Protocol) yang sah."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u24-l2-e1",
+          "type": "ios",
+          "concept": "dhcp-snooping",
+          "prompt": "On SW1, enable DHCP (Dynamic Host Configuration Protocol) snooping for VLAN (Virtual LAN) 10 and trust G0/1, the uplink toward the real DHCP server.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "ip dhcp snooping"
+              },
+              {
+                "line": "ip dhcp snooping vlan 10"
+              },
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "ip dhcp snooping trust"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip dhcp snooping",
+            "ip dhcp snooping vlan 10",
+            "interface g0/1",
+            "ip dhcp snooping trust",
+            "end"
+          ],
+          "explanation": "Snooping diaktifkan secara global dan untuk VLAN (Virtual LAN) 10, lalu uplink ke server sah dipercaya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-snoop-enable",
+            "ccna-f-u24-snoop-trust"
+          ]
+        },
+        {
+          "id": "ccna-u24-l2-e2",
+          "type": "choice",
+          "concept": "dhcp-snooping",
+          "prompt": "A rogue DHCP (Dynamic Host Configuration Protocol) server is plugged into an access port where DHCP snooping is on. What happens to its offers?",
+          "options": [
+            "They are dropped because the port is untrusted",
+            "They are forwarded because offers are broadcast",
+            "They are forwarded only to VLAN (Virtual LAN) 1",
+            "The switch shuts down every port"
+          ],
+          "answer": 0,
+          "explanation": "Port pengguna untrusted, jadi pesan dari sisi server dibuang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-snoop",
+            "ccna-f-u24-snoop-trust"
+          ]
+        },
+        {
+          "id": "ccna-u24-l2-e3",
+          "type": "truefalse",
+          "concept": "dhcp-snooping",
+          "prompt": "With DHCP (Dynamic Host Configuration Protocol) snooping, every port is trusted until an administrator marks it untrusted.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Bawaannya semua port untrusted; hanya uplink ke server sah yang ditandai trust.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-snoop-trust"
+          ]
+        },
+        {
+          "id": "ccna-u24-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "snoop-binding"
+          ],
+          "title": "Tabel binding dan rate limit",
+          "body": "Dari pertukaran DHCP (Dynamic Host Configuration Protocol) yang sah, switch membangun tabel binding: MAC (Media Access Control), alamat IP (Internet Protocol), masa sewa, VLAN (Virtual LAN), dan port setiap klien. Tabel ini dipakai fitur lain, seperti DAI (Dynamic ARP Inspection). Penyerang juga bisa meminta alamat terus-menerus sampai pool habis; ip dhcp snooping limit rate di port untrusted membatasi jumlah pesan per detik.",
+          "keyPoints": [
+            "Binding: MAC, IP, sewa, VLAN, port",
+            "Dipakai DAI",
+            "limit rate menahan penghabisan alamat"
+          ],
+          "teaches": [
+            "ccna-f-u24-snoop-binding",
+            "ccna-f-u24-snoop-rate"
+          ]
+        },
+        {
+          "id": "ccna-u24-l2-e4",
+          "type": "ios",
+          "concept": "snoop-binding",
+          "prompt": "DHCP (Dynamic Host Configuration Protocol) snooping is on for VLAN (Virtual LAN) 10. Limit DHCP messages on access port Fa0/3 to 15 per second.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ip dhcp snooping",
+                "ip dhcp snooping vlan 10"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/3",
+                "line": "ip dhcp snooping limit rate 15"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/3",
+            "ip dhcp snooping limit rate 15",
+            "end"
+          ],
+          "explanation": "limit rate dipasang di port untrusted tempat pengguna tersambung.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-snoop-rate"
+          ]
+        },
+        {
+          "id": "ccna-u24-l2-e5",
+          "type": "multi",
+          "concept": "snoop-binding",
+          "prompt": "Which two items are stored in the DHCP (Dynamic Host Configuration Protocol) snooping binding table? (Choose two.)",
+          "options": [
+            "The client MAC (Media Access Control) address",
+            "The switch port of the client",
+            "The DNS (Domain Name System) server address",
+            "The password of the user"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Tabel binding menyimpan MAC (Media Access Control), IP (Internet Protocol), masa sewa, VLAN (Virtual LAN), dan port. Server DNS (Domain Name System) dan password tidak.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-snoop-binding"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u24-l3",
+      "title": "Dynamic ARP Inspection",
+      "items": [
+        {
+          "id": "ccna-u24-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "dai"
+          ],
+          "title": "Dynamic ARP Inspection",
+          "body": "ARP (Address Resolution Protocol) palsu membuat korban mengirim frame ke penyerang, misalnya dengan mengaku sebagai gateway. DAI (Dynamic ARP Inspection) memeriksa setiap paket ARP di port untrusted terhadap tabel binding DHCP (Dynamic Host Configuration Protocol) snooping, dan membuang yang tidak cocok. DAI diaktifkan per VLAN (Virtual LAN) dengan ip arp inspection vlan, dan port antar switch ditandai ip arp inspection trust.",
+          "keyPoints": [
+            "Cek ARP terhadap tabel binding",
+            "ip arp inspection vlan",
+            "trust di port antar switch"
+          ],
+          "teaches": [
+            "ccna-f-u24-dai",
+            "ccna-f-u24-dai-enable",
+            "ccna-f-u24-dai-trust",
+            "ccna-f-u24-snoop-binding"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
+              },
+              "given": [
+                {
+                  "lines": [
+                    "ip dhcp snooping",
+                    "ip dhcp snooping vlan 110"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/1",
+                  "lines": [
+                    "ip dhcp snooping trust"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip arp inspection vlan 110",
+                  "note": "Menyalakan DAI (Dynamic ARP Inspection) di VLAN 110."
+                },
+                {
+                  "command": "interface g0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip arp inspection trust",
+                  "note": "Mempercayai port ini untuk DAI (Dynamic ARP Inspection), biasanya port antar switch."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u24-l3-e1",
+          "type": "ios",
+          "concept": "dai",
+          "prompt": "DHCP (Dynamic Host Configuration Protocol) snooping already runs for VLAN (Virtual LAN) 10 on SW1. Enable DAI (Dynamic ARP Inspection) for VLAN 10 and trust the uplink G0/1 to the other switch.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ip dhcp snooping",
+                "ip dhcp snooping vlan 10"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/1",
+              "lines": [
+                "ip dhcp snooping trust"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip arp inspection vlan 10"
+              },
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "ip arp inspection trust"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip arp inspection vlan 10",
+            "interface g0/1",
+            "ip arp inspection trust",
+            "end"
+          ],
+          "explanation": "DAI (Dynamic ARP Inspection) dinyalakan untuk VLAN (Virtual LAN) 10, dan uplink antar switch dipercaya supaya ARP (Address Resolution Protocol) dari sana tidak diperiksa dua kali.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-dai-enable",
+            "ccna-f-u24-dai-trust"
+          ]
+        },
+        {
+          "id": "ccna-u24-l3-e2",
+          "type": "choice",
+          "concept": "dai",
+          "prompt": "What does DAI (Dynamic ARP Inspection) compare ARP (Address Resolution Protocol) packets against?",
+          "options": [
+            "DHCP (Dynamic Host Configuration Protocol) snooping bindings",
+            "The routing table of the switch",
+            "The MAC (Media Access Control) address table only",
+            "The running configuration"
+          ],
+          "answer": 0,
+          "explanation": "DAI (Dynamic ARP Inspection) memakai pasangan IP (Internet Protocol) dan MAC (Media Access Control) dari tabel binding DHCP (Dynamic Host Configuration Protocol) snooping.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-dai",
+            "ccna-f-u24-snoop-binding"
+          ]
+        },
+        {
+          "id": "ccna-u24-l3-e3",
+          "type": "truefalse",
+          "concept": "dai",
+          "prompt": "By default, every port is untrusted for DAI (Dynamic ARP Inspection).",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Port yang perlu dilewati, seperti uplink antar switch, ditandai trust.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-dai-trust"
+          ]
+        },
+        {
+          "id": "ccna-u24-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "dai-rate"
+          ],
+          "title": "Batas laju ARP",
+          "body": "DAI (Dynamic ARP Inspection) juga membatasi laju ARP (Address Resolution Protocol). Bawaannya port untrusted boleh menerima sampai 15 paket ARP per detik. Kalau lebih, port menjadi err-disabled, sama seperti pelanggaran port security. Port trusted tidak dibatasi.",
+          "keyPoints": [
+            "Untrusted: 15 ARP per detik",
+            "Terlampaui: err-disabled",
+            "Trusted: tanpa batas"
+          ],
+          "teaches": [
+            "ccna-f-u24-dai-rate",
+            "ccna-f-u24-errdisable"
+          ]
+        },
+        {
+          "id": "ccna-u24-l3-e4",
+          "type": "choice",
+          "concept": "dai-rate",
+          "prompt": "A host on an untrusted port sends 200 ARP (Address Resolution Protocol) packets per second with default DAI (Dynamic ARP Inspection) settings. What happens?",
+          "options": [
+            "The port becomes err-disabled",
+            "The switch forwards them all",
+            "The switch trusts the port automatically",
+            "The VLAN (Virtual LAN) is deleted"
+          ],
+          "answer": 0,
+          "explanation": "Batas bawaan 15 per detik terlampaui, jadi port err-disabled.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-dai-rate"
+          ]
+        },
+        {
+          "id": "ccna-u24-l3-e5",
+          "type": "sort",
+          "concept": "dai-rate",
+          "prompt": "Sort each port by how DAI (Dynamic ARP Inspection) usually treats it.",
+          "buckets": [
+            "Trusted",
+            "Untrusted"
+          ],
+          "items": [
+            {
+              "text": "Uplink to another switch",
+              "bucket": 0
+            },
+            {
+              "text": "Access port to a PC",
+              "bucket": 1
+            },
+            {
+              "text": "Access port to a printer",
+              "bucket": 1
+            },
+            {
+              "text": "Trunk to the distribution switch",
+              "bucket": 0
+            }
+          ],
+          "explanation": "Port antar switch dipercaya; port akses ke perangkat pengguna tetap untrusted.",
+          "requires": [
+            "ccna-f-u24-dai-trust"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u24-l4",
+      "title": "Storm control",
+      "items": [
+        {
+          "id": "ccna-u24-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "storm"
+          ],
+          "title": "Storm control",
+          "body": "Loop atau kartu jaringan yang rusak bisa membanjiri jaringan dengan broadcast. Storm control memantau broadcast, multicast, atau unicast di sebuah port. Kalau lalu lintasnya melewati level yang ditentukan, misalnya 20 persen bandwidth port, sisanya dibuang. storm-control action shutdown membuat port err-disabled, dan action trap mengirim trap SNMP (Simple Network Management Protocol).",
+          "keyPoints": [
+            "Pantau broadcast, multicast, unicast",
+            "Level dalam persen bandwidth",
+            "action shutdown atau trap"
+          ],
+          "teaches": [
+            "ccna-f-u24-storm",
+            "ccna-f-u24-storm-action"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface fa0/8",
+                  "note": "Masuk ke mode konfigurasi interface fa0/8; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "storm-control broadcast level 20",
+                  "note": "Membatasi lalu lintas broadcast di port ini sampai 20 persen bandwidth."
+                },
+                {
+                  "command": "storm-control action shutdown",
+                  "note": "Saat badai terjadi, lakukan shutdown."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u24-l4-e1",
+          "type": "ios",
+          "concept": "storm",
+          "prompt": "On SW1, limit broadcast traffic on Fa0/8 to 20 percent of the port bandwidth and shut the port down when a storm happens.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/8",
+                "line": "storm-control broadcast level 20"
+              },
+              {
+                "context": "interface FastEthernet0/8",
+                "line": "storm-control action shutdown"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/8",
+            "storm-control broadcast level 20",
+            "storm-control action shutdown",
+            "end"
+          ],
+          "explanation": "Level 20 persen untuk broadcast, lalu action shutdown untuk mematikan port saat badai.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-storm",
+            "ccna-f-u24-storm-action"
+          ]
+        },
+        {
+          "id": "ccna-u24-l4-e2",
+          "type": "choice",
+          "concept": "storm",
+          "prompt": "Which feature limits the amount of broadcast traffic a port accepts?",
+          "options": [
+            "Storm control",
+            "Port security",
+            "DHCP (Dynamic Host Configuration Protocol) snooping",
+            "RA (Router Advertisement) guard"
+          ],
+          "answer": 0,
+          "explanation": "Storm control membatasi level broadcast, multicast, atau unicast.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-storm",
+            "ccna-f-u24-psec"
+          ]
+        },
+        {
+          "id": "ccna-u24-l4-e3",
+          "type": "truefalse",
+          "concept": "storm",
+          "prompt": "storm-control action trap error-disables the port during a storm.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. trap mengirim trap SNMP (Simple Network Management Protocol); shutdown yang membuat port err-disabled.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-storm-action"
+          ]
+        },
+        {
+          "id": "ccna-u24-l4-e4",
+          "type": "multi",
+          "concept": "storm",
+          "prompt": "Which two traffic types can storm control watch? (Choose two.)",
+          "options": [
+            "Broadcast",
+            "Multicast",
+            "ARP (Address Resolution Protocol) replies only",
+            "Routing updates only"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Storm control memantau broadcast, multicast, dan unicast.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-storm"
+          ]
+        },
+        {
+          "id": "ccna-u24-l4-e5",
+          "type": "match",
+          "concept": "storm",
+          "prompt": "Match each switch feature to what it watches.",
+          "pairs": [
+            [
+              "Storm control",
+              "Traffic level on a port"
+            ],
+            [
+              "Port security",
+              "Source MAC (Media Access Control) addresses on a port"
+            ],
+            [
+              "DHCP (Dynamic Host Configuration Protocol) snooping",
+              "DHCP messages on untrusted ports"
+            ],
+            [
+              "DAI (Dynamic ARP Inspection)",
+              "ARP (Address Resolution Protocol) packets against bindings"
+            ]
+          ],
+          "explanation": "Setiap fitur memantau hal yang berbeda.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-storm",
+            "ccna-f-u24-psec",
+            "ccna-f-u24-snoop",
+            "ccna-f-u24-dai"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u24-l5",
+      "title": "RA guard",
+      "items": [
+        {
+          "id": "ccna-u24-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "ra-guard"
+          ],
+          "title": "RA guard",
+          "body": "Host IPv6 memakai Router Advertisement untuk menemukan gateway dan prefix. Penyerang bisa mengirim RA (Router Advertisement) palsu supaya host memakai dia sebagai router. RA guard memblokir RA dari port yang tidak berhak. Buat policy dengan ipv6 nd raguard policy, tentukan device-role host atau router, lalu pasang dengan ipv6 nd raguard attach-policy di interface.",
+          "keyPoints": [
+            "RA palsu: router palsu",
+            "device-role host: RA diblokir",
+            "attach-policy di interface"
+          ],
+          "teaches": [
+            "ccna-f-u24-rag",
+            "ccna-f-u24-rag-policy",
+            "ccna-f-u24-rag-host",
+            "ccna-f-u05-slaac"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ipv6 nd raguard policy Klien",
+                  "note": "Membuat policy RA (Router Advertisement) guard bernama Klien."
+                },
+                {
+                  "command": "device-role host",
+                  "note": "Peran perangkat di port: host."
+                },
+                {
+                  "command": "exit",
+                  "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
+                },
+                {
+                  "command": "interface fa0/2",
+                  "note": "Masuk ke mode konfigurasi interface fa0/2; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 nd raguard attach-policy Klien",
+                  "note": "Memasang policy Klien di interface ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u24-l5-e1",
+          "type": "ios",
+          "concept": "ra-guard",
+          "prompt": "On SW1, create RA (Router Advertisement) guard policy Klien with device role host and attach it to Fa0/2.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "ipv6 nd raguard policy Klien",
+                "line": "device-role host"
+              },
+              {
+                "context": "interface FastEthernet0/2",
+                "line": "ipv6 nd raguard attach-policy Klien"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ipv6 nd raguard policy Klien",
+            "device-role host",
+            "exit",
+            "interface fa0/2",
+            "ipv6 nd raguard attach-policy Klien",
+            "end"
+          ],
+          "explanation": "Policy berperan host memblokir RA (Router Advertisement) di port pengguna, lalu dipasang di Fa0/2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-rag-policy",
+            "ccna-f-u24-rag-host"
+          ]
+        },
+        {
+          "id": "ccna-u24-l5-e2",
+          "type": "choice",
+          "concept": "ra-guard",
+          "prompt": "Which attack does RA (Router Advertisement) guard stop?",
+          "options": [
+            "A host pretending to be an IPv6 router",
+            "A host flooding the MAC (Media Access Control) table",
+            "A rogue DHCPv4 (Dynamic Host Configuration Protocol version 4) server",
+            "A broadcast storm"
+          ],
+          "answer": 0,
+          "explanation": "RA (Router Advertisement) guard memblokir Router Advertisement dari port yang bukan port router.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-rag"
+          ]
+        },
+        {
+          "id": "ccna-u24-l5-e3",
+          "type": "truefalse",
+          "concept": "ra-guard",
+          "prompt": "The default device role in an RA (Router Advertisement) guard policy is host.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Port berperan host tidak boleh mengirim Router Advertisement.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-rag-host"
+          ]
+        },
+        {
+          "id": "ccna-u24-l5-e4",
+          "type": "sort",
+          "concept": "ra-guard",
+          "prompt": "Sort each port by the RA (Router Advertisement) guard device role it should get.",
+          "buckets": [
+            "host",
+            "router"
+          ],
+          "items": [
+            {
+              "text": "Port to a user PC",
+              "bucket": 0
+            },
+            {
+              "text": "Port to the real IPv6 gateway",
+              "bucket": 1
+            },
+            {
+              "text": "Port to a printer",
+              "bucket": 0
+            },
+            {
+              "text": "Port to a wireless guest AP (access point)",
+              "bucket": 0
+            }
+          ],
+          "explanation": "Hanya port ke router sah yang berperan router; port ke perangkat pengguna berperan host.",
+          "requires": [
+            "ccna-f-u24-rag-policy",
+            "ccna-f-u24-rag-host"
+          ]
+        },
+        {
+          "id": "ccna-u24-l5-e5",
+          "type": "choice",
+          "concept": "ra-guard",
+          "prompt": "Which command applies RA (Router Advertisement) guard policy Klien to an interface?",
+          "options": [
+            "ipv6 nd raguard attach-policy Klien",
+            "ipv6 nd raguard policy Klien",
+            "device-role host under the policy Klien",
+            "ip access-group Klien in"
+          ],
+          "answer": 0,
+          "explanation": "attach-policy memasang policy di interface; policy dibuat dengan ipv6 nd raguard policy, dan device-role diatur di dalamnya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-rag-policy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u24-l6",
+      "title": "Lab: keamanan Layer 2",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u24-l5"
+      },
+      "items": [
+        {
+          "id": "ccna-u24-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "l2-lab"
+          ],
+          "title": "Rencana lab",
+          "body": "SW1 melayani VLAN (Virtual LAN) 10 untuk pengguna, dengan server DHCP (Dynamic Host Configuration Protocol) sah di belakang uplink G0/1. Port pengguna Fa0/1 dan Fa0/2 diberi port security sticky. DHCP snooping dan DAI (Dynamic ARP Inspection) diaktifkan untuk VLAN 10 dengan uplink sebagai trusted. Lalu sebuah PC asing dicolokkan untuk memicu pelanggaran.",
+          "keyPoints": [
+            "Port security sticky di port pengguna",
+            "DHCP snooping dan DAI untuk VLAN 10",
+            "Picu pelanggaran dan pulihkan"
+          ],
+          "teaches": [
+            "ccna-f-u24-psec",
+            "ccna-f-u24-sticky",
+            "ccna-f-u24-snoop",
+            "ccna-f-u24-dai",
+            "ccna-f-u24-errdisable"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
+              },
+              "given": [
+                {
+                  "context": "vlan 110",
+                  "lines": [
+                    "name Pengguna"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface fa0/1",
+                  "note": "Masuk ke mode konfigurasi interface fa0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "switchport mode access",
+                  "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+                },
+                {
+                  "command": "switchport access vlan 110",
+                  "note": "Memasukkan port ini ke VLAN 110."
+                },
+                {
+                  "command": "switchport port-security",
+                  "note": "Menyalakan port security di port ini."
+                },
+                {
+                  "command": "switchport port-security mac-address sticky",
+                  "note": "Mempelajari alamat MAC (Media Access Control) yang datang dan menyimpannya ke running-config."
+                },
+                {
+                  "command": "exit",
+                  "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
+                },
+                {
+                  "command": "ip dhcp snooping",
+                  "note": "Menyalakan DHCP (Dynamic Host Configuration Protocol) snooping secara global."
+                },
+                {
+                  "command": "ip dhcp snooping vlan 110",
+                  "note": "Menerapkan DHCP (Dynamic Host Configuration Protocol) snooping di VLAN 110."
+                },
+                {
+                  "command": "ip arp inspection vlan 110",
+                  "note": "Menyalakan DAI (Dynamic ARP Inspection) di VLAN 110."
+                },
+                {
+                  "command": "interface g0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip dhcp snooping trust",
+                  "note": "Mempercayai port ini, misalnya uplink ke server DHCP (Dynamic Host Configuration Protocol) yang sah."
+                },
+                {
+                  "command": "ip arp inspection trust",
+                  "note": "Mempercayai port ini untuk DAI (Dynamic ARP Inspection), biasanya port antar switch."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u24-l6-e1",
+          "type": "ios",
+          "concept": "l2-lab",
+          "prompt": "Secure SW1: on Fa0/1 set access VLAN (Virtual LAN) 10 and port security with sticky learning; enable DHCP (Dynamic Host Configuration Protocol) snooping and DAI (Dynamic ARP Inspection) for VLAN 10, with G0/1 trusted for both. Save.",
+          "device": {
+            "hostname": "SW1",
+            "model": "c2960"
+          },
+          "given": [
+            {
+              "context": "vlan 10",
+              "lines": [
+                "name Pengguna"
+              ]
+            }
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport mode access"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport access vlan 10"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport port-security"
+              },
+              {
+                "context": "interface FastEthernet0/1",
+                "line": "switchport port-security mac-address sticky"
+              },
+              {
+                "line": "ip dhcp snooping"
+              },
+              {
+                "line": "ip dhcp snooping vlan 10"
+              },
+              {
+                "line": "ip arp inspection vlan 10"
+              },
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "ip dhcp snooping trust"
+              },
+              {
+                "context": "interface GigabitEthernet0/1",
+                "line": "ip arp inspection trust"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "interface fa0/1",
+            "switchport mode access",
+            "switchport access vlan 10",
+            "switchport port-security",
+            "switchport port-security mac-address sticky",
+            "exit",
+            "ip dhcp snooping",
+            "ip dhcp snooping vlan 10",
+            "ip arp inspection vlan 10",
+            "interface g0/1",
+            "ip dhcp snooping trust",
+            "ip arp inspection trust",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Port pengguna diamankan, snooping dan DAI (Dynamic ARP Inspection) dinyalakan untuk VLAN (Virtual LAN) 10, uplink dipercaya untuk keduanya, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-psec-mode",
+            "ccna-f-u24-sticky",
+            "ccna-f-u24-snoop-enable",
+            "ccna-f-u24-snoop-trust",
+            "ccna-f-u24-dai-enable",
+            "ccna-f-u24-dai-trust",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u24-l6-e2",
+          "type": "exhibit",
+          "concept": "l2-lab",
+          "prompt": "Refer to the exhibit. What happened on Fa0/1?",
+          "outputs": [
+            {
+              "title": "SW1# show port-security interface fa0/1",
+              "text": "Port Security              : Enabled\nPort Status                : Secure-shutdown\nViolation Mode             : Shutdown\nMaximum MAC Addresses      : 1\nTotal MAC Addresses        : 1\nSticky MAC Addresses       : 1\nLast Source Address:Vlan   : 0050.7966.6802:10\nSecurity Violation Count   : 1"
+            }
+          ],
+          "options": [
+            "A violation shut it down",
+            "DHCP (Dynamic Host Configuration Protocol) snooping dropped an offer",
+            "The sticky address was deleted",
+            "Storm control blocked broadcasts"
+          ],
+          "answer": 0,
+          "explanation": "Maksimum satu alamat; alamat kedua memicu pelanggaran, dan mode bawaan shutdown membuat port Secure-shutdown.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-psec-default",
+            "ccna-f-u24-psec-shutdown"
+          ]
+        },
+        {
+          "id": "ccna-u24-l6-e3",
+          "type": "choice",
+          "concept": "l2-lab",
+          "prompt": "After the foreign PC is removed, which steps bring Fa0/1 back up?",
+          "options": [
+            "Enter shutdown, then no shutdown, on Fa0/1",
+            "Enter no ip dhcp snooping",
+            "Remove the sticky address from G0/1",
+            "Enter ip arp inspection trust on Fa0/1"
+          ],
+          "answer": 0,
+          "explanation": "Port err-disabled dipulihkan dengan shutdown lalu no shutdown.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u24-errdisable"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u24-psec",
+      "statement": "Port security membatasi alamat MAC yang boleh mengirim lewat sebuah port; alamat yang diizinkan disebut secure MAC address.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html"
+    },
+    {
+      "id": "ccna-f-u24-psec-flood",
+      "statement": "Port security menahan serangan banjir MAC, yang mengisi tabel MAC switch dengan alamat palsu supaya switch membanjiri frame ke semua port.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/switches/catalyst-3750-series-switches/72846-layer2-secftrs-catl3fixed.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u24-psec-mode",
+      "statement": "Port security hanya bisa dipasang di port access atau trunk yang statis; di port dinamis, perintahnya ditolak dengan Command rejected.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html"
+    },
+    {
+      "id": "ccna-f-u24-psec-default",
+      "statement": "Bawaan port security: maksimum satu secure MAC address dan mode pelanggaran shutdown.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html"
+    },
+    {
+      "id": "ccna-f-u24-psec-protect",
+      "statement": "Mode protect membuang frame dari alamat tak dikenal tanpa pemberitahuan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html"
+    },
+    {
+      "id": "ccna-f-u24-psec-restrict",
+      "statement": "Mode restrict membuang frame dari alamat tak dikenal, mencatat syslog, mengirim trap SNMP, dan menaikkan penghitung pelanggaran.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html"
+    },
+    {
+      "id": "ccna-f-u24-psec-shutdown",
+      "statement": "Mode shutdown membuat port err-disabled saat terjadi pelanggaran, dan juga mencatat syslog serta mengirim trap SNMP.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html"
+    },
+    {
+      "id": "ccna-f-u24-sticky",
+      "statement": "switchport port-security mac-address sticky mempelajari alamat MAC secara dinamis dan menuliskannya ke running-config sebagai alamat sticky.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html"
+    },
+    {
+      "id": "ccna-f-u24-errdisable",
+      "statement": "Port yang err-disabled karena port security dipulihkan dengan shutdown lalu no shutdown, atau otomatis dengan errdisable recovery cause psecure-violation.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960l/software/15-2_7_e/configuration_guide/sec/b_1527e_security_2960l_cg/port_security.html"
+    },
+    {
+      "id": "ccna-f-u24-snoop",
+      "statement": "DHCP snooping menyaring pesan DHCP dari port untrusted, sehingga server DHCP palsu di port pengguna tidak bisa memberi alamat.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-4SY/config_guide/sup6T/15_3_sy_swcg_6T/dhcp_snooping.html"
+    },
+    {
+      "id": "ccna-f-u24-snoop-trust",
+      "statement": "Semua port bawaannya untrusted untuk DHCP snooping; port menuju server DHCP yang sah ditandai ip dhcp snooping trust.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-4SY/config_guide/sup6T/15_3_sy_swcg_6T/dhcp_snooping.html"
+    },
+    {
+      "id": "ccna-f-u24-snoop-binding",
+      "statement": "DHCP snooping membangun tabel binding berisi alamat MAC, alamat IP, masa sewa, VLAN, dan port setiap klien.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-4SY/config_guide/sup6T/15_3_sy_swcg_6T/dhcp_snooping.html"
+    },
+    {
+      "id": "ccna-f-u24-snoop-enable",
+      "statement": "DHCP snooping diaktifkan dengan ip dhcp snooping lalu ip dhcp snooping vlan <daftar VLAN>.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-4SY/config_guide/sup6T/15_3_sy_swcg_6T/dhcp_snooping.html"
+    },
+    {
+      "id": "ccna-f-u24-snoop-rate",
+      "statement": "ip dhcp snooping limit rate <pps> di port untrusted membatasi jumlah pesan DHCP per detik, untuk menahan serangan yang menghabiskan alamat.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/15-4SY/config_guide/sup6T/15_3_sy_swcg_6T/dhcp_snooping.html"
+    },
+    {
+      "id": "ccna-f-u24-dai",
+      "statement": "Dynamic ARP Inspection memeriksa paket ARP di port untrusted terhadap tabel binding DHCP snooping dan membuang yang tidak cocok, sehingga ARP palsu ditolak.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750x_3560x/software/release/15-0_1_se/configuration/guide/3750xcg/swdynarp.html"
+    },
+    {
+      "id": "ccna-f-u24-dai-trust",
+      "statement": "Semua port bawaannya untrusted untuk DAI; port antar switch ditandai ip arp inspection trust.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750x_3560x/software/release/15-0_1_se/configuration/guide/3750xcg/swdynarp.html"
+    },
+    {
+      "id": "ccna-f-u24-dai-enable",
+      "statement": "DAI diaktifkan per VLAN dengan ip arp inspection vlan <daftar VLAN>.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750x_3560x/software/release/15-0_1_se/configuration/guide/3750xcg/swdynarp.html"
+    },
+    {
+      "id": "ccna-f-u24-dai-rate",
+      "statement": "Bawaannya DAI membatasi paket ARP di port untrusted sampai 15 paket per detik; kalau terlampaui, port menjadi err-disabled.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750x_3560x/software/release/15-0_1_se/configuration/guide/3750xcg/swdynarp.html"
+    },
+    {
+      "id": "ccna-f-u24-storm",
+      "statement": "Storm control memantau lalu lintas broadcast, multicast, atau unicast di sebuah port dan membuangnya saat melewati level yang ditentukan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/flowcontrol-stormcontrol/flow-control-and-storm-control-configuration-guide/m-storm-control.html"
+    },
+    {
+      "id": "ccna-f-u24-storm-action",
+      "statement": "storm-control action shutdown membuat port err-disabled saat badai terjadi, sedangkan storm-control action trap mengirim trap SNMP.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/flowcontrol-stormcontrol/flow-control-and-storm-control-configuration-guide/m-storm-control.html"
+    },
+    {
+      "id": "ccna-f-u24-rag",
+      "statement": "RA guard memblokir Router Advertisement IPv6 dari port yang tidak berhak, sehingga host tidak memakai router palsu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipv6_fhsec/configuration/15-e/ip6f-15-e-book/ip6-ra-guard.html"
+    },
+    {
+      "id": "ccna-f-u24-rag-policy",
+      "statement": "ipv6 nd raguard policy <nama> membuat policy, device-role host atau router menentukan peran perangkat di port, dan ipv6 nd raguard attach-policy memasangnya di interface.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipv6_fhsec/configuration/15-e/ip6f-15-e-book/ip6-ra-guard.html"
+    },
+    {
+      "id": "ccna-f-u24-rag-host",
+      "statement": "Bawaan device-role adalah host, dan port berperan host tidak boleh mengirim Router Advertisement.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipv6_fhsec/configuration/15-e/ip6f-15-e-book/ip6-ra-guard.html"
+    }
+  ]
+}

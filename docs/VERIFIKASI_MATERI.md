@@ -497,3 +497,274 @@ tidak berlabel, tapi langkah bersih-bersihnya selalu mengingatkan bahwa VM ditag
 Dua hal yang sengaja ditulis di tips karena sering membuat bingung saat membersihkan: vault Recovery Services
 yang berisi data soft delete baru bisa dihapus setelah masa soft delete lewat, dan blob Archive yang dihapus
 sebelum 180 hari kena biaya early deletion.
+
+## CCNA 200-301 v2.0 (3 Oktober 2026)
+
+Course CCNA (rencana: `LANGIT_CCNA_PLAN.md`) punya 28 unit, 156 lesson, 940 soal, 338 kartu materi, 21 lab, dan
+623 fakta bersumber. Bagian ini mencatat cara faktanya dicek dan apa yang masih harus dicek ulang.
+
+### Versi ujian
+
+Materi mengikuti exam topics resmi CCNA 200-301 **v2.0**. Menurut halaman ujian CCNA di cisco.com, v1.1 masih
+dipakai sampai 2 Februari 2027 dan v2.0 mulai 3 Februari 2027. Kalau ujian diambil sebelum 3 Februari 2027,
+yang keluar adalah v1.1, jadi sebagian materi (misalnya Unit 28 tentang AI) tidak akan diuji.
+
+### Cara mengecek
+
+- **Domain resmi tidak bisa dibuka langsung.** Dari lingkungan pengembangan, cisco.com, rfc-editor.org,
+  docs.ansible.com, dan sejenisnya diblokir kebijakan jaringan. Setiap fakta dicek lewat **pencarian web yang
+  dibatasi ke domain resmi** (cisco.com dan subdomainnya, rfc-editor.org, docs.ansible.com, learn.microsoft.com
+  untuk perintah Windows, man7.org untuk perintah Linux, networkmanager.dev untuk nmcli). `source` setiap fakta adalah URL resmi dari hasil
+  pencarian itu, dan validator menolak sumber di luar daftar domain tersebut.
+- **Kalimat yang tidak bisa dipastikan** dari ringkasan hasil pencarian diberi `verify: true`. Fakta ini tetap
+  dipakai karena sesuai praktik umum, tetapi belum dicocokkan kalimat per kalimat. Daftarnya ada di bawah.
+- **Simulator CLI hanya memakai sintaks yang terdokumentasi.** Perintah yang diterima simulator dan pesan
+  galatnya diambil dari dokumentasi Cisco: misalnya `% Bridge Priority must be in increments of 4096.`,
+  `Command rejected: <interface> is a dynamic port.` untuk port security, format `show access-lists` dengan
+  `wildcard bits`, dan entri static di `show ip nat translations`. Output yang tidak disimulasikan ditandai
+  sebagai pesan **Langit**, bukan dikarang seolah output IOS. Contohnya entri NAT dinamis yang butuh lalu lintas.
+- **Setiap perintah di langkah lab** diputar ulang di simulator oleh validator, jadi lab dan latihan di app
+  memakai sintaks yang sama.
+- **Bias jawaban dicek per unit:** sebaran benar/salah dan jumlah soal yang pilihan benarnya paling panjang.
+  Lihat juga baris "kepanjangan singkatan membuat jawaban benar paling panjang" di `docs/BUGS_LOG.md`.
+
+### Sebaran sumber fakta
+
+| Domain | Fakta |
+|---|---|
+| cisco.com | 472 |
+| rfc-editor.org | 56 |
+| datatracker.ietf.org | 31 |
+| docs.ansible.com | 22 |
+| learn.microsoft.com | 8 |
+| learningnetwork.cisco.com | 7 |
+| blogs.cisco.com | 5 |
+| iana.org | 5 |
+| outshift.cisco.com | 4 |
+| man7.org | 3 |
+| support.apple.com | 3 |
+| developer.cisco.com | 2 |
+| netascode.cisco.com | 2 |
+| standards.ieee.org | 2 |
+| networkmanager.dev | 1 |
+
+### Lab
+
+Ke-21 lab punya label status. Semuanya masih **belum dicoba langsung** di Packet Tracer atau CML (Cisco Modeling
+Labs): langkah dan perintahnya baru dicek ke dokumentasi dan diputar di simulator. Hal yang sengaja ditulis di
+catatan lab karena bisa berbeda di alatnya:
+
+- Packet Tracer bisa menampilkan pesan pembuatan kunci RSA yang sedikit berbeda dari IOS asli (Unit 19).
+- Dukungan DHCP snooping dan DAI di Packet Tracer bergantung versinya (Unit 24).
+- Lab Ansible (Unit 27) memakai CML Free dengan IOSv karena Packet Tracer tidak bisa menjalankan Ansible; nama
+  interface IOSv berbeda dari ISR4331.
+
+Setelah lab dicoba, isi `testedIn` di `src/content/ccna/labs.json` dengan alat dan versinya, dan catat
+perbedaan di `docs/BUGS_LOG.md`.
+
+### Masih bertanda `verify` (118 fakta)
+
+Fakta ini perlu dicocokkan kalimat per kalimat setelah domain resmi bisa dibuka.
+
+
+**Fondasi jaringan**
+
+- `ccna-f-u01-layer-map`: Layer application TCP/IP sepadan dengan layer 5 sampai 7 OSI, transport dengan layer 4, internet dengan layer 3, dan link dengan layer 1 dan 2.
+- `ccna-f-u01-pdu`: Unit data per layer disebut segmen di transport (TCP), paket di network, frame di data link, dan bit di physical.
+- `ccna-f-u01-encap`: Saat mengirim, setiap layer menambahkan header miliknya ke data dari layer di atasnya (enkapsulasi); penerima melepasnya dari bawah ke atas (de-enkapsulasi).
+- `ccna-f-u01-frame-fields`: Frame Ethernet berisi MAC tujuan, MAC sumber, field type/length, data, dan FCS (Frame Check Sequence) 4 byte di akhir untuk mendeteksi frame yang rusak.
+- `ccna-f-u01-socket`: Satu koneksi dikenali dari alamat IP dan port sumber serta alamat IP dan port tujuan; klien memakai port sumber acak dari rentang dynamic.
+
+**Mengenal Cisco IOS**
+
+- `ccna-f-u02-do`: Awalan do menjalankan perintah EXEC, misalnya do show ip interface brief, tanpa keluar dari mode konfigurasi.
+- `ccna-f-u02-hostname`: Perintah hostname di global configuration mengganti nama perangkat, dan prompt langsung memakai nama baru itu.
+- `ccna-f-u02-erase`: erase startup-config menghapus konfigurasi tersimpan, jadi setelah reload perangkat menyala tanpa konfigurasi.
+- `ccna-f-u02-history`: Panah atas (atau Ctrl+P) memanggil lagi perintah sebelumnya dari riwayat perintah.
+
+**Kabel dan interface**
+
+- `ccna-f-u03-pins`: Ethernet 10 dan 100 Mbps memakai dua pasang kabel di pin 1-2 dan 3-6; 1000BASE-T memakai keempat pasang.
+- `ccna-f-u03-straight-cross`: Kabel straight-through menyambung pin ke pin yang sama, sedangkan kabel crossover menukar pasangan 1-2 dengan 3-6; secara klasik crossover dipakai antar perangkat sejenis, misalnya switch ke switch.
+- `ccna-f-u03-emi`: Fiber membawa sinyal cahaya, jadi tidak terganggu interferensi elektromagnetik yang bisa merusak sinyal di kabel tembaga.
+- `ccna-f-u03-status-cmd`: show interfaces status di switch menampilkan status (connected, notconnect, err-disabled, disabled), VLAN, duplex, speed, dan jenis port; awalan a- seperti a-full berarti hasil autonegotiation.
+
+**IPv4 dan subnetting**
+
+- `ccna-f-u04-and`: Alamat network didapat dari operasi AND per bit antara alamat dan subnet mask: hasilnya 1 hanya kalau kedua bit bernilai 1.
+- `ccna-f-u04-vlsm-order`: Saat merencanakan VLSM, subnet dialokasikan dari kebutuhan host terbesar ke terkecil supaya setiap blok jatuh di kelipatan ukurannya dan tidak tumpang tindih.
+- `ccna-f-u04-p2p-30`: Prefix /30 punya 4 alamat dan 2 alamat host, cukup untuk link point-to-point antar dua router.
+- `ccna-f-u04-overlap`: IOS menolak alamat interface yang subnet-nya tumpang tindih dengan interface lain di router yang sama, dengan pesan seperti "% 10.1.1.0 overlaps with GigabitEthernet0/0/0".
+- `ccna-f-u04-bad-mask`: IOS menolak alamat network atau broadcast sebagai alamat interface dengan pesan seperti "Bad mask /24 for address 192.168.1.0".
+
+**IPv6**
+
+- `ccna-f-u05-unicast-routing`: ipv6 unicast-routing mengaktifkan penerusan paket IPv6 unicast di router Cisco; tanpa perintah ini router juga tidak mengirim RA.
+- `ccna-f-u05-multi-addr`: Interface IPv6 bisa punya beberapa alamat global; perintah ipv6 address berikutnya menambah alamat, tidak menggantikan yang lama, jadi alamat yang salah dihapus dengan no ipv6 address.
+- `ccna-f-u05-show-v6-br`: show ipv6 interface brief menampilkan status setiap interface beserta link-local dan alamat global-nya.
+
+**Wireless**
+
+- `ccna-f-u06-range`: Pada daya yang sama, sinyal 5 GHz melemah lebih cepat daripada 2,4 GHz, jadi jangkauan sel 5 GHz lebih kecil.
+- `ccna-f-u06-bss-ess`: Satu AP beserta kliennya membentuk BSS (Basic Service Set) yang dikenali dari BSSID, yaitu MAC radio AP; beberapa AP dengan SSID yang sama membentuk ESS (Extended Service Set), sehingga klien bisa roaming.
+- `ccna-f-u06-aci`: Adjacent channel interference terjadi saat AP yang berdekatan memakai channel yang tumpang tindih sebagian, misalnya channel 1 dan 3 di 2,4 GHz.
+- `ccna-f-u06-width`: Channel bisa digabung menjadi 40, 80, atau 160 MHz untuk throughput yang lebih tinggi, tapi jumlah channel yang tidak tumpang tindih jadi berkurang.
+- `ccna-f-u06-std-legacy`: 802.11b memakai 2,4 GHz sampai 11 Mbps, 802.11a memakai 5 GHz sampai 54 Mbps, dan 802.11g memakai 2,4 GHz sampai 54 Mbps.
+- `ccna-f-u06-std-n-ac`: 802.11n (Wi-Fi 4) memakai 2,4 dan 5 GHz dengan MIMO (multiple-input multiple-output), sedangkan 802.11ac (Wi-Fi 5) hanya memakai 5 GHz.
+- `ccna-f-u06-wep`: WEP (Wired Equivalent Privacy) memakai kunci statis bersama 64 atau 128 bit; WPA dibuat untuk menutup kelemahannya, dan WEP tidak boleh dipakai lagi.
+- `ccna-f-u06-psk-len`: PSK WPA dan WPA2 berisi 8 sampai 63 karakter teks.
+- `ccna-f-u06-pmf`: WPA3 mewajibkan PMF (Protected Management Frames), yang melindungi frame manajemen seperti deauthentication dari pemalsuan.
+- `ccna-f-u06-wpa3-6e`: Di band 6 GHz (Wi-Fi 6E), WPA2 tidak boleh dipakai; WLAN harus memakai WPA3 atau OWE (Opportunistic Wireless Encryption).
+- `ccna-f-u06-materials`: Bahan seperti beton, logam, dan air (termasuk tubuh manusia) menyerap atau memantulkan sinyal, sehingga jangkauan AP berkurang.
+
+**Virtualisasi**
+
+- `ccna-f-u07-container-os`: Karena berbagi kernel host, container memakai OS yang sama dengan host-nya; kalau butuh OS yang berbeda, misalnya Windows di host Linux, pakai VM.
+- `ccna-f-u07-vswitch`: Hypervisor menyediakan virtual switch yang menghubungkan NIC virtual milik VM satu sama lain dan ke NIC fisik server sebagai uplink ke jaringan.
+- `ccna-f-u07-vswitch-trunk`: Port VM di virtual switch bisa diberi VLAN, dan uplink NIC fisik ke switch biasanya trunk supaya beberapa VLAN VM bisa lewat.
+- `ccna-f-u07-vrf-cmd`: VRF dibuat dengan vrf definition <nama>, lalu interface dimasukkan dengan vrf forwarding <nama>; IOS menghapus alamat IP interface saat VRF dipasang, jadi alamat harus diisi ulang.
+
+**Konektivitas klien dan DHCP**
+
+- `ccna-f-u08-conflict`: Server DHCP IOS memeriksa alamat dengan ping sebelum memberikannya; alamat yang ternyata dipakai dicatat di show ip dhcp conflict dan tidak dibagikan.
+- `ccna-f-u08-dhcp-client`: ip address dhcp membuat interface router menjadi klien DHCP, misalnya di interface yang menghadap ISP.
+- `ccna-f-u08-netsh-wlan`: Di Windows, netsh wlan show interfaces menampilkan detail koneksi wireless, antara lain SSID, BSSID, radio type, authentication, cipher, channel, dan signal; netsh wlan show networks menampilkan jaringan yang terlihat.
+- `ccna-f-u08-mac-wifi-menu`: Di Mac, Option-klik ikon Wi-Fi di menu bar menampilkan detail koneksi seperti alamat IP, alamat router, channel, band, standar keamanan, dan protokol 802.11; menu yang sama membuka Wireless Diagnostics.
+- `ccna-f-u08-nmcli-wifi`: Di Linux dengan NetworkManager, nmcli device wifi list menampilkan jaringan Wi-Fi yang terlihat dengan kolom seperti SSID, CHAN, SIGNAL, dan SECURITY; tanda * di kolom IN-USE menunjukkan jaringan yang sedang dipakai.
+
+**VLAN dan port akses**
+
+- `ccna-f-u09-auto-create`: Kalau VLAN akses belum ada, IOS membuatnya otomatis dan menampilkan "% Access VLAN does not exist. Creating vlan <id>".
+- `ccna-f-u09-show-vlan`: show vlan brief menampilkan setiap VLAN beserta nama, status, dan port aksesnya; port trunk tidak tercantum di sana.
+- `ccna-f-u09-ap-local`: AP (access point) dalam mode local membawa semua trafik klien di dalam tunnel CAPWAP ke WLC, jadi port switch-nya cukup port akses.
+- `ccna-f-u09-appliance`: Perangkat yang hanya ada di satu VLAN, misalnya printer atau server biasa, memakai port akses; perangkat yang melayani banyak VLAN memakai trunk.
+
+**Trunk dan routing antar-VLAN**
+
+- `ccna-f-u10-auto-auto`: Dua port yang sama-sama dynamic auto tidak membentuk trunk, jadi keduanya tetap port akses.
+- `ccna-f-u10-native-match`: Native VLAN di kedua ujung trunk harus sama; kalau berbeda, frame tanpa tag masuk ke VLAN yang salah, dan CDP melaporkan native VLAN mismatch.
+- `ccna-f-u10-svi-up`: SVI baru berstatus up kalau VLAN-nya ada dan minimal satu port di VLAN itu up, termasuk trunk yang membawa VLAN itu.
+- `ccna-f-u10-svi-mgmt`: Switch layer 2 seperti Catalyst 2960 memakai SVI hanya untuk manajemen, misalnya SSH, dan memakai ip default-gateway untuk menjangkau subnet lain.
+- `ccna-f-u10-roas-parent`: Subinterface ikut mati kalau interface fisik induknya shutdown, jadi induknya harus no shutdown.
+- `ccna-f-u10-roas-scale`: Semua trafik antar-VLAN di router-on-a-stick lewat satu link, jadi link itu bisa menjadi bottleneck; switch layer 3 merutekan antar-VLAN di dalam switch.
+
+**EtherChannel**
+
+- `ccna-f-u11-ec-stp`: STP (Spanning Tree Protocol) memperlakukan EtherChannel sebagai satu link, jadi link anggotanya tidak diblokir satu per satu.
+- `ccna-f-u11-po-config`: Setelan port seperti switchport mode trunk dipasang di interface Port-channel, dan IOS menerapkannya ke semua anggotanya.
+- `ccna-f-u11-standalone`: Flag I (stand-alone) biasanya berarti port tidak menerima negosiasi yang cocok dari seberang, misalnya satu sisi LACP dan sisi lain tidak menjalankan LACP.
+
+**CDP dan LLDP**
+
+- `ccna-f-u12-cdp-timers`: Bawaannya CDP dikirim setiap 60 detik, dan informasi tetangga disimpan selama 180 detik (holdtime).
+- `ccna-f-u12-cdp-security`: CDP mengirim informasi seperti model, versi software, dan alamat, jadi sebaiknya dimatikan di interface yang menghadap jaringan yang tidak tepercaya, misalnya ke ISP.
+- `ccna-f-u12-doc-check`: Output show cdp neighbors dan show lldp neighbors bisa dicocokkan dengan diagram jaringan untuk menemukan kabel, port, atau perangkat yang tidak sesuai dokumentasi.
+
+**Rapid PVST+**
+
+- `ccna-f-u13-loop-harm`: Tanpa STP (Spanning Tree Protocol), link redundan antar switch membentuk loop layer 2 yang menyebabkan broadcast storm, tabel MAC yang terus berubah, dan frame ganda.
+- `ccna-f-u13-no-ttl`: Header Ethernet tidak punya field TTL (time to live), jadi frame yang berputar di loop layer 2 tidak dibuang dengan sendirinya.
+- `ccna-f-u13-cost`: Biaya port bawaan dalam mode short adalah 100 untuk 10 Mbps, 19 untuk 100 Mbps, 4 untuk 1 Gbps, dan 2 untuk 10 Gbps; root path cost adalah jumlah biaya port menuju root.
+- `ccna-f-u13-tiebreak`: Kalau biaya ke root sama, switch memilih root port lewat bridge ID tetangga yang terendah, lalu port ID tetangga yang terendah.
+
+**Troubleshoot Layer 2 dan Layer 3**
+
+- `ccna-f-u14-link-msgs`: %LINK-3-UPDOWN melaporkan perubahan status interface (layer 1), sedangkan %LINEPROTO-5-UPDOWN melaporkan perubahan status line protocol (layer 2).
+- `ccna-f-u14-config-i`: %SYS-5-CONFIG_I mencatat bahwa konfigurasi diubah, beserta user dan sumbernya, misalnya console atau vty dengan alamat IP pengirimnya.
+- `ccna-f-u14-adjchg`: %OSPF-5-ADJCHG mencatat perubahan state tetangga OSPF; alasan Dead timer expired berarti tidak ada hello dari tetangga itu selama dead interval.
+- `ccna-f-u14-duplex-msg`: %CDP-4-DUPLEX_MISMATCH dilaporkan CDP saat setting duplex dua ujung link tidak sama.
+- `ccna-f-u14-arp-capture`: Di capture, ARP request tampil sebagai Who has <alamat>? Tell <alamat pengirim> dengan tujuan broadcast; request yang berulang tanpa reply berarti tidak ada perangkat yang menjawab untuk alamat itu.
+- `ccna-f-u14-nxdomain`: Jawaban DNS dengan RCODE 3 (Name Error, disebut NXDOMAIN) berarti nama yang ditanyakan tidak ada; Wireshark menampilkannya sebagai No such name.
+- `ccna-f-u14-syn-retrans`: SYN yang dikirim ulang tanpa jawaban berarti segmen hilang atau dibuang diam-diam di jalan, misalnya oleh ACL atau firewall; ini berbeda dengan RST, yang berarti host tujuan menolak koneksi.
+
+**Tabel routing**
+
+- `ccna-f-u15-rt-codes`: Kode di awal baris show ip route menunjukkan sumber route, misalnya C connected, L local, S static, O OSPF, D EIGRP, R RIP, dan B BGP; tanda * menandai candidate default.
+- `ccna-f-u15-rt-local`: Route L (local) adalah route /32 untuk alamat interface router itu sendiri, sedangkan C (connected) adalah subnet tempat interface itu berada.
+- `ccna-f-u15-rt-bracket`: Angka di dalam kurung siku, misalnya [110/20], adalah administrative distance lalu metric route itu.
+- `ccna-f-u15-ecmp`: Kalau beberapa route ke prefix yang sama punya AD dan metric yang sama, router bisa memasang semuanya dan membagi beban di antaranya.
+
+**Static route**
+
+- `ccna-f-u16-host-route`: Host route adalah route ke satu alamat, dengan mask 255.255.255.255 (/32).
+- `ccna-f-u16-v6-ll`: Kalau next hop IPv6 adalah alamat link-local, interface keluar wajib ditulis, karena link-local hanya unik di satu link; IOS menolak tanpa interface dengan pesan "% Interface has to be specified for a link-local nexthop".
+- `ccna-f-u16-both-ways`: Komunikasi dua arah butuh route di kedua arah: kalau router di seberang tidak punya route balik ke subnet sumber, balasan tidak sampai.
+- `ccna-f-u16-static-show`: show ip route static hanya menampilkan route statis yang terpasang; route yang next hop-nya tidak terjangkau tidak muncul.
+
+**OSPF**
+
+- `ccna-f-u17-rid-change`: Router ID yang diubah baru dipakai setelah proses OSPF dimulai ulang, misalnya dengan clear ip ospf process.
+- `ccna-f-u17-rid-unique`: Dua router OSPF dengan router ID yang sama tidak bisa membentuk adjacency yang benar.
+- `ccna-f-u17-dr-nopreempt`: Pemilihan DR tidak preemptive: router baru dengan priority lebih tinggi tidak merebut posisi DR yang sudah ada.
+- `ccna-f-u17-p2p`: Network type point-to-point tidak memilih DR dan BDR; ip ospf network point-to-point di link Ethernet antar dua router membuat adjacency lebih cepat terbentuk.
+- `ccna-f-u17-passive-pitfall`: Kalau interface antar router dijadikan passive, hello tidak dikirim di sana, jadi adjacency di link itu tidak terbentuk.
+
+**First Hop Redundancy Protocol**
+
+- `ccna-f-u18-show-vrrp`: show vrrp brief menampilkan interface, grup, priority, apakah preempt aktif, state (Master atau Backup), alamat master, dan alamat grup.
+
+**Akses manajemen perangkat**
+
+- `ccna-f-u19-priv15`: username <nama> privilege 15 secret <password> membuat user yang langsung masuk privileged EXEC setelah login.
+- `ccna-f-u19-exec-timeout`: exec-timeout <menit> [detik] di line memutus sesi yang diam terlalu lama; bawaannya 10 menit.
+- `ccna-f-u19-crypto-combo`: Protokol seperti SSH dan IPsec memakai kriptografi asimetris untuk autentikasi dan pertukaran kunci, lalu enkripsi simetris untuk data.
+- `ccna-f-u19-ssh-modulus`: SSH versi 2 butuh kunci RSA minimal 768 bit; 2048 bit adalah ukuran yang umum dipakai.
+- `ccna-f-u19-fallback`: Metode berikutnya, misalnya local, hanya dipakai kalau server tidak menjawab; kalau server menjawab dan menolak password, login gagal.
+- `ccna-f-u19-default-list`: Daftar metode bernama default berlaku otomatis di semua line yang tidak memakai daftar lain.
+- `ccna-f-u19-sftp`: SFTP (SSH File Transfer Protocol) juga berjalan di atas SSH, jadi isi file dan password terenkripsi.
+
+**NAT dan PAT**
+
+- `ccna-f-u20-exhaust`: Kalau semua alamat di pool sedang dipakai dan tidak ada overload, host baru tidak diterjemahkan dan paketnya dibuang.
+- `ccna-f-u20-timeout`: Terjemahan dinamis yang tidak dipakai dihapus setelah timeout; bawaannya 24 jam.
+- `ccna-f-u20-show-trans`: show ip nat translations menampilkan tabel terjemahan; entri static selalu ada, sedangkan entri dinamis baru muncul setelah ada lalu lintas.
+- `ccna-f-u20-faults`: Penyebab NAT gagal yang umum: interface inside dan outside tertukar atau tidak ditandai, access list tidak cocok dengan alamat dalam, dan tidak ada route keluar.
+
+**DNS**
+
+- `ccna-f-u21-ip-not-name`: Kalau ping ke alamat IP berhasil tetapi ping ke nama gagal, jaringannya jalan dan masalahnya ada di resolusi nama.
+
+**VPN IPsec**
+
+- `ccna-f-u22-clientless`: SSL VPN mode clientless berjalan lewat web browser tanpa software klien, tetapi hanya untuk aplikasi tertentu seperti halaman web.
+- `ccna-f-u22-gre`: IPsec biasa hanya membawa unicast, jadi GRE over IPsec dipakai kalau terowongan harus membawa multicast seperti hello protokol routing.
+- `ccna-f-u22-split`: Split tunneling hanya mengirim lalu lintas ke jaringan kantor lewat terowongan, sedangkan lalu lintas internet lain keluar langsung.
+
+**Access control list**
+
+- `ccna-f-u23-one-per`: Satu interface hanya bisa memakai satu ACL per protokol per arah.
+- `ccna-f-u23-place-ext`: ACL extended sebaiknya dipasang dekat sumber, supaya lalu lintas yang ditolak tidak melintasi jaringan.
+- `ccna-f-u23-place-std`: ACL standard sebaiknya dipasang dekat tujuan, karena hanya melihat sumber dan bisa memblokir sumber itu ke semua tujuan lain.
+- `ccna-f-u23-access-class`: access-class <nomor atau nama> in di line vty membatasi siapa yang boleh membuka sesi remote ke perangkat.
+- `ccna-f-u23-empty-acl`: ACL yang hanya berisi deny tanpa permit menolak semua lalu lintas di interface itu karena deny tersembunyi.
+
+**Keamanan Layer 2**
+
+- `ccna-f-u24-psec-flood`: Port security menahan serangan banjir MAC, yang mengisi tabel MAC switch dengan alamat palsu supaya switch membanjiri frame ke semua port.
+
+**Pendekatan manajemen jaringan**
+
+- `ccna-f-u25-per-device`: Pada manajemen per perangkat, setiap router dan switch dikonfigurasi satu per satu, biasanya lewat CLI dengan SSH, dan setiap perangkat menjalankan control plane-nya sendiri.
+- `ccna-f-u25-intent`: Pada intent-based networking, administrator menyatakan apa yang diinginkan, dan Catalyst Center menerjemahkannya menjadi konfigurasi perangkat.
+- `ccna-f-u25-cloud-oob`: Di Meraki, hanya lalu lintas manajemen yang pergi ke cloud; lalu lintas data pengguna tidak melewati cloud.
+
+**SNMP dan syslog**
+
+- `ccna-f-u26-facility`: Di protokol syslog, facility menandai bagian sistem yang menghasilkan pesan; local0 sampai local7 disediakan untuk penggunaan lokal, dan IOS memakai local7 secara bawaan untuk server syslog.
+- `ccna-f-u26-timestamps`: service timestamps log datetime msec menambahkan tanggal dan waktu sampai milidetik ke setiap pesan log.
+
+**Ansible**
+
+- `ccna-f-u27-agentless`: Ansible tidak butuh agent di perangkat yang dikelola; untuk perangkat jaringan, Ansible terhubung lewat SSH.
+- `ccna-f-u27-yaml-indent`: YAML memakai indentasi spasi untuk menunjukkan susunan bersarang; tab tidak boleh dipakai untuk indentasi.
+
+**AI dalam operasi jaringan**
+
+- `ccna-f-u28-agent-roles`: Di operasi jaringan, agent bisa diberi peran tertentu, misalnya pemantauan, diagnosis, dan perbaikan, sehingga alur kerjanya bisa dilacak dan diaudit.
+- `ccna-f-u28-human-loop`: Pada pendekatan Cisco, manusia tetap dalam alur: setiap langkah bisa diaudit, disetujui engineer, dan bisa ditinjau, dikonfirmasi, atau dibatalkan.
+- `ccna-f-u28-net-context`: Untuk pekerjaan jaringan, berikan konteks seperti perangkat yang ada, standar yang dipakai, dan teknologi yang dipilih, supaya jawaban sesuai dengan lingkungan sendiri.
+- `ccna-f-u28-classify`: Data perlu diklasifikasikan sebelum masuk ke sistem AI, supaya data sensitif tidak ikut masuk.
+- `ccna-f-u28-no-secrets`: Password, kunci, dan data pelanggan tidak boleh dimasukkan ke alat AI yang tidak disetujui organisasi; hapus atau samarkan dulu dari output yang dibagikan.
+- `ccna-f-u28-indirect`: Instruksi berbahaya juga bisa tersembunyi di konten yang dibaca AI, misalnya dokumen atau data, bukan hanya diketik langsung oleh pengguna.
+- `ccna-f-u28-hallucination`: AI bisa menghasilkan jawaban yang meyakinkan tetapi salah atau dikarang, misalnya perintah yang tidak ada.
+- `ccna-f-u28-verify-output`: Output AI harus diperiksa terhadap dokumentasi resmi dan diuji, misalnya di lab, sebelum diterapkan; engineer tetap bertanggung jawab atas perubahan.

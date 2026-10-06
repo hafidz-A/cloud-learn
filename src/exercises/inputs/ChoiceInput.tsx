@@ -1,12 +1,13 @@
-import type { ChoiceExercise, FixExercise, RulesExercise, TemplateExercise, TopologyExercise } from '../../lib/types'
+import type { ChoiceExercise, ExhibitExercise, FixExercise, RulesExercise, TemplateExercise, TopologyExercise } from '../../lib/types'
 import type { Look, InputProps } from '../looks'
+import { ExhibitScene } from './ExhibitScene'
 import { FixScene } from './FixScene'
 import { OptionList } from './OptionList'
 import { RuleTables } from './RuleTables'
 import { TemplateCode } from './TemplateCode'
 import { TopologyDiagram } from './TopologyDiagram'
 
-type OneAnswer = ChoiceExercise | FixExercise | RulesExercise | TemplateExercise | TopologyExercise
+type OneAnswer = ChoiceExercise | FixExercise | RulesExercise | TemplateExercise | TopologyExercise | ExhibitExercise
 
 /** What the player reads before picking: a portal or error scene, rule tables, template code, or a network diagram. */
 function Scene({ exercise }: { exercise: OneAnswer }) {
@@ -19,6 +20,8 @@ function Scene({ exercise }: { exercise: OneAnswer }) {
       return <TemplateCode language={exercise.language} code={exercise.code} fileName={exercise.fileName} />
     case 'topology':
       return <TopologyDiagram nodes={exercise.nodes} links={exercise.links} />
+    case 'exhibit':
+      return <ExhibitScene exercise={exercise} />
     default:
       return null
   }

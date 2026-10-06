@@ -91,20 +91,22 @@ export function StatsScreen() {
         />
       </div>
 
-      <Card title="Kisi-kisi ujian" subtitle={`Kisi-kisi resmi ${COURSES[course].name} versi ${outlineDate(OUTLINES[course].version)}.`}>
-        {(() => {
-          const items = outlineItems(course)
-          const mastered = items.filter((i) => itemStatus(i, c.conceptStats).status === 'mastered').length
-          return (
-            <>
-              <Meter label="Butir dikuasai" detail="Minimal 3 jawaban dan 80% benar per butir." value={mastered / items.length} valueText={`${mastered}/${items.length}`} />
-              <a href={hrefFor({ name: 'outline' })} className="mt-3 inline-flex min-h-11 items-center font-display text-15 font-bold text-biru-dalam underline underline-offset-4">
-                Lihat peta kisi-kisi
-              </a>
-            </>
-          )
-        })()}
-      </Card>
+      {OUTLINES[course] && (
+        <Card title="Kisi-kisi ujian" subtitle={`Kisi-kisi resmi ${COURSES[course].name} versi ${outlineDate(OUTLINES[course]!.version)}.`}>
+          {(() => {
+            const items = outlineItems(course)
+            const mastered = items.filter((i) => itemStatus(i, c.conceptStats).status === 'mastered').length
+            return (
+              <>
+                <Meter label="Butir dikuasai" detail="Minimal 3 jawaban dan 80% benar per butir." value={mastered / items.length} valueText={`${mastered}/${items.length}`} />
+                <a href={hrefFor({ name: 'outline' })} className="mt-3 inline-flex min-h-11 items-center font-display text-15 font-bold text-biru-dalam underline underline-offset-4">
+                  Lihat peta kisi-kisi
+                </a>
+              </>
+            )
+          })()}
+        </Card>
+      )}
 
       <Card title="XP 7 hari terakhir" subtitle="Ketuk batang untuk melihat nilainya. Garis putus-putus adalah target harian.">
         <BarChart data={bars} unit="XP" highlight={today} reference={{ value: p.dailyGoal, label: `Target ${p.dailyGoal}` }} caption="XP per hari, 7 hari terakhir" />

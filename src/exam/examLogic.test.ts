@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ExamAttempt, Exercise, PathId } from '../lib/types'
-import { EXAM_MODES, FULL_SPLIT, createAttempt, isAnswered, openRange, pickDomain, pickFull, pickWeak, readiness, scoreAttempt, weakestDomain, type CasePool, type ExamQuestion } from './examLogic'
+import { EXAM_MODES, FULL_SPLIT, PASS_SCORES, createAttempt, isAnswered, openRange, pickDomain, pickFull, pickWeak, readiness, scoreAttempt, weakestDomain, type CasePool, type ExamQuestion } from './examLogic'
 
 const q = (id: string, path: PathId, concept = 'c'): ExamQuestion => ({
   path,
@@ -193,6 +193,12 @@ describe('readiness', () => {
   it('needs 3 full simulations averaging 800', () => {
     expect(readiness([full(900), full(900)]).ready).toBe(false)
     expect(readiness([full(600), full(820), full(800), full(790)])).toEqual({ ready: true, average: 803, fullCount: 4 })
+  })
+  it('asks CCNA for 850, and gives CCNA no pass mark (Cisco publishes none)', () => {
+    expect(readiness([full(820), full(800), full(790)], 'ccna').ready).toBe(false)
+    expect(readiness([full(860), full(850), full(845)], 'ccna')).toEqual({ ready: true, average: 852, fullCount: 3 })
+    expect(PASS_SCORES.ccna).toBeNull()
+    expect(PASS_SCORES.az104).toBe(700)
   })
   it('finds the weakest domain', () => {
     const a = { domainScores: { 1: { right: 9, total: 10 }, 2: { right: 3, total: 10 }, 3: { right: 6, total: 10 } } } as unknown as ExamAttempt

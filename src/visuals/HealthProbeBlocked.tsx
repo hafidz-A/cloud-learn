@@ -12,7 +12,7 @@ export const HealthProbeBlocked: FC = () => {
   const arrow = useSvgId('probe-arrow')
   return (
     <svg
-      viewBox="0 0 300 230"
+      viewBox="0 0 300 236"
       role="img"
       aria-label="Health probe diblokir: probe load balancer datang dari 168.63.129.16, yaitu service tag AzureLoadBalancer. NSG punya aturan buatan sendiri prioritas 200 yang menolak semua trafik masuk, sehingga aturan default AllowAzureLoadBalancerInBound di 65001 tidak pernah tercapai. Semua VM di backend dianggap tidak sehat, dan load balancer tidak mengirim koneksi baru."
       className="w-full font-display"

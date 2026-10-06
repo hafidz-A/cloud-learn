@@ -1,0 +1,1139 @@
+{
+  "id": "ccna-u18-fhrp",
+  "path": 3,
+  "title": "First Hop Redundancy Protocol",
+  "lessons": [
+    {
+      "id": "ccna-u18-l1",
+      "title": "Kenapa butuh FHRP",
+      "items": [
+        {
+          "id": "ccna-u18-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "fhrp"
+          ],
+          "title": "Satu gateway, satu titik gagal",
+          "body": "PC hanya punya satu default gateway. Kalau router itu mati, PC kehilangan akses ke jaringan lain, walaupun ada router kedua di subnet yang sama, karena PC tidak tahu harus pindah. FHRP (first hop redundancy protocol) menyelesaikannya: beberapa router berbagi satu alamat IP (Internet Protocol) virtual dan MAC (Media Access Control) virtual. PC memakai IP virtual sebagai gateway, dan router mana pun yang aktif menjawab untuknya.",
+          "keyPoints": [
+            "Satu gateway: titik gagal",
+            "IP dan MAC virtual dibagi",
+            "Setelan PC tidak berubah"
+          ],
+          "visual": "FhrpVirtual",
+          "teaches": [
+            "ccna-f-u18-why",
+            "ccna-f-u18-virtual"
+          ]
+        },
+        {
+          "id": "ccna-u18-l1-e1",
+          "type": "truefalse",
+          "concept": "fhrp",
+          "prompt": "Without an FHRP (first hop redundancy protocol), a PC automatically switches to a second router when its default gateway fails.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. PC hanya tahu satu gateway dan tidak pindah sendiri; itulah gunanya FHRP (first hop redundancy protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-why"
+          ]
+        },
+        {
+          "id": "ccna-u18-l1-e2",
+          "type": "choice",
+          "concept": "fhrp",
+          "prompt": "What do PCs use as their default gateway when an FHRP (first hop redundancy protocol) is running?",
+          "options": [
+            "The shared virtual IP (Internet Protocol) address",
+            "The real interface address of whichever router is active",
+            "The address of the standby router",
+            "Two gateways, one for each router"
+          ],
+          "answer": 0,
+          "explanation": "PC memakai IP (Internet Protocol) virtual. Alamat asli router bisa berpindah peran, sedangkan IP virtual selalu dijawab oleh router yang aktif.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-virtual"
+          ]
+        },
+        {
+          "id": "ccna-u18-l1-e3",
+          "type": "multi",
+          "concept": "fhrp",
+          "prompt": "Which two things do the routers in an FHRP (first hop redundancy protocol) group share? (Choose two.)",
+          "options": [
+            "A virtual IP (Internet Protocol) address",
+            "A virtual MAC (Media Access Control) address",
+            "Their interface IP (Internet Protocol) addresses",
+            "Their hostnames"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Grup FHRP (first hop redundancy protocol) berbagi IP (Internet Protocol) dan MAC (Media Access Control) virtual. Setiap router tetap punya alamat interface dan hostname sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-virtual"
+          ]
+        },
+        {
+          "id": "ccna-u18-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "fhrp-types"
+          ],
+          "title": "Tiga pilihan FHRP",
+          "body": "Ada tiga FHRP (first hop redundancy protocol) yang umum. HSRP (Hot Standby Router Protocol) milik Cisco memakai satu router active dan satu standby. VRRP (Virtual Router Redundancy Protocol) adalah standar terbuka dengan peran master dan backup. GLBP (Gateway Load Balancing Protocol) milik Cisco juga membagi beban ke beberapa router sekaligus.",
+          "keyPoints": [
+            "HSRP: Cisco, active/standby",
+            "VRRP: standar, master/backup",
+            "GLBP: Cisco, bagi beban"
+          ],
+          "visual": "FhrpCompare",
+          "teaches": [
+            "ccna-f-u18-hsrp-roles",
+            "ccna-f-u18-vrrp-std",
+            "ccna-f-u18-glbp"
+          ]
+        },
+        {
+          "id": "ccna-u18-l1-e4",
+          "type": "match",
+          "concept": "fhrp-types",
+          "prompt": "Match each protocol to its description.",
+          "pairs": [
+            [
+              "HSRP (Hot Standby Router Protocol)",
+              "Cisco protocol with active and standby routers"
+            ],
+            [
+              "VRRP (Virtual Router Redundancy Protocol)",
+              "Open standard with master and backup routers"
+            ],
+            [
+              "GLBP (Gateway Load Balancing Protocol)",
+              "Cisco protocol that also load balances across routers"
+            ],
+            [
+              "FHRP (first hop redundancy protocol)",
+              "The family name for all three"
+            ]
+          ],
+          "explanation": "HSRP (Hot Standby Router Protocol) milik Cisco dengan active dan standby, VRRP (Virtual Router Redundancy Protocol) standar terbuka dengan master dan backup, dan GLBP (Gateway Load Balancing Protocol) milik Cisco yang membagi beban.",
+          "requires": [
+            "ccna-f-u18-hsrp-roles",
+            "ccna-f-u18-vrrp-std",
+            "ccna-f-u18-glbp"
+          ]
+        },
+        {
+          "id": "ccna-u18-l1-e5",
+          "type": "choice",
+          "concept": "fhrp-types",
+          "prompt": "A company mixes routers from Cisco and another vendor and needs gateway redundancy. Which protocol fits?",
+          "options": [
+            "VRRP (Virtual Router Redundancy Protocol)",
+            "HSRP (Hot Standby Router Protocol)",
+            "GLBP (Gateway Load Balancing Protocol)",
+            "CDP (Cisco Discovery Protocol)"
+          ],
+          "answer": 0,
+          "explanation": "VRRP (Virtual Router Redundancy Protocol) adalah standar terbuka, jadi didukung banyak vendor. HSRP (Hot Standby Router Protocol) dan GLBP (Gateway Load Balancing Protocol) milik Cisco.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-vrrp-std",
+            "ccna-f-u18-hsrp-roles",
+            "ccna-f-u18-glbp"
+          ]
+        },
+        {
+          "id": "ccna-u18-l1-e6",
+          "type": "truefalse",
+          "concept": "fhrp-types",
+          "prompt": "GLBP (Gateway Load Balancing Protocol) can send traffic through several routers of the group at the same time.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. AVG (active virtual gateway) menjawab ARP (Address Resolution Protocol) dengan MAC (Media Access Control) virtual yang berbeda, jadi beberapa router meneruskan trafik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-glbp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u18-l2",
+      "title": "HSRP",
+      "items": [
+        {
+          "id": "ccna-u18-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "hsrp"
+          ],
+          "title": "HSRP",
+          "body": "Di HSRP (Hot Standby Router Protocol), satu router active meneruskan trafik ke IP (Internet Protocol) virtual, dan satu standby menunggu. Router active adalah yang priority-nya tertinggi, bawaannya 100; kalau sama, alamat IP interface tertinggi menang. Router saling mengirim hello setiap 3 detik, dan standby mengambil alih kalau tidak mendengar active selama hold time 10 detik.",
+          "keyPoints": [
+            "Active meneruskan, standby menunggu",
+            "Priority tertinggi, lalu IP tertinggi",
+            "Hello 3 detik, hold 10 detik"
+          ],
+          "teaches": [
+            "ccna-f-u18-hsrp-roles",
+            "ccna-f-u18-hsrp-elect",
+            "ccna-f-u18-hsrp-timers"
+          ]
+        },
+        {
+          "id": "ccna-u18-l2-e1",
+          "type": "choice",
+          "concept": "hsrp",
+          "prompt": "R1 has HSRP (Hot Standby Router Protocol) priority 110 and R2 keeps the default. Both start together. Which router becomes active?",
+          "options": [
+            "R1",
+            "R2",
+            "The router with the higher IP (Internet Protocol) address",
+            "Both share the active role"
+          ],
+          "answer": 0,
+          "explanation": "Priority tertinggi menang: 110 lebih tinggi dari bawaan 100. Alamat IP (Internet Protocol) hanya dipakai kalau priority sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-elect"
+          ]
+        },
+        {
+          "id": "ccna-u18-l2-e2",
+          "type": "truefalse",
+          "concept": "hsrp",
+          "prompt": "The default HSRP (Hot Standby Router Protocol) priority is 255.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Priority bawaan HSRP (Hot Standby Router Protocol) adalah 100.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-elect"
+          ]
+        },
+        {
+          "id": "ccna-u18-l2-e3",
+          "type": "choice",
+          "concept": "hsrp",
+          "prompt": "With default timers, about how long does an HSRP (Hot Standby Router Protocol) standby router wait without hellos before it takes over?",
+          "options": [
+            "10 seconds",
+            "3 seconds",
+            "40 seconds",
+            "180 seconds"
+          ],
+          "answer": 0,
+          "explanation": "Hello dikirim setiap 3 detik, dan hold time 10 detik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-timers"
+          ]
+        },
+        {
+          "id": "ccna-u18-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "hsrp-preempt"
+          ],
+          "title": "Preempt dan MAC virtual",
+          "body": "Preempt HSRP (Hot Standby Router Protocol) mati secara bawaan. Artinya, kalau R1 dengan priority lebih tinggi menyala kembali setelah mati, R2 tetap active. Supaya R1 merebut kembali peran active, pasang standby preempt di R1. MAC (Media Access Control) virtual HSRP versi 1 adalah 0000.0c07.acxx, dengan xx nomor grup; versi 2 memakai 0000.0c9f.fxxx dan mendukung grup sampai 4095 serta IPv6.",
+          "keyPoints": [
+            "Preempt mati bawaan",
+            "v1 MAC: 0000.0c07.acxx",
+            "v2: grup sampai 4095, IPv6"
+          ],
+          "teaches": [
+            "ccna-f-u18-hsrp-preempt",
+            "ccna-f-u18-hsrp-mac",
+            "ccna-f-u18-hsrp-v2"
+          ]
+        },
+        {
+          "id": "ccna-u18-l2-e4",
+          "type": "choice",
+          "concept": "hsrp-preempt",
+          "prompt": "What is the virtual MAC (Media Access Control) address of HSRP (Hot Standby Router Protocol) version 1 group 10?",
+          "options": [
+            "0000.0c07.ac0a",
+            "0000.0c07.ac10",
+            "ffff.ffff.ff0a",
+            "0000.0c9f.f00a"
+          ],
+          "answer": 0,
+          "explanation": "Grup 10 dalam heksadesimal adalah 0a, jadi MAC (Media Access Control)-nya 0000.0c07.ac0a. 0000.0c9f.fxxx milik HSRP (Hot Standby Router Protocol) versi 2, dan ffff.ffff.ffxx bukan MAC virtual.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-mac",
+            "ccna-f-u01-hex-value",
+            "ccna-f-u01-broadcast-mac"
+          ]
+        },
+        {
+          "id": "ccna-u18-l2-e5",
+          "type": "truefalse",
+          "concept": "hsrp-preempt",
+          "prompt": "With default settings, a higher-priority HSRP (Hot Standby Router Protocol) router that comes back online takes the active role back right away.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Preempt mati secara bawaan, jadi router itu tetap standby sampai standby preempt dipasang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-preempt"
+          ]
+        },
+        {
+          "id": "ccna-u18-l2-e6",
+          "type": "multi",
+          "concept": "hsrp-preempt",
+          "prompt": "Which two statements about HSRP (Hot Standby Router Protocol) version 2 are true? (Choose two.)",
+          "options": [
+            "It supports group numbers up to 4095",
+            "It supports IPv6",
+            "It uses the VRRP (Virtual Router Redundancy Protocol) MAC (Media Access Control) range",
+            "It makes preemption the default"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Versi 2 menambah rentang grup dan dukungan IPv6. MAC (Media Access Control)-nya 0000.0c9f.fxxx, dan preempt tetap harus dipasang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-v2",
+            "ccna-f-u18-hsrp-mac",
+            "ccna-f-u18-hsrp-preempt"
+          ]
+        },
+        {
+          "id": "ccna-u18-l2-e7",
+          "type": "sort",
+          "concept": "hsrp-preempt",
+          "prompt": "Sort each value by whether it is an HSRP (Hot Standby Router Protocol) default.",
+          "buckets": [
+            "HSRP default",
+            "Not an HSRP default"
+          ],
+          "items": [
+            {
+              "text": "Priority 100",
+              "bucket": 0
+            },
+            {
+              "text": "Hello every 3 seconds",
+              "bucket": 0
+            },
+            {
+              "text": "Hold time 10 seconds",
+              "bucket": 0
+            },
+            {
+              "text": "Preemption enabled",
+              "bucket": 1
+            },
+            {
+              "text": "Priority 255",
+              "bucket": 1
+            },
+            {
+              "text": "Dead time 40 seconds",
+              "bucket": 1
+            }
+          ],
+          "explanation": "Bawaan HSRP (Hot Standby Router Protocol): priority 100, hello 3 detik, dan hold 10 detik. Preempt mati secara bawaan, dan dead 40 detik adalah timer OSPF (Open Shortest Path First).",
+          "requires": [
+            "ccna-f-u18-hsrp-elect",
+            "ccna-f-u18-hsrp-timers",
+            "ccna-f-u18-hsrp-preempt",
+            "ccna-f-u17-timers"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u18-l3",
+      "title": "Konfigurasi HSRP dasar",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u18-l2"
+      },
+      "items": [
+        {
+          "id": "ccna-u18-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "hsrp-config"
+          ],
+          "title": "Perintah HSRP",
+          "body": "HSRP (Hot Standby Router Protocol) dipasang di interface LAN (Local Area Network). standby diikuti nomor grup dan ip mengaktifkan grup dengan IP (Internet Protocol) virtual. standby diikuti grup dan priority mengatur priority, dan standby diikuti grup dan preempt mengaktifkan preempt. Semua router di grup memakai nomor grup dan IP virtual yang sama.",
+          "keyPoints": [
+            "standby <grup> ip <virtual>",
+            "standby <grup> priority <nilai>",
+            "standby <grup> preempt"
+          ],
+          "teaches": [
+            "ccna-f-u18-hsrp-cmds"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.2 255.255.255.0",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "standby 1 ip 192.168.41.1",
+                  "note": "Ikut grup HSRP (Hot Standby Router Protocol) 1 dengan alamat virtual 192.168.41.1, gateway yang dipakai host."
+                },
+                {
+                  "command": "standby 1 priority 110",
+                  "note": "Memasang priority 110 di grup 1; yang tertinggi menjadi router aktif."
+                },
+                {
+                  "command": "standby 1 preempt",
+                  "note": "Membolehkan router ini merebut peran aktif di grup 1 saat priority-nya lebih tinggi."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u18-l3-e1",
+          "type": "ios",
+          "concept": "hsrp-config",
+          "prompt": "Make R1 the preferred gateway for the LAN (Local Area Network) on GigabitEthernet0/0/0: HSRP (Hot Standby Router Protocol) group 1, virtual IP (Internet Protocol) 192.168.1.1, priority 110, and take the active role back when it returns.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.2 255.255.255.0",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "standby 1 ip 192.168.1.1"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "standby 1 priority 110"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "standby 1 preempt"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "standby 1 ip 192.168.1.1",
+            "standby 1 priority 110",
+            "standby 1 preempt",
+            "end"
+          ],
+          "explanation": "IP (Internet Protocol) virtual, priority 110, dan preempt membuat R1 menjadi active dan merebut kembali perannya setelah pulih.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-cmds",
+            "ccna-f-u18-hsrp-preempt"
+          ]
+        },
+        {
+          "id": "ccna-u18-l3-e2",
+          "type": "ios",
+          "concept": "hsrp-config",
+          "prompt": "Configure R2 as the backup gateway on GigabitEthernet0/0/0: join HSRP (Hot Standby Router Protocol) group 1 with the virtual IP (Internet Protocol) 192.168.1.1 and keep the default priority.",
+          "device": {
+            "hostname": "R2",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.3 255.255.255.0",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "standby 1 ip 192.168.1.1"
+              }
+            ],
+            "absent": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "standby 1 priority 110"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "standby 1 ip 192.168.1.1",
+            "end"
+          ],
+          "explanation": "R2 bergabung ke grup yang sama dengan IP (Internet Protocol) virtual yang sama. Priority bawaan 100 membuatnya standby.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-cmds",
+            "ccna-f-u18-hsrp-elect"
+          ]
+        },
+        {
+          "id": "ccna-u18-l3-e3",
+          "type": "choice",
+          "concept": "hsrp-config",
+          "prompt": "Which command makes an HSRP (Hot Standby Router Protocol) router take back the active role when its priority is higher?",
+          "options": [
+            "standby 1 preempt",
+            "standby 1 priority 110",
+            "standby 1 ip 192.168.1.1",
+            "standby version 2"
+          ],
+          "answer": 0,
+          "explanation": "preempt mengizinkan router dengan priority lebih tinggi merebut peran active. Priority saja tidak cukup.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-cmds",
+            "ccna-f-u18-hsrp-preempt"
+          ]
+        },
+        {
+          "id": "ccna-u18-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "hsrp-version"
+          ],
+          "title": "Mengganti versi HSRP",
+          "body": "Grup HSRP (Hot Standby Router Protocol) versi 1 hanya 0 sampai 255. Untuk grup lebih besar, atau untuk IPv6, ganti dulu versinya dengan standby version 2 di interface, lalu buat grupnya. Semua router di grup harus memakai versi yang sama.",
+          "keyPoints": [
+            "Versi 1: grup 0-255",
+            "standby version 2",
+            "Versi sama di semua router"
+          ],
+          "teaches": [
+            "ccna-f-u18-hsrp-v2",
+            "ccna-f-u18-hsrp-cmds"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.2 255.255.255.0",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "standby version 2",
+                  "note": "Memakai HSRP (Hot Standby Router Protocol) versi 2."
+                },
+                {
+                  "command": "standby 300 ip 192.168.41.1",
+                  "note": "Ikut grup HSRP (Hot Standby Router Protocol) 300 dengan alamat virtual 192.168.41.1, gateway yang dipakai host."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u18-l3-e4",
+          "type": "ios",
+          "concept": "hsrp-version",
+          "prompt": "The LAN (Local Area Network) of R1 needs HSRP (Hot Standby Router Protocol) group 300, which version 1 does not allow. Switch R1 GigabitEthernet0/0/0 to HSRP version 2 and create group 300 with virtual IP (Internet Protocol) 192.168.1.1.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.2 255.255.255.0",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0"
+          ],
+          "goal": {
+            "config": [
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "standby version 2"
+              },
+              {
+                "context": "interface GigabitEthernet0/0/0",
+                "line": "standby 300 ip 192.168.1.1"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "interface g0/0/0",
+            "standby version 2",
+            "standby 300 ip 192.168.1.1",
+            "end"
+          ],
+          "explanation": "Versi 2 mendukung grup sampai 4095, jadi versinya diganti dulu sebelum grup 300 dibuat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-v2",
+            "ccna-f-u18-hsrp-cmds"
+          ]
+        },
+        {
+          "id": "ccna-u18-l3-e5",
+          "type": "fill",
+          "concept": "hsrp-config",
+          "prompt": "Complete the commands for R1 to win the active role.",
+          "sentence": "standby 1 ___ 120\nstandby 1 ___",
+          "bank": [
+            "priority",
+            "preempt",
+            "ip",
+            "version"
+          ],
+          "answers": [
+            "priority",
+            "preempt"
+          ],
+          "explanation": "priority 120 membuat R1 lebih tinggi dari bawaan 100, dan preempt membuatnya merebut peran active.",
+          "requires": [
+            "ccna-f-u18-hsrp-cmds"
+          ]
+        },
+        {
+          "id": "ccna-u18-l3-e6",
+          "type": "truefalse",
+          "concept": "hsrp-config",
+          "prompt": "Each router in an HSRP (Hot Standby Router Protocol) group should use a different virtual IP (Internet Protocol) address.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Semua router di grup memakai nomor grup dan IP (Internet Protocol) virtual yang sama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-cmds"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u18-l4",
+      "title": "VRRP",
+      "items": [
+        {
+          "id": "ccna-u18-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "vrrp"
+          ],
+          "title": "VRRP",
+          "body": "VRRP (Virtual Router Redundancy Protocol) adalah standar terbuka (RFC (Request for Comments) 5798), jadi cocok untuk jaringan multi-vendor. Router yang meneruskan trafik disebut master, sisanya backup. Priority bawaan 100, dan kalau sama, alamat IP (Internet Protocol) tertinggi menjadi master. Berbeda dari HSRP (Hot Standby Router Protocol), preempt VRRP aktif secara bawaan.",
+          "keyPoints": [
+            "Standar terbuka",
+            "Master dan backup",
+            "Preempt aktif bawaan"
+          ],
+          "teaches": [
+            "ccna-f-u18-vrrp-std",
+            "ccna-f-u18-vrrp-defaults"
+          ]
+        },
+        {
+          "id": "ccna-u18-l4-e1",
+          "type": "truefalse",
+          "concept": "vrrp",
+          "prompt": "In VRRP (Virtual Router Redundancy Protocol), preemption is enabled by default.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Ini berbeda dari HSRP (Hot Standby Router Protocol), yang preempt-nya mati bawaan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-vrrp-defaults",
+            "ccna-f-u18-hsrp-preempt"
+          ]
+        },
+        {
+          "id": "ccna-u18-l4-e2",
+          "type": "choice",
+          "concept": "vrrp",
+          "prompt": "In VRRP (Virtual Router Redundancy Protocol), what is the router that forwards traffic for the virtual address called?",
+          "options": [
+            "Master",
+            "Active",
+            "AVG (active virtual gateway)",
+            "DR (designated router)"
+          ],
+          "answer": 0,
+          "explanation": "VRRP (Virtual Router Redundancy Protocol) memakai istilah master dan backup. Active milik HSRP (Hot Standby Router Protocol), AVG (active virtual gateway) milik GLBP (Gateway Load Balancing Protocol), dan DR (designated router) milik OSPF (Open Shortest Path First).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-vrrp-std",
+            "ccna-f-u18-hsrp-roles",
+            "ccna-f-u18-glbp",
+            "ccna-f-u17-dr-why"
+          ]
+        },
+        {
+          "id": "ccna-u18-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "vrrp-details"
+          ],
+          "title": "MAC virtual dan pemilik alamat",
+          "body": "MAC (Media Access Control) virtual VRRP (Virtual Router Redundancy Protocol) untuk IPv4 adalah 0000.5e00.01xx, dengan xx nomor grup. VRRP juga boleh memakai alamat interface asli salah satu router sebagai alamat virtual. Router pemilik alamat itu otomatis menjadi master dengan priority 255.",
+          "keyPoints": [
+            "MAC: 0000.5e00.01xx",
+            "Boleh pakai alamat interface asli",
+            "Pemilik alamat: priority 255"
+          ],
+          "teaches": [
+            "ccna-f-u18-vrrp-mac",
+            "ccna-f-u18-vrrp-owner"
+          ]
+        },
+        {
+          "id": "ccna-u18-l4-e3",
+          "type": "choice",
+          "concept": "vrrp-details",
+          "prompt": "Which virtual MAC (Media Access Control) address belongs to VRRP (Virtual Router Redundancy Protocol) group 5?",
+          "options": [
+            "0000.5e00.0105",
+            "0000.0c07.ac05",
+            "0000.0c9f.f005",
+            "ffff.ffff.ffff"
+          ],
+          "answer": 0,
+          "explanation": "VRRP (Virtual Router Redundancy Protocol) memakai 0000.5e00.01 diikuti nomor grup. 0000.0c07.acxx dan 0000.0c9f.fxxx milik HSRP (Hot Standby Router Protocol).",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-vrrp-mac",
+            "ccna-f-u18-hsrp-mac"
+          ]
+        },
+        {
+          "id": "ccna-u18-l4-e4",
+          "type": "multi",
+          "concept": "vrrp-details",
+          "prompt": "Which two statements about VRRP (Virtual Router Redundancy Protocol) are true? (Choose two.)",
+          "options": [
+            "It is defined in an open standard",
+            "Its virtual MAC (Media Access Control) address starts with 0000.5e00.01",
+            "Only Cisco routers support it",
+            "Its default priority is 255"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "VRRP (Virtual Router Redundancy Protocol) adalah standar terbuka dengan MAC (Media Access Control) 0000.5e00.01xx. Priority bawaannya 100; 255 khusus untuk pemilik alamat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-vrrp-std",
+            "ccna-f-u18-vrrp-mac",
+            "ccna-f-u18-vrrp-defaults",
+            "ccna-f-u18-vrrp-owner"
+          ]
+        },
+        {
+          "id": "ccna-u18-l4-e5",
+          "type": "match",
+          "concept": "vrrp-details",
+          "prompt": "Match each item to the protocol it belongs to.",
+          "pairs": [
+            [
+              "0000.0c07.ac01",
+              "HSRP (Hot Standby Router Protocol) version 1"
+            ],
+            [
+              "0000.5e00.0101",
+              "VRRP (Virtual Router Redundancy Protocol)"
+            ],
+            [
+              "Preemption on by default",
+              "VRRP"
+            ],
+            [
+              "Active and standby routers",
+              "HSRP"
+            ]
+          ],
+          "explanation": "MAC (Media Access Control) 0000.0c07.ac milik HSRP (Hot Standby Router Protocol) v1, 0000.5e00.01 milik VRRP (Virtual Router Redundancy Protocol). Preempt bawaan aktif di VRRP, dan active/standby adalah istilah HSRP.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-mac",
+            "ccna-f-u18-vrrp-mac",
+            "ccna-f-u18-vrrp-defaults",
+            "ccna-f-u18-hsrp-roles"
+          ]
+        },
+        {
+          "id": "ccna-u18-l4-e6",
+          "type": "truefalse",
+          "concept": "vrrp-details",
+          "prompt": "A VRRP (Virtual Router Redundancy Protocol) router that owns the virtual address as its interface address becomes master with priority 255.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Pemilik alamat selalu menjadi master.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-vrrp-owner"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u18-l5",
+      "title": "Membaca status HSRP dan VRRP",
+      "items": [
+        {
+          "id": "ccna-u18-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "fhrp-status"
+          ],
+          "title": "show standby brief",
+          "body": "show standby brief menampilkan setiap grup HSRP (Hot Standby Router Protocol): interface, grup, priority, tanda P kalau preempt aktif, state, router active, router standby, dan IP (Internet Protocol) virtual. Kata local berarti router itu sendiri. Router yang sehat menampilkan satu Active dan satu Standby untuk setiap grup.",
+          "keyPoints": [
+            "Grp, Pri, P, State",
+            "local = router ini",
+            "Satu Active, satu Standby"
+          ],
+          "teaches": [
+            "ccna-f-u18-show-standby"
+          ]
+        },
+        {
+          "id": "ccna-u18-l5-e1",
+          "type": "exhibit",
+          "concept": "fhrp-status",
+          "prompt": "Refer to the exhibit. Which router is active for group 1?",
+          "outputs": [
+            {
+              "title": "R1# show standby brief",
+              "text": "                     P indicates configured to preempt.\n                     |\nInterface   Grp  Pri P State   Active          Standby         Virtual IP\nGi0/0/0     1    110 P Active  local           192.168.1.3     192.168.1.1"
+            }
+          ],
+          "options": [
+            "R1 itself",
+            "192.168.1.3",
+            "192.168.1.1",
+            "No router"
+          ],
+          "answer": 0,
+          "explanation": "Kolom Active berisi local, artinya R1 sendiri. 192.168.1.3 adalah standby, dan 192.168.1.1 adalah IP (Internet Protocol) virtual.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-show-standby"
+          ]
+        },
+        {
+          "id": "ccna-u18-l5-e2",
+          "type": "exhibit",
+          "concept": "fhrp-status",
+          "prompt": "Refer to the exhibit. If R1 fails and later returns, does it become active again?",
+          "outputs": [
+            {
+              "title": "R1# show standby brief",
+              "text": "                     P indicates configured to preempt.\n                     |\nInterface   Grp  Pri P State   Active          Standby         Virtual IP\nGi0/0/0     1    110 P Active  local           192.168.1.3     192.168.1.1"
+            },
+            {
+              "title": "R2# show standby brief",
+              "text": "                     P indicates configured to preempt.\n                     |\nInterface   Grp  Pri P State   Active          Standby         Virtual IP\nGi0/0/0     1    100   Standby 192.168.1.2     local           192.168.1.1"
+            }
+          ],
+          "options": [
+            "Yes, it preempts with priority 110",
+            "No, because preemption is turned off on both routers",
+            "No, because the virtual IP (Internet Protocol) changes",
+            "Only after a reload of R2"
+          ],
+          "answer": 0,
+          "explanation": "Tanda P menunjukkan preempt aktif, dan priority 110 lebih tinggi dari R2 (100), jadi R1 merebut kembali peran active.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-show-standby",
+            "ccna-f-u18-hsrp-preempt",
+            "ccna-f-u18-hsrp-elect"
+          ]
+        },
+        {
+          "id": "ccna-u18-l5-e3",
+          "type": "exhibit",
+          "concept": "fhrp-status",
+          "prompt": "Refer to the exhibit. What is the HSRP (Hot Standby Router Protocol) priority of R2?",
+          "outputs": [
+            {
+              "title": "R2# show standby brief",
+              "text": "                     P indicates configured to preempt.\n                     |\nInterface   Grp  Pri P State   Active          Standby         Virtual IP\nGi0/0/0     1    100   Standby 192.168.1.2     local           192.168.1.1"
+            }
+          ],
+          "options": [
+            "100",
+            "110",
+            "1",
+            "255"
+          ],
+          "answer": 0,
+          "explanation": "Kolom Pri di R2 berisi 100, nilai bawaan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-show-standby",
+            "ccna-f-u18-hsrp-elect"
+          ]
+        },
+        {
+          "id": "ccna-u18-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "vrrp-status"
+          ],
+          "title": "show vrrp brief",
+          "body": "show vrrp brief menampilkan setiap grup VRRP (Virtual Router Redundancy Protocol). Kolom Grp dan Pri berisi nomor grup dan priority, dan Pre menunjukkan preempt. State berisi Master atau Backup. Master addr adalah alamat asli master, dan Group addr adalah IP (Internet Protocol) virtual.",
+          "keyPoints": [
+            "Grp, Pri, Pre",
+            "State: Master atau Backup",
+            "Group addr: IP virtual"
+          ],
+          "teaches": [
+            "ccna-f-u18-show-vrrp"
+          ]
+        },
+        {
+          "id": "ccna-u18-l5-e4",
+          "type": "exhibit",
+          "concept": "vrrp-status",
+          "prompt": "Refer to the exhibit. What is the virtual address that PCs use as their gateway?",
+          "outputs": [
+            {
+              "title": "R1# show vrrp brief",
+              "text": "Interface          Grp Pri Time  Own Pre State   Master addr     Group addr\nGi0/0/0            10  120 3531       Y  Master  192.168.1.2     192.168.1.1"
+            }
+          ],
+          "options": [
+            "192.168.1.1",
+            "192.168.1.2",
+            "0000.5e00.010a",
+            "10"
+          ],
+          "answer": 0,
+          "explanation": "Group addr adalah IP (Internet Protocol) virtual: 192.168.1.1. 192.168.1.2 adalah alamat asli master, dan 10 adalah nomor grup.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-show-vrrp",
+            "ccna-f-u18-virtual"
+          ]
+        },
+        {
+          "id": "ccna-u18-l5-e5",
+          "type": "choice",
+          "concept": "vrrp-status",
+          "prompt": "Two HSRP (Hot Standby Router Protocol) routers both show Active for the same group. What is the most likely cause?",
+          "options": [
+            "Their hellos do not reach each other",
+            "Both routers have preemption configured on the interface",
+            "Both routers still use the default priority of 100",
+            "The virtual IP (Internet Protocol) is in the same subnet"
+          ],
+          "answer": 0,
+          "explanation": "Kalau hello tidak sampai, masing-masing mengira dirinya sendirian dan menjadi active. Preempt dan priority sama tidak menyebabkan dua active.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-hsrp-roles",
+            "ccna-f-u18-hsrp-timers",
+            "ccna-f-u18-hsrp-preempt"
+          ]
+        },
+        {
+          "id": "ccna-u18-l5-e6",
+          "type": "match",
+          "concept": "vrrp-status",
+          "prompt": "Match each column to its meaning.",
+          "pairs": [
+            [
+              "Grp",
+              "Group number"
+            ],
+            [
+              "Pri",
+              "Priority of this router"
+            ],
+            [
+              "P (in show standby brief)",
+              "Preemption is configured"
+            ],
+            [
+              "Group addr (in show vrrp brief)",
+              "The virtual IP (Internet Protocol) address"
+            ]
+          ],
+          "explanation": "Grp nomor grup, Pri priority, P berarti preempt, dan Group addr adalah IP (Internet Protocol) virtual.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-show-standby",
+            "ccna-f-u18-show-vrrp"
+          ]
+        },
+        {
+          "id": "ccna-u18-l5-e7",
+          "type": "truefalse",
+          "concept": "vrrp-status",
+          "prompt": "In show standby brief, the word local in the Standby column means this router is the standby router.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. local berarti router yang menjalankan perintah itu sendiri.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u18-show-standby"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u18-why",
+      "statement": "Host hanya memakai satu default gateway; kalau router itu mati, host kehilangan akses ke jaringan lain walaupun ada router lain di subnet yang sama.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ntw-servs/b-network-services/m_fhp-hsrp-0.html"
+    },
+    {
+      "id": "ccna-f-u18-virtual",
+      "statement": "FHRP membuat beberapa router berbagi satu alamat IP virtual dan MAC virtual; host memakai IP virtual sebagai gateway, jadi setelan host tidak berubah saat router lain mengambil alih.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ntw-servs/b-network-services/m_fhp-hsrp-0.html"
+    },
+    {
+      "id": "ccna-f-u18-hsrp-roles",
+      "statement": "HSRP (Hot Standby Router Protocol) milik Cisco: satu router active meneruskan trafik ke IP virtual, dan satu router standby siap mengambil alih.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ntw-servs/b-network-services/m_fhp-hsrp-0.html"
+    },
+    {
+      "id": "ccna-f-u18-hsrp-elect",
+      "statement": "Router active HSRP adalah yang priority-nya tertinggi (bawaan 100); kalau sama, alamat IP interface tertinggi yang menang.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/ip/b_179_ip_9300_cg/configuring___hsrp.html"
+    },
+    {
+      "id": "ccna-f-u18-hsrp-preempt",
+      "statement": "Preempt HSRP mati secara bawaan, jadi router dengan priority lebih tinggi tidak merebut posisi active kecuali standby preempt dikonfigurasi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/ip/b_179_ip_9300_cg/configuring___hsrp.html"
+    },
+    {
+      "id": "ccna-f-u18-hsrp-timers",
+      "statement": "Bawaannya HSRP mengirim hello setiap 3 detik dengan hold time 10 detik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/ip/b_179_ip_9300_cg/configuring___hsrp.html"
+    },
+    {
+      "id": "ccna-f-u18-hsrp-mac",
+      "statement": "MAC virtual HSRP versi 1 adalah 0000.0c07.acxx, dengan xx nomor grup dalam heksadesimal; versi 2 memakai rentang 0000.0c9f.f000 sampai 0000.0c9f.ffff.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/ip/b_179_ip_9300_cg/configuring___hsrp.html"
+    },
+    {
+      "id": "ccna-f-u18-hsrp-v2",
+      "statement": "HSRP versi 2 mendukung nomor grup 0 sampai 4095 dan IPv6, sedangkan versi 1 hanya grup 0 sampai 255.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ntw-servs/b-network-services/m_fhp-hsrp-0.html"
+    },
+    {
+      "id": "ccna-f-u18-hsrp-cmds",
+      "statement": "standby <grup> ip <alamat virtual> mengaktifkan HSRP, standby <grup> priority <nilai> mengatur priority, dan standby <grup> preempt mengaktifkan preempt.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/ip/b_179_ip_9300_cg/configuring___hsrp.html"
+    },
+    {
+      "id": "ccna-f-u18-vrrp-std",
+      "statement": "VRRP (Virtual Router Redundancy Protocol) adalah standar terbuka di RFC 5798; router yang meneruskan trafik disebut master dan sisanya backup.",
+      "source": "https://www.rfc-editor.org/rfc/rfc5798.html"
+    },
+    {
+      "id": "ccna-f-u18-vrrp-defaults",
+      "statement": "Di VRRP, priority bawaan 100 dan preempt aktif secara bawaan; kalau priority sama, alamat IP tertinggi menjadi master.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ntw-servs/b-network-services/m_fhp-vrrp-0.html"
+    },
+    {
+      "id": "ccna-f-u18-vrrp-mac",
+      "statement": "MAC virtual VRRP untuk IPv4 adalah 0000.5e00.01xx, dengan xx nomor grup (VRID).",
+      "source": "https://www.rfc-editor.org/rfc/rfc5798.html"
+    },
+    {
+      "id": "ccna-f-u18-vrrp-owner",
+      "statement": "VRRP boleh memakai alamat interface salah satu router sebagai alamat virtual; router pemilik alamat itu menjadi master dengan priority 255.",
+      "source": "https://www.rfc-editor.org/rfc/rfc5798.html"
+    },
+    {
+      "id": "ccna-f-u18-glbp",
+      "statement": "GLBP (Gateway Load Balancing Protocol) milik Cisco membagi beban: satu AVG (active virtual gateway) menjawab ARP dengan MAC virtual yang berbeda, sehingga beberapa router (AVF) meneruskan trafik bersamaan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipapp_fhrp/configuration/xe-3s/fhp-xe-3s-book/fhp-glbp.html"
+    },
+    {
+      "id": "ccna-f-u18-show-standby",
+      "statement": "show standby brief menampilkan interface, grup, priority, tanda P untuk preempt, state, router active dan standby, serta IP virtual.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-9/configuration_guide/ip/b_179_ip_9300_cg/configuring___hsrp.html"
+    },
+    {
+      "id": "ccna-f-u18-show-vrrp",
+      "statement": "show vrrp brief menampilkan interface, grup, priority, apakah preempt aktif, state (Master atau Backup), alamat master, dan alamat grup.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/ntw-servs/b-network-services/m_fhp-vrrp-0.html",
+      "verify": true
+    }
+  ]
+}

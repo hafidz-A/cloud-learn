@@ -9,7 +9,7 @@ export function TemplateCode({ language, code, fileName }: Pick<TemplateExercise
   return (
     <figure lang="en" className="overflow-hidden rounded-2xl border-2 border-tinta bg-tinta">
       <figcaption className="border-b border-white/15 px-4 py-2 text-13 font-semibold text-white">
-        {fileName ?? (language === 'json' ? 'azuredeploy.json (ARM template)' : 'main.bicep')}
+        {fileName ?? (language === 'json' ? 'azuredeploy.json (ARM template)' : language === 'yaml' ? 'playbook.yml' : 'main.bicep')}
       </figcaption>
       <div className="py-2" role="region" aria-label="Kode template">
         <pre className="font-mono text-13 leading-relaxed text-white">

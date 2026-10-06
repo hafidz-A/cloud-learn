@@ -111,6 +111,19 @@ Untuk AZ-104, halaman Ujian memakai soal dan riwayat AZ-104 saja (pilih course A
 per domain 15 soal dalam 30 menit, ujian titik lemah 20 soal dalam 40 menit, dan simulasi penuh 50 soal
 dalam 100 menit yang ditutup satu studi kasus. Indikator **Siap ujian** memakai aturan yang sama.
 
+Untuk CCNA (pilih course CCNA di home):
+
+1. **Cek versi ujian dulu.** Materi Langit mengikuti CCNA 200-301 **v2.0**, yang berlaku mulai 3 Februari 2027.
+   Ujian sebelum tanggal itu masih v1.1.
+2. **Ikuti batang pohon dari bawah ke atas.** Cabang **prasyarat** wajib, tapi bisa dilewati dengan **tes lompat**
+   (minimal 80% benar). Cabang **hands-on** dan **pendukung** opsional, tapi hands-on sangat disarankan: soal
+   simulator CLI mirip soal simulasi di ujian.
+3. **Kerjakan lab** di cabang hands-on dengan Cisco Packet Tracer (gratis lewat Cisco Networking Academy),
+   lalu cocokkan hasilmu dengan bagian **Cara membuktikan** di kartu lab.
+4. Halaman Ujian CCNA: mini ujian per domain 25 soal dalam 30 menit, ujian titik lemah 30 soal dalam 36 menit, dan
+   simulasi penuh 100 soal dalam 120 menit. Cisco tidak memublikasikan nilai lulus, jadi hasilnya tanpa label lulus.
+   Indikator **Siap ujian** menyala kalau rata-rata 3 simulasi penuh terakhir minimal **850**.
+
 ## 6. Cara kerja fiturnya
 
 - **Lesson**: kartu **Konsep baru** memperkenalkan konsep, lalu soal naik dari mudah ke sulit. Soal yang
@@ -145,6 +158,21 @@ dalam 100 menit yang ditutup satu studi kasus. Indikator **Siap ujian** memakai 
   Label **Hati-hati biaya** menandai yang bisa memakan biaya (Bastion selain SKU Developer, Standard Load
   Balancer, Site Recovery, tier App Service berbayar, lisensi Microsoft Entra ID P1/P2). Buat resource misi di
   satu resource group dan hapus setelah selesai.
+- **Pohon lesson CCNA**: lesson utama ada di batang. Cabang yang tumbuh dari sebuah lesson berarti
+  **prasyarat** (wajib, bisa dilewati dengan tes lompat), **hands-on** (opsional, simulator CLI lalu lab), atau
+  **pendukung** (opsional, materi tambahan). Cabang bisa bercabang lagi, misalnya lab kedua yang tumbuh dari lab pertama.
+- **Soal simulator CLI (CCNA)**: ketik perintah IOS seperti di terminal router atau switch. Seperti IOS asli, setiap kata boleh
+  disingkat selama unik, misalnya `hostn R2`, `ip add`, `no shut`, atau `switchp mo acc`; kalau singkatannya cocok
+  dengan lebih dari satu perintah, muncul `% Ambiguous command`. Singkatan minimal 3 huruf, kecuali bentuk pendek
+  yang lazim di dokumentasi Cisco seperti `sh`, `en`, `conf t`, `br`, dan `wr`. Panah atas/bawah memanggil perintah sebelumnya. Bantuan `?` dan Tab
+  tidak ada. Pesan yang diawali **Langit:** berasal dari simulator, bukan dari IOS asli, misalnya untuk output yang
+  tidak disimulasikan. Yang dinilai adalah hasil konfigurasinya, jadi urutan atau cara mengetik boleh berbeda.
+- **Contoh di console (CCNA)**: kartu materi yang perintahnya dipakai di soal console menampilkan contoh
+  pengetikannya langkah demi langkah, lengkap dengan prompt, jawaban perangkat, dan arti setiap baris. Nilainya
+  sengaja berbeda dari soal, jadi tetap pahami perintahnya, jangan hanya disalin.
+- **Lab (CCNA)**: setiap cabang hands-on punya kartu lab berisi topologi, tabel alamat, langkah, perintah, cara
+  membuktikan, dan sumber resmi. Label kuning **Belum dicoba langsung** berarti langkahnya baru dicek ke dokumentasi
+  Cisco dan simulator Langit, belum dicoba di Packet Tracer. Kalau hasilmu berbeda, catat supaya bisa diperbaiki.
 - **Statistik**: XP 7 hari terakhir, penguasaan per unit, dan per konsep (yang paling lemah di atas).
 - **Keyboard di PC**: **Enter** untuk Lanjut dan Periksa, angka **1–4** untuk memilih jawaban,
   panah **→** (Benar) dan **←** (Salah) di kartu benar/salah, **Esc** untuk menutup panel di lesson. Di Ujian, panah
@@ -156,8 +184,11 @@ dalam 100 menit yang ditutup satu studi kasus. Indikator **Siap ujian** memakai 
 - **Tanpa sinkron, progres tersimpan di perangkat dan browser itu saja.** Menghapus data browser, menghapus
   ikon Langit (uninstall), atau pindah HP akan memulai dari nol. Nyalakan sinkron (bagian 3) supaya progres
   aman dan sama di semua perangkat.
-- Skor di halaman Ujian adalah perkiraan. Microsoft memakai skala skor sendiri.
-- Soal ditulis mengikuti materi AZ-900 dan AZ-104 terbaru, dicek ke dokumentasi Microsoft Learn. Kalau menemukan soal yang janggal, catat ID-nya (terlihat
+- Skor di halaman Ujian adalah perkiraan. Microsoft memakai skala skor sendiri, dan Cisco tidak memublikasikan
+  nilai lulus CCNA.
+- Soal ditulis mengikuti materi AZ-900 dan AZ-104 terbaru, dicek ke dokumentasi Microsoft Learn. Fakta CCNA dicek ke
+  dokumentasi Cisco, RFC, dan Ansible; yang belum bisa dicocokkan kalimat per kalimat didaftar di
+  `docs/VERIFIKASI_MATERI.md`. Kalau menemukan soal yang janggal, catat ID-nya (terlihat
   di pembahasan) supaya bisa diperbaiki.
 
 ## 8. Untuk developer (opsional)

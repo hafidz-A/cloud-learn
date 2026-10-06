@@ -1,5 +1,93 @@
 import type { FC } from 'react'
 import type { VisualName } from '../content/visuals'
+import { OsiTcpIp } from './OsiTcpIp'
+import { Encapsulation } from './Encapsulation'
+import { SwitchLearning } from './SwitchLearning'
+import { ArpExchange } from './ArpExchange'
+import { TcpHandshake } from './TcpHandshake'
+import { CliModes } from './CliModes'
+import { RunVsStartup } from './RunVsStartup'
+import { StraightVsCrossover } from './StraightVsCrossover'
+import { FiberTypes } from './FiberTypes'
+import { DuplexMismatch } from './DuplexMismatch'
+import { OctetBits } from './OctetBits'
+import { SubnetMaskBits } from './SubnetMaskBits'
+import { SubnetBlocks } from './SubnetBlocks'
+import { VlsmPlan } from './VlsmPlan'
+import { Ipv6Compression } from './Ipv6Compression'
+import { Ipv6AddressTypes } from './Ipv6AddressTypes'
+import { Eui64Steps } from './Eui64Steps'
+import { SlaacFlow } from './SlaacFlow'
+import { Channels24 } from './Channels24'
+import { RfBehaviors } from './RfBehaviors'
+import { WifiSecurity } from './WifiSecurity'
+import { BssEss } from './BssEss'
+import { HypervisorTypes } from './HypervisorTypes'
+import { VmVsContainer } from './VmVsContainer'
+import { VirtualSwitch } from './VirtualSwitch'
+import { VrfTables } from './VrfTables'
+import { ClientIpCommands } from './ClientIpCommands'
+import { DhcpDora } from './DhcpDora'
+import { DhcpRelay } from './DhcpRelay'
+import { VlanDomains } from './VlanDomains'
+import { VoiceVlan } from './VoiceVlan'
+import { PoeClasses } from './PoeClasses'
+import { Dot1qTag } from './Dot1qTag'
+import { TrunkNative } from './TrunkNative'
+import { RouterOnAStick } from './RouterOnAStick'
+import { SviRouting } from './SviRouting'
+import { EtherChannelBundle } from './EtherChannelBundle'
+import { LacpModes } from './LacpModes'
+import { CdpVsLldp } from './CdpVsLldp'
+import { NeighborScope } from './NeighborScope'
+import { StpLoop } from './StpLoop'
+import { StpRoles } from './StpRoles'
+import { StpStates } from './StpStates'
+import { StpGuards } from './StpGuards'
+import { TroubleshootLadder } from './TroubleshootLadder'
+import { PingSymbols } from './PingSymbols'
+import { TracerouteTtl } from './TracerouteTtl'
+import { RouteEntry } from './RouteEntry'
+import { LongestPrefix } from './LongestPrefix'
+import { AdLadder } from './AdLadder'
+import { StaticBothWays } from './StaticBothWays'
+import { FloatingStatic } from './FloatingStatic'
+import { OspfAreas } from './OspfAreas'
+import { WildcardMask } from './WildcardMask'
+import { OspfStates } from './OspfStates'
+import { DrElection } from './DrElection'
+import { OspfCost } from './OspfCost'
+import { FhrpVirtual } from './FhrpVirtual'
+import { FhrpCompare } from './FhrpCompare'
+import { CryptoBasics } from './CryptoBasics'
+import { SshSetup } from './SshSetup'
+import { AaaFlow } from './AaaFlow'
+import { TacacsRadius } from './TacacsRadius'
+import { NatTerms } from './NatTerms'
+import { NatTypes } from './NatTypes'
+import { PatPorts } from './PatPorts'
+import { DnsResolve } from './DnsResolve'
+import { DnsRecords } from './DnsRecords'
+import { VpnTypes } from './VpnTypes'
+import { EspAh } from './EspAh'
+import { TunnelTransport } from './TunnelTransport'
+import { AclFlow } from './AclFlow'
+import { AclPlacement } from './AclPlacement'
+import { PsecModes } from './PsecModes'
+import { SnoopTrust } from './SnoopTrust'
+import { L2Defenses } from './L2Defenses'
+import { MgmtModels } from './MgmtModels'
+import { SdnLayers } from './SdnLayers'
+import { RestCrud } from './RestCrud'
+import { SnmpRoles } from './SnmpRoles'
+import { SyslogLevels } from './SyslogLevels'
+import { SyslogFormat } from './SyslogFormat'
+import { AnsibleFlow } from './AnsibleFlow'
+import { YamlShapes } from './YamlShapes'
+import { PlaybookAnatomy } from './PlaybookAnatomy'
+import { GenVsAgentic } from './GenVsAgentic'
+import { PromptParts } from './PromptParts'
+import { DataClasses } from './DataClasses'
 import { AccountFailover } from './AccountFailover'
 import { AciRestartPolicy } from './AciRestartPolicy'
 import { AlertFlow } from './AlertFlow'
@@ -67,6 +155,94 @@ import { ZonesInRegion } from './ZonesInRegion'
 
 /** Diagrams drawn so far. A catalog name without a component here renders nothing. */
 export const VISUALS: Partial<Record<VisualName, FC>> = {
+  DataClasses,
+  PromptParts,
+  GenVsAgentic,
+  PlaybookAnatomy,
+  YamlShapes,
+  AnsibleFlow,
+  SyslogFormat,
+  SyslogLevels,
+  SnmpRoles,
+  RestCrud,
+  SdnLayers,
+  MgmtModels,
+  L2Defenses,
+  SnoopTrust,
+  PsecModes,
+  AclPlacement,
+  AclFlow,
+  TunnelTransport,
+  EspAh,
+  VpnTypes,
+  DnsRecords,
+  DnsResolve,
+  PatPorts,
+  NatTypes,
+  NatTerms,
+  TacacsRadius,
+  AaaFlow,
+  SshSetup,
+  CryptoBasics,
+  FhrpCompare,
+  FhrpVirtual,
+  OspfCost,
+  DrElection,
+  OspfStates,
+  WildcardMask,
+  OspfAreas,
+  FloatingStatic,
+  StaticBothWays,
+  AdLadder,
+  LongestPrefix,
+  RouteEntry,
+  TracerouteTtl,
+  PingSymbols,
+  TroubleshootLadder,
+  StpGuards,
+  StpStates,
+  StpRoles,
+  StpLoop,
+  NeighborScope,
+  CdpVsLldp,
+  LacpModes,
+  EtherChannelBundle,
+  SviRouting,
+  RouterOnAStick,
+  TrunkNative,
+  Dot1qTag,
+  PoeClasses,
+  VoiceVlan,
+  VlanDomains,
+  DhcpRelay,
+  DhcpDora,
+  ClientIpCommands,
+  VrfTables,
+  VirtualSwitch,
+  VmVsContainer,
+  HypervisorTypes,
+  BssEss,
+  WifiSecurity,
+  RfBehaviors,
+  Channels24,
+  SlaacFlow,
+  Eui64Steps,
+  Ipv6AddressTypes,
+  Ipv6Compression,
+  VlsmPlan,
+  SubnetBlocks,
+  SubnetMaskBits,
+  OctetBits,
+  DuplexMismatch,
+  FiberTypes,
+  StraightVsCrossover,
+  RunVsStartup,
+  CliModes,
+  TcpHandshake,
+  ArpExchange,
+  SwitchLearning,
+  Encapsulation,
+  OsiTcpIp,
   AccountFailover,
   AciRestartPolicy,
   AlertFlow,

@@ -20,7 +20,7 @@ function conceptsOf(course: CourseId): Set<string> {
 }
 
 describe.each(['az900', 'az104'] as CourseId[])('%s outline', (course) => {
-  const outline = OUTLINES[course]
+  const outline = OUTLINES[course]!
 
   it('covers every domain of the course, with unique item ids', () => {
     expect(outline.domains.map((d) => d.path).sort()).toEqual(COURSES[course].paths.map((p) => p.id))

@@ -28,6 +28,12 @@ export const EXAM_MODES: Record<CourseId, Record<ExamMode, ModeInfo>> = {
     domain: { title: 'Mini ujian per domain', count: 15, minutes: 30, blurb: 'Satu domain pilihanmu, tanpa studi kasus.' },
     weak: { title: 'Ujian titik lemah', count: 20, minutes: 40, blurb: 'Konsep dengan akurasi terendah dari latihanmu.' },
   },
+  // CCNA (LANGIT_CCNA_PLAN.md section 9): 120 minutes like the real exam. Cisco does not publish the question count.
+  ccna: {
+    full: { title: 'Simulasi penuh', count: 100, minutes: 120, blurb: 'Semua domain sesuai bobot ujian asli, termasuk soal simulasi CLI.' },
+    domain: { title: 'Mini ujian per domain', count: 25, minutes: 30, blurb: 'Satu domain pilihanmu.' },
+    weak: { title: 'Ujian titik lemah', count: 30, minutes: 36, blurb: 'Konsep dengan akurasi terendah dari latihanmu.' },
+  },
 }
 
 /**
@@ -37,6 +43,7 @@ export const EXAM_MODES: Record<CourseId, Record<ExamMode, ModeInfo>> = {
 export const FULL_SPLIT: Record<CourseId, Record<PathId, number>> = {
   az900: { 1: 14, 2: 19, 3: 17 },
   az104: { 1: 12, 2: 10, 3: 9, 4: 12, 5: 7 },
+  ccna: { 1: 25, 2: 25, 3: 20, 4: 20, 5: 10 },
 }
 
 /**
@@ -44,10 +51,16 @@ export const FULL_SPLIT: Record<CourseId, Record<PathId, number>> = {
  * few single statements, and a third of the AZ-104 bank is true/false, so without
  * a cap a simulation would be easier than the real thing. AZ-900 has no cap.
  */
-const TRUEFALSE_SHARE: Record<CourseId, number | null> = { az900: null, az104: 0.2 }
+const TRUEFALSE_SHARE: Record<CourseId, number | null> = { az900: null, az104: 0.2, ccna: 0.2 }
 
-export const PASS_SCORE = 700
-export const READY_SCORE = 800
+/**
+ * Passing score per course, on the 1,000-point scale. Microsoft publishes 700. Cisco
+ * does not publish a CCNA passing score, so CCNA results show no pass or fail label
+ * (LANGIT_CCNA_PLAN.md section 9).
+ */
+export const PASS_SCORES: Record<CourseId, number | null> = { az900: 700, az104: 700, ccna: null }
+/** Average of the last 3 full simulations that counts as exam-ready; stricter for CCNA, whose pass mark is unknown. */
+export const READY_SCORES: Record<CourseId, number> = { az900: 800, az104: 800, ccna: 850 }
 /** Questions from this many recent attempts are used last. */
 const RECENT_ATTEMPTS = 3
 
@@ -260,12 +273,12 @@ export function scoreAttempt(
 }
 
 /** "Siap ujian" when the last 3 full simulations average at least 800 (plan section 12.6). */
-export function readiness(history: ExamAttempt[]): { ready: boolean; average: number | null; fullCount: number } {
+export function readiness(history: ExamAttempt[], course: CourseId = 'az900'): { ready: boolean; average: number | null; fullCount: number } {
   const full = history.filter((a) => a.mode === 'full' && a.score !== undefined)
   const last = full.slice(-3)
   if (last.length < 3) return { ready: false, average: last.length ? avg(last) : null, fullCount: full.length }
   const average = avg(last)
-  return { ready: average >= READY_SCORE, average, fullCount: full.length }
+  return { ready: average >= READY_SCORES[course], average, fullCount: full.length }
 }
 
 function avg(list: ExamAttempt[]): number {

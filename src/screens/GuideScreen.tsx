@@ -1,11 +1,13 @@
-import { BookOpen, ChevronLeft, ListChecks } from 'lucide-react'
+import { BookOpen, ChevronLeft, FlaskConical, ListChecks } from 'lucide-react'
 import { MissionCard, TipBox } from '../components/PracticeBlocks'
 import { cardConcepts, cardsByLesson, courseOf, findUnit, isExercise, unitNumber } from '../content/course'
+import { labFor } from '../content/labs'
 import { itemsForConcept } from '../content/objectives'
 import { missionFor, tipFor } from '../content/practice'
+import { KIND_LABEL } from '../lib/tree'
 import { TeachingCardContent } from '../lesson/TeachingCardContent'
 import { Unavailable } from '../lesson/LessonScreen'
-import { leaveFlow } from '../lib/router'
+import { leaveFlow, navigate } from '../lib/router'
 import type { CourseId } from '../lib/types'
 
 /** The official outline items a lesson covers, so the guide doubles as a map of the exam. */
@@ -70,6 +72,7 @@ export function GuideScreen({ unitId }: { unitId: string }) {
             <section key={lesson.id} aria-labelledby={`guide-${lesson.id}`}>
               <h2 id={`guide-${lesson.id}`} className="font-display text-17 font-bold text-tinta-lembut">
                 Lesson {i + 1} · {lesson.title}
+                {lesson.branch && <span className="ml-2 rounded-lg bg-biru-muda px-2 py-0.5 text-13 text-tinta">Cabang {KIND_LABEL[lesson.branch.kind].toLowerCase()}</span>}
               </h2>
               <OutlineChips concepts={[...cards.flatMap(cardConcepts), ...lesson.items.filter(isExercise).map((e) => e.concept)]} course={courseOf(unit.id)} />
               <div className="mt-3 space-y-4">
@@ -79,6 +82,16 @@ export function GuideScreen({ unitId }: { unitId: string }) {
                   </article>
                 ))}
                 {tipFor(lesson.id) && <TipBox tip={tipFor(lesson.id)!} />}
+                {labFor(lesson.id) && (
+                  <button
+                    type="button"
+                    onClick={() => navigate({ name: 'lab', lessonId: lesson.id })}
+                    className="flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-2xl border-2 border-dashed border-biru bg-white p-4 text-left font-display text-15 font-bold"
+                  >
+                    <FlaskConical size={18} className="shrink-0 text-biru-dalam" aria-hidden="true" />
+                    Lab Packet Tracer: {labFor(lesson.id)!.title}
+                  </button>
+                )}
               </div>
             </section>
           ),

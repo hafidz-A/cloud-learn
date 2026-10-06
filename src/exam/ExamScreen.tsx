@@ -11,8 +11,8 @@ import { useCourseProgress, useProgress } from '../store/progress'
 import {
   EXAM_MODES,
   FULL_SPLIT,
-  PASS_SCORE,
-  READY_SCORE,
+  PASS_SCORES,
+  READY_SCORES,
   createAttempt,
   formatClock,
   isAnswered,
@@ -71,11 +71,14 @@ function CourseExamScreen({ course }: { course: CourseId }) {
     navigate({ name: 'exam' })
   }
 
-  const scores = readiness(history)
+  const scores = readiness(history, course)
+  const passScore = PASS_SCORES[course]
+  const readyScore = READY_SCORES[course]
   const items = outlineItems(course)
   const mastered = items.filter((i) => itemStatus(i, conceptStats).status === 'mastered').length
   // "Siap ujian" (docs/RENCANA_LULUS_UJIAN.md): good simulation scores and every outline item mastered.
   const ready = { ...scores, ready: scores.ready && mastered === items.length }
+  const hasOutline = items.length > 0
   const weakest = weakestDomain(history.slice(-5))
   const fullRuns = history.filter((a) => a.mode === 'full' && a.score !== undefined)
   const poolByPath = (p: PathId) => pool.filter((q) => q.path === p).length
@@ -180,16 +183,20 @@ function CourseExamScreen({ course }: { course: CourseId }) {
         </h2>
         <p className="mt-1 text-15">
           {ready.fullCount < 3
-            ? `Butuh 3 simulasi penuh dengan rata-rata minimal ${READY_SCORE}. Sudah ${ready.fullCount}.`
-            : `Rata-rata 3 simulasi penuh terakhir: ${ready.average}. ${scores.ready ? 'Sudah mencapai target.' : `Target ${READY_SCORE}.`}`}
+            ? `Butuh 3 simulasi penuh dengan rata-rata minimal ${readyScore}. Sudah ${ready.fullCount}.`
+            : `Rata-rata 3 simulasi penuh terakhir: ${ready.average}. ${scores.ready ? 'Sudah mencapai target.' : `Target ${readyScore}.`}`}
         </p>
-        <p className="mt-1 text-15">
-          Kisi-kisi dikuasai: <span className="font-bold tabular-nums">{mastered}</span> dari {items.length} butir.
-          {ready.ready && ' Mantap, pertahankan!'}
-        </p>
-        <a href={hrefFor({ name: 'outline' })} className="mt-2 inline-flex min-h-11 items-center font-display text-15 font-bold text-biru-dalam underline underline-offset-4">
-          Lihat peta kisi-kisi
-        </a>
+        {hasOutline && (
+          <>
+            <p className="mt-1 text-15">
+              Kisi-kisi dikuasai: <span className="font-bold tabular-nums">{mastered}</span> dari {items.length} butir.
+              {ready.ready && ' Mantap, pertahankan!'}
+            </p>
+            <a href={hrefFor({ name: 'outline' })} className="mt-2 inline-flex min-h-11 items-center font-display text-15 font-bold text-biru-dalam underline underline-offset-4">
+              Lihat peta kisi-kisi
+            </a>
+          </>
+        )}
         {!ready.ready && weakest && (
           <p className="mt-2 text-15 text-tinta-lembut">
             Saran: latih jalur {weakest} ({paths[weakest - 1]?.title}), domain dengan skor terendahmu belakangan ini.
@@ -239,10 +246,7 @@ function CourseExamScreen({ course }: { course: CourseId }) {
               caption="Skor simulasi penuh dari waktu ke waktu"
               unit="poin"
               yMax={1000}
-              references={[
-                { value: PASS_SCORE, label: 'Lulus' },
-                { value: READY_SCORE, label: 'Siap' },
-              ]}
+              references={[...(passScore === null ? [] : [{ value: passScore, label: 'Lulus' }]), { value: readyScore, label: 'Siap' }]}
               data={fullRuns.map((a, i) => ({ key: a.id, label: `#${i + 1}`, full: `Simulasi #${i + 1}, ${formatDate(a.startedAt)}`, value: a.score! }))}
             />
           </div>
@@ -260,7 +264,7 @@ function CourseExamScreen({ course }: { course: CourseId }) {
                   </span>
                   <span className="text-right">
                     <span className="block font-display text-20 font-bold tabular-nums">{a.score}</span>
-                    <span className="block text-13 text-tinta-lembut">{(a.score ?? 0) >= PASS_SCORE ? 'Lulus' : 'Belum lulus'}</span>
+                    <span className="block text-13 text-tinta-lembut">{passScore === null ? 'dari 1.000' : (a.score ?? 0) >= passScore ? 'Lulus' : 'Belum lulus'}</span>
                   </span>
                 </a>
               </li>

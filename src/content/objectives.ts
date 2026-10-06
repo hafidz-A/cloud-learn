@@ -22,17 +22,18 @@ export type Outline = {
   outOfScope: Record<string, string>
 }
 
-export const OUTLINES: Record<CourseId, Outline> = { az900: az900 as unknown as Outline, az104: az104 as unknown as Outline }
+/** AZ-900 and AZ-104. CCNA tracks its exam topics per unit in LANGIT_CCNA_PLAN.md, not here. */
+export const OUTLINES: Partial<Record<CourseId, Outline>> = { az900: az900 as unknown as Outline, az104: az104 as unknown as Outline }
 
 export type PlacedItem = OutlineItem & { group: OutlineGroup; domain: OutlineDomain }
 
-/** Every outline item of a course, in study guide order. */
+/** Every outline item of a course, in study guide order (none for a course without an outline). */
 export function outlineItems(course: CourseId): PlacedItem[] {
-  return OUTLINES[course].domains.flatMap((domain) => domain.groups.flatMap((group) => group.items.map((item) => ({ ...item, group, domain }))))
+  return (OUTLINES[course]?.domains ?? []).flatMap((domain) => domain.groups.flatMap((group) => group.items.map((item) => ({ ...item, group, domain }))))
 }
 
-const ITEMS_BY_CONCEPT: Record<CourseId, ReadonlyMap<string, PlacedItem[]>> = (() => {
-  const out = {} as Record<CourseId, Map<string, PlacedItem[]>>
+const ITEMS_BY_CONCEPT: Partial<Record<CourseId, ReadonlyMap<string, PlacedItem[]>>> = (() => {
+  const out: Partial<Record<CourseId, Map<string, PlacedItem[]>>> = {}
   for (const course of Object.keys(OUTLINES) as CourseId[]) {
     const map = new Map<string, PlacedItem[]>()
     for (const item of outlineItems(course)) for (const c of item.concepts) map.set(c, [...(map.get(c) ?? []), item])
@@ -43,12 +44,13 @@ const ITEMS_BY_CONCEPT: Record<CourseId, ReadonlyMap<string, PlacedItem[]>> = ((
 
 /** The outline items a concept belongs to (empty when the outline does not list it). */
 export function itemsForConcept(course: CourseId, concept: string): PlacedItem[] {
-  return ITEMS_BY_CONCEPT[course].get(concept) ?? []
+  return ITEMS_BY_CONCEPT[course]?.get(concept) ?? []
 }
 
-/** Whether questions about this concept can be on the real exam. */
+/** Whether questions about this concept can be on the real exam. Always true for a course without an outline here. */
 export function inOutline(course: CourseId, concept: string): boolean {
-  return ITEMS_BY_CONCEPT[course].has(concept)
+  const map = ITEMS_BY_CONCEPT[course]
+  return !map || map.has(concept)
 }
 
 export type ItemStatus = 'new' | 'practice' | 'mastered'

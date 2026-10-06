@@ -11,9 +11,11 @@ import { PlacementRun } from './lesson/PlacementRun'
 import { CheckpointScreen } from './lesson/CheckpointScreen'
 import { LessonScreen } from './lesson/LessonScreen'
 import { PracticeRun } from './lesson/PracticeRun'
+import { SkipRun } from './lesson/SkipRun'
 import { useRoute, type Route, type Tab } from './lib/router'
 import { GlossaryScreen } from './screens/GlossaryScreen'
 import { GuideScreen } from './screens/GuideScreen'
+import { LabScreen } from './screens/LabScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { OutlineScreen } from './screens/OutlineScreen'
 import { PracticeScreen } from './screens/PracticeScreen'
@@ -57,6 +59,10 @@ function FullScreen({ route }: { route: Exclude<Route, { name: 'tab' }> }) {
       return <GuideScreen unitId={route.unitId} />
     case 'placement':
       return <PlacementRun />
+    case 'skip':
+      return <SkipRun lessonId={route.lessonId} />
+    case 'lab':
+      return <LabScreen lessonId={route.lessonId} />
     case 'outline':
       return <OutlineScreen />
   }

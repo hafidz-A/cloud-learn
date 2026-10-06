@@ -33,6 +33,7 @@ export const initialProgress: Progress = {
   heartsAt: undefined,
   resetAt: undefined,
   courses: {},
+  ccna: null,
 }
 
 export const EMPTY_COURSE: CourseProgress = {
@@ -47,20 +48,28 @@ export const EMPTY_COURSE: CourseProgress = {
 
 /**
  * One course's progress. AZ-900 keeps its fields at the top level (where they
- * were before AZ-104), AZ-104 lives in `courses.az104`.
+ * were before AZ-104), AZ-104 lives in `courses.az104`, and CCNA in the top-level
+ * key `ccna` (LANGIT_CCNA_PLAN.md section 3).
  */
 export function courseProgress(s: Progress, course: CourseId): CourseProgress {
   if (course === 'az900') {
     const { lessonsDone, checkpoints, unitLevel, review, reviewRemoved, conceptStats, examHistory } = s
     return { lessonsDone, checkpoints, unitLevel, review, reviewRemoved, conceptStats, examHistory }
   }
+  if (course === 'ccna') return { ...EMPTY_COURSE, ...s.ccna }
   return { ...EMPTY_COURSE, ...s.courses[course] }
 }
 
-/** The store update that writes `patch` into one course's progress and leaves the other course alone. */
+/** The store update that writes `patch` into one course's progress and leaves the other courses alone. */
 function withCourse(s: Progress, course: CourseId, patch: Partial<CourseProgress>): Partial<Progress> {
   if (course === 'az900') return patch
+  if (course === 'ccna') return { ccna: { ...courseProgress(s, course), ...patch } }
   return { courses: { ...s.courses, [course]: { ...courseProgress(s, course), ...patch } } }
+}
+
+/** Finished exams of every course, for screens that open an attempt by id. */
+export function allExamHistory(s: Progress): ExamAttempt[] {
+  return [...s.examHistory, ...(s.courses.az104?.examHistory ?? []), ...(s.ccna?.examHistory ?? [])]
 }
 
 type Actions = {
@@ -96,6 +105,11 @@ type Actions = {
   skipPlacement: () => void
   /** Marks every lesson of the chosen units done, without XP; an empty list just closes the offer. */
   applyPlacement: (unitIds: string[]) => void
+  /**
+   * A passed prerequisite skip test (LANGIT_CCNA_PLAN.md section 4.4): marks the
+   * branch's lessons done without XP. Lessons already done keep their record.
+   */
+  applySkip: (lessonIds: string[], accuracy: number) => void
   resetProgress: () => void
 }
 
@@ -247,6 +261,17 @@ export const useProgress = create<ProgressStore>()(
             unitLevel[unit.id] = Math.max(unitLevel[unit.id] ?? 0, 1) as 0 | 1 | 2 | 3
           }
           return withCourse(s, 'az104', { lessonsDone, unitLevel, placement: { ...c.placement, applied: unitIds, appliedAt: at } })
+        }),
+
+      applySkip: (lessonIds, accuracy) =>
+        set((s) => {
+          if (!lessonIds.length) return s
+          const course = courseOf(lessonIds[0])
+          const c = courseProgress(s, course)
+          const at = now()
+          const lessonsDone = { ...c.lessonsDone }
+          for (const id of lessonIds) lessonsDone[id] ??= { bestAccuracy: accuracy, completedAt: at, count: 1 }
+          return withCourse(s, course, { lessonsDone })
         }),
 
       resetProgress: () => set({ ...initialProgress, resetAt: now() }),

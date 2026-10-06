@@ -151,6 +151,49 @@ describe('mergeProgress', () => {
     expect(mergeProgress(phone, pc).courses).toEqual({})
   })
 
+  const ccnaProgress = (lessons: Record<string, number>, exams: ExamAttempt[] = []) => ({
+    lessonsDone: Object.fromEntries(Object.entries(lessons).map(([id, count]) => [id, { bestAccuracy: 1, completedAt: '2026-10-02T08:00:00Z', count }])),
+    checkpoints: {},
+    unitLevel: {},
+    review: {},
+    reviewRemoved: {},
+    conceptStats: {},
+    examHistory: exams,
+  })
+
+  it('merges CCNA progress in its own top-level key (LANGIT_CCNA_PLAN.md section 3)', () => {
+    const a = data({ ...phone, ccna: ccnaProgress({ 'ccna-u01-l1': 1 }) })
+    const b = data({ ...pc, ccna: ccnaProgress({ 'ccna-u01-l1': 2, 'ccna-u01-l2': 1 }) })
+    const m = mergeProgress(a, b)
+    expect(m.ccna?.lessonsDone['ccna-u01-l1'].count).toBe(2)
+    expect(Object.keys(m.ccna!.lessonsDone)).toEqual(['ccna-u01-l1', 'ccna-u01-l2'])
+    expect(m.courses).toEqual({})
+    expect(m.lessonsDone['ccna-u01-l1']).toBeUndefined()
+    expect(stableJson(mergeProgress(b, a))).toBe(stableJson(m))
+    expect(mergeProgress(phone, pc).ccna).toBeNull()
+  })
+
+  it('keeps CCNA progress when the other device runs an app version without it', () => {
+    const withCcna = data({ ...phone, ccna: ccnaProgress({ 'ccna-u01-l1': 1 }) })
+    // An older version neither reads nor sends the key, so its data has no "ccna" at all.
+    const old = { ...pc } as Partial<SyncData>
+    delete old.ccna
+    const m = mergeProgress(withCcna, readSyncData(old, base)!)
+    expect(m.ccna?.lessonsDone['ccna-u01-l1']).toBeDefined()
+  })
+
+  it('sends CCNA progress as null when there is none, so a reset reaches the server', () => {
+    const reset = JSON.parse(JSON.stringify(toSyncData({ ...initialProgress, ccna: undefined }))) as SyncData
+    expect(reset).toHaveProperty('ccna', null)
+  })
+
+  it('does not bring back a CCNA exam that is already in the CCNA history', () => {
+    const done = exam('exam-ccna', '2026-10-02T09:00:00Z')
+    const a = data({ ccna: ccnaProgress({}, [done]), activeExamAt: '2026-10-02T08:00:00Z' })
+    const b = data({ activeExam: { ...done, finishedAt: undefined }, activeExamAt: '2026-10-02T08:30:00Z' })
+    expect(mergeProgress(a, b).activeExam).toBeNull()
+  })
+
   it('keeps at most 100 finished exams', () => {
     const many = (prefix: string) => Array.from({ length: 80 }, (_, i) => exam(`${prefix}${i}`, `2026-09-${String(1 + (i % 28)).padStart(2, '0')}T0${i % 10}:00:00Z`))
     expect(mergeProgress(data({ examHistory: many('a') }), data({ examHistory: many('b') })).examHistory).toHaveLength(100)

@@ -1,0 +1,1424 @@
+{
+  "id": "ccna-u02-ios",
+  "path": 1,
+  "title": "Mengenal Cisco IOS",
+  "lessons": [
+    {
+      "id": "ccna-u02-l1",
+      "title": "Akses dan mode CLI",
+      "items": [
+        {
+          "id": "ccna-u02-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "console-access"
+          ],
+          "title": "Masuk lewat console",
+          "body": "Perangkat Cisco baru belum punya alamat untuk diakses dari jaringan, jadi akses pertamanya lewat port console. Laptop disambung dengan kabel console, lalu dibuka dengan aplikasi terminal emulator. Pengaturannya 9600 bps, 8 data bit, tanpa parity, 1 stop bit, dan tanpa flow control. Setelah perangkat punya alamat IP (Internet Protocol), akses remote memakai SSH (Secure Shell) lewat line vty.",
+          "keyPoints": [
+            "Console: akses pertama, tanpa jaringan",
+            "9600 bps, 8 data bit, tanpa parity, 1 stop bit",
+            "Remote: SSH lewat line vty"
+          ],
+          "teaches": [
+            "ccna-f-u02-console"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e1",
+          "type": "truefalse",
+          "concept": "console-access",
+          "prompt": "The default console settings for a Cisco device are 9600 bps, 8 data bits, no parity, and 1 stop bit.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Itu pengaturan terminal emulator untuk port console perangkat Cisco, tanpa flow control.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-console"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e2",
+          "type": "choice",
+          "concept": "console-access",
+          "prompt": "A new router has no configuration yet. How do you connect to it for the first time?",
+          "options": [
+            "Through the console port with a terminal emulator",
+            "With SSH (Secure Shell) to its default IP (Internet Protocol) address",
+            "With a web browser to its default address",
+            "Through the VTY (virtual terminal) lines with Telnet"
+          ],
+          "answer": 0,
+          "explanation": "Router baru belum punya alamat IP (Internet Protocol), jadi SSH (Secure Shell), web, dan Telnet lewat VTY (virtual terminal) belum bisa. Akses pertama lewat console.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-console"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "ios-modes"
+          ],
+          "title": "Mode CLI",
+          "body": "Cisco IOS punya beberapa mode, dan prompt menunjukkan posisimu. User EXEC (R1>) hanya untuk pemantauan dasar. Perintah enable masuk ke privileged EXEC (R1#), yang membuka semua perintah. Dari sana, configure terminal masuk ke global configuration (R1(config)#), dan perintah interface masuk ke interface configuration (R1(config-if)#).",
+          "keyPoints": [
+            "R1> user EXEC, R1# privileged EXEC",
+            "configure terminal: global configuration",
+            "interface: interface configuration"
+          ],
+          "visual": "CliModes",
+          "teaches": [
+            "ccna-f-u02-user-exec",
+            "ccna-f-u02-mode-moves"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "start": "user",
+              "steps": [
+                {
+                  "command": "enable",
+                  "note": "Masuk ke privileged EXEC; prompt berubah dari > menjadi #."
+                },
+                {
+                  "command": "show running-config",
+                  "note": "Menampilkan konfigurasi yang sedang berjalan."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e3",
+          "type": "match",
+          "concept": "ios-modes",
+          "prompt": "Match each prompt to its mode.",
+          "pairs": [
+            [
+              "R1>",
+              "User EXEC"
+            ],
+            [
+              "R1#",
+              "Privileged EXEC"
+            ],
+            [
+              "R1(config)#",
+              "Global configuration"
+            ],
+            [
+              "R1(config-if)#",
+              "Interface configuration"
+            ]
+          ],
+          "explanation": "Tanda > berarti user EXEC, # privileged EXEC, (config)# global configuration, dan (config-if)# interface configuration.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-user-exec",
+            "ccna-f-u02-mode-moves"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e4",
+          "type": "choice",
+          "concept": "ios-modes",
+          "prompt": "The prompt shows R1>. Which command opens privileged EXEC mode?",
+          "options": [
+            "enable",
+            "configure terminal",
+            "login",
+            "privilege"
+          ],
+          "answer": 0,
+          "explanation": "enable pindah dari user EXEC ke privileged EXEC. configure terminal baru bisa dipakai dari privileged EXEC.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-mode-moves"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e5",
+          "type": "ios",
+          "concept": "ios-modes",
+          "prompt": "You are in user EXEC mode on R1. Display the running configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "start": "user",
+          "goal": {
+            "run": [
+              "show running-config"
+            ]
+          },
+          "solution": [
+            "enable",
+            "show running-config"
+          ],
+          "explanation": "show running-config hanya ada di privileged EXEC, jadi ketik enable dulu, baru show running-config. Bisa disingkat en lalu sh run.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-user-exec",
+            "ccna-f-u02-mode-moves"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "exit-end"
+          ],
+          "title": "exit, end, dan do",
+          "body": "exit kembali satu mode ke atas, misalnya dari interface configuration ke global configuration. end (atau Ctrl+Z) langsung kembali ke privileged EXEC dari mode konfigurasi mana pun. Kalau ingin menjalankan perintah show tanpa keluar dari mode konfigurasi, beri awalan do, misalnya do show ip interface brief.",
+          "keyPoints": [
+            "exit: naik satu mode",
+            "end: langsung ke privileged EXEC",
+            "do: perintah EXEC dari mode konfigurasi"
+          ],
+          "teaches": [
+            "ccna-f-u02-exit-end",
+            "ccna-f-u02-do"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "start": "config",
+              "steps": [
+                {
+                  "command": "do show ip interface brief",
+                  "note": "Menjalankan perintah EXEC \"show ip interface brief\" tanpa keluar dari mode konfigurasi."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e6",
+          "type": "truefalse",
+          "concept": "exit-end",
+          "prompt": "In interface configuration mode, the end command returns you to user EXEC mode.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. end kembali ke privileged EXEC (R1#), bukan user EXEC. Untuk turun ke user EXEC dipakai disable.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-exit-end",
+            "ccna-f-u02-user-exec"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e7",
+          "type": "choice",
+          "concept": "exit-end",
+          "prompt": "You are at R1(config-if)#. Which command returns you to R1(config)#?",
+          "options": [
+            "exit",
+            "end",
+            "disable",
+            "do exit"
+          ],
+          "answer": 0,
+          "explanation": "exit naik satu mode, dari interface configuration ke global configuration. end langsung ke privileged EXEC.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-exit-end",
+            "ccna-f-u02-do"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e8",
+          "type": "order",
+          "concept": "ios-modes",
+          "prompt": "Put the commands in order to go from R1> to interface GigabitEthernet0/0/0 configuration.",
+          "items": [
+            "enable",
+            "configure terminal",
+            "interface GigabitEthernet0/0/0"
+          ],
+          "explanation": "enable ke privileged EXEC, configure terminal ke global configuration, lalu interface ke interface configuration.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-mode-moves"
+          ]
+        },
+        {
+          "id": "ccna-u02-l1-e9",
+          "type": "ios",
+          "concept": "exit-end",
+          "prompt": "You are in global configuration mode on R1. Display the interface summary (show ip interface brief) without typing end or exit.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "start": "config",
+          "goal": {
+            "run": [
+              "show ip interface brief"
+            ]
+          },
+          "solution": [
+            "do show ip interface brief"
+          ],
+          "explanation": "Awalan do menjalankan perintah EXEC dari mode konfigurasi, jadi do show ip interface brief (atau do sh ip int br) langsung jalan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-do"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u02-l2",
+      "title": "Konfigurasi dasar perangkat",
+      "items": [
+        {
+          "id": "ccna-u02-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "basic-config"
+          ],
+          "title": "Nama perangkat dan enable secret",
+          "body": "Langkah pertama konfigurasi adalah memberi nama dengan hostname, dan prompt langsung berubah. Berikutnya lindungi privileged EXEC. enable secret disimpan sebagai hash dan selalu didahulukan daripada enable password, jadi Cisco menyarankan enable secret. Kalau keduanya terpasang, yang dipakai adalah enable secret.",
+          "keyPoints": [
+            "hostname mengganti nama dan prompt",
+            "enable secret disimpan sebagai hash",
+            "enable secret menang atas enable password"
+          ],
+          "teaches": [
+            "ccna-f-u02-hostname",
+            "ccna-f-u02-secret"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "Router",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "hostname BDG-R1",
+                  "note": "Mengganti nama perangkat menjadi BDG-R1; prompt langsung ikut berubah."
+                },
+                {
+                  "command": "enable secret Langit#26",
+                  "note": "Memasang password untuk masuk privileged EXEC, disimpan sebagai hash."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e1",
+          "type": "truefalse",
+          "concept": "basic-config",
+          "prompt": "If both enable password and enable secret are configured, the enable password is the one IOS asks for.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. enable secret selalu didahulukan; enable password tidak dipakai selama enable secret ada.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-secret"
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e2",
+          "type": "ios",
+          "concept": "basic-config",
+          "prompt": "The router still has its default name. Name it BDG-R1 and protect privileged EXEC mode with the hashed password Langit#26.",
+          "device": {
+            "hostname": "Router",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "hostname BDG-R1"
+              },
+              {
+                "line": "enable secret Langit#26"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "hostname BDG-R1",
+            "enable secret Langit#26",
+            "end"
+          ],
+          "explanation": "hostname mengganti nama, dan enable secret menyimpan password sebagai hash. enable password tidak disarankan karena disimpan sebagai teks biasa.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-hostname",
+            "ccna-f-u02-secret"
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e3",
+          "type": "choice",
+          "concept": "basic-config",
+          "prompt": "Why does Cisco recommend enable secret instead of enable password?",
+          "options": [
+            "enable secret is stored as a hash, not as readable text",
+            "enable secret also protects the console line",
+            "enable secret works without the enable command",
+            "enable secret is the only one that can be removed"
+          ],
+          "answer": 0,
+          "explanation": "enable secret disimpan sebagai hash. enable password disimpan sebagai teks biasa, kecuali disandikan type 7 yang lemah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-secret"
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "line-passwords"
+          ],
+          "title": "Password console dan vty",
+          "body": "Line console 0 adalah akses lewat kabel console, sedangkan line vty adalah sesi remote seperti SSH (Secure Shell) atau Telnet. Pasang password di line itu, lalu tambahkan perintah login supaya password benar-benar ditanyakan. line vty 0 4 mengatur lima sesi pertama; switch Catalyst punya 16 line vty, 0 sampai 15.",
+          "keyPoints": [
+            "password + login di setiap line",
+            "line console 0: akses kabel",
+            "line vty: SSH atau Telnet, 0 4 = lima sesi"
+          ],
+          "trap": "Password di line tanpa perintah login tidak pernah ditanyakan.",
+          "teaches": [
+            "ccna-f-u02-line-login",
+            "ccna-f-u02-vty-lines"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "line console 0",
+                  "note": "Masuk ke pengaturan port console."
+                },
+                {
+                  "command": "password Konsol123",
+                  "note": "Memasang password untuk line ini."
+                },
+                {
+                  "command": "login",
+                  "note": "Meminta password line saat seseorang masuk."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e4",
+          "type": "truefalse",
+          "concept": "line-passwords",
+          "prompt": "A password set on line vty 0 4 is asked for even if the login command is not configured on that line.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Password line baru ditanyakan kalau perintah login juga dipasang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-line-login"
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e5",
+          "type": "choice",
+          "concept": "line-passwords",
+          "prompt": "How many remote sessions does line vty 0 4 configure?",
+          "options": [
+            "5",
+            "4",
+            "16",
+            "1"
+          ],
+          "answer": 0,
+          "explanation": "Line 0 sampai 4 adalah lima line vty. Switch Catalyst punya 16 line vty, 0 sampai 15.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-vty-lines"
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e6",
+          "type": "ios",
+          "concept": "line-passwords",
+          "prompt": "Protect console access on R1 with the password Konsol123, and make sure the password is asked for.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "line con 0",
+                "line": "password Konsol123"
+              },
+              {
+                "context": "line con 0",
+                "line": "login"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "line console 0",
+            "password Konsol123",
+            "login",
+            "end"
+          ],
+          "explanation": "Password dipasang di line console 0, dan login membuat password itu ditanyakan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-line-login"
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-m3",
+          "type": "learn",
+          "concepts": [
+            "secure-basics"
+          ],
+          "title": "Banner dan service password-encryption",
+          "body": "banner motd menampilkan pesan sebelum login, misalnya peringatan akses resmi. Teksnya diapit karakter pembatas pilihanmu, misalnya #, yang tidak boleh muncul di dalam pesan. service password-encryption menyandikan password teks biasa, seperti password line, sebagai type 7. Type 7 hanya mencegah orang membaca dari layar, karena mudah dibalik dengan tool publik.",
+          "keyPoints": [
+            "banner motd: pesan sebelum login",
+            "Pesan diapit karakter pembatas",
+            "Type 7 lemah, hanya menyamarkan"
+          ],
+          "teaches": [
+            "ccna-f-u02-banner",
+            "ccna-f-u02-type7"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "banner motd #Authorized access only#",
+                  "note": "Memasang pesan yang tampil sebelum login."
+                },
+                {
+                  "command": "service password-encryption",
+                  "note": "Menyandikan password teks biasa di konfigurasi (type 7, lemah, hanya mencegah orang membaca sekilas)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e7",
+          "type": "exhibit",
+          "concept": "secure-basics",
+          "prompt": "Refer to the exhibit. Which command produced the 7 in front of the console password?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | section line con",
+              "text": "line con 0\n password 7 0822455D0A16\n login"
+            }
+          ],
+          "options": [
+            "service password-encryption",
+            "enable secret",
+            "login local",
+            "banner motd"
+          ],
+          "answer": 0,
+          "explanation": "service password-encryption menyandikan password teks biasa sebagai type 7. enable secret memakai hash dengan tipe lain dan tidak mengubah password line.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-type7",
+            "ccna-f-u02-secret"
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e8",
+          "type": "ios",
+          "concept": "secure-basics",
+          "prompt": "On R1, show the message Authorized access only before login, and hide the plain-text line passwords in the configuration.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "banner motd #Authorized access only#"
+              },
+              {
+                "line": "service password-encryption"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "banner motd #Authorized access only#",
+            "service password-encryption",
+            "end"
+          ],
+          "explanation": "banner motd memakai karakter pembatas, di sini #. service password-encryption menyandikan password teks biasa sebagai type 7.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-banner",
+            "ccna-f-u02-type7"
+          ]
+        },
+        {
+          "id": "ccna-u02-l2-e9",
+          "type": "fill",
+          "concept": "secure-basics",
+          "prompt": "Complete the sentence.",
+          "sentence": "The text of a banner motd is placed between two ___ characters, and service password-encryption stores passwords as type ___.",
+          "bank": [
+            "delimiting",
+            "7",
+            "quotation",
+            "5"
+          ],
+          "answers": [
+            "delimiting",
+            "7"
+          ],
+          "explanation": "Pesan banner diapit karakter pembatas (delimiting), dan service password-encryption memakai type 7.",
+          "requires": [
+            "ccna-f-u02-banner",
+            "ccna-f-u02-type7"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u02-l3",
+      "title": "Menyimpan dan membaca konfigurasi",
+      "items": [
+        {
+          "id": "ccna-u02-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "running-vs-startup"
+          ],
+          "title": "Running-config dan startup-config",
+          "body": "Setiap perintah konfigurasi langsung mengubah running configuration, yang ada di RAM (random-access memory). Saat perangkat menyala, yang dimuat adalah startup configuration dari NVRAM (non-volatile RAM). Jadi perubahan baru permanen setelah disimpan dengan copy running-config startup-config atau write memory. Tanpa itu, perubahan hilang setelah reload.",
+          "keyPoints": [
+            "running-config: RAM, langsung berubah",
+            "startup-config: NVRAM, dimuat saat boot",
+            "Simpan dengan copy run start atau write memory"
+          ],
+          "visual": "RunVsStartup",
+          "teaches": [
+            "ccna-f-u02-run-ram",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u02-l3-e1",
+          "type": "truefalse",
+          "concept": "running-vs-startup",
+          "prompt": "The running configuration is stored in NVRAM (non-volatile RAM) and survives a reload.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Running configuration ada di RAM (random-access memory). Yang tersimpan di NVRAM (non-volatile RAM) dan bertahan saat reload adalah startup configuration.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-run-ram"
+          ]
+        },
+        {
+          "id": "ccna-u02-l3-e2",
+          "type": "choice",
+          "concept": "running-vs-startup",
+          "prompt": "An engineer configures a new VLAN (Virtual LAN) name and an interface description, then the switch reloads. Both changes are gone. What is the most likely cause?",
+          "options": [
+            "The running configuration was not copied to the startup configuration",
+            "The startup configuration was too large",
+            "The commands were entered in user EXEC mode",
+            "The reload erased the NVRAM (non-volatile RAM)"
+          ],
+          "answer": 0,
+          "explanation": "Perubahan ada di running configuration. Tanpa copy running-config startup-config, saat reload yang dimuat adalah startup configuration lama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-save",
+            "ccna-f-u02-run-ram"
+          ]
+        },
+        {
+          "id": "ccna-u02-l3-e3",
+          "type": "ios",
+          "concept": "running-vs-startup",
+          "prompt": "R1 already has the configuration you need. Save it so that it survives a reload.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "lines": [
+                "hostname R1",
+                "banner motd #Lab Langit#"
+              ]
+            }
+          ],
+          "goal": {
+            "saved": true
+          },
+          "solution": [
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "copy running-config startup-config (atau write memory) menyalin running configuration ke NVRAM (non-volatile RAM). IOS menanyakan nama tujuan; tekan Enter untuk menerima startup-config.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u02-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "show-config"
+          ],
+          "title": "Membaca konfigurasi",
+          "body": "show running-config menampilkan konfigurasi yang sedang berjalan, dan show startup-config menampilkan yang tersimpan di NVRAM (non-volatile RAM). Membandingkan keduanya memberi tahu apakah ada perubahan yang belum disimpan. erase startup-config menghapus konfigurasi tersimpan, sehingga setelah reload perangkat menyala tanpa konfigurasi.",
+          "keyPoints": [
+            "show running-config: yang berjalan",
+            "show startup-config: yang tersimpan",
+            "erase startup-config: kosong setelah reload"
+          ],
+          "teaches": [
+            "ccna-f-u02-show-configs",
+            "ccna-f-u02-erase"
+          ]
+        },
+        {
+          "id": "ccna-u02-l3-e4",
+          "type": "choice",
+          "concept": "show-config",
+          "prompt": "Which command shows the configuration that the router will load the next time it boots?",
+          "options": [
+            "show startup-config",
+            "show running-config",
+            "show version",
+            "show ip interface brief"
+          ],
+          "answer": 0,
+          "explanation": "Saat boot yang dimuat adalah startup configuration, jadi show startup-config yang menampilkannya. show running-config menampilkan yang sedang berjalan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-show-configs",
+            "ccna-f-u02-run-ram"
+          ]
+        },
+        {
+          "id": "ccna-u02-l3-e5",
+          "type": "match",
+          "concept": "show-config",
+          "prompt": "Match each command to what it does.",
+          "pairs": [
+            [
+              "show running-config",
+              "Shows the configuration in use now"
+            ],
+            [
+              "show startup-config",
+              "Shows the saved configuration"
+            ],
+            [
+              "copy running-config startup-config",
+              "Saves the current configuration"
+            ],
+            [
+              "erase startup-config",
+              "Deletes the saved configuration"
+            ]
+          ],
+          "explanation": "show running-config untuk yang berjalan, show startup-config untuk yang tersimpan, copy running-config startup-config untuk menyimpan, dan erase startup-config untuk menghapus yang tersimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-show-configs",
+            "ccna-f-u02-save",
+            "ccna-f-u02-erase"
+          ]
+        },
+        {
+          "id": "ccna-u02-l3-e6",
+          "type": "order",
+          "concept": "running-vs-startup",
+          "prompt": "Put the steps in order to make an interface description permanent on R1.",
+          "items": [
+            "configure terminal",
+            "interface GigabitEthernet0/0/1",
+            "description Ke internet",
+            "end",
+            "copy running-config startup-config"
+          ],
+          "explanation": "Masuk ke global configuration, ke interface, beri description, keluar dengan end, lalu simpan dengan copy running-config startup-config.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-mode-moves",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u02-l3-e7",
+          "type": "truefalse",
+          "concept": "show-config",
+          "prompt": "After erase startup-config and a reload, the device starts without its saved configuration.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. erase startup-config menghapus konfigurasi di NVRAM (non-volatile RAM), jadi setelah reload tidak ada yang dimuat.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-erase"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u02-l4",
+      "title": "Bantuan CLI dan pesan error",
+      "branch": {
+        "kind": "support",
+        "from": "ccna-u02-l3"
+      },
+      "items": [
+        {
+          "id": "ccna-u02-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "cli-help"
+          ],
+          "title": "Bantuan ? dan Tab",
+          "body": "Ketik ? untuk melihat perintah atau parameter yang tersedia di posisi itu, misalnya show ? atau ip address ?. Tab melengkapi kata yang sudah unik. IOS juga menerima singkatan selama hurufnya cukup untuk membedakannya dari perintah lain, misalnya conf t untuk configure terminal. Panah atas memanggil lagi perintah sebelumnya.",
+          "keyPoints": [
+            "? : daftar pilihan di posisi itu",
+            "Tab: lengkapi kata unik",
+            "Singkatan boleh kalau unik"
+          ],
+          "teaches": [
+            "ccna-f-u02-help",
+            "ccna-f-u02-abbrev",
+            "ccna-f-u02-history"
+          ]
+        },
+        {
+          "id": "ccna-u02-l4-e1",
+          "type": "truefalse",
+          "concept": "cli-help",
+          "prompt": "IOS accepts conf t as configure terminal because the letters are enough to tell the command apart.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. IOS menerima singkatan selama hurufnya cukup untuk membedakan perintah itu dari perintah lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-abbrev"
+          ]
+        },
+        {
+          "id": "ccna-u02-l4-e2",
+          "type": "choice",
+          "concept": "cli-help",
+          "prompt": "You typed show and a space. What do you type next to list every option that can follow?",
+          "options": [
+            "?",
+            "Tab",
+            "help all",
+            "Ctrl+Z"
+          ],
+          "answer": 0,
+          "explanation": "Tanda ? menampilkan pilihan yang tersedia di posisi itu. Tab hanya melengkapi kata yang sudah unik, dan Ctrl+Z kembali ke privileged EXEC.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-help",
+            "ccna-f-u02-exit-end"
+          ]
+        },
+        {
+          "id": "ccna-u02-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "cli-errors"
+          ],
+          "title": "Tiga pesan error",
+          "body": "% Ambiguous command berarti huruf yang diketik belum cukup untuk membedakan perintah, misalnya s yang cocok dengan show dan beberapa perintah lain. % Incomplete command berarti ada kata kunci atau nilai wajib yang belum diketik. % Invalid input detected at '^' marker berarti ada bagian yang salah, dan tanda ^ menunjuk tempatnya.",
+          "keyPoints": [
+            "Ambiguous: singkatan terlalu pendek",
+            "Incomplete: bagian wajib belum diketik",
+            "Invalid input: ^ menunjuk letak salah"
+          ],
+          "teaches": [
+            "ccna-f-u02-err-ambiguous",
+            "ccna-f-u02-err-incomplete",
+            "ccna-f-u02-err-invalid"
+          ]
+        },
+        {
+          "id": "ccna-u02-l4-e3",
+          "type": "match",
+          "concept": "cli-errors",
+          "prompt": "Match each IOS message to its cause.",
+          "pairs": [
+            [
+              "% Ambiguous command",
+              "Too few letters to tell the command apart"
+            ],
+            [
+              "% Incomplete command",
+              "A required keyword or value is missing"
+            ],
+            [
+              "% Invalid input detected at '^' marker",
+              "Part of the command is wrong"
+            ]
+          ],
+          "explanation": "Ambiguous: singkatan terlalu pendek. Incomplete: bagian wajib belum diketik. Invalid input: ada bagian yang salah, ditunjuk tanda ^.",
+          "requires": [
+            "ccna-f-u02-err-ambiguous",
+            "ccna-f-u02-err-incomplete",
+            "ccna-f-u02-err-invalid"
+          ]
+        },
+        {
+          "id": "ccna-u02-l4-e4",
+          "type": "exhibit",
+          "concept": "cli-errors",
+          "prompt": "Refer to the exhibit. What is wrong with the command?",
+          "outputs": [
+            {
+              "title": "R1 console",
+              "text": "R1(config-if)#ip address 300.10.10.1 255.255.255.0\n                         ^\n% Invalid input detected at '^' marker."
+            }
+          ],
+          "options": [
+            "The first octet of the address is not a valid value",
+            "The subnet mask must be written as a prefix length",
+            "The command must be entered in global configuration mode",
+            "A keyword is missing at the end of the command"
+          ],
+          "answer": 0,
+          "explanation": "Tanda ^ menunjuk 300, dan satu oktet IPv4 hanya boleh 0 sampai 255. Perintah ip address memang diketik di interface configuration, dan mask ditulis dalam bentuk titik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-err-invalid"
+          ]
+        },
+        {
+          "id": "ccna-u02-l4-e5",
+          "type": "choice",
+          "concept": "cli-errors",
+          "prompt": "You enter ip address on an interface and press Enter. IOS answers % Incomplete command. What should you do?",
+          "options": [
+            "Add the address and the subnet mask to the command",
+            "Use a longer abbreviation of ip",
+            "Move to global configuration mode first",
+            "Add the word secondary"
+          ],
+          "answer": 0,
+          "explanation": "% Incomplete command berarti nilai wajib belum ada. ip address butuh alamat dan subnet mask.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-err-incomplete"
+          ]
+        },
+        {
+          "id": "ccna-u02-l4-e6",
+          "type": "truefalse",
+          "concept": "cli-errors",
+          "prompt": "% Ambiguous command means that the command does not exist in the current mode.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Ambiguous berarti singkatannya cocok dengan lebih dari satu perintah. Perintah yang tidak ada di mode itu menghasilkan % Invalid input.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-err-ambiguous",
+            "ccna-f-u02-err-invalid"
+          ]
+        },
+        {
+          "id": "ccna-u02-l4-e7",
+          "type": "choice",
+          "concept": "cli-help",
+          "prompt": "Which key recalls the command you typed before, so you can edit and run it again?",
+          "options": [
+            "The up arrow",
+            "Tab",
+            "The question mark",
+            "Ctrl+Z"
+          ],
+          "answer": 0,
+          "explanation": "Panah atas (atau Ctrl+P) memanggil perintah sebelumnya dari riwayat. Tab melengkapi kata, ? menampilkan bantuan, dan Ctrl+Z kembali ke privileged EXEC.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-history",
+            "ccna-f-u02-help",
+            "ccna-f-u02-exit-end"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u02-l5",
+      "title": "Lab: konfigurasi awal",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u02-l3"
+      },
+      "items": [
+        {
+          "id": "ccna-u02-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "initial-config-lab"
+          ],
+          "title": "Konfigurasi awal yang selalu dipakai",
+          "body": "Setiap router atau switch baru mendapat konfigurasi awal yang sama sebelum dipakai. Berikan nama, lindungi privileged EXEC dengan enable secret, pasang password dan login di console serta vty, tambahkan banner, dan sandikan password teks biasa. Terakhir simpan semuanya ke startup-config. Kerjakan di simulator dulu, lalu ulangi di Packet Tracer.",
+          "keyPoints": [
+            "Nama, enable secret, password line",
+            "Banner dan service password-encryption",
+            "Selalu simpan di akhir"
+          ],
+          "teaches": [
+            "ccna-f-u02-hostname",
+            "ccna-f-u02-secret",
+            "ccna-f-u02-line-login",
+            "ccna-f-u02-save"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "Router",
+                "model": "isr4331"
+              },
+              "start": "user",
+              "steps": [
+                {
+                  "command": "enable",
+                  "note": "Masuk ke privileged EXEC; prompt berubah dari > menjadi #."
+                },
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "hostname HQ-R1",
+                  "note": "Mengganti nama perangkat menjadi HQ-R1; prompt langsung ikut berubah."
+                },
+                {
+                  "command": "enable secret Cisc0Lab",
+                  "note": "Memasang password untuk masuk privileged EXEC, disimpan sebagai hash."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            },
+            {
+              "device": {
+                "hostname": "HQ-R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "line console 0",
+                  "note": "Masuk ke pengaturan port console."
+                },
+                {
+                  "command": "password Konsol1",
+                  "note": "Memasang password untuk line ini."
+                },
+                {
+                  "command": "login",
+                  "note": "Meminta password line saat seseorang masuk."
+                },
+                {
+                  "command": "line vty 0 4",
+                  "note": "Masuk ke pengaturan line vty 0 sampai 4, jalur akses remote seperti SSH (Secure Shell)."
+                },
+                {
+                  "command": "password Remote1",
+                  "note": "Memasang password untuk line ini."
+                },
+                {
+                  "command": "login",
+                  "note": "Meminta password line saat seseorang masuk."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            },
+            {
+              "device": {
+                "hostname": "HQ-R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "banner motd #Akses terbatas#",
+                  "note": "Memasang pesan yang tampil sebelum login."
+                },
+                {
+                  "command": "service password-encryption",
+                  "note": "Menyandikan password teks biasa di konfigurasi (type 7, lemah, hanya mencegah orang membaca sekilas)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u02-l5-e1",
+          "type": "ios",
+          "concept": "initial-config-lab",
+          "prompt": "Give the new router the name HQ-R1 and set the enable secret to Cisc0Lab.",
+          "device": {
+            "hostname": "Router",
+            "model": "isr4331"
+          },
+          "start": "user",
+          "goal": {
+            "config": [
+              {
+                "line": "hostname HQ-R1"
+              },
+              {
+                "line": "enable secret Cisc0Lab"
+              }
+            ]
+          },
+          "solution": [
+            "enable",
+            "configure terminal",
+            "hostname HQ-R1",
+            "enable secret Cisc0Lab",
+            "end"
+          ],
+          "explanation": "Mulai dari user EXEC: enable, configure terminal, lalu hostname dan enable secret.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-hostname",
+            "ccna-f-u02-secret",
+            "ccna-f-u02-mode-moves"
+          ]
+        },
+        {
+          "id": "ccna-u02-l5-e2",
+          "type": "ios",
+          "concept": "initial-config-lab",
+          "prompt": "On HQ-R1, require the password Konsol1 on the console and the password Remote1 on the first five VTY (virtual terminal) lines.",
+          "device": {
+            "hostname": "HQ-R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "context": "line con 0",
+                "line": "password Konsol1"
+              },
+              {
+                "context": "line con 0",
+                "line": "login"
+              },
+              {
+                "context": "line vty 0 4",
+                "line": "password Remote1"
+              },
+              {
+                "context": "line vty 0 4",
+                "line": "login"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "line console 0",
+            "password Konsol1",
+            "login",
+            "line vty 0 4",
+            "password Remote1",
+            "login",
+            "end"
+          ],
+          "explanation": "Setiap line butuh password dan login. line vty 0 4 adalah lima line VTY (virtual terminal) pertama.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-line-login",
+            "ccna-f-u02-vty-lines"
+          ]
+        },
+        {
+          "id": "ccna-u02-l5-e3",
+          "type": "ios",
+          "concept": "initial-config-lab",
+          "prompt": "On HQ-R1, add the banner Akses terbatas, hide the plain-text passwords, and save the configuration.",
+          "device": {
+            "hostname": "HQ-R1",
+            "model": "isr4331"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "banner motd #Akses terbatas#"
+              },
+              {
+                "line": "service password-encryption"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "banner motd #Akses terbatas#",
+            "service password-encryption",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Banner memakai karakter pembatas, service password-encryption menyandikan password line, dan copy running-config startup-config menyimpan semuanya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-banner",
+            "ccna-f-u02-type7",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u02-l5-e4",
+          "type": "ios",
+          "concept": "initial-config-lab",
+          "prompt": "Do the same on the new switch: name it HQ-SW1, require the password Remote1 on all 16 VTY (virtual terminal) lines, and save the configuration.",
+          "device": {
+            "hostname": "Switch",
+            "model": "c2960"
+          },
+          "goal": {
+            "config": [
+              {
+                "line": "hostname HQ-SW1"
+              },
+              {
+                "context": "line vty 0 15",
+                "line": "password Remote1"
+              },
+              {
+                "context": "line vty 0 15",
+                "line": "login"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "hostname HQ-SW1",
+            "line vty 0 15",
+            "password Remote1",
+            "login",
+            "end",
+            "write memory"
+          ],
+          "explanation": "Switch Catalyst punya 16 line VTY (virtual terminal), 0 sampai 15. write memory menyimpan sama seperti copy running-config startup-config.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-hostname",
+            "ccna-f-u02-vty-lines",
+            "ccna-f-u02-line-login",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u02-l5-e5",
+          "type": "exhibit",
+          "concept": "initial-config-lab",
+          "prompt": "Refer to the exhibit. The administrator configured HQ-R1, and then the router reloaded. Which part of the configuration is still there after the reload?",
+          "outputs": [
+            {
+              "title": "HQ-R1# show running-config | include hostname|banner",
+              "text": "hostname HQ-R1\nbanner motd ^CAkses terbatas^C"
+            },
+            {
+              "title": "HQ-R1# show startup-config | include hostname|banner",
+              "text": "hostname HQ-R1"
+            }
+          ],
+          "options": [
+            "Only the hostname",
+            "The hostname and the banner",
+            "Nothing, because the startup configuration is empty",
+            "The banner only"
+          ],
+          "answer": 0,
+          "explanation": "show startup-config hanya berisi hostname HQ-R1, jadi hanya itu yang dimuat saat reload. Banner ada di running configuration tapi belum disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u02-save",
+            "ccna-f-u02-show-configs",
+            "ccna-f-u02-run-ram"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u02-console",
+      "statement": "Akses pertama ke perangkat Cisco lewat port console memakai terminal emulator dengan 9600 bps, 8 data bit, tanpa parity, 1 stop bit, dan tanpa flow control.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/storage-networking/management/217970-troubleshoot-and-apply-correct-terminal.html"
+    },
+    {
+      "id": "ccna-f-u02-user-exec",
+      "statement": "User EXEC (prompt >) hanya berisi perintah pemantauan dasar; privileged EXEC (prompt #) membuka semua perintah, termasuk masuk ke mode konfigurasi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html"
+    },
+    {
+      "id": "ccna-f-u02-mode-moves",
+      "statement": "enable pindah dari user EXEC ke privileged EXEC, configure terminal masuk ke global configuration (prompt (config)#), dan interface masuk ke interface configuration (prompt (config-if)#).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html"
+    },
+    {
+      "id": "ccna-f-u02-exit-end",
+      "statement": "exit kembali satu mode ke atas, sedangkan end (atau Ctrl+Z) langsung kembali ke privileged EXEC dari mode konfigurasi mana pun.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html"
+    },
+    {
+      "id": "ccna-f-u02-do",
+      "statement": "Awalan do menjalankan perintah EXEC, misalnya do show ip interface brief, tanpa keluar dari mode konfigurasi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/configuration/xe-16-12/fundamentals-xe-16-12-book/cf-cli-basics.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u02-hostname",
+      "statement": "Perintah hostname di global configuration mengganti nama perangkat, dan prompt langsung memakai nama baru itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u02-secret",
+      "statement": "enable secret disimpan sebagai hash dan selalu didahulukan daripada enable password; Cisco menyarankan enable secret.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_cfg/configuration/15-mt/sec-usr-cfg-15-mt-book/sec-cfg-sec-4cli.html"
+    },
+    {
+      "id": "ccna-f-u02-line-login",
+      "statement": "Password di line console 0 atau line vty baru ditanyakan kalau perintah login juga dipasang di line itu.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-8/configuration_guide/sec/b_168_sec_9400_cg/controlling_switch_access_with_passwords_and_privilege_levels.html"
+    },
+    {
+      "id": "ccna-f-u02-vty-lines",
+      "statement": "line vty 0 4 mengatur lima sesi remote pertama (Telnet atau SSH); switch Catalyst punya 16 line vty, 0 sampai 15.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9400/software/release/16-8/configuration_guide/sec/b_168_sec_9400_cg/controlling_switch_access_with_passwords_and_privilege_levels.html"
+    },
+    {
+      "id": "ccna-f-u02-type7",
+      "statement": "service password-encryption menyandikan password yang tadinya teks biasa (misalnya password line dan enable password) sebagai type 7, yang bisa dibalik dengan tool publik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_usr_cfg/configuration/15-mt/sec-usr-cfg-15-mt-book/sec-cfg-sec-4cli.html"
+    },
+    {
+      "id": "ccna-f-u02-banner",
+      "statement": "banner motd menampilkan pesan sebelum login; teksnya diapit karakter pembatas pilihanmu, misalnya #, dan karakter itu tidak boleh ada di dalam pesan.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/command/cf_command_ref/A_through_B.html"
+    },
+    {
+      "id": "ccna-f-u02-run-ram",
+      "statement": "Running configuration ada di RAM dan langsung berubah setiap perintah konfigurasi diketik; startup configuration ada di NVRAM dan dimuat saat perangkat menyala.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3850/software/release/16-9/configuration_guide/sys_mgmt/b_169_sys_mgmt_3850_cg/m-169-fm-config-cg.html"
+    },
+    {
+      "id": "ccna-f-u02-save",
+      "statement": "copy running-config startup-config (atau write memory) menyimpan konfigurasi; perubahan yang belum disimpan hilang setelah reload.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3850/software/release/16-9/configuration_guide/sys_mgmt/b_169_sys_mgmt_3850_cg/m-169-fm-config-cg.html"
+    },
+    {
+      "id": "ccna-f-u02-show-configs",
+      "statement": "show running-config menampilkan konfigurasi yang sedang berjalan, sedangkan show startup-config menampilkan yang tersimpan di NVRAM.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3850/software/release/16-9/configuration_guide/sys_mgmt/b_169_sys_mgmt_3850_cg/m-169-fm-config-cg.html"
+    },
+    {
+      "id": "ccna-f-u02-erase",
+      "statement": "erase startup-config menghapus konfigurasi tersimpan, jadi setelah reload perangkat menyala tanpa konfigurasi.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3850/software/release/16-9/configuration_guide/sys_mgmt/b_169_sys_mgmt_3850_cg/m-169-fm-config-cg.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u02-help",
+      "statement": "Tanda ? menampilkan perintah atau parameter yang tersedia di posisi itu, dan Tab melengkapi kata yang sudah unik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/configuration/xe-16-12/fundamentals-xe-16-12-book/cf-cli-basics.html"
+    },
+    {
+      "id": "ccna-f-u02-abbrev",
+      "statement": "IOS menerima singkatan selama hurufnya cukup untuk membedakan perintah itu dari perintah lain, misalnya conf t untuk configure terminal.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/configuration/xe-16-12/fundamentals-xe-16-12-book/cf-cli-basics.html"
+    },
+    {
+      "id": "ccna-f-u02-err-ambiguous",
+      "statement": "% Ambiguous command berarti huruf yang diketik belum cukup untuk membedakan perintah dari perintah lain.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/configuration/xe-16-12/fundamentals-xe-16-12-book/cf-cli-basics.html"
+    },
+    {
+      "id": "ccna-f-u02-err-incomplete",
+      "statement": "% Incomplete command berarti kata kunci atau nilai wajib dari perintah itu belum diketik.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/configuration/xe-16-12/fundamentals-xe-16-12-book/cf-cli-basics.html"
+    },
+    {
+      "id": "ccna-f-u02-err-invalid",
+      "statement": "% Invalid input detected at '^' marker berarti ada bagian perintah yang salah, dan tanda ^ menunjuk tempat kesalahannya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/configuration/xe-16-12/fundamentals-xe-16-12-book/cf-cli-basics.html"
+    },
+    {
+      "id": "ccna-f-u02-history",
+      "statement": "Panah atas (atau Ctrl+P) memanggil lagi perintah sebelumnya dari riwayat perintah.",
+      "source": "https://www.cisco.com/E-Learning/bulk/public/tac/cim/cib/using_cisco_ios_software/lab2/lab_steps.htm",
+      "verify": true
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ExerciseInput } from '../../exercises/ExerciseInput'
 import { INSTRUCTIONS } from '../../exercises/instructions'
-import { correctAnswerText, initialResponse, isComplete, judge, makeLayout } from '../../exercises/logic'
+import { correctAnswerText, initialResponse, isComplete, judge, judgeIos, makeLayout } from '../../exercises/logic'
 import { ExerciseHeader } from '../ExerciseHeader'
 import { CheckFooter } from '../LessonFooter'
 import type { ExerciseProps } from '../types'
@@ -15,10 +15,17 @@ export function CheckedView({ exercise, answered, onVerdict }: ExerciseProps) {
   const check = () => {
     if (!complete || answered) return
     const j = judge(exercise, response)
+    // The terminal itself lists what is missing and an example solution, so the sheet only counts.
+    const missing = exercise.type === 'ios' && !j.correct ? judgeIos(exercise, response as string[]).missing.length : 0
     onVerdict({
       correct: j.correct,
-      correctAnswer: j.correct ? undefined : correctAnswerText(exercise),
-      note: exercise.type === 'yesno' && !j.correct ? `${j.points} dari ${j.maxPoints} pernyataan benar.` : undefined,
+      correctAnswer: j.correct || exercise.type === 'ios' ? undefined : correctAnswerText(exercise),
+      note:
+        exercise.type === 'yesno' && !j.correct
+          ? `${j.points} dari ${j.maxPoints} pernyataan benar.`
+          : missing
+            ? `${missing} syarat belum terpenuhi. Lihat daftarnya di bawah terminal.`
+            : undefined,
     })
   }
 

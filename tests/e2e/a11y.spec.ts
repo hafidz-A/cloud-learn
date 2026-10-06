@@ -97,3 +97,27 @@ test('the AZ-104 case study section has no accessibility violations', async ({ p
   await page.locator('[data-case-panel] summary').first().click()
   await scan(page, 'AZ-104 exam review with scenario')
 })
+
+test('the CCNA screens have no accessibility violations', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('langit-course', JSON.stringify({ state: { active: 'ccna' }, version: 1 })))
+  for (const [name, hash] of [
+    ['home CCNA (tree)', '/'],
+    ['ujian CCNA', '/#/ujian'],
+    ['lab CCNA', '/#/lab/ccna-u20-l6'],
+    ['panduan unit CCNA (contoh console)', '/#/guide/ccna-u04-ipv4'],
+  ] as const) {
+    await page.goto(hash)
+    await page.waitForTimeout(300)
+    await scan(page, name)
+  }
+  await page.goto('/')
+  await page.locator('[data-node="ccna-u02-l5"]').click()
+  await scan(page, 'CCNA hands-on popover')
+
+  // A CLI question before and after a wrong answer, and an exhibit question.
+  await page.goto('/#/lesson/ccna-u02-l5')
+  const first = await skipCards(page)
+  await scan(page, `CCNA exercise ${first.type}`)
+  await answer(page, first, { wrong: true })
+  await scan(page, `CCNA feedback ${first.type}`)
+})

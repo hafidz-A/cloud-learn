@@ -40,6 +40,7 @@
   --font-*: initial;
   --font-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
   --font-body: 'Nunito', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 
   /* Type scale: 28 / 20 / 17 / 15 / 13 px */
   --text-*: initial;

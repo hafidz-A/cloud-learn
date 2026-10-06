@@ -35,6 +35,18 @@ export function OutlineScreen() {
   const items = outlineItems(course)
   const mastered = items.filter((i) => itemStatus(i, conceptStats).status === 'mastered').length
 
+  if (!outline) {
+    return (
+      <main className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
+        <h1 className="font-display text-20 font-bold">Peta kisi-kisi belum ada untuk {COURSES[course].name}</h1>
+        <p className="mt-2 text-15 text-tinta-lembut">Topik ujian course ini tercantum di setiap unit.</p>
+        <button type="button" onClick={() => leaveFlow('ujian')} className="mt-6 min-h-11 font-display text-15 font-bold text-biru-dalam underline underline-offset-4">
+          Kembali
+        </button>
+      </main>
+    )
+  }
+
   return (
     <div className="min-h-dvh">
       <header className="sticky top-0 z-20 border-b-2 border-kabut bg-langit px-2 pb-2 pt-[calc(8px+env(safe-area-inset-top))]">

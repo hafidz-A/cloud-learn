@@ -1,0 +1,1657 @@
+{
+  "id": "ccna-u16-static-route",
+  "path": 3,
+  "title": "Static route",
+  "lessons": [
+    {
+      "id": "ccna-u16-l1",
+      "title": "Static route IPv4",
+      "items": [
+        {
+          "id": "ccna-u16-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "static-route"
+          ],
+          "title": "Static route IPv4",
+          "body": "Router hanya tahu subnet yang tersambung langsung. Untuk subnet lain, tambahkan route. Static route ditulis ip route, diikuti prefix tujuan, mask, lalu next hop: ip route 192.168.2.0 255.255.255.0 10.0.12.2. Router mencari jalan ke next hop itu di tabel routing (lookup rekursif). AD (administrative distance) static bawaannya 1.",
+          "keyPoints": [
+            "ip route <prefix> <mask> <next hop>",
+            "Next hop dicari secara rekursif",
+            "AD static: 1"
+          ],
+          "visual": "StaticBothWays",
+          "teaches": [
+            "ccna-f-u16-syntax",
+            "ccna-f-u16-recursive",
+            "ccna-f-u16-static-ad"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
+                  "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip route",
+                  "note": "Menampilkan tabel routing IPv4."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u16-l1-e1",
+          "type": "ios",
+          "concept": "static-route",
+          "prompt": "R1 must reach the LAN (Local Area Network) 192.168.2.0/24 behind R2. R2 is at 10.0.12.2. Add the static route, then check the routing table.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip route 192.168.2.0 255.255.255.0 10.0.12.2"
+              }
+            ],
+            "run": [
+              "show ip route"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip route 192.168.2.0 255.255.255.0 10.0.12.2",
+            "end",
+            "show ip route"
+          ],
+          "explanation": "Route ke 192.168.2.0/24 lewat next hop 10.0.12.2. Next hop berada di subnet 10.0.12.0/30 yang tersambung, jadi route langsung terpasang sebagai S.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-syntax",
+            "ccna-f-u16-recursive"
+          ]
+        },
+        {
+          "id": "ccna-u16-l1-e2",
+          "type": "choice",
+          "concept": "static-route",
+          "prompt": "Which command adds a route to 172.16.0.0/16 through the next hop 10.0.12.2?",
+          "options": [
+            "ip route 172.16.0.0 255.255.0.0 10.0.12.2",
+            "ip route 172.16.0.0/16 10.0.12.2",
+            "ip route 10.0.12.2 172.16.0.0 255.255.0.0",
+            "route add 172.16.0.0 mask 255.255.0.0 10.0.12.2"
+          ],
+          "answer": 0,
+          "explanation": "Urutannya prefix, mask bertitik, lalu next hop. IOS tidak memakai /16 di perintah ini, dan route add adalah perintah Windows.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-syntax"
+          ]
+        },
+        {
+          "id": "ccna-u16-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "static-forms"
+          ],
+          "title": "Next hop, interface, atau keduanya",
+          "body": "Selain next hop, static route bisa menulis interface keluar. Route dengan interface saja tampil sebagai directly connected. Di link Ethernet yang bisa berisi banyak perangkat, lebih aman menulis keduanya, misalnya ip route 192.168.2.0 255.255.255.0 g0/0/1 10.0.12.2 (fully specified). Route dengan next hop saja baru dipasang kalau next hop-nya bisa dijangkau; show ip route static hanya menampilkan route statis yang terpasang.",
+          "keyPoints": [
+            "Next hop saja: rekursif",
+            "Interface saja: directly connected",
+            "Keduanya: fully specified"
+          ],
+          "teaches": [
+            "ccna-f-u16-exit-if",
+            "ccna-f-u16-recursive",
+            "ccna-f-u16-static-show"
+          ]
+        },
+        {
+          "id": "ccna-u16-l1-e3",
+          "type": "truefalse",
+          "concept": "static-forms",
+          "prompt": "A static route is only placed in the routing table when its next hop can be reached.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Router harus bisa menjangkau next hop lewat route lain dulu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-recursive"
+          ]
+        },
+        {
+          "id": "ccna-u16-l1-e4",
+          "type": "exhibit",
+          "concept": "static-forms",
+          "prompt": "Refer to the exhibit. Why does the route to 10.3.0.0/16 not appear?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | include ip route",
+              "text": "ip route 10.2.0.0 255.255.0.0 10.0.12.2\nip route 10.3.0.0 255.255.0.0 10.0.99.2"
+            },
+            {
+              "title": "R1# show ip route static",
+              "text": "<output omitted>\n      10.0.0.0/8 is variably subnetted, 3 subnets, 3 masks\nS        10.2.0.0/16 [1/0] via 10.0.12.2"
+            }
+          ],
+          "options": [
+            "Its next hop 10.0.99.2 is not reachable",
+            "Static routes never show for /16 prefixes",
+            "The AD (administrative distance) must be set by hand",
+            "The route needs the exit interface Null0"
+          ],
+          "answer": 0,
+          "explanation": "R1 tidak punya route ke 10.0.99.2, jadi route itu tidak bisa dipasang. Route 10.2.0.0/16 dengan next hop yang terjangkau tampil normal.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-recursive",
+            "ccna-f-u16-static-show"
+          ]
+        },
+        {
+          "id": "ccna-u16-l1-e5",
+          "type": "truefalse",
+          "concept": "static-forms",
+          "prompt": "A static route has a default administrative distance of 1.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. AD (administrative distance) static bawaan 1; hanya connected (0) yang lebih dipercaya.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-static-ad"
+          ]
+        },
+        {
+          "id": "ccna-u16-l1-e6",
+          "type": "fill",
+          "concept": "static-route",
+          "prompt": "Complete the command for a route to 172.16.0.0/16 through 10.0.12.2.",
+          "sentence": "ip route ___ ___ 10.0.12.2",
+          "bank": [
+            "172.16.0.0",
+            "255.255.0.0",
+            "/16",
+            "255.255.255.0"
+          ],
+          "answers": [
+            "172.16.0.0",
+            "255.255.0.0"
+          ],
+          "explanation": "Prefix lalu mask bertitik: 172.16.0.0 255.255.0.0. IOS tidak memakai /16 di sini.",
+          "requires": [
+            "ccna-f-u16-syntax"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u16-l2",
+      "title": "Default route dan host route",
+      "items": [
+        {
+          "id": "ccna-u16-l2-m1",
+          "type": "learn",
+          "concepts": [
+            "default-static"
+          ],
+          "title": "Default route statis",
+          "body": "Router di cabang kecil sering hanya punya satu jalan keluar. Daripada menulis route ke setiap subnet, cukup satu default route: ip route 0.0.0.0 0.0.0.0 diikuti next hop. Di show ip route ia tampil sebagai S*, dan next hop-nya menjadi gateway of last resort.",
+          "keyPoints": [
+            "ip route 0.0.0.0 0.0.0.0 <next hop>",
+            "Tampil S*",
+            "Gateway of last resort"
+          ],
+          "teaches": [
+            "ccna-f-u16-default-static",
+            "ccna-f-u15-default"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 0.0.0.0 0.0.0.0 10.0.52.2",
+                  "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 10.0.52.2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip route",
+                  "note": "Menampilkan tabel routing IPv4."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u16-l2-e1",
+          "type": "ios",
+          "concept": "default-static",
+          "prompt": "Branch router R1 has a single uplink to the ISP (Internet Service Provider) at 10.0.12.2. Add a default route and check the gateway of last resort.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip route 0.0.0.0 0.0.0.0 10.0.12.2"
+              }
+            ],
+            "run": [
+              "show ip route"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip route 0.0.0.0 0.0.0.0 10.0.12.2",
+            "end",
+            "show ip route"
+          ],
+          "explanation": "Default route 0.0.0.0/0 via 10.0.12.2 tampil sebagai S* dan menjadi gateway of last resort.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-default-static"
+          ]
+        },
+        {
+          "id": "ccna-u16-l2-e2",
+          "type": "choice",
+          "concept": "default-static",
+          "prompt": "Which line appears in show ip route after a static default route via 10.0.12.2 is added?",
+          "options": [
+            "S*    0.0.0.0/0 [1/0] via 10.0.12.2",
+            "S     0.0.0.0/32 [0/1] via 10.0.12.2",
+            "C*    0.0.0.0/0 is directly connected",
+            "D*    0.0.0.0/0 [90/0] via 10.0.12.2"
+          ],
+          "answer": 0,
+          "explanation": "Default route statis tampil sebagai S* dengan [1/0]: AD (administrative distance) static 1 dan metric 0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-default-static",
+            "ccna-f-u16-static-ad"
+          ]
+        },
+        {
+          "id": "ccna-u16-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "host-route"
+          ],
+          "title": "Host route",
+          "body": "Host route mengarah ke satu alamat saja, dengan mask 255.255.255.255 (/32). Contohnya ip route 10.9.9.9 255.255.255.255 10.0.13.3 untuk mengirim trafik ke satu server lewat jalur khusus. Karena /32 adalah prefix terpanjang, host route selalu menang atas route lain yang mencakup alamat itu.",
+          "keyPoints": [
+            "Mask 255.255.255.255",
+            "Satu alamat saja",
+            "/32 selalu menang"
+          ],
+          "teaches": [
+            "ccna-f-u16-host-route",
+            "ccna-f-u15-lpm"
+          ]
+        },
+        {
+          "id": "ccna-u16-l2-e3",
+          "type": "ios",
+          "concept": "host-route",
+          "prompt": "Traffic to the server 10.9.9.9 only must go through R3 at 10.0.13.3, while the rest of 10.9.0.0/16 uses R2. Add the host route on R1.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/2",
+              "lines": [
+                "ip address 10.0.13.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "",
+              "lines": [
+                "ip route 10.9.0.0 255.255.0.0 10.0.12.2"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1",
+            "GigabitEthernet0/0/2"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip route 10.9.9.9 255.255.255.255 10.0.13.3"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip route 10.9.9.9 255.255.255.255 10.0.13.3",
+            "end"
+          ],
+          "explanation": "Mask 255.255.255.255 membuat route hanya untuk 10.9.9.9. Karena /32 lebih panjang dari /16, route ini yang dipakai untuk server itu.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-host-route",
+            "ccna-f-u15-lpm"
+          ]
+        },
+        {
+          "id": "ccna-u16-l2-e4",
+          "type": "truefalse",
+          "concept": "host-route",
+          "prompt": "A host route uses the mask 255.255.255.255.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. Host route mencakup tepat satu alamat, /32.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-host-route"
+          ]
+        },
+        {
+          "id": "ccna-u16-l2-e5",
+          "type": "multi",
+          "concept": "host-route",
+          "prompt": "Which two statements about static default routes are true? (Choose two.)",
+          "options": [
+            "The prefix and mask are 0.0.0.0 0.0.0.0",
+            "Its next hop becomes the gateway of last resort",
+            "It always beats a more specific route",
+            "It is written with the mask 255.255.255.255"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Default route memakai 0.0.0.0 0.0.0.0 dan menjadi gateway of last resort. Route yang lebih spesifik selalu menang, dan /32 adalah host route.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-default-static",
+            "ccna-f-u16-host-route",
+            "ccna-f-u15-lpm"
+          ]
+        },
+        {
+          "id": "ccna-u16-l2-e6",
+          "type": "match",
+          "concept": "static-forms",
+          "prompt": "Match each static route to its form.",
+          "pairs": [
+            [
+              "ip route 10.2.0.0 255.255.0.0 10.0.12.2",
+              "Next hop only (recursive)"
+            ],
+            [
+              "ip route 10.2.0.0 255.255.0.0 g0/0/1",
+              "Exit interface only"
+            ],
+            [
+              "ip route 10.2.0.0 255.255.0.0 g0/0/1 10.0.12.2",
+              "Fully specified"
+            ],
+            [
+              "ip route 0.0.0.0 0.0.0.0 10.0.12.2",
+              "Default route"
+            ]
+          ],
+          "explanation": "Next hop saja dicari secara rekursif, interface saja tampil directly connected, keduanya disebut fully specified, dan 0.0.0.0/0 adalah default route.",
+          "requires": [
+            "ccna-f-u16-exit-if",
+            "ccna-f-u16-recursive",
+            "ccna-f-u16-default-static"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u16-l3",
+      "title": "Floating static route",
+      "items": [
+        {
+          "id": "ccna-u16-l3-m1",
+          "type": "learn",
+          "concepts": [
+            "floating-static"
+          ],
+          "title": "Floating static route",
+          "body": "Floating static route adalah route cadangan. Ia diberi AD (administrative distance) lebih tinggi dari route utama, ditulis di akhir perintah, misalnya ip route 0.0.0.0 0.0.0.0 192.168.100.1 200. Selama route utama ada di tabel routing, route cadangan tidak dipasang. Kalau route utama hilang, misalnya link-nya putus, route cadangan otomatis masuk.",
+          "keyPoints": [
+            "AD lebih tinggi di akhir perintah",
+            "Tidak dipasang selama route utama ada",
+            "Masuk saat route utama hilang"
+          ],
+          "visual": "FloatingStatic",
+          "teaches": [
+            "ccna-f-u16-floating"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/2",
+                  "lines": [
+                    "ip address 192.168.140.2 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "lines": [
+                    "ip route 0.0.0.0 0.0.0.0 10.0.52.2"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1",
+                "GigabitEthernet0/0/2"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 0.0.0.0 0.0.0.0 192.168.140.1 200",
+                  "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 192.168.140.1, dengan administrative distance 200 (floating static route)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u16-l3-e1",
+          "type": "ios",
+          "concept": "floating-static",
+          "prompt": "R1 uses a default route via 10.0.12.2. Add a backup default route via the second ISP (Internet Service Provider) at 192.168.100.1 that is used only when the first one is gone. Use AD (administrative distance) 200.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/2",
+              "lines": [
+                "ip address 192.168.100.2 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "",
+              "lines": [
+                "ip route 0.0.0.0 0.0.0.0 10.0.12.2"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1",
+            "GigabitEthernet0/0/2"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip route 0.0.0.0 0.0.0.0 192.168.100.1 200"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip route 0.0.0.0 0.0.0.0 192.168.100.1 200",
+            "end"
+          ],
+          "explanation": "AD (administrative distance) 200 lebih tinggi dari 1, jadi route ini hanya dipasang kalau default route utama hilang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-floating",
+            "ccna-f-u16-static-ad"
+          ]
+        },
+        {
+          "id": "ccna-u16-l3-e2",
+          "type": "choice",
+          "concept": "floating-static",
+          "prompt": "R1 has ip route 0.0.0.0 0.0.0.0 10.0.12.2 and ip route 0.0.0.0 0.0.0.0 192.168.100.1 200. Both next hops are reachable. Which default route is in the routing table?",
+          "options": [
+            "Only the route via 10.0.12.2",
+            "Only the route via 192.168.100.1",
+            "Both, sharing the load",
+            "Neither, because they conflict"
+          ],
+          "answer": 0,
+          "explanation": "Prefix sama, jadi AD (administrative distance) terendah menang: 1 via 10.0.12.2. Route AD 200 menunggu sebagai cadangan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-floating",
+            "ccna-f-u15-ad"
+          ]
+        },
+        {
+          "id": "ccna-u16-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "floating-ospf"
+          ],
+          "title": "Cadangan untuk OSPF",
+          "body": "Floating static juga dipakai sebagai cadangan route OSPF (Open Shortest Path First). AD (administrative distance) OSPF adalah 110, jadi AD floating static harus lebih tinggi dari 110, misalnya 120 atau 200. Kalau AD-nya lebih rendah, misalnya bawaan 1, static itu justru menggantikan route OSPF dan tidak lagi menjadi cadangan.",
+          "keyPoints": [
+            "AD OSPF 110",
+            "Cadangan: AD di atas 110",
+            "AD terlalu rendah: menggantikan OSPF"
+          ],
+          "teaches": [
+            "ccna-f-u16-floating-ospf",
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u16-l3-e3",
+          "type": "choice",
+          "concept": "floating-ospf",
+          "prompt": "R1 learns 10.50.0.0/16 by OSPF (Open Shortest Path First). Which static route is a correct floating backup for it?",
+          "options": [
+            "ip route 10.50.0.0 255.255.0.0 10.0.13.3 130",
+            "ip route 10.50.0.0 255.255.0.0 10.0.13.3",
+            "ip route 10.50.0.0 255.255.0.0 10.0.13.3 100",
+            "ip route 10.50.0.0 255.255.0.0 10.0.13.3 1"
+          ],
+          "answer": 0,
+          "explanation": "AD (administrative distance) 130 lebih tinggi dari OSPF (Open Shortest Path First) 110, jadi static ini menunggu. AD 1 dan 100 lebih rendah, jadi static itu langsung menggantikan route OSPF.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-floating-ospf",
+            "ccna-f-u16-static-ad"
+          ]
+        },
+        {
+          "id": "ccna-u16-l3-e4",
+          "type": "truefalse",
+          "concept": "floating-ospf",
+          "prompt": "A static route with the default AD (administrative distance) can serve as a backup for an OSPF (Open Shortest Path First) route to the same prefix.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. AD (administrative distance) bawaan static adalah 1, lebih rendah dari OSPF (Open Shortest Path First) 110, jadi static itu langsung dipakai.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-floating-ospf",
+            "ccna-f-u16-static-ad"
+          ]
+        },
+        {
+          "id": "ccna-u16-l3-e5",
+          "type": "multi",
+          "concept": "floating-ospf",
+          "prompt": "Which two AD (administrative distance) values make a static route a floating backup for an OSPF (Open Shortest Path First) route to the same prefix? (Choose two.)",
+          "options": [
+            "130",
+            "200",
+            "90",
+            "1"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "AD (administrative distance) harus lebih tinggi dari OSPF (Open Shortest Path First) 110: 130 dan 200. Nilai 90 dan 1 lebih rendah, jadi static itu langsung dipakai.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-floating-ospf",
+            "ccna-f-u15-ad-values"
+          ]
+        },
+        {
+          "id": "ccna-u16-l3-e6",
+          "type": "exhibit",
+          "concept": "floating-ospf",
+          "prompt": "Refer to the exhibit. The link to 10.0.12.2 just went down. What does the routing table show now?",
+          "outputs": [
+            {
+              "title": "R1# show running-config | include ip route",
+              "text": "ip route 0.0.0.0 0.0.0.0 10.0.12.2\nip route 0.0.0.0 0.0.0.0 192.168.100.1 200"
+            }
+          ],
+          "options": [
+            "S*    0.0.0.0/0 [200/0] via 192.168.100.1",
+            "S*    0.0.0.0/0 [1/0] via 10.0.12.2",
+            "No default route at all, until the link is repaired",
+            "Both default routes, sharing the traffic"
+          ],
+          "answer": 0,
+          "explanation": "Route utama hilang karena next hop-nya tidak lagi terjangkau, jadi floating static AD (administrative distance) 200 masuk tabel.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-floating",
+            "ccna-f-u16-recursive"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u16-l4",
+      "title": "Static route IPv6",
+      "items": [
+        {
+          "id": "ccna-u16-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "ipv6-static"
+          ],
+          "title": "Static route IPv6",
+          "body": "Static route IPv6 ditulis ipv6 route, diikuti prefix dengan panjangnya, lalu next hop, interface, atau keduanya: ipv6 route 2001:db8:acad:3::/64 2001:db8:acad:12::2. Default route IPv6 adalah ::/0. Router juga harus menjalankan ipv6 unicast-routing supaya meneruskan paket IPv6.",
+          "keyPoints": [
+            "ipv6 route <prefix>/<panjang> <next hop>",
+            "Default: ::/0",
+            "Butuh ipv6 unicast-routing"
+          ],
+          "teaches": [
+            "ccna-f-u16-v6-syntax",
+            "ccna-f-u05-unicast-routing"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "lines": [
+                    "ipv6 unicast-routing"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ipv6 address 2001:db8:acad:12::1/64",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ipv6 route 2001:db8:acad:3::/64 2001:db8:acad:12::2",
+                  "note": "Membuat static route IPv6 ke 2001:db8:acad:3::/64 lewat next hop 2001:db8:acad:12::2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ipv6 route",
+                  "note": "Menampilkan tabel routing IPv6."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u16-l4-e1",
+          "type": "ios",
+          "concept": "ipv6-static",
+          "prompt": "R1 needs a route to 2001:db8:acad:3::/64 through R2 at 2001:db8:acad:12::2. IPv6 routing is already enabled. Add the route and check the IPv6 routing table.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ipv6 unicast-routing"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ipv6 address 2001:db8:acad:12::1/64",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ipv6 route 2001:db8:acad:3::/64 2001:db8:acad:12::2"
+              }
+            ],
+            "run": [
+              "show ipv6 route"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ipv6 route 2001:db8:acad:3::/64 2001:db8:acad:12::2",
+            "end",
+            "show ipv6 route"
+          ],
+          "explanation": "Prefix ditulis dengan /64 lalu next hop global R2. Route tampil sebagai S di show ipv6 route.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-v6-syntax"
+          ]
+        },
+        {
+          "id": "ccna-u16-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "ipv6-ll-nexthop"
+          ],
+          "title": "Next hop link-local",
+          "body": "Next hop IPv6 juga boleh alamat link-local tetangga, misalnya fe80::2. Tapi link-local hanya unik di satu link, jadi interface keluar wajib ditulis: ipv6 route ::/0 g0/0/1 fe80::2. Tanpa interface, IOS menolak dengan pesan Interface has to be specified for a link-local nexthop.",
+          "keyPoints": [
+            "Link-local: hanya unik di satu link",
+            "Interface wajib ditulis",
+            "ipv6 route ::/0 <interface> fe80::..."
+          ],
+          "teaches": [
+            "ccna-f-u16-v6-ll",
+            "ccna-f-u05-lla"
+          ]
+        },
+        {
+          "id": "ccna-u16-l4-e2",
+          "type": "ios",
+          "concept": "ipv6-ll-nexthop",
+          "prompt": "Add an IPv6 default route on R1 through the link-local address fe80::2 of R2, which is on GigabitEthernet0/0/1.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "",
+              "lines": [
+                "ipv6 unicast-routing"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ipv6 address 2001:db8:acad:12::1/64",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ipv6 route ::/0 GigabitEthernet0/0/1 fe80::2"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ipv6 route ::/0 g0/0/1 fe80::2",
+            "end"
+          ],
+          "explanation": "Next hop link-local butuh interface keluar, jadi g0/0/1 ditulis sebelum fe80::2.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-v6-ll",
+            "ccna-f-u16-v6-syntax"
+          ]
+        },
+        {
+          "id": "ccna-u16-l4-e3",
+          "type": "truefalse",
+          "concept": "ipv6-ll-nexthop",
+          "prompt": "With a link-local next hop such as fe80::2, the IPv6 static route must also name the exit interface.",
+          "answer": true,
+          "explanation": "Pernyataan ini benar. fe80::2 bisa ada di banyak link, jadi interface keluar menentukan link yang dimaksud.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-v6-ll"
+          ]
+        },
+        {
+          "id": "ccna-u16-l4-e4",
+          "type": "choice",
+          "concept": "ipv6-ll-nexthop",
+          "prompt": "Which is the IPv6 default route prefix?",
+          "options": [
+            "::/0",
+            "::1/128",
+            "fe80::/10",
+            "ff00::/8"
+          ],
+          "answer": 0,
+          "explanation": "::/0 cocok dengan semua tujuan. ::1/128 adalah loopback, fe80::/10 link-local, dan ff00::/8 multicast.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-v6-syntax",
+            "ccna-f-u05-loop6",
+            "ccna-f-u05-lla",
+            "ccna-f-u05-mcast"
+          ]
+        },
+        {
+          "id": "ccna-u16-l4-e5",
+          "type": "match",
+          "concept": "ipv6-ll-nexthop",
+          "prompt": "Match each IPv6 static route to its description.",
+          "pairs": [
+            [
+              "ipv6 route ::/0 2001:db8:acad:12::2",
+              "Default route through a global next hop"
+            ],
+            [
+              "ipv6 route ::/0 g0/0/1 fe80::2",
+              "Default route through a link-local next hop"
+            ],
+            [
+              "ipv6 route 2001:db8:acad:3::/64 g0/0/1",
+              "Route through an exit interface only"
+            ],
+            [
+              "ipv6 route 2001:db8:acad:3::/64 2001:db8:acad:12::2",
+              "Route to one /64 through a global next hop"
+            ]
+          ],
+          "explanation": "::/0 adalah default route. Next hop link-local butuh interface, dan route bisa juga hanya menulis interface keluar.",
+          "requires": [
+            "ccna-f-u16-v6-syntax",
+            "ccna-f-u16-v6-ll"
+          ]
+        },
+        {
+          "id": "ccna-u16-l4-e6",
+          "type": "multi",
+          "concept": "ipv6-ll-nexthop",
+          "prompt": "Which two are needed for R1 to forward IPv6 packets with a static route? (Choose two.)",
+          "options": [
+            "The ipv6 unicast-routing command",
+            "An ipv6 route command with a reachable next hop",
+            "An IPv4 default route",
+            "A DHCP (Dynamic Host Configuration Protocol) pool"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Router harus menjalankan ipv6 unicast-routing dan punya route IPv6. Route IPv4 dan DHCP (Dynamic Host Configuration Protocol) tidak berpengaruh pada penerusan IPv6.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u05-unicast-routing",
+            "ccna-f-u16-v6-syntax"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u16-l5",
+      "title": "Troubleshoot static route",
+      "items": [
+        {
+          "id": "ccna-u16-l5-m1",
+          "type": "learn",
+          "concepts": [
+            "static-troubleshoot"
+          ],
+          "title": "Kesalahan static route yang umum",
+          "body": "Pertama, route tidak muncul: next hop salah ketik atau tidak terjangkau, jadi route tidak dipasang; cek dengan show ip route static. Kedua, mask salah, sehingga route mencakup subnet yang keliru. Ketiga, route balik lupa dibuat: paket sampai ke tujuan, tapi balasannya tidak punya jalan pulang. Ping dari interface LAN (Local Area Network) membantu menemukan kasus ketiga.",
+          "keyPoints": [
+            "Next hop salah: route tidak dipasang",
+            "Mask salah: subnet keliru",
+            "Route balik lupa: balasan hilang"
+          ],
+          "teaches": [
+            "ccna-f-u16-static-show",
+            "ccna-f-u16-recursive",
+            "ccna-f-u16-both-ways",
+            "ccna-f-u14-ext-ping"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R2",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.42.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.2 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 192.168.41.0 255.255.255.0 10.0.52.1",
+                  "note": "Membuat static route ke 192.168.41.0 255.255.255.0 lewat next hop 10.0.52.1."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip route static",
+                  "note": "Menampilkan route static saja dari tabel routing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u16-l5-e1",
+          "type": "exhibit",
+          "concept": "static-troubleshoot",
+          "prompt": "Refer to the exhibit. PC1 (192.168.1.10) cannot ping PC2 (192.168.2.10). What is missing?",
+          "outputs": [
+            {
+              "title": "R1# show ip route static",
+              "text": "<output omitted>\nS        192.168.2.0/24 [1/0] via 10.0.12.2"
+            },
+            {
+              "title": "R2# show ip route static",
+              "text": "<output omitted>\nGateway of last resort is not set"
+            }
+          ],
+          "options": [
+            "A route on R2 back to 192.168.1.0/24",
+            "A route on R1 to 192.168.2.0/24",
+            "A default route on PC2 toward the server",
+            "An IPv6 route on both routers"
+          ],
+          "answer": 0,
+          "explanation": "R1 punya route ke 192.168.2.0/24, tapi R2 tidak punya route ke 192.168.1.0/24, jadi balasan PC2 tidak bisa pulang.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-both-ways"
+          ]
+        },
+        {
+          "id": "ccna-u16-l5-e2",
+          "type": "ios",
+          "concept": "static-troubleshoot",
+          "prompt": "On R2 (LAN 192.168.2.0/24 on GigabitEthernet0/0/0, link 10.0.12.2/30 to R1 on GigabitEthernet0/0/1), add the missing route back to the LAN (Local Area Network) 192.168.1.0/24 behind R1, then check the static routes.",
+          "device": {
+            "hostname": "R2",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.2.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.2 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip route 192.168.1.0 255.255.255.0 10.0.12.1"
+              }
+            ],
+            "run": [
+              "show ip route static"
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "ip route 192.168.1.0 255.255.255.0 10.0.12.1",
+            "end",
+            "show ip route static"
+          ],
+          "explanation": "Route balik ke 192.168.1.0/24 lewat R1 di 10.0.12.1 melengkapi jalur dua arah.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-both-ways",
+            "ccna-f-u16-syntax"
+          ]
+        },
+        {
+          "id": "ccna-u16-l5-e3",
+          "type": "order",
+          "concept": "static-troubleshoot",
+          "prompt": "Put the static route troubleshooting steps in order.",
+          "items": [
+            "Check that the route is in show ip route",
+            "Check the next hop and mask of the route",
+            "Check that the far router has a route back",
+            "Ping from the LAN (Local Area Network) interface to test both directions"
+          ],
+          "explanation": "Pastikan route terpasang, periksa next hop dan mask, periksa route balik, lalu uji dengan ping dari interface LAN (Local Area Network).",
+          "requires": [
+            "ccna-f-u16-static-show",
+            "ccna-f-u16-recursive",
+            "ccna-f-u16-both-ways",
+            "ccna-f-u14-ping-source"
+          ]
+        },
+        {
+          "id": "ccna-u16-l5-m2",
+          "type": "learn",
+          "concepts": [
+            "static-fix"
+          ],
+          "title": "Memperbaiki route yang salah",
+          "body": "Static route yang salah dihapus dengan no diikuti perintah yang sama persis, misalnya no ip route 192.168.2.0 255.255.255.0 10.0.21.2, lalu route yang benar ditambahkan. Mengetik route baru saja tidak menghapus yang lama; keduanya bisa ada di konfigurasi.",
+          "keyPoints": [
+            "Hapus: no ip route ... persis",
+            "Lalu tambahkan yang benar",
+            "Route baru tidak menghapus yang lama"
+          ],
+          "teaches": [
+            "ccna-f-u16-syntax",
+            "ccna-f-u16-recursive"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "lines": [
+                    "ip route 192.168.42.0 255.255.255.0 10.0.61.2"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "no ip route 192.168.42.0 255.255.255.0 10.0.61.2",
+                  "note": "Menghapus static route ke 192.168.42.0 255.255.255.0."
+                },
+                {
+                  "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
+                  "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u16-l5-e4",
+          "type": "ios",
+          "concept": "static-fix",
+          "prompt": "R1 has a wrong route: ip route 192.168.2.0 255.255.255.0 10.0.21.2 (the next hop is mistyped). Remove it and add the correct route via 10.0.12.2.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "",
+              "lines": [
+                "ip route 192.168.2.0 255.255.255.0 10.0.21.2"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip route 192.168.2.0 255.255.255.0 10.0.12.2"
+              }
+            ],
+            "absent": [
+              {
+                "line": "ip route 192.168.2.0 255.255.255.0 10.0.21.2"
+              }
+            ]
+          },
+          "solution": [
+            "configure terminal",
+            "no ip route 192.168.2.0 255.255.255.0 10.0.21.2",
+            "ip route 192.168.2.0 255.255.255.0 10.0.12.2",
+            "end"
+          ],
+          "explanation": "Route lama dihapus dengan no dan perintah yang sama persis, lalu route yang benar ditambahkan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-syntax",
+            "ccna-f-u16-recursive"
+          ]
+        },
+        {
+          "id": "ccna-u16-l5-e5",
+          "type": "truefalse",
+          "concept": "static-fix",
+          "prompt": "Entering a new ip route command for the same prefix automatically removes the old one with a different next hop.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Kedua route bisa ada di konfigurasi; yang lama harus dihapus dengan no ip route.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-syntax"
+          ]
+        },
+        {
+          "id": "ccna-u16-l5-e6",
+          "type": "choice",
+          "concept": "static-fix",
+          "prompt": "An engineer typed ip route 192.168.2.0 255.255.0.0 10.0.12.2 instead of a /24 route. What is the effect?",
+          "options": [
+            "The route covers all of 192.168.0.0/16",
+            "IOS rejects it because the mask is wrong",
+            "The route only covers 192.168.2.0/24 anyway",
+            "The route becomes a host route"
+          ],
+          "answer": 0,
+          "explanation": "IOS memakai mask yang ditulis, jadi route itu mencakup 192.168.0.0/16. Pastikan mask sesuai subnet tujuan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-syntax",
+            "ccna-f-u04-prefix"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ccna-u16-l6",
+      "title": "Lab: static routing",
+      "branch": {
+        "kind": "handson",
+        "from": "ccna-u16-l5"
+      },
+      "items": [
+        {
+          "id": "ccna-u16-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "static-lab"
+          ],
+          "title": "Alur kerja static routing",
+          "body": "Gambar dulu semua subnet dan router. Di setiap router, tambahkan route ke setiap subnet yang tidak tersambung langsung, atau satu default route kalau hanya ada satu jalan keluar. Jangan lupa route balik. Cek dengan show ip route, lalu uji dengan ping dari PC ke PC.",
+          "keyPoints": [
+            "Route ke setiap subnet jauh",
+            "Atau default route di cabang",
+            "Cek tabel, lalu ping"
+          ],
+          "teaches": [
+            "ccna-f-u16-syntax",
+            "ccna-f-u16-default-static",
+            "ccna-f-u16-both-ways"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
+                  "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
+                },
+                {
+                  "command": "ip route 0.0.0.0 0.0.0.0 10.0.52.2 250",
+                  "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 10.0.52.2, dengan administrative distance 250 (floating static route)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip route",
+                  "note": "Menampilkan tabel routing IPv4."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u16-l6-e1",
+          "type": "ios",
+          "concept": "static-lab",
+          "prompt": "On R1 (LAN 192.168.1.0/24, link 10.0.12.1/30 to R2), add a route to the LAN (Local Area Network) 192.168.2.0/24 behind R2 (10.0.12.2) and a floating default route via 10.0.12.2 with AD (administrative distance) 250. Check the table and save.",
+          "device": {
+            "hostname": "R1",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.1.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.1 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip route 192.168.2.0 255.255.255.0 10.0.12.2"
+              },
+              {
+                "line": "ip route 0.0.0.0 0.0.0.0 10.0.12.2 250"
+              }
+            ],
+            "run": [
+              "show ip route"
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "ip route 192.168.2.0 255.255.255.0 10.0.12.2",
+            "ip route 0.0.0.0 0.0.0.0 10.0.12.2 250",
+            "end",
+            "show ip route",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Route ke LAN (Local Area Network) R2 dan default route dengan AD (administrative distance) 250 ditambahkan, dicek, lalu disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-syntax",
+            "ccna-f-u16-floating",
+            "ccna-f-u16-default-static",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u16-l6-e2",
+          "type": "ios",
+          "concept": "static-lab",
+          "prompt": "On R2 (LAN 192.168.2.0/24 on GigabitEthernet0/0/0, link 10.0.12.2/30 on GigabitEthernet0/0/1), add the route back to 192.168.1.0/24 via R1 and save.",
+          "device": {
+            "hostname": "R2",
+            "model": "isr4331"
+          },
+          "given": [
+            {
+              "context": "interface GigabitEthernet0/0/0",
+              "lines": [
+                "ip address 192.168.2.1 255.255.255.0",
+                "no shutdown"
+              ]
+            },
+            {
+              "context": "interface GigabitEthernet0/0/1",
+              "lines": [
+                "ip address 10.0.12.2 255.255.255.252",
+                "no shutdown"
+              ]
+            }
+          ],
+          "cabled": [
+            "GigabitEthernet0/0/0",
+            "GigabitEthernet0/0/1"
+          ],
+          "goal": {
+            "config": [
+              {
+                "line": "ip route 192.168.1.0 255.255.255.0 10.0.12.1"
+              }
+            ],
+            "saved": true
+          },
+          "solution": [
+            "configure terminal",
+            "ip route 192.168.1.0 255.255.255.0 10.0.12.1",
+            "end",
+            "copy running-config startup-config",
+            ""
+          ],
+          "explanation": "Route balik melengkapi jalur dua arah, lalu konfigurasi disimpan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u16-both-ways",
+            "ccna-f-u02-save"
+          ]
+        },
+        {
+          "id": "ccna-u16-l6-e3",
+          "type": "truefalse",
+          "concept": "static-lab",
+          "prompt": "In this lab, the default route with AD (administrative distance) 250 is used for traffic to 192.168.2.0/24.",
+          "answer": false,
+          "explanation": "Pernyataan ini salah. Route 192.168.2.0/24 lebih spesifik, jadi default route hanya dipakai untuk tujuan lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u15-lpm",
+            "ccna-f-u16-floating"
+          ]
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "ccna-f-u16-syntax",
+      "statement": "Static route IPv4 ditulis ip route <prefix> <mask> diikuti next hop, interface keluar, atau keduanya.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/dial-access/floating-static-route/118263-technote-nexthop-00.html"
+    },
+    {
+      "id": "ccna-f-u16-recursive",
+      "statement": "Kalau hanya next hop yang ditulis, router mencari interface keluar lewat lookup rekursif di tabel routing, dan route baru dipasang kalau next hop itu bisa dijangkau.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/dial-access/floating-static-route/118263-technote-nexthop-00.html"
+    },
+    {
+      "id": "ccna-f-u16-exit-if",
+      "statement": "Static route yang hanya menulis interface keluar tampil sebagai directly connected; di link multiaccess seperti Ethernet sebaiknya next hop juga ditulis (fully specified).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-16-11/iri-xe-16-11-book/ip6-route-static-xe.html"
+    },
+    {
+      "id": "ccna-f-u16-static-ad",
+      "statement": "Static route punya administrative distance bawaan 1.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/15986-admin-distance.html"
+    },
+    {
+      "id": "ccna-f-u16-default-static",
+      "statement": "Default route statis IPv4 ditulis ip route 0.0.0.0 0.0.0.0 <next hop> dan tampil sebagai S* serta gateway of last resort.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-3e/iri-xe-3e-book/iri_iprouting.html"
+    },
+    {
+      "id": "ccna-f-u16-host-route",
+      "statement": "Host route adalah route ke satu alamat, dengan mask 255.255.255.255 (/32).",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-3e/iri-xe-3e-book/iri_iprouting.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u16-floating",
+      "statement": "Floating static route diberi AD lebih tinggi dari route utama, misalnya 200, jadi baru dipasang kalau route utama hilang dari tabel routing.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/dial-access/floating-static-route/118263-technote-nexthop-00.html"
+    },
+    {
+      "id": "ccna-f-u16-floating-ospf",
+      "statement": "Supaya floating static menjadi cadangan route OSPF, AD-nya harus lebih tinggi dari 110; kalau lebih rendah, static itu justru menggantikan route OSPF.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/15986-admin-distance.html"
+    },
+    {
+      "id": "ccna-f-u16-v6-syntax",
+      "statement": "Static route IPv6 ditulis ipv6 route <prefix>/<panjang> diikuti next hop, interface keluar, atau keduanya; default route IPv6 adalah ::/0.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-16-11/iri-xe-16-11-book/ip6-route-static-xe.html"
+    },
+    {
+      "id": "ccna-f-u16-v6-ll",
+      "statement": "Kalau next hop IPv6 adalah alamat link-local, interface keluar wajib ditulis, karena link-local hanya unik di satu link; IOS menolak tanpa interface dengan pesan \"% Interface has to be specified for a link-local nexthop\".",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/ip-version-6-ipv6/113361-ipv6-static-routes.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u16-both-ways",
+      "statement": "Komunikasi dua arah butuh route di kedua arah: kalau router di seberang tidak punya route balik ke subnet sumber, balasan tidak sampai.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/dial-access/floating-static-route/118263-technote-nexthop-00.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u16-static-show",
+      "statement": "show ip route static hanya menampilkan route statis yang terpasang; route yang next hop-nya tidak terjangkau tidak muncul.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/xe-3e/iri-xe-3e-book/iri_iprouting.html",
+      "verify": true
+    }
+  ]
+}

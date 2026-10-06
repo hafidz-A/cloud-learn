@@ -18,4 +18,6 @@ export const INSTRUCTIONS: Record<Exercise['type'], string> = {
   template: 'Baca template-nya, lalu jawab',
   topology: 'Baca diagram jaringannya, lalu jawab',
   kql: 'Susun query KQL-nya',
+  ios: 'Ketik perintahnya di terminal, lalu Periksa',
+  exhibit: 'Lihat exhibit-nya, lalu jawab',
 }
