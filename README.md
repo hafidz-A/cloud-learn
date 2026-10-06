@@ -42,7 +42,7 @@ Cara memasang dan memakai Langit di HP ada di [`PANDUAN.md`](PANDUAN.md).
       (`src/sync/`, SQL di `supabase/migrations/`)
 - [x] AZ-104: 15 unit, studi kasus, placement test, misi unit (lihat `LANGIT_AZ104_PLAN.md`)
 - [x] CCNA 200-301 v2.0: 28 unit dalam pohon lesson (batang, cabang prasyarat, hands-on, pendukung), 156
-      lesson, 918 soal termasuk 143 soal simulator CLI IOS, 21 lab Packet Tracer/CML, tes lompat prasyarat,
+      lesson, 940 soal termasuk 144 soal simulator CLI IOS, 21 lab Packet Tracer/CML, tes lompat prasyarat,
       halaman Ujian tanpa label lulus (lihat `LANGIT_CCNA_PLAN.md` bagian 11)
 
 ## Struktur

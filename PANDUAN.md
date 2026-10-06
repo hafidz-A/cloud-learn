@@ -158,7 +158,8 @@ Untuk CCNA (pilih course CCNA di home):
   **pendukung** (opsional, materi tambahan). Cabang bisa bercabang lagi, misalnya lab kedua yang tumbuh dari lab pertama.
 - **Soal simulator CLI (CCNA)**: ketik perintah IOS seperti di terminal router atau switch. Seperti IOS asli, setiap kata boleh
   disingkat selama unik, misalnya `hostn R2`, `ip add`, `no shut`, atau `switchp mo acc`; kalau singkatannya cocok
-  dengan lebih dari satu perintah, muncul `% Ambiguous command`. Panah atas/bawah memanggil perintah sebelumnya. Bantuan `?` dan Tab
+  dengan lebih dari satu perintah, muncul `% Ambiguous command`. Singkatan minimal 3 huruf, kecuali bentuk pendek
+  yang lazim di dokumentasi Cisco seperti `sh`, `en`, `conf t`, `br`, dan `wr`. Panah atas/bawah memanggil perintah sebelumnya. Bantuan `?` dan Tab
   tidak ada. Pesan yang diawali **Langit:** berasal dari simulator, bukan dari IOS asli, misalnya untuk output yang
   tidak disimulasikan. Yang dinilai adalah hasil konfigurasinya, jadi urutan atau cara mengetik boleh berbeda.
 - **Contoh di console (CCNA)**: kartu materi yang perintahnya dipakai di soal console menampilkan contoh

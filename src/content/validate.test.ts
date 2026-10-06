@@ -345,7 +345,7 @@ describe('CCNA abbreviation patterns (LANGIT_CCNA_PLAN.md section 2)', () => {
 
 describe('CLI examples on learn cards (LANGIT_CCNA_PLAN.md section 7)', () => {
   const fact = (id: string): Fact => ({ id, statement: 'Fakta.', source: 'https://www.cisco.com/c/en/us/td/docs/routers/ios/config/17-x/syst-mgmt/b-system-management/m_cf-cli-basics.html' })
-  const card = (cli: LearnCard['cli']): LearnCard => ({
+  const card = (cli: NonNullable<LearnCard['cli']>[number]): LearnCard => ({
     id: 'u99-l1-m1',
     type: 'learn',
     concepts: ['cli'],
@@ -353,7 +353,7 @@ describe('CLI examples on learn cards (LANGIT_CCNA_PLAN.md section 7)', () => {
     body: 'Satu kalimat. Dua kalimat. Tiga kalimat.',
     keyPoints: ['Satu', 'Dua'],
     teaches: ['f-u99-a'],
-    cli,
+    cli: [cli],
   })
   const device = { hostname: 'R1', model: 'isr4331' as const }
 

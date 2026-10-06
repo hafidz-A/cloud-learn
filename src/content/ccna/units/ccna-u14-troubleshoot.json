@@ -159,6 +159,110 @@
             "ccna-f-u14-link-msgs",
             "ccna-f-u03-if-states"
           ]
+        },
+        {
+          "id": "ccna-u14-l1-m3",
+          "type": "learn",
+          "concepts": [
+            "syslog-common"
+          ],
+          "title": "Pesan log yang sering muncul",
+          "body": "Bagian atas show logging menunjukkan tujuan log dan level-nya (console, buffer, trap ke server syslog), lalu Log Buffer berisi pesan dari yang lama ke yang baru. Pesan yang sering keluar di soal: %SYS-5-CONFIG_I (konfigurasi diubah, beserta user dan sumbernya, misalnya vty0 dan alamat IP (Internet Protocol)-nya), %OSPF-5-ADJCHG (state tetangga OSPF (Open Shortest Path First) berubah; Dead timer expired berarti hello tidak datang lagi), dan %CDP-4-DUPLEX_MISMATCH (setting duplex dua ujung link berbeda, dilaporkan CDP (Cisco Discovery Protocol)).",
+          "keyPoints": [
+            "%SYS-5-CONFIG_I: siapa dan dari mana",
+            "%OSPF-5-ADJCHG: tetangga OSPF berubah",
+            "%CDP-4-DUPLEX_MISMATCH: duplex beda"
+          ],
+          "teaches": [
+            "ccna-f-u14-config-i",
+            "ccna-f-u14-adjchg",
+            "ccna-f-u14-duplex-msg",
+            "ccna-f-u14-show-logging"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "start": "priv",
+              "outputs": {
+                "show logging": "Syslog logging: enabled (0 messages dropped, 0 flushes, 0 overruns, xml disabled, filtering disabled)\n    Console logging: level debugging, 52 messages logged, xml disabled,\n    Buffer logging:  level debugging, 52 messages logged, xml disabled,\n    Trap logging: level informational, 55 message lines logged\n\nLog Buffer (8192 bytes):\n\n*Oct  6 09:02:11: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.10.25)\n*Oct  6 09:14:37: %OSPF-5-ADJCHG: Process 1, Nbr 2.2.2.2 on GigabitEthernet0/0/1 from FULL to DOWN, Neighbor Down: Dead timer expired\n*Oct  6 09:15:02: %CDP-4-DUPLEX_MISMATCH: duplex mismatch discovered on GigabitEthernet0/0/0 (not full duplex), with SW1 GigabitEthernet0/1 (full duplex)."
+              },
+              "steps": [
+                {
+                  "command": "show logging",
+                  "note": "Level setiap tujuan log di bagian atas, lalu isi buffer: perubahan konfigurasi, tetangga OSPF (Open Shortest Path First) yang putus, dan duplex yang tidak cocok."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-e6",
+          "type": "exhibit",
+          "concept": "syslog-common",
+          "prompt": "Refer to the exhibit. Why did R1 lose its OSPF (Open Shortest Path First) neighbor 2.2.2.2?",
+          "outputs": [
+            {
+              "title": "R1# show logging",
+              "text": "Syslog logging: enabled (0 messages dropped, 0 flushes, 0 overruns, xml disabled, filtering disabled)\n    Console logging: level debugging, 52 messages logged, xml disabled,\n    Buffer logging:  level debugging, 52 messages logged, xml disabled,\n    Trap logging: level informational, 55 message lines logged\n\nLog Buffer (8192 bytes):\n\n*Oct  6 09:02:11: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.10.25)\n*Oct  6 09:14:37: %OSPF-5-ADJCHG: Process 1, Nbr 2.2.2.2 on GigabitEthernet0/0/1 from FULL to DOWN, Neighbor Down: Dead timer expired\n*Oct  6 09:15:02: %CDP-4-DUPLEX_MISMATCH: duplex mismatch discovered on GigabitEthernet0/0/0 (not full duplex), with SW1 GigabitEthernet0/1 (full duplex)."
+            }
+          ],
+          "options": [
+            "Hello packets from 2.2.2.2 stopped arriving",
+            "An administrator entered shutdown on GigabitEthernet0/0/1",
+            "The OSPF process on R1 was removed from the configuration",
+            "The duplex mismatch on GigabitEthernet0/0/1 reset the neighbor"
+          ],
+          "answer": 0,
+          "explanation": "Dead timer expired berarti hello dari 2.2.2.2 tidak datang selama dead interval. Duplex mismatch di log terjadi di G0/0/0, interface yang lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-adjchg"
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-e7",
+          "type": "exhibit",
+          "concept": "syslog-common",
+          "prompt": "Refer to the exhibit. Who changed the configuration of R1 at 09:02, and how?",
+          "outputs": [
+            {
+              "title": "R1# show logging | include SYS",
+              "text": "*Oct  6 09:02:11: %SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.10.25)"
+            }
+          ],
+          "options": [
+            "User admin, over a remote session from 192.168.10.25",
+            "User admin, on the console port of R1",
+            "A device with IP (Internet Protocol) address 192.168.10.25, over SNMP (Simple Network Management Protocol)",
+            "Nobody; the message reports a reload"
+          ],
+          "answer": 0,
+          "explanation": "vty0 adalah line untuk sesi remote (Telnet atau SSH (Secure Shell)), dan alamat di dalam kurung adalah sumbernya. Kata console di awal pesan selalu ada, jadi lihat bagian on vty0.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-config-i"
+          ]
+        },
+        {
+          "id": "ccna-u14-l1-e8",
+          "type": "choice",
+          "concept": "syslog-common",
+          "prompt": "R1 logs %CDP-4-DUPLEX_MISMATCH for GigabitEthernet0/0/0. What should you check?",
+          "options": [
+            "The duplex settings on both ends of that link",
+            "The OSPF (Open Shortest Path First) hello timers",
+            "The VLAN (Virtual LAN) of the switch port",
+            "The NTP (Network Time Protocol) server"
+          ],
+          "answer": 0,
+          "explanation": "Pesan ini berarti setting duplex kedua ujung berbeda. Samakan keduanya, sebaiknya auto di kedua sisi atau full di kedua sisi.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-duplex-msg"
+          ]
         }
       ]
     },
@@ -629,6 +733,152 @@
           "requires": [
             "ccna-f-u14-ttl"
           ]
+        },
+        {
+          "id": "ccna-u14-l4-m3",
+          "type": "learn",
+          "concepts": [
+            "capture-patterns"
+          ],
+          "title": "Pola capture: ARP, DNS, dan SYN",
+          "body": "ARP (Address Resolution Protocol) request tampil sebagai Who has 192.168.1.1? Tell 192.168.1.10 ke tujuan Broadcast; kalau terus berulang tanpa reply, tidak ada perangkat yang menjawab untuk alamat itu, misalnya gateway mati atau beda VLAN (Virtual LAN). Jawaban DNS (Domain Name System) No such name (NXDOMAIN) berarti namanya tidak ada di server DNS. SYN (synchronize) yang dikirim ulang tanpa jawaban berarti paket hilang atau dibuang diam-diam, misalnya oleh ACL (access control list); kalau dijawab RST (reset), paketnya sampai tapi ditolak.",
+          "keyPoints": [
+            "ARP berulang tanpa reply: tidak ada yang menjawab",
+            "No such name: nama tidak ada",
+            "SYN tanpa jawaban: dibuang, RST: ditolak"
+          ],
+          "teaches": [
+            "ccna-f-u14-arp-capture",
+            "ccna-f-u14-nxdomain",
+            "ccna-f-u14-syn-retrans",
+            "ccna-f-u01-arp-messages"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e6",
+          "type": "exhibit",
+          "concept": "capture-patterns",
+          "prompt": "Refer to the exhibit. PC1 (192.168.1.10) cannot reach anything outside its subnet. Its default gateway is 192.168.1.1. What does the capture show?",
+          "outputs": [
+            {
+              "title": "Capture di PC1",
+              "text": "No.  Source             Destination  Protocol  Info\n1    00:50:79:66:68:11  Broadcast    ARP       Who has 192.168.1.1? Tell 192.168.1.10\n2    00:50:79:66:68:11  Broadcast    ARP       Who has 192.168.1.1? Tell 192.168.1.10\n3    00:50:79:66:68:11  Broadcast    ARP       Who has 192.168.1.1? Tell 192.168.1.10"
+            }
+          ],
+          "options": [
+            "No device answers the ARP (Address Resolution Protocol) request for the gateway address",
+            "The gateway answers the ARP (Address Resolution Protocol) requests, but an ACL (access control list) drops the traffic",
+            "DNS (Domain Name System) cannot resolve the name of the gateway",
+            "PC1 has no IP (Internet Protocol) address"
+          ],
+          "answer": 0,
+          "explanation": "PC1 punya alamat (Tell 192.168.1.10) dan terus bertanya MAC (Media Access Control) milik 192.168.1.1 tanpa reply. Gateway tidak menjawab: bisa mati, salah alamat, atau ada di VLAN (Virtual LAN) lain.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-arp-capture",
+            "ccna-f-u01-gateway"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e7",
+          "type": "exhibit",
+          "concept": "capture-patterns",
+          "prompt": "Refer to the exhibit. A user cannot open intranet.kantor.local. What is the cause?",
+          "outputs": [
+            {
+              "title": "Capture di PC1",
+              "text": "No.  Source        Destination   Protocol  Info\n1    192.168.1.10  192.168.1.5   DNS       Standard query 0x3c1a A intranet.kantor.local\n2    192.168.1.5   192.168.1.10  DNS       Standard query response 0x3c1a No such name A intranet.kantor.local"
+            }
+          ],
+          "options": [
+            "The DNS (Domain Name System) server has no record for that name",
+            "The DNS server cannot be reached from PC1 because of a routing problem",
+            "The web server refuses connections on port 443",
+            "PC1 uses the wrong default gateway"
+          ],
+          "answer": 0,
+          "explanation": "Server DNS (Domain Name System) menjawab, jadi server bisa dijangkau. Jawabannya No such name: nama itu tidak ada di server, misalnya record belum dibuat atau nama salah ketik.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-nxdomain"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e8",
+          "type": "exhibit",
+          "concept": "capture-patterns",
+          "prompt": "Refer to the exhibit. Compare it with a capture where the server answers with RST (reset). What does this capture show?",
+          "outputs": [
+            {
+              "title": "Capture di PC1",
+              "text": "No.  Time   Source        Destination  Protocol  Info\n1    0.000  192.168.1.10  10.2.2.20    TCP       51520 > 443 [SYN]\n2    1.003  192.168.1.10  10.2.2.20    TCP       [TCP Retransmission] 51520 > 443 [SYN]\n3    3.011  192.168.1.10  10.2.2.20    TCP       [TCP Retransmission] 51520 > 443 [SYN]\n4    7.027  192.168.1.10  10.2.2.20    TCP       [TCP Retransmission] 51520 > 443 [SYN]"
+            }
+          ],
+          "options": [
+            "Something on the path drops the SYN (synchronize) segments, or the server is down",
+            "The server refuses the connection on port 443",
+            "The TCP (Transmission Control Protocol) handshake completes, but the server sends back an empty web page",
+            "DNS (Domain Name System) fails to resolve 10.2.2.20"
+          ],
+          "answer": 0,
+          "explanation": "Tidak ada SYN-ACK (synchronize-acknowledgment) maupun RST (reset), hanya retransmission. Paket hilang atau dibuang diam-diam, misalnya oleh ACL (access control list). Kalau server menolak, ia mengirim RST.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-syn-retrans",
+            "ccna-f-u14-tcp-rst",
+            "ccna-f-u01-tcp-handshake"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e9",
+          "type": "choice",
+          "concept": "capture-patterns",
+          "prompt": "In a capture, which destination MAC (Media Access Control) address does an ARP (Address Resolution Protocol) request use?",
+          "options": [
+            "ffff.ffff.ffff, the broadcast address",
+            "The MAC address of the default gateway",
+            "0000.0000.0000",
+            "The multicast address 0100.5e00.0001"
+          ],
+          "answer": 0,
+          "explanation": "Pengirim belum tahu MAC (Media Access Control) tujuan, jadi ARP (Address Resolution Protocol) request dikirim broadcast. Reply-nya unicast.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u01-arp-messages",
+            "ccna-f-u01-broadcast-mac"
+          ]
+        },
+        {
+          "id": "ccna-u14-l4-e10",
+          "type": "match",
+          "concept": "capture-patterns",
+          "prompt": "Match each pattern in a capture to what it means.",
+          "pairs": [
+            [
+              "The same ARP (Address Resolution Protocol) request repeats with no reply",
+              "No device answers for that address"
+            ],
+            [
+              "A DNS (Domain Name System) response says No such name",
+              "The name does not exist on the server"
+            ],
+            [
+              "A SYN (synchronize) is sent again and again with no answer",
+              "Something drops the packets on the path"
+            ],
+            [
+              "A SYN is answered with RST (reset)",
+              "The host refuses connections on that port"
+            ]
+          ],
+          "explanation": "Tanpa jawaban berarti paket tidak sampai atau dibuang; jawaban RST (reset) atau No such name berarti paket sampai dan server menjawab, tapi menolak atau tidak menemukan.",
+          "examReady": true,
+          "requires": [
+            "ccna-f-u14-arp-capture",
+            "ccna-f-u14-nxdomain",
+            "ccna-f-u14-syn-retrans",
+            "ccna-f-u14-tcp-rst"
+          ]
         }
       ]
     },
@@ -658,47 +908,49 @@
             "ccna-f-u09-show-vlan",
             "ccna-f-u14-ping-chars"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
-            },
-            "given": [
-              {
-                "context": "interface FastEthernet0/2",
-                "lines": [
-                  "switchport mode access",
-                  "switchport access vlan 110",
-                  "shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "FastEthernet0/2"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
               },
-              {
-                "command": "interface fa0/2",
-                "note": "Masuk ke mode konfigurasi interface fa0/2; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ip interface brief",
-                "note": "Ringkasan semua interface: alamat, status, dan protocol."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface FastEthernet0/2",
+                  "lines": [
+                    "switchport mode access",
+                    "switchport access vlan 110",
+                    "shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "FastEthernet0/2"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface fa0/2",
+                  "note": "Masuk ke mode konfigurasi interface fa0/2; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip interface brief",
+                  "note": "Ringkasan semua interface: alamat, status, dan protocol."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u14-l5-e1",
@@ -888,6 +1140,42 @@
       "id": "ccna-f-u14-tcp-rst",
       "statement": "Di TCP, segmen dengan flag RST menolak atau memutus koneksi; SYN yang dijawab RST berarti host tujuan tidak menerima koneksi di port itu.",
       "source": "https://www.rfc-editor.org/rfc/rfc9293.html"
+    },
+    {
+      "id": "ccna-f-u14-config-i",
+      "statement": "%SYS-5-CONFIG_I mencatat bahwa konfigurasi diubah, beserta user dan sumbernya, misalnya console atau vty dengan alamat IP pengirimnya.",
+      "source": "https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/SysMsgLogging.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u14-adjchg",
+      "statement": "%OSPF-5-ADJCHG mencatat perubahan state tetangga OSPF; alasan Dead timer expired berarti tidak ada hello dari tetangga itu selama dead interval.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/13699-29.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u14-duplex-msg",
+      "statement": "%CDP-4-DUPLEX_MISMATCH dilaporkan CDP saat setting duplex dua ujung link tidak sama.",
+      "source": "https://www.cisco.com/c/en/us/support/docs/lan-switching/ethernet/10561-3.html",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u14-arp-capture",
+      "statement": "Di capture, ARP request tampil sebagai Who has <alamat>? Tell <alamat pengirim> dengan tujuan broadcast; request yang berulang tanpa reply berarti tidak ada perangkat yang menjawab untuk alamat itu.",
+      "source": "https://www.rfc-editor.org/rfc/rfc826",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u14-nxdomain",
+      "statement": "Jawaban DNS dengan RCODE 3 (Name Error, disebut NXDOMAIN) berarti nama yang ditanyakan tidak ada; Wireshark menampilkannya sebagai No such name.",
+      "source": "https://www.rfc-editor.org/rfc/rfc1035",
+      "verify": true
+    },
+    {
+      "id": "ccna-f-u14-syn-retrans",
+      "statement": "SYN yang dikirim ulang tanpa jawaban berarti segmen hilang atau dibuang diam-diam di jalan, misalnya oleh ACL atau firewall; ini berbeda dengan RST, yang berarti host tujuan menolak koneksi.",
+      "source": "https://www.rfc-editor.org/rfc/rfc9293",
+      "verify": true
     }
   ]
 }

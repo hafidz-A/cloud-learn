@@ -105,6 +105,21 @@ describe('abbreviations and errors (LANGIT_CCNA_PLAN.md section 7)', () => {
     expect(kinds(step(conf, 'ip route 0.0.0.0 0.0.0.0 10.0.0.1'))).toEqual([])
   })
 
+  it('takes 3 letters or more, or a short form Cisco documentation uses', () => {
+    const conf = newDevice({ ...R1, start: 'config' })
+    step(conf, 'line vty 0 4')
+    // A real router also has padding and parity in line mode, so "pa" is ambiguous there.
+    expect(text(step(conf, 'pa Rahasia1'))).toBe('% Ambiguous command: "pa"')
+    // "tr" is unique, but below 3 letters the simulator cannot be sure it is unique on a real device.
+    expect(text(step(conf, 'tr input ssh'))).toContain('Ketik minimal "tra"')
+    expect(kinds(step(conf, 'pas Rahasia1'))).toEqual([])
+    const st = newDevice(R1)
+    expect(text(step(st, 'sh ip in br'))).toContain('Ketik minimal "int"')
+    expect(text(step(st, 'sh ip int br'))).toContain('Interface')
+    expect(kinds(step(st, 'en'))).toEqual([])
+    expect(text(step(st, 'conf t'))).toContain('Enter configuration commands')
+  })
+
   it('points at a bad value with the IOS caret, under the right column', () => {
     const st = newDevice({ ...R1, start: 'config' })
     step(st, 'interface g0/0/0')
@@ -465,5 +480,18 @@ describe('port security', () => {
     const text = run.transcript.map((l) => l.text).join('\n')
     expect(text.match(/Command rejected: FastEthernet0\/1 is a dynamic port\./g)).toHaveLength(1)
     expect(judgeSession(run.state, { config: [{ context: 'interface FastEthernet0/1', line: 'switchport port-security' }] }).correct).toBe(true)
+  })
+})
+
+describe('IOS software files', () => {
+  it('runs verify /md5 with prepared output, keeps boot system, and needs the save', () => {
+    const file = 'flash:c2960-lanbasek9-mz.152-7.E10.bin'
+    const outputs = { [`verify /md5 ${file}`]: `verify /md5 (${file}) = 0123` }
+    const run = runSession({ ...SW1, start: 'priv', outputs }, [`verify /md5 ${file}`, 'conf t', `boot system ${file}`, 'end', 'copy run start', ''])
+    expect(run.transcript.map((l) => l.text).join('\n')).toContain(`verify /md5 (${file}) = 0123`)
+    const goal = { run: [`verify /md5 ${file}`], config: [{ line: `boot system ${file}` }], saved: true }
+    expect(judgeSession(run.state, goal).correct).toBe(true)
+    const unsaved = runSession({ ...SW1, start: 'priv', outputs }, [`verify /md5 ${file}`, 'conf t', `boot system ${file}`, 'end'])
+    expect(judgeSession(unsaved.state, goal).correct).toBe(false)
   })
 })

@@ -26,50 +26,52 @@
             "ccna-f-u16-recursive",
             "ccna-f-u16-static-ad"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
-                "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ip route",
-                "note": "Menampilkan tabel routing IPv4."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
+                  "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip route",
+                  "note": "Menampilkan tabel routing IPv4."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u16-l1-e1",
@@ -257,50 +259,52 @@
             "ccna-f-u16-default-static",
             "ccna-f-u15-default"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip route 0.0.0.0 0.0.0.0 10.0.52.2",
-                "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 10.0.52.2."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ip route",
-                "note": "Menampilkan tabel routing IPv4."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 0.0.0.0 0.0.0.0 10.0.52.2",
+                  "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 10.0.52.2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip route",
+                  "note": "Menampilkan tabel routing IPv4."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u16-l2-e1",
@@ -388,60 +392,7 @@
           "teaches": [
             "ccna-f-u16-host-route",
             "ccna-f-u15-lpm"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/2",
-                "lines": [
-                  "ip address 10.0.53.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "lines": [
-                  "ip route 10.9.40.0 255.255.0.0 10.0.52.2"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1",
-              "GigabitEthernet0/0/2"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip route 10.9.49.9 255.255.255.255 10.0.53.3",
-                "note": "Membuat static route ke 10.9.49.9 255.255.255.255 lewat next hop 10.0.53.3."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u16-l2-e3",
@@ -593,59 +544,61 @@
           "teaches": [
             "ccna-f-u16-floating"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/2",
-                "lines": [
-                  "ip address 192.168.140.2 255.255.255.0",
-                  "no shutdown"
-                ]
-              },
-              {
-                "lines": [
-                  "ip route 0.0.0.0 0.0.0.0 10.0.52.2"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1",
-              "GigabitEthernet0/0/2"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip route 0.0.0.0 0.0.0.0 192.168.140.1 200",
-                "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 192.168.140.1, dengan administrative distance 200 (floating static route)."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/2",
+                  "lines": [
+                    "ip address 192.168.140.2 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "lines": [
+                    "ip route 0.0.0.0 0.0.0.0 10.0.52.2"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1",
+                "GigabitEthernet0/0/2"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 0.0.0.0 0.0.0.0 192.168.140.1 200",
+                  "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 192.168.140.1, dengan administrative distance 200 (floating static route)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u16-l3-e1",
@@ -848,47 +801,49 @@
             "ccna-f-u16-v6-syntax",
             "ccna-f-u05-unicast-routing"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "lines": [
-                  "ipv6 unicast-routing"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ipv6 address 2001:db8:acad:12::1/64",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ipv6 route 2001:db8:acad:3::/64 2001:db8:acad:12::2",
-                "note": "Membuat static route IPv6 ke 2001:db8:acad:3::/64 lewat next hop 2001:db8:acad:12::2."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ipv6 route",
-                "note": "Menampilkan tabel routing IPv6."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "lines": [
+                    "ipv6 unicast-routing"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ipv6 address 2001:db8:acad:12::1/64",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ipv6 route 2001:db8:acad:3::/64 2001:db8:acad:12::2",
+                  "note": "Membuat static route IPv6 ke 2001:db8:acad:3::/64 lewat next hop 2001:db8:acad:12::2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ipv6 route",
+                  "note": "Menampilkan tabel routing IPv6."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u16-l4-e1",
@@ -955,44 +910,7 @@
           "teaches": [
             "ccna-f-u16-v6-ll",
             "ccna-f-u05-lla"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "lines": [
-                  "ipv6 unicast-routing"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ipv6 address 2001:db8:acad:12::1/64",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ipv6 route ::/0 g0/0/1 fe80::2",
-                "note": "Membuat static route IPv6 ke ::/0 lewat g0/0/1 dengan next hop link-local fe80::2."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u16-l4-e2",
@@ -1149,50 +1067,52 @@
             "ccna-f-u16-both-ways",
             "ccna-f-u14-ext-ping"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R2",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.42.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R2",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.2 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip route 192.168.41.0 255.255.255.0 10.0.52.1",
-                "note": "Membuat static route ke 192.168.41.0 255.255.255.0 lewat next hop 10.0.52.1."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ip route static",
-                "note": "Menampilkan route static saja dari tabel routing."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.42.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.2 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 192.168.41.0 255.255.255.0 10.0.52.1",
+                  "note": "Membuat static route ke 192.168.41.0 255.255.255.0 lewat next hop 10.0.52.1."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip route static",
+                  "note": "Menampilkan route static saja dari tabel routing."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u16-l5-e1",
@@ -1310,55 +1230,57 @@
             "ccna-f-u16-syntax",
             "ccna-f-u16-recursive"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "lines": [
-                  "ip route 192.168.42.0 255.255.255.0 10.0.61.2"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "no ip route 192.168.42.0 255.255.255.0 10.0.61.2",
-                "note": "Menghapus static route ke 192.168.42.0 255.255.255.0."
-              },
-              {
-                "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
-                "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "lines": [
+                    "ip route 192.168.42.0 255.255.255.0 10.0.61.2"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "no ip route 192.168.42.0 255.255.255.0 10.0.61.2",
+                  "note": "Menghapus static route ke 192.168.42.0 255.255.255.0."
+                },
+                {
+                  "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
+                  "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u16-l5-e4",
@@ -1479,62 +1401,64 @@
             "ccna-f-u16-default-static",
             "ccna-f-u16-both-ways"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
-                "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
-              },
-              {
-                "command": "ip route 0.0.0.0 0.0.0.0 10.0.52.2 250",
-                "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 10.0.52.2, dengan administrative distance 250 (floating static route)."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ip route",
-                "note": "Menampilkan tabel routing IPv4."
-              },
-              {
-                "command": "copy running-config startup-config",
-                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
-              },
-              {
-                "command": "",
-                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip route 192.168.42.0 255.255.255.0 10.0.52.2",
+                  "note": "Membuat static route ke 192.168.42.0 255.255.255.0 lewat next hop 10.0.52.2."
+                },
+                {
+                  "command": "ip route 0.0.0.0 0.0.0.0 10.0.52.2 250",
+                  "note": "Membuat static route ke 0.0.0.0 0.0.0.0 lewat next hop 10.0.52.2, dengan administrative distance 250 (floating static route)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip route",
+                  "note": "Menampilkan tabel routing IPv4."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u16-l6-e1",

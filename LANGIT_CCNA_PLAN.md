@@ -500,16 +500,23 @@ pernah menampilkan perilaku palsu sebagai perilaku IOS:
 - Singkatan: seperti IOS asli, setiap kata kunci boleh disingkat selama unik di posisi itu (`hostn R2`,
   `ip add`, `desc`, `switchp mo acc`, `sh ip int br`). Singkatan yang cocok dengan lebih dari satu kata kunci
   dijawab `% Ambiguous command: "..."`, dan kata yang diketik lengkap menang atas kata lain yang diawalinya
-  (`ip` dan `ipv6`). Untuk kata pertama, simulator juga menghitung perintah tingkat atas IOS asli yang tidak
-  disimulasikan (`send`, `setup`, `connect`, dan lain-lain), jadi `s` dan `con` tetap ambigu seperti di router.
-  Di kata berikutnya, keunikan dihitung dari perintah yang dikenal simulator saja, jadi singkatan sangat pendek
-  di posisi itu bisa diterima simulator walau ambigu di IOS asli. Nama interface tetap memakai singkatan baku
-  (`g0/0/0`, `fa0/1`, `lo0`, `vl10`, `po1`).
+  (`ip` dan `ipv6`). Untuk kata pertama di mode user, privileged, konfigurasi global, interface, dan line,
+  simulator juga menghitung perintah IOS asli yang tidak disimulasikan (`send`, `setup`, `connect`, `padding`,
+  `parity`, dan lain-lain), jadi `s`, `con`, dan `pa` tetap ambigu seperti di perangkat asli.
+- Supaya simulator tidak menerima singkatan yang di IOS asli ambigu, setiap kata minimal **3 huruf**, kecuali
+  bentuk pendek yang dipakai dokumentasi Cisco: `sh`, `en`, `t` (`conf t`), `br`, `sw`, `mo`, `ex`, `wr`, `ro`
+  (`sh ip ro`), dan `sh` untuk `shutdown`. Singkatan yang lebih pendek dijawab pesan **Langit** yang menyebut
+  bentuk 3 hurufnya. Nama interface tetap memakai singkatan baku (`g0/0/0`, `fa0/1`, `lo0`, `vl10`, `po1`).
+- Perintah manajemen file (exam topic 4.2): `show flash:`, `dir flash:`, `verify /md5 <file>` (output disiapkan
+  per soal), `copy <sumber> <tujuan>` (output disiapkan per soal), dan `boot system <file>`.
 - **Contoh di console** (`cli` di kartu materi): kartu yang perintahnya dipakai soal `ios` di lesson yang sama
   menampilkan contoh pengetikannya. Langkahnya diputar oleh simulator yang sama, jadi prompt dan output persis
   seperti terminal soal, dan setiap baris punya penjelasan singkat. Nilainya dibuat berbeda dari soal (alamat IP
   dan nomor VLAN digeser) supaya contoh tidak sekadar kunci jawaban. Validator menolak contoh yang menghasilkan
   galat IOS atau pesan Langit, dan baris tanpa penjelasan.
+  Contoh boleh membawa `outputs` (output `show` yang disiapkan, seperti di soal `ios`), misalnya
+  `show version`, `dir flash:`, `verify /md5`, dan `show logging`. Contoh yang ditulis tangan dengan `outputs`
+  dipertahankan saat contoh lain dibangun ulang dari soal.
 - `?` dan Tab tidak didukung. Output `show` ditulis per soal mengikuti format perangkat asli, atau dibangun dari
   konfigurasi yang diketik (`show running-config` hanya menampilkan bagian yang relevan dan diberi catatan Langit).
 - Setiap soal `ios` punya `solution` (urutan perintah contoh). Validator menjalankannya di simulator dan

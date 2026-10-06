@@ -608,9 +608,19 @@
     "description": "Memori kerja yang isinya hilang saat perangkat mati."
   },
   {
+    "term": "ROM",
+    "expansion": "read-only memory",
+    "description": "Memori yang isinya tetap saat perangkat mati. Di perangkat Cisco berisi program bootstrap untuk menyalakan perangkat."
+  },
+  {
     "term": "NVRAM",
     "expansion": "Non-Volatile RAM",
     "description": "Memori yang isinya bertahan saat perangkat mati. Startup-config disimpan di NVRAM."
+  },
+  {
+    "term": "NXDOMAIN",
+    "expansion": "non-existent domain",
+    "description": "Jawaban DNS (Domain Name System) bahwa nama yang ditanyakan tidak ada. Wireshark menampilkannya sebagai No such name."
   },
   {
     "term": "VTY",

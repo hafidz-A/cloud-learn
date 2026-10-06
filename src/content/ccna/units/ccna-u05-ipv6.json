@@ -429,34 +429,36 @@
             "ccna-f-u05-v6-64",
             "ccna-f-u05-v6-cmd"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 address 2001:db8:acad:1::1/64",
-                "note": "Memasang alamat IPv6 2001:db8:acad:1::1/64 di interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 address 2001:db8:acad:1::1/64",
+                  "note": "Memasang alamat IPv6 2001:db8:acad:1::1/64 di interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u05-l3-e1",
@@ -640,39 +642,7 @@
           "teaches": [
             "ccna-f-u05-eui64",
             "ccna-f-u05-eui64-cmd"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ipv6 unicast-routing",
-                "note": "Mengaktifkan routing IPv6 di router."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 address 2001:db8:acad:2::/64 eui-64",
-                "note": "Memasang alamat IPv6 dari prefix 2001:db8:acad:2::/64, dengan interface ID dibuat dari alamat MAC (Media Access Control) lewat EUI-64."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u05-l4-e1",
@@ -828,6 +798,40 @@
           "teaches": [
             "ccna-f-u05-temporary",
             "ccna-f-u05-unicast-routing"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ipv6 unicast-routing",
+                  "note": "Mengaktifkan routing IPv6 di router."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 address 2001:db8:acad:2::/64 eui-64",
+                  "note": "Memasang alamat IPv6 dari prefix 2001:db8:acad:2::/64, dengan interface ID dibuat dari alamat MAC (Media Access Control) lewat EUI-64 (Extended Unique Identifier)."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
           ]
         },
         {
@@ -909,39 +913,41 @@
             "ccna-f-u05-ipv6-enable",
             "ccna-f-u05-multi-addr"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ipv6 address 2001:db8:acad:1::1/64",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 address fe80::1 link-local",
-                "note": "Memasang alamat link-local fe80::1 secara manual."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ipv6 address 2001:db8:acad:1::1/64",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 address fe80::1 link-local",
+                  "note": "Memasang alamat link-local fe80::1 secara manual."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u05-l5-e1",
@@ -1030,43 +1036,45 @@
             "ccna-f-u05-unicast-routing",
             "ccna-f-u05-slaac"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ipv6 address 2001:db8:acad:20::1/64",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "no ipv6 address 2001:db8:acad:20::1/64",
-                "note": "Menghapus alamat IPv6 2001:db8:acad:20::1/64 dari interface ini."
-              },
-              {
-                "command": "ipv6 address 2001:db8:acad:2::1/64",
-                "note": "Memasang alamat IPv6 2001:db8:acad:2::1/64 di interface ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ipv6 address 2001:db8:acad:20::1/64",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no ipv6 address 2001:db8:acad:20::1/64",
+                  "note": "Menghapus alamat IPv6 2001:db8:acad:20::1/64 dari interface ini."
+                },
+                {
+                  "command": "ipv6 address 2001:db8:acad:2::1/64",
+                  "note": "Memasang alamat IPv6 2001:db8:acad:2::1/64 di interface ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u05-l5-e4",
@@ -1190,66 +1198,68 @@
             "ccna-f-u05-lla-cmd",
             "ccna-f-u05-show-v6-br"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "ipv6 unicast-routing",
-                "note": "Mengaktifkan routing IPv6 di router."
-              },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 address 2001:db8:acad:1::1/64",
-                "note": "Memasang alamat IPv6 2001:db8:acad:1::1/64 di interface ini."
-              },
-              {
-                "command": "ipv6 address fe80::1 link-local",
-                "note": "Memasang alamat link-local fe80::1 secara manual."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 address 2001:db8:acad:2::1/64",
-                "note": "Memasang alamat IPv6 2001:db8:acad:2::1/64 di interface ini."
-              },
-              {
-                "command": "ipv6 address fe80::1 link-local",
-                "note": "Memasang alamat link-local fe80::1 secara manual."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ipv6 interface brief",
-                "note": "Ringkasan interface dengan alamat IPv6-nya."
-              }
-            ]
-          }
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ipv6 unicast-routing",
+                  "note": "Mengaktifkan routing IPv6 di router."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 address 2001:db8:acad:1::1/64",
+                  "note": "Memasang alamat IPv6 2001:db8:acad:1::1/64 di interface ini."
+                },
+                {
+                  "command": "ipv6 address fe80::1 link-local",
+                  "note": "Memasang alamat link-local fe80::1 secara manual."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 address 2001:db8:acad:2::1/64",
+                  "note": "Memasang alamat IPv6 2001:db8:acad:2::1/64 di interface ini."
+                },
+                {
+                  "command": "ipv6 address fe80::1 link-local",
+                  "note": "Memasang alamat link-local fe80::1 secara manual."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ipv6 interface brief",
+                  "note": "Ringkasan interface dengan alamat IPv6-nya."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u05-l6-e1",

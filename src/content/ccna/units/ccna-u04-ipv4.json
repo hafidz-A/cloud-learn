@@ -615,35 +615,7 @@
           "teaches": [
             "ccna-f-u04-prefix",
             "ccna-f-u04-classless"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip address 172.16.45.1 255.255.255.192",
-                "note": "Memberi alamat 172.16.45.1 dengan mask 255.255.255.192 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u04-l3-e3",
@@ -722,6 +694,36 @@
           "teaches": [
             "ccna-f-u04-ip-cmd",
             "ccna-f-u03-if-states"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip address 172.16.45.1 255.255.255.192",
+                  "note": "Memberi alamat 172.16.45.1 dengan mask 255.255.255.192 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
           ]
         },
         {
@@ -801,35 +803,7 @@
           "teaches": [
             "ccna-f-u04-net-bcast",
             "ccna-f-u04-hosts"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip address 192.168.60.65 255.255.255.224",
-                "note": "Memberi alamat 192.168.60.65 dengan mask 255.255.255.224 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u04-l4-e1",
@@ -971,6 +945,36 @@
             "ccna-f-u04-net-bcast",
             "ccna-f-u04-block",
             "ccna-f-u04-subnet-zero"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip address 192.168.60.65 255.255.255.224",
+                  "note": "Memberi alamat 192.168.60.65 dengan mask 255.255.255.224 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
           ]
         },
         {
@@ -1361,44 +1365,7 @@
             "ccna-f-u04-vlsm-order",
             "ccna-f-u04-hosts",
             "ccna-f-u04-block"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 10.10.40.1 255.255.255.128",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip address 10.10.40.129 255.255.255.192",
-                "note": "Memberi alamat 10.10.40.129 dengan mask 255.255.255.192 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u04-l6-e3",
@@ -1572,6 +1539,45 @@
           "teaches": [
             "ccna-f-u04-overlap",
             "ccna-f-u04-vlsm-order"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 10.10.40.1 255.255.255.128",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip address 10.10.40.129 255.255.255.192",
+                  "note": "Memberi alamat 10.10.40.129 dengan mask 255.255.255.192 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
           ]
         },
         {
@@ -1818,34 +1824,36 @@
             "ccna-f-u04-overlap",
             "ccna-f-u04-secondary"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip address 192.168.70.1 255.255.255.0",
-                "note": "Memberi alamat 192.168.70.1 dengan mask 255.255.255.0 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip address 192.168.70.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.70.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u04-l7-e5",
@@ -1983,54 +1991,56 @@
             "ccna-f-u04-sh-ip-int-br",
             "ccna-f-u04-gateway-subnet"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip address 192.168.90.1 255.255.255.192",
-                "note": "Memberi alamat 192.168.90.1 dengan mask 255.255.255.192 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip address 192.168.90.65 255.255.255.192",
-                "note": "Memberi alamat 192.168.90.65 dengan mask 255.255.255.192 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ip interface brief",
-                "note": "Ringkasan semua interface: alamat, status, dan protocol."
-              }
-            ]
-          }
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip address 192.168.90.1 255.255.255.192",
+                  "note": "Memberi alamat 192.168.90.1 dengan mask 255.255.255.192 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip address 192.168.90.65 255.255.255.192",
+                  "note": "Memberi alamat 192.168.90.65 dengan mask 255.255.255.192 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip interface brief",
+                  "note": "Ringkasan semua interface: alamat, status, dan protocol."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u04-l8-e1",

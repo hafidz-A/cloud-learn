@@ -15,7 +15,7 @@ type Step = { input: Extract<TermLine, { kind: 'in' }>; output: TermLine[]; note
  */
 export function CliExampleView({ cli }: { cli: CliExample }) {
   const steps = useMemo(() => {
-    const { transcript } = runSession({ hostname: cli.device.hostname, model: cli.device.model, start: cli.start, given: cli.given, cabled: cli.cabled }, cli.steps.map((s) => s.command))
+    const { transcript } = runSession({ hostname: cli.device.hostname, model: cli.device.model, start: cli.start, given: cli.given, outputs: cli.outputs, cabled: cli.cabled }, cli.steps.map((s) => s.command))
     const out: Step[] = []
     for (const line of transcript) {
       if (line.kind === 'in') out.push({ input: line, output: [], note: cli.steps[out.length]?.note ?? '' })

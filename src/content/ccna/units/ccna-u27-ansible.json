@@ -589,54 +589,91 @@
             "ccna-f-u27-check-mode",
             "ccna-f-u27-idempotent"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip domain name lab.local",
+                  "note": "Memasang nama domain lab.local; dibutuhkan untuk membuat kunci RSA (Rivest-Shamir-Adleman)."
+                },
+                {
+                  "command": "crypto key generate rsa modulus 2048",
+                  "note": "Membuat pasangan kunci RSA (Rivest-Shamir-Adleman) 2048 bit, syarat SSH (Secure Shell) aktif."
+                },
+                {
+                  "command": "ip ssh version 2",
+                  "note": "Hanya menerima SSH (Secure Shell) versi 2."
+                },
+                {
+                  "command": "username otomasi secret Rahasia-27",
+                  "note": "Membuat user lokal otomasi, password-nya disimpan sebagai hash."
+                },
+                {
+                  "command": "enable secret Enable-27",
+                  "note": "Memasang password untuk masuk privileged EXEC, disimpan sebagai hash."
+                },
+                {
+                  "command": "line vty 0 4",
+                  "note": "Masuk ke pengaturan line vty 0 sampai 4, jalur akses remote seperti SSH (Secure Shell)."
+                },
+                {
+                  "command": "login local",
+                  "note": "Meminta username dan password dari daftar user lokal."
+                },
+                {
+                  "command": "transport input ssh",
+                  "note": "Hanya mengizinkan SSH (Secure Shell) di line ini, jadi Telnet ditolak."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
             },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "ip domain name lab.local",
-                "note": "Memasang nama domain lab.local; dibutuhkan untuk membuat kunci RSA (Rivest-Shamir-Adleman)."
-              },
-              {
-                "command": "crypto key generate rsa modulus 2048",
-                "note": "Membuat pasangan kunci RSA (Rivest-Shamir-Adleman) 2048 bit, syarat SSH (Secure Shell) aktif."
-              },
-              {
-                "command": "ip ssh version 2",
-                "note": "Hanya menerima SSH (Secure Shell) versi 2."
-              },
-              {
-                "command": "username otomasi secret Rahasia-27",
-                "note": "Membuat user lokal otomasi, password-nya disimpan sebagai hash."
-              },
-              {
-                "command": "enable secret Enable-27",
-                "note": "Memasang password untuk masuk privileged EXEC, disimpan sebagai hash."
-              },
-              {
-                "command": "line vty 0 4",
-                "note": "Masuk ke pengaturan line vty 0 sampai 4, jalur akses remote seperti SSH (Secure Shell)."
-              },
-              {
-                "command": "login local",
-                "note": "Meminta username dan password dari daftar user lokal."
-              },
-              {
-                "command": "transport input ssh",
-                "note": "Hanya mengizinkan SSH (Secure Shell) di line ini, jadi Telnet ditolak."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "lines": [
+                    "ip domain name lab.local"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "crypto key generate rsa modulus 2048",
+                  "note": "Membuat pasangan kunci RSA (Rivest-Shamir-Adleman) 2048 bit, syarat SSH (Secure Shell) aktif."
+                },
+                {
+                  "command": "ip ssh version 2",
+                  "note": "Hanya menerima SSH (Secure Shell) versi 2."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip ssh",
+                  "note": "Menampilkan apakah SSH (Secure Shell) aktif dan versinya."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u27-l5-e1",

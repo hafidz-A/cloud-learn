@@ -69,7 +69,7 @@ export type LearnCard = {
   link?: string // a Microsoft Learn page for further reading
   teaches: string[] // Fact ids
   /** CCNA: the commands of this card typed on the CLI simulator, each with what it does. */
-  cli?: CliExample
+  cli?: CliExample[]
 }
 
 /**
@@ -82,6 +82,8 @@ export type CliExample = {
   start?: 'user' | 'priv' | 'config'
   given?: { context?: string; lines: string[] }[]
   cabled?: string[]
+  /** Prepared output of show commands, keyed by the command in full, as on `ios` questions. */
+  outputs?: Record<string, string>
   steps: { command: string; note: string }[]
 }
 
