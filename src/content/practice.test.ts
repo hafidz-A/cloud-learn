@@ -19,7 +19,8 @@ describe('AZ-104 practice', () => {
       expect(mission!.steps.length, unit.id).toBeGreaterThanOrEqual(4)
       expect(mission!.minutes).toBeGreaterThanOrEqual(20)
       expect(mission!.minutes).toBeLessThanOrEqual(40)
-      for (const lesson of unit.lessons) expect(tipFor(lesson.id)?.text, lesson.id).toBeTruthy()
+      // Exam practice lessons (docs/RENCANA_LULUS_UJIAN.md) teach nothing new, so they have no hands-on tip.
+      for (const lesson of unit.lessons.filter((l) => !l.review)) expect(tipFor(lesson.id)?.text, lesson.id).toBeTruthy()
     }
     const lessons = new Set(AZ104_UNITS.flatMap((u) => u.lessons.map((l) => l.id)))
     expect(Object.values(PRACTICE).flatMap((u) => Object.keys(u.tips)).filter((id) => !lessons.has(id))).toEqual([])
@@ -29,7 +30,7 @@ describe('AZ-104 practice', () => {
     const costly = /Standard Load Balancer|Site Recovery|Entra ID P1|VPN gateway|tier Basic|tier Standard|plan Basic|plan Standard|SKU Basic/i
     for (const unit of AZ104_UNITS) {
       if (missionTexts(unit.id).some((t) => costly.test(t) && !/tidak tersedia|SKU lain/.test(t))) expect(missionFor(unit.id)!.careful, unit.id).toBe(true)
-      for (const lesson of unit.lessons) if (costly.test(tipFor(lesson.id)!.text)) expect(tipFor(lesson.id)!.careful, lesson.id).toBe(true)
+      for (const lesson of unit.lessons.filter((l) => !l.review)) if (costly.test(tipFor(lesson.id)!.text)) expect(tipFor(lesson.id)!.careful, lesson.id).toBe(true)
     }
   })
 
@@ -37,9 +38,9 @@ describe('AZ-104 practice', () => {
     const terms = new Set(GLOSSARY.map((g) => g.term))
     for (const unit of AZ104_UNITS) {
       expect(unexpandedAbbreviations(missionTexts(unit.id)), unit.id).toEqual([])
-      for (const lesson of unit.lessons) expect(unexpandedAbbreviations([tipFor(lesson.id)!.text]), lesson.id).toEqual([])
+      for (const lesson of unit.lessons.filter((l) => !l.review)) expect(unexpandedAbbreviations([tipFor(lesson.id)!.text]), lesson.id).toEqual([])
     }
-    const all = AZ104_UNITS.flatMap((u) => [...missionTexts(u.id), u.lessons.map((l) => tipFor(l.id)!.text)].flat())
+    const all = AZ104_UNITS.flatMap((u) => [...missionTexts(u.id), u.lessons.filter((l) => !l.review).map((l) => tipFor(l.id)!.text)].flat())
     expect([...abbreviationsIn(all)].filter((a) => !terms.has(a))).toEqual([])
   })
 })

@@ -1259,6 +1259,273 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u02-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u02-l5-e1",
+          "type": "choice",
+          "concept": "rbac-scope",
+          "prompt": "Contoso has a management group named Corp that contains the subscriptions Dev and Prod. The security team must view all resources in both subscriptions, and in any subscription that is added to Corp later. The solution must minimize administrative effort. What should you do?",
+          "options": [
+            "Assign the Reader role to the security team group in Dev and in Prod, and again for each new subscription",
+            "Assign the Reader role to the security team group at the Corp management group",
+            "Assign the Reader role to each member of the security team on every resource group",
+            "Assign the Owner role to the security team group at the Corp management group"
+          ],
+          "answer": 1,
+          "explanation": "Role di management group berlaku untuk subscription di dalamnya, termasuk yang ditambahkan nanti. Reader cukup untuk melihat; Owner jauh lebih luas dari yang dibutuhkan. Role diberikan ke group, bukan ke setiap user.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-mg-scope",
+            "az104-f-u02-scope-levels",
+            "az104-f-u02-least-priv",
+            "az104-f-u02-groups-best",
+            "az104-f-u02-owner"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e2",
+          "type": "choice",
+          "concept": "rbac-least-privilege",
+          "prompt": "Budi must manage the virtual networks in the resource group rg-net. He must not manage virtual machines. The solution must follow the principle of least privilege. Which role assignment should you create?",
+          "options": [
+            "Contributor on rg-net",
+            "Network Contributor on the subscription",
+            "Virtual Machine Contributor on rg-net",
+            "Network Contributor on rg-net"
+          ],
+          "answer": 3,
+          "explanation": "Network Contributor mengelola jaringan tanpa izin mengelola VM (virtual machine). Contributor terlalu luas, scope subscription lebih luas dari yang dibutuhkan, dan Virtual Machine Contributor tidak mengelola virtual network.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-network-contributor",
+            "az104-f-u02-contributor",
+            "az104-f-u02-least-priv",
+            "az104-f-u02-vm-contributor"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e3",
+          "type": "choice",
+          "concept": "rbac-cli",
+          "prompt": "You need to assign the Reader role to the group Auditors on the management group Corp by using the Azure CLI (command-line interface). Which value should you use for --scope?",
+          "options": [
+            "/subscriptions/Corp",
+            "/managementGroups/Corp",
+            "/subscriptions/1111/resourceGroups/Corp/providers/Microsoft.Management",
+            "/providers/Microsoft.Management/managementGroups/Corp"
+          ],
+          "answer": 3,
+          "explanation": "Scope management group ditulis /providers/Microsoft.Management/managementGroups/{nama}. Format /subscriptions/... dipakai untuk subscription dan resource group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-scope-format",
+            "az104-f-u02-cli-assign"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e4",
+          "type": "yesno",
+          "concept": "elevate-access",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "The only Owner of a Contoso subscription left the company. Ani is a Global Administrator and has no Azure role assignments.",
+          "statements": [
+            {
+              "text": "Ani can manage the resources in the subscription by default.",
+              "answer": false
+            },
+            {
+              "text": "After Ani turns on Access management for Azure resources, she has the User Access Administrator role at root scope (/).",
+              "answer": true
+            },
+            {
+              "text": "Ani should turn the setting off again after she has assigned the access she needs.",
+              "answer": true
+            }
+          ],
+          "explanation": "Secara default Global Administrator tidak punya akses ke resource Azure. Dengan elevate access, ia mendapat User Access Administrator di root scope, jadi bisa memberi akses di semua subscription. Setelah selesai, setting itu sebaiknya dimatikan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-global-no-azure",
+            "az104-f-u02-elevate"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e5",
+          "type": "choice",
+          "concept": "rbac-groups-timing",
+          "prompt": "An administrator adds Citra to the group Ops. Ops has the Contributor role on rg-web. Two minutes later, Citra still cannot create resources in rg-web. What should Citra do first?",
+          "options": [
+            "Sign out and sign in again, because role changes can take up to 10 minutes to apply",
+            "Ask for the Owner role on rg-web",
+            "Ask the administrator to remove Ops and assign the Contributor role to her account directly",
+            "Ask the administrator to create a deny assignment for rg-web"
+          ],
+          "answer": 0,
+          "explanation": "Perubahan role assignment bisa butuh sampai 10 menit untuk berlaku; sign out lalu sign in memaksa refresh. Role lewat group tetap berlaku, dan deny assignment tidak bisa dibuat langsung.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-propagation",
+            "az104-f-u01-rbac-transitive",
+            "az104-f-u02-deny"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e6",
+          "type": "rules",
+          "concept": "effective-permissions",
+          "prompt": "There are no deny assignments. Based on the table, who can create a storage account in the resource group rg-web?",
+          "tables": [
+            {
+              "title": "Role assignments",
+              "columns": [
+                "User",
+                "Role",
+                "Scope"
+              ],
+              "rows": [
+                [
+                  "Ani",
+                  "Reader",
+                  "Subscription"
+                ],
+                [
+                  "Ani",
+                  "Contributor",
+                  "rg-web"
+                ],
+                [
+                  "Budi",
+                  "Contributor",
+                  "Subscription"
+                ],
+                [
+                  "Budi",
+                  "Reader",
+                  "rg-web"
+                ],
+                [
+                  "Citra",
+                  "Reader",
+                  "rg-web"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Ani only",
+            "Ani and Budi",
+            "Budi only",
+            "Ani, Budi, and Citra"
+          ],
+          "answer": 1,
+          "explanation": "Azure RBAC (role-based access control) bersifat aditif: izin efektif adalah gabungan semua role assignment. Ani punya Contributor di rg-web, dan Budi mewarisi Contributor dari subscription walau juga punya Reader di rg-web. Citra hanya Reader.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-additive",
+            "az104-f-u02-scope-levels",
+            "az104-f-u02-reader"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e7",
+          "type": "choice",
+          "concept": "check-access",
+          "prompt": "You need to confirm the access of Ani on rg-web. Ani has the Reader role on the subscription and the Contributor role on the virtual machine web-01, which is in rg-web. You open Access control (IAM) > Check access for Ani on rg-web. What does it show?",
+          "options": [
+            "Reader from the subscription and Contributor from web-01",
+            "Reader, inherited from the subscription",
+            "Contributor from web-01 only",
+            "No role assignments"
+          ],
+          "answer": 1,
+          "explanation": "Check access menampilkan role assignment di scope itu dan yang diwariskan ke scope itu. Assignment di scope anak, seperti VM (virtual machine) web-01, tidak ditampilkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-check-access",
+            "az104-f-u02-iam-inherited"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e8",
+          "type": "template",
+          "concept": "role-definitions",
+          "prompt": "A user has only this custom role on rg-web. What can the user do with the virtual machines in rg-web?",
+          "language": "json",
+          "fileName": "vm-operator-role.json",
+          "code": "{\n  \"Name\": \"VM Operator\",\n  \"Actions\": [\n    \"Microsoft.Compute/virtualMachines/*\"\n  ],\n  \"NotActions\": [\n    \"Microsoft.Compute/virtualMachines/delete\"\n  ],\n  \"DataActions\": [],\n  \"NotDataActions\": [],\n  \"AssignableScopes\": [\n    \"/subscriptions/1111/resourceGroups/rg-web\"\n  ]\n}",
+          "options": [
+            "Only delete the virtual machines",
+            "Every virtual machine action except deleting the virtual machines",
+            "Every virtual machine action, including delete, because Actions ends with *",
+            "Nothing, because DataActions is empty"
+          ],
+          "answer": 1,
+          "explanation": "Izin efektif = Actions dikurangi NotActions. Actions mengizinkan semua aksi VM (virtual machine), lalu NotActions membuang delete. DataActions mengatur data plane, bukan aksi pada VM.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-actions-notactions"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e9",
+          "type": "yesno",
+          "concept": "control-vs-data-plane",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Dewi has the Contributor role on the storage account stdata and no other role assignments.",
+          "statements": [
+            {
+              "text": "Dewi can change the redundancy setting of stdata.",
+              "answer": true
+            },
+            {
+              "text": "The Contributor role includes the permissions of Storage Blob Data Reader.",
+              "answer": false
+            },
+            {
+              "text": "To read blobs by signing in with her Microsoft Entra account, Dewi needs a data role such as Storage Blob Data Reader.",
+              "answer": true
+            }
+          ],
+          "explanation": "Contributor mengelola resource di control plane, tapi akses control plane tidak otomatis memberi akses data plane. Untuk membaca blob dengan akun Microsoft Entra, dibutuhkan role data seperti Storage Blob Data Reader.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-contributor",
+            "az104-f-u02-control-data",
+            "az104-f-u02-blob-data-roles"
+          ]
+        },
+        {
+          "id": "az104-u02-l5-e10",
+          "type": "multi",
+          "concept": "azure-vs-entra-roles",
+          "prompt": "Ani must create users and reset passwords in Microsoft Entra ID. She must also manage the virtual machines in rg-web. The solution must follow the principle of least privilege. Which two role assignments should you create? Choose two.",
+          "options": [
+            "Virtual Machine Contributor on rg-web, in Access control (IAM)",
+            "Global Administrator, in Microsoft Entra ID > Roles and administrators",
+            "User Administrator, in Microsoft Entra ID > Roles and administrators",
+            "Owner on the subscription, in Access control (IAM)"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Azure role dan Microsoft Entra role adalah sistem terpisah. User Administrator mengelola user dan group, dan Virtual Machine Contributor mengelola VM (virtual machine). Global Administrator dan Owner jauh lebih luas dari yang dibutuhkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u02-azure-vs-entra",
+            "az104-f-u02-where-assigned",
+            "az104-f-u02-entra-examples",
+            "az104-f-u02-vm-contributor",
+            "az104-f-u02-least-priv",
+            "az104-f-u02-owner"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

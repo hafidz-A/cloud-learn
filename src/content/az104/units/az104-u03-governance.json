@@ -1532,6 +1532,614 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u03-l6",
+      "title": "Mengelola resource group dan subscription",
+      "items": [
+        {
+          "id": "az104-u03-l6-m1",
+          "type": "learn",
+          "concepts": [
+            "resource-group-lifecycle"
+          ],
+          "title": "Membuat dan menghapus resource group",
+          "body": "Lokasi resource group hanya menentukan tempat metadata disimpan; resource di dalamnya boleh di region lain. Taruh resource yang lifecycle-nya sama di satu resource group. Resource group tidak bisa di-rename: buat yang baru lalu pindahkan resource-nya. Menghapus resource group cukup butuh izin delete resource group, dan gagal kalau ada lock atau resource yang masih dipakai resource group lain. Resource group yang sudah terhapus tidak bisa dikembalikan.",
+          "keyPoints": [
+            "Lokasi = tempat metadata",
+            "Tidak bisa di-rename",
+            "Hapus gagal kalau ada lock atau dependensi",
+            "Terhapus = tidak bisa dikembalikan"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group",
+          "teaches": [
+            "az104-f-u03-rg-metadata",
+            "az104-f-u03-rg-lifecycle",
+            "az104-f-u03-rg-rename",
+            "az104-f-u03-rg-delete-perm",
+            "az104-f-u03-rg-delete-fail",
+            "az104-f-u03-rg-no-recover"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e1",
+          "type": "choice",
+          "concept": "resource-group-lifecycle",
+          "prompt": "A company created a resource group named rg-test-old and now wants it to be named rg-test. What should you do?",
+          "options": [
+            "Create rg-test, and then move the resources from rg-test-old to it",
+            "Select Rename on the Overview page of rg-test-old and enter the new name rg-test",
+            "Change the region of rg-test-old, which renames it",
+            "Add a tag Name = rg-test to rg-test-old"
+          ],
+          "answer": 0,
+          "explanation": "Resource group tidak bisa di-rename. Buat resource group baru dengan nama yang diinginkan, lalu pindahkan resource ke sana. Tag tidak mengubah nama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-rg-rename",
+            "az104-f-u03-tags-not-inherited",
+            "az104-f-u03-rg-metadata"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e2",
+          "type": "yesno",
+          "concept": "resource-group-lifecycle",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to delete the resource group rg-lab, which contains a virtual machine and a virtual network. The virtual machine has a Delete lock.",
+          "statements": [
+            {
+              "text": "The deletion fails, and nothing in rg-lab is deleted.",
+              "answer": true
+            },
+            {
+              "text": "After rg-lab is deleted, Contoso can restore it from a recycle bin.",
+              "answer": false
+            },
+            {
+              "text": "To delete a resource group, a user needs delete permission on the resource group, but not on each resource in it.",
+              "answer": true
+            }
+          ],
+          "explanation": "Kalau satu resource punya Delete lock, penghapusan resource group gagal seluruhnya. Resource group yang terhapus tidak bisa dikembalikan. Izin yang dibutuhkan hanya delete resource group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-rg-delete",
+            "az104-f-u03-rg-no-recover",
+            "az104-f-u03-rg-delete-perm"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e3",
+          "type": "choice",
+          "concept": "resource-group-lifecycle",
+          "prompt": "For compliance, a company must store the metadata of a resource group in Germany West Central. The virtual machines in that resource group will run in West Europe. What should you do?",
+          "options": [
+            "Deploy the virtual machines to Germany West Central as well, because they must match the resource group",
+            "Create the resource group in Germany West Central and deploy the virtual machines to West Europe",
+            "Create one resource group in each region and split the virtual machines",
+            "Nothing, because resource groups do not store metadata"
+          ],
+          "answer": 1,
+          "explanation": "Lokasi resource group menentukan tempat metadata disimpan, dan resource di dalamnya boleh berada di region lain.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-rg-metadata"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e4",
+          "type": "choice",
+          "concept": "resource-group-lifecycle",
+          "prompt": "You try to delete the resource group rg-net, but the deletion fails even though there are no locks. rg-net contains a virtual network whose subnet is used by a virtual machine in rg-app. What is the cause?",
+          "options": [
+            "A resource group that contains a virtual network can never be deleted by any role",
+            "The virtual network is still used by a resource in another resource group",
+            "You need the Owner role on every resource in rg-net",
+            "A resource group can be deleted only when it is empty"
+          ],
+          "answer": 1,
+          "explanation": "Penghapusan gagal kalau resource-nya masih dipakai resource di resource group lain, misalnya virtual network yang subnet-nya dipakai VM (virtual machine). Izin yang dibutuhkan hanya delete resource group, dan resource group tidak harus kosong.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-rg-delete-fail",
+            "az104-f-u03-rg-delete-perm"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-m2",
+          "type": "learn",
+          "concepts": [
+            "subscription-management"
+          ],
+          "title": "Mengelola subscription",
+          "body": "Hanya Owner subscription yang bisa memindahkan subscription ke directory (tenant Microsoft Entra) lain. Setelah dipindah, semua role assignment Azure RBAC (role-based access control) hilang dan harus dibuat ulang, key vault harus diganti tenant ID (identifier)-nya, dan managed identity harus diaktifkan atau dibuat ulang; billing ownership tidak berubah. Subscription bisa di-rename lewat Overview > Rename. Owner juga bisa membatalkan subscription; datanya tidak langsung dihapus, dan subscription baru bisa dihapus setelah semua resource-nya dihapus.",
+          "keyPoints": [
+            "Ganti directory: role assignment hilang",
+            "Key vault dan managed identity perlu diperbaiki",
+            "Rename lewat Overview",
+            "Batal dulu, hapus setelah resource kosong"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/how-subscriptions-associated-directory",
+          "teaches": [
+            "az104-f-u03-sub-directory",
+            "az104-f-u03-sub-cancel",
+            "az104-f-u03-sub-rename"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e5",
+          "type": "choice",
+          "concept": "subscription-management",
+          "prompt": "After an acquisition, Contoso must associate the subscription Sub-A with the Microsoft Entra tenant of the parent company. What happens to the existing Azure role assignments on Sub-A?",
+          "options": [
+            "They are lost and must be created again in the new directory",
+            "They move with the subscription to the new directory and keep working there",
+            "They become Microsoft Entra roles in the new directory",
+            "Only the Owner assignments are kept"
+          ],
+          "answer": 0,
+          "explanation": "Saat subscription dipindah ke directory lain, semua role assignment Azure RBAC (role-based access control) hilang dan harus dibuat ulang untuk user, group, atau service principal di directory baru.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-sub-directory",
+            "az104-f-u02-azure-vs-entra"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e6",
+          "type": "multi",
+          "concept": "subscription-management",
+          "prompt": "A company plans to associate a subscription with a different Microsoft Entra directory. Which two tasks must the company plan for after the change? Choose two.",
+          "options": [
+            "Create the Azure role assignments again for the users and groups that need access",
+            "Re-create every virtual machine in the subscription",
+            "Move all resources to new resource groups",
+            "Re-enable or re-create the managed identities of its resources"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Setelah directory diganti, role assignment hilang dan managed identity harus diaktifkan atau dibuat ulang. Resource seperti VM (virtual machine) dan resource group tetap ada.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-sub-directory"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e7",
+          "type": "yesno",
+          "concept": "subscription-management",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An administrator at Contoso plans to cancel the Dev subscription and delete it later.",
+          "statements": [
+            {
+              "text": "A subscription Owner can cancel the subscription.",
+              "answer": true
+            },
+            {
+              "text": "Azure deletes all data in the subscription immediately when it is canceled.",
+              "answer": false
+            },
+            {
+              "text": "Before the subscription can be deleted, all of its resources must be deleted.",
+              "answer": true
+            }
+          ],
+          "explanation": "Owner subscription bisa membatalkan subscription. Data tidak langsung dihapus supaya subscription masih bisa diaktifkan lagi, dan subscription baru bisa dihapus setelah semua resource-nya dihapus.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-sub-cancel"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e8",
+          "type": "choice",
+          "concept": "subscription-management",
+          "prompt": "You need to associate a subscription with a different Microsoft Entra directory. Which role do you need on the subscription?",
+          "options": [
+            "Owner",
+            "Contributor",
+            "Reader",
+            "Tag Contributor"
+          ],
+          "answer": 0,
+          "explanation": "Mengganti directory subscription butuh role Owner di subscription itu. Contributor tidak bisa mengatur akses, dan Reader hanya melihat.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-sub-directory",
+            "az104-f-u02-contributor",
+            "az104-f-u02-reader",
+            "az104-f-u03-tag-access"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-m3",
+          "type": "learn",
+          "concepts": [
+            "management-groups"
+          ],
+          "title": "Memindah dan menghapus management group",
+          "body": "Untuk memindahkan subscription ke management group lain, kamu butuh izin di subscription itu, misalnya Owner, dan izin write seperti Management Group Contributor di management group induk sekarang dan di management group tujuan. Izin di root management group tidak dibutuhkan. Management group hanya bisa dihapus kalau sudah tidak punya child management group atau subscription. Di Azure CLI (command-line interface), pindahkan subscription dengan az account management-group subscription add.",
+          "keyPoints": [
+            "Izin di subscription, induk lama, dan induk baru",
+            "Root tidak butuh izin tambahan",
+            "Hapus hanya kalau tidak punya child"
+          ],
+          "visual": "ResourceHierarchy",
+          "link": "https://learn.microsoft.com/en-us/azure/governance/management-groups/manage",
+          "teaches": [
+            "az104-f-u03-mg-move-perm",
+            "az104-f-u03-mg-delete",
+            "az104-f-u03-mg-cli"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e9",
+          "type": "choice",
+          "concept": "management-groups",
+          "prompt": "Ani has the Owner role assigned directly on the subscription Sub1. She must move Sub1 from the management group Sales to the management group Marketing. Which other permissions does she need?",
+          "options": [
+            "No other permissions are needed, because she is the Owner of Sub1 and owns everything in it",
+            "The Owner role on the root management group only",
+            "Write permission, such as Management Group Contributor, on both Sales and Marketing",
+            "The Global Administrator role in Microsoft Entra ID"
+          ],
+          "answer": 2,
+          "explanation": "Memindahkan subscription butuh izin di subscription itu dan izin write di management group induk sekarang (Sales) serta tujuan (Marketing). Izin di root management group tidak dibutuhkan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-mg-move-perm",
+            "az104-f-u02-global-no-azure"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e10",
+          "type": "choice",
+          "concept": "management-groups",
+          "prompt": "You need to delete the management group Old-Projects. It contains one subscription. What should you do first?",
+          "options": [
+            "Delete all resource groups in the subscription",
+            "Move the subscription to another management group",
+            "Assign yourself the Reader role on Old-Projects",
+            "Nothing, because deleting the management group also deletes the subscription"
+          ],
+          "answer": 1,
+          "explanation": "Management group hanya bisa dihapus kalau tidak punya child management group atau subscription, jadi subscription-nya dipindah dulu. Menghapus resource group tidak membuat subscription keluar dari management group.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-mg-delete"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e11",
+          "type": "choice",
+          "concept": "management-groups",
+          "prompt": "You need to move the subscription 1111 into the management group Contoso by using the Azure CLI (command-line interface). Which command should you run?",
+          "options": [
+            "az group move --name Contoso --subscription 1111",
+            "az account set --subscription 1111 --management-group Contoso",
+            "az role assignment create --scope /providers/Microsoft.Management/managementGroups/Contoso",
+            "az account management-group subscription add --name Contoso --subscription 1111"
+          ],
+          "answer": 3,
+          "explanation": "Subscription dipindah ke management group dengan az account management-group subscription add. az role assignment create hanya memberi role, tidak memindahkan subscription.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-mg-cli",
+            "az104-f-u02-cli-assign"
+          ]
+        },
+        {
+          "id": "az104-u03-l6-e12",
+          "type": "match",
+          "concept": "management-groups",
+          "prompt": "Contoso is reorganizing its management groups. Match each statement with what it describes.",
+          "pairs": [
+            [
+              "Delete a management group",
+              "Remove its child management groups and subscriptions first"
+            ],
+            [
+              "Move a subscription",
+              "Write permission on the current and the target parent"
+            ],
+            [
+              "Tenant root group",
+              "Cannot be moved or deleted"
+            ],
+            [
+              "Hierarchy depth",
+              "Up to six levels below the root"
+            ]
+          ],
+          "explanation": "Management group dihapus setelah tidak punya child. Memindahkan subscription butuh izin di induk lama dan baru. Root tidak bisa dipindah atau dihapus, dan pohonnya maksimal enam level di bawah root.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-mg-delete",
+            "az104-f-u03-mg-move-perm",
+            "az104-f-u03-root-mg",
+            "az104-f-u03-mg-limits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "az104-u03-l7",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u03-l7-e1",
+          "type": "choice",
+          "concept": "resource-locks",
+          "prompt": "Admins must still be able to change the settings of the resources in rg-prod, but nobody, including Owners, may delete them. Resources added to rg-prod later must also be protected. What should you do?",
+          "options": [
+            "Apply a Read-only lock to each resource in rg-prod",
+            "Apply a Delete lock to each resource that exists in rg-prod today",
+            "Apply a Delete lock to rg-prod",
+            "Assign an Azure Policy definition with the audit effect to rg-prod"
+          ],
+          "answer": 2,
+          "explanation": "Delete lock mengizinkan perubahan tapi memblokir penghapusan, berlaku untuk semua role termasuk Owner, dan lock di resource group diwariskan ke resource yang ditambahkan kemudian. Effect audit tidak menghentikan request.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-types",
+            "az104-f-u03-lock-inherit",
+            "az104-f-u03-lock-all",
+            "az104-f-u03-audit"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e2",
+          "type": "choice",
+          "concept": "lock-side-effects",
+          "prompt": "rg-app has a Read-only lock. An administrator at the company, who has the Owner role, tries to restart a virtual machine in rg-app. What happens?",
+          "options": [
+            "The restart fails, because a Read-only lock also blocks POST operations such as restart",
+            "The restart works, because Owner overrides locks",
+            "The restart works, because a restart does not change the configuration of the virtual machine",
+            "The lock is removed automatically during the restart"
+          ],
+          "answer": 0,
+          "explanation": "Lock berlaku untuk semua role termasuk Owner. Read-only lock juga memblokir operasi POST, misalnya start atau restart VM (virtual machine) di resource group yang dikunci.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-lock-post",
+            "az104-f-u03-lock-all"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e3",
+          "type": "multi",
+          "concept": "tag-inheritance-policy",
+          "prompt": "Every resource in rg-sales, including the resources that exist today, must get the costCenter tag of rg-sales. Which two actions should you take? Choose two.",
+          "options": [
+            "Add the tag to the subscription so that the resources inherit it",
+            "Apply a Read-only lock to rg-sales",
+            "Run a remediation task for the existing resources",
+            "Assign the built-in policy Inherit a tag from the resource group if missing"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Resource tidak mewarisi tag otomatis. Policy Inherit a tag from the resource group if missing menambahkan tag ke resource baru atau yang diubah, dan resource lama diperbaiki dengan remediation task.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-tag-policy",
+            "az104-f-u03-tags-not-inherited",
+            "az104-f-u03-remediation"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e4",
+          "type": "yesno",
+          "concept": "tags",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso adds the tag Environment = Prod to the virtual machine vm1.",
+          "statements": [
+            {
+              "text": "For tag operations, environment and Environment are the same tag name.",
+              "answer": true
+            },
+            {
+              "text": "The tag value prod is the same as the value Prod.",
+              "answer": false
+            },
+            {
+              "text": "vm1 can have at most 15 tag name-value pairs.",
+              "answer": false
+            }
+          ],
+          "explanation": "Nama tag tidak case-sensitive untuk operasi, tapi nilai tag case-sensitive. Setiap resource bisa punya maksimal 50 pasangan tag.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-tag-limits"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e5",
+          "type": "choice",
+          "concept": "tags",
+          "prompt": "Maria has the Tag Contributor role on a subscription. In the Azure portal, she tries to add a tag to a virtual machine in that subscription. What happens?",
+          "options": [
+            "She cannot add it in the portal; Tag Contributor can tag only subscriptions there, so she must use Azure PowerShell or the REST (Representational State Transfer) API (Application Programming Interface)",
+            "She can add the tag in the portal, because in the portal Tag Contributor can tag every subscription, resource group, and resource",
+            "She cannot add tags at all, because Tag Contributor is a read-only role",
+            "She can add the tag, but only after she gets the Contributor role on the virtual machine"
+          ],
+          "answer": 0,
+          "explanation": "Tag Contributor bisa memberi tag tanpa akses ke resource-nya. Di portal, role ini hanya bisa memberi tag ke subscription; untuk resource dan resource group, pakai Azure PowerShell atau REST (Representational State Transfer) API (Application Programming Interface).",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-tag-access"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e6",
+          "type": "choice",
+          "concept": "management-groups",
+          "prompt": "The Allowed locations policy must apply to every subscription in the tenant, including subscriptions that are created later. The solution must minimize administrative effort. Where should you assign the policy?",
+          "options": [
+            "On each subscription, and again on each new subscription",
+            "At the Tenant root group",
+            "On a new management group, and then move each new subscription into it by hand",
+            "On each resource group in every subscription"
+          ],
+          "answer": 1,
+          "explanation": "Subscription baru otomatis masuk ke Tenant root group, dan assignment di sebuah scope berlaku untuk semua yang ada di bawahnya. Jadi satu assignment di root mencakup subscription yang sudah ada dan yang dibuat nanti.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-root-mg",
+            "az104-f-u03-assignment"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e7",
+          "type": "choice",
+          "concept": "move-rules",
+          "prompt": "Contoso must move the virtual machine vm1 from a subscription in the Contoso tenant to a subscription in the Fabrikam tenant. What is true?",
+          "options": [
+            "vm1 can be moved with Azure Resource Mover, which moves resources between subscriptions in different tenants",
+            "vm1 can be moved after it is stopped, from any tenant to any other tenant",
+            "vm1 cannot be moved directly, because both subscriptions must be in the same Microsoft Entra tenant",
+            "vm1 can be moved only if a Read-only lock protects the target resource group"
+          ],
+          "answer": 2,
+          "explanation": "Untuk pindah ke subscription lain, kedua subscription harus aktif dan berada di tenant Microsoft Entra yang sama. Azure Resource Mover dipakai untuk pindah region, dan Read-only lock justru memblokir pemindahan.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-move-rules",
+            "az104-f-u03-move-basics",
+            "az104-f-u03-move-readonly"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e8",
+          "type": "rules",
+          "concept": "policy-evaluation-order",
+          "prompt": "A user who has the Owner role creates a virtual machine in North Europe in the subscription Prod. Based on the table, what happens?",
+          "tables": [
+            {
+              "title": "Policy assignments",
+              "columns": [
+                "Scope",
+                "Policy",
+                "Allowed locations",
+                "Effect"
+              ],
+              "rows": [
+                [
+                  "Management group Corp (contains Prod)",
+                  "Allowed locations",
+                  "West Europe, North Europe",
+                  "deny"
+                ],
+                [
+                  "Subscription Prod",
+                  "Allowed locations",
+                  "West Europe",
+                  "deny"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "The request is denied, because each assignment is evaluated and one deny is enough",
+            "The virtual machine is created, because the management group allows North Europe",
+            "The virtual machine is created, because the user is an Owner",
+            "The virtual machine is created and marked non-compliant in the audit log"
+          ],
+          "answer": 0,
+          "explanation": "Setiap assignment dievaluasi sendiri-sendiri dan hasilnya cumulative most restrictive: satu deny cukup untuk memblokir. Azure Policy tetap memblokir walau user punya role Owner.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-layering",
+            "az104-f-u03-policy-vs-rbac"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e9",
+          "type": "choice",
+          "concept": "initiative",
+          "prompt": "A company must assign 15 related security policy definitions to three management groups and track their compliance as one set. What should the company do?",
+          "options": [
+            "Assign each of the 15 definitions to each of the three management groups separately, 45 assignments in total",
+            "Create 15 management groups, one for each definition",
+            "Assign the definitions to the Tenant root group with the disabled effect",
+            "Group the definitions in an initiative and assign the initiative to each management group"
+          ],
+          "answer": 3,
+          "explanation": "Initiative (policySet) menggabungkan beberapa policy definition supaya dikelola dan di-assign bersama. Effect disabled justru mematikan assignment.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-initiative",
+            "az104-f-u03-assignment",
+            "az104-f-u03-disabled"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e10",
+          "type": "choice",
+          "concept": "cost-alerts",
+          "prompt": "When the costs of the resource group rg-dev reach its monthly budget, a runbook must stop the virtual machines in rg-dev automatically. What should you configure?",
+          "options": [
+            "Nothing, because a budget stops the resources in its scope at 100% of the amount by itself",
+            "A Read-only lock that applies when the budget is reached",
+            "A budget threshold that triggers an action group, which runs the automation",
+            "An Azure Advisor cost recommendation for rg-dev"
+          ],
+          "answer": 2,
+          "explanation": "Budget tidak menghentikan resource sendiri. Untuk scope subscription dan resource group, budget bisa memicu action group untuk notifikasi atau otomatisasi.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-budget-action-group",
+            "az104-f-u03-budget-def",
+            "az104-f-u03-lock-types",
+            "az104-f-u03-advisor-cost"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e11",
+          "type": "choice",
+          "concept": "resource-group-lifecycle",
+          "prompt": "An operator has a custom role on the subscription. The role includes Microsoft.Resources/subscriptions/resourceGroups/delete, and its NotActions include Microsoft.Compute/virtualMachines/delete. The operator deletes rg-old, which contains two virtual machines. What happens?",
+          "options": [
+            "The deletion fails, because the NotActions of the custom role block the deletion of the virtual machines in rg-old",
+            "rg-old and its virtual machines are deleted, because the resource group delete action is enough",
+            "rg-old is deleted, but the two virtual machines stay in the subscription",
+            "Only the resources other than the virtual machines are deleted"
+          ],
+          "answer": 1,
+          "explanation": "Menghapus resource group hanya butuh izin delete resource group, dan aksi delete di NotActions kalah oleh aksi delete resource group. Penghapusan resource group menghapus semua isinya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-rg-delete-perm",
+            "az104-f-u02-actions-notactions"
+          ]
+        },
+        {
+          "id": "az104-u03-l7-e12",
+          "type": "choice",
+          "concept": "resource-group-lifecycle",
+          "prompt": "An app has a web tier, a database, and a virtual network that are deployed, updated, and retired together. When the app is retired, all of its resources must be removed in one step. How should you organize the resources?",
+          "options": [
+            "Put each resource in its own resource group",
+            "Put the resources in three subscriptions, one for each tier",
+            "Put the resources in the same resource group as other apps, and add a tag",
+            "Put all resources of the app in one resource group"
+          ],
+          "answer": 3,
+          "explanation": "Resource dengan lifecycle yang sama sebaiknya di satu resource group, supaya di-deploy, di-update, dan dihapus bersama.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u03-rg-lifecycle",
+            "az104-f-u03-tags-not-inherited"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
@@ -1784,6 +2392,66 @@
       "id": "az104-f-u03-advisor-cost",
       "statement": "Rekomendasi cost di Azure Advisor antara lain mematikan atau mengecilkan VM (virtual machine) yang jarang dipakai, lengkap dengan perkiraan penghematannya.",
       "source": "https://learn.microsoft.com/en-us/azure/advisor/advisor-cost-recommendations"
+    },
+    {
+      "id": "az104-f-u03-rg-metadata",
+      "statement": "Lokasi resource group menentukan tempat metadata resource-nya disimpan, misalnya untuk kebutuhan kepatuhan; resource di dalam resource group boleh berada di region lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal"
+    },
+    {
+      "id": "az104-f-u03-rg-lifecycle",
+      "statement": "Resource di satu resource group sebaiknya punya lifecycle yang sama, karena di-deploy, di-update, dan dihapus bersama; resource tetap bisa terhubung ke resource di resource group lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "az104-f-u03-rg-rename",
+      "statement": "Resource group tidak bisa di-rename. Buat resource group baru dengan nama yang diinginkan, lalu pindahkan resource ke sana.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/frequently-asked-questions"
+    },
+    {
+      "id": "az104-f-u03-rg-delete-perm",
+      "statement": "Menghapus resource group hanya butuh izin delete untuk resource group (Microsoft.Resources/subscriptions/resourceGroups/delete), tanpa izin menghapus setiap resource di dalamnya; aksi delete di NotActions sebuah role kalah oleh aksi delete resource group.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group"
+    },
+    {
+      "id": "az104-f-u03-rg-delete-fail",
+      "statement": "Penghapusan resource group gagal kalau ada lock, atau kalau resource di dalamnya masih dipakai resource di resource group lain, misalnya virtual network yang subnet-nya dipakai VM (virtual machine) lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group"
+    },
+    {
+      "id": "az104-f-u03-rg-no-recover",
+      "statement": "Resource group yang sudah dihapus tidak bisa dikembalikan; hanya sebagian resource yang mendukung soft delete yang mungkin bisa dipulihkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group"
+    },
+    {
+      "id": "az104-f-u03-sub-directory",
+      "statement": "Mengganti directory (tenant Microsoft Entra) sebuah subscription butuh role Owner di subscription itu. Setelah diganti, semua role assignment Azure RBAC (role-based access control) hilang dan harus dibuat ulang, key vault harus diganti tenant ID-nya, dan managed identity harus diaktifkan ulang atau dibuat ulang; billing ownership tidak berubah.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-subscriptions-associated-directory"
+    },
+    {
+      "id": "az104-f-u03-sub-cancel",
+      "statement": "Subscription dibatalkan oleh Owner subscription. Setelah dibatalkan, data tidak langsung dihapus supaya subscription masih bisa diaktifkan lagi; untuk menghapus subscription, semua resource-nya harus dihapus dulu.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/cancel-azure-subscription"
+    },
+    {
+      "id": "az104-f-u03-sub-rename",
+      "statement": "Nama subscription bisa diganti di portal lewat Overview > Rename, maksimal dua kali dalam lima menit.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/change-azure-account-profile"
+    },
+    {
+      "id": "az104-f-u03-mg-move-perm",
+      "statement": "Memindahkan subscription ke management group lain butuh izin di subscription itu (misalnya Owner) dan izin write, misalnya Management Group Contributor, di management group induk sekarang dan management group tujuan; izin di root management group tidak dibutuhkan.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/manage"
+    },
+    {
+      "id": "az104-f-u03-mg-delete",
+      "statement": "Management group hanya bisa dihapus kalau tidak punya child management group atau subscription, dan butuh izin write di management group itu, misalnya Owner, Contributor, atau Management Group Contributor.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/manage"
+    },
+    {
+      "id": "az104-f-u03-mg-cli",
+      "statement": "Di Azure CLI (command-line interface), subscription dipindah ke management group dengan az account management-group subscription add --name <management group> --subscription <ID subscription>.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/manage"
     }
   ]
 }

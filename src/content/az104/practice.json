@@ -97,6 +97,9 @@
         },
         "az104-u03-l5": {
           "text": "Buat budget kecil di Cost Management untuk subscription latihanmu dengan threshold forecast, supaya kamu diberi tahu kalau biaya latihan membengkak."
+        },
+        "az104-u03-l6": {
+          "text": "Buat management group uji di bawah Tenant root group, pindahkan subscription latihanmu ke sana, lalu kembalikan ke Tenant root group dan hapus management group itu. Cari juga tombol rename di resource group: tidak ada, jadi buat resource group baru lalu pindahkan resource-nya."
         }
       }
     },

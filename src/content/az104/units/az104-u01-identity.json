@@ -1683,6 +1683,339 @@
           ]
         }
       ]
+    },
+    {
+      "id": "az104-u01-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "az104-u01-l6-e1",
+          "type": "choice",
+          "concept": "user-properties",
+          "prompt": "Contoso syncs users from on-premises Active Directory by using Microsoft Entra Connect. The human resources team asks you to change the department of a synced user named Megan, and to set her usage location so that a license can be assigned. What should you do?",
+          "options": [
+            "Change both the department and the usage location in the Microsoft Entra admin center",
+            "Change both the department and the usage location in on-premises Active Directory, then wait for the next sync cycle",
+            "Open a support request, because synced users cannot be changed",
+            "Change the department in on-premises Active Directory, and set the usage location in the Microsoft Entra admin center"
+          ],
+          "answer": 3,
+          "explanation": "Untuk user hasil sinkronisasi, job info seperti department diubah di Active Directory lalu menunggu sinkronisasi. Usage location adalah atribut milik Microsoft Entra ID, jadi bisa diubah langsung di admin center.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-synced-edit",
+            "az104-f-u01-usage-location",
+            "az104-f-u01-prop-categories"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e2",
+          "type": "yesno",
+          "concept": "user-lifecycle",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An administrator at Contoso deleted the user Ben 20 days ago and the user Ana 40 days ago by mistake.",
+          "statements": [
+            {
+              "text": "Ben can be restored with all of his properties from Deleted users.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft Support can restore Ana's account.",
+              "answer": false
+            },
+            {
+              "text": "Any member user can restore Ben's account.",
+              "answer": false
+            }
+          ],
+          "explanation": "User yang dihapus bisa di-restore selama 30 hari, lengkap dengan propertinya, oleh minimal User Administrator. Setelah 30 hari, penghapusan permanen berjalan dan tidak ada yang bisa mengembalikannya, termasuk Microsoft Support.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-restore-30",
+            "az104-f-u01-permanent-delete"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e3",
+          "type": "rules",
+          "concept": "assigned-vs-dynamic-membership",
+          "prompt": "You change the Sales group from Assigned membership to Dynamic user membership with the rule user.department -eq \"Sales\". How many members does the group have after the change?",
+          "tables": [
+            {
+              "title": "Sales group before the change",
+              "columns": [
+                "Members",
+                "Department",
+                "Count"
+              ],
+              "rows": [
+                [
+                  "Current members",
+                  "Sales",
+                  "40"
+                ],
+                [
+                  "Current members",
+                  "Marketing",
+                  "10"
+                ]
+              ]
+            },
+            {
+              "title": "Other users in the tenant",
+              "columns": [
+                "Members",
+                "Department",
+                "Count"
+              ],
+              "rows": [
+                [
+                  "Not in the group",
+                  "Sales",
+                  "15"
+                ],
+                [
+                  "Not in the group",
+                  "Finance",
+                  "30"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "55",
+            "50",
+            "40",
+            "65"
+          ],
+          "answer": 0,
+          "explanation": "Saat group Assigned diubah menjadi dynamic, anggota yang cocok dengan aturan tetap ada (40), anggota yang tidak cocok dikeluarkan (10 Marketing), dan user lain yang cocok ditambahkan otomatis (15). Jadi 40 + 15 = 55.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-static-to-dynamic",
+            "az104-f-u01-dynamic-rule"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e4",
+          "type": "choice",
+          "concept": "nested-groups",
+          "prompt": "The group IT (information technology)-Admins is a member of the group Ops. Ops is assigned the Contributor role on the resource group rg-prod, and the app Payroll is assigned to Ops. What does a member of IT-Admins get?",
+          "options": [
+            "Access to Payroll, but not the Contributor permissions on rg-prod",
+            "The Contributor permissions on rg-prod, but not access to Payroll",
+            "Both the Contributor permissions on rg-prod and access to Payroll",
+            "Neither the permissions on rg-prod nor access to Payroll"
+          ],
+          "answer": 1,
+          "explanation": "Role assignment Azure RBAC (role-based access control) transitif untuk group, jadi anggota nested group ikut mendapat izin Contributor. Tapi anggota nested group tidak ikut mendapat aplikasi yang di-assign ke group induknya.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-rbac-transitive",
+            "az104-f-u01-nested-no-access"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e5",
+          "type": "match",
+          "concept": "user-admin-roles",
+          "prompt": "Contoso delegates identity tasks by following the principle of least privilege. Match each task with the role to assign.",
+          "pairs": [
+            [
+              "Create user accounts",
+              "User Administrator"
+            ],
+            [
+              "Only invite guest users",
+              "Guest Inviter"
+            ],
+            [
+              "Only assign licenses and usage locations",
+              "License Administrator"
+            ],
+            [
+              "Assign Microsoft Entra roles to users",
+              "Privileged Role Administrator"
+            ]
+          ],
+          "explanation": "Role dengan hak paling kecil: User Administrator untuk membuat user, Guest Inviter untuk mengundang guest, License Administrator untuk lisensi, dan Privileged Role Administrator untuk memberi role Microsoft Entra.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-least-priv-roles",
+            "az104-f-u01-license-roles",
+            "az104-f-u01-guest-inviter"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e6",
+          "type": "choice",
+          "concept": "default-user-permissions",
+          "prompt": "Contoso keeps the default user settings in Microsoft Entra ID. Adele is a member user. She wants to create a Microsoft 365 group for her project. What happens?",
+          "options": [
+            "Adele cannot create any group until an administrator assigns her the Global Administrator role for the whole tenant",
+            "Adele can create the group, because members can create security groups and Microsoft 365 groups by default",
+            "Adele can create the group only after an administrator changes her User type to Guest",
+            "Adele can create only security groups, not Microsoft 365 groups"
+          ],
+          "answer": 1,
+          "explanation": "Secara default, member bisa melihat daftar user dan group, membuat security group dan Microsoft 365 group, serta mengundang guest. Global Administrator terlalu luas untuk tugas ini.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-member-default",
+            "az104-f-u01-global-admin",
+            "az104-f-u01-usertype-prop"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e7",
+          "type": "rules",
+          "concept": "dynamic-membership",
+          "prompt": "You create a security group named Sales-Dyn with Dynamic user membership and the rule user.department -eq \"Sales\". Which objects become members of Sales-Dyn?",
+          "tables": [
+            {
+              "title": "Objects in the tenant",
+              "columns": [
+                "Name",
+                "Object type",
+                "Department"
+              ],
+              "rows": [
+                [
+                  "Ana",
+                  "User",
+                  "Sales"
+                ],
+                [
+                  "Ben",
+                  "User",
+                  "Marketing"
+                ],
+                [
+                  "Citra",
+                  "User",
+                  "Sales"
+                ],
+                [
+                  "Laptop1",
+                  "Device",
+                  "Not applicable"
+                ]
+              ]
+            }
+          ],
+          "options": [
+            "Ana and Citra",
+            "Ana, Citra, and Laptop1",
+            "Ana, Ben, Citra, and Laptop1",
+            "Ana only"
+          ],
+          "answer": 0,
+          "explanation": "Aturan dynamic membership memakai atribut user, jadi hanya user dengan department Sales yang masuk. Satu dynamic group berisi user saja atau device saja, jadi Laptop1 tidak bisa menjadi anggota group Dynamic user.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-dynamic-rule",
+            "az104-f-u01-dynamic-users-or-devices"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e8",
+          "type": "yesno",
+          "concept": "group-based-licensing",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso assigns a Microsoft 365 E3 license to the security group Marketing, which uses Dynamic user membership. Some members have no usage location.",
+          "statements": [
+            {
+              "text": "Members without a usage location get the location of the tenant.",
+              "answer": true
+            },
+            {
+              "text": "A user who is in a group nested inside Marketing gets the license from Marketing.",
+              "answer": false
+            },
+            {
+              "text": "If a member cannot get the license, the reason appears under Errors & issues in the Microsoft 365 admin center.",
+              "answer": true
+            }
+          ],
+          "explanation": "Lewat group-based licensing, anggota tanpa usage location memakai lokasi tenant. Nested group tidak didukung, jadi hanya anggota level pertama yang mendapat lisensi. Masalah lisensi dilihat di tab Errors & issues.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-gbl-location",
+            "az104-f-u01-gbl-nested",
+            "az104-f-u01-gbl-errors"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e9",
+          "type": "multi",
+          "concept": "guest-invite-settings",
+          "prompt": "Contoso must allow only users with the User Administrator or Guest Inviter role to invite guests, and invitations must go only to fabrikam.com. Which two settings should you configure? Choose two.",
+          "options": [
+            "Guest user access: Guest users have the same access as members",
+            "Guest invite settings: Only users assigned to specific admin roles can invite guest users",
+            "Collaboration restrictions: Allow invitations only to the specified domains, with fabrikam.com",
+            "Collaboration restrictions: Deny invitations to the specified domains, with fabrikam.com"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Guest invite settings mengatur siapa yang boleh mengundang; pilihan \"only users assigned to specific admin roles\" berarti User Administrator atau Guest Inviter. Collaboration restrictions dengan allow list membatasi undangan hanya ke domain yang disebut.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-invite-settings",
+            "az104-f-u01-collab-restrictions",
+            "az104-f-u01-guest-access-levels"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e10",
+          "type": "choice",
+          "concept": "b2b-guest-invite",
+          "prompt": "An administrator named Maria invites a consultant from Fabrikam by using Invite external user. The consultant has not accepted the invitation yet. What is the Invitation state of the account, and who is its Sponsor?",
+          "options": [
+            "Pending acceptance, and Maria is the Sponsor",
+            "Accepted, and Maria is the Sponsor",
+            "Pending acceptance, and the Global Administrator is the Sponsor",
+            "Accepted, and the account has no Sponsor"
+          ],
+          "answer": 0,
+          "explanation": "Akun guest langsung dibuat dengan User type Guest. Sebelum undangan diterima, Invitation state-nya Pending acceptance, dan pengundang otomatis menjadi Sponsor.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-b2b-invite"
+          ]
+        },
+        {
+          "id": "az104-u01-l6-e11",
+          "type": "yesno",
+          "concept": "sspr-methods",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso enables SSPR (self-service password reset) for all users. Users are cloud-only and have Microsoft Entra ID P1 licenses. Some users have the Global Administrator role.",
+          "statements": [
+            {
+              "text": "Users without an administrator role can reset a forgotten password after they register the required methods.",
+              "answer": true
+            },
+            {
+              "text": "Global Administrators can use security questions to reset their password.",
+              "answer": false
+            },
+            {
+              "text": "Global Administrators must provide two pieces of authentication data to reset their password.",
+              "answer": true
+            }
+          ],
+          "explanation": "Dengan P1, user cloud-only bisa me-reset password setelah mendaftarkan metodenya. Akun admin memakai kebijakan two-gate: dua data autentikasi wajib dan security questions dilarang.",
+          "examReady": true,
+          "requires": [
+            "az104-f-u01-sspr-licensing",
+            "az104-f-u01-sspr-register",
+            "az104-f-u01-sspr-admin"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
