@@ -55,3 +55,17 @@ dan diajarkan kartu materi sebelum diuji.
 2. Menambal butir AZ-900 yang di bawah standar, unit demi unit.
 3. Menambal butir AZ-104 yang di bawah standar, unit demi unit.
 4. Tes cakupan menjadi wajib (gagal kalau ada butir di bawah standar), lalu cek akhir semua tes.
+
+## 5. Status
+
+| Tahap | Status |
+|---|---|
+| 1. Data kisi-kisi, peta, dan perubahan aplikasi | Selesai |
+| 2. AZ-900 | Selesai (6 Oktober 2026): 57 dari 57 butir memenuhi standar. 42 fakta baru, 204 soal baru, dan lesson "Latihan soal ujian" di akhir setiap unit |
+| 3. AZ-104 | Sedang dikerjakan |
+| 4. Tes cakupan wajib dan cek akhir | Belum |
+
+Lesson "Latihan soal ujian" (`review: true` di data lesson) selalu menjadi lesson terakhir unit, tidak
+punya kartu materi, berisi 8–15 soal siap ujian, dan tidak dihitung sebagai lesson pengajaran. Di peta
+jalur, lesson ini memakai ikon papan klip. Pemain yang sudah menyelesaikan unit tetap bisa lanjut ke
+lesson berikutnya; level mahkota unit tidak turun karena lesson baru.

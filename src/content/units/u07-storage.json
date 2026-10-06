@@ -495,6 +495,93 @@
             "f-u07-lrs",
             "f-u07-grs"
           ]
+        },
+        {
+          "id": "u07-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "storage-accounts"
+          ],
+          "title": "Tipe storage account",
+          "body": "Untuk sebagian besar kebutuhan, pilih Standard general-purpose v2. Tipe ini bisa menampung blob, file share, queue, dan table, dan mendukung LRS (Locally Redundant Storage), ZRS (Zone-Redundant Storage), GRS (Geo-Redundant Storage), maupun GZRS (Geo-Zone-Redundant Storage). Tipe premium memakai SSD (Solid-State Drive) untuk latensi rendah: premium block blobs, premium file shares, atau premium page blobs. Masing-masing hanya untuk satu jenis data dan hanya mendukung LRS atau ZRS. Tipe storage account tidak bisa diubah setelah dibuat.",
+          "keyPoints": [
+            "Standard general-purpose v2: semua layanan, semua redundancy",
+            "Premium: SSD, satu jenis data, hanya LRS atau ZRS",
+            "Tipe tidak bisa diubah; buat account baru dan salin data"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview",
+          "teaches": [
+            "f-u07-sa-types",
+            "f-u07-sa-premium",
+            "f-u07-sa-type-fixed"
+          ]
+        },
+        {
+          "id": "u07-l2-e10",
+          "type": "choice",
+          "concept": "storage-accounts",
+          "prompt": "A company needs one storage account for blobs, file shares, queues, and tables, and the data must be copied to a second region. Which type of storage account should the company create?",
+          "options": [
+            "Standard general-purpose v2",
+            "Premium block blobs",
+            "Premium file shares",
+            "Premium page blobs"
+          ],
+          "answer": 0,
+          "explanation": "Standard general-purpose v2 mendukung blob, file share, queue, dan table, plus GRS (Geo-Redundant Storage) atau GZRS (Geo-Zone-Redundant Storage) yang menyalin data ke region kedua. Tipe premium hanya untuk satu jenis data dan hanya mendukung LRS (Locally Redundant Storage) atau ZRS (Zone-Redundant Storage).",
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-types",
+            "f-u07-sa-premium",
+            "f-u07-geo-region"
+          ]
+        },
+        {
+          "id": "u07-l2-e11",
+          "type": "choice",
+          "concept": "storage-accounts",
+          "prompt": "An app at a company writes many small blobs and needs consistently low storage latency. Which type of storage account fits best?",
+          "options": [
+            "Premium file shares",
+            "Premium page blobs",
+            "Standard general-purpose v2 with GRS (Geo-Redundant Storage)",
+            "Premium block blobs"
+          ],
+          "answer": 3,
+          "explanation": "Premium block blobs memakai SSD (Solid-State Drive) untuk latensi rendah dan cocok untuk banyak objek kecil. Premium file shares hanya untuk file share. Standard general-purpose v2 cocok untuk sebagian besar skenario, tapi latensi rendah yang konsisten adalah kelebihan tipe premium.",
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-premium",
+            "f-u07-sa-types",
+            "f-u07-grs"
+          ]
+        },
+        {
+          "id": "u07-l2-e12",
+          "type": "yesno",
+          "concept": "storage-accounts",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso created a Standard general-purpose v2 storage account. It now wants a premium storage account for its file shares.",
+          "statements": [
+            {
+              "text": "Contoso can change the existing account to the premium file shares type.",
+              "answer": false
+            },
+            {
+              "text": "Contoso must create a new storage account and copy the data to it.",
+              "answer": true
+            },
+            {
+              "text": "A premium file shares account uses SSDs (Solid-State Drives).",
+              "answer": true
+            }
+          ],
+          "explanation": "Tipe storage account tidak bisa diubah setelah dibuat, jadi Contoso harus membuat account baru dan menyalin datanya. Tipe premium memakai SSD (Solid-State Drive).",
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-type-fixed",
+            "f-u07-sa-premium"
+          ]
         }
       ]
     },
@@ -1273,6 +1360,363 @@
           ]
         }
       ]
+    },
+    {
+      "id": "u07-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u07-l6-e1",
+          "type": "choice",
+          "concept": "blob-access-tiers",
+          "prompt": "A company stores log files that are rarely read but must be readable right away when they are needed. The files are kept for at least 90 days. The company wants the lowest storage cost without making the data offline. Which access tier should it use?",
+          "options": [
+            "Cold",
+            "Archive",
+            "Hot",
+            "Cool, because it is the only tier for rarely used data"
+          ],
+          "answer": 0,
+          "explanation": "Cold untuk data yang sangat jarang diakses (minimal 90 hari) dan tetap online. Archive lebih murah tapi offline, jadi harus di-rehydrate dulu. Semakin jarang tier-nya, biaya simpannya makin murah, jadi Cold lebih murah daripada Cool dan Hot.",
+          "examReady": true,
+          "requires": [
+            "f-u07-tiers",
+            "f-u07-tier-cost",
+            "f-u07-archive-offline"
+          ]
+        },
+        {
+          "id": "u07-l6-e2",
+          "type": "yesno",
+          "concept": "archive-rehydration",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company moves 500 old project files to the Archive tier.",
+          "statements": [
+            {
+              "text": "The company can open a file right away when a customer asks for it.",
+              "answer": false
+            },
+            {
+              "text": "To read a file, the company must first rehydrate it to an online tier, which can take hours.",
+              "answer": true
+            },
+            {
+              "text": "Deleting a file 30 days after it was moved to Archive incurs an early deletion charge.",
+              "answer": true
+            }
+          ],
+          "explanation": "Blob di Archive offline dan harus di-rehydrate dulu ke Hot, Cool, atau Cold, yang bisa memakan waktu berjam-jam. Masa minimal Archive 180 hari, jadi menghapusnya setelah 30 hari kena biaya early deletion.",
+          "examReady": true,
+          "requires": [
+            "f-u07-archive-offline",
+            "f-u07-rehydrate-time",
+            "f-u07-early-deletion",
+            "f-u07-tiers"
+          ]
+        },
+        {
+          "id": "u07-l6-e3",
+          "type": "choice",
+          "concept": "geo-redundancy",
+          "prompt": "A company's data must stay available if one availability zone in the primary region fails. The data must also be copied to a second region in case the whole primary region fails. Which redundancy option should the company choose?",
+          "options": [
+            "ZRS (Zone-Redundant Storage)",
+            "LRS (Locally Redundant Storage)",
+            "GZRS (Geo-Zone-Redundant Storage)",
+            "GRS (Geo-Redundant Storage), which keeps the primary copies in one datacenter"
+          ],
+          "answer": 2,
+          "explanation": "GZRS (Geo-Zone-Redundant Storage) menyalin data dengan ZRS (Zone-Redundant Storage) di region utama (tahan satu zone mati), lalu menyalinnya ke region kedua. GRS (Geo-Redundant Storage) juga punya region kedua, tapi di region utama memakai LRS (Locally Redundant Storage), yaitu satu datacenter.",
+          "examReady": true,
+          "requires": [
+            "f-u07-gzrs",
+            "f-u07-grs",
+            "f-u07-zrs",
+            "f-u07-lrs"
+          ]
+        },
+        {
+          "id": "u07-l6-e4",
+          "type": "choice",
+          "concept": "primary-redundancy",
+          "prompt": "For compliance, a company's data must stay in one region. The data must survive the failure of one availability zone, at the lowest cost that meets this requirement. Which redundancy option should the company choose?",
+          "options": [
+            "LRS (Locally Redundant Storage)",
+            "GRS (Geo-Redundant Storage)",
+            "GZRS (Geo-Zone-Redundant Storage)",
+            "ZRS (Zone-Redundant Storage)"
+          ],
+          "answer": 3,
+          "explanation": "ZRS (Zone-Redundant Storage) menyalin data ke tiga atau lebih availability zone di region utama saja. LRS (Locally Redundant Storage) hanya satu datacenter, sedangkan GRS (Geo-Redundant Storage) dan GZRS (Geo-Zone-Redundant Storage) menyalin ke region kedua, padahal data harus tetap di satu region.",
+          "examReady": true,
+          "requires": [
+            "f-u07-zrs",
+            "f-u07-lrs",
+            "f-u07-geo-region"
+          ]
+        },
+        {
+          "id": "u07-l6-e5",
+          "type": "choice",
+          "concept": "storage-accounts",
+          "prompt": "A company creates a storage account named contosodata. Which address is the endpoint for the blobs in this account?",
+          "options": [
+            "https://blob.core.windows.net/contosodata",
+            "https://contosodata.blob.core.windows.net",
+            "https://contosodata.azure.com/blob",
+            "https://storage.azure.com/contosodata/blob"
+          ],
+          "answer": 1,
+          "explanation": "Nama storage account menjadi bagian alamat endpoint-nya, misalnya https://namaakun.blob.core.windows.net. Karena itu namanya harus unik di seluruh Azure.",
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-unique"
+          ]
+        },
+        {
+          "id": "u07-l6-e6",
+          "type": "multi",
+          "concept": "storage-accounts",
+          "prompt": "Which two kinds of data can a Standard general-purpose v2 storage account hold? Choose two.",
+          "options": [
+            "Virtual machines that run apps",
+            "Tables in Table Storage",
+            "Network security groups",
+            "File shares in Azure Files"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Standard general-purpose v2 menampung Blob Storage, Queue Storage, Table Storage, dan Azure Files. VM (Virtual Machine) dan NSG (Network Security Group) adalah resource lain, bukan data di storage account.",
+          "examReady": true,
+          "requires": [
+            "f-u07-sa-types",
+            "f-u07-sa-def",
+            "f-u06-nsg-def"
+          ]
+        },
+        {
+          "id": "u07-l6-e7",
+          "type": "choice",
+          "concept": "file-movement-tools",
+          "prompt": "An admin needs to schedule a nightly script that copies files from an on-premises server to Blob storage from the command line. Which tool should the admin use?",
+          "options": [
+            "Azure Storage Explorer",
+            "Azure Data Box",
+            "Azure Migrate",
+            "AzCopy"
+          ],
+          "answer": 3,
+          "explanation": "AzCopy adalah alat baris perintah untuk menyalin blob atau file ke dan dari storage account, jadi cocok untuk skrip. Storage Explorer adalah aplikasi grafis, dan Data Box adalah perangkat fisik.",
+          "examReady": true,
+          "requires": [
+            "f-u07-azcopy",
+            "f-u07-explorer",
+            "f-u07-databox-def",
+            "f-u07-migrate-def"
+          ]
+        },
+        {
+          "id": "u07-l6-e8",
+          "type": "choice",
+          "concept": "file-movement-tools",
+          "prompt": "A support team has no command-line experience. The team needs to browse blobs, upload files, and change settings from their Mac computers by using a graphical app. What should the team use?",
+          "options": [
+            "Azure Storage Explorer",
+            "AzCopy",
+            "Azure File Sync",
+            "Azure Data Box"
+          ],
+          "answer": 0,
+          "explanation": "Azure Storage Explorer adalah aplikasi grafis untuk mengelola data storage dari Windows, macOS, atau Linux. AzCopy adalah alat baris perintah, dan File Sync menyinkronkan Windows file server.",
+          "examReady": true,
+          "requires": [
+            "f-u07-explorer",
+            "f-u07-azcopy",
+            "f-u07-filesync",
+            "f-u07-databox-def"
+          ]
+        },
+        {
+          "id": "u07-l6-e9",
+          "type": "yesno",
+          "concept": "file-movement-tools",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company plans to keep its Windows file servers in branch offices and use Azure File Sync with Azure Files.",
+          "statements": [
+            {
+              "text": "Changes made in Azure Files can sync back to the file servers in the branch offices.",
+              "answer": true
+            },
+            {
+              "text": "With cloud tiering, every file is always kept on the local file servers.",
+              "answer": false
+            },
+            {
+              "text": "Azure File Sync is a command-line tool for one-time copies.",
+              "answer": false
+            }
+          ],
+          "explanation": "Azure File Sync menyinkronkan Windows file server dengan Azure Files dua arah. Dengan cloud tiering, hanya file yang sering dipakai yang disimpan lokal, bukan semua file. Alat baris perintah untuk menyalin adalah AzCopy.",
+          "examReady": true,
+          "requires": [
+            "f-u07-filesync",
+            "f-u07-azcopy"
+          ]
+        },
+        {
+          "id": "u07-l6-e10",
+          "type": "multi",
+          "concept": "file-movement-tools",
+          "prompt": "A company needs to move files from its laptops to a storage account. Which two tools can copy the files? Choose two.",
+          "options": [
+            "An NSG (Network Security Group)",
+            "Azure Virtual Desktop",
+            "Azure Storage Explorer",
+            "AzCopy"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "AzCopy menyalin file lewat baris perintah, dan Storage Explorer mengelola data storage lewat aplikasi grafis. NSG (Network Security Group) memfilter traffic, dan Azure Virtual Desktop menjalankan desktop jarak jauh.",
+          "examReady": true,
+          "requires": [
+            "f-u07-azcopy",
+            "f-u07-explorer",
+            "f-u06-nsg-def",
+            "f-u05-avd-def"
+          ]
+        },
+        {
+          "id": "u07-l6-e11",
+          "type": "choice",
+          "concept": "azure-migrate",
+          "prompt": "A company plans to move 200 on-premises servers and databases to Azure. First, it needs to discover them and assess whether they are ready, from one portal. What should the company use?",
+          "options": [
+            "Azure Data Box",
+            "AzCopy",
+            "Azure File Sync",
+            "Azure Migrate"
+          ],
+          "answer": 3,
+          "explanation": "Azure Migrate adalah platform terpadu untuk menemukan, menilai, dan memigrasikan server, database, dan web app ke Azure dari satu portal.",
+          "examReady": true,
+          "requires": [
+            "f-u07-migrate-def",
+            "f-u07-databox-def",
+            "f-u07-azcopy",
+            "f-u07-filesync"
+          ]
+        },
+        {
+          "id": "u07-l6-e12",
+          "type": "choice",
+          "concept": "azure-data-box",
+          "prompt": "A company must move 80 terabytes of video archives to Azure within two weeks. Over its internet connection, the transfer would take months. What should the company use?",
+          "options": [
+            "An assessment in Azure Migrate",
+            "Azure Data Box",
+            "AzCopy over the internet connection",
+            "Azure Storage Explorer"
+          ],
+          "answer": 1,
+          "explanation": "Data Box adalah perangkat storage fisik yang dikirim Microsoft untuk memindahkan data berukuran terabyte, cocok saat transfer lewat jaringan dibatasi waktu atau bandwidth. AzCopy dan Storage Explorer tetap memakai internet yang lambat.",
+          "examReady": true,
+          "requires": [
+            "f-u07-databox-def",
+            "f-u07-databox-when",
+            "f-u07-migrate-def",
+            "f-u07-azcopy",
+            "f-u07-explorer"
+          ]
+        },
+        {
+          "id": "u07-l6-e13",
+          "type": "yesno",
+          "concept": "azure-data-box",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to leave its datacenter. It has 50 servers and 100 terabytes of archived files, and its internet connection is slow.",
+          "statements": [
+            {
+              "text": "Azure Migrate can discover and assess the 50 servers.",
+              "answer": true
+            },
+            {
+              "text": "Azure Data Box sends the archived files over the slow internet connection.",
+              "answer": false
+            },
+            {
+              "text": "After the assessment, Azure Migrate can also migrate the servers to Azure.",
+              "answer": true
+            }
+          ],
+          "explanation": "Azure Migrate menemukan, menilai, lalu memigrasikan server. Data Box adalah perangkat fisik yang dikirim, bukan transfer lewat internet, jadi cocok untuk koneksi lambat.",
+          "examReady": true,
+          "requires": [
+            "f-u07-migrate-def",
+            "f-u07-databox-def",
+            "f-u07-databox-when"
+          ]
+        },
+        {
+          "id": "u07-l6-e14",
+          "type": "match",
+          "concept": "blob-access-tiers",
+          "prompt": "A company stores four kinds of data in Blob storage. Match each kind of data with the access tier that has the lowest total cost for it.",
+          "pairs": [
+            [
+              "Product images that the website reads all day",
+              "Hot"
+            ],
+            [
+              "Monthly reports read a few times, kept at least 30 days",
+              "Cool"
+            ],
+            [
+              "Old logs read very rarely, kept at least 90 days, needed right away when read",
+              "Cold"
+            ],
+            [
+              "Records kept for 7 years, can wait hours to read",
+              "Archive"
+            ]
+          ],
+          "explanation": "Hot untuk data yang sering diakses, Cool untuk jarang diakses (minimal 30 hari), Cold untuk lebih jarang lagi (minimal 90 hari), dan Archive yang offline (minimal 180 hari) untuk data yang boleh menunggu rehydrate berjam-jam.",
+          "examReady": true,
+          "requires": [
+            "f-u07-tiers",
+            "f-u07-tier-cost",
+            "f-u07-archive-offline",
+            "f-u07-rehydrate-time"
+          ]
+        },
+        {
+          "id": "u07-l6-e15",
+          "type": "multi",
+          "concept": "azure-migrate",
+          "prompt": "A company plans its move to Azure. Which two kinds of workloads can Azure Migrate help migrate? Choose two.",
+          "options": [
+            "On-premises servers",
+            "Web apps",
+            "Physical hard drives shipped by courier",
+            "Microsoft 365 mailboxes"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Azure Migrate menemukan, menilai, dan memigrasikan server, database, dan web app. Mengirim data lewat perangkat fisik adalah tugas Azure Data Box.",
+          "examReady": true,
+          "requires": [
+            "f-u07-migrate-def",
+            "f-u07-databox-def",
+            "f-u03-saas-def"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
@@ -1400,6 +1844,21 @@
       "id": "f-u07-filesync",
       "statement": "Azure File Sync menyinkronkan Windows file server dengan Azure Files dua arah, dan dengan cloud tiering hanya file yang sering dipakai yang disimpan lokal.",
       "source": "https://learn.microsoft.com/en-us/azure/storage/file-sync/file-sync-introduction"
+    },
+    {
+      "id": "f-u07-sa-types",
+      "statement": "Standard general-purpose v2 adalah tipe storage account yang direkomendasikan untuk sebagian besar skenario: mendukung Blob Storage, Queue Storage, Table Storage, dan Azure Files, dengan pilihan redundancy LRS (Locally Redundant Storage), ZRS (Zone-Redundant Storage), GRS (Geo-Redundant Storage), dan GZRS (Geo-Zone-Redundant Storage).",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview"
+    },
+    {
+      "id": "f-u07-sa-premium",
+      "statement": "Tipe storage account premium (premium block blobs, premium file shares, premium page blobs) memakai SSD (Solid-State Drive) untuk latensi rendah dan throughput tinggi, masing-masing hanya untuk satu jenis data, dan hanya mendukung LRS (Locally Redundant Storage) atau ZRS (Zone-Redundant Storage).",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview"
+    },
+    {
+      "id": "f-u07-sa-type-fixed",
+      "statement": "Tipe storage account tidak bisa diubah setelah dibuat; untuk pindah tipe, buat storage account baru lalu salin datanya.",
+      "source": "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview"
     }
   ]
 }

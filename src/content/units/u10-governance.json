@@ -734,6 +734,337 @@
             "f-u10-purview-def",
             "f-u10-stp"
           ]
+        },
+        {
+          "id": "u10-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "microsoft-purview"
+          ],
+          "title": "Isi Microsoft Purview",
+          "body": "Data Map memindai sumber data di Azure, on-premises, dan cloud lain seperti AWS (Amazon Web Services) untuk mencatat metadata, dan Unified Catalog menjadi daftar terpusat: data apa yang ada, di mana, dan siapa pemiliknya. Sensitivity label menandai seberapa sensitif sebuah data dan bisa menerapkan enkripsi, pembatasan akses, atau penanda visual. Kebijakan DLP (Data Loss Prevention) memantau dan melindungi informasi sensitif di layanan Microsoft 365 dan perangkat, misalnya memblokir pengiriman ke luar perusahaan.",
+          "keyPoints": [
+            "Data Map dan Unified Catalog: peta semua data",
+            "Sensitivity label: enkripsi, akses, dan penanda",
+            "DLP: cegah data sensitif bocor"
+          ],
+          "link": "https://learn.microsoft.com/en-us/purview/purview",
+          "teaches": [
+            "f-u10-purview-map",
+            "f-u10-purview-labels",
+            "f-u10-purview-dlp"
+          ]
+        },
+        {
+          "id": "u10-l3-e9",
+          "type": "choice",
+          "concept": "microsoft-purview",
+          "prompt": "A company wants an up-to-date map of all its data across Azure, its on-premises SQL (Structured Query Language) servers, and AWS (Amazon Web Services), so that analysts can find which data exists and who owns it. What should the company use?",
+          "options": [
+            "The Service Trust Portal",
+            "The Data Map and Unified Catalog in Microsoft Purview",
+            "An Azure Policy initiative",
+            "Cost analysis in Microsoft Cost Management, grouped by resource owner"
+          ],
+          "answer": 1,
+          "explanation": "Purview Data Map memindai sumber data di Azure, on-premises, dan cloud lain, dan Unified Catalog menjadi daftar terpusat data dan pemiliknya. Service Trust Portal hanya berisi dokumen kepatuhan Microsoft.",
+          "examReady": true,
+          "requires": [
+            "f-u10-purview-map",
+            "f-u10-stp",
+            "f-u10-policy-def",
+            "f-u09-cost-analysis"
+          ]
+        },
+        {
+          "id": "u10-l3-e10",
+          "type": "choice",
+          "concept": "microsoft-purview",
+          "prompt": "A company must stop employees from emailing documents that contain credit card numbers to people outside the company. What should the company use?",
+          "options": [
+            "A DLP (Data Loss Prevention) policy in Microsoft Purview",
+            "A resource lock on the mail service",
+            "An Azure Policy assignment that denies emails with card numbers",
+            "The Service Trust Portal"
+          ],
+          "answer": 0,
+          "explanation": "Kebijakan DLP (Data Loss Prevention) di Purview mengenali dan melindungi informasi sensitif di layanan Microsoft 365, termasuk memblokir pengirimannya. Resource lock dan Azure Policy mengatur resource Azure, bukan isi email.",
+          "examReady": true,
+          "requires": [
+            "f-u10-purview-dlp",
+            "f-u10-lock-def",
+            "f-u10-policy-def",
+            "f-u10-stp"
+          ]
+        },
+        {
+          "id": "u10-l3-e11",
+          "type": "yesno",
+          "concept": "microsoft-purview",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to label its documents with Microsoft Purview sensitivity labels.",
+          "statements": [
+            {
+              "text": "A sensitivity label can apply encryption to a document.",
+              "answer": true
+            },
+            {
+              "text": "A sensitivity label can add a visual marking, such as a header, to a document.",
+              "answer": true
+            },
+            {
+              "text": "Sensitivity labels are used to stop Azure resources from being deleted.",
+              "answer": false
+            }
+          ],
+          "explanation": "Sensitivity label menandai seberapa sensitif data dan bisa menerapkan enkripsi, pembatasan akses, dan penanda visual. Mencegah resource Azure terhapus adalah tugas resource lock.",
+          "examReady": true,
+          "requires": [
+            "f-u10-purview-labels",
+            "f-u10-lock-def"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u10-l4",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u10-l4-e1",
+          "type": "multi",
+          "concept": "microsoft-purview",
+          "prompt": "A company plans to use Microsoft Purview. Which two tasks can Purview help with? Choose two.",
+          "options": [
+            "Downloading Microsoft's ISO (International Organization for Standardization) audit reports",
+            "Preventing sensitive data from being shared outside the company",
+            "Finding and classifying sensitive data across the company's data estate",
+            "Blocking deployments of Azure resources in regions that are not approved"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Purview membantu menemukan dan mengklasifikasikan data serta mencegah kebocoran data sensitif dengan DLP (Data Loss Prevention). Laporan audit Microsoft ada di Service Trust Portal, dan pembatasan region adalah tugas Azure Policy.",
+          "examReady": true,
+          "requires": [
+            "f-u10-purview-def",
+            "f-u10-purview-dlp",
+            "f-u10-stp",
+            "f-u10-policy-def"
+          ]
+        },
+        {
+          "id": "u10-l4-e2",
+          "type": "choice",
+          "concept": "microsoft-purview",
+          "prompt": "A compliance team must show auditors two things: the ISO (International Organization for Standardization) certificates of Microsoft's cloud services, and where the company's own sensitive data is stored. Which tools should the team use?",
+          "options": [
+            "Microsoft Purview for the certificates, and the Service Trust Portal for the company's data",
+            "Azure Policy for both the certificates and the company's data",
+            "The Service Trust Portal for the certificates, and Microsoft Purview for the company's data",
+            "Microsoft Purview for both the certificates and the company's data"
+          ],
+          "answer": 2,
+          "explanation": "Service Trust Portal berisi bukti kepatuhan Microsoft sendiri dan tidak memindai data customer. Untuk menemukan dan mengklasifikasikan data milik organisasimu, pakai Microsoft Purview.",
+          "examReady": true,
+          "requires": [
+            "f-u10-purview-vs-stp",
+            "f-u10-stp",
+            "f-u10-purview-def",
+            "f-u10-policy-def"
+          ]
+        },
+        {
+          "id": "u10-l4-e3",
+          "type": "choice",
+          "concept": "azure-policy",
+          "prompt": "A company must make sure that every storage account in its 20 subscriptions follows an approved configuration. Storage accounts that do not comply must be reported. The solution must use the least administrative effort. What should the company do?",
+          "options": [
+            "Assign an RBAC (Role-Based Access Control) role to every storage admin in each of the 20 subscriptions",
+            "Assign an Azure Policy definition to a management group that contains the 20 subscriptions",
+            "Apply a ReadOnly lock to every storage account",
+            "Create a budget for each of the 20 subscriptions"
+          ],
+          "answer": 1,
+          "explanation": "Azure Policy memeriksa konfigurasi resource, menolak yang melanggar, dan melaporkan yang tidak patuh. Policy di management group berlaku untuk semua subscription di bawahnya. RBAC (Role-Based Access Control) mengatur siapa boleh melakukan apa, bukan konfigurasinya.",
+          "examReady": true,
+          "requires": [
+            "f-u10-policy-def",
+            "f-u10-policy-inherit",
+            "f-u10-policy-vs-rbac",
+            "f-u10-lock-types",
+            "f-u09-budgets"
+          ]
+        },
+        {
+          "id": "u10-l4-e4",
+          "type": "choice",
+          "concept": "policy-initiatives",
+          "prompt": "A company has 12 related policy definitions for security. It wants to assign them and track their compliance as one unit. What should the company do?",
+          "options": [
+            "Group the definitions in an initiative and assign the initiative",
+            "Create 12 management groups, one for each of the 12 policy definitions",
+            "Put the 12 definitions in one resource group",
+            "Add the same tag to each of the 12 definitions"
+          ],
+          "answer": 0,
+          "explanation": "Initiative adalah kumpulan policy definition yang saling terkait, jadi bisa di-assign dan dikelola sebagai satu kesatuan.",
+          "examReady": true,
+          "requires": [
+            "f-u10-initiative",
+            "f-u10-policy-terms",
+            "f-u04-mg-def",
+            "f-u09-tags"
+          ]
+        },
+        {
+          "id": "u10-l4-e5",
+          "type": "yesno",
+          "concept": "azure-policy",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An admin assigns a policy to a subscription named Prod. The policy denies virtual machines that are larger than an approved size.",
+          "statements": [
+            {
+              "text": "A new virtual machine that is too large is denied in every resource group in Prod.",
+              "answer": true
+            },
+            {
+              "text": "The policy also stops users from signing in to the Azure portal.",
+              "answer": false
+            },
+            {
+              "text": "A user with the Owner role can still create a virtual machine that is too large.",
+              "answer": false
+            }
+          ],
+          "explanation": "Policy di subscription berlaku untuk semua resource group di bawahnya. Azure Policy memeriksa konfigurasi resource tanpa peduli siapa pembuatnya, jadi Owner pun ditolak. Policy tidak mengatur login.",
+          "examReady": true,
+          "requires": [
+            "f-u10-policy-def",
+            "f-u10-policy-inherit",
+            "f-u10-policy-vs-rbac"
+          ]
+        },
+        {
+          "id": "u10-l4-e6",
+          "type": "choice",
+          "concept": "read-only-locks",
+          "prompt": "A company's production virtual network must not be deleted by accident, but admins must still be able to add subnets to it. Which control should the company apply?",
+          "options": [
+            "A ReadOnly lock",
+            "An Azure Policy initiative",
+            "A Delete (CanNotDelete) lock",
+            "The Reader role for every admin"
+          ],
+          "answer": 2,
+          "explanation": "Lock Delete (CanNotDelete) mencegah penghapusan, tapi resource masih bisa diubah, misalnya ditambah subnet. ReadOnly juga melarang perubahan, dan Reader hanya bisa melihat.",
+          "examReady": true,
+          "requires": [
+            "f-u10-lock-types",
+            "f-u10-initiative",
+            "f-u08-rbac-roles"
+          ]
+        },
+        {
+          "id": "u10-l4-e7",
+          "type": "yesno",
+          "concept": "resource-locks",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso applies a Delete (CanNotDelete) lock to a resource group named rg-prod. Later, an admin creates a new storage account in rg-prod.",
+          "statements": [
+            {
+              "text": "The new storage account is protected by the lock.",
+              "answer": true
+            },
+            {
+              "text": "An Owner can delete rg-prod without removing the lock first.",
+              "answer": false
+            },
+            {
+              "text": "Users can still change the settings of the new storage account.",
+              "answer": true
+            }
+          ],
+          "explanation": "Lock diwariskan ke semua resource di bawahnya, termasuk yang ditambahkan nanti, dan berlaku untuk semua role termasuk Owner. Lock Delete masih mengizinkan perubahan.",
+          "examReady": true,
+          "requires": [
+            "f-u10-lock-scope",
+            "f-u10-lock-def",
+            "f-u10-lock-remove",
+            "f-u10-lock-types"
+          ]
+        },
+        {
+          "id": "u10-l4-e8",
+          "type": "choice",
+          "concept": "read-only-locks",
+          "prompt": "A company wants to make sure that nobody, including admins, changes the configuration of a critical firewall by accident. What should the company apply to the firewall?",
+          "options": [
+            "A Delete (CanNotDelete) lock",
+            "The Contributor role for the admins",
+            "A ReadOnly lock",
+            "A tag that marks the firewall as critical"
+          ],
+          "answer": 2,
+          "explanation": "Lock ReadOnly membuat resource hanya bisa dibaca, tidak bisa diubah atau dihapus, dan berlaku untuk semua pengguna termasuk admin. Lock Delete masih mengizinkan perubahan.",
+          "examReady": true,
+          "requires": [
+            "f-u10-lock-types",
+            "f-u10-lock-def",
+            "f-u08-rbac-roles",
+            "f-u09-tags"
+          ]
+        },
+        {
+          "id": "u10-l4-e9",
+          "type": "match",
+          "concept": "azure-policy",
+          "prompt": "A company plans its governance. Match each requirement with the control that meets it.",
+          "pairs": [
+            [
+              "Allow virtual machines only in West Europe",
+              "Azure Policy"
+            ],
+            [
+              "Let the support team view resources without changing them",
+              "RBAC (Role-Based Access Control)"
+            ],
+            [
+              "Stop anyone from deleting the production database by accident",
+              "Resource lock"
+            ],
+            [
+              "Classify sensitive data across the organization",
+              "Microsoft Purview"
+            ]
+          ],
+          "explanation": "Azure Policy mengatur konfigurasi resource yang boleh, RBAC (Role-Based Access Control) mengatur siapa boleh melakukan apa, resource lock mencegah penghapusan tidak sengaja, dan Purview mengelola data organisasi.",
+          "examReady": true,
+          "requires": [
+            "f-u10-three-controls",
+            "f-u10-purview-def"
+          ]
+        },
+        {
+          "id": "u10-l4-e10",
+          "type": "choice",
+          "concept": "resource-locks",
+          "prompt": "A company applies a lock to a subscription. Which resources does the lock protect?",
+          "options": [
+            "Only the resources that existed in the subscription at the moment when the lock was applied",
+            "Only the subscription object itself, not its resources",
+            "Only resources that have a matching tag",
+            "All resource groups and resources in the subscription, including ones that are added later"
+          ],
+          "answer": 3,
+          "explanation": "Lock bisa dipasang di subscription, resource group, atau resource, dan diwariskan ke semua resource di bawahnya, termasuk resource yang ditambahkan nanti.",
+          "examReady": true,
+          "requires": [
+            "f-u10-lock-scope",
+            "f-u09-tags"
+          ]
         }
       ]
     }
@@ -803,6 +1134,21 @@
       "id": "f-u10-purview-vs-stp",
       "statement": "Service Trust Portal berisi bukti kepatuhan Microsoft sendiri dan tidak memindai data customer; untuk menemukan dan mengklasifikasikan data milik organisasimu, pakai Microsoft Purview.",
       "source": "https://learn.microsoft.com/en-us/compliance/assurance/stp-get-started"
+    },
+    {
+      "id": "f-u10-purview-map",
+      "statement": "Microsoft Purview Data Map memindai sumber data, termasuk Azure, on-premises, dan cloud lain seperti AWS (Amazon Web Services) dan Google Cloud, untuk mencatat metadata aset data; Unified Catalog menjadi daftar terpusat tentang data apa yang ada, di mana, dan siapa pemiliknya.",
+      "source": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/data/governance-security-baselines-purview-data-estate-unify-data-platform"
+    },
+    {
+      "id": "f-u10-purview-labels",
+      "statement": "Sensitivity label di Microsoft Purview menandai seberapa sensitif sebuah data dan bisa menerapkan enkripsi, pembatasan akses, dan penanda visual.",
+      "source": "https://learn.microsoft.com/en-us/purview/information-protection"
+    },
+    {
+      "id": "f-u10-purview-dlp",
+      "statement": "Kebijakan DLP (Data Loss Prevention) di Microsoft Purview mengenali, memantau, dan melindungi informasi sensitif di layanan Microsoft 365 dan perangkat, misalnya memperingatkan atau memblokir pembagian data sensitif ke pihak yang tidak semestinya.",
+      "source": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp"
     }
   ]
 }

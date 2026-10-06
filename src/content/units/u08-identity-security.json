@@ -129,6 +129,27 @@
           ]
         },
         {
+          "id": "u08-l1-e9",
+          "type": "choice",
+          "concept": "entra-connect",
+          "prompt": "A company has its users in on-premises Active Directory and is moving its apps to the cloud. The users must keep one identity for on-premises and cloud apps. What should the company deploy?",
+          "options": [
+            "A separate cloud-only account with a new password for every user",
+            "Azure DNS (Domain Name System) records for every user",
+            "Microsoft Entra Connect to sync the users to Microsoft Entra ID",
+            "A network security group for every user"
+          ],
+          "answer": 2,
+          "explanation": "Microsoft Entra Connect menyinkronkan identitas dari Active Directory on-premises ke Microsoft Entra ID, jadi pengguna memakai identitas yang sama di on-premises dan di cloud.",
+          "examReady": true,
+          "requires": [
+            "f-u08-entra-connect",
+            "f-u08-entra-def",
+            "f-u06-dns-def",
+            "f-u06-nsg-def"
+          ]
+        },
+        {
           "id": "u08-l1-i3",
           "type": "learn",
           "concepts": [
@@ -293,6 +314,27 @@
           "requires": [
             "f-u08-sso",
             "f-u01-mfa-basic"
+          ]
+        },
+        {
+          "id": "u08-l2-e9",
+          "type": "choice",
+          "concept": "sso",
+          "prompt": "Employees at a company use 15 cloud apps and struggle to remember a password for each one. When someone leaves the company, the admins must remove that person's access to all apps quickly. What should the company implement?",
+          "options": [
+            "A separate account and password in each app",
+            "SSO (Single Sign-On) with Microsoft Entra ID",
+            "A point-to-site VPN (Virtual Private Network) for every employee",
+            "A new resource group for each app"
+          ],
+          "answer": 1,
+          "explanation": "Dengan SSO (Single Sign-On), pengguna login sekali untuk banyak aplikasi, dan menonaktifkan satu akun mencabut akses ke semua aplikasi yang terhubung. Akun terpisah per aplikasi justru menambah password dan kerja admin.",
+          "examReady": true,
+          "requires": [
+            "f-u08-sso",
+            "f-u08-entra-def",
+            "f-u06-vpn-types",
+            "f-u04-rg-def"
           ]
         },
         {
@@ -484,6 +526,53 @@
             "f-u08-mfa",
             "f-u08-passwordless"
           ]
+        },
+        {
+          "id": "u08-l2-e10",
+          "type": "choice",
+          "concept": "passwordless",
+          "prompt": "A company wants employees to sign in to their Windows devices with a face scan or a fingerprint instead of typing a password. What should the company use?",
+          "options": [
+            "Windows Hello for Business",
+            "SSO (Single Sign-On) on its own, without other changes",
+            "A longer password policy for every employee",
+            "Microsoft Entra Connect"
+          ],
+          "answer": 0,
+          "explanation": "Windows Hello for Business adalah opsi passwordless di Microsoft Entra ID, misalnya dengan wajah atau sidik jari. SSO (Single Sign-On) hanya mengurangi jumlah login, dan Entra Connect menyinkronkan identitas.",
+          "examReady": true,
+          "requires": [
+            "f-u08-passwordless",
+            "f-u08-sso",
+            "f-u08-entra-connect"
+          ]
+        },
+        {
+          "id": "u08-l2-e11",
+          "type": "yesno",
+          "concept": "mfa",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company requires MFA (Multi-Factor Authentication) for all users.",
+          "statements": [
+            {
+              "text": "A stolen password on its own is no longer enough to sign in.",
+              "answer": true
+            },
+            {
+              "text": "A password plus a PIN (Personal Identification Number) counts as two different factor categories.",
+              "answer": false
+            },
+            {
+              "text": "A password plus a fingerprint counts as MFA.",
+              "answer": true
+            }
+          ],
+          "explanation": "MFA (Multi-Factor Authentication) meminta bukti dari kategori berbeda: sesuatu yang kamu tahu, punya, atau melekat padamu. Password dan PIN (Personal Identification Number) sama-sama sesuatu yang kamu tahu, jadi bukan dua kategori. Password plus sidik jari adalah MFA, dan password curian saja tidak cukup.",
+          "examReady": true,
+          "requires": [
+            "f-u08-mfa",
+            "f-u08-mfa-stolen"
+          ]
         }
       ]
     },
@@ -498,17 +587,20 @@
             "conditional-access"
           ],
           "title": "Conditional Access",
-          "body": "Conditional Access memakai sinyal seperti pengguna, lokasi, perangkat, dan aplikasi untuk memutuskan: izinkan, minta MFA (Multi-Factor Authentication), atau blokir. Contohnya, minta MFA hanya kalau login dari luar kantor. Fitur ini butuh lisensi Microsoft Entra ID P1 atau P2.",
+          "body": "Conditional Access memakai sinyal seperti pengguna, lokasi, perangkat, dan aplikasi untuk memutuskan: izinkan, minta MFA (Multi-Factor Authentication), atau blokir. Contohnya, minta MFA hanya kalau login dari luar kantor. Fitur ini butuh lisensi Microsoft Entra ID P1 atau P2. Kalau diizinkan, aksesnya bisa bersyarat, misalnya wajib MFA, perangkat yang compliant, atau ganti password. Conditional Access adalah mesin policy Zero Trust milik Microsoft.",
           "keyPoints": [
             "Sinyal: pengguna, lokasi, perangkat, aplikasi",
             "Keputusan: izinkan, minta MFA, atau blokir",
-            "Butuh Entra ID P1 atau P2"
+            "Butuh Entra ID P1 atau P2",
+            "Mesin policy Zero Trust Microsoft"
           ],
           "visual": "ConditionalAccessFlow",
           "link": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview",
           "teaches": [
             "f-u08-ca-def",
-            "f-u08-ca-license"
+            "f-u08-ca-license",
+            "f-u08-ca-decisions",
+            "f-u08-ca-zt"
           ]
         },
         {
@@ -542,6 +634,55 @@
             "f-u02-policy-audit",
             "f-u08-entra-connect",
             "f-u06-peering-def"
+          ]
+        },
+        {
+          "id": "u08-l3-e10",
+          "type": "choice",
+          "concept": "conditional-access",
+          "prompt": "A company must block every sign-in that comes from countries where it does not do business. What should the company configure?",
+          "options": [
+            "A Conditional Access policy that blocks those locations",
+            "An Azure Policy assignment that denies resources in those regions",
+            "Microsoft Entra Connect with a location filter",
+            "A network security group on every virtual network"
+          ],
+          "answer": 0,
+          "explanation": "Conditional Access memakai sinyal seperti lokasi untuk memutuskan, termasuk memblokir login dari lokasi tertentu. Azure Policy mengatur resource, bukan login pengguna.",
+          "examReady": true,
+          "requires": [
+            "f-u08-ca-def",
+            "f-u08-ca-decisions",
+            "f-u02-policy-audit",
+            "f-u08-entra-connect",
+            "f-u06-nsg-def"
+          ]
+        },
+        {
+          "id": "u08-l3-e11",
+          "type": "yesno",
+          "concept": "conditional-access",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans a Conditional Access policy for its administrators.",
+          "statements": [
+            {
+              "text": "The policy can only block access; it cannot ask for MFA (Multi-Factor Authentication).",
+              "answer": false
+            },
+            {
+              "text": "The policy can allow access only from devices that are marked as compliant.",
+              "answer": true
+            },
+            {
+              "text": "Contoso can use Conditional Access without a Microsoft Entra ID P1 or P2 license.",
+              "answer": false
+            }
+          ],
+          "explanation": "Conditional Access bisa memblokir, atau mengizinkan akses dengan syarat, misalnya wajib MFA (Multi-Factor Authentication) atau perangkat yang compliant. Fitur ini butuh lisensi Microsoft Entra ID P1 atau P2.",
+          "examReady": true,
+          "requires": [
+            "f-u08-ca-decisions",
+            "f-u08-ca-license"
           ]
         },
         {
@@ -678,14 +819,18 @@
             "external-identities"
           ],
           "title": "External identities",
-          "body": "External identities membuat orang di luar organisasi, misalnya partner atau vendor, bisa masuk dengan akun mereka sendiri. Dengan B2B (Business-to-Business) collaboration, mereka menjadi guest user di organisasimu. Kamu tidak perlu membuat dan mengelola password untuk mereka.",
+          "body": "External identities membuat orang di luar organisasi, misalnya partner atau vendor, bisa masuk dengan akun mereka sendiri. Dengan B2B (Business-to-Business) collaboration, mereka menjadi guest user di organisasimu. Kamu tidak perlu membuat dan mengelola password untuk mereka. Tamu itu tetap dibuat sebagai user di directory-mu, jadi bisa dimasukkan ke group dan diberi izin. Untuk aplikasi pelanggan atau konsumen, Microsoft Entra External ID memakai tenant external terpisah dengan pendaftaran mandiri dan login memakai akun seperti Google atau Facebook.",
           "keyPoints": [
             "Partner masuk sebagai guest",
-            "Memakai identitas mereka sendiri"
+            "Memakai identitas mereka sendiri",
+            "Aplikasi pelanggan: tenant external terpisah"
           ],
           "link": "https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b",
           "teaches": [
-            "f-u08-b2b"
+            "f-u08-b2b",
+            "f-u08-extid-def",
+            "f-u08-b2b-guest",
+            "f-u08-extid-customers"
           ]
         },
         {
@@ -698,6 +843,26 @@
           "examReady": true,
           "requires": [
             "f-u08-b2b"
+          ]
+        },
+        {
+          "id": "u08-l3-e12",
+          "type": "choice",
+          "concept": "external-identities",
+          "prompt": "A company invites an employee of one of its suppliers as a B2B (Business-to-Business) collaboration guest. How does the guest sign in?",
+          "options": [
+            "With the credentials of the guest's own organization or identity provider",
+            "With a new password that the company creates for the guest",
+            "With the shared admin account of the company",
+            "With an account that Microsoft Entra Connect syncs from the company's on-premises directory"
+          ],
+          "answer": 0,
+          "explanation": "Tamu B2B (Business-to-Business) login dengan kredensial organisasi atau penyedia identitas asalnya, jadi perusahaan tidak membuat password untuk mereka. Entra Connect hanya menyinkronkan pengguna Active Directory perusahaan sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u08-b2b",
+            "f-u08-b2b-guest",
+            "f-u08-entra-connect"
           ]
         },
         {
@@ -977,6 +1142,122 @@
             "f-u08-zt-principles",
             "f-u08-did-def"
           ]
+        },
+        {
+          "id": "u08-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "defense-in-depth"
+          ],
+          "title": "Kontrol di tiap lapisan",
+          "body": "Setiap lapisan defense in depth punya kontrolnya sendiri. Perimeter adalah batas antara jaringanmu dan internet, tempat DDoS (Distributed Denial of Service) protection dan firewall dipasang. Di lapisan network, virtual network dibagi menjadi subnet dengan network security group di antaranya. Di lapisan data, banyak layanan seperti Azure Storage dan Azure SQL (Structured Query Language) Database mengenkripsi data at rest secara default. Lapisan identity and access memakai MFA (Multi-Factor Authentication) dan Conditional Access, dan physical security dijaga Microsoft di datacenter.",
+          "keyPoints": [
+            "Perimeter: DDoS protection dan firewall",
+            "Network: subnet dan network security group",
+            "Data: enkripsi data at rest"
+          ],
+          "visual": "DefenseInDepth",
+          "link": "https://learn.microsoft.com/en-us/azure/security/fundamentals/network-best-practices",
+          "teaches": [
+            "f-u08-did-perimeter",
+            "f-u08-did-network",
+            "f-u08-did-data"
+          ]
+        },
+        {
+          "id": "u08-l4-e9",
+          "type": "choice",
+          "concept": "defense-in-depth",
+          "prompt": "A company enables DDoS (Distributed Denial of Service) protection for its public website. In the defense-in-depth model, which layer does this control belong to?",
+          "options": [
+            "Data",
+            "Application",
+            "Physical security",
+            "Perimeter"
+          ],
+          "answer": 3,
+          "explanation": "Perimeter adalah batas antara jaringanmu dan internet, dan di sanalah DDoS (Distributed Denial of Service) protection dipasang untuk meredam banjir traffic.",
+          "examReady": true,
+          "requires": [
+            "f-u08-did-perimeter",
+            "f-u08-did-layers",
+            "f-u02-ddos"
+          ]
+        },
+        {
+          "id": "u08-l4-e10",
+          "type": "choice",
+          "concept": "defense-in-depth",
+          "prompt": "A company wants to stop the virtual machines in its web subnet from reaching the database subnet, except on the database port. Which defense-in-depth layer does this control belong to?",
+          "options": [
+            "Perimeter",
+            "Identity and access",
+            "Network",
+            "Physical security"
+          ],
+          "answer": 2,
+          "explanation": "Membatasi komunikasi antar-subnet dengan network security group adalah kontrol di lapisan network. Perimeter adalah batas dengan internet, bukan traffic di dalam virtual network.",
+          "examReady": true,
+          "requires": [
+            "f-u08-did-network",
+            "f-u08-did-perimeter",
+            "f-u08-did-layers"
+          ]
+        },
+        {
+          "id": "u08-l4-e11",
+          "type": "multi",
+          "concept": "defense-in-depth",
+          "prompt": "Which two statements describe defense in depth? Choose two.",
+          "options": [
+            "If one layer is breached, the other layers still protect the data",
+            "One strong firewall is enough to protect all data",
+            "Data is the outermost layer of the model",
+            "Security is built in several layers"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Defense in depth melapisi keamanan, jadi kalau satu lapisan jebol, lapisan lain masih melindungi. Data ada di tengah, bukan di luar.",
+          "examReady": true,
+          "requires": [
+            "f-u08-did-def",
+            "f-u08-did-layers"
+          ]
+        },
+        {
+          "id": "u08-l4-e12",
+          "type": "match",
+          "concept": "defense-in-depth",
+          "prompt": "A company maps its security controls to the defense-in-depth layers. Match each control with its layer.",
+          "pairs": [
+            [
+              "Guards and badge checks at the datacenter",
+              "Physical security"
+            ],
+            [
+              "MFA (Multi-Factor Authentication) for every sign-in",
+              "Identity and access"
+            ],
+            [
+              "DDoS (Distributed Denial of Service) protection at the network edge",
+              "Perimeter"
+            ],
+            [
+              "Encryption of stored data",
+              "Data"
+            ]
+          ],
+          "explanation": "Penjagaan datacenter adalah physical security, MFA (Multi-Factor Authentication) di identity and access, DDoS (Distributed Denial of Service) protection di perimeter, dan enkripsi di lapisan data.",
+          "examReady": true,
+          "requires": [
+            "f-u04-dc-security",
+            "f-u08-mfa",
+            "f-u08-did-perimeter",
+            "f-u08-did-data",
+            "f-u08-did-layers"
+          ]
         }
       ]
     },
@@ -1143,6 +1424,50 @@
           ]
         },
         {
+          "id": "u08-l5-e9",
+          "type": "choice",
+          "concept": "zero-trust",
+          "prompt": "Microsoft Defender for Cloud shows that several admins at a company have permanent Owner access to every subscription. The company wants to follow Zero Trust. What should it do?",
+          "options": [
+            "Keep the access, because users inside the company network can be trusted",
+            "Give every user Owner access so that nobody is blocked",
+            "Give each admin only the role and scope that the job needs",
+            "Turn off the recommendations in Defender for Cloud"
+          ],
+          "answer": 2,
+          "explanation": "Zero Trust memakai prinsip use least privilege access: role paling kecil pada scope paling sempit yang masih cukup. Tidak ada yang dipercaya otomatis, termasuk yang ada di dalam jaringan kantor.",
+          "examReady": true,
+          "requires": [
+            "f-u08-least-privilege",
+            "f-u08-zt-principles",
+            "f-u08-zt-no-trust",
+            "f-u08-rbac-roles",
+            "f-u08-defender-functions"
+          ]
+        },
+        {
+          "id": "u08-l5-e10",
+          "type": "choice",
+          "concept": "defender-for-cloud",
+          "prompt": "A company wants a list of the steps that would raise its secure score and lower its risk across its Azure subscriptions. Where can the company find these steps?",
+          "options": [
+            "In the security recommendations of Microsoft Defender for Cloud",
+            "In the Pricing Calculator, under the estimate for each subscription",
+            "In Microsoft Entra Connect",
+            "In Azure DNS (Domain Name System)"
+          ],
+          "answer": 0,
+          "explanation": "Defender for Cloud memberi rekomendasi untuk mengamankan resource, dan secure score naik saat rekomendasi dijalankan.",
+          "examReady": true,
+          "requires": [
+            "f-u08-defender-functions",
+            "f-u08-secure-score",
+            "f-u02-pricing-calculator",
+            "f-u08-entra-connect",
+            "f-u06-dns-def"
+          ]
+        },
+        {
           "id": "u08-l5-m1",
           "type": "learn",
           "concepts": [
@@ -1211,6 +1536,375 @@
           "requires": [
             "f-u08-defender-functions",
             "f-u08-secure-score"
+          ]
+        },
+        {
+          "id": "u08-l5-e11",
+          "type": "choice",
+          "concept": "defense-in-depth",
+          "prompt": "Defender for Cloud recommends just-in-time VM (Virtual Machine) access to close the RDP (Remote Desktop Protocol) port of a company's virtual machines when nobody uses it. Which defense-in-depth layer does this control protect most directly?",
+          "options": [
+            "Compute",
+            "Data",
+            "Physical security",
+            "Identity and access"
+          ],
+          "answer": 0,
+          "explanation": "Just-in-time VM (Virtual Machine) access mengamankan akses ke VM, yaitu lapisan compute. Port manajemen hanya dibuka saat dibutuhkan dan untuk waktu terbatas.",
+          "examReady": true,
+          "requires": [
+            "f-u08-jit",
+            "f-u08-did-layers",
+            "f-u08-did-data",
+            "f-u04-dc-security"
+          ]
+        },
+        {
+          "id": "u08-l5-e12",
+          "type": "yesno",
+          "concept": "defender-for-cloud",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso wants to protect its Azure subscriptions, its on-premises servers, and its AWS (Amazon Web Services) account with Microsoft Defender for Cloud.",
+          "statements": [
+            {
+              "text": "Defender for Cloud can raise alerts when it detects threats.",
+              "answer": true
+            },
+            {
+              "text": "Defender for Cloud can assess the resources in AWS too.",
+              "answer": true
+            },
+            {
+              "text": "Following the recommendations lowers the secure score.",
+              "answer": false
+            }
+          ],
+          "explanation": "Defender for Cloud mendeteksi ancaman dan mengirim alert, dan melindungi resource di Azure, di cloud lain seperti AWS (Amazon Web Services), dan di on-premises. Menjalankan rekomendasi justru menaikkan secure score.",
+          "examReady": true,
+          "requires": [
+            "f-u08-defender-functions",
+            "f-u08-defender-def",
+            "f-u08-secure-score"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u08-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u08-l6-e1",
+          "type": "yesno",
+          "concept": "external-identities",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso wants employees of a supplier to work on a shared project site. The supplier employees should use their own work accounts.",
+          "statements": [
+            {
+              "text": "Contoso can invite the supplier employees as B2B (Business-to-Business) collaboration guests.",
+              "answer": true
+            },
+            {
+              "text": "The guests cannot be added to groups, because they are not part of Contoso's directory.",
+              "answer": false
+            },
+            {
+              "text": "Contoso must create and manage a password for each guest.",
+              "answer": false
+            }
+          ],
+          "explanation": "Dengan B2B (Business-to-Business) collaboration, tamu login memakai akun mereka sendiri, tapi tetap dibuat sebagai user object di directory Contoso, jadi bisa dimasukkan ke group. Contoso tidak perlu membuat password untuk mereka.",
+          "examReady": true,
+          "requires": [
+            "f-u08-b2b",
+            "f-u08-b2b-guest"
+          ]
+        },
+        {
+          "id": "u08-l6-e2",
+          "type": "choice",
+          "concept": "external-identities",
+          "prompt": "A company builds a mobile app for consumers. Customers must sign up by themselves and sign in with an email and password or with their Google or Facebook account. What should the company use?",
+          "options": [
+            "B2B (Business-to-Business) collaboration in the employee tenant",
+            "Microsoft Entra Connect",
+            "Microsoft Entra External ID with an external tenant",
+            "Microsoft Entra Domain Services"
+          ],
+          "answer": 2,
+          "explanation": "Untuk aplikasi konsumen, External ID memakai tenant external terpisah dengan pendaftaran mandiri dan login memakai email atau akun sosial. B2B (Business-to-Business) collaboration untuk tamu bisnis di tenant karyawan.",
+          "examReady": true,
+          "requires": [
+            "f-u08-extid-customers",
+            "f-u08-b2b-guest",
+            "f-u08-entra-connect",
+            "f-u08-domain-services"
+          ]
+        },
+        {
+          "id": "u08-l6-e3",
+          "type": "choice",
+          "concept": "rbac",
+          "prompt": "A developer at a company must create and manage resources in one resource group but must not give access to anyone else. The solution must follow the principle of least privilege. Which role should you assign?",
+          "options": [
+            "Owner on the resource group",
+            "Contributor on the subscription that contains the resource group",
+            "Reader on the resource group",
+            "Contributor on the resource group"
+          ],
+          "answer": 3,
+          "explanation": "Contributor mengelola resource tapi tidak bisa memberi akses. Owner bisa memberi akses, dan scope subscription lebih luas dari yang dibutuhkan. Reader hanya bisa melihat.",
+          "examReady": true,
+          "requires": [
+            "f-u08-rbac-roles",
+            "f-u08-least-privilege",
+            "f-u08-rbac-def"
+          ]
+        },
+        {
+          "id": "u08-l6-e4",
+          "type": "choice",
+          "concept": "conditional-access",
+          "prompt": "A company wants to block sign-ins that Microsoft Entra ID flags as risky, for example sign-ins that are probably made by an attacker. What should the company use?",
+          "options": [
+            "An Azure Policy assignment",
+            "A Conditional Access policy that blocks risky sign-ins",
+            "Microsoft Entra Connect",
+            "SSO (Single Sign-On) for all apps, so users sign in only once"
+          ],
+          "answer": 1,
+          "explanation": "Microsoft Entra ID bisa mendeteksi login berisiko, dan Conditional Access bisa memakai sinyal itu untuk memblokir login. Azure Policy mengatur resource, dan SSO (Single Sign-On) hanya mengurangi jumlah login.",
+          "examReady": true,
+          "requires": [
+            "f-u08-ca-def",
+            "f-u08-entra-risk",
+            "f-u08-ca-decisions",
+            "f-u02-policy-audit",
+            "f-u08-sso"
+          ]
+        },
+        {
+          "id": "u08-l6-e5",
+          "type": "choice",
+          "concept": "zero-trust",
+          "prompt": "A company adopts Zero Trust. A user signs in from a laptop that is connected to the office network. What should happen?",
+          "options": [
+            "The sign-in is trusted automatically, because it comes from inside the office network",
+            "The sign-in is still verified with signals such as identity, device, and location",
+            "The user gets permanent admin rights while connected to the office network",
+            "The sign-in skips every check because the network is internal"
+          ],
+          "answer": 1,
+          "explanation": "Zero Trust tidak mempercayai apa pun secara otomatis, termasuk yang ada di dalam jaringan kantor. Prinsip verify explicitly berarti setiap permintaan diverifikasi dengan semua sinyal yang tersedia.",
+          "examReady": true,
+          "requires": [
+            "f-u08-zt-no-trust",
+            "f-u08-zt-principles"
+          ]
+        },
+        {
+          "id": "u08-l6-e6",
+          "type": "choice",
+          "concept": "external-identities",
+          "prompt": "Employees at a company need to work with consultants from another company in their Microsoft 365 apps. The consultants should keep using their own company accounts. What should the company do?",
+          "options": [
+            "Invite the consultants as B2B (Business-to-Business) collaboration guests",
+            "Create new member accounts in the company directory, with new passwords for the consultants",
+            "Sync the consultants with Microsoft Entra Connect",
+            "Give the consultants the credentials of an employee"
+          ],
+          "answer": 0,
+          "explanation": "B2B (Business-to-Business) collaboration membuat orang luar masuk sebagai guest dengan identitas mereka sendiri. Entra Connect menyinkronkan pengguna Active Directory perusahaan sendiri, bukan orang dari perusahaan lain.",
+          "examReady": true,
+          "requires": [
+            "f-u08-b2b",
+            "f-u08-extid-def",
+            "f-u08-entra-connect"
+          ]
+        },
+        {
+          "id": "u08-l6-e7",
+          "type": "yesno",
+          "concept": "rbac",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An admin assigns a user the Reader role on a subscription named Prod.",
+          "statements": [
+            {
+              "text": "The user can view all resource groups in Prod.",
+              "answer": true
+            },
+            {
+              "text": "The user can delete a virtual machine in Prod.",
+              "answer": false
+            },
+            {
+              "text": "Signing in proves who the user is, and the Reader role decides what the user can do.",
+              "answer": true
+            }
+          ],
+          "explanation": "Reader hanya bisa melihat, dan izin di subscription diwariskan ke semua resource group di dalamnya. Autentikasi membuktikan siapa kamu; otorisasi, misalnya lewat role RBAC (Role-Based Access Control), menentukan apa yang boleh dilakukan.",
+          "examReady": true,
+          "requires": [
+            "f-u08-rbac-roles",
+            "f-u08-rbac-def",
+            "f-u08-authn-authz"
+          ]
+        },
+        {
+          "id": "u08-l6-e8",
+          "type": "match",
+          "concept": "conditional-access",
+          "prompt": "A company sets up Conditional Access. Match each item with its role.",
+          "pairs": [
+            [
+              "The country a user signs in from",
+              "A signal"
+            ],
+            [
+              "Block access",
+              "The most restrictive decision"
+            ],
+            [
+              "Require MFA (Multi-Factor Authentication)",
+              "A requirement to grant access"
+            ],
+            [
+              "Microsoft Entra ID P1 or P2",
+              "The license that is needed"
+            ]
+          ],
+          "explanation": "Lokasi adalah sinyal. Keputusan Conditional Access adalah blokir akses, atau izinkan dengan syarat seperti MFA (Multi-Factor Authentication). Fiturnya butuh lisensi Microsoft Entra ID P1 atau P2.",
+          "examReady": true,
+          "requires": [
+            "f-u08-ca-def",
+            "f-u08-ca-decisions",
+            "f-u08-ca-license"
+          ]
+        },
+        {
+          "id": "u08-l6-e9",
+          "type": "multi",
+          "concept": "external-identities",
+          "prompt": "A company plans to let partners and customers sign in to its apps with Microsoft Entra External ID. Which two kinds of identities can these external users bring? Choose two.",
+          "options": [
+            "A password that the company's admin creates for each of them",
+            "A work or school account from their own organization",
+            "A shared account that belongs to the company",
+            "A social account such as Google or Facebook"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "External ID membuat orang luar memakai identitas yang sudah mereka punya: akun kantor, akun sekolah, atau akun sosial seperti Google atau Facebook. Admin tidak membuatkan password, dan akun bersama tidak dipakai.",
+          "examReady": true,
+          "requires": [
+            "f-u08-extid-def",
+            "f-u08-b2b"
+          ]
+        },
+        {
+          "id": "u08-l6-e10",
+          "type": "choice",
+          "concept": "rbac",
+          "prompt": "A help desk team must manage which users have access to Azure resources, but must not manage the resources themselves. Which built-in role should the team get?",
+          "options": [
+            "Owner on every subscription",
+            "User Access Administrator",
+            "Contributor on every subscription",
+            "Reader"
+          ],
+          "answer": 1,
+          "explanation": "User Access Administrator mengelola akses pengguna. Owner juga bisa mengelola resource, jadi lebih dari yang dibutuhkan. Contributor tidak bisa memberi akses, dan Reader hanya melihat.",
+          "examReady": true,
+          "requires": [
+            "f-u08-rbac-roles",
+            "f-u08-least-privilege"
+          ]
+        },
+        {
+          "id": "u08-l6-e11",
+          "type": "choice",
+          "concept": "external-identities",
+          "prompt": "Which statement describes external identities in Microsoft Entra?",
+          "options": [
+            "Employees sign in once and can then use many apps",
+            "Users prove who they are with two or more kinds of proof",
+            "People outside the organization can access its apps with identities they already have",
+            "Users from the on-premises Active Directory of the company are synced to Microsoft Entra ID"
+          ],
+          "answer": 2,
+          "explanation": "External identities membuat orang luar, seperti mitra dan pelanggan, memakai identitas yang sudah mereka punya. Login sekali untuk banyak aplikasi adalah SSO (Single Sign-On), dua bukti atau lebih adalah MFA (Multi-Factor Authentication), dan sinkronisasi adalah Entra Connect.",
+          "examReady": true,
+          "requires": [
+            "f-u08-extid-def",
+            "f-u08-sso",
+            "f-u08-mfa",
+            "f-u08-entra-connect"
+          ]
+        },
+        {
+          "id": "u08-l6-e12",
+          "type": "choice",
+          "concept": "conditional-access",
+          "prompt": "A company plans to use Conditional Access to require MFA (Multi-Factor Authentication) for its administrators. Which license does the company need?",
+          "options": [
+            "Microsoft Entra ID Free",
+            "Microsoft Entra ID P1 or P2",
+            "Only a pay-as-you-go Azure subscription",
+            "A Microsoft Defender for Cloud plan"
+          ],
+          "answer": 1,
+          "explanation": "Conditional Access butuh lisensi Microsoft Entra ID P1 atau P2. Langganan Azure atau Defender for Cloud tidak menggantikan lisensi itu.",
+          "examReady": true,
+          "requires": [
+            "f-u08-ca-license",
+            "f-u08-defender-def"
+          ]
+        },
+        {
+          "id": "u08-l6-e13",
+          "type": "multi",
+          "concept": "zero-trust",
+          "prompt": "A company plans its Zero Trust rollout. Which two actions follow the Zero Trust principles? Choose two.",
+          "options": [
+            "Trust all traffic that comes from inside the company network",
+            "Use Conditional Access to verify every sign-in with signals such as device and location",
+            "Give admins permanent Owner access in case they need it",
+            "Give users only the access that they need for their job"
+          ],
+          "answers": [
+            1,
+            3
+          ],
+          "explanation": "Conditional Access adalah mesin policy Zero Trust yang memverifikasi setiap login (verify explicitly), dan memberi akses secukupnya adalah use least privilege access. Zero Trust tidak mempercayai jaringan internal secara otomatis.",
+          "examReady": true,
+          "requires": [
+            "f-u08-zt-principles",
+            "f-u08-ca-zt",
+            "f-u08-least-privilege",
+            "f-u08-zt-no-trust"
+          ]
+        },
+        {
+          "id": "u08-l6-e14",
+          "type": "choice",
+          "concept": "external-identities",
+          "prompt": "A company invited 30 users from a partner as guests. An admin must give all of them access to the same app with the least administrative effort. What should the admin do?",
+          "options": [
+            "Create a new tenant for the guest users",
+            "Ask each partner user to create a new password in the company's own directory",
+            "Sync the guest users with Microsoft Entra Connect",
+            "Add the guest users to a group and give the group access to the app"
+          ],
+          "answer": 3,
+          "explanation": "Tamu B2B (Business-to-Business) adalah user object di directory, jadi bisa dimasukkan ke group, dan akses cukup diberikan sekali ke group itu. Tenant external untuk aplikasi pelanggan, bukan untuk tamu mitra.",
+          "examReady": true,
+          "requires": [
+            "f-u08-b2b-guest",
+            "f-u08-extid-customers",
+            "f-u08-entra-connect"
           ]
         }
       ]
@@ -1332,6 +2026,46 @@
       "id": "f-u08-jit",
       "statement": "Just-in-time VM access di Defender for Cloud membuka port manajemen VM (Virtual Machine) hanya saat dibutuhkan dan hanya untuk waktu terbatas.",
       "source": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-overview"
+    },
+    {
+      "id": "f-u08-extid-def",
+      "statement": "Microsoft Entra External ID membuat orang di luar organisasi, seperti mitra, vendor, pelanggan, dan konsumen, bisa mengakses aplikasi dan resource dengan identitas yang sudah mereka punya, misalnya akun kantor, akun sekolah, atau akun sosial seperti Google atau Facebook.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/external-identities-overview"
+    },
+    {
+      "id": "f-u08-b2b-guest",
+      "statement": "Tamu B2B (Business-to-Business) collaboration dibuat sebagai user object di directory yang sama dengan karyawan, jadi bisa dimasukkan ke group dan diberi izin, sementara mereka login dengan kredensial organisasi atau penyedia identitas asalnya.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/external-identities-overview"
+    },
+    {
+      "id": "f-u08-extid-customers",
+      "statement": "Untuk aplikasi yang dipakai konsumen dan pelanggan bisnis, External ID memakai tenant terpisah dengan konfigurasi external, lengkap dengan pendaftaran mandiri (self-service sign-up), branding sendiri, dan login memakai email, kode sekali pakai, atau akun Google atau Facebook.",
+      "source": "https://learn.microsoft.com/en-us/entra/external-id/external-identities-overview"
+    },
+    {
+      "id": "f-u08-ca-decisions",
+      "statement": "Keputusan Conditional Access adalah blokir akses, atau izinkan akses dengan syarat seperti MFA (Multi-Factor Authentication), perangkat yang ditandai compliant, atau ganti password; contoh policy umum: wajib MFA untuk admin, blokir login dari lokasi tertentu, dan blokir login berisiko.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview"
+    },
+    {
+      "id": "f-u08-ca-zt",
+      "statement": "Conditional Access adalah mesin policy Zero Trust milik Microsoft: ia menggabungkan sinyal dari berbagai sumber sebelum memutuskan akses.",
+      "source": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview"
+    },
+    {
+      "id": "f-u08-did-perimeter",
+      "statement": "Perimeter adalah batas antara jaringanmu dan internet; di sinilah biasanya DDoS (Distributed Denial of Service) protection dan firewall dipasang.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/network-best-practices"
+    },
+    {
+      "id": "f-u08-did-network",
+      "statement": "Di lapisan network, virtual network dibagi menjadi subnet dan network security group dipasang di antaranya, supaya komunikasi antar-resource dibatasi.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/network-best-practices"
+    },
+    {
+      "id": "f-u08-did-data",
+      "statement": "Banyak layanan Azure, seperti Azure Storage dan Azure SQL Database, mengenkripsi data at rest secara default.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/data-encryption-best-practices"
     }
   ]
 }

@@ -105,6 +105,11 @@
     "description": "Serangan yang membanjiri layanan dengan lalu lintas dari banyak sumber sampai layanan itu lumpuh."
   },
   {
+    "term": "DLP",
+    "expansion": "Data Loss Prevention",
+    "description": "Kebijakan di Microsoft Purview yang mengenali dan melindungi informasi sensitif supaya tidak bocor, misalnya memblokir pengiriman nomor kartu kredit ke luar perusahaan."
+  },
+  {
     "term": "DNS",
     "expansion": "Domain Name System",
     "description": "Sistem yang menerjemahkan nama domain, misalnya contoh.com, menjadi alamat IP (Internet Protocol)."

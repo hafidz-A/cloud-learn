@@ -5,7 +5,7 @@ import { readFileSync, readdirSync } from 'node:fs'
 // player would: by tapping the visible controls.
 
 type Item = { id: string; type: string; [key: string]: unknown }
-type Lesson = { id: string; title: string; items: Item[] }
+type Lesson = { id: string; title: string; review?: boolean; items: Item[] }
 type Unit = { id: string; path: number; lessons: Lesson[] }
 
 const readUnits = (dir: string): Unit[] =>

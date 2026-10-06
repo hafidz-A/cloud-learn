@@ -61,6 +61,97 @@
           ]
         },
         {
+          "id": "u11-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "azure-portal"
+          ],
+          "title": "Lebih jauh dengan portal",
+          "body": "Azure portal ada di setiap datacenter Azure, jadi tetap bisa dipakai walau satu datacenter bermasalah. Menu Create a resource membuka Marketplace berisi ratusan aplikasi dan layanan, dan global search di header membantu menemukan resource dengan cepat. Dashboard bisa dibuat lebih dari satu dan dibagikan ke pengguna lain di organisasi. Untuk memantau dari ponsel, ada Azure mobile app untuk iOS dan Android.",
+          "keyPoints": [
+            "Ada di setiap datacenter Azure",
+            "Create a resource membuka Marketplace",
+            "Dashboard bisa dibagikan",
+            "Azure mobile app untuk iOS dan Android"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-portal/azure-portal-overview",
+          "teaches": [
+            "f-u11-portal-resilient",
+            "f-u11-portal-create",
+            "f-u11-portal-dashboards",
+            "f-u11-mobile"
+          ]
+        },
+        {
+          "id": "u11-l1-e9",
+          "type": "choice",
+          "concept": "azure-portal",
+          "prompt": "An operations team wants one screen that shows the five resources it watches most. The team also wants to share that screen with the support team. What should the team use?",
+          "options": [
+            "A resource group named Dashboard that contains all five of the resources",
+            "A tag on each of the five resources",
+            "A custom dashboard in the Azure portal, shared with the support team",
+            "A budget alert for each of the five resources"
+          ],
+          "answer": 2,
+          "explanation": "Dashboard di Azure portal menampilkan resource yang paling penting bagimu, dan bisa dibagikan ke pengguna lain. Resource group dan tag mengelompokkan resource, tapi bukan tampilan pemantauan.",
+          "examReady": true,
+          "requires": [
+            "f-u11-portal-dashboards",
+            "f-u04-rg-def",
+            "f-u09-tags",
+            "f-u09-budgets"
+          ]
+        },
+        {
+          "id": "u11-l1-e10",
+          "type": "yesno",
+          "concept": "azure-portal",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An admin on call wants to check alerts and restart a virtual machine while away from a computer.",
+          "statements": [
+            {
+              "text": "The Azure mobile app can show alerts about the admin's resources.",
+              "answer": true
+            },
+            {
+              "text": "The Azure mobile app can only show the bill; it cannot start or stop virtual machines.",
+              "answer": false
+            },
+            {
+              "text": "The admin must be at a computer with the Azure CLI (Command-Line Interface) installed to restart the virtual machine.",
+              "answer": false
+            }
+          ],
+          "explanation": "Azure mobile app untuk iOS dan Android bisa menampilkan alert, menjalankan tugas umum seperti start dan stop VM (Virtual Machine), dan membuka Cloud Shell, jadi admin tidak harus di depan komputer.",
+          "examReady": true,
+          "requires": [
+            "f-u11-mobile",
+            "f-u11-other-tools"
+          ]
+        },
+        {
+          "id": "u11-l1-e11",
+          "type": "choice",
+          "concept": "azure-portal",
+          "prompt": "A new admin at a company wants to create a resource by choosing from a list of apps and services that are certified to run on Azure. Where should the admin start in the Azure portal?",
+          "options": [
+            "The Pricing Calculator",
+            "A new management group",
+            "Cost analysis in Microsoft Cost Management, filtered by service",
+            "Create a resource, which opens the Marketplace"
+          ],
+          "answer": 3,
+          "explanation": "Create a resource membuka Marketplace berisi ratusan aplikasi dan layanan yang tersertifikasi berjalan di Azure. Pricing Calculator hanya membuat estimasi biaya.",
+          "examReady": true,
+          "requires": [
+            "f-u11-portal-create",
+            "f-u09-pricing-details",
+            "f-u04-mg-def",
+            "f-u09-cost-analysis"
+          ]
+        },
+        {
           "id": "u11-l1-i2",
           "type": "learn",
           "concepts": [
@@ -736,15 +827,18 @@
             "arm"
           ],
           "title": "Azure Resource Manager",
-          "body": "ARM (Azure Resource Manager) adalah layanan deployment dan manajemen Azure. Semua permintaan, dari portal, CLI (Command-Line Interface), PowerShell, sampai API (Application Programming Interface), melewati ARM. Karena itu hasil dan kontrol aksesnya konsisten, apa pun alatnya.",
+          "body": "ARM (Azure Resource Manager) adalah layanan deployment dan manajemen Azure. Semua permintaan, dari portal, CLI (Command-Line Interface), PowerShell, sampai API (Application Programming Interface), melewati ARM. Karena itu hasil dan kontrol aksesnya konsisten, apa pun alatnya. ARM juga mengautentikasi dan mengotorisasi setiap permintaan. Dengan ARM, resource sebuah solusi bisa di-deploy dan dikelola sebagai satu kelompok, dalam urutan yang benar sesuai dependensinya.",
           "keyPoints": [
             "Semua alat lewat ARM",
-            "Hasil dan akses konsisten"
+            "Hasil dan akses konsisten",
+            "Autentikasi, otorisasi, dan deploy sebagai satu kelompok"
           ],
           "visual": "ManagementTools",
           "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
           "teaches": [
-            "f-u11-arm-def"
+            "f-u11-arm-def",
+            "f-u11-arm-auth",
+            "f-u11-arm-benefits"
           ]
         },
         {
@@ -951,6 +1045,338 @@
             "f-u11-bicep-def",
             "f-u11-arm-def"
           ]
+        },
+        {
+          "id": "u11-l4-m1",
+          "type": "learn",
+          "concepts": [
+            "infrastructure-as-code"
+          ],
+          "title": "Infrastructure as code",
+          "body": "Dengan infrastructure as code, definisi infrastruktur disimpan dan diberi versi di source repository seperti kode aplikasi, jadi siapa pun di tim bisa membuat lingkungan yang serupa. ARM (Azure Resource Manager) template dan Bicep memakai sintaks deklaratif: kamu menyatakan apa yang ingin dibuat, bukan urutan perintah untuk membuatnya. Resource Manager mengatur urutan resource yang saling bergantung dan men-deploy secara paralel bila bisa. Sebelum deploy, operasi what-if menampilkan resource yang akan dibuat, diubah, atau dihapus.",
+          "keyPoints": [
+            "Infrastruktur disimpan dan diberi versi seperti kode",
+            "Deklaratif: apa yang dibuat, bukan langkahnya",
+            "What-if: lihat perubahan sebelum deploy"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview",
+          "teaches": [
+            "f-u11-iac-why",
+            "f-u11-declarative",
+            "f-u11-orchestration",
+            "f-u11-what-if"
+          ]
+        },
+        {
+          "id": "u11-l4-e9",
+          "type": "choice",
+          "concept": "infrastructure-as-code",
+          "prompt": "A company wants every new environment to be created from code that is stored and versioned in a source repository, so that any team member can create the same environment. What should the company use?",
+          "options": [
+            "Resources created by hand in the Azure portal for each new environment, following a checklist",
+            "Screenshots of every setting, saved in a shared wiki",
+            "A ReadOnly lock on every environment",
+            "Infrastructure as code with Bicep files or ARM (Azure Resource Manager) templates"
+          ],
+          "answer": 3,
+          "explanation": "Infrastructure as code menyimpan definisi infrastruktur di source repository dan memberinya versi, jadi siapa pun bisa membuat lingkungan yang sama. Membuat resource dengan tangan sulit diulang dengan hasil yang sama.",
+          "examReady": true,
+          "requires": [
+            "f-u11-iac-why",
+            "f-u11-template-def",
+            "f-u10-lock-types"
+          ]
+        },
+        {
+          "id": "u11-l4-e10",
+          "type": "choice",
+          "concept": "infrastructure-as-code",
+          "prompt": "A team writes a Bicep file that says that a storage account named contosodata should exist. The file does not list the commands to create it. Which kind of syntax is this?",
+          "options": [
+            "Imperative: it lists every command, in the exact order in which each one runs",
+            "Graphical: it is a picture of the settings in the portal",
+            "Manual: an admin must still select each setting by hand",
+            "Declarative: it states what to create, not the steps to create it"
+          ],
+          "answer": 3,
+          "explanation": "Sintaks deklaratif menyatakan apa yang ingin di-deploy tanpa menulis urutan perintahnya. ARM (Azure Resource Manager) template dan Bicep sama-sama deklaratif.",
+          "examReady": true,
+          "requires": [
+            "f-u11-declarative"
+          ]
+        },
+        {
+          "id": "u11-l4-e11",
+          "type": "yesno",
+          "concept": "infrastructure-as-code",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to manage its infrastructure as code with Bicep.",
+          "statements": [
+            {
+              "text": "Contoso can see the changes of a deployment with what-if before it deploys.",
+              "answer": true
+            },
+            {
+              "text": "Contoso must write the deployment steps in the exact order in which the resources are created.",
+              "answer": false
+            },
+            {
+              "text": "The Bicep files can be stored and versioned in source control.",
+              "answer": true
+            }
+          ],
+          "explanation": "What-if menampilkan perubahan sebelum deploy. Resource Manager mengatur urutan resource yang saling bergantung, jadi Contoso tidak perlu menulis langkahnya. File Bicep disimpan dan diberi versi seperti kode.",
+          "examReady": true,
+          "requires": [
+            "f-u11-what-if",
+            "f-u11-orchestration",
+            "f-u11-iac-why"
+          ]
+        },
+        {
+          "id": "u11-l4-e12",
+          "type": "multi",
+          "concept": "infrastructure-as-code",
+          "prompt": "Which two are benefits of infrastructure as code? Choose two.",
+          "options": [
+            "Resources that are deployed from code are free",
+            "Environments are deployed the same way every time",
+            "Changes to the infrastructure can be tracked in version control",
+            "Azure Resource Manager is no longer needed"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Template yang sama memberi hasil yang sama setiap kali di-deploy, dan file-nya diberi versi di source control. Resource tetap ditagih, dan deployment Bicep atau template tetap diproses Azure Resource Manager.",
+          "examReady": true,
+          "requires": [
+            "f-u11-iac-why",
+            "f-u11-template-def",
+            "f-u11-bicep-def",
+            "f-u09-factors"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u11-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u11-l5-e1",
+          "type": "choice",
+          "concept": "azure-portal",
+          "prompt": "A company asks why the Azure portal stays available when a single Azure datacenter fails, and why it does not go offline for updates. What is the reason?",
+          "options": [
+            "The portal runs in every Azure datacenter and is updated continuously without downtime",
+            "The portal is installed on the computer of each admin",
+            "The portal runs only in the paired region of the company",
+            "The portal is updated only once a year, during a planned maintenance window at night"
+          ],
+          "answer": 0,
+          "explanation": "Azure portal ada di setiap datacenter Azure, jadi tahan terhadap kegagalan satu datacenter, dan diperbarui terus tanpa downtime.",
+          "examReady": true,
+          "requires": [
+            "f-u11-portal-resilient",
+            "f-u11-portal-def",
+            "f-u04-pair-def"
+          ]
+        },
+        {
+          "id": "u11-l5-e2",
+          "type": "multi",
+          "concept": "azure-portal",
+          "prompt": "A company plans how its admins will manage Azure. Which two statements about the Azure portal are true? Choose two.",
+          "options": [
+            "Admins can open the portal in any supported web browser",
+            "Admins must install the portal on a Windows server",
+            "The portal is the only tool that can create resources",
+            "The capabilities in the portal are also available through PowerShell, the Azure CLI (Command-Line Interface), and REST (Representational State Transfer) APIs (Application Programming Interfaces)"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Portal dibuka di browser, dan semua kemampuannya juga tersedia lewat PowerShell, Azure CLI (Command-Line Interface), dan REST (Representational State Transfer) API (Application Programming Interface) karena semuanya melewati Azure Resource Manager.",
+          "examReady": true,
+          "requires": [
+            "f-u11-arm-auth",
+            "f-u11-portal-resilient",
+            "f-u11-other-tools"
+          ]
+        },
+        {
+          "id": "u11-l5-e3",
+          "type": "choice",
+          "concept": "azure-portal",
+          "prompt": "An admin needs to find a storage account named contosologs among hundreds of resources in the Azure portal. What is the quickest way?",
+          "options": [
+            "Open the Pricing Calculator and search for the account",
+            "Export an ARM (Azure Resource Manager) template of every resource group",
+            "Create a new management group for the storage account",
+            "Use the global search in the portal header"
+          ],
+          "answer": 3,
+          "explanation": "Global search di header portal membantu menemukan resource, layanan, atau dokumentasi dengan cepat.",
+          "examReady": true,
+          "requires": [
+            "f-u11-portal-create",
+            "f-u09-pricing-details",
+            "f-u11-template-def",
+            "f-u04-mg-def"
+          ]
+        },
+        {
+          "id": "u11-l5-e4",
+          "type": "choice",
+          "concept": "azure-arc",
+          "prompt": "A company runs Kubernetes clusters in another public cloud. It wants to manage them with the same Azure tools and policies as its Azure resources, without moving them. What should the company use?",
+          "options": [
+            "Azure VMware Solution",
+            "Azure Migrate",
+            "Azure Arc",
+            "AKS (Azure Kubernetes Service), after moving the clusters to Azure"
+          ],
+          "answer": 2,
+          "explanation": "Azure Arc membawa manajemen dan governance Azure ke resource di luar Azure, termasuk cluster Kubernetes di cloud lain, tanpa memindahkannya. AKS (Azure Kubernetes Service) menjalankan Kubernetes di Azure, jadi clusternya harus dipindah dulu.",
+          "examReady": true,
+          "requires": [
+            "f-u11-arc-def",
+            "f-u11-arc-policy",
+            "f-u11-avs-def",
+            "f-u07-migrate-def",
+            "f-u05-aks-def"
+          ]
+        },
+        {
+          "id": "u11-l5-e5",
+          "type": "yesno",
+          "concept": "azure-arc",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to connect its on-premises Windows servers to Azure Arc.",
+          "statements": [
+            {
+              "text": "After the connection, the servers appear as resources in Azure.",
+              "answer": true
+            },
+            {
+              "text": "Contoso can use RBAC (Role-Based Access Control) to control who manages the servers.",
+              "answer": true
+            },
+            {
+              "text": "Contoso must migrate the servers to Azure virtual machines first.",
+              "answer": false
+            }
+          ],
+          "explanation": "Server yang terhubung ke Azure Arc tetap di tempatnya, tapi muncul sebagai resource di Azure dan bisa diatur dengan Azure Policy dan RBAC (Role-Based Access Control).",
+          "examReady": true,
+          "requires": [
+            "f-u11-arc-policy",
+            "f-u11-arc-def"
+          ]
+        },
+        {
+          "id": "u11-l5-e6",
+          "type": "choice",
+          "concept": "infrastructure-as-code",
+          "prompt": "A team at a company wants to see which resources a template deployment would create, change, or delete before it runs the deployment. What should the team do?",
+          "options": [
+            "Run the what-if operation for the template",
+            "Deploy the template twice and compare the results",
+            "Check an estimate in the Pricing Calculator",
+            "Apply a ReadOnly lock before the deployment"
+          ],
+          "answer": 0,
+          "explanation": "Operasi what-if menampilkan resource yang akan dibuat, diubah, atau dihapus sebelum template di-deploy. Pricing Calculator hanya memperkirakan biaya.",
+          "examReady": true,
+          "requires": [
+            "f-u11-what-if",
+            "f-u11-template-def",
+            "f-u09-pricing-details",
+            "f-u10-lock-types"
+          ]
+        },
+        {
+          "id": "u11-l5-e7",
+          "type": "choice",
+          "concept": "arm-templates",
+          "prompt": "A company deploys a virtual machine, a virtual network, and a storage account that depend on each other. It wants them created in the right order with one command. What should the company do?",
+          "options": [
+            "Create each resource by hand in the Azure portal, in the right order",
+            "Open three Cloud Shell sessions and create the resources at the same time",
+            "Deploy them together from an ARM (Azure Resource Manager) template",
+            "Put each resource in its own subscription"
+          ],
+          "answer": 2,
+          "explanation": "Resource Manager mengatur urutan deployment resource yang saling bergantung, jadi template di-deploy dengan satu perintah. Membuat resource dengan tangan tidak bisa diulang dengan hasil yang sama.",
+          "examReady": true,
+          "requires": [
+            "f-u11-orchestration",
+            "f-u11-arm-benefits",
+            "f-u11-template-def",
+            "f-u04-sub-required"
+          ]
+        },
+        {
+          "id": "u11-l5-e8",
+          "type": "yesno",
+          "concept": "arm",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An admin creates a virtual machine in the Azure portal, and a script creates another virtual machine with the Azure CLI (Command-Line Interface).",
+          "statements": [
+            {
+              "text": "Both requests are handled by Azure Resource Manager.",
+              "answer": true
+            },
+            {
+              "text": "Azure Resource Manager authenticates and authorizes both requests.",
+              "answer": true
+            },
+            {
+              "text": "Only the request from the portal is checked against RBAC (Role-Based Access Control).",
+              "answer": false
+            }
+          ],
+          "explanation": "Semua permintaan, dari portal maupun CLI (Command-Line Interface), melewati ARM (Azure Resource Manager), dan ARM mengautentikasi serta mengotorisasi setiap permintaan, jadi kontrol aksesnya sama.",
+          "examReady": true,
+          "requires": [
+            "f-u11-arm-def",
+            "f-u11-arm-auth"
+          ]
+        },
+        {
+          "id": "u11-l5-e9",
+          "type": "match",
+          "concept": "arm",
+          "prompt": "A company is learning how Azure deployments work. Match each term with its meaning.",
+          "pairs": [
+            [
+              "Azure Resource Manager",
+              "Receives, authenticates, and authorizes every request"
+            ],
+            [
+              "ARM (Azure Resource Manager) template",
+              "JSON (JavaScript Object Notation) file that declares resources"
+            ],
+            [
+              "Bicep",
+              "Concise language that becomes an ARM template"
+            ],
+            [
+              "What-if",
+              "Preview of the changes before a deployment"
+            ]
+          ],
+          "explanation": "ARM (Azure Resource Manager) menerima dan memeriksa setiap permintaan, ARM template adalah file JSON (JavaScript Object Notation) deklaratif, Bicep diubah menjadi ARM template saat deploy, dan what-if menampilkan perubahan sebelum deploy.",
+          "examReady": true,
+          "requires": [
+            "f-u11-arm-auth",
+            "f-u11-template-def",
+            "f-u11-bicep-def",
+            "f-u11-what-if"
+          ]
         }
       ]
     }
@@ -1035,6 +1461,56 @@
       "id": "f-u11-bicep-def",
       "statement": "Bicep adalah bahasa deklaratif dengan sintaks lebih ringkas daripada JSON dan mendukung modul; saat deploy, file Bicep diubah menjadi ARM template dan tetap diproses ARM.",
       "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview"
+    },
+    {
+      "id": "f-u11-portal-resilient",
+      "statement": "Azure portal ada di setiap datacenter Azure, jadi tahan terhadap kegagalan satu datacenter dan dekat dengan pengguna; portal bisa dibuka dari browser apa pun yang didukung.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-portal/azure-portal-overview"
+    },
+    {
+      "id": "f-u11-portal-create",
+      "statement": "Di Azure portal, Create a resource membuka Marketplace berisi ratusan aplikasi dan layanan yang tersertifikasi berjalan di Azure, dan global search di header membantu menemukan resource, layanan, atau dokumentasi dengan cepat.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-portal/azure-portal-overview"
+    },
+    {
+      "id": "f-u11-portal-dashboards",
+      "statement": "Dashboard di Azure portal menampilkan resource yang paling penting bagimu; kamu bisa membuat lebih dari satu dashboard dan membagikannya ke pengguna lain di organisasi.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-portal/azure-portal-overview"
+    },
+    {
+      "id": "f-u11-mobile",
+      "statement": "Azure mobile app untuk iOS dan Android bisa memantau status dan kesehatan resource, menjalankan tugas umum seperti start dan stop VM (Virtual Machine), membuka Cloud Shell, dan menerima notifikasi alert.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-portal/mobile-app/overview"
+    },
+    {
+      "id": "f-u11-arm-auth",
+      "statement": "ARM (Azure Resource Manager) mengautentikasi dan mengotorisasi setiap permintaan sebelum meneruskannya ke layanan Azure, jadi hasilnya konsisten di semua alat; semua kemampuan portal juga tersedia lewat PowerShell, Azure CLI (Command-Line Interface), dan REST (Representational State Transfer) API (Application Programming Interface).",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u11-arm-benefits",
+      "statement": "Dengan ARM (Azure Resource Manager), resource sebuah solusi bisa di-deploy, dikelola, dan dipantau sebagai satu kelompok, dan dependensi antar-resource bisa ditetapkan supaya di-deploy dengan urutan yang benar.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u11-iac-why",
+      "statement": "Dengan infrastructure as code, definisi infrastruktur disimpan dan diberi versi di source repository seperti kode aplikasi, jadi siapa pun di tim bisa menjalankannya untuk membuat lingkungan yang serupa.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview"
+    },
+    {
+      "id": "f-u11-declarative",
+      "statement": "Sintaks deklaratif, seperti di ARM template dan Bicep, menyatakan apa yang ingin di-deploy tanpa menulis urutan perintah pemrograman untuk membuatnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview"
+    },
+    {
+      "id": "f-u11-orchestration",
+      "statement": "Resource Manager mengatur urutan deployment resource yang saling bergantung dan men-deploy secara paralel bila bisa, jadi sebuah template di-deploy dengan satu perintah.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview"
+    },
+    {
+      "id": "f-u11-what-if",
+      "statement": "Operasi what-if menampilkan resource yang akan dibuat, diubah, atau dihapus sebelum template di-deploy.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview"
     }
   ]
 }

@@ -122,6 +122,7 @@ describe('unexpandedAbbreviations', () => {
 
   it('does not flag product names such as Entra ID', () => {
     expect(unexpandedAbbreviations(['Sign in with Microsoft Entra ID.'])).toEqual([])
+    expect(unexpandedAbbreviations(['Customers sign up with Microsoft Entra External ID.'])).toEqual([])
   })
 })
 

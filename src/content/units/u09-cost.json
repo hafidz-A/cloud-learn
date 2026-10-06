@@ -459,6 +459,95 @@
           "requires": [
             "f-u09-calc-compare"
           ]
+        },
+        {
+          "id": "u09-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "pricing-calculator"
+          ],
+          "title": "Membandingkan dan membagikan estimasi",
+          "body": "Di Pricing Calculator, kamu bisa membandingkan pricing plan untuk resource yang sama: pay-as-you-go, reservation satu atau tiga tahun, atau savings plan. Estimasi bisa disimpan, diekspor ke file Excel, atau dibagikan lewat link. Orang yang menerima link bisa melihat estimasinya, tapi hanya pembuatnya yang bisa mengubahnya. Tidak ada resource yang dibuat dari estimasi.",
+          "keyPoints": [
+            "Bandingkan pay-as-you-go, reservation, dan savings plan",
+            "Simpan, ekspor ke Excel, atau bagikan lewat link",
+            "Estimasi tidak membuat resource"
+          ],
+          "visual": "PricingVsTco",
+          "link": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/pricing-calculator",
+          "teaches": [
+            "f-u09-calc-plans"
+          ]
+        },
+        {
+          "id": "u09-l2-e9",
+          "type": "choice",
+          "concept": "pricing-calculator",
+          "prompt": "Before deploying, a company wants to compare the cost of running a virtual machine on pay-as-you-go with the cost of a 3-year reservation for the same virtual machine. What should the company use?",
+          "options": [
+            "The TCO (Total Cost of Ownership) Calculator, which compares on-premises costs with Azure",
+            "Microsoft Cost Management, which shows the money already spent",
+            "A budget alert for the subscription",
+            "The Pricing Calculator"
+          ],
+          "answer": 3,
+          "explanation": "Pricing Calculator memperkirakan resource Azure baru dan bisa membandingkan pricing plan, termasuk reservation. TCO (Total Cost of Ownership) Calculator membandingkan on-premises dengan Azure, dan Cost Management menunjukkan pengeluaran nyata.",
+          "examReady": true,
+          "requires": [
+            "f-u09-calc-plans",
+            "f-u09-calc-compare",
+            "f-u09-tco"
+          ]
+        },
+        {
+          "id": "u09-l2-e10",
+          "type": "yesno",
+          "concept": "pricing-calculator",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "An architect wants to send an Azure cost estimate to the finance team for approval.",
+          "statements": [
+            {
+              "text": "The architect can export the estimate to an Excel file.",
+              "answer": true
+            },
+            {
+              "text": "The finance team can change the estimate through a shared link.",
+              "answer": false
+            },
+            {
+              "text": "Saving the estimate creates the resources in Azure.",
+              "answer": false
+            }
+          ],
+          "explanation": "Estimasi bisa diekspor ke Excel atau dibagikan lewat link, tapi hanya pembuatnya yang bisa mengubahnya. Pricing Calculator tidak pernah membuat resource.",
+          "examReady": true,
+          "requires": [
+            "f-u09-calc-plans",
+            "f-u09-pricing-details"
+          ]
+        },
+        {
+          "id": "u09-l2-e11",
+          "type": "multi",
+          "concept": "pricing-calculator",
+          "prompt": "An architect plans a virtual machine in the Pricing Calculator. Which two settings change the estimated price? Choose two.",
+          "options": [
+            "The region of the virtual machine",
+            "The name of the virtual machine",
+            "The name of the resource group",
+            "The size of the virtual machine"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Di Pricing Calculator kamu memilih layanan, region, dan ukuran setiap resource, dan harga bisa berbeda antar region. Nama resource tidak memengaruhi harga.",
+          "examReady": true,
+          "requires": [
+            "f-u09-pricing-details",
+            "f-u09-region-price",
+            "f-u09-factors"
+          ]
         }
       ]
     },
@@ -555,16 +644,19 @@
             "tags"
           ],
           "title": "Tag",
-          "body": "Tag adalah pasangan nama dan nilai, misalnya Environment = Production, yang ditempel ke resource, resource group, atau subscription. Resource tidak otomatis mewarisi tag dari resource group-nya. Kalau perlu, Azure Policy bisa menambahkan tag itu secara otomatis.",
+          "body": "Tag adalah pasangan nama dan nilai, misalnya Environment = Production, yang ditempel ke resource, resource group, atau subscription. Resource tidak otomatis mewarisi tag dari resource group-nya. Kalau perlu, Azure Policy bisa menambahkan tag itu secara otomatis. Tag tidak bisa dipasang di management group. Tag disimpan sebagai teks biasa, jadi jangan menaruh nilai rahasia di dalamnya.",
           "keyPoints": [
             "Tag = nama + nilai",
-            "Tidak diwariskan otomatis"
+            "Tidak diwariskan otomatis",
+            "Bukan untuk management group, bukan untuk rahasia"
           ],
           "trap": "Berbeda dengan RBAC (Role-Based Access Control) dan policy, tag di resource group tidak mengalir ke resource di dalamnya.",
           "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources",
           "teaches": [
             "f-u09-tags",
-            "f-u09-tags-not-inherited"
+            "f-u09-tags-not-inherited",
+            "f-u09-tags-no-mg",
+            "f-u09-tags-plaintext"
           ]
         },
         {
@@ -690,6 +782,387 @@
             "f-u09-budgets",
             "f-u09-tags"
           ]
+        },
+        {
+          "id": "u09-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "cost-management"
+          ],
+          "title": "Alert biaya lainnya",
+          "body": "Selain budget alert, Cost Management punya anomaly alert yang memberi tahu saat pemakaian harian naik atau turun tiba-tiba. Ada juga scheduled alert, yang mengirim ringkasan biaya dari tampilan cost analysis secara harian, mingguan, atau bulanan. Penerimanya tidak perlu akses ke Azure portal. Budget sendiri bisa dibuat untuk subscription maupun resource group.",
+          "keyPoints": [
+            "Anomaly alert: lonjakan atau penurunan tiba-tiba",
+            "Scheduled alert: ringkasan biaya terjadwal",
+            "Budget untuk subscription atau resource group"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management",
+          "teaches": [
+            "f-u09-anomaly",
+            "f-u09-budget-scopes"
+          ]
+        },
+        {
+          "id": "u09-l3-e9",
+          "type": "choice",
+          "concept": "cost-management",
+          "prompt": "A company wants to know right away when its daily Azure usage spikes unexpectedly, even if the monthly budget has not been reached. What should the company use?",
+          "options": [
+            "An anomaly alert in Microsoft Cost Management",
+            "A budget alert at 100% of the monthly budget",
+            "An estimate in the Pricing Calculator",
+            "A tag on every resource in the subscription"
+          ],
+          "answer": 0,
+          "explanation": "Anomaly alert memberi tahu saat pemakaian harian berubah tiba-tiba. Budget alert baru muncul saat pengeluaran mencapai ambang budget, dan Pricing Calculator hanya membuat estimasi.",
+          "examReady": true,
+          "requires": [
+            "f-u09-anomaly",
+            "f-u09-budgets",
+            "f-u09-pricing-details",
+            "f-u09-tags"
+          ]
+        },
+        {
+          "id": "u09-l3-e10",
+          "type": "choice",
+          "concept": "cost-management",
+          "prompt": "A finance manager at a company has no access to the Azure portal but wants an email every week with the latest Azure costs. What should the company set up?",
+          "options": [
+            "A budget alert that fires at 80% of the budget",
+            "An anomaly alert for unexpected changes in usage",
+            "A scheduled alert based on a saved cost analysis view",
+            "A TCO (Total Cost of Ownership) Calculator report"
+          ],
+          "answer": 2,
+          "explanation": "Scheduled alert mengirim ringkasan biaya dari tampilan cost analysis secara harian, mingguan, atau bulanan, juga ke penerima tanpa akses portal. Budget alert dan anomaly alert hanya muncul saat ada ambang atau perubahan.",
+          "examReady": true,
+          "requires": [
+            "f-u09-anomaly",
+            "f-u09-budgets",
+            "f-u09-tco"
+          ]
+        },
+        {
+          "id": "u09-l3-e11",
+          "type": "yesno",
+          "concept": "tags",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans a tagging strategy for its Azure environment.",
+          "statements": [
+            {
+              "text": "Contoso can apply tags to a management group.",
+              "answer": false
+            },
+            {
+              "text": "Contoso should not store passwords in tag values.",
+              "answer": true
+            },
+            {
+              "text": "Tags on a resource group are copied automatically to the resources in it.",
+              "answer": false
+            }
+          ],
+          "explanation": "Tag bisa dipasang di resource, resource group, dan subscription, tapi tidak di management group. Tag disimpan sebagai teks biasa, jadi jangan menaruh rahasia, dan tag tidak diwariskan otomatis.",
+          "examReady": true,
+          "requires": [
+            "f-u09-tags-no-mg",
+            "f-u09-tags-plaintext",
+            "f-u09-tags-not-inherited"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u09-l4",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u09-l4-e1",
+          "type": "choice",
+          "concept": "pricing-calculator",
+          "prompt": "A company plans a new app and wants to see how the estimated monthly cost changes if the app runs in East US instead of West Europe. Nothing is deployed yet. What should the company do?",
+          "options": [
+            "Deploy the app in both regions and compare the two bills",
+            "Use cost analysis in Microsoft Cost Management for the planned app",
+            "Change the region in a Pricing Calculator estimate",
+            "Use the TCO (Total Cost of Ownership) Calculator"
+          ],
+          "answer": 2,
+          "explanation": "Pricing Calculator memperkirakan biaya sebelum resource dibuat, dan harga bisa berbeda antar region. Cost analysis hanya menunjukkan biaya resource yang sudah berjalan.",
+          "examReady": true,
+          "requires": [
+            "f-u09-pricing-details",
+            "f-u09-region-price",
+            "f-u09-cost-analysis",
+            "f-u09-tco"
+          ]
+        },
+        {
+          "id": "u09-l4-e2",
+          "type": "yesno",
+          "concept": "pricing-calculator",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company uses the Pricing Calculator to plan a new app.",
+          "statements": [
+            {
+              "text": "The Pricing Calculator is free to use.",
+              "answer": true
+            },
+            {
+              "text": "The estimate is the exact amount that the company will be billed.",
+              "answer": false
+            },
+            {
+              "text": "The estimate can show the price of a one-year or three-year reservation.",
+              "answer": true
+            }
+          ],
+          "explanation": "Pricing Calculator gratis dan hasilnya hanya estimasi, bukan tagihan pasti. Pricing plan seperti reservation satu atau tiga tahun bisa dibandingkan di estimasi.",
+          "examReady": true,
+          "requires": [
+            "f-u09-pricing-details",
+            "f-u09-calc-plans"
+          ]
+        },
+        {
+          "id": "u09-l4-e3",
+          "type": "choice",
+          "concept": "cost-management",
+          "prompt": "A company's Azure bill doubled this month. The finance team must find which resource groups caused the increase. What should the team use?",
+          "options": [
+            "The Pricing Calculator",
+            "Cost analysis in Microsoft Cost Management",
+            "The TCO (Total Cost of Ownership) Calculator",
+            "A new budget for next month"
+          ],
+          "answer": 1,
+          "explanation": "Cost analysis memperlihatkan ke mana uang pergi, dan biayanya bisa dikelompokkan per subscription, resource group, atau tag. Kalkulator hanya membuat estimasi, dan budget baru tidak menjelaskan kenaikan yang sudah terjadi.",
+          "examReady": true,
+          "requires": [
+            "f-u09-cost-analysis",
+            "f-u09-pricing-details",
+            "f-u09-tco",
+            "f-u09-budgets"
+          ]
+        },
+        {
+          "id": "u09-l4-e4",
+          "type": "yesno",
+          "concept": "cost-management",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso sets a budget of 5,000 dollars for a resource group, with an alert at 90%.",
+          "statements": [
+            {
+              "text": "Contoso is notified when spending reaches 4,500 dollars.",
+              "answer": true
+            },
+            {
+              "text": "When spending reaches 5,000 dollars, the budget deletes the resources in the resource group.",
+              "answer": false
+            },
+            {
+              "text": "Contoso could also create a budget for the whole subscription.",
+              "answer": true
+            }
+          ],
+          "explanation": "Alert 90% dari 5.000 dolar muncul di 4.500 dolar. Budget mengirim alert tapi tidak mematikan atau menghapus resource. Budget bisa dibuat untuk subscription maupun resource group.",
+          "examReady": true,
+          "requires": [
+            "f-u09-budgets",
+            "f-u09-budget-scopes"
+          ]
+        },
+        {
+          "id": "u09-l4-e5",
+          "type": "match",
+          "concept": "cost-management",
+          "prompt": "A company sets up Cost Management. Match each need with the feature that meets it.",
+          "pairs": [
+            [
+              "Find which resources drive the costs",
+              "Cost analysis"
+            ],
+            [
+              "Get an email when costs reach 80% of a planned amount",
+              "Budget alert"
+            ],
+            [
+              "Hear about a sudden spike in daily usage",
+              "Anomaly alert"
+            ],
+            [
+              "Receive a weekly cost summary by email",
+              "Scheduled alert"
+            ]
+          ],
+          "explanation": "Cost analysis menunjukkan ke mana uang pergi, budget alert muncul di ambang budget, anomaly alert memberi tahu perubahan tiba-tiba, dan scheduled alert mengirim ringkasan terjadwal.",
+          "examReady": true,
+          "requires": [
+            "f-u09-cost-analysis",
+            "f-u09-budgets",
+            "f-u09-anomaly"
+          ]
+        },
+        {
+          "id": "u09-l4-e6",
+          "type": "choice",
+          "concept": "tags",
+          "prompt": "A company wants to find all resources that belong to its marketing team. The resources are spread across 10 subscriptions. What should the company do?",
+          "options": [
+            "Move all marketing resources into one new subscription",
+            "Put the marketing resources directly in a management group",
+            "Rename every marketing resource so that it starts with mkt-",
+            "Add a tag such as Team = Marketing to the resources and filter by it"
+          ],
+          "answer": 3,
+          "explanation": "Tag adalah pasangan nama dan nilai yang bisa dipakai untuk mengelompokkan dan mencari resource di banyak subscription, termasuk di cost analysis. Resource tidak bisa ditaruh langsung di management group.",
+          "examReady": true,
+          "requires": [
+            "f-u09-tags",
+            "f-u09-cost-analysis",
+            "f-u04-mg-def",
+            "f-u04-sub-required"
+          ]
+        },
+        {
+          "id": "u09-l4-e7",
+          "type": "yesno",
+          "concept": "tags",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company adds the tag CostCenter = 1234 to a resource group named rg-sales.",
+          "statements": [
+            {
+              "text": "The virtual machines that are already in rg-sales get the CostCenter tag automatically.",
+              "answer": false
+            },
+            {
+              "text": "Azure Policy can add the tag to the resources in rg-sales automatically.",
+              "answer": true
+            },
+            {
+              "text": "In cost analysis, costs can be grouped by the CostCenter tag.",
+              "answer": true
+            }
+          ],
+          "explanation": "Resource tidak otomatis mewarisi tag dari resource group, tapi Azure Policy bisa menambahkannya. Cost analysis bisa mengelompokkan biaya per tag.",
+          "examReady": true,
+          "requires": [
+            "f-u09-tags-not-inherited",
+            "f-u09-cost-analysis"
+          ]
+        },
+        {
+          "id": "u09-l4-e8",
+          "type": "choice",
+          "concept": "tags",
+          "prompt": "A company wants every resource to get the tag of its resource group automatically. What should the company use?",
+          "options": [
+            "A budget alert",
+            "Azure Policy",
+            "The Pricing Calculator",
+            "A tag on the management group"
+          ],
+          "answer": 1,
+          "explanation": "Tag tidak diwariskan otomatis, tapi Azure Policy bisa menambahkan tag dari resource group ke resource-nya. Management group sendiri tidak bisa diberi tag.",
+          "examReady": true,
+          "requires": [
+            "f-u09-tags-not-inherited",
+            "f-u09-tags-no-mg",
+            "f-u09-budgets",
+            "f-u09-pricing-details"
+          ]
+        },
+        {
+          "id": "u09-l4-e9",
+          "type": "multi",
+          "concept": "tags",
+          "prompt": "A company plans its tags. Which two can the company apply tags to? Choose two.",
+          "options": [
+            "A management group",
+            "An estimate in the Pricing Calculator",
+            "A virtual machine",
+            "A resource group"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Tag bisa dipasang di resource, resource group, dan subscription, tapi tidak di management group. Estimasi Pricing Calculator bukan resource Azure.",
+          "examReady": true,
+          "requires": [
+            "f-u09-tags",
+            "f-u09-tags-no-mg",
+            "f-u09-pricing-details"
+          ]
+        },
+        {
+          "id": "u09-l4-e10",
+          "type": "choice",
+          "concept": "data-transfer",
+          "prompt": "A company stores backups in Azure and often downloads large backup files to its office. Which cost grows with these downloads?",
+          "options": [
+            "Outbound data transfer (egress) from Azure",
+            "Inbound data transfer (ingress) into Azure",
+            "A fee for each resource group in the subscription",
+            "A fee for each tag on the storage account"
+          ],
+          "answer": 0,
+          "explanation": "Data yang keluar dari Azure (egress) ditagih, sedangkan data yang masuk (ingress) umumnya gratis. Jumlah resource group atau tag bukan faktor biaya.",
+          "examReady": true,
+          "requires": [
+            "f-u09-ingress-egress",
+            "f-u09-factors"
+          ]
+        },
+        {
+          "id": "u09-l4-e11",
+          "type": "choice",
+          "concept": "reservations",
+          "prompt": "A company's web servers run around the clock and will keep running for at least three years. Its test environment runs only a few hours a week. How should the company buy compute to lower costs?",
+          "options": [
+            "Reservations for both the web servers and the test environment",
+            "Pay-as-you-go for the web servers, and a reservation for the test environment",
+            "A reservation for the test environment only",
+            "A reservation for the web servers, and pay-as-you-go for the test environment"
+          ],
+          "answer": 3,
+          "explanation": "Reservation cocok untuk workload stabil yang menyala terus, dengan komitmen satu atau tiga tahun. Lingkungan test yang jarang menyala lebih murah dengan pay-as-you-go, karena hanya membayar yang dipakai.",
+          "examReady": true,
+          "requires": [
+            "f-u09-reservations",
+            "f-u01-consumption-pay-use"
+          ]
+        },
+        {
+          "id": "u09-l4-e12",
+          "type": "yesno",
+          "concept": "cost-factors",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to lower its Azure bill.",
+          "statements": [
+            {
+              "text": "Deleting virtual machines that nobody uses stops their charges.",
+              "answer": true
+            },
+            {
+              "text": "The same virtual machine size always costs the same in every region.",
+              "answer": false
+            },
+            {
+              "text": "Uploading data into Azure is generally free.",
+              "answer": true
+            }
+          ],
+          "explanation": "Resource yang dihapus tidak ditagih lagi. Harga layanan yang sama bisa berbeda antar region, dan data yang masuk ke Azure (ingress) umumnya gratis.",
+          "examReady": true,
+          "requires": [
+            "f-u09-unused",
+            "f-u01-consumption-stop-billing",
+            "f-u09-region-price",
+            "f-u09-ingress-egress"
+          ]
         }
       ]
     }
@@ -755,6 +1228,31 @@
       "id": "f-u09-tags-not-inherited",
       "statement": "Resource tidak otomatis mewarisi tag dari resource group atau subscription-nya; Azure Policy bisa dipakai untuk menambahkan tag itu secara otomatis.",
       "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-policies"
+    },
+    {
+      "id": "f-u09-calc-plans",
+      "statement": "Di Pricing Calculator kamu bisa membandingkan pricing plan untuk resource yang sama, misalnya pay-as-you-go, reservation satu atau tiga tahun, dan savings plan; estimasinya bisa disimpan, diekspor ke file Excel, atau dibagikan lewat link, tapi hanya pembuatnya yang bisa mengubahnya.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/pricing-calculator"
+    },
+    {
+      "id": "f-u09-anomaly",
+      "statement": "Selain budget alert, Cost Management punya anomaly alert yang memberi tahu saat pemakaian harian berubah tiba-tiba, dan scheduled alert yang mengirim ringkasan biaya dari tampilan cost analysis secara harian, mingguan, atau bulanan, juga ke penerima yang tidak punya akses ke Azure portal.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management"
+    },
+    {
+      "id": "f-u09-budget-scopes",
+      "statement": "Budget bisa dibuat di setiap scope yang didukung Cost Management, termasuk subscription dan resource group.",
+      "source": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management"
+    },
+    {
+      "id": "f-u09-tags-no-mg",
+      "statement": "Tag bisa dipasang di resource, resource group, dan subscription, tapi tidak di management group.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources"
+    },
+    {
+      "id": "f-u09-tags-plaintext",
+      "statement": "Tag disimpan sebagai teks biasa dan bisa terlihat di laporan biaya dan log, jadi jangan menaruh nilai rahasia seperti password di tag.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources"
     }
   ]
 }

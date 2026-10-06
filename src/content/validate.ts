@@ -109,8 +109,8 @@ export function unexpandedAbbreviations(texts: string[], expandedBy: Set<string>
       if (SYSLOG_NAME.test(text.slice(0, start))) continue
       // IEEE physical layer names such as 1000BASE-SX and 1000BASE-LX/LH are names.
       if (/\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start))) continue
-      // "Entra ID" is the product name, not an abbreviation to expand.
-      if (abbr === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
+      // "Entra ID" and "Entra External ID" are product names, not abbreviations to expand.
+      if (abbr === 'ID' && /(Entra|External)\s$/.test(text.slice(0, start))) continue
       // "TCP/IP (Transmission Control Protocol/Internet Protocol)" expands both parts at once.
       // "EUI-64 (Extended Unique Identifier)" and "PVST+ (Per-VLAN Spanning Tree Plus)" expand the whole name.
       const after = /^(-\d+|\+)?(\/[A-Z][A-Za-z0-9]*)*\s*\(/.test(text.slice(end))
@@ -589,7 +589,7 @@ export function abbreviationsIn(texts: string[]): Set<string> {
     for (const m of text.matchAll(ABBREVIATION)) {
       const start = m.index
       if (NOT_ABBREVIATIONS.has(m[1]) || DEVICE_NAME.test(m[1]) || /\dBASE-([A-Z0-9]+\/)?$/.test(text.slice(0, start)) || SYSLOG_NAME.test(text.slice(0, start))) continue
-      if (m[1] === 'ID' && /Entra\s$/.test(text.slice(0, start))) continue
+      if (m[1] === 'ID' && /(Entra|External)\s$/.test(text.slice(0, start))) continue
       found.add(m[1])
     }
   }

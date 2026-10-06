@@ -68,6 +68,71 @@ di app (cloud concepts 25–30%, architecture and services 35–40%, management 
   masuk daftar materi AZ-900, jadi tidak dimasukkan ke soal.
 - **Availability set:** Microsoft kini merekomendasikan VM Scale Sets mode Flexible untuk ketersediaan tinggi.
 
+## AZ-900: tambahan untuk kisi-kisi 20 Juli 2026 (6 Oktober 2026)
+
+Semua 57 butir kisi-kisi AZ-900 dibawa ke standar di `docs/RENCANA_LULUS_UJIAN.md` bagian 2: setiap butir
+punya kartu materi, minimal 8 soal, 6 soal siap ujian, dan 3 soal skenario. Hasilnya 42 fakta baru,
+204 soal baru, dan satu lesson "Latihan soal ujian" di akhir setiap unit (144 soal bergaya ujian).
+
+Setiap fakta baru dicocokkan ke kalimat di file Markdown resmi (repo `MicrosoftDocs`), kecuali
+`f-u04-dc-choose` dan `f-u04-az-types` (halaman reliability) serta tiga fakta Purview, yang dicocokkan
+lewat pencarian terbatas ke learn.microsoft.com karena repo-nya tidak publik. Lapisan defense in depth
+kini punya contoh kontrol dari dokumentasi (perimeter: DDoS protection dan firewall; network: subnet dan
+NSG; data: enkripsi at rest), bukan hanya urutan lapisannya.
+
+| Unit | Fakta | Sumber (learn.microsoft.com/en-us/...) |
+|---|---|---|
+| 4 | `f-u04-dc-def` | azure/security/fundamentals/physical-security |
+| 4 | `f-u04-dc-security` | azure/security/fundamentals/physical-security |
+| 4 | `f-u04-dc-choose` | azure/reliability/availability-zones-overview |
+| 4 | `f-u04-az-types` | azure/reliability/availability-zones-overview |
+| 4 | `f-u04-rg-metadata` | azure/azure-resource-manager/management/overview |
+| 4 | `f-u04-rg-move` | azure/azure-resource-manager/management/overview |
+| 4 | `f-u04-sub-trust` | entra/fundamentals/how-subscriptions-associated-directory |
+| 4 | `f-u04-mg-root` | azure/governance/management-groups/overview |
+| 4 | `f-u04-mg-limit` | azure/governance/management-groups/overview |
+| 5 | `f-u05-vm-parts` | azure/virtual-machines/overview |
+| 5 | `f-u05-vm-nsg` | azure/virtual-machines/overview |
+| 5 | `f-u05-vm-data-disk` | azure/virtual-machines/overview |
+| 5 | `f-u05-vm-size` | azure/virtual-machines/overview |
+| 7 | `f-u07-sa-types` | azure/storage/common/storage-account-overview |
+| 7 | `f-u07-sa-premium` | azure/storage/common/storage-account-overview |
+| 7 | `f-u07-sa-type-fixed` | azure/storage/common/storage-account-overview |
+| 8 | `f-u08-extid-def` | entra/external-id/external-identities-overview |
+| 8 | `f-u08-b2b-guest` | entra/external-id/external-identities-overview |
+| 8 | `f-u08-extid-customers` | entra/external-id/external-identities-overview |
+| 8 | `f-u08-ca-decisions` | entra/identity/conditional-access/overview |
+| 8 | `f-u08-ca-zt` | entra/identity/conditional-access/overview |
+| 8 | `f-u08-did-perimeter` | azure/security/fundamentals/network-best-practices |
+| 8 | `f-u08-did-network` | azure/security/fundamentals/network-best-practices |
+| 8 | `f-u08-did-data` | azure/security/fundamentals/data-encryption-best-practices |
+| 9 | `f-u09-calc-plans` | azure/cost-management-billing/costs/pricing-calculator |
+| 9 | `f-u09-anomaly` | azure/cost-management-billing/costs/overview-cost-management |
+| 9 | `f-u09-budget-scopes` | azure/cost-management-billing/costs/overview-cost-management |
+| 9 | `f-u09-tags-no-mg` | azure/azure-resource-manager/management/tag-resources |
+| 9 | `f-u09-tags-plaintext` | azure/azure-resource-manager/management/tag-resources |
+| 10 | `f-u10-purview-map` | azure/cloud-adoption-framework/data/governance-security-baselines-purview-data-estate-unify-data-platform |
+| 10 | `f-u10-purview-labels` | purview/information-protection |
+| 10 | `f-u10-purview-dlp` | purview/dlp-learn-about-dlp |
+| 11 | `f-u11-portal-resilient` | azure/azure-portal/azure-portal-overview |
+| 11 | `f-u11-portal-create` | azure/azure-portal/azure-portal-overview |
+| 11 | `f-u11-portal-dashboards` | azure/azure-portal/azure-portal-overview |
+| 11 | `f-u11-mobile` | azure/azure-portal/mobile-app/overview |
+| 11 | `f-u11-arm-auth` | azure/azure-resource-manager/management/overview |
+| 11 | `f-u11-arm-benefits` | azure/azure-resource-manager/management/overview |
+| 11 | `f-u11-iac-why` | azure/azure-resource-manager/templates/overview |
+| 11 | `f-u11-declarative` | azure/azure-resource-manager/templates/overview |
+| 11 | `f-u11-orchestration` | azure/azure-resource-manager/templates/overview |
+| 11 | `f-u11-what-if` | azure/azure-resource-manager/templates/overview |
+
+Yang perlu diketahui untuk ujian dan pekerjaan:
+- **Zone itu logis.** Zone 1 di satu subscription belum tentu datacenter yang sama dengan zone 1 di
+  subscription lain. Customer memilih region dan nomor zone, tidak pernah gedung datacenter.
+- **Tipe storage account tidak bisa diubah** setelah dibuat. Premium hanya mendukung LRS atau ZRS.
+- **Private endpoint tidak otomatis menutup akses publik**; akses publik harus dimatikan terpisah.
+- **Microsoft Entra External ID**: tamu B2B tinggal di directory karyawan, sedangkan aplikasi untuk
+  konsumen memakai tenant external terpisah. Azure AD B2C kini berstatus legacy.
+
 ## AZ-104: fakta di rencana (29 September 2026)
 
 Semua "Fakta wajib akurat" di `LANGIT_AZ104_PLAN.md` bagian 5 dan info ujian di bagian 1 dicek dengan

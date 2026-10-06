@@ -964,6 +964,278 @@
           ]
         }
       ]
+    },
+    {
+      "id": "u06-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u06-l5-e1",
+          "type": "yesno",
+          "concept": "endpoints",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso wants to reach its storage account from a virtual network named VNet1 without going over the internet. It creates a private endpoint for the storage account in VNet1.",
+          "statements": [
+            {
+              "text": "Resources in VNet1 can reach the storage account through a private IP (Internet Protocol) address.",
+              "answer": true
+            },
+            {
+              "text": "Creating the private endpoint automatically blocks all access from the internet.",
+              "answer": false
+            },
+            {
+              "text": "The public endpoint of the storage account stays reachable until public network access is disabled.",
+              "answer": true
+            }
+          ],
+          "explanation": "Private endpoint memberi layanan alamat IP (Internet Protocol) privat dari virtual network-mu. Tapi membuat private endpoint tidak otomatis menutup akses publik; akses publik harus dimatikan terpisah.",
+          "examReady": true,
+          "requires": [
+            "f-u06-private-endpoint",
+            "f-u06-pe-public-off",
+            "f-u06-public-endpoint"
+          ]
+        },
+        {
+          "id": "u06-l5-e2",
+          "type": "choice",
+          "concept": "endpoints",
+          "prompt": "A company runs a public website on an Azure web app. Customers must reach the website from anywhere on the internet. Which kind of endpoint do the customers use?",
+          "options": [
+            "A private endpoint in the company's virtual network",
+            "A peering connection to the company's virtual network",
+            "A private IP (Internet Protocol) address in a subnet",
+            "A public endpoint"
+          ],
+          "answer": 3,
+          "explanation": "Public endpoint adalah alamat publik layanan yang bisa dijangkau dari internet. Private endpoint dan alamat IP (Internet Protocol) privat hanya bisa dipakai dari dalam jaringan privat.",
+          "examReady": true,
+          "requires": [
+            "f-u06-public-endpoint",
+            "f-u06-private-endpoint",
+            "f-u06-peering-def",
+            "f-u06-public-private-ip"
+          ]
+        },
+        {
+          "id": "u06-l5-e3",
+          "type": "multi",
+          "concept": "endpoints",
+          "prompt": "Virtual machines in a company's virtual network must connect to an Azure SQL (Structured Query Language) database through a private IP (Internet Protocol) address. The database must not be reachable from the internet. Which two actions should the company take? Choose two.",
+          "options": [
+            "Assign a public IP (Internet Protocol) address to each virtual machine",
+            "Create a public DNS (Domain Name System) record for the database",
+            "Disable public network access on the database",
+            "Create a private endpoint for the database in the virtual network"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Private endpoint memberi database alamat IP (Internet Protocol) privat di virtual network. Karena private endpoint tidak otomatis menutup akses publik, akses publik database juga harus dimatikan.",
+          "examReady": true,
+          "requires": [
+            "f-u06-private-endpoint",
+            "f-u06-pe-public-off",
+            "f-u06-public-private-ip",
+            "f-u06-dns-def"
+          ]
+        },
+        {
+          "id": "u06-l5-e4",
+          "type": "choice",
+          "concept": "nsg",
+          "prompt": "A company must allow only HTTPS (Hypertext Transfer Protocol Secure) traffic on port 443 from the internet to its web subnet and block all other inbound internet traffic. What should the company configure?",
+          "options": [
+            "VNet (Virtual Network) peering between the web subnet and the internet",
+            "An NSG (Network Security Group) on the web subnet with an inbound rule that allows port 443",
+            "A private endpoint for each web server in the subnet",
+            "An ExpressRoute circuit for the web subnet"
+          ],
+          "answer": 1,
+          "explanation": "NSG (Network Security Group) berisi rule allow atau deny untuk traffic masuk dan keluar, dan bisa dipasang ke subnet. Default rule DenyAllInBound sudah memblokir traffic masuk lainnya, jadi cukup tambahkan rule allow untuk port 443.",
+          "examReady": true,
+          "requires": [
+            "f-u06-nsg-def",
+            "f-u06-nsg-assoc",
+            "f-u06-nsg-defaults",
+            "f-u06-peering-def",
+            "f-u06-private-endpoint",
+            "f-u06-er-def"
+          ]
+        },
+        {
+          "id": "u06-l5-e5",
+          "type": "yesno",
+          "concept": "expressroute",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company plans to connect the network at its headquarters to Azure.",
+          "statements": [
+            {
+              "text": "A site-to-site VPN (Virtual Private Network) sends encrypted traffic over the public internet.",
+              "answer": true
+            },
+            {
+              "text": "ExpressRoute traffic travels over the public internet.",
+              "answer": false
+            },
+            {
+              "text": "A VPN gateway is usually cheaper and simpler to set up than ExpressRoute.",
+              "answer": true
+            }
+          ],
+          "explanation": "VPN (Virtual Private Network) Gateway mengirim traffic terenkripsi lewat internet publik, lebih murah dan sederhana. ExpressRoute adalah koneksi privat lewat penyedia konektivitas, tanpa internet publik, dan lebih mahal.",
+          "examReady": true,
+          "requires": [
+            "f-u06-vpn-def",
+            "f-u06-vpn-types",
+            "f-u06-er-def",
+            "f-u06-hybrid-choice"
+          ]
+        },
+        {
+          "id": "u06-l5-e6",
+          "type": "choice",
+          "concept": "vnet-peering",
+          "prompt": "A company has two virtual networks in the same region: one for apps and one for databases. Virtual machines in both virtual networks must communicate through private IP (Internet Protocol) addresses, without crossing the public internet. What should the company use?",
+          "options": [
+            "A site-to-site VPN (Virtual Private Network) over the internet",
+            "A public IP (Internet Protocol) address on every virtual machine",
+            "VNet (Virtual Network) peering",
+            "Azure DNS (Domain Name System)"
+          ],
+          "answer": 2,
+          "explanation": "VNet (Virtual Network) peering menghubungkan dua virtual network lewat backbone Microsoft dengan alamat privat. VPN (Virtual Private Network) dan IP (Internet Protocol) publik memakai internet, dan Azure DNS (Domain Name System) hanya menerjemahkan nama.",
+          "examReady": true,
+          "requires": [
+            "f-u06-peering-def",
+            "f-u06-vpn-def",
+            "f-u06-public-private-ip",
+            "f-u06-dns-def"
+          ]
+        },
+        {
+          "id": "u06-l5-e7",
+          "type": "choice",
+          "concept": "azure-dns",
+          "prompt": "A company bought the domain contoso.com from a domain registrar. It wants to manage the DNS (Domain Name System) records of the domain with the same tools, billing, and access control as its other Azure resources. What should the company use?",
+          "options": [
+            "A private endpoint for the domain",
+            "An NSG (Network Security Group) for the domain",
+            "VNet (Virtual Network) peering with the domain registrar",
+            "Azure DNS"
+          ],
+          "answer": 3,
+          "explanation": "Azure DNS (Domain Name System) menghosting domain DNS di Azure, dan record-nya dikelola dengan kredensial, alat, dan tagihan yang sama seperti layanan Azure lain, dengan akses diatur RBAC (Role-Based Access Control). Nama domainnya tetap dibeli di registrar.",
+          "examReady": true,
+          "requires": [
+            "f-u06-azure-dns",
+            "f-u06-azure-dns-mgmt",
+            "f-u06-private-endpoint",
+            "f-u06-nsg-def",
+            "f-u06-peering-def"
+          ]
+        },
+        {
+          "id": "u06-l5-e8",
+          "type": "choice",
+          "concept": "subnets",
+          "prompt": "A company wants its web servers and its database servers in one virtual network, but in separate address ranges, so that it can apply different traffic rules to each group. What should the company create?",
+          "options": [
+            "Two subnets in the virtual network",
+            "Two subscriptions, one for each group of servers",
+            "Two resource groups in the same region",
+            "Two DNS (Domain Name System) zones in Azure DNS"
+          ],
+          "answer": 0,
+          "explanation": "Subnet membagi virtual network menjadi beberapa bagian, masing-masing dengan rentang alamat IP (Internet Protocol) sendiri, dan NSG (Network Security Group) bisa dipasang per subnet. Subscription, resource group, dan zona DNS (Domain Name System) tidak membagi alamat jaringan.",
+          "examReady": true,
+          "requires": [
+            "f-u06-subnet",
+            "f-u06-nsg-assoc",
+            "f-u04-sub-billing",
+            "f-u04-rg-def",
+            "f-u06-azure-dns"
+          ]
+        },
+        {
+          "id": "u06-l5-e9",
+          "type": "choice",
+          "concept": "vpn-gateway",
+          "prompt": "Five developers work from home and need encrypted access from their laptops to virtual machines in an Azure virtual network. The company has no office network to connect. What should the company use?",
+          "options": [
+            "A site-to-site VPN (Virtual Private Network) from the office network",
+            "An ExpressRoute circuit for each developer",
+            "VNet (Virtual Network) peering with each laptop",
+            "Point-to-site VPN (Virtual Private Network) connections"
+          ],
+          "answer": 3,
+          "explanation": "VPN (Virtual Private Network) point-to-site menghubungkan satu perangkat, misalnya laptop di rumah, ke Azure. Site-to-site menghubungkan seluruh jaringan kantor, padahal kantornya tidak ada. Peering hanya menghubungkan dua virtual network.",
+          "examReady": true,
+          "requires": [
+            "f-u06-vpn-types",
+            "f-u06-vpn-def",
+            "f-u06-er-def",
+            "f-u06-peering-def"
+          ]
+        },
+        {
+          "id": "u06-l5-e10",
+          "type": "match",
+          "concept": "endpoints",
+          "prompt": "A company is designing its Azure network. Match each requirement with what to use.",
+          "pairs": [
+            [
+              "Reach an Azure service through a private IP (Internet Protocol) address in your virtual network",
+              "Private endpoint"
+            ],
+            [
+              "Connect two virtual networks privately",
+              "VNet (Virtual Network) peering"
+            ],
+            [
+              "Allow or block traffic to a subnet by port",
+              "NSG (Network Security Group)"
+            ],
+            [
+              "Translate a name into an IP address",
+              "DNS (Domain Name System)"
+            ]
+          ],
+          "explanation": "Private endpoint memberi layanan alamat IP (Internet Protocol) privat, peering menghubungkan dua virtual network, NSG (Network Security Group) memfilter traffic, dan DNS (Domain Name System) menerjemahkan nama menjadi alamat IP.",
+          "examReady": true,
+          "requires": [
+            "f-u06-private-endpoint",
+            "f-u06-peering-def",
+            "f-u06-nsg-def",
+            "f-u06-dns-def"
+          ]
+        },
+        {
+          "id": "u06-l5-e11",
+          "type": "choice",
+          "concept": "expressroute",
+          "prompt": "A company sends large amounts of data between its datacenter and Azure every day. The connection must have consistent latency, and the traffic must not cross the public internet. Which option should the company choose, even though it costs more?",
+          "options": [
+            "A site-to-site VPN (Virtual Private Network) over the internet",
+            "A point-to-site VPN on the file server",
+            "ExpressRoute",
+            "A public endpoint for each service"
+          ],
+          "answer": 2,
+          "explanation": "ExpressRoute adalah koneksi privat lewat penyedia konektivitas: tidak lewat internet publik, lebih andal, dan latensinya konsisten, walaupun lebih mahal dari VPN (Virtual Private Network).",
+          "examReady": true,
+          "requires": [
+            "f-u06-er-def",
+            "f-u06-er-benefits",
+            "f-u06-hybrid-choice",
+            "f-u06-vpn-types",
+            "f-u06-public-endpoint"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

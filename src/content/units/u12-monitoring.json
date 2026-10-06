@@ -702,6 +702,270 @@
           ]
         }
       ]
+    },
+    {
+      "id": "u12-l4",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u12-l4-e1",
+          "type": "choice",
+          "concept": "azure-advisor",
+          "prompt": "A company wants free, personalized recommendations to improve the reliability, security, performance, and cost of its existing Azure resources. What should the company use?",
+          "options": [
+            "Azure Advisor",
+            "The Pricing Calculator, which estimates new resources",
+            "Azure Service Health, which reports outages",
+            "Azure Monitor alert rules with action groups"
+          ],
+          "answer": 0,
+          "explanation": "Azure Advisor menganalisis konfigurasi dan pemakaian resource-mu lalu memberi rekomendasi best practice yang dipersonalisasi, gratis, dalam kategori reliability, security, performance, cost, dan operational excellence.",
+          "examReady": true,
+          "requires": [
+            "f-u12-advisor-def",
+            "f-u12-advisor-categories",
+            "f-u09-pricing-details",
+            "f-u12-service-health",
+            "f-u12-alerts"
+          ]
+        },
+        {
+          "id": "u12-l4-e2",
+          "type": "choice",
+          "concept": "azure-advisor",
+          "prompt": "A company receives an Azure Advisor recommendation to resize or shut down virtual machines that are barely used. In which Advisor category does this recommendation appear?",
+          "options": [
+            "Security",
+            "Reliability",
+            "Operational excellence",
+            "Cost"
+          ],
+          "answer": 3,
+          "explanation": "Rekomendasi untuk mengecilkan atau mematikan VM (Virtual Machine) yang jarang dipakai bertujuan menurunkan pengeluaran, jadi masuk kategori Cost. Resource yang dibiarkan berjalan tetap ditagih.",
+          "examReady": true,
+          "requires": [
+            "f-u12-advisor-categories",
+            "f-u09-unused"
+          ]
+        },
+        {
+          "id": "u12-l4-e3",
+          "type": "yesno",
+          "concept": "azure-advisor",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso wants to review Azure Advisor for its subscription.",
+          "statements": [
+            {
+              "text": "Azure Advisor charges a monthly fee for its recommendations.",
+              "answer": false
+            },
+            {
+              "text": "The recommendations are based on the configuration and usage of Contoso's own resources.",
+              "answer": true
+            },
+            {
+              "text": "Azure Advisor can recommend ways to improve security.",
+              "answer": true
+            }
+          ],
+          "explanation": "Azure Advisor gratis dan rekomendasinya dipersonalisasi dari konfigurasi dan pemakaian resource-mu. Security adalah salah satu dari lima kategorinya.",
+          "examReady": true,
+          "requires": [
+            "f-u12-advisor-def",
+            "f-u12-advisor-categories"
+          ]
+        },
+        {
+          "id": "u12-l4-e4",
+          "type": "choice",
+          "concept": "service-health",
+          "prompt": "A company wants an email before Microsoft performs planned maintenance that affects the Azure services and regions the company uses. What should the company set up?",
+          "options": [
+            "A daily check of the Azure status page",
+            "An Azure Advisor recommendation digest",
+            "A Service Health alert",
+            "A budget alert in Microsoft Cost Management"
+          ],
+          "answer": 2,
+          "explanation": "Service Health memberi gambaran personal tentang gangguan, maintenance terencana, dan health advisory untuk layanan dan region yang kamu pakai, dan bisa mengirim alert. Halaman Azure status hanya gambaran global.",
+          "examReady": true,
+          "requires": [
+            "f-u12-service-health",
+            "f-u12-status",
+            "f-u12-advisor-def",
+            "f-u09-budgets"
+          ]
+        },
+        {
+          "id": "u12-l4-e5",
+          "type": "yesno",
+          "concept": "service-health",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Users at Contoso report that a web app in West Europe is slow. An admin checks the Azure health tools.",
+          "statements": [
+            {
+              "text": "The Azure status page shows a global view of Azure services in all regions.",
+              "answer": true
+            },
+            {
+              "text": "The Azure status page shows the health of each of Contoso's individual resources.",
+              "answer": false
+            },
+            {
+              "text": "Resource Health can show whether Contoso's web app is affected by a problem on the Azure platform.",
+              "answer": true
+            }
+          ],
+          "explanation": "Azure status memberi gambaran global semua layanan di semua region, bukan resource milikmu. Kesehatan resource milikmu, termasuk masalah dari sisi Azure, ada di Resource Health.",
+          "examReady": true,
+          "requires": [
+            "f-u12-status",
+            "f-u12-resource-health"
+          ]
+        },
+        {
+          "id": "u12-l4-e6",
+          "type": "choice",
+          "concept": "azure-advisor",
+          "prompt": "A company wants to know which of its virtual machines should be made highly available to avoid downtime, based on best practices for its own deployment. Where should the company look?",
+          "options": [
+            "The global Azure status page",
+            "Microsoft Purview",
+            "The TCO (Total Cost of Ownership) Calculator",
+            "The reliability recommendations in Azure Advisor"
+          ],
+          "answer": 3,
+          "explanation": "Azure Advisor memberi rekomendasi yang dipersonalisasi, dan kategori reliability berisi saran supaya workload tetap berjalan. Halaman Azure status hanya menunjukkan kesehatan layanan secara global.",
+          "examReady": true,
+          "requires": [
+            "f-u12-advisor-def",
+            "f-u12-advisor-categories",
+            "f-u12-status",
+            "f-u10-purview-def",
+            "f-u09-tco"
+          ]
+        },
+        {
+          "id": "u12-l4-e7",
+          "type": "choice",
+          "concept": "service-health",
+          "prompt": "A company's virtual machine was unavailable for 20 minutes last night. The admin must find out whether the cause was a problem on the Azure platform rather than the company's own configuration. What should the admin check?",
+          "options": [
+            "Resource Health for the virtual machine",
+            "Azure Advisor recommendations for the subscription",
+            "The Pricing Calculator",
+            "The Service Trust Portal"
+          ],
+          "answer": 0,
+          "explanation": "Resource Health menunjukkan kesehatan setiap resource milikmu, termasuk kapan resource itu tidak tersedia karena masalah di Azure.",
+          "examReady": true,
+          "requires": [
+            "f-u12-resource-health",
+            "f-u12-advisor-def",
+            "f-u09-pricing-details",
+            "f-u10-stp"
+          ]
+        },
+        {
+          "id": "u12-l4-e8",
+          "type": "match",
+          "concept": "service-health",
+          "prompt": "An admin at a company has four questions. Match each question with the tool that answers it.",
+          "pairs": [
+            [
+              "Is an Azure service down anywhere in the world?",
+              "Azure status"
+            ],
+            [
+              "Is an outage affecting the services and regions we use?",
+              "Service Health"
+            ],
+            [
+              "Was our virtual machine unavailable because of Azure?",
+              "Resource Health"
+            ],
+            [
+              "How can we lower the cost of our resources?",
+              "Azure Advisor"
+            ]
+          ],
+          "explanation": "Azure status memberi gambaran global, Service Health gambaran personal untuk layanan dan region yang kamu pakai, Resource Health kesehatan setiap resource, dan Advisor rekomendasi best practice.",
+          "examReady": true,
+          "requires": [
+            "f-u12-status",
+            "f-u12-service-health",
+            "f-u12-resource-health",
+            "f-u12-advisor-categories"
+          ]
+        },
+        {
+          "id": "u12-l4-e9",
+          "type": "choice",
+          "concept": "application-insights",
+          "prompt": "A company runs a web app in its own datacenter. It wants to see the response times and failure rates of the app in Azure. What should the company use?",
+          "options": [
+            "Azure Advisor",
+            "Azure Service Health",
+            "Resource Health",
+            "Application Insights"
+          ],
+          "answer": 3,
+          "explanation": "Application Insights memantau performa aplikasi, seperti request, waktu respons, dan kegagalan, dan aplikasinya boleh berjalan di mana saja, tidak harus di Azure.",
+          "examReady": true,
+          "requires": [
+            "f-u12-appinsights",
+            "f-u12-advisor-def",
+            "f-u12-service-health",
+            "f-u12-resource-health"
+          ]
+        },
+        {
+          "id": "u12-l4-e10",
+          "type": "choice",
+          "concept": "azure-monitor-alerts",
+          "prompt": "An admin at a company wants to get a phone call whenever a certain Azure Monitor alert fires. What should the admin do?",
+          "options": [
+            "Add the phone number to an action group that the alert rule uses",
+            "Create a new Log Analytics workspace for the alert",
+            "Add a tag with the phone number to the virtual machine",
+            "Turn on Service Health for the region"
+          ],
+          "answer": 0,
+          "explanation": "Action group menentukan siapa yang diberi tahu dan bagaimana, misalnya email, SMS (Short Message Service), atau telepon. Tanpa action group, alert menyala tanpa memberi tahu siapa pun.",
+          "examReady": true,
+          "requires": [
+            "f-u12-action-groups",
+            "f-u12-alerts",
+            "f-u12-log-analytics",
+            "f-u09-tags",
+            "f-u12-service-health"
+          ]
+        },
+        {
+          "id": "u12-l4-e11",
+          "type": "multi",
+          "concept": "monitoring-data",
+          "prompt": "A company plans to use Azure Monitor. Which two kinds of data does Azure Monitor collect? Choose two.",
+          "options": [
+            "Invoices from Microsoft Cost Management",
+            "Audit reports from the Service Trust Portal",
+            "Logs: records of events with detailed data",
+            "Metrics: numeric values that are collected at regular intervals"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Dua jenis data utama Azure Monitor adalah metrics (angka berkala) dan logs (catatan kejadian yang detail). Tagihan dan laporan audit bukan data telemetri Azure Monitor.",
+          "examReady": true,
+          "requires": [
+            "f-u12-metrics-logs",
+            "f-u09-cost-analysis",
+            "f-u10-stp"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
