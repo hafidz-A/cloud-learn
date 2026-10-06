@@ -188,9 +188,10 @@ export const useProgress = create<ProgressStore>()(
               count: (prev?.count ?? 0) + 1,
             },
           }
-          // A unit's level is how many full rounds of all its lessons are done, up to 3.
+          // A unit's level is how many full rounds of all its lessons are done, up to 3. It never
+          // drops: a lesson added to a finished unit (an exam practice lesson) waits to be played.
           const rounds = Math.min(...unitLessonIds.map((id) => lessonsDone[id]?.count ?? 0))
-          const level = Math.min(3, rounds) as 0 | 1 | 2 | 3
+          const level = Math.max(c.unitLevel[unitId] ?? 0, Math.min(3, rounds)) as 0 | 1 | 2 | 3
           return {
             ...addXp(s, xp, today),
             streak: bumpStreak(s.streak, today),

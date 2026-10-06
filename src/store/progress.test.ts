@@ -34,6 +34,14 @@ describe('progress per course', () => {
     expect(courseProgress(store(), 'az104').unitLevel).toEqual({ 'az104-u01-identity': 1 })
   })
 
+  it('never lowers a unit level when a lesson is added to a finished unit', () => {
+    store().completeLesson('u04-l1', 1, 10, 'u04-core-architecture', ['u04-l1'])
+    expect(courseProgress(store(), 'az900').unitLevel['u04-core-architecture']).toBe(1)
+    // The unit gains an exam practice lesson that is not played yet.
+    store().completeLesson('u04-l1', 1, 10, 'u04-core-architecture', ['u04-l1', 'u04-l5'])
+    expect(courseProgress(store(), 'az900').unitLevel['u04-core-architecture']).toBe(1)
+  })
+
   it('files checkpoints and finished exams under their own course', () => {
     store().completeCheckpoint('az104-cp1', 0.9, true, 20)
     store().completeCheckpoint('cp1', 0.5, false, 20)

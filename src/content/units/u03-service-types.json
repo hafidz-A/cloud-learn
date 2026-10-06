@@ -971,6 +971,285 @@
           ]
         }
       ]
+    },
+    {
+      "id": "u03-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u03-l5-e1",
+          "type": "choice",
+          "concept": "vm-updates",
+          "prompt": "A company runs its app on Azure virtual machines. A security update for the operating system of the virtual machines is released. Who must make sure the update is installed?",
+          "options": [
+            "The company, for example by scheduling it with Azure Update Manager",
+            "Microsoft, because Azure patches the operating system of every customer virtual machine",
+            "Nobody, because Azure virtual machines never need operating system updates",
+            "The internet service provider that connects the company to Azure"
+          ],
+          "answer": 0,
+          "explanation": "Di IaaS (Infrastructure as a Service), memasang update sistem operasi VM (Virtual Machine) adalah tugas customer. Azure Update Manager membantu memantau dan menjadwalkan update, tapi customer yang mengaturnya.",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-patch",
+            "f-u03-update-manager"
+          ]
+        },
+        {
+          "id": "u03-l5-e2",
+          "type": "yesno",
+          "concept": "iaas",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company plans to rent Azure virtual machines and install its own database software on them.",
+          "statements": [
+            {
+              "text": "This is an example of IaaS (Infrastructure as a Service).",
+              "answer": true
+            },
+            {
+              "text": "The company configures the firewall inside the virtual machines.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft installs and configures the database software for the company.",
+              "answer": false
+            }
+          ],
+          "explanation": "Menyewa VM (Virtual Machine) adalah IaaS (Infrastructure as a Service). Customer mengurus sistem operasi, aplikasi, dan konfigurasinya, termasuk firewall di dalam VM. Software yang dipasang customer juga diurus customer.",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-def",
+            "f-u03-iaas-example",
+            "f-u03-iaas-split"
+          ]
+        },
+        {
+          "id": "u03-l5-e3",
+          "type": "choice",
+          "concept": "paas",
+          "prompt": "A company wants to host an API (Application Programming Interface) without managing the operating system or the runtime. It also wants built-in autoscale. Which Azure service should the company use?",
+          "options": [
+            "Azure Virtual Machines",
+            "Microsoft 365",
+            "An on-premises web server",
+            "Azure App Service"
+          ],
+          "answer": 3,
+          "explanation": "Azure App Service adalah PaaS (Platform as a Service): Azure mengurus hardware, sistem operasi, dan runtime, dan ada fitur bawaan seperti autoscale. Di VM (IaaS), sistem operasi diurus customer. Microsoft 365 adalah SaaS (Software as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-example",
+            "f-u03-paas-def",
+            "f-u03-paas-benefits",
+            "f-u03-iaas-example",
+            "f-u03-saas-def"
+          ]
+        },
+        {
+          "id": "u03-l5-e4",
+          "type": "choice",
+          "concept": "serverless-billing",
+          "prompt": "A company runs an Azure Functions app on the Flex Consumption plan to process orders. How is the company billed for the compute that runs the function code?",
+          "options": [
+            "A fixed monthly fee for a dedicated server",
+            "For every hour of the day, even when no orders arrive",
+            "For the executions and the memory used while the code runs",
+            "For the virtual machines that the company creates to host the function"
+          ],
+          "answer": 2,
+          "explanation": "Di plan serverless Azure Functions (Flex Consumption dan Consumption), customer membayar saat function berjalan: jumlah eksekusi dan memori yang dipakai. Customer tidak membuat VM (Virtual Machine) sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u03-serverless-billing",
+            "f-u03-serverless-def"
+          ]
+        },
+        {
+          "id": "u03-l5-e5",
+          "type": "choice",
+          "concept": "saas",
+          "prompt": "A company starts using a SaaS (Software as a Service) app to track customer support tickets. Which task is still the company's responsibility?",
+          "options": [
+            "Installing new versions of the ticket app when they are released",
+            "Deciding which employees can access the ticket data",
+            "Maintaining the servers that run the ticket app",
+            "Patching the operating system of the servers that run the app"
+          ],
+          "answer": 1,
+          "explanation": "Di SaaS (Software as a Service), penyedia mengurus infrastruktur, server, dan update aplikasinya. Data, akun, dan siapa yang boleh mengakses data tetap tanggung jawab customer.",
+          "examReady": true,
+          "requires": [
+            "f-u03-saas-provider",
+            "f-u03-saas-def",
+            "f-u01-sr-customer-always"
+          ]
+        },
+        {
+          "id": "u03-l5-e6",
+          "type": "choice",
+          "concept": "serverless-vs-vm",
+          "prompt": "A company needs to send a reminder email every morning at 8:00. The company does not want to manage any servers. What should the company use?",
+          "options": [
+            "A virtual machine that runs all day",
+            "Microsoft 365",
+            "An on-premises server with a scheduled task",
+            "Azure Functions with a timer trigger"
+          ],
+          "answer": 3,
+          "explanation": "Azure Functions menjalankan kode yang dipicu event, termasuk timer, tanpa server yang harus dikelola customer. VM (Virtual Machine) dan server on-premises harus dikelola sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u03-functions-scenarios",
+            "f-u03-functions",
+            "f-u03-serverless-def",
+            "f-u03-saas-def"
+          ]
+        },
+        {
+          "id": "u03-l5-e7",
+          "type": "yesno",
+          "concept": "serverless",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to process uploaded files with Azure Functions. The number of uploads changes a lot during the day.",
+          "statements": [
+            {
+              "text": "Azure Functions adds instances automatically when many files arrive.",
+              "answer": true
+            },
+            {
+              "text": "Contoso must patch the operating system that runs the functions.",
+              "answer": false
+            },
+            {
+              "text": "In the shared responsibility model, Microsoft classifies Azure Functions as PaaS (Platform as a Service).",
+              "answer": true
+            }
+          ],
+          "explanation": "Azure Functions menambah dan mengurangi instance mengikuti jumlah event. Serverless berarti customer tidak mengelola server. Microsoft menggolongkan Azure Functions sebagai PaaS (Platform as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-serverless-scale",
+            "f-u03-serverless-def",
+            "f-u03-serverless-paas"
+          ]
+        },
+        {
+          "id": "u03-l5-e8",
+          "type": "choice",
+          "concept": "iaas",
+          "prompt": "The developers at a company need test environments where they control the operating system and can rebuild an environment quickly. Which cloud service type fits best?",
+          "options": [
+            "IaaS (Infrastructure as a Service)",
+            "PaaS (Platform as a Service), because the provider manages the operating system",
+            "SaaS (Software as a Service)",
+            "Microsoft 365"
+          ],
+          "answer": 0,
+          "explanation": "IaaS (Infrastructure as a Service) cocok untuk lingkungan test dan development yang butuh kontrol penuh dan cepat dibuat ulang. Di PaaS (Platform as a Service) dan SaaS (Software as a Service), sistem operasi diurus penyedia, jadi developer tidak bisa mengaturnya.",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-uses",
+            "f-u03-iaas-def",
+            "f-u03-paas-def",
+            "f-u03-saas-def"
+          ]
+        },
+        {
+          "id": "u03-l5-e9",
+          "type": "choice",
+          "concept": "serverless-vs-vm",
+          "prompt": "A company has a legacy app that needs a custom operating system configuration and runs all the time. Which compute option fits best?",
+          "options": [
+            "Azure Functions",
+            "Microsoft 365",
+            "Azure Virtual Machines",
+            "A SaaS (Software as a Service) app"
+          ],
+          "answer": 2,
+          "explanation": "VM (IaaS) memberi kontrol penuh atas sistem operasi. Azure Functions menjalankan kode saat ada event dan tidak memberi akses ke pengaturan sistem operasi. Microsoft 365 adalah aplikasi jadi.",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-def",
+            "f-u03-iaas-uses",
+            "f-u03-serverless-def",
+            "f-u03-saas-def"
+          ]
+        },
+        {
+          "id": "u03-l5-e10",
+          "type": "multi",
+          "concept": "lift-and-shift",
+          "prompt": "A company must move its servers to Azure quickly, with low risk, and without changing the application code. Which two statements are true? Choose two.",
+          "options": [
+            "Lift-and-shift to Azure virtual machines fits this requirement",
+            "Rewriting the apps to use cloud services is a modernization strategy, not lift-and-shift",
+            "Lift-and-shift means rewriting every app before it moves",
+            "Only SaaS (Software as a Service) products can be moved quickly"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Lift-and-shift (rehost) memindahkan workload ke Azure VM (Virtual Machine) tanpa mengubah kodenya, cepat dan berisiko rendah. Menulis ulang aplikasi termasuk modernisasi.",
+          "examReady": true,
+          "requires": [
+            "f-u03-lift-shift",
+            "f-u03-modernize",
+            "f-u03-saas-def"
+          ]
+        },
+        {
+          "id": "u03-l5-e11",
+          "type": "match",
+          "concept": "paas",
+          "prompt": "A company is choosing services for four projects. Match each project with the service type it describes.",
+          "pairs": [
+            [
+              "Rent a virtual machine and install your own software",
+              "IaaS (Infrastructure as a Service)"
+            ],
+            [
+              "Deploy code to a managed web platform",
+              "PaaS (Platform as a Service)"
+            ],
+            [
+              "Use a finished email app",
+              "SaaS (Software as a Service)"
+            ],
+            [
+              "Run code only when an event happens",
+              "Serverless"
+            ]
+          ],
+          "explanation": "IaaS (Infrastructure as a Service) menyewakan infrastruktur seperti VM (Virtual Machine), PaaS (Platform as a Service) menyediakan platform siap pakai untuk kode, SaaS (Software as a Service) adalah aplikasi jadi, dan serverless menjalankan kode saat dipicu event.",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-def",
+            "f-u03-paas-def",
+            "f-u03-saas-def",
+            "f-u03-serverless-def"
+          ]
+        },
+        {
+          "id": "u03-l5-e12",
+          "type": "choice",
+          "concept": "saas",
+          "prompt": "A company compares on-premises servers, IaaS (Infrastructure as a Service), PaaS (Platform as a Service), and SaaS (Software as a Service). The company wants the smallest share of management responsibility. Which option should it choose?",
+          "options": [
+            "PaaS (Platform as a Service)",
+            "SaaS (Software as a Service)",
+            "IaaS (Infrastructure as a Service)",
+            "On-premises servers"
+          ],
+          "answer": 1,
+          "explanation": "Tanggung jawab customer paling besar di on-premises, lalu IaaS (Infrastructure as a Service), lalu PaaS (Platform as a Service), dan paling kecil di SaaS (Software as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-control-order"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

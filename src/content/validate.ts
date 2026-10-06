@@ -654,7 +654,11 @@ export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[
     if (!new RegExp(`^${rules.prefix}u\\d{2}-[a-z0-9-]+$`).test(unit.id)) pusher(uw)(`unit id must look like "${rules.prefix}u04-core-architecture"`)
     if (!Number.isInteger(unit.path) || unit.path < 1 || unit.path > rules.paths) pusher(uw)(`path must be 1 to ${rules.paths}`)
     const [minLessons, maxLessons] = rules.lessons
-    if (unit.lessons.length < minLessons || unit.lessons.length > maxLessons) pusher(uw)(`units should have ${minLessons}-${maxLessons} lessons, found ${unit.lessons.length}`, 'warn')
+    const teaching = unit.lessons.filter((l) => !l.review).length
+    if (teaching < minLessons || teaching > maxLessons) pusher(uw)(`units should have ${minLessons}-${maxLessons} lessons, found ${teaching}`, 'warn')
+    unit.lessons.forEach((l, i) => {
+      if (l.review && i !== unit.lessons.length - 1) pusher(`${uw} > ${l.id}`)('an exam practice lesson must be the last lesson of its unit')
+    })
     if (unit.facts !== undefined && !Array.isArray(unit.facts)) pusher(uw)('facts must be a list')
     for (const fact of unit.facts ?? []) {
       claim(fact.id, `${uw} > ${fact.id}`)
@@ -680,10 +684,14 @@ export function validateUnits(units: Unit[], course: CourseId = 'az900'): Issue[
       const learnCards = lesson.items.filter((i) => i.type === 'learn').length
       const intros = lesson.items.filter((i) => i.type === 'intro').length
       const handson = lesson.branch?.kind === 'handson'
-      const [minEx, maxEx] = handson ? [3, 8] : rules.exercises
+      const [minEx, maxEx] = handson ? [3, 8] : lesson.review ? [8, 15] : rules.exercises
       if (exercises.length < minEx || exercises.length > maxEx) warn(`lessons should have ${minEx}-${maxEx} exercises, found ${exercises.length}`)
       const [minCards, maxCards] = rules.learnCards
-      if (reworked && (learnCards < minCards || learnCards > maxCards)) warn(`lessons should have ${minCards}-${maxCards} learn cards, found ${learnCards}`)
+      if (lesson.review) {
+        // Exam practice (docs/RENCANA_LULUS_UJIAN.md): only exam-ready questions about what earlier lessons taught.
+        if (learnCards || intros) pusher(lw)('an exam practice lesson has no learn or intro cards')
+        if (exercises.some((e) => !e.examReady)) warn('every question of an exam practice lesson should be examReady')
+      } else if (reworked && (learnCards < minCards || learnCards > maxCards)) warn(`lessons should have ${minCards}-${maxCards} learn cards, found ${learnCards}`)
       if (!reworked && intros > 3) warn(`a lesson introduces at most 3 new concepts, found ${intros} intro cards`)
       const types = new Set(exercises.map((e) => e.type))
       if (types.size < (handson ? 2 : 4)) warn(`lessons should use at least ${handson ? 2 : 4} exercise types, found ${types.size}`)

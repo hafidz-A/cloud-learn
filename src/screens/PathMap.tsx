@@ -1,4 +1,4 @@
-import { BookOpen, Check, Crown, Lock, Star, Trophy } from 'lucide-react'
+import { BookOpen, Check, ClipboardCheck, Crown, Lock, Star, Trophy } from 'lucide-react'
 import { useEffect, useEffectEvent, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Button } from '../components/Button'
 import { COURSES, courseOf, isRequiredLesson, unitNumber, type Checkpoint } from '../content/course'
@@ -103,7 +103,8 @@ function LessonNode({
   const done = useCourseProgress(courseOf(lesson.id)).lessonsDone[lesson.id]
   const look = NODE_LOOK[state]
   const offset = offsetFor(lessonIndex, unitIndex)
-  const Icon = state === 'done' ? Check : state === 'locked' || state === 'soon' ? Lock : Star
+  // An exam practice lesson (docs/RENCANA_LULUS_UJIAN.md) shows a clipboard instead of a star.
+  const Icon = state === 'done' ? Check : state === 'locked' || state === 'soon' ? Lock : lesson.review ? ClipboardCheck : Star
   const start = () => navigate({ name: 'lesson', lessonId: lesson.id })
 
   return (
@@ -121,7 +122,7 @@ function LessonNode({
             className={`btn-3d flex h-[72px] w-[72px] cursor-pointer items-center justify-center rounded-full ${look.className}`}
             style={{ '--edge': look.edge, '--depth': '6px' } as CSSProperties}
           >
-            <Icon size={32} strokeWidth={3} className={state === 'active' || state === 'open' ? 'fill-white' : ''} />
+            <Icon size={32} strokeWidth={3} className={(state === 'active' || state === 'open') && Icon === Star ? 'fill-white' : ''} />
           </button>
         </div>
       </div>
@@ -132,6 +133,7 @@ function LessonNode({
           <p className="mt-0.5 text-13 text-tinta-lembut">
             Unit {unitNumber(unit)} · Lesson {lessonIndex + 1} dari {unit.lessons.length}
           </p>
+          {lesson.review && <p className="mt-2 text-15">Soal bergaya ujian asli tentang semua lesson di unit ini, tanpa materi baru.</p>}
           {state === 'soon' && <p className="mt-3 text-15 text-tinta-lembut">Soal untuk lesson ini sedang disiapkan.</p>}
           {state === 'locked' && (
             <p className="mt-3 text-15 text-tinta-lembut">

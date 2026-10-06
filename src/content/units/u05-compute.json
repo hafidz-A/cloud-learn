@@ -235,6 +235,113 @@
             "f-u05-vm-deallocated",
             "f-u05-vm-image"
           ]
+        },
+        {
+          "id": "u05-l1-m2",
+          "type": "learn",
+          "concepts": [
+            "vm-resources"
+          ],
+          "title": "Resource pendukung VM",
+          "body": "Membuat VM (Virtual Machine) berarti juga membuat resource pendukungnya. Virtual network membuat VM bisa berkomunikasi, dan network interface card (NIC) menghubungkan VM ke virtual network itu. VM punya alamat IP (Internet Protocol) private dan bisa diberi alamat IP public, sedangkan network security group (NSG) mengatur traffic yang boleh masuk dan keluar. Disk sistem operasi berisi sistem operasi, dan data sebaiknya di disk data terpisah. Ukuran (size) VM menentukan daya proses, memori, dan bandwidth jaringan.",
+          "keyPoints": [
+            "Jaringan: virtual network, NIC, alamat IP, NSG",
+            "Disk sistem operasi, plus disk data terpisah untuk data",
+            "Size menentukan CPU (Central Processing Unit), memori, dan harga per jam"
+          ],
+          "example": "Untuk web server Linux: VM ukuran kecil, NIC di subnet web, alamat IP public, NSG yang membuka port 443 untuk HTTPS (Hypertext Transfer Protocol Secure) dan port 22 hanya dari IP kantor, disk sistem operasi, dan satu disk data.",
+          "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/overview",
+          "teaches": [
+            "f-u05-vm-parts",
+            "f-u05-vm-nsg",
+            "f-u05-vm-data-disk",
+            "f-u05-vm-size"
+          ]
+        },
+        {
+          "id": "u05-l1-e9",
+          "type": "choice",
+          "concept": "vm-resources",
+          "prompt": "A company creates a virtual machine in the Azure portal. Which resource connects the virtual machine to a virtual network?",
+          "options": [
+            "A network interface card (NIC)",
+            "A data disk",
+            "The VM (Virtual Machine) image",
+            "A network security group"
+          ],
+          "answer": 0,
+          "explanation": "Network interface card (NIC) menghubungkan VM (Virtual Machine) ke virtual network. Disk menyimpan data, image adalah template untuk membuat VM, dan network security group mengatur traffic.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vm-parts",
+            "f-u05-vm-image",
+            "f-u05-vm-nsg"
+          ]
+        },
+        {
+          "id": "u05-l1-e10",
+          "type": "multi",
+          "concept": "vm-resources",
+          "prompt": "Which two resources are created by default to support a new virtual machine? Choose two.",
+          "options": [
+            "An Azure Functions app",
+            "A network interface card (NIC)",
+            "An operating system disk",
+            "A Microsoft 365 mailbox"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Resource pendukung bawaan VM (Virtual Machine): virtual network, NIC (Network Interface Card), alamat IP (Internet Protocol), network security group, dan disk sistem operasi. Functions app dan mailbox Microsoft 365 adalah layanan lain yang tidak dibuat otomatis.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vm-parts",
+            "f-u03-functions",
+            "f-u03-saas-def"
+          ]
+        },
+        {
+          "id": "u05-l1-e11",
+          "type": "choice",
+          "concept": "vm-resources",
+          "prompt": "A virtual machine at a company needs more processing power and memory for a new workload. Which setting of the virtual machine should the company change?",
+          "options": [
+            "The network security group of the virtual machine",
+            "The virtual network that the virtual machine is connected to",
+            "The size of the virtual machine",
+            "The public IP (Internet Protocol) address of the virtual machine"
+          ],
+          "answer": 2,
+          "explanation": "Ukuran (size) VM (Virtual Machine) menentukan daya proses, memori, kapasitas storage, dan bandwidth jaringan. Network security group, virtual network, dan alamat IP (Internet Protocol) mengatur jaringan, bukan tenaga VM.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vm-size",
+            "f-u05-vm-parts",
+            "f-u05-vm-nsg"
+          ]
+        },
+        {
+          "id": "u05-l1-e12",
+          "type": "fill",
+          "concept": "vm-resources",
+          "prompt": "Complete the sentence.",
+          "sentence": "The ___ of a virtual machine sets its processing power and memory, and a network ___ group allows or blocks the traffic to it.",
+          "bank": [
+            "size",
+            "security",
+            "image",
+            "interface"
+          ],
+          "answers": [
+            "size",
+            "security"
+          ],
+          "explanation": "Size menentukan daya proses dan memori. Network security group (NSG) mengatur traffic yang masuk dan keluar VM (Virtual Machine).",
+          "requires": [
+            "f-u05-vm-size",
+            "f-u05-vm-nsg"
+          ]
         }
       ]
     },
@@ -1205,6 +1312,268 @@
           ]
         }
       ]
+    },
+    {
+      "id": "u05-l6",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u05-l6-e1",
+          "type": "yesno",
+          "concept": "vm-resources",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company creates a Windows virtual machine in Azure to host a website. Users must reach the website from the internet over HTTPS (Hypertext Transfer Protocol Secure).",
+          "statements": [
+            {
+              "text": "The virtual machine needs a network interface card (NIC) that is connected to a virtual network.",
+              "answer": true
+            },
+            {
+              "text": "A network security group can allow HTTPS traffic to the virtual machine and block other ports.",
+              "answer": true
+            },
+            {
+              "text": "Following best practice, the website data should be stored on the operating system disk.",
+              "answer": false
+            }
+          ],
+          "explanation": "VM (Virtual Machine) terhubung ke virtual network lewat NIC (Network Interface Card), dan network security group mengatur port yang boleh masuk. Data sebaiknya di disk data terpisah dari disk sistem operasi.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vm-parts",
+            "f-u05-vm-nsg",
+            "f-u05-vm-data-disk"
+          ]
+        },
+        {
+          "id": "u05-l6-e2",
+          "type": "choice",
+          "concept": "vm-resources",
+          "prompt": "A company wants the data of its app to survive if the virtual machine that runs the app fails and must be rebuilt. Following best practice, where should the data be stored?",
+          "options": [
+            "On the operating system disk, together with the operating system",
+            "On a separate data disk",
+            "In the VM (Virtual Machine) image that was used to create the virtual machine",
+            "In the network security group of the virtual machine"
+          ],
+          "answer": 1,
+          "explanation": "Simpan data di disk data terpisah. Kalau VM (Virtual Machine) gagal, disk data bisa dilepas dan dipasang ke VM baru. Image hanya template untuk membuat VM, dan network security group mengatur traffic.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vm-data-disk",
+            "f-u05-vm-image",
+            "f-u05-vm-nsg"
+          ]
+        },
+        {
+          "id": "u05-l6-e3",
+          "type": "choice",
+          "concept": "vm-states",
+          "prompt": "A company stops a virtual machine from the Azure portal so that its status is Stopped (deallocated). Which part of the virtual machine is still billed?",
+          "options": [
+            "Its compute time",
+            "Both its compute time and its disks",
+            "Nothing, because a deallocated virtual machine is free",
+            "Its disks"
+          ],
+          "answer": 3,
+          "explanation": "VM (Virtual Machine) yang deallocated berhenti ditagih compute-nya, tapi disk-nya tetap ditagih karena datanya masih disimpan.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vm-deallocated",
+            "f-u05-vm-disk-billed"
+          ]
+        },
+        {
+          "id": "u05-l6-e4",
+          "type": "match",
+          "concept": "vm-resources",
+          "prompt": "A company is planning its first virtual machine. Match each resource with its purpose.",
+          "pairs": [
+            [
+              "Virtual network",
+              "Lets the virtual machine communicate with other resources"
+            ],
+            [
+              "Network interface card (NIC)",
+              "Connects the virtual machine to the virtual network"
+            ],
+            [
+              "Network security group (NSG)",
+              "Allows or blocks traffic to the virtual machine"
+            ],
+            [
+              "Operating system disk",
+              "Holds the operating system that the virtual machine starts from"
+            ]
+          ],
+          "explanation": "Virtual network untuk komunikasi, NIC (Network Interface Card) menghubungkan VM (Virtual Machine) ke virtual network, NSG (Network Security Group) mengatur traffic, dan disk sistem operasi berisi sistem operasi VM.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vm-parts",
+            "f-u05-vm-nsg"
+          ]
+        },
+        {
+          "id": "u05-l6-e5",
+          "type": "choice",
+          "concept": "vm-resources",
+          "prompt": "An admin needs to connect to a Linux virtual machine from the internet by using SSH (Secure Shell) on port 22. Which resources must allow this connection?",
+          "options": [
+            "A second operating system disk and a larger size for the virtual machine",
+            "A new VM (Virtual Machine) image and an availability set",
+            "A data disk and a Virtual Machine Scale Set",
+            "A public IP (Internet Protocol) address and a network security group rule that allows port 22"
+          ],
+          "answer": 3,
+          "explanation": "Supaya bisa dihubungi dari internet, VM (Virtual Machine) butuh alamat IP (Internet Protocol) public, dan network security group harus mengizinkan port 22 untuk SSH (Secure Shell). Disk, size, image, dan scale set tidak mengatur akses jaringan.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vm-parts",
+            "f-u05-vm-nsg",
+            "f-u05-vm-size",
+            "f-u05-vm-image",
+            "f-u05-vmss-def"
+          ]
+        },
+        {
+          "id": "u05-l6-e6",
+          "type": "choice",
+          "concept": "availability-sets",
+          "prompt": "A company runs three virtual machines for an app. A failure of one power source or network switch must not stop all three virtual machines, and the company does not want to pay extra for this protection. What should the company use?",
+          "options": [
+            "Azure Virtual Desktop",
+            "An availability set",
+            "One virtual machine with a larger size",
+            "ACI (Azure Container Instances)"
+          ],
+          "answer": 1,
+          "explanation": "Availability set menyebar VM (Virtual Machine) ke fault domain, yaitu kelompok VM yang berbagi sumber listrik dan network switch, tanpa biaya tambahan. Satu VM besar justru menjadi satu titik kegagalan.",
+          "examReady": true,
+          "requires": [
+            "f-u05-avset-fd",
+            "f-u05-avset-free",
+            "f-u05-avd-def",
+            "f-u05-aci-def",
+            "f-u05-vm-size"
+          ]
+        },
+        {
+          "id": "u05-l6-e7",
+          "type": "choice",
+          "concept": "azure-virtual-desktop",
+          "prompt": "A company wants employees to use a Windows desktop with company apps from home, on their own devices. To save costs, several employees should share one virtual machine. What should the company use?",
+          "options": [
+            "A Virtual Machine Scale Set with one virtual machine for each employee",
+            "Azure Functions",
+            "ACI (Azure Container Instances)",
+            "Azure Virtual Desktop with Windows 11 Enterprise multi-session"
+          ],
+          "answer": 3,
+          "explanation": "Azure Virtual Desktop menjalankan desktop Windows di Azure yang dipakai dari jauh, dan Windows 11 Enterprise multi-session membuat beberapa pengguna bisa memakai satu VM (Virtual Machine) sekaligus.",
+          "examReady": true,
+          "requires": [
+            "f-u05-avd-def",
+            "f-u05-avd-multisession",
+            "f-u05-vmss-def",
+            "f-u03-functions",
+            "f-u05-aci-def"
+          ]
+        },
+        {
+          "id": "u05-l6-e8",
+          "type": "choice",
+          "concept": "aks",
+          "prompt": "A company runs hundreds of containers for its microservices. It needs a managed service to deploy, scale, and manage all of them. What should the company use?",
+          "options": [
+            "AKS (Azure Kubernetes Service)",
+            "ACI (Azure Container Instances) for a single container",
+            "Azure Virtual Desktop",
+            "An availability set"
+          ],
+          "answer": 0,
+          "explanation": "AKS (Azure Kubernetes Service) adalah layanan Kubernetes terkelola untuk men-deploy, men-scale, dan mengelola banyak container. ACI (Azure Container Instances) adalah cara paling sederhana untuk menjalankan container tanpa orkestrasi.",
+          "examReady": true,
+          "requires": [
+            "f-u05-aks-def",
+            "f-u05-aci-def",
+            "f-u05-avd-def",
+            "f-u05-avset-fd"
+          ]
+        },
+        {
+          "id": "u05-l6-e9",
+          "type": "yesno",
+          "concept": "containers",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A developer plans to package an app as a container instead of running it on a virtual machine.",
+          "statements": [
+            {
+              "text": "The container includes the app and everything that the app needs to run.",
+              "answer": true
+            },
+            {
+              "text": "The container runs its own full operating system, like a virtual machine.",
+              "answer": false
+            },
+            {
+              "text": "The container can usually start faster than a virtual machine.",
+              "answer": true
+            }
+          ],
+          "explanation": "Container membungkus aplikasi beserta kebutuhannya dan berbagi sistem operasi host, jadi lebih ringan dan bisa menyala dalam hitungan detik. VM (Virtual Machine) menjalankan sistem operasi lengkap.",
+          "examReady": true,
+          "requires": [
+            "f-u05-container-def",
+            "f-u05-container-vs-vm",
+            "f-u05-container-fast"
+          ]
+        },
+        {
+          "id": "u05-l6-e10",
+          "type": "choice",
+          "concept": "app-service",
+          "prompt": "A company needs to host a REST (Representational State Transfer) API (Application Programming Interface) and a mobile back end. The teams use different programming languages, and some need Linux while others need Windows. The company does not want to manage servers. What should it use?",
+          "options": [
+            "Azure Virtual Machines",
+            "Azure App Service",
+            "Azure Virtual Desktop",
+            "An availability set"
+          ],
+          "answer": 1,
+          "explanation": "Azure App Service menghosting web app, REST (Representational State Transfer) API (Application Programming Interface), dan mobile back end, mendukung banyak bahasa di Windows dan Linux, tanpa server yang harus dikelola. VM (Virtual Machine) harus dikelola sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u05-appsvc-def",
+            "f-u05-vm-def",
+            "f-u05-avd-def",
+            "f-u05-avset-fd"
+          ]
+        },
+        {
+          "id": "u05-l6-e11",
+          "type": "multi",
+          "concept": "vm-scale-sets",
+          "prompt": "Which two statements about Virtual Machine Scale Sets are true? Choose two.",
+          "options": [
+            "The number of virtual machines can change automatically with the load or on a schedule",
+            "All virtual machines in the scale set are created from the same configuration",
+            "Each virtual machine in the scale set must be configured by hand",
+            "A scale set can contain only one virtual machine"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "explanation": "Scale set membuat dan mengelola sekelompok VM (Virtual Machine) identik dari satu konfigurasi, dan jumlahnya bisa naik-turun otomatis mengikuti beban atau jadwal.",
+          "examReady": true,
+          "requires": [
+            "f-u05-vmss-def",
+            "f-u05-vmss-autoscale"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
@@ -1327,6 +1696,26 @@
       "id": "f-u05-compute-choice",
       "statement": "Pilih compute sesuai kebutuhan: kontrol sistem operasi di VM, banyak VM identik di scale set, container sederhana di ACI, banyak container di AKS, web app di App Service, dan kode berbasis event di Azure Functions.",
       "source": "https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/compute-decision-tree"
+    },
+    {
+      "id": "f-u05-vm-parts",
+      "statement": "Saat membuat VM (Virtual Machine), kamu juga membuat resource pendukungnya: virtual network, network interface card (NIC) yang menghubungkan VM ke virtual network, alamat IP (Internet Protocol) private dan kadang public, network security group (NSG), serta disk sistem operasi dan bisa juga disk data.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/overview"
+    },
+    {
+      "id": "f-u05-vm-nsg",
+      "statement": "Network security group (NSG) mengatur traffic yang masuk ke dan keluar dari VM (Virtual Machine), misalnya membuka port 22 untuk SSH (Secure Shell) dan memblokir port 80.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/overview"
+    },
+    {
+      "id": "f-u05-vm-data-disk",
+      "statement": "Sebaiknya data disimpan di disk data yang terpisah dari disk sistem operasi, supaya kalau VM (Virtual Machine) gagal, disk data bisa dilepas dan dipasang ke VM baru.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/overview"
+    },
+    {
+      "id": "f-u05-vm-size",
+      "statement": "Ukuran (size) VM (Virtual Machine) menentukan daya proses, memori, kapasitas storage, dan bandwidth jaringan; Azure menagih VM per jam berdasarkan ukuran dan sistem operasinya, sedangkan storage ditagih terpisah.",
+      "source": "https://learn.microsoft.com/en-us/azure/virtual-machines/overview"
     }
   ]
 }

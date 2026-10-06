@@ -1,4 +1,4 @@
-import { BookOpen, ChevronLeft, FlaskConical, ListChecks } from 'lucide-react'
+import { BookOpen, ChevronLeft, ClipboardCheck, FlaskConical, ListChecks } from 'lucide-react'
 import { MissionCard, TipBox } from '../components/PracticeBlocks'
 import { cardConcepts, cardsByLesson, courseOf, findUnit, isExercise, unitNumber } from '../content/course'
 import { labFor } from '../content/labs'
@@ -68,7 +68,18 @@ export function GuideScreen({ unitId }: { unitId: string }) {
           {mission && ' Setiap lesson punya tips "Coba di Azure", dan misi unit ada di akhir panduan.'}
         </p>
         {sections.map(({ lesson, cards }, i) =>
-          cards.length === 0 ? null : (
+          lesson.review ? (
+            <section key={lesson.id} aria-labelledby={`guide-${lesson.id}`}>
+              <h2 id={`guide-${lesson.id}`} className="font-display text-17 font-bold text-tinta-lembut">
+                Lesson {i + 1} · {lesson.title}
+              </h2>
+              <p className="mt-2 flex items-start gap-2 text-15">
+                <ClipboardCheck size={18} className="mt-0.5 shrink-0 text-biru-dalam" aria-hidden="true" />
+                {lesson.items.filter(isExercise).length} soal bergaya ujian asli tentang semua lesson di atas, tanpa materi baru. Kalau ada yang salah, tombol &quot;Pelajari lagi&quot; membuka
+                kartu materinya.
+              </p>
+            </section>
+          ) : cards.length === 0 ? null : (
             <section key={lesson.id} aria-labelledby={`guide-${lesson.id}`}>
               <h2 id={`guide-${lesson.id}`} className="font-display text-17 font-bold text-tinta-lembut">
                 Lesson {i + 1} · {lesson.title}

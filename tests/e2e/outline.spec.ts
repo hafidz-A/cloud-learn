@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { answer, ITEMS, main, next } from './helpers'
+import { answer, exercisesOf, ITEMS, main, next, UNITS } from './helpers'
 
 // The map of the official skills outline (docs/RENCANA_LULUS_UJIAN.md).
 
@@ -44,4 +44,25 @@ test("the AZ-104 outline map shows the AZ-104 items, and the guide shows each le
 
   await page.goto('/#/guide/az104-u01-identity')
   await expect(page.getByRole('list', { name: 'Kisi-kisi ujian' }).first()).toContainText('Create users and groups')
+})
+
+test('an exam practice lesson ends each unit: marked on the map and in the guide, and playable', async ({ page }) => {
+  const practice = UNITS.find((u) => u.id === 'u04-core-architecture')!.lessons.at(-1)!
+  expect(practice.review).toBe(true)
+  await page.goto('/')
+  await page.locator(`[data-node="${practice.id}"]`).click()
+  await expect(page.getByText('Soal bergaya ujian asli tentang semua lesson di unit ini, tanpa materi baru.')).toBeVisible()
+  await page.goto('/#/guide/u04-core-architecture')
+  await expect(page.getByRole('heading', { name: new RegExp(`Lesson \\d · ${practice.title}`) })).toBeVisible()
+  await expect(page.getByText(`${exercisesOf(practice).length} soal bergaya ujian asli`)).toBeVisible()
+
+  await page.goto(`/#/lesson/${practice.id}`)
+  for (let guard = 0; guard < 40; guard++) {
+    if (await page.getByRole('heading', { name: 'Lesson selesai!' }).isVisible()) break
+    const item = ITEMS.get((await main(page).getAttribute('data-item-id'))!)!
+    expect(item.type === 'learn' || item.type === 'intro').toBe(false)
+    await answer(page, item)
+    await next(page)
+  }
+  await expect(page.getByRole('heading', { name: 'Lesson selesai!' })).toBeVisible()
 })

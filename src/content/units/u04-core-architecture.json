@@ -265,6 +265,95 @@
             "f-u04-pair-recovery",
             "f-u04-pair-def"
           ]
+        },
+        {
+          "id": "u04-l1-m1",
+          "type": "learn",
+          "concepts": [
+            "physical-infrastructure"
+          ],
+          "title": "Datacenter dan apa yang kamu pilih",
+          "body": "Datacenter adalah gedung fisik berisi rak server, lengkap dengan listrik, pendingin, dan jaringan. Satu availability zone berisi satu atau lebih datacenter, dan region berisi sekumpulan datacenter. Microsoft menjaganya berlapis: kunjungan harus diajukan dan disetujui dulu, lalu diperiksa di pagar, pintu gedung, dalam gedung, dan lantai server. Saat deploy, kamu memilih region dan, untuk resource zonal, nomor zone logis, bukan datacenter tertentu. Resource zonal hidup di satu zone pilihanmu, sedangkan resource zone-redundant disebar layanannya ke beberapa zone.",
+          "keyPoints": [
+            "Datacenter → availability zone → region",
+            "Keamanan fisik berlapis, tanggung jawab Microsoft",
+            "Kamu memilih region dan zone, bukan datacenter",
+            "Zonal: satu zone. Zone-redundant: beberapa zone"
+          ],
+          "trap": "Zone 1 di subscription-mu belum tentu datacenter yang sama dengan zone 1 di subscription lain. Nomor zone itu logis.",
+          "link": "https://learn.microsoft.com/en-us/azure/security/fundamentals/physical-security",
+          "teaches": [
+            "f-u04-dc-def",
+            "f-u04-dc-security",
+            "f-u04-dc-choose",
+            "f-u04-az-types"
+          ]
+        },
+        {
+          "id": "u04-l1-e10",
+          "type": "choice",
+          "concept": "physical-infrastructure",
+          "prompt": "A company needs to deploy a virtual machine in Azure. Which location settings can the company choose when it creates the virtual machine?",
+          "options": [
+            "A region and, for a zonal deployment, an availability zone number",
+            "A specific datacenter building in the region and the floor where the server sits",
+            "A specific server rack in a datacenter",
+            "A specific datacenter floor and its security level"
+          ],
+          "answer": 0,
+          "explanation": "Kamu memilih region dan, untuk resource zonal, nomor zone logis (1, 2, atau 3). Gedung, rak, dan lantai datacenter tidak pernah dipilih customer; Microsoft yang mengelolanya.",
+          "examReady": true,
+          "requires": [
+            "f-u04-dc-choose",
+            "f-u04-dc-def"
+          ]
+        },
+        {
+          "id": "u04-l1-e11",
+          "type": "yesno",
+          "concept": "physical-infrastructure",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to move its workloads from its own server room to Azure.",
+          "statements": [
+            {
+              "text": "Microsoft is responsible for the physical security of the Azure datacenters.",
+              "answer": true
+            },
+            {
+              "text": "Contoso staff can walk into an Azure datacenter at any time to inspect the hardware that runs their resources.",
+              "answer": false
+            },
+            {
+              "text": "An availability zone is made up of one or more datacenters with independent power, cooling, and networking.",
+              "answer": true
+            }
+          ],
+          "explanation": "Keamanan fisik datacenter selalu tanggung jawab Microsoft. Akses ke datacenter harus diajukan dengan alasan bisnis dan disetujui lebih dulu, jadi tidak bisa masuk kapan saja. Satu availability zone berisi satu atau lebih datacenter dengan listrik, pendingin, dan jaringan sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u01-sr-microsoft-always",
+            "f-u04-dc-security",
+            "f-u04-dc-def"
+          ]
+        },
+        {
+          "id": "u04-l1-e12",
+          "type": "choice",
+          "concept": "physical-infrastructure",
+          "prompt": "A company has two subscriptions. It deploys vm-a to availability zone 1 in West Europe from the first subscription, and vm-b to availability zone 1 in West Europe from the second subscription. Which statement is true?",
+          "options": [
+            "vm-a and vm-b always run in the same datacenter building, because they use the same zone number in the same region",
+            "vm-a and vm-b always run on the same physical server",
+            "vm-b is moved to zone 2 because zone 1 is already used by the company",
+            "vm-a and vm-b might run in different physical datacenters, because zone numbers are logical per subscription"
+          ],
+          "answer": 3,
+          "explanation": "Nomor zone itu logis. Pemetaan zone logis ke zone fisik bisa berbeda di tiap subscription, jadi zone 1 di dua subscription belum tentu datacenter yang sama.",
+          "examReady": true,
+          "requires": [
+            "f-u04-dc-choose",
+            "f-u04-dc-def"
+          ]
         }
       ]
     },
@@ -374,18 +463,21 @@
             "resource-groups"
           ],
           "title": "Resource group",
-          "body": "Resource group adalah wadah logis untuk mengelompokkan resource. Setiap resource ada di tepat satu resource group, dan resource group tidak bisa di-nest. Isinya boleh berada di region yang berbeda-beda. Menghapus resource group ikut menghapus semua isinya, dan tidak bisa dibatalkan.",
+          "body": "Resource group adalah wadah logis untuk mengelompokkan resource. Setiap resource ada di tepat satu resource group, dan resource group tidak bisa di-nest. Isinya boleh berada di region yang berbeda-beda. Menghapus resource group ikut menghapus semua isinya, dan tidak bisa dibatalkan. Lokasi resource group hanya menentukan tempat metadata-nya disimpan. Resource juga bisa dipindah ke resource group lain.",
           "keyPoints": [
             "Satu resource = tepat satu resource group",
             "Tidak bisa di-nest; isinya boleh beda region",
-            "Hapus resource group = semua isinya ikut terhapus"
+            "Hapus resource group = semua isinya ikut terhapus",
+            "Lokasi resource group = tempat metadata; resource bisa dipindah"
           ],
           "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group",
           "teaches": [
             "f-u04-rg-def",
             "f-u04-rg-one",
             "f-u04-rg-regions",
-            "f-u04-rg-delete"
+            "f-u04-rg-delete",
+            "f-u04-rg-metadata",
+            "f-u04-rg-move"
           ]
         },
         {
@@ -553,6 +645,45 @@
             "f-u04-rg-def",
             "f-u04-sovereign",
             "f-u04-region"
+          ]
+        },
+        {
+          "id": "u04-l2-e10",
+          "type": "choice",
+          "concept": "resource-groups",
+          "prompt": "A company creates a resource group in West Europe. You need to deploy a virtual machine in East US and add it to the same resource group. What should you do?",
+          "options": [
+            "Move the resource group to East US first",
+            "Create a second resource group in East US, because a resource group only holds resources from its own region",
+            "Deploy the virtual machine to West Europe instead",
+            "Deploy it to East US in the existing resource group"
+          ],
+          "answer": 3,
+          "explanation": "Lokasi resource group hanya menentukan tempat metadata-nya disimpan. Resource di dalamnya boleh berada di region lain, jadi VM (Virtual Machine) di East US bisa masuk resource group di West Europe.",
+          "examReady": true,
+          "requires": [
+            "f-u04-rg-metadata",
+            "f-u04-rg-regions"
+          ]
+        },
+        {
+          "id": "u04-l2-e11",
+          "type": "choice",
+          "concept": "resource-groups",
+          "prompt": "A company runs a three-month test project with a virtual machine, a disk, and a virtual network. When the project ends, all of them must be removed. You need to remove them with the least administrative effort. What should you do?",
+          "options": [
+            "Put the three resources in one resource group and delete the resource group when the project ends",
+            "Put each resource in its own resource group",
+            "Put the resources in the production resource group and delete each resource by hand when the project ends",
+            "Create a new subscription for each resource"
+          ],
+          "answer": 0,
+          "explanation": "Resource yang lifecycle-nya sama ditaruh di satu resource group. Menghapus resource group ikut menghapus semua isinya sekaligus. Mencampur dengan resource produksi berbahaya, karena penghapusan resource group menghapus produksi juga.",
+          "examReady": true,
+          "requires": [
+            "f-u04-rg-lifecycle",
+            "f-u04-rg-delete",
+            "f-u04-rg-def"
           ]
         }
       ]
@@ -780,6 +911,96 @@
             "f-u04-rg-def",
             "f-u04-sub-multi"
           ]
+        },
+        {
+          "id": "u04-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "subscriptions"
+          ],
+          "title": "Subscription dan tenant",
+          "body": "Setiap subscription mempercayai tepat satu tenant Microsoft Entra, yaitu directory identitas yang memeriksa siapa yang masuk dan apa izinnya. Sebaliknya, satu tenant boleh dipercaya banyak subscription. Jadi perusahaan dengan satu directory karyawan bisa punya subscription Dev, Test, dan Prod yang memakai akun karyawan yang sama.",
+          "keyPoints": [
+            "Satu subscription → tepat satu tenant",
+            "Satu tenant → boleh banyak subscription"
+          ],
+          "link": "https://learn.microsoft.com/en-us/entra/fundamentals/how-subscriptions-associated-directory",
+          "teaches": [
+            "f-u04-sub-trust"
+          ]
+        },
+        {
+          "id": "u04-l3-e9",
+          "type": "choice",
+          "concept": "subscriptions",
+          "prompt": "A company has one Microsoft Entra tenant for all its employees. It plans to create three subscriptions: Dev, Test, and Prod. Which statement is true?",
+          "options": [
+            "Each subscription needs its own tenant",
+            "All three subscriptions can trust the same tenant",
+            "A subscription can trust two tenants at the same time",
+            "Subscriptions do not use a tenant to sign users in"
+          ],
+          "answer": 1,
+          "explanation": "Setiap subscription mempercayai tepat satu tenant untuk autentikasi dan otorisasi, dan satu tenant boleh dipercaya banyak subscription.",
+          "examReady": true,
+          "requires": [
+            "f-u04-sub-trust"
+          ]
+        },
+        {
+          "id": "u04-l3-e10",
+          "type": "yesno",
+          "concept": "subscriptions",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso creates a subscription named Prod for its production apps.",
+          "statements": [
+            {
+              "text": "Costs for resources in Prod are billed to the Prod subscription.",
+              "answer": true
+            },
+            {
+              "text": "Prod can trust two Microsoft Entra tenants at the same time.",
+              "answer": false
+            },
+            {
+              "text": "A resource in Prod can also belong to another subscription at the same time.",
+              "answer": false
+            }
+          ],
+          "explanation": "Subscription adalah batas tagihan. Subscription mempercayai tepat satu tenant, dan setiap resource hanya berada di satu subscription.",
+          "examReady": true,
+          "requires": [
+            "f-u04-sub-billing",
+            "f-u04-sub-trust",
+            "f-u04-sub-one"
+          ]
+        },
+        {
+          "id": "u04-l3-e11",
+          "type": "yesno",
+          "concept": "resource-groups",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to reorganize its resources. Its resource group rg-web contains a virtual machine named vm-web.",
+          "statements": [
+            {
+              "text": "You can move vm-web from rg-web to another resource group.",
+              "answer": true
+            },
+            {
+              "text": "vm-web can belong to rg-web and to a second resource group at the same time.",
+              "answer": false
+            },
+            {
+              "text": "You can create a resource group named rg-data inside rg-web.",
+              "answer": false
+            }
+          ],
+          "explanation": "Resource bisa dipindah ke resource group lain. Tapi setiap resource hanya ada di tepat satu resource group, dan resource group tidak bisa di-nest.",
+          "examReady": true,
+          "requires": [
+            "f-u04-rg-move",
+            "f-u04-rg-one"
+          ]
         }
       ]
     },
@@ -1003,6 +1224,431 @@
           "requires": [
             "f-u04-hierarchy"
           ]
+        },
+        {
+          "id": "u04-l4-m2",
+          "type": "learn",
+          "concepts": [
+            "management-group-limits"
+          ],
+          "title": "Root management group",
+          "body": "Setiap directory punya satu management group teratas bernama Tenant root group, dengan ID (Identifier) yang sama dengan ID tenant. Semua management group dan subscription berada di bawahnya. Jadi policy atau akses yang dipasang di root berlaku untuk semuanya. Root tidak bisa dipindah atau dihapus, dan satu directory bisa menampung sampai 10.000 management group.",
+          "keyPoints": [
+            "Satu root per directory: Tenant root group",
+            "Pengaturan di root berlaku untuk semuanya",
+            "Sampai 10.000 management group per directory"
+          ],
+          "link": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview",
+          "teaches": [
+            "f-u04-mg-root",
+            "f-u04-mg-limit"
+          ]
+        },
+        {
+          "id": "u04-l4-e9",
+          "type": "choice",
+          "concept": "management-group-limits",
+          "prompt": "A company creates its first management group in its Microsoft Entra directory. Where is the new management group placed in the hierarchy?",
+          "options": [
+            "Under one of the subscriptions",
+            "Under the root management group of the directory",
+            "Inside a resource group",
+            "Outside the hierarchy until a policy is assigned to it"
+          ],
+          "answer": 1,
+          "explanation": "Semua management group dan subscription berada di bawah root management group (Tenant root group). Management group tidak pernah ada di bawah subscription atau di dalam resource group.",
+          "examReady": true,
+          "requires": [
+            "f-u04-mg-root",
+            "f-u04-hierarchy"
+          ]
+        },
+        {
+          "id": "u04-l4-e10",
+          "type": "multi",
+          "concept": "management-group-limits",
+          "prompt": "A company plans its management group hierarchy. Which two statements are true? Choose two.",
+          "options": [
+            "Each directory has exactly one root management group",
+            "A subscription can have two parent management groups",
+            "A management group can have many child management groups",
+            "The hierarchy can have ten levels of management groups below the root"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Setiap directory punya satu root management group, dan satu management group boleh punya banyak child. Subscription hanya punya satu parent, dan pohonnya maksimal enam level di bawah root.",
+          "examReady": true,
+          "requires": [
+            "f-u04-mg-root",
+            "f-u04-mg-parent",
+            "f-u04-mg-depth"
+          ]
+        },
+        {
+          "id": "u04-l4-e11",
+          "type": "choice",
+          "concept": "resource-hierarchy",
+          "prompt": "A company gives a user read access at a management group that contains two subscriptions. The user opens a virtual machine in one of those subscriptions. What can the user do?",
+          "options": [
+            "Nothing, because access at a management group only applies to the management group itself",
+            "Delete the virtual machine",
+            "View the virtual machine, because access is inherited down the hierarchy",
+            "View the subscriptions, but not the resources inside them"
+          ],
+          "answer": 2,
+          "explanation": "Akses yang diberikan di satu level diwariskan ke semua level di bawahnya: management group, subscription, resource group, lalu resource. Akses baca hanya untuk melihat, bukan menghapus.",
+          "examReady": true,
+          "requires": [
+            "f-u04-inheritance",
+            "f-u04-hierarchy",
+            "f-u04-mg-def"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u04-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u04-l5-e1",
+          "type": "choice",
+          "concept": "availability-zones",
+          "prompt": "A company runs a web app on a single virtual machine that is deployed to availability zone 1. Zone 1 has an outage. What happens to the app?",
+          "options": [
+            "Azure moves the virtual machine to a healthy zone automatically, so the app keeps running",
+            "The app goes down, because a zonal virtual machine runs only in the zone you selected",
+            "The app keeps running from the paired region automatically",
+            "Nothing, because every virtual machine is zone-redundant"
+          ],
+          "answer": 1,
+          "explanation": "VM (Virtual Machine) zonal hanya hidup di satu zone yang kamu pilih dan tidak otomatis pindah saat zone itu mati. Supaya tahan zone mati, jalankan beberapa VM di zone yang berbeda.",
+          "examReady": true,
+          "requires": [
+            "f-u04-az-types",
+            "f-u04-az-spread",
+            "f-u04-pair-dr"
+          ]
+        },
+        {
+          "id": "u04-l5-e2",
+          "type": "yesno",
+          "concept": "physical-infrastructure",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company deploys a zonal virtual machine to availability zone 2 in its subscription.",
+          "statements": [
+            {
+              "text": "The company chose the specific datacenter building that runs the virtual machine.",
+              "answer": false
+            },
+            {
+              "text": "Zone 2 maps to the same physical datacenters for every Azure subscription.",
+              "answer": false
+            },
+            {
+              "text": "Microsoft is responsible for the physical security of the datacenters in that zone.",
+              "answer": true
+            }
+          ],
+          "explanation": "Customer memilih nomor zone logis, bukan gedung datacenter. Pemetaan zone logis ke fisik bisa berbeda di tiap subscription. Keamanan fisik datacenter selalu tanggung jawab Microsoft.",
+          "examReady": true,
+          "requires": [
+            "f-u04-dc-choose",
+            "f-u01-sr-microsoft-always"
+          ]
+        },
+        {
+          "id": "u04-l5-e3",
+          "type": "choice",
+          "concept": "region-pairs",
+          "prompt": "A company deploys its app to a newer Azure region that has no region pair. The region supports availability zones. Which statement is true?",
+          "options": [
+            "The company cannot deploy resources to a region without a pair",
+            "The company can still protect the app from a datacenter failure by spreading it across availability zones",
+            "Azure pairs the region with the nearest older region automatically when the company deploys its first resource",
+            "Every Azure region has a region pair, so this cannot happen"
+          ],
+          "answer": 1,
+          "explanation": "Tidak semua region punya pasangan; banyak region baru tidak dipasangkan dan memakai availability zone sebagai cara utama redundansi. Menyebar aplikasi ke beberapa zone membuatnya tahan satu datacenter atau zone mati.",
+          "examReady": true,
+          "requires": [
+            "f-u04-pair-not-all",
+            "f-u04-az-def",
+            "f-u04-az-spread"
+          ]
+        },
+        {
+          "id": "u04-l5-e4",
+          "type": "choice",
+          "concept": "availability-zones",
+          "prompt": "Your company needs its app to keep running if one datacenter in a region fails. The copies of the app must have the lowest possible network latency between them. Where should you deploy the copies?",
+          "options": [
+            "On two virtual machines in the same datacenter",
+            "In the two regions of a region pair, far apart in the same geography",
+            "In different availability zones of the same region",
+            "In a sovereign region"
+          ],
+          "answer": 2,
+          "explanation": "Availability zone dalam satu region cukup dekat untuk latensi rendah, tapi terpisah secara fisik, jadi tahan satu datacenter mati. Region pair juga melindungi, tapi jaraknya ratusan kilometer sehingga latensinya lebih tinggi. Dua VM (Virtual Machine) di satu datacenter ikut mati bersama datacenter itu.",
+          "examReady": true,
+          "requires": [
+            "f-u04-az-def",
+            "f-u04-az-spread",
+            "f-u04-pair-def",
+            "f-u04-sovereign"
+          ]
+        },
+        {
+          "id": "u04-l5-e5",
+          "type": "choice",
+          "concept": "resource-hierarchy",
+          "prompt": "You need to give a team access to every resource in three resource groups of one subscription, but not to the other resource groups in that subscription. The solution must use the least administrative effort. Where should you assign the access?",
+          "options": [
+            "On the subscription",
+            "On the root management group",
+            "On each of the three resource groups",
+            "On each resource in the three resource groups"
+          ],
+          "answer": 2,
+          "explanation": "Akses yang diberikan di resource group diwariskan ke semua resource di dalamnya, jadi cukup tiga penetapan. Di subscription, akses akan mengalir ke semua resource group, termasuk yang tidak boleh. Per resource juga bisa, tapi jauh lebih banyak kerja.",
+          "examReady": true,
+          "requires": [
+            "f-u04-inheritance",
+            "f-u04-hierarchy",
+            "f-u04-mg-root"
+          ]
+        },
+        {
+          "id": "u04-l5-e6",
+          "type": "choice",
+          "concept": "sovereign-regions",
+          "prompt": "A company needs to run workloads on Azure services that are operated within China to meet local legal requirements. What should the company use?",
+          "options": [
+            "Azure Government",
+            "Any public Azure region in Asia that supports availability zones",
+            "A region pair in Asia",
+            "Azure operated by 21Vianet"
+          ],
+          "answer": 3,
+          "explanation": "Azure di China dioperasikan 21Vianet sebagai sovereign region yang terpisah dari Azure utama. Azure Government hanya untuk instansi pemerintah Amerika Serikat dan mitranya.",
+          "examReady": true,
+          "requires": [
+            "f-u04-sovereign",
+            "f-u04-gov-eligibility",
+            "f-u04-pair-def"
+          ]
+        },
+        {
+          "id": "u04-l5-e7",
+          "type": "multi",
+          "concept": "physical-infrastructure",
+          "prompt": "Which two measures are part of how Microsoft controls physical access to Azure datacenters? Choose two.",
+          "options": [
+            "Visits must be requested with a business reason and approved in advance",
+            "Customers install their own locks on the server racks they use",
+            "Identity checks happen at several layers, from the facility perimeter to the datacenter floor",
+            "Customer staff guard the servers that run their resources"
+          ],
+          "answers": [
+            0,
+            2
+          ],
+          "explanation": "Microsoft mengamankan datacenter berlapis: akses diajukan dan disetujui dulu, lalu diperiksa di perimeter, pintu gedung, dalam gedung, dan lantai datacenter. Keamanan fisik bukan tugas customer.",
+          "examReady": true,
+          "requires": [
+            "f-u04-dc-security",
+            "f-u01-sr-microsoft-always"
+          ]
+        },
+        {
+          "id": "u04-l5-e8",
+          "type": "yesno",
+          "concept": "resource-hierarchy",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso has a management group named Corp. Corp contains a subscription named Prod. Prod contains a resource group named rg-web, which contains a virtual machine named vm-web.",
+          "statements": [
+            {
+              "text": "Access granted at Corp applies to vm-web.",
+              "answer": true
+            },
+            {
+              "text": "Access granted at rg-web applies to the other resource groups in Prod.",
+              "answer": false
+            },
+            {
+              "text": "vm-web can be placed directly under Corp, without a subscription.",
+              "answer": false
+            }
+          ],
+          "explanation": "Akses mengalir ke bawah: dari Corp ke Prod, rg-web, lalu vm-web. Akses tidak mengalir ke samping, jadi akses di rg-web tidak berlaku di resource group lain. Resource selalu dibuat di dalam subscription, lewat resource group.",
+          "examReady": true,
+          "requires": [
+            "f-u04-inheritance",
+            "f-u04-hierarchy",
+            "f-u04-sub-required"
+          ]
+        },
+        {
+          "id": "u04-l5-e9",
+          "type": "choice",
+          "concept": "availability-zones",
+          "prompt": "A company needs a managed database in one region. The data must survive the outage of one availability zone, and the company does not want to manage copies of the data itself. Which kind of deployment should the company choose?",
+          "options": [
+            "Zonal",
+            "A single datacenter",
+            "Zone-redundant",
+            "A sovereign region"
+          ],
+          "answer": 2,
+          "explanation": "Resource zone-redundant direplikasi oleh layanannya ke beberapa zone, dan Microsoft memindahkannya ke zone lain secara otomatis saat satu zone mati. Resource zonal hanya ada di satu zone.",
+          "examReady": true,
+          "requires": [
+            "f-u04-az-types",
+            "f-u04-sovereign"
+          ]
+        },
+        {
+          "id": "u04-l5-e10",
+          "type": "choice",
+          "concept": "management-groups",
+          "prompt": "A company has three departments. Each department has five subscriptions. The company needs one policy that applies to all 15 subscriptions and a different policy for each department. The solution must minimize administrative effort. What should you create?",
+          "options": [
+            "One resource group per department in each of the 15 subscriptions, with the policies assigned to each one",
+            "One subscription that contains all 15 subscriptions",
+            "One management group per department, all under a company-wide management group",
+            "A separate Microsoft Entra tenant for each department"
+          ],
+          "answer": 2,
+          "explanation": "Policy di management group perusahaan diwariskan ke semua departemen, dan policy di management group departemen berlaku untuk lima subscription-nya. Subscription tidak bisa berisi subscription lain, dan memecah tenant membuat pengelolaan lebih berat.",
+          "examReady": true,
+          "requires": [
+            "f-u04-mg-def",
+            "f-u04-mg-parent",
+            "f-u04-inheritance",
+            "f-u04-hierarchy",
+            "f-u04-sub-trust"
+          ]
+        },
+        {
+          "id": "u04-l5-e11",
+          "type": "choice",
+          "concept": "physical-infrastructure",
+          "prompt": "A company moves its workloads from an on-premises server room to Azure virtual machines. Which task does the company no longer have to do?",
+          "options": [
+            "Install security updates on the operating system of each virtual machine",
+            "Manage the accounts that sign in to the apps",
+            "Secure the datacenter buildings and server racks that host the workloads",
+            "Protect the data stored by the apps"
+          ],
+          "answer": 2,
+          "explanation": "Keamanan fisik datacenter, termasuk gedung dan rak server, selalu tanggung jawab Microsoft. Di IaaS (Infrastructure as a Service), customer tetap mengurus sistem operasi VM (Virtual Machine), akun, dan data.",
+          "examReady": true,
+          "requires": [
+            "f-u01-sr-microsoft-always",
+            "f-u01-sr-iaas",
+            "f-u01-sr-customer-always"
+          ]
+        },
+        {
+          "id": "u04-l5-e12",
+          "type": "match",
+          "concept": "resource-hierarchy",
+          "prompt": "Match each need to the level of the Azure hierarchy where you should handle it.",
+          "pairs": [
+            [
+              "Apply rules to many subscriptions at once",
+              "Management group"
+            ],
+            [
+              "Get a separate bill for one department",
+              "Subscription"
+            ],
+            [
+              "Delete all resources of a project together",
+              "Resource group"
+            ],
+            [
+              "Run one copy of an app on a server",
+              "Virtual machine (a resource)"
+            ]
+          ],
+          "explanation": "Management group untuk banyak subscription sekaligus, subscription untuk batas tagihan, resource group untuk resource yang lifecycle-nya sama, dan resource adalah item yang kamu buat, misalnya VM (Virtual Machine).",
+          "examReady": true,
+          "requires": [
+            "f-u04-mg-def",
+            "f-u04-sub-billing",
+            "f-u04-rg-lifecycle",
+            "f-u04-resource"
+          ]
+        },
+        {
+          "id": "u04-l5-e13",
+          "type": "choice",
+          "concept": "physical-infrastructure",
+          "prompt": "Which statement about Azure datacenters is correct?",
+          "options": [
+            "An availability zone contains one or more datacenters with independent power, cooling, and networking",
+            "Each Azure region is a single datacenter",
+            "Customers choose the datacenter building and server rack for each resource they deploy in an Azure region",
+            "All zones in a region share one power supply"
+          ],
+          "answer": 0,
+          "explanation": "Satu availability zone berisi satu atau lebih datacenter dengan listrik, pendingin, dan jaringan sendiri, dan region berisi sekumpulan datacenter. Customer memilih region dan zone, bukan gedung datacenter.",
+          "examReady": true,
+          "requires": [
+            "f-u04-dc-def",
+            "f-u04-dc-choose"
+          ]
+        },
+        {
+          "id": "u04-l5-e14",
+          "type": "yesno",
+          "concept": "availability-zones",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to deploy an app to an Azure region that supports availability zones.",
+          "statements": [
+            {
+              "text": "The region has at least three availability zones.",
+              "answer": true
+            },
+            {
+              "text": "Every Azure region supports availability zones.",
+              "answer": false
+            },
+            {
+              "text": "A zone-redundant service fails over to another zone automatically if one zone has an outage.",
+              "answer": true
+            }
+          ],
+          "explanation": "Region yang mendukung zone punya minimal tiga zone, tapi tidak semua region mendukungnya. Untuk resource zone-redundant, Microsoft memindahkannya ke zone lain secara otomatis saat satu zone mati.",
+          "examReady": true,
+          "requires": [
+            "f-u04-az-min3",
+            "f-u04-az-not-all",
+            "f-u04-az-types"
+          ]
+        },
+        {
+          "id": "u04-l5-e15",
+          "type": "choice",
+          "concept": "resource-hierarchy",
+          "prompt": "A company assigns access to a subscription. Later, an administrator creates a new resource group in that subscription. Which statement is true?",
+          "options": [
+            "The access also applies to the new resource group, because it is inherited from the subscription",
+            "The access must be assigned again on the new resource group",
+            "The access applies only to the resource groups that already existed at the time the access was assigned",
+            "The access applies only to the subscription itself, never to its resource groups"
+          ],
+          "answer": 0,
+          "explanation": "Akses yang diberikan di satu level diwariskan ke semua level di bawahnya, termasuk resource group yang dibuat belakangan.",
+          "examReady": true,
+          "requires": [
+            "f-u04-inheritance",
+            "f-u04-hierarchy"
+          ]
         }
       ]
     }
@@ -1147,6 +1793,51 @@
       "id": "f-u04-inheritance",
       "statement": "Akses yang diberikan di satu level diwariskan ke semua level di bawahnya.",
       "source": "https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview"
+    },
+    {
+      "id": "f-u04-dc-def",
+      "statement": "Datacenter adalah fasilitas fisik tempat server Azure berjalan dalam rak; satu availability zone terdiri dari satu atau lebih datacenter dengan listrik, pendingin, dan jaringan sendiri, dan region adalah sekumpulan datacenter yang saling terhubung jaringan.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/physical-security"
+    },
+    {
+      "id": "f-u04-dc-security",
+      "statement": "Microsoft mengamankan datacenter secara berlapis: akses harus diajukan dengan alasan bisnis dan disetujui lebih dulu, lalu diperiksa di perimeter fasilitas, pintu masuk gedung, di dalam gedung, dan di lantai datacenter; pengunjung selalu didampingi.",
+      "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/physical-security"
+    },
+    {
+      "id": "f-u04-dc-choose",
+      "statement": "Saat deploy, kamu memilih region dan, untuk resource zonal, nomor zone logis (1, 2, atau 3), bukan datacenter tertentu; pemetaan zone logis ke zone fisik bisa berbeda di tiap subscription.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"
+    },
+    {
+      "id": "f-u04-az-types",
+      "statement": "Resource zonal di-deploy ke satu availability zone yang kamu pilih dan tidak otomatis tahan kalau zone itu mati; resource zone-redundant direplikasi atau disebar oleh layanannya ke beberapa zone, dan Microsoft memindahkannya ke zone lain secara otomatis saat satu zone mati.",
+      "source": "https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview"
+    },
+    {
+      "id": "f-u04-rg-metadata",
+      "statement": "Resource group menyimpan metadata tentang resource-nya; lokasi resource group menentukan di mana metadata itu disimpan, bukan di mana resource-nya harus berada.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u04-rg-move",
+      "statement": "Resource bisa ditambahkan ke atau dikeluarkan dari resource group kapan saja, dan bisa dipindahkan ke resource group lain.",
+      "source": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+    },
+    {
+      "id": "f-u04-sub-trust",
+      "statement": "Setiap subscription Azure mempercayai tepat satu tenant (directory) Microsoft Entra untuk autentikasi dan otorisasi, sedangkan satu tenant boleh dipercaya oleh banyak subscription.",
+      "source": "https://learn.microsoft.com/en-us/entra/fundamentals/how-subscriptions-associated-directory"
+    },
+    {
+      "id": "f-u04-mg-root",
+      "statement": "Setiap directory punya satu root management group bernama Tenant root group, yang ID-nya sama dengan ID tenant; semua management group dan subscription berada di bawahnya, jadi policy dan akses di root berlaku untuk semuanya, dan root tidak bisa dipindah atau dihapus.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview"
+    },
+    {
+      "id": "f-u04-mg-limit",
+      "statement": "Satu directory bisa menampung sampai 10.000 management group.",
+      "source": "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview"
     }
   ]
 }

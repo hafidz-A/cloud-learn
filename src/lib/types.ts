@@ -30,6 +30,11 @@ export type Lesson = {
   items: LessonItem[] // learn cards and exercises, easiest first (section 11.2)
   /** A branch of the CCNA lesson tree (LANGIT_CCNA_PLAN.md section 4). Lessons without one are the trunk. */
   branch?: LessonBranch
+  /**
+   * An exam practice lesson at the end of a unit (docs/RENCANA_LULUS_UJIAN.md): exam-style
+   * questions on what the unit's lessons taught, without new learn cards.
+   */
+  review?: boolean
 }
 
 /**

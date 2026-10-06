@@ -988,6 +988,294 @@
           ]
         }
       ]
+    },
+    {
+      "id": "u02-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u02-l5-e1",
+          "type": "choice",
+          "concept": "scalability",
+          "prompt": "A company runs its app on one virtual machine. During peak hours, the virtual machine runs out of memory. The company wants to fix this without adding more virtual machines. What should it do?",
+          "options": [
+            "Scale out by adding more virtual machines",
+            "Put a load balancer in front of the single virtual machine",
+            "Create a budget alert in Microsoft Cost Management",
+            "Scale up the virtual machine to a size with more memory"
+          ],
+          "answer": 3,
+          "explanation": "Scale up (vertical scaling) menambah kapasitas satu instance, misalnya memori. Scale out menambah jumlah instance, padahal itu tidak diinginkan. Load balancer membagi traffic ke beberapa instance, jadi tidak membantu satu VM (Virtual Machine) yang kekurangan memori.",
+          "examReady": true,
+          "requires": [
+            "f-u02-vertical",
+            "f-u02-horizontal",
+            "f-u02-load-balancer",
+            "f-u02-cost-management"
+          ]
+        },
+        {
+          "id": "u02-l5-e2",
+          "type": "yesno",
+          "concept": "high-availability",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A company runs its web app on three virtual machines behind a load balancer. One of the virtual machines fails.",
+          "statements": [
+            {
+              "text": "The load balancer keeps sending part of the traffic to the failed virtual machine.",
+              "answer": false
+            },
+            {
+              "text": "The app stays available because the other virtual machines keep serving users.",
+              "answer": true
+            },
+            {
+              "text": "Giving each virtual machine more memory is an example of horizontal scaling.",
+              "answer": false
+            }
+          ],
+          "explanation": "Load balancer memakai health probe, jadi traffic hanya dikirim ke instance yang sehat. Karena ada redundansi, instance lain tetap melayani. Menambah memori satu instance adalah vertical scaling, bukan horizontal.",
+          "examReady": true,
+          "requires": [
+            "f-u02-load-balancer",
+            "f-u02-ha-redundancy",
+            "f-u02-vertical"
+          ]
+        },
+        {
+          "id": "u02-l5-e3",
+          "type": "choice",
+          "concept": "elasticity",
+          "prompt": "A company needs the number of web server instances to grow automatically when CPU (Central Processing Unit) usage is high and to shrink again at night. What should the company configure?",
+          "options": [
+            "A bigger virtual machine size",
+            "An SLA (Service Level Agreement)",
+            "Autoscale",
+            "A Pricing Calculator estimate"
+          ],
+          "answer": 2,
+          "explanation": "Autoscale menambah dan mengurangi jumlah instance secara otomatis berdasarkan jadwal atau metrik seperti CPU (Central Processing Unit). Itulah elasticity. Ukuran VM (Virtual Machine) yang lebih besar tidak menyusut sendiri di malam hari.",
+          "examReady": true,
+          "requires": [
+            "f-u02-autoscale",
+            "f-u02-elasticity",
+            "f-u02-vertical",
+            "f-u02-sla",
+            "f-u02-pricing-calculator"
+          ]
+        },
+        {
+          "id": "u02-l5-e4",
+          "type": "choice",
+          "concept": "high-availability",
+          "prompt": "A company's critical app depends on an Azure service. The company needs to know the uptime that Microsoft commits to for that service and what happens if the commitment is not met. What should the company review?",
+          "options": [
+            "An estimate in the Pricing Calculator for the service",
+            "A budget in Microsoft Cost Management",
+            "The SLA (Service Level Agreement) of the service",
+            "An Azure Policy compliance report for the subscription"
+          ],
+          "answer": 2,
+          "explanation": "SLA (Service Level Agreement) adalah komitmen tertulis tingkat layanan, misalnya persentase uptime. Kalau tidak terpenuhi, customer mendapat service credit. Pricing Calculator dan Cost Management mengurus biaya, sedangkan Azure Policy mengurus kepatuhan.",
+          "examReady": true,
+          "requires": [
+            "f-u02-sla",
+            "f-u02-pricing-calculator",
+            "f-u02-cost-management",
+            "f-u02-policy-audit"
+          ]
+        },
+        {
+          "id": "u02-l5-e5",
+          "type": "choice",
+          "concept": "predictability",
+          "prompt": "A finance team must be warned when Azure spending gets close to the monthly budget. What should the team use?",
+          "options": [
+            "The Pricing Calculator, with an estimate of the monthly bill",
+            "Autoscale",
+            "A budget alert in Microsoft Cost Management",
+            "A load balancer"
+          ],
+          "answer": 2,
+          "explanation": "Microsoft Cost Management memantau pengeluaran dan bisa mengirim peringatan saat pengeluaran mendekati anggaran. Pricing Calculator hanya memperkirakan biaya sebelum resource dibuat, jadi tidak mengirim peringatan.",
+          "examReady": true,
+          "requires": [
+            "f-u02-cost-management",
+            "f-u02-pricing-calculator",
+            "f-u02-autoscale",
+            "f-u02-load-balancer"
+          ]
+        },
+        {
+          "id": "u02-l5-e6",
+          "type": "choice",
+          "concept": "reliability",
+          "prompt": "A company must keep its app running even if an entire Azure region has an outage. What should the company do?",
+          "options": [
+            "Deploy the app in more than one Azure region",
+            "Move the app to a virtual machine size with more memory",
+            "Add a second disk to the virtual machine that runs the app",
+            "Create a budget alert for the subscription"
+          ],
+          "answer": 0,
+          "explanation": "Reliability adalah kemampuan pulih dari kegagalan. Karena Azure ada di banyak region, aplikasi bisa dijalankan di lebih dari satu region supaya tetap jalan saat satu region bermasalah. VM (Virtual Machine) yang lebih besar tetap ada di region yang sama.",
+          "examReady": true,
+          "requires": [
+            "f-u02-reliability",
+            "f-u02-reliability-regions",
+            "f-u02-vertical",
+            "f-u02-cost-management"
+          ]
+        },
+        {
+          "id": "u02-l5-e7",
+          "type": "choice",
+          "concept": "management-in-cloud",
+          "prompt": "An admin needs to create Azure resources by running scripts from a laptop instead of clicking through the portal. Which tools can the admin use?",
+          "options": [
+            "Azure CLI (Command-Line Interface) or Azure PowerShell",
+            "The Pricing Calculator or the budgets in Microsoft Cost Management",
+            "Azure DDoS (Distributed Denial of Service) Protection",
+            "The SLA (Service Level Agreement) of each service"
+          ],
+          "answer": 0,
+          "explanation": "Management in the cloud adalah cara customer mengelola resource: Azure portal, CLI (Command-Line Interface), REST (Representational State Transfer) API (Application Programming Interface), atau PowerShell. CLI dan PowerShell bisa dijalankan sebagai skrip.",
+          "examReady": true,
+          "requires": [
+            "f-u02-mgmt-in-cloud",
+            "f-u02-pricing-calculator",
+            "f-u02-cost-management",
+            "f-u02-ddos",
+            "f-u02-sla"
+          ]
+        },
+        {
+          "id": "u02-l5-e8",
+          "type": "yesno",
+          "concept": "management-of-cloud",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to run a new app in Azure and wants as little manual work as possible.",
+          "statements": [
+            {
+              "text": "Azure can monitor the health of resources and replace failed resources automatically.",
+              "answer": true
+            },
+            {
+              "text": "Contoso can deploy the same environment again from a template.",
+              "answer": true
+            },
+            {
+              "text": "Contoso can manage its resources only by calling Microsoft support.",
+              "answer": false
+            }
+          ],
+          "explanation": "Management of the cloud mencakup memantau kesehatan dan mengganti resource yang gagal, serta deploy dari template. Customer mengelola resource sendiri lewat portal, CLI (Command-Line Interface), REST (Representational State Transfer) API (Application Programming Interface), atau PowerShell, bukan lewat telepon ke Microsoft.",
+          "examReady": true,
+          "requires": [
+            "f-u02-mgmt-of-cloud",
+            "f-u02-templates",
+            "f-u02-mgmt-in-cloud"
+          ]
+        },
+        {
+          "id": "u02-l5-e9",
+          "type": "choice",
+          "concept": "cloud-governance",
+          "prompt": "A company must stop employees from creating Azure resources outside the regions that the company approved. What should the company use?",
+          "options": [
+            "The Pricing Calculator",
+            "A load balancer",
+            "Azure Policy",
+            "Autoscale"
+          ],
+          "answer": 2,
+          "explanation": "Governance memastikan resource mengikuti aturan perusahaan. Azure Policy memeriksa resource, melaporkan yang tidak patuh, dan bisa menolak pembuatan resource yang melanggar, misalnya di region yang tidak diizinkan.",
+          "examReady": true,
+          "requires": [
+            "f-u02-governance",
+            "f-u02-policy-audit",
+            "f-u02-pricing-calculator",
+            "f-u02-load-balancer",
+            "f-u02-autoscale"
+          ]
+        },
+        {
+          "id": "u02-l5-e10",
+          "type": "choice",
+          "concept": "cloud-security",
+          "prompt": "A company's public website is flooded with traffic from many sources and becomes unavailable to customers. Which Azure service helps protect the website from this kind of attack?",
+          "options": [
+            "Azure DDoS (Distributed Denial of Service) Protection",
+            "Azure Policy",
+            "The Pricing Calculator",
+            "A budget alert in Microsoft Cost Management for the website"
+          ],
+          "answer": 0,
+          "explanation": "Serangan DDoS (Distributed Denial of Service) membanjiri layanan dengan traffic dari banyak sumber supaya tidak bisa diakses. Azure DDoS Protection membantu meredamnya. Azure Policy mengurus aturan resource, bukan serangan traffic.",
+          "examReady": true,
+          "requires": [
+            "f-u02-ddos",
+            "f-u02-policy-audit",
+            "f-u02-pricing-calculator",
+            "f-u02-cost-management"
+          ]
+        },
+        {
+          "id": "u02-l5-e11",
+          "type": "multi",
+          "concept": "scalability",
+          "prompt": "Which two changes are examples of horizontal scaling? Choose two.",
+          "options": [
+            "Remove web server instances when traffic drops at night",
+            "Move a virtual machine to a size with more memory",
+            "Upgrade a database to a bigger tier",
+            "Add two more web server instances during a sale"
+          ],
+          "answers": [
+            0,
+            3
+          ],
+          "explanation": "Horizontal scaling (scale out atau scale in) mengubah jumlah instance. Mengubah ukuran satu VM (Virtual Machine) atau tier database adalah vertical scaling.",
+          "examReady": true,
+          "requires": [
+            "f-u02-horizontal",
+            "f-u02-vertical"
+          ]
+        },
+        {
+          "id": "u02-l5-e12",
+          "type": "match",
+          "concept": "predictability",
+          "prompt": "A company is planning its first Azure workload. Match each need with what helps.",
+          "pairs": [
+            [
+              "Estimate the bill before deploying",
+              "Pricing Calculator"
+            ],
+            [
+              "Get warned when spending nears the budget",
+              "Budget alert in Cost Management"
+            ],
+            [
+              "Keep response times steady during peaks",
+              "Autoscaling and load balancing"
+            ],
+            [
+              "Check resources against company rules",
+              "Azure Policy"
+            ]
+          ],
+          "explanation": "Pricing Calculator memperkirakan biaya sebelum deploy, Cost Management memantau pengeluaran dan mengirim peringatan, autoscaling dan load balancing menjaga performa, dan Azure Policy memeriksa kepatuhan.",
+          "examReady": true,
+          "requires": [
+            "f-u02-pricing-calculator",
+            "f-u02-cost-management",
+            "f-u02-perf-predictability",
+            "f-u02-policy-audit"
+          ]
+        }
+      ]
     }
   ],
   "facts": [

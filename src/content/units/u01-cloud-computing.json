@@ -1041,6 +1041,283 @@
           ]
         }
       ]
+    },
+    {
+      "id": "u01-l5",
+      "title": "Latihan soal ujian",
+      "review": true,
+      "items": [
+        {
+          "id": "u01-l5-e1",
+          "type": "choice",
+          "concept": "cloud-computing",
+          "prompt": "A company needs to explain cloud computing to its managers before a migration project. Which definition should it use?",
+          "options": [
+            "Running every server in the company's own building and maintaining the hardware itself",
+            "Buying servers from a vendor and installing them in an on-premises server room",
+            "Keeping all company files on the laptops of the employees who use them",
+            "Delivering computing services, such as servers, storage, and databases, over the internet"
+          ],
+          "answer": 3,
+          "explanation": "Cloud computing adalah penyediaan layanan komputasi lewat internet: server, storage, database, networking, dan software. Menjalankan dan merawat hardware sendiri di gedung sendiri adalah on-premises.",
+          "examReady": true,
+          "requires": [
+            "f-u01-cloud-definition",
+            "f-u01-on-premises"
+          ]
+        },
+        {
+          "id": "u01-l5-e2",
+          "type": "yesno",
+          "concept": "cloud-computing",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to move its file server and its database from its server room to Azure.",
+          "statements": [
+            {
+              "text": "Contoso will still pay for the Azure services it uses.",
+              "answer": true
+            },
+            {
+              "text": "Contoso must buy the physical servers that host its Azure resources.",
+              "answer": false
+            },
+            {
+              "text": "Contoso can create new resources in minutes when it needs them.",
+              "answer": true
+            }
+          ],
+          "explanation": "Cloud tidak gratis: Contoso membayar layanan yang dipakainya. Hardware datacenter dibeli dan dirawat penyedia cloud, dan resource baru bisa dibuat dalam hitungan menit.",
+          "examReady": true,
+          "requires": [
+            "f-u01-cloud-not-free",
+            "f-u01-no-hardware",
+            "f-u01-fast-provisioning"
+          ]
+        },
+        {
+          "id": "u01-l5-e3",
+          "type": "match",
+          "concept": "cloud-computing",
+          "prompt": "A company plans to move several workloads to the cloud. Match each need with the cloud service that meets it.",
+          "pairs": [
+            [
+              "Run a server without buying hardware",
+              "Virtual machine"
+            ],
+            [
+              "Keep files and backups",
+              "Storage"
+            ],
+            [
+              "Store app data in tables",
+              "Database"
+            ],
+            [
+              "Connect resources to each other",
+              "Networking"
+            ]
+          ],
+          "explanation": "Contoh layanan cloud: virtual machine (server virtual), storage untuk menyimpan data, database, dan jaringan untuk menghubungkan resource.",
+          "examReady": true,
+          "requires": [
+            "f-u01-cloud-services",
+            "f-u01-cloud-definition"
+          ]
+        },
+        {
+          "id": "u01-l5-e4",
+          "type": "choice",
+          "concept": "shared-responsibility",
+          "prompt": "A company deploys its web app to a PaaS (Platform as a Service) hosting service in Azure. Who installs operating system updates on the servers that run the app?",
+          "options": [
+            "Microsoft",
+            "The company",
+            "The company's internet service provider",
+            "The people who use the app"
+          ],
+          "answer": 0,
+          "explanation": "Di PaaS (Platform as a Service), penyedia mengurus sistem operasi dan platform, sedangkan customer fokus ke aplikasi dan data. Di IaaS (Infrastructure as a Service), update sistem operasi tetap tugas customer.",
+          "examReady": true,
+          "requires": [
+            "f-u01-sr-paas",
+            "f-u01-sr-iaas",
+            "f-u01-sr-depends"
+          ]
+        },
+        {
+          "id": "u01-l5-e5",
+          "type": "choice",
+          "concept": "capex-opex",
+          "prompt": "A company compares two options: buying servers for its own datacenter, or running the same workloads in Azure. Which statement describes the Azure option?",
+          "options": [
+            "The costs are a capital expense paid up front for hardware",
+            "The costs are an operational expense that changes with usage",
+            "The company owns the hardware and records its depreciation each year",
+            "The company pays nothing until the hardware wears out"
+          ],
+          "answer": 1,
+          "explanation": "Tagihan cloud termasuk OpEx (Operational Expenditure): biaya berjalan yang dibayar saat dipakai dan bisa naik-turun. Membeli server sendiri adalah CapEx (Capital Expenditure), yaitu belanja besar di depan untuk aset yang nilainya menyusut.",
+          "examReady": true,
+          "requires": [
+            "f-u01-cloud-opex",
+            "f-u01-opex",
+            "f-u01-capex"
+          ]
+        },
+        {
+          "id": "u01-l5-e6",
+          "type": "choice",
+          "concept": "cloud-computing",
+          "prompt": "The developers at a company need a test database for one afternoon. Which characteristic of cloud computing lets them do this without buying hardware?",
+          "options": [
+            "Cloud services are free when they are used for less than a day",
+            "Resources can be created and released quickly, as needed",
+            "The company owns part of the cloud provider's hardware after it signs up",
+            "The cloud provider ships a server to the office for each new request"
+          ],
+          "answer": 1,
+          "explanation": "Resource cloud bisa dibuat dan dilepas dalam hitungan menit, dan hardware-nya diurus penyedia. Cloud tetap tidak gratis: database itu ditagih selama dipakai.",
+          "examReady": true,
+          "requires": [
+            "f-u01-fast-provisioning",
+            "f-u01-cloud-not-free",
+            "f-u01-no-hardware"
+          ]
+        },
+        {
+          "id": "u01-l5-e7",
+          "type": "choice",
+          "concept": "private-cloud",
+          "prompt": "A company must keep full control over the hardware that runs its workloads. It can afford to buy and maintain that hardware. Which cloud model fits this requirement best?",
+          "options": [
+            "Private cloud",
+            "Public cloud",
+            "Multi-cloud with two public providers",
+            "A consumption-based public service"
+          ],
+          "answer": 0,
+          "explanation": "Private cloud dipakai satu organisasi dan memberi kontrol penuh, tapi organisasi menanggung pembelian dan perawatan hardware-nya. Di public cloud dan multi-cloud, hardware milik penyedia.",
+          "examReady": true,
+          "requires": [
+            "f-u01-private-cloud",
+            "f-u01-private-control-cost",
+            "f-u01-public-cloud",
+            "f-u01-multi-cloud"
+          ]
+        },
+        {
+          "id": "u01-l5-e8",
+          "type": "choice",
+          "concept": "consumption-model",
+          "prompt": "A company creates a test environment in Azure for each new release and deletes the environment when testing ends. Under the consumption-based model, what happens to the cost of a deleted test environment?",
+          "options": [
+            "The company stops paying for it",
+            "The company keeps paying for it until the end of the year",
+            "The company pays a deletion fee equal to one year of use",
+            "The company must buy the hardware it used during testing"
+          ],
+          "answer": 0,
+          "explanation": "Di consumption-based model, customer hanya membayar resource yang dipakai. Resource yang dihapus tidak ditagih lagi, dan tidak ada pembelian hardware.",
+          "examReady": true,
+          "requires": [
+            "f-u01-consumption-stop-billing",
+            "f-u01-consumption-pay-use",
+            "f-u01-no-hardware"
+          ]
+        },
+        {
+          "id": "u01-l5-e9",
+          "type": "yesno",
+          "concept": "consumption-model",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "A startup plans to launch its app on Azure with the consumption-based model.",
+          "statements": [
+            {
+              "text": "The startup needs a large upfront payment for infrastructure before it can start.",
+              "answer": false
+            },
+            {
+              "text": "If the app gets more users, the startup can add resources and pay only for what it adds.",
+              "answer": true
+            },
+            {
+              "text": "The startup's Azure costs are capital expenditure.",
+              "answer": false
+            }
+          ],
+          "explanation": "Consumption-based model tidak butuh biaya di depan, dan resource bisa ditambah kapan saja dengan membayar tambahannya saja. Biaya cloud termasuk OpEx (Operational Expenditure), bukan CapEx (Capital Expenditure).",
+          "examReady": true,
+          "requires": [
+            "f-u01-consumption-no-upfront",
+            "f-u01-consumption-add-when-needed",
+            "f-u01-cloud-opex"
+          ]
+        },
+        {
+          "id": "u01-l5-e10",
+          "type": "multi",
+          "concept": "shared-responsibility",
+          "prompt": "A company moves an on-premises app to Azure virtual machines, which is IaaS (Infrastructure as a Service). Which two responsibilities stay with the company? Choose two.",
+          "options": [
+            "Replacing failed disks in the physical servers",
+            "Securing the physical datacenter buildings",
+            "Managing the user accounts that sign in to the app",
+            "Installing operating system updates on the virtual machines"
+          ],
+          "answers": [
+            2,
+            3
+          ],
+          "explanation": "Di IaaS (Infrastructure as a Service), customer mengurus sistem operasi, aplikasi, dan data, dan akun selalu tanggung jawab customer. Disk fisik dan gedung datacenter selalu tanggung jawab Microsoft.",
+          "examReady": true,
+          "requires": [
+            "f-u01-sr-iaas",
+            "f-u01-sr-customer-always",
+            "f-u01-sr-microsoft-always"
+          ]
+        },
+        {
+          "id": "u01-l5-e11",
+          "type": "choice",
+          "concept": "multi-cloud",
+          "prompt": "A company runs workloads in Azure and in another public cloud provider. It wants to manage the resources in both clouds from one place. What should it use?",
+          "options": [
+            "Azure Arc",
+            "A private cloud for each provider",
+            "On-premises servers only",
+            "A larger upfront hardware purchase"
+          ],
+          "answer": 0,
+          "explanation": "Memakai lebih dari satu penyedia public cloud disebut multi-cloud. Azure Arc membantu mengelola resource di luar Azure, termasuk di cloud lain, dari satu tempat.",
+          "examReady": true,
+          "requires": [
+            "f-u01-multi-cloud",
+            "f-u01-multi-cloud-arc",
+            "f-u01-private-cloud",
+            "f-u01-upfront-cost"
+          ]
+        },
+        {
+          "id": "u01-l5-e12",
+          "type": "choice",
+          "concept": "account-protection",
+          "prompt": "Users at a company sign in to cloud apps with only a password. The company wants to reduce the risk of stolen passwords being used. Under the shared responsibility model, what should the company do?",
+          "options": [
+            "Wait for Microsoft to protect the accounts, because Microsoft owns the identities",
+            "Require MFA (Multi-Factor Authentication) for its users, because protecting accounts is the customer's job",
+            "Nothing, because cloud providers are responsible for every sign-in",
+            "Ask its internet service provider to block password theft"
+          ],
+          "answer": 1,
+          "explanation": "Akun dan identity selalu tanggung jawab customer. Microsoft menyediakan alatnya, misalnya MFA (Multi-Factor Authentication), tapi customer yang harus mengaktifkan dan mewajibkannya.",
+          "examReady": true,
+          "requires": [
+            "f-u01-account-protection",
+            "f-u01-mfa-basic",
+            "f-u01-sr-customer-always"
+          ]
+        }
+      ]
     }
   ],
   "facts": [
