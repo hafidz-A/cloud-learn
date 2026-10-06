@@ -132,56 +132,58 @@
             "ccna-f-u17-cost",
             "ccna-f-u17-ref-bw"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "router ospf 1",
-                "lines": [
-                  "network 10.0.52.0 0.0.0.3 area 0"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "router ospf 1",
-                "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
-              },
-              {
-                "command": "auto-cost reference-bandwidth 10000",
-                "note": "Mengubah reference bandwidth OSPF (Open Shortest Path First) menjadi 10000 Mbps, dipakai untuk menghitung cost."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "router ospf 1",
+                  "lines": [
+                    "network 10.0.52.0 0.0.0.3 area 0"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "router ospf 1",
+                  "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
+                },
+                {
+                  "command": "auto-cost reference-bandwidth 10000",
+                  "note": "Mengubah reference bandwidth OSPF (Open Shortest Path First) menjadi 10000 Mbps, dipakai untuk menghitung cost."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l1-e5",
@@ -461,54 +463,100 @@
             "ccna-f-u17-network-cmd",
             "ccna-f-u17-ip-ospf-area"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "router ospf 1",
+                  "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
+                },
+                {
+                  "command": "network 192.168.41.0 0.0.0.255 area 0",
+                  "note": "Menyalakan OSPF (Open Shortest Path First) di interface yang alamatnya cocok dengan 192.168.41.0 wildcard 0.0.0.255, di area 0."
+                },
+                {
+                  "command": "network 10.0.52.0 0.0.0.3 area 0",
+                  "note": "Menyalakan OSPF (Open Shortest Path First) di interface yang alamatnya cocok dengan 10.0.52.0 wildcard 0.0.0.3, di area 0."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
             },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "router ospf 1",
-                "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
-              },
-              {
-                "command": "network 192.168.41.0 0.0.0.255 area 0",
-                "note": "Menyalakan OSPF (Open Shortest Path First) di interface yang alamatnya cocok dengan 192.168.41.0 wildcard 0.0.0.255, di area 0."
-              },
-              {
-                "command": "network 10.0.52.0 0.0.0.3 area 0",
-                "note": "Menyalakan OSPF (Open Shortest Path First) di interface yang alamatnya cocok dengan 10.0.52.0 wildcard 0.0.0.3, di area 0."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip ospf 1 area 0",
+                  "note": "Menyalakan OSPF (Open Shortest Path First) proses 1 langsung di interface ini, di area 0."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l3-e1",
@@ -632,50 +680,52 @@
             "ccna-f-u17-rid-order",
             "ccna-f-u17-rid-change"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "router ospf 1",
-                "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
-              },
-              {
-                "command": "router-id 1.1.1.1",
-                "note": "Memasang router ID 1.1.1.1 secara manual."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "router ospf 1",
+                  "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
+                },
+                {
+                  "command": "router-id 1.1.1.1",
+                  "note": "Memasang router ID 1.1.1.1 secara manual."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l3-e3",
@@ -805,57 +855,59 @@
             "ccna-f-u17-passive",
             "ccna-f-u17-default-orig"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "router ospf 1",
-                "lines": [
-                  "network 192.168.41.0 0.0.0.255 area 0",
-                  "network 10.0.52.0 0.0.0.3 area 0"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "router ospf 1",
-                "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
-              },
-              {
-                "command": "passive-interface g0/0/0",
-                "note": "Menjadikan g0/0/0 passive: subnetnya tetap diiklankan, tapi hello tidak dikirim ke sana."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "router ospf 1",
+                  "lines": [
+                    "network 192.168.41.0 0.0.0.255 area 0",
+                    "network 10.0.52.0 0.0.0.3 area 0"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "router ospf 1",
+                  "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
+                },
+                {
+                  "command": "passive-interface g0/0/0",
+                  "note": "Menjadikan g0/0/0 passive: subnetnya tetap diiklankan, tapi hello tidak dikirim ke sana."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l3-e7",
@@ -956,56 +1008,58 @@
             "ccna-f-u17-nbr-match",
             "ccna-f-u17-rid-unique"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip ospf hello-interval 5"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip ospf hello-interval 10",
-                "note": "Mengubah interval hello menjadi 10 detik; harus sama dengan tetangga."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip ospf hello-interval 5"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip ospf hello-interval 10",
+                  "note": "Mengubah interval hello menjadi 10 detik; harus sama dengan tetangga."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l4-e1",
@@ -1206,50 +1260,52 @@
             "ccna-f-u17-dr-elect",
             "ccna-f-u17-dr-nopreempt"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip ospf priority 0",
-                "note": "Memasang priority 0 untuk pemilihan DR (designated router); 0 berarti tidak ikut."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip ospf priority 0",
+                  "note": "Memasang priority 0 untuk pemilihan DR (designated router); 0 berarti tidak ikut."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l5-e1",
@@ -1345,51 +1401,7 @@
           ],
           "teaches": [
             "ccna-f-u17-p2p"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip ospf network point-to-point",
-                "note": "Menjadikan link ini point-to-point, jadi tidak ada pemilihan DR (designated router)."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u17-l5-e4",
@@ -1506,72 +1518,7 @@
           "teaches": [
             "ccna-f-u17-v3-basics",
             "ccna-f-u17-v3-rid"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "lines": [
-                  "ipv6 unicast-routing"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ipv6 address 2001:db8:acad:1::1/64",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ipv6 address 2001:db8:acad:12::1/64",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ipv6 router ospf 1",
-                "note": "Menjalankan OSPFv3 (Open Shortest Path First version 3) proses 1."
-              },
-              {
-                "command": "router-id 1.1.1.1",
-                "note": "Memasang router ID 1.1.1.1 secara manual."
-              },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 ospf 1 area 0",
-                "note": "Menyalakan OSPFv3 (Open Shortest Path First version 3) proses 1 di interface ini, area 0."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 ospf 1 area 0",
-                "note": "Menyalakan OSPFv3 (Open Shortest Path First version 3) proses 1 di interface ini, area 0."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u17-l6-e1",
@@ -1639,6 +1586,73 @@
           "teaches": [
             "ccna-f-u17-v3-cmds",
             "ccna-f-u17-v3-rid"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "lines": [
+                    "ipv6 unicast-routing"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ipv6 address 2001:db8:acad:1::1/64",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ipv6 address 2001:db8:acad:12::1/64",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ipv6 router ospf 1",
+                  "note": "Menjalankan OSPFv3 (Open Shortest Path First version 3) proses 1."
+                },
+                {
+                  "command": "router-id 1.1.1.1",
+                  "note": "Memasang router ID 1.1.1.1 secara manual."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 ospf 1 area 0",
+                  "note": "Menyalakan OSPFv3 (Open Shortest Path First version 3) proses 1 di interface ini, area 0."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 ospf 1 area 0",
+                  "note": "Menyalakan OSPFv3 (Open Shortest Path First version 3) proses 1 di interface ini, area 0."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
           ]
         },
         {
@@ -1876,59 +1890,61 @@
             "ccna-f-u17-passive-pitfall",
             "ccna-f-u17-network-cmd"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "context": "router ospf 1",
-                "lines": [
-                  "network 192.168.41.0 0.0.0.255 area 0",
-                  "network 10.0.52.0 0.0.0.3 area 0",
-                  "passive-interface GigabitEthernet0/0/0",
-                  "passive-interface GigabitEthernet0/0/1"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "router ospf 1",
-                "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
-              },
-              {
-                "command": "no passive-interface g0/0/1",
-                "note": "Mengirim hello lagi di g0/0/1."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "router ospf 1",
+                  "lines": [
+                    "network 192.168.41.0 0.0.0.255 area 0",
+                    "network 10.0.52.0 0.0.0.3 area 0",
+                    "passive-interface GigabitEthernet0/0/0",
+                    "passive-interface GigabitEthernet0/0/1"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "router ospf 1",
+                  "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
+                },
+                {
+                  "command": "no passive-interface g0/0/1",
+                  "note": "Mengirim hello lagi di g0/0/1."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l7-e4",
@@ -2057,87 +2073,153 @@
             "ccna-f-u17-passive",
             "ccna-f-u17-default-orig"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.41.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.1 255.255.255.252",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "lines": [
+                    "ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/2"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/2",
+                  "lines": [
+                    "ip address 203.0.113.2 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1",
+                "GigabitEthernet0/0/2"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "router ospf 1",
+                  "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
+                },
+                {
+                  "command": "router-id 1.1.1.1",
+                  "note": "Memasang router ID (identifier) 1.1.1.1 secara manual."
+                },
+                {
+                  "command": "network 192.168.41.0 0.0.0.255 area 0",
+                  "note": "Menyalakan OSPF (Open Shortest Path First) di interface yang alamatnya cocok dengan 192.168.41.0 wildcard 0.0.0.255, di area 0."
+                },
+                {
+                  "command": "network 10.0.52.0 0.0.0.3 area 0",
+                  "note": "Menyalakan OSPF (Open Shortest Path First) di interface yang alamatnya cocok dengan 10.0.52.0 wildcard 0.0.0.3, di area 0."
+                },
+                {
+                  "command": "passive-interface g0/0/0",
+                  "note": "Menjadikan g0/0/0 passive: subnetnya tetap diiklankan, tapi hello tidak dikirim ke sana."
+                },
+                {
+                  "command": "default-information originate",
+                  "note": "Mengiklankan default route router ini ke tetangga OSPF (Open Shortest Path First)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
             },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.41.1 255.255.255.0",
-                  "no shutdown"
-                ]
+            {
+              "device": {
+                "hostname": "R2",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 10.0.52.1 255.255.255.252",
-                  "no shutdown"
-                ]
-              },
-              {
-                "lines": [
-                  "ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/2"
-                ]
-              },
-              {
-                "context": "interface GigabitEthernet0/0/2",
-                "lines": [
-                  "ip address 203.0.113.2 255.255.255.252",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1",
-              "GigabitEthernet0/0/2"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "router ospf 1",
-                "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
-              },
-              {
-                "command": "router-id 1.1.1.1",
-                "note": "Memasang router ID (identifier) 1.1.1.1 secara manual."
-              },
-              {
-                "command": "network 192.168.41.0 0.0.0.255 area 0",
-                "note": "Menyalakan OSPF (Open Shortest Path First) di interface yang alamatnya cocok dengan 192.168.41.0 wildcard 0.0.0.255, di area 0."
-              },
-              {
-                "command": "network 10.0.52.0 0.0.0.3 area 0",
-                "note": "Menyalakan OSPF (Open Shortest Path First) di interface yang alamatnya cocok dengan 10.0.52.0 wildcard 0.0.0.3, di area 0."
-              },
-              {
-                "command": "passive-interface g0/0/0",
-                "note": "Menjadikan g0/0/0 passive: subnetnya tetap diiklankan, tapi hello tidak dikirim ke sana."
-              },
-              {
-                "command": "default-information originate",
-                "note": "Mengiklankan default route router ini ke tetangga OSPF (Open Shortest Path First)."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "copy running-config startup-config",
-                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
-              },
-              {
-                "command": "",
-                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.42.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 10.0.52.2 255.255.255.252",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "router ospf 1",
+                  "note": "Menjalankan proses OSPF (Open Shortest Path First) nomor 1 dan masuk ke modenya."
+                },
+                {
+                  "command": "router-id 2.2.2.2",
+                  "note": "Memasang router ID 2.2.2.2 secara manual."
+                },
+                {
+                  "command": "passive-interface g0/0/0",
+                  "note": "Menjadikan g0/0/0 passive: subnetnya tetap diiklankan, tapi hello tidak dikirim ke sana."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip ospf 1 area 0",
+                  "note": "Menyalakan OSPF (Open Shortest Path First) proses 1 langsung di interface ini, di area 0."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip ospf 1 area 0",
+                  "note": "Menyalakan OSPF (Open Shortest Path First) proses 1 langsung di interface ini, di area 0."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l8-e1",
@@ -2349,78 +2431,80 @@
             "ccna-f-u17-v3-cmds",
             "ccna-f-u17-v3-rid"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ipv6 address 2001:db8:acad:1::1/64",
-                  "no shutdown"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ipv6 address 2001:db8:acad:12::1/64",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "GigabitEthernet0/0/0",
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ipv6 unicast-routing",
-                "note": "Mengaktifkan routing IPv6 di router."
-              },
-              {
-                "command": "ipv6 router ospf 1",
-                "note": "Menjalankan OSPFv3 (Open Shortest Path First version 3) proses 1."
-              },
-              {
-                "command": "router-id 1.1.1.1",
-                "note": "Memasang router ID (identifier) 1.1.1.1 secara manual."
-              },
-              {
-                "command": "interface g0/0/0",
-                "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 ospf 1 area 0",
-                "note": "Menyalakan OSPFv3 (Open Shortest Path First version 3) proses 1 di interface ini, area 0."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ipv6 ospf 1 area 0",
-                "note": "Menyalakan OSPFv3 (Open Shortest Path First version 3) proses 1 di interface ini, area 0."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "copy running-config startup-config",
-                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
-              },
-              {
-                "command": "",
-                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ipv6 address 2001:db8:acad:1::1/64",
+                    "no shutdown"
+                  ]
+                },
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ipv6 address 2001:db8:acad:12::1/64",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/0",
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ipv6 unicast-routing",
+                  "note": "Mengaktifkan routing IPv6 di router."
+                },
+                {
+                  "command": "ipv6 router ospf 1",
+                  "note": "Menjalankan OSPFv3 (Open Shortest Path First version 3) proses 1."
+                },
+                {
+                  "command": "router-id 1.1.1.1",
+                  "note": "Memasang router ID (identifier) 1.1.1.1 secara manual."
+                },
+                {
+                  "command": "interface g0/0/0",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/0; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 ospf 1 area 0",
+                  "note": "Menyalakan OSPFv3 (Open Shortest Path First version 3) proses 1 di interface ini, area 0."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ipv6 ospf 1 area 0",
+                  "note": "Menyalakan OSPFv3 (Open Shortest Path First version 3) proses 1 di interface ini, area 0."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u17-l9-e1",

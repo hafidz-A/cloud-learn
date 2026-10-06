@@ -105,6 +105,21 @@ describe('abbreviations and errors (LANGIT_CCNA_PLAN.md section 7)', () => {
     expect(kinds(step(conf, 'ip route 0.0.0.0 0.0.0.0 10.0.0.1'))).toEqual([])
   })
 
+  it('takes 3 letters or more, or a short form Cisco documentation uses', () => {
+    const conf = newDevice({ ...R1, start: 'config' })
+    step(conf, 'line vty 0 4')
+    // A real router also has padding and parity in line mode, so "pa" is ambiguous there.
+    expect(text(step(conf, 'pa Rahasia1'))).toBe('% Ambiguous command: "pa"')
+    // "tr" is unique, but below 3 letters the simulator cannot be sure it is unique on a real device.
+    expect(text(step(conf, 'tr input ssh'))).toContain('Ketik minimal "tra"')
+    expect(kinds(step(conf, 'pas Rahasia1'))).toEqual([])
+    const st = newDevice(R1)
+    expect(text(step(st, 'sh ip in br'))).toContain('Ketik minimal "int"')
+    expect(text(step(st, 'sh ip int br'))).toContain('Interface')
+    expect(kinds(step(st, 'en'))).toEqual([])
+    expect(text(step(st, 'conf t'))).toContain('Enter configuration commands')
+  })
+
   it('points at a bad value with the IOS caret, under the right column', () => {
     const st = newDevice({ ...R1, start: 'config' })
     step(st, 'interface g0/0/0')

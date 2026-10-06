@@ -141,38 +141,40 @@
             "ccna-f-u26-community-cmd",
             "ccna-f-u26-snmp-host"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "snmp-server community Pantau ro",
-                "note": "Membuka SNMP (Simple Network Management Protocol) dengan community Pantau, akses baca saja."
-              },
-              {
-                "command": "snmp-server location Rak-2",
-                "note": "Mencatat lokasi perangkat: Rak-2."
-              },
-              {
-                "command": "snmp-server host 192.168.41.50 version 2c Pantau",
-                "note": "Mengirim notifikasi SNMP (Simple Network Management Protocol) ke 192.168.41.50."
-              },
-              {
-                "command": "snmp-server enable traps",
-                "note": "Menyalakan pengiriman trap."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "snmp-server community Pantau ro",
+                  "note": "Membuka SNMP (Simple Network Management Protocol) dengan community Pantau, akses baca saja."
+                },
+                {
+                  "command": "snmp-server location Rak-2",
+                  "note": "Mencatat lokasi perangkat: Rak-2."
+                },
+                {
+                  "command": "snmp-server host 192.168.41.50 version 2c Pantau",
+                  "note": "Mengirim notifikasi SNMP (Simple Network Management Protocol) ke 192.168.41.50."
+                },
+                {
+                  "command": "snmp-server enable traps",
+                  "note": "Menyalakan pengiriman trap."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u26-l1-e5",
@@ -364,26 +366,28 @@
             "ccna-f-u26-threshold",
             "ccna-f-u26-levels"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "logging trap warnings",
-                "note": "Hanya log level warnings dan yang lebih parah yang dikirim ke server syslog."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "logging trap warnings",
+                  "note": "Hanya log level warnings dan yang lebih parah yang dikirim ke server syslog."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u26-l2-e4",
@@ -529,35 +533,7 @@
             "ccna-f-u26-buffered",
             "ccna-f-u26-facility",
             "ccna-f-u01-ports-udp"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "logging host 192.168.41.60",
-                "note": "Mengirim log ke server syslog 192.168.41.60."
-              },
-              {
-                "command": "service timestamps log datetime msec",
-                "note": "Menambahkan tanggal dan waktu sampai milidetik ke setiap log."
-              },
-              {
-                "command": "ntp server 192.168.41.1",
-                "note": "Menyamakan jam perangkat dengan server NTP (Network Time Protocol) 192.168.41.1."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u26-l3-e3",
@@ -606,6 +582,36 @@
           "teaches": [
             "ccna-f-u26-timestamps",
             "ccna-f-u26-ntp-logs"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "logging host 192.168.41.60",
+                  "note": "Mengirim log ke server syslog 192.168.41.60."
+                },
+                {
+                  "command": "service timestamps log datetime msec",
+                  "note": "Menambahkan tanggal dan waktu sampai milidetik ke setiap log."
+                },
+                {
+                  "command": "ntp server 192.168.41.1",
+                  "note": "Menyamakan jam perangkat dengan server NTP (Network Time Protocol) 192.168.41.1."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
           ]
         },
         {
@@ -705,62 +711,107 @@
             "ccna-f-u26-community-cmd",
             "ccna-f-u26-snmp-host"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "logging host 192.168.41.60",
+                  "note": "Mengirim log ke server syslog 192.168.41.60."
+                },
+                {
+                  "command": "logging trap notifications",
+                  "note": "Hanya log level notifications dan yang lebih parah yang dikirim ke server syslog."
+                },
+                {
+                  "command": "logging buffered informational",
+                  "note": "Menyimpan log sampai level informational di buffer RAM (random-access memory)."
+                },
+                {
+                  "command": "service timestamps log datetime msec",
+                  "note": "Menambahkan tanggal dan waktu sampai milidetik ke setiap log."
+                },
+                {
+                  "command": "ntp server 192.168.41.1",
+                  "note": "Menyamakan jam perangkat dengan server NTP (Network Time Protocol) 192.168.41.1."
+                },
+                {
+                  "command": "snmp-server community Pantau ro",
+                  "note": "Membuka SNMP (Simple Network Management Protocol) dengan community Pantau, akses baca saja."
+                },
+                {
+                  "command": "snmp-server host 192.168.41.60 version 2c Pantau",
+                  "note": "Mengirim notifikasi SNMP (Simple Network Management Protocol) ke 192.168.41.60."
+                },
+                {
+                  "command": "snmp-server enable traps",
+                  "note": "Menyalakan pengiriman trap."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
             },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "logging host 192.168.41.60",
-                "note": "Mengirim log ke server syslog 192.168.41.60."
-              },
-              {
-                "command": "logging trap notifications",
-                "note": "Hanya log level notifications dan yang lebih parah yang dikirim ke server syslog."
-              },
-              {
-                "command": "logging buffered informational",
-                "note": "Menyimpan log sampai level informational di buffer RAM (random-access memory)."
-              },
-              {
-                "command": "service timestamps log datetime msec",
-                "note": "Menambahkan tanggal dan waktu sampai milidetik ke setiap log."
-              },
-              {
-                "command": "ntp server 192.168.41.1",
-                "note": "Menyamakan jam perangkat dengan server NTP (Network Time Protocol) 192.168.41.1."
-              },
-              {
-                "command": "snmp-server community Pantau ro",
-                "note": "Membuka SNMP (Simple Network Management Protocol) dengan community Pantau, akses baca saja."
-              },
-              {
-                "command": "snmp-server host 192.168.41.60 version 2c Pantau",
-                "note": "Mengirim notifikasi SNMP (Simple Network Management Protocol) ke 192.168.41.60."
-              },
-              {
-                "command": "snmp-server enable traps",
-                "note": "Menyalakan pengiriman trap."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "copy running-config startup-config",
-                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
-              },
-              {
-                "command": "",
-                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 192.168.41.2 255.255.255.0"
+                  ]
+                }
+              ],
+              "cabled": [
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "description Uji log",
+                  "note": "Memberi keterangan pada interface; tidak memengaruhi lalu lintas."
+                },
+                {
+                  "command": "shutdown",
+                  "note": "Mematikan interface secara administratif."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u26-l4-e1",

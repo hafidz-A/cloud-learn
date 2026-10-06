@@ -25,31 +25,7 @@
             "ccna-f-u12-cdp-what",
             "ccna-f-u12-cdp-default",
             "ccna-f-u12-direct-only"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "no cdp enable",
-                "note": "Mematikan CDP (Cisco Discovery Protocol) di interface ini saja."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u12-l1-e1",
@@ -202,6 +178,32 @@
             "ccna-f-u12-cdp-default",
             "ccna-f-u12-cdp-timers",
             "ccna-f-u12-cdp-security"
+          ],
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no cdp enable",
+                  "note": "Mematikan CDP (Cisco Discovery Protocol) di interface ini saja."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
           ]
         },
         {
@@ -278,26 +280,28 @@
             "ccna-f-u12-lldp-timers",
             "ccna-f-u12-lldp-mixed"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
               },
-              {
-                "command": "lldp run",
-                "note": "Menyalakan LLDP (Link Layer Discovery Protocol), yang mati secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "lldp run",
+                  "note": "Menyalakan LLDP (Link Layer Discovery Protocol), yang mati secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u12-l2-e1",
@@ -407,37 +411,39 @@
             "ccna-f-u12-lldp-int",
             "ccna-f-u12-lldp-neighbors"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
-            },
-            "given": [
-              {
-                "lines": [
-                  "lldp run"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
               },
-              {
-                "command": "interface g0/2",
-                "note": "Masuk ke mode konfigurasi interface g0/2; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "no lldp transmit",
-                "note": "Berhenti mengirim LLDP (Link Layer Discovery Protocol) dari interface ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "lines": [
+                    "lldp run"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/2",
+                  "note": "Masuk ke mode konfigurasi interface g0/2; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no lldp transmit",
+                  "note": "Berhenti mengirim LLDP (Link Layer Discovery Protocol) dari interface ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u12-l2-e4",
@@ -707,26 +713,60 @@
             "ccna-f-u12-direct-only",
             "ccna-f-u12-lldp-default"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
+              },
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "lldp run",
+                  "note": "Menyalakan LLDP (Link Layer Discovery Protocol), yang mati secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
             },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "lldp run",
-                "note": "Menyalakan LLDP (Link Layer Discovery Protocol), yang mati secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no cdp enable",
+                  "note": "Mematikan CDP (Cisco Discovery Protocol) di interface ini saja."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u12-l4-e1",

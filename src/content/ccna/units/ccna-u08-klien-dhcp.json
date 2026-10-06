@@ -592,47 +592,49 @@
             "ccna-f-u08-gw-subnet",
             "ccna-f-u08-lease-cmd"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.50.1 255.255.255.0",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "ip dhcp pool Kantor",
-                "note": "Membuat pool DHCP (Dynamic Host Configuration Protocol) bernama Kantor."
-              },
-              {
-                "command": "network 192.168.50.0 255.255.255.0",
-                "note": "Menentukan subnet pool ini: 192.168.50.0 mask 255.255.255.0."
-              },
-              {
-                "command": "default-router 192.168.50.1",
-                "note": "Memberi tahu klien bahwa gateway-nya 192.168.50.1."
-              },
-              {
-                "command": "dns-server 192.168.50.5",
-                "note": "Memberi tahu klien bahwa server DNS (Domain Name System)-nya 192.168.50.5."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.50.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip dhcp pool Kantor",
+                  "note": "Membuat pool DHCP (Dynamic Host Configuration Protocol) bernama Kantor."
+                },
+                {
+                  "command": "network 192.168.50.0 255.255.255.0",
+                  "note": "Menentukan subnet pool ini: 192.168.50.0 mask 255.255.255.0."
+                },
+                {
+                  "command": "default-router 192.168.50.1",
+                  "note": "Memberi tahu klien bahwa gateway-nya 192.168.50.1."
+                },
+                {
+                  "command": "dns-server 192.168.50.5",
+                  "note": "Memberi tahu klien bahwa server DNS (Domain Name System)-nya 192.168.50.5."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u08-l4-e1",
@@ -716,36 +718,7 @@
           ],
           "teaches": [
             "ccna-f-u08-excluded"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "ip dhcp pool Kantor",
-                "lines": [
-                  "network 192.168.50.0 255.255.255.0",
-                  "default-router 192.168.50.1"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip dhcp excluded-address 192.168.50.1 192.168.50.10",
-                "note": "Mengecualikan 192.168.50.1 sampai 192.168.50.10 supaya tidak dibagikan DHCP (Dynamic Host Configuration Protocol)."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u08-l4-e3",
@@ -881,39 +854,41 @@
             "ccna-f-u08-helper",
             "ccna-f-u08-giaddr"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/1",
-                "lines": [
-                  "ip address 192.168.60.1 255.255.255.0",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip helper-address 192.168.50.5",
-                "note": "Meneruskan broadcast DHCP (Dynamic Host Configuration Protocol) dari subnet ini ke server 192.168.50.5."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 192.168.60.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip helper-address 192.168.50.5",
+                  "note": "Meneruskan broadcast DHCP (Dynamic Host Configuration Protocol) dari subnet ini ke server 192.168.50.5."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u08-l5-e1",
@@ -1019,34 +994,36 @@
             "ccna-f-u08-dhcp-client",
             "ccna-f-u04-sh-ip-int-br"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "interface g0/0/2",
-                "note": "Masuk ke mode konfigurasi interface g0/0/2; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "ip address dhcp",
-                "note": "Meminta alamat IPv4 untuk interface ini dari server DHCP (Dynamic Host Configuration Protocol)."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/2",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/2; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip address dhcp",
+                  "note": "Meminta alamat IPv4 untuk interface ini dari server DHCP (Dynamic Host Configuration Protocol)."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u08-l5-e5",
@@ -1144,55 +1121,98 @@
             "ccna-f-u08-helper",
             "ccna-f-u08-binding"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
+              },
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/0",
+                  "lines": [
+                    "ip address 192.168.50.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip dhcp excluded-address 192.168.50.1 192.168.50.9",
+                  "note": "Mengecualikan 192.168.50.1 sampai 192.168.50.9 supaya tidak dibagikan DHCP (Dynamic Host Configuration Protocol)."
+                },
+                {
+                  "command": "ip dhcp pool Kantor",
+                  "note": "Membuat pool DHCP (Dynamic Host Configuration Protocol) bernama Kantor."
+                },
+                {
+                  "command": "network 192.168.50.0 255.255.255.0",
+                  "note": "Menentukan subnet pool ini: 192.168.50.0 mask 255.255.255.0."
+                },
+                {
+                  "command": "default-router 192.168.50.1",
+                  "note": "Memberi tahu klien bahwa gateway-nya 192.168.50.1."
+                },
+                {
+                  "command": "dns-server 192.168.50.5",
+                  "note": "Memberi tahu klien bahwa server DNS (Domain Name System)-nya 192.168.50.5."
+                },
+                {
+                  "command": "lease 7",
+                  "note": "Mengatur masa sewa alamat menjadi 7 (hari jam menit)."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
             },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/0/0",
-                "lines": [
-                  "ip address 192.168.50.1 255.255.255.0",
-                  "no shutdown"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "ip dhcp excluded-address 192.168.50.1 192.168.50.9",
-                "note": "Mengecualikan 192.168.50.1 sampai 192.168.50.9 supaya tidak dibagikan DHCP (Dynamic Host Configuration Protocol)."
-              },
-              {
-                "command": "ip dhcp pool Kantor",
-                "note": "Membuat pool DHCP (Dynamic Host Configuration Protocol) bernama Kantor."
-              },
-              {
-                "command": "network 192.168.50.0 255.255.255.0",
-                "note": "Menentukan subnet pool ini: 192.168.50.0 mask 255.255.255.0."
-              },
-              {
-                "command": "default-router 192.168.50.1",
-                "note": "Memberi tahu klien bahwa gateway-nya 192.168.50.1."
-              },
-              {
-                "command": "dns-server 192.168.50.5",
-                "note": "Memberi tahu klien bahwa server DNS (Domain Name System)-nya 192.168.50.5."
-              },
-              {
-                "command": "lease 7",
-                "note": "Mengatur masa sewa alamat menjadi 7 (hari jam menit)."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/0/1",
+                  "lines": [
+                    "ip address 192.168.60.1 255.255.255.0",
+                    "no shutdown"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "ip helper-address 192.168.50.5",
+                  "note": "Meneruskan broadcast DHCP (Dynamic Host Configuration Protocol) dari subnet ini ke server 192.168.50.5."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u08-l6-e1",

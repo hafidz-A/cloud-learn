@@ -345,10 +345,25 @@ const REAL_FIRST_WORDS: { [M in Mode]?: string[] } = {
     ...['default', 'do', 'enable', 'end', 'exit', 'hostname', 'interface', 'ip', 'ipv6', 'key', 'license', 'line', 'lldp', 'logging', 'mac'],
     ...['monitor', 'ntp', 'policy-map', 'privilege', 'router', 'service', 'snmp-server', 'spanning-tree', 'username', 'vlan'],
   ],
+  line: [
+    ...['access-class', 'autocommand', 'exec-timeout', 'exit', 'history', 'length', 'logging', 'login', 'logout-warning', 'modem'],
+    ...['motd-banner', 'padding', 'parity', 'password', 'privilege', 'session-timeout', 'speed', 'stopbits', 'transport', 'width'],
+  ],
   if: [
     ...['bandwidth', 'cdp', 'channel-group', 'default', 'delay', 'description', 'duplex', 'encapsulation', 'exit', 'ip', 'ipv6', 'keepalive'],
     ...['lldp', 'mtu', 'shutdown', 'spanning-tree', 'speed', 'standby', 'storm-control', 'switchport', 'vrrp'],
   ],
+}
+
+/**
+ * Short forms taken below 3 letters, as Cisco documentation and labs write them:
+ * "sh ip int br", "sh ip ro", "en", "conf t", "sw mo acc", "no sh", "ex", "wr".
+ */
+const SHORT_FORMS: Record<string, number> = { show: 2, enable: 2, terminal: 1, brief: 2, switchport: 2, mode: 2, shutdown: 2, exit: 2, write: 2, route: 2 }
+
+/** The fewest letters the simulator takes for a keyword: 3, or less for the short forms above. */
+function minAbbreviation(full: string): number {
+  return Math.min(full.length, SHORT_FORMS[full] ?? 3)
 }
 
 /** The command `toks` is, among `defs`; or what went wrong, IOS style where the simulator is sure. */
@@ -371,17 +386,30 @@ function lookup(st: Pick<DeviceState, 'model'>, defs: CmdDef[], toks: InTok[], r
   // The first command (in definition order) whose every abbreviation is unambiguous.
   // A word typed in full wins over longer keywords it is also the start of ("ip" and "ipv6").
   let ambiguousAt = -1
+  let tooShort: Trace['short']
   for (const { def, match } of fulls) {
+    const options = (ii: number, path: string, typed: string) => [...seen.get(`${ii}|${path}`)!].filter((o) => o.startsWith(typed))
+    // Another keyword is exactly what was typed: that command wins, this one drops out.
+    if (match.kws.some(([ii, path, full]) => toks[ii].text.toLowerCase() !== full && options(ii, path, toks[ii].text.toLowerCase()).includes(toks[ii].text.toLowerCase()))) continue
     const clash = match.kws.find(([ii, path, full]) => {
       const typed = toks[ii].text.toLowerCase()
-      if (typed === full) return false
-      const options = [...seen.get(`${ii}|${path}`)!].filter((o) => o.startsWith(typed))
-      return options.includes(typed) || options.length > 1
+      return typed !== full && options(ii, path, typed).length > 1
     })
-    if (!clash) return { ok: { def, words: match.words } }
-    ambiguousAt = Math.max(ambiguousAt, clash[0])
+    if (clash) {
+      ambiguousAt = Math.max(ambiguousAt, clash[0])
+      continue
+    }
+    // The simulator knows only part of IOS, so a word unique here may not be unique on a
+    // real device. Below 3 letters, only the short forms Cisco documentation uses are taken.
+    const short = match.kws.find(([ii, , full]) => {
+      const typed = toks[ii].text.toLowerCase()
+      return typed !== full && typed.length < minAbbreviation(full)
+    })
+    if (!short) return { ok: { def, words: match.words } }
+    if (!tooShort) tooShort = { at: short[0], full: short[2], min: minAbbreviation(short[2]) }
   }
   if (ambiguousAt >= 0) return { err: 'ambiguous', at: ambiguousAt }
+  if (tooShort) return { err: 'short', ...tooShort }
   // Everything typed fits the start of a command: IOS calls that incomplete.
   if (incomplete) return { err: 'incomplete', def: incomplete, words: allowPrefix ? prefixWords(incomplete, toks) : [] }
   if (short && short.at >= Math.max(failAt, valueFailAt)) return { err: 'short', ...short }
@@ -594,7 +622,7 @@ function reportError(found: Lookup, raw: string, prompt: string, toks: InTok[], 
         langit(
           found.full === 'interface name'
             ? 'Langit: tulis nama interface minimal seperti g0/0/0, fa0/1, gi1/0/1, lo0, vl10, atau po1.'
-            : `Langit: singkatan "${toks[found.at + offset]?.text}" mungkin diterima IOS asli kalau unik, tapi simulator ini hanya menerima mulai dari "${found.full.slice(0, found.min)}". Ketik "${found.full}".`,
+            : `Langit: singkatan "${toks[found.at + offset]?.text}" terlalu pendek untuk dipastikan unik di IOS asli. Ketik minimal "${found.full.slice(0, found.min)}" (lengkapnya "${found.full}").`,
         ),
       ]
     case 'unknown':

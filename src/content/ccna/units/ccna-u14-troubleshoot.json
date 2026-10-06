@@ -658,47 +658,49 @@
             "ccna-f-u09-show-vlan",
             "ccna-f-u14-ping-chars"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
-            },
-            "given": [
-              {
-                "context": "interface FastEthernet0/2",
-                "lines": [
-                  "switchport mode access",
-                  "switchport access vlan 110",
-                  "shutdown"
-                ]
-              }
-            ],
-            "cabled": [
-              "FastEthernet0/2"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
               },
-              {
-                "command": "interface fa0/2",
-                "note": "Masuk ke mode konfigurasi interface fa0/2; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "show ip interface brief",
-                "note": "Ringkasan semua interface: alamat, status, dan protocol."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface FastEthernet0/2",
+                  "lines": [
+                    "switchport mode access",
+                    "switchport access vlan 110",
+                    "shutdown"
+                  ]
+                }
+              ],
+              "cabled": [
+                "FastEthernet0/2"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface fa0/2",
+                  "note": "Masuk ke mode konfigurasi interface fa0/2; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "show ip interface brief",
+                  "note": "Ringkasan semua interface: alamat, status, dan protocol."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u14-l5-e1",

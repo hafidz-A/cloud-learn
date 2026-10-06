@@ -164,7 +164,7 @@ export function questionTexts(e: Exercise): string[] {
 
 /** The texts a learn card shows (the title may stay a bare abbreviation, like "IaaS"). */
 export function learnTexts(card: LearnCard): string[] {
-  return [card.body, ...(card.keyPoints ?? []), card.example ?? '', ...(card.cli?.steps ?? []).map((s) => s.note), card.trap ?? ''].filter(Boolean)
+  return [card.body, ...(card.keyPoints ?? []), card.example ?? '', ...(card.cli ?? []).flatMap((c) => c.steps.map((s) => s.note)), card.trap ?? ''].filter(Boolean)
 }
 
 /** Everything a lesson item shows on screen, for the glossary check. */
@@ -559,11 +559,11 @@ function checkLearn(card: LearnCard, facts: Set<string>, push: (message: string,
   const missing = unexpandedAbbreviations(learnTexts(card))
   if (missing.length) push(`expand on first use in the learn card: ${missing.join(', ')}`, 'warn')
   checkEntraName([card.title, ...learnTexts(card)], push)
-  if (card.cli) checkCli(card.cli, push)
+  for (const cli of card.cli ?? []) checkCli(cli, push)
 }
 
 /** A CLI example must replay cleanly: no IOS errors and no Langit notes, and every line explained. */
-function checkCli(cli: NonNullable<LearnCard['cli']>, push: (message: string, level?: Issue['level']) => void) {
+function checkCli(cli: NonNullable<LearnCard['cli']>[number], push: (message: string, level?: Issue['level']) => void) {
   if (!PHYSICAL[cli.device?.model]) return push(`unknown model "${cli.device?.model}" in the CLI example`)
   if (!cli.steps?.length) return push('a CLI example needs steps')
   for (const s of cli.steps) if (!s.note?.trim()) push(`CLI example line "${s.command}" needs a note`)

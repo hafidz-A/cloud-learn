@@ -69,7 +69,7 @@ export type LearnCard = {
   link?: string // a Microsoft Learn page for further reading
   teaches: string[] // Fact ids
   /** CCNA: the commands of this card typed on the CLI simulator, each with what it does. */
-  cli?: CliExample
+  cli?: CliExample[]
 }
 
 /**

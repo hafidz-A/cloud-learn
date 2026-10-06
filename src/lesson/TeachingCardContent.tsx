@@ -56,7 +56,7 @@ export function TeachingCardContent({ card, titleId, heading = 'h2' }: { card: T
           ))}
         </ul>
       )}
-      {learn?.cli && <CliExampleView cli={learn.cli} />}
+      {learn?.cli?.map((cli, i) => <CliExampleView key={i} cli={cli} />)}
       {learn?.example && (
         <div className="mt-4 rounded-xl bg-langit p-3">
           <p className="flex items-center gap-1.5 font-display text-13 font-bold text-tinta-lembut">

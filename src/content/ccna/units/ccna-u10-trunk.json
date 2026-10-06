@@ -24,30 +24,32 @@
             "ccna-f-u10-trunk",
             "ccna-f-u10-trunk-cmd"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
               },
-              {
-                "command": "interface g0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "switchport mode trunk",
-                "note": "Menjadikan port ini trunk yang membawa banyak VLAN dengan tag 802.1Q."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "switchport mode trunk",
+                  "note": "Menjadikan port ini trunk yang membawa banyak VLAN dengan tag 802.1Q."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u10-l1-e1",
@@ -266,39 +268,41 @@
             "ccna-f-u10-allowed",
             "ccna-f-u10-show-trunk"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/1",
-                "lines": [
-                  "switchport mode trunk",
-                  "switchport trunk allowed vlan 110,120"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
               },
-              {
-                "command": "interface g0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "switchport trunk allowed vlan add 130",
-                "note": "Membatasi VLAN yang boleh lewat trunk ini menjadi add 130."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "interface GigabitEthernet0/1",
+                  "lines": [
+                    "switchport mode trunk",
+                    "switchport trunk allowed vlan 110,120"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "switchport trunk allowed vlan add 130",
+                  "note": "Membatasi VLAN yang boleh lewat trunk ini menjadi add 130."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u10-l2-e1",
@@ -398,39 +402,7 @@
           "teaches": [
             "ccna-f-u10-native",
             "ccna-f-u10-native-match"
-          ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
-            },
-            "given": [
-              {
-                "context": "interface GigabitEthernet0/1",
-                "lines": [
-                  "switchport mode trunk"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "switchport trunk native vlan 199",
-                "note": "Menjadikan VLAN 199 native VLAN, yang dikirim tanpa tag di trunk ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+          ]
         },
         {
           "id": "ccna-u10-l2-e4",
@@ -523,34 +495,36 @@
             "ccna-f-u10-l2-l3",
             "ccna-f-u10-routed-port"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c3650"
-            },
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c3650"
               },
-              {
-                "command": "interface g1/0/24",
-                "note": "Masuk ke mode konfigurasi interface g1/0/24; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "no switchport",
-                "note": "Mengubah port switch menjadi port routed, yang bisa diberi alamat IP."
-              },
-              {
-                "command": "ip address 10.0.40.1 255.255.255.252",
-                "note": "Memberi alamat 10.0.40.1 dengan mask 255.255.255.252 ke interface ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g1/0/24",
+                  "note": "Masuk ke mode konfigurasi interface g1/0/24; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no switchport",
+                  "note": "Mengubah port switch menjadi port routed, yang bisa diberi alamat IP."
+                },
+                {
+                  "command": "ip address 10.0.40.1 255.255.255.252",
+                  "note": "Memberi alamat 10.0.40.1 dengan mask 255.255.255.252 ke interface ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u10-l3-e1",
@@ -735,64 +709,66 @@
             "ccna-f-u10-svi-up",
             "ccna-f-u10-ip-routing"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c3650"
-            },
-            "given": [
-              {
-                "context": "vlan 110",
-                "lines": [
-                  "name Staf"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c3650"
               },
-              {
-                "context": "vlan 120",
-                "lines": [
-                  "name Tamu"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip routing",
-                "note": "Menyalakan routing IPv4 di switch Layer 3."
-              },
-              {
-                "command": "interface vlan 110",
-                "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN 110."
-              },
-              {
-                "command": "ip address 192.168.50.1 255.255.255.0",
-                "note": "Memberi alamat 192.168.50.1 dengan mask 255.255.255.0 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
-              },
-              {
-                "command": "interface vlan 120",
-                "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN 120."
-              },
-              {
-                "command": "ip address 192.168.60.1 255.255.255.0",
-                "note": "Memberi alamat 192.168.60.1 dengan mask 255.255.255.0 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "vlan 110",
+                  "lines": [
+                    "name Staf"
+                  ]
+                },
+                {
+                  "context": "vlan 120",
+                  "lines": [
+                    "name Tamu"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip routing",
+                  "note": "Menyalakan routing IPv4 di switch Layer 3."
+                },
+                {
+                  "command": "interface vlan 110",
+                  "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN 110."
+                },
+                {
+                  "command": "ip address 192.168.50.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.50.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
+                },
+                {
+                  "command": "interface vlan 120",
+                  "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN 120."
+                },
+                {
+                  "command": "ip address 192.168.60.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.60.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u10-l4-e1",
@@ -912,50 +888,52 @@
           "teaches": [
             "ccna-f-u10-svi-mgmt"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW2",
-              "model": "c2960"
-            },
-            "given": [
-              {
-                "context": "vlan 199",
-                "lines": [
-                  "name Manajemen"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW2",
+                "model": "c2960"
               },
-              {
-                "command": "interface vlan 199",
-                "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN (Virtual LAN) 199."
-              },
-              {
-                "command": "ip address 192.168.139.12 255.255.255.0",
-                "note": "Memberi alamat 192.168.139.12 dengan mask 255.255.255.0 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
-              },
-              {
-                "command": "exit",
-                "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
-              },
-              {
-                "command": "ip default-gateway 192.168.139.1",
-                "note": "Memasang gateway 192.168.139.1 untuk switch Layer 2, supaya bisa dikelola dari subnet lain."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "vlan 199",
+                  "lines": [
+                    "name Manajemen"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface vlan 199",
+                  "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN (Virtual LAN) 199."
+                },
+                {
+                  "command": "ip address 192.168.139.12 255.255.255.0",
+                  "note": "Memberi alamat 192.168.139.12 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
+                },
+                {
+                  "command": "exit",
+                  "note": "Naik satu mode, misalnya dari mode interface kembali ke konfigurasi global."
+                },
+                {
+                  "command": "ip default-gateway 192.168.139.1",
+                  "note": "Memasang gateway 192.168.139.1 untuk switch Layer 2, supaya bisa dikelola dari subnet lain."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u10-l4-e4",
@@ -1066,57 +1044,59 @@
             "ccna-f-u10-subif-cmd",
             "ccna-f-u10-roas-parent"
           ],
-          "cli": {
-            "device": {
-              "hostname": "R1",
-              "model": "isr4331"
-            },
-            "cabled": [
-              "GigabitEthernet0/0/1"
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+          "cli": [
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "command": "interface g0/0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
-              },
-              {
-                "command": "interface g0/0/1.110",
-                "note": "Membuat subinterface g0/0/1.110 untuk satu VLAN di link trunk."
-              },
-              {
-                "command": "encapsulation dot1Q 110",
-                "note": "Menandai subinterface ini untuk frame VLAN 110 (tag 802.1Q)."
-              },
-              {
-                "command": "ip address 192.168.50.1 255.255.255.0",
-                "note": "Memberi alamat 192.168.50.1 dengan mask 255.255.255.0 ke interface ini."
-              },
-              {
-                "command": "interface g0/0/1.120",
-                "note": "Membuat subinterface g0/0/1.120 untuk satu VLAN di link trunk."
-              },
-              {
-                "command": "encapsulation dot1Q 120",
-                "note": "Menandai subinterface ini untuk frame VLAN 120 (tag 802.1Q)."
-              },
-              {
-                "command": "ip address 192.168.60.1 255.255.255.0",
-                "note": "Memberi alamat 192.168.60.1 dengan mask 255.255.255.0 ke interface ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "cabled": [
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "interface g0/0/1.110",
+                  "note": "Membuat subinterface g0/0/1.110 untuk satu VLAN di link trunk."
+                },
+                {
+                  "command": "encapsulation dot1Q 110",
+                  "note": "Menandai subinterface ini untuk frame VLAN 110 (tag 802.1Q)."
+                },
+                {
+                  "command": "ip address 192.168.50.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.50.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "interface g0/0/1.120",
+                  "note": "Membuat subinterface g0/0/1.120 untuk satu VLAN di link trunk."
+                },
+                {
+                  "command": "encapsulation dot1Q 120",
+                  "note": "Menandai subinterface ini untuk frame VLAN 120 (tag 802.1Q)."
+                },
+                {
+                  "command": "ip address 192.168.60.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.60.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u10-l5-e1",
@@ -1328,72 +1308,133 @@
             "ccna-f-u10-subif-cmd",
             "ccna-f-u10-show-trunk"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c2960"
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c2960"
+              },
+              "given": [
+                {
+                  "context": "vlan 110",
+                  "lines": [
+                    "name Staf"
+                  ]
+                },
+                {
+                  "context": "vlan 120",
+                  "lines": [
+                    "name Tamu"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "switchport mode trunk",
+                  "note": "Menjadikan port ini trunk yang membawa banyak VLAN dengan tag 802.1Q."
+                },
+                {
+                  "command": "switchport trunk allowed vlan 110,120",
+                  "note": "Membatasi VLAN yang boleh lewat trunk ini menjadi 110,120."
+                },
+                {
+                  "command": "interface fa0/1",
+                  "note": "Masuk ke mode konfigurasi interface fa0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "switchport mode access",
+                  "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+                },
+                {
+                  "command": "switchport access vlan 110",
+                  "note": "Memasukkan port ini ke VLAN 110."
+                },
+                {
+                  "command": "interface fa0/2",
+                  "note": "Masuk ke mode konfigurasi interface fa0/2; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "switchport mode access",
+                  "note": "Menjadikan port ini port access, anggota satu VLAN saja."
+                },
+                {
+                  "command": "switchport access vlan 120",
+                  "note": "Memasukkan port ini ke VLAN 120."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                }
+              ]
             },
-            "given": [
-              {
-                "context": "vlan 110",
-                "lines": [
-                  "name Staf"
-                ]
+            {
+              "device": {
+                "hostname": "R1",
+                "model": "isr4331"
               },
-              {
-                "context": "vlan 120",
-                "lines": [
-                  "name Tamu"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "interface g0/1",
-                "note": "Masuk ke mode konfigurasi interface g0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "switchport mode trunk",
-                "note": "Menjadikan port ini trunk yang membawa banyak VLAN dengan tag 802.1Q."
-              },
-              {
-                "command": "switchport trunk allowed vlan 110,120",
-                "note": "Membatasi VLAN yang boleh lewat trunk ini menjadi 110,120."
-              },
-              {
-                "command": "interface fa0/1",
-                "note": "Masuk ke mode konfigurasi interface fa0/1; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "switchport mode access",
-                "note": "Menjadikan port ini port access, anggota satu VLAN saja."
-              },
-              {
-                "command": "switchport access vlan 110",
-                "note": "Memasukkan port ini ke VLAN 110."
-              },
-              {
-                "command": "interface fa0/2",
-                "note": "Masuk ke mode konfigurasi interface fa0/2; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "switchport mode access",
-                "note": "Menjadikan port ini port access, anggota satu VLAN saja."
-              },
-              {
-                "command": "switchport access vlan 120",
-                "note": "Memasukkan port ini ke VLAN 120."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              }
-            ]
-          }
+              "cabled": [
+                "GigabitEthernet0/0/1"
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "interface g0/0/1",
+                  "note": "Masuk ke mode konfigurasi interface g0/0/1; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface; router mematikan interface-nya secara bawaan."
+                },
+                {
+                  "command": "interface g0/0/1.110",
+                  "note": "Membuat subinterface g0/0/1.110 untuk satu VLAN di link trunk."
+                },
+                {
+                  "command": "encapsulation dot1Q 110",
+                  "note": "Menandai subinterface ini untuk frame VLAN 110 (tag 802.1Q)."
+                },
+                {
+                  "command": "ip address 192.168.50.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.50.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "interface g0/0/1.120",
+                  "note": "Membuat subinterface g0/0/1.120 untuk satu VLAN di link trunk."
+                },
+                {
+                  "command": "encapsulation dot1Q 120",
+                  "note": "Menandai subinterface ini untuk frame VLAN 120 (tag 802.1Q)."
+                },
+                {
+                  "command": "ip address 192.168.60.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.60.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u10-l6-e1",
@@ -1578,84 +1619,86 @@
             "ccna-f-u10-svi",
             "ccna-f-u10-routed-port"
           ],
-          "cli": {
-            "device": {
-              "hostname": "SW1",
-              "model": "c3650"
-            },
-            "given": [
-              {
-                "context": "vlan 110",
-                "lines": [
-                  "name Staf"
-                ]
+          "cli": [
+            {
+              "device": {
+                "hostname": "SW1",
+                "model": "c3650"
               },
-              {
-                "context": "vlan 120",
-                "lines": [
-                  "name Tamu"
-                ]
-              }
-            ],
-            "steps": [
-              {
-                "command": "configure terminal",
-                "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
-              },
-              {
-                "command": "ip routing",
-                "note": "Menyalakan routing IPv4 di switch Layer 3."
-              },
-              {
-                "command": "interface vlan 110",
-                "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN 110."
-              },
-              {
-                "command": "ip address 192.168.50.1 255.255.255.0",
-                "note": "Memberi alamat 192.168.50.1 dengan mask 255.255.255.0 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
-              },
-              {
-                "command": "interface vlan 120",
-                "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN 120."
-              },
-              {
-                "command": "ip address 192.168.60.1 255.255.255.0",
-                "note": "Memberi alamat 192.168.60.1 dengan mask 255.255.255.0 ke interface ini."
-              },
-              {
-                "command": "no shutdown",
-                "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
-              },
-              {
-                "command": "interface g1/0/24",
-                "note": "Masuk ke mode konfigurasi interface g1/0/24; prompt menjadi (config-if)#."
-              },
-              {
-                "command": "no switchport",
-                "note": "Mengubah port switch menjadi port routed, yang bisa diberi alamat IP (Internet Protocol)."
-              },
-              {
-                "command": "ip address 10.0.40.1 255.255.255.252",
-                "note": "Memberi alamat 10.0.40.1 dengan mask 255.255.255.252 ke interface ini."
-              },
-              {
-                "command": "end",
-                "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
-              },
-              {
-                "command": "copy running-config startup-config",
-                "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
-              },
-              {
-                "command": "",
-                "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
-              }
-            ]
-          }
+              "given": [
+                {
+                  "context": "vlan 110",
+                  "lines": [
+                    "name Staf"
+                  ]
+                },
+                {
+                  "context": "vlan 120",
+                  "lines": [
+                    "name Tamu"
+                  ]
+                }
+              ],
+              "steps": [
+                {
+                  "command": "configure terminal",
+                  "note": "Masuk ke mode konfigurasi global; prompt menjadi (config)#."
+                },
+                {
+                  "command": "ip routing",
+                  "note": "Menyalakan routing IPv4 di switch Layer 3."
+                },
+                {
+                  "command": "interface vlan 110",
+                  "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN 110."
+                },
+                {
+                  "command": "ip address 192.168.50.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.50.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
+                },
+                {
+                  "command": "interface vlan 120",
+                  "note": "Membuat atau masuk ke SVI (switched virtual interface) VLAN 120."
+                },
+                {
+                  "command": "ip address 192.168.60.1 255.255.255.0",
+                  "note": "Memberi alamat 192.168.60.1 dengan mask 255.255.255.0 ke interface ini."
+                },
+                {
+                  "command": "no shutdown",
+                  "note": "Menyalakan interface ini; interface VLAN (SVI) dan port yang dimatikan butuh perintah ini."
+                },
+                {
+                  "command": "interface g1/0/24",
+                  "note": "Masuk ke mode konfigurasi interface g1/0/24; prompt menjadi (config-if)#."
+                },
+                {
+                  "command": "no switchport",
+                  "note": "Mengubah port switch menjadi port routed, yang bisa diberi alamat IP (Internet Protocol)."
+                },
+                {
+                  "command": "ip address 10.0.40.1 255.255.255.252",
+                  "note": "Memberi alamat 10.0.40.1 dengan mask 255.255.255.252 ke interface ini."
+                },
+                {
+                  "command": "end",
+                  "note": "Keluar dari semua mode konfigurasi, kembali ke privileged EXEC."
+                },
+                {
+                  "command": "copy running-config startup-config",
+                  "note": "Menyimpan konfigurasi yang sedang berjalan ke startup-config supaya tidak hilang saat restart."
+                },
+                {
+                  "command": "",
+                  "note": "Tekan Enter untuk menerima nama bawaannya, startup-config."
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "ccna-u10-l7-e1",
