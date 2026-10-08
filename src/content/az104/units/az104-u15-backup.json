@@ -1549,7 +1549,7 @@
             "backup-vault"
           ],
           "title": "Membuat dan menghapus Backup vault",
-          "body": "Backup vault dipakai untuk Azure Disks, Azure Blobs, Azure Database for PostgreSQL, dan Kubernetes. Saat membuatnya, pilih subscription, resource group, nama, region, dan storage redundancy: geo-redundant (default) atau locally redundant yang lebih murah. Storage redundancy tidak bisa diubah setelah ada item yang dilindungi. Vault memakai managed identity untuk mengakses resource yang di-backup. Vault baru bisa dihapus setelah semua backup instance dan backup policy di dalamnya dihapus.",
+          "body": "Backup vault dipakai untuk Azure Disks, Azure Blobs, Azure Database for PostgreSQL, dan Kubernetes. Saat membuatnya, pilih subscription, resource group, nama, region, dan storage redundancy, misalnya geo-redundant (default) atau locally redundant yang lebih murah. Storage redundancy tidak bisa diubah setelah ada item yang dilindungi. Vault memakai managed identity untuk mengakses resource yang di-backup. Vault baru bisa dihapus setelah semua backup instance dan backup policy di dalamnya dihapus.",
           "keyPoints": [
             "Redundancy dipilih sebelum ada item",
             "Akses lewat managed identity vault",

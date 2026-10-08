@@ -295,7 +295,7 @@
           "body": "Resource logs, misalnya log akses Key Vault atau log query database, tidak dikumpulkan secara default. Buat diagnostic setting di setiap resource untuk memilih kategori log dan tujuannya: Log Analytics workspace, storage account, Event Hubs, atau solusi partner. Tujuannya harus sudah ada. Satu resource boleh punya paling banyak lima diagnostic setting.",
           "keyPoints": [
             "Resource logs: tidak otomatis",
-            "Satu setting per resource",
+            "Diatur di setiap resource",
             "Maks. lima setting per resource"
           ],
           "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/diagnostic-settings",

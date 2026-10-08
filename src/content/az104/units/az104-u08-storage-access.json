@@ -252,7 +252,7 @@
           "type": "yesno",
           "concept": "trusted-services",
           "prompt": "For each statement, select Yes or No.",
-          "scenario": "contosodata allows only the subnet snet-app. Ani works from home and opens the Azure portal.",
+          "scenario": "contosodata allows only the subnet snet-app. Ani has the Storage Blob Data Reader role on contosodata, works from home, and opens the Azure portal.",
           "statements": [
             {
               "text": "Ani can see contosodata in the portal.",

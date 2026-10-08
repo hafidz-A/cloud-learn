@@ -95,7 +95,7 @@
             "standard-vs-premium"
           ],
           "title": "Standard vs premium",
-          "body": "Akun premium memakai SSD (solid-state drive) untuk latensi rendah dan throughput tinggi. Premium file shares dipakai untuk file share yang butuh performa tinggi, dan wajib kalau butuh file share NFS (Network File System). Premium block blobs cocok untuk transaksi tinggi atau objek kecil. Harganya: akun premium tidak mendukung geo-redundancy; redundancy-nya hanya LRS (locally redundant storage) atau ZRS (zone-redundant storage) di region utama.",
+          "body": "Akun premium memakai SSD (solid-state drive) untuk latensi rendah dan throughput tinggi. Premium file shares dipakai untuk file share yang butuh performa tinggi, dan wajib kalau butuh file share NFS (Network File System). Premium block blobs cocok untuk transaksi tinggi atau objek kecil. Kekurangannya: akun premium tidak mendukung geo-redundancy; redundancy-nya hanya LRS (locally redundant storage) atau ZRS (zone-redundant storage) di region utama.",
           "keyPoints": [
             "Premium: SSD, latensi rendah",
             "NFS di Azure Files: Premium file shares",

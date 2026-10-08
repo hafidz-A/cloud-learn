@@ -1801,7 +1801,7 @@
           "id": "az104-u01-l6-e4",
           "type": "choice",
           "concept": "nested-groups",
-          "prompt": "The group IT (information technology)-Admins is a member of the group Ops. Ops is assigned the Contributor role on the resource group rg-prod, and the app Payroll is assigned to Ops. What does a member of IT-Admins get?",
+          "prompt": "The group Helpdesk is a member of the group Ops. Ops is assigned the Contributor role on the resource group rg-prod, and the app Payroll is assigned to Ops. What does a member of Helpdesk get?",
           "options": [
             "Access to Payroll, but not the Contributor permissions on rg-prod",
             "The Contributor permissions on rg-prod, but not access to Payroll",

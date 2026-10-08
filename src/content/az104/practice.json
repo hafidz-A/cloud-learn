@@ -25,7 +25,7 @@
           "careful": true
         },
         "az104-u01-l3": {
-          "text": "Buka Microsoft 365 admin center > Billing > Licenses dan lihat usage location seorang user. Assign lisensi hanya kalau kamu punya langganan atau trial.",
+          "text": "Di Microsoft Entra admin center, buka Properties seorang user dan lihat Usage location-nya, lalu buka Licenses. Assign lisensi hanya kalau kamu punya langganan atau trial.",
           "careful": true
         },
         "az104-u01-l4": {
@@ -262,7 +262,7 @@
           "text": "Buat stored access policy di container, buat service SAS (shared access signature) yang merujuk policy itu, lalu hapus policy-nya: URL (Uniform Resource Locator) SAS tidak berlaku lagi."
         },
         "az104-u08-l4": {
-          "text": "Rotasi access key sesuai urutannya: buat ulang key2, lalu key1, dan lihat SAS (shared access signature) yang ditandatangani key lama berhenti bekerja."
+          "text": "Rotasi access key sesuai urutannya: pindahkan pemakaian ke key2, buat ulang key1, kembali ke key1 yang baru, lalu buat ulang key2. Lihat SAS (shared access signature) yang ditandatangani key lama berhenti bekerja."
         },
         "az104-u08-l5": {
           "text": "Buka file share di storage account uji dan lihat pengaturan akses berbasis identitasnya, lalu beri dirimu role Storage File Data SMB (Server Message Block) Share Reader."
@@ -279,7 +279,7 @@
           "Upload file, timpa isinya, lalu pulihkan versi lama.",
           "Tambahkan lifecycle rule tierToCool dan delete berbasis hari sejak terakhir diubah.",
           "Buat file share, ambil snapshot, hapus satu file, lalu pulihkan dari snapshot.",
-          "Ubah satu blob ke Archive, lalu salin ke blob baru di tier Hot untuk membacanya."
+          "Ubah satu blob ke Archive, lalu salin ke blob baru di tier Hot dengan rehydrate priority High, yang bisa selesai kurang dari satu jam untuk blob kecil."
         ],
         "check": "Versi lama kembali, file share pulih dari snapshot, dan blob Archive terbaca lewat salinan Hot.",
         "cleanup": "Hapus resource group misi. Blob Archive yang dihapus sebelum 180 hari kena biaya early deletion yang kecil."
@@ -352,7 +352,7 @@
       },
       "tips": {
         "az104-u11-l1": {
-          "text": "Buat VM (virtual machine) kecil, misalnya seri B, lalu lihat disk-nya: OS (operating system) disk, data disk yang kamu tambahkan, dan temporary disk di dalam OS (operating system). Stop VM saat tidak dipakai supaya deallocated."
+          "text": "Buat VM (virtual machine) kecil, misalnya seri B, lalu lihat disk-nya: OS (operating system) disk, data disk yang kamu tambahkan, dan, kalau ukurannya punya, temporary disk di dalam OS (operating system). Stop VM saat tidak dipakai supaya deallocated."
         },
         "az104-u11-l2": {
           "text": "Resize VM (virtual machine) uji lewat Availability + scale > Size, lalu perhatikan VM restart."

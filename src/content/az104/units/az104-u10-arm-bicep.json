@@ -1133,7 +1133,7 @@
           "type": "yesno",
           "concept": "incremental-vs-complete",
           "prompt": "For each statement, select Yes or No.",
-          "scenario": "Contoso redeploys a template to rg-web in the default mode. The template does not set the tags of vm1, but vm1 has tags that an admin added by hand.",
+          "scenario": "Contoso redeploys a template to rg-web in the default mode. After the last deployment, an admin changed some properties of vm1 by hand, and the template does not set those properties.",
           "statements": [
             {
               "text": "Resources in rg-web that are not in the template are deleted.",

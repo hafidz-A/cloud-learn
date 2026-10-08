@@ -666,6 +666,36 @@ memakai diagram pertama.
 | Skenario umum di modul yang sama: IaaS lift-and-shift migration serta testing and development; PaaS development framework serta analytics and business intelligence; SaaS email and messaging (Microsoft 365, Teams, Outlook), productivity applications (Word, Excel, PowerPoint online), serta finance and expense tracking | Skenario PaaS dan SaaS sebelumnya belum diajarkan. Skenarionya dimasukkan ke kartu PaaS dan SaaS yang sudah ada (fakta `f-u03-paas-scenarios` dan `f-u03-saas-scenarios`), dan soal sort `u03-l3-e4` memakai nama skenario resmi. Tidak ada kartu atau soal baru | `training/modules/describe-cloud-service-types/` |
 | Halaman modul tidak bisa dibuka dari lingkungan pengembangan | Isi di dua baris di atas dicocokkan ke screenshot pengguna, kata demi kata untuk lapisan dan skenarionya | Screenshot pengguna |
 
+## AZ-104: audit kredibilitas menyeluruh (8 Oktober 2026)
+
+Seluruh materi AZ-104 dibaca ulang dari awal sampai akhir: 596 fakta (angka, tanggal, dan nama dicocokkan
+otomatis ke sumbernya, lalu dibaca manual), semua kartu dan soal di 15 unit, 46 visual, 30 soal studi kasus,
+serta 15 misi dan 76 tips praktik. Setiap klaim yang meragukan dicocokkan ke salinan lokal repo
+`MicrosoftDocs`. Perbaikan mengubah item yang sudah ada; tidak ada kartu, soal, atau id baru.
+
+| Item | Masalah | Perbaikan | Sumber |
+|---|---|---|---|
+| Soal `az104-u01-l6-e4` | Nama group IT-Admins ikut diperluas otomatis menjadi "IT (information technology)-Admins" | Nama group diganti Helpdesk | - |
+| Fakta `az104-f-u04-basic-retired`, kartu `az104-u04-l2-m1` | "Public IP baru memakai Standard (v1 atau v2)" tanpa menyebut bahwa Standard v2 saat ini hanya bisa dipakai dengan NAT gateway Standard v2 | Batasan Standard v2 ditulis di kalimat yang sama | `virtual-network/ip-services/public-ip-addresses.md` |
+| Kartu `az104-u07-l1-m2` | Kata "Harganya" untuk kekurangan akun premium, padahal yang dibahas redundancy, bukan biaya | Diganti "Kekurangannya" | - |
+| Soal `az104-u08-l1-e9` | Pernyataan "IP rule untuk rumah Ani membuat dia bisa membuka data blob" bergantung pada izin data Ani, yang tidak disebut | Skenario menyebut Ani punya Storage Blob Data Reader | `storage/common/storage-network-security.md` |
+| Soal `az104-u10-l5-e7` | Contohnya tag yang ditambah manual, padahal dokumentasi hanya menyatakan aturan umum (properti yang tidak ditulis kembali ke default) | Skenario memakai properti yang diubah manual | `azure-resource-manager/templates/deployment-modes.md` |
+| Kartu `az104-u14-l2-m2` | Poin kunci "Satu setting per resource" bertentangan dengan isi kartu (maksimal lima diagnostic setting per resource) | Diganti "Diatur di setiap resource" | `azure-monitor/data-collection/diagnostic-settings.md` |
+| Kartu `az104-u15-l6-m1` | Pilihan redundancy Backup vault terbaca seolah hanya dua | Ditulis sebagai contoh ("misalnya") | `backup/create-manage-backup-vault.md`, `backup/backup-vault-overview.md` |
+| Visual `StorageRedundancy` | Teks alternatif menulis ZRS "di tiap tiga zone", fakta dan dokumentasi menulis tiga atau lebih | Diselaraskan menjadi tiga atau lebih zone | `storage/common/storage-redundancy.md` |
+| Tips `az104-u08-l4` | Urutan rotasi "buat ulang key2, lalu key1" bertentangan dengan kartu dan dokumentasi | Urutan diganti: pindah ke key2, buat ulang key1, kembali ke key1, buat ulang key2 | `storage/common/storage-account-keys-manage.md` |
+| Misi unit 9, langkah 5 | Salinan blob Archive ke Hot butuh rehydrate (priority Standard bisa sampai 15 jam), padahal misinya 30 menit | Langkahnya memakai rehydrate priority High | `storage/blobs/archive-rehydrate-overview.md` |
+| Tips `az104-u01-l3` | Usage location disebut ada di Microsoft 365 admin center > Billing > Licenses | Diganti ke Properties user di Microsoft Entra admin center | `entra/fundamentals/how-to-manage-user-profile-info.md` |
+| Tips `az104-u11-l1` | Tidak semua ukuran seri B punya temporary disk | Ditulis "kalau ukurannya punya" | `virtual-machines/managed-disks-overview.md` |
+
+Klaim yang dicek ulang dan sudah benar, antara lain: Bastion (subnet /26, SKU dan fiturnya, Developer tanpa
+peering), urutan NSG subnet dan network interface, aturan default NSG, health probe dan metrik load balancer,
+auto registration private DNS, failover storage (planned tetap geo, unplanned menjadi LRS), object replication,
+customer-managed key, tier blob dan Archive di ZRS, smart tier, lifecycle management, mode deployment ARM
+(lock, subscription level, portal), VM (resize, enkripsi, availability set, pemindahan dengan ADE), ACR dan
+container, App Service (tier, backup, linked database, IP based SSL, automatic scaling), Azure Monitor, dan
+Azure Backup (redundancy vault, Disk Backup lintas subscription, Resiliency, classic alerts).
+
 ## CCNA 200-301 v2.0 (3 Oktober 2026)
 
 Course CCNA (rencana: `LANGIT_CCNA_PLAN.md`) punya 28 unit, 156 lesson, 940 soal, 338 kartu materi, 21 lab, dan

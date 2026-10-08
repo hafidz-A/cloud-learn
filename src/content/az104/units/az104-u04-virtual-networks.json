@@ -265,7 +265,7 @@
             "public-ip-sku"
           ],
           "title": "Public IP Standard",
-          "body": "Public IP (Internet Protocol) SKU (stock-keeping unit) Basic sudah pensiun pada 30 September 2025, jadi public IP baru memakai Standard (v1 atau v2). Public IP Standard selalu static. Standard juga aman secara default: trafik masuk tertutup sampai diizinkan NSG (network security group).",
+          "body": "Public IP (Internet Protocol) SKU (stock-keeping unit) Basic sudah pensiun pada 30 September 2025, jadi public IP baru memakai Standard; Standard v2 saat ini hanya untuk NAT (network address translation) gateway Standard v2. Public IP Standard selalu static. Standard juga aman secara default: trafik masuk tertutup sampai diizinkan NSG (network security group).",
           "keyPoints": [
             "Basic pensiun 30 September 2025",
             "Standard selalu static",
@@ -1700,7 +1700,7 @@
     },
     {
       "id": "az104-f-u04-basic-retired",
-      "statement": "Public IP SKU (stock-keeping unit) Basic pensiun pada 30 September 2025. SKU yang dipakai sekarang adalah Standard (v1 atau v2).",
+      "statement": "Public IP SKU (stock-keeping unit) Basic pensiun pada 30 September 2025. SKU yang dipakai sekarang adalah Standard (v1 atau v2), dan Standard v2 saat ini hanya bisa dipakai dengan NAT (network address translation) gateway Standard v2.",
       "source": "https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses"
     },
     {

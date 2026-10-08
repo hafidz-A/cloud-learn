@@ -55,7 +55,7 @@ export const StorageRedundancy: FC = () => {
     <svg
       viewBox="0 0 300 262"
       role="img"
-      aria-label="Diagram redundancy: LRS menyimpan tiga salinan di satu datacenter, ZRS satu salinan di tiap tiga zone, GRS memakai LRS lalu menyalin ke region kedua, dan GZRS memakai ZRS lalu menyalin ke region kedua."
+      aria-label="Diagram redundancy: LRS menyimpan tiga salinan di satu datacenter, ZRS menyalin ke tiga atau lebih zone, GRS memakai LRS lalu menyalin ke region kedua, dan GZRS memakai ZRS lalu menyalin ke region kedua."
       className="w-full font-display"
     >
       <defs>
