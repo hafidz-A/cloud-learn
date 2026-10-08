@@ -646,7 +646,13 @@ Yang perlu diketahui untuk ujian dan pekerjaan:
 
 Dicek ulang setelah pengguna merasa konsep IaaS, PaaS, dan SaaS di Langit janggal. Sumber: study guide AZ-900
 (kisi-kisi 20 Juli 2026), `security/fundamentals/shared-responsibility.md` (24 Agustus 2026) beserta gambar
-diagramnya, dan halaman indeks dokumentasi Azure Functions.
+diagramnya, halaman indeks dokumentasi Azure Functions, dan modul AZ-900 "Describe cloud service types".
+
+Ada dua diagram resmi yang terlihat berbeda tapi tidak bertentangan. Diagram jenis layanan di modul AZ-900
+menunjukkan lapisan teknologi yang kamu kelola (aplikasi, data, runtime, middleware, sistem operasi, server,
+storage, jaringan). Diagram shared responsibility menunjukkan tanggung jawab keamanan, termasuk account, identity,
+dan device yang selalu milik customer; di sana aplikasi di PaaS ditandai "shared" karena runtime dan middleware di
+bawah aplikasi diurus Microsoft. Langit memakai keduanya dan menjelaskan bedanya di kartu Unit 1 lesson 2.
 
 | Temuan | Dampak ke materi | Sumber |
 |---|---|---|
@@ -655,6 +661,9 @@ diagramnya, dan halaman indeks dokumentasi Azure Functions.
 | Dokumentasi Azure Functions menyebutnya "managed platform-as-a-service (PaaS) provider" yang bisa memberi "serverless hosting" | Serverless dijelaskan sebagai cara layanan PaaS menjalankan kode | `azure-functions/index.yml` |
 | Diagram resmi: selalu customer (informasi dan data, device, account dan identity); tergantung jenis (infrastruktur identitas dan direktori: IaaS customer, PaaS dan SaaS bersama; aplikasi: IaaS customer, PaaS bersama, SaaS Microsoft; kontrol jaringan: IaaS customer, PaaS bersama, SaaS Microsoft; sistem operasi: IaaS customer, PaaS dan SaaS Microsoft); selalu Microsoft (host, jaringan, dan datacenter fisik) | Diagram `SharedResponsibility` dibuat ulang sel per sel; fakta `f-u01-sr-depends`, `-iaas`, `-paas`, `-saas` menyebut keempat baris yang tergantung jenis layanan dan sel bersamanya | `media/shared-responsibility/shared-responsibility.svg` |
 | Tabel teks di halaman yang sama (diperbarui 24 Agustus 2026) berbeda dari gambarnya: aplikasi dan client devices di SaaS ditulis "Shared", dan baris infrastruktur identitas diganti "Configurations and settings" serta "Identities and users" (selalu customer) | Materi mengikuti gambar diagram, yang juga dipakai di halaman itu. Penjelasan tetap menyebut bahwa pengaturan dan akses aplikasi SaaS adalah tugas customer, jadi tidak bertentangan dengan tabelnya | `shared-responsibility.md` |
+| Modul AZ-900 "Describe cloud service types" (screenshot halaman IaaS, PaaS, dan SaaS dari pengguna, 8 Oktober 2026): IaaS, kamu mengelola applications, data, runtime, middleware, dan operating system, penyedia mengelola servers, storage, dan networking ("Maximum control", "You rent hardware — what you do with it is up to you"); PaaS, kamu mengelola applications dan data ("Balanced", "You build on the platform — no infrastructure headaches"); SaaS, kamu mengelola data ("Least control", "You use the app — the provider handles everything else") | Diagram `ServiceModelsStack` memakai delapan lapisan yang sama (Aplikasi, Data, Runtime, Middleware, Sistem operasi, Server, Storage, Jaringan); fakta baru `f-u03-iaas-stack`, `f-u03-paas-stack`, `f-u03-saas-stack` | `training/modules/describe-cloud-service-types/` |
+| Skenario umum di modul yang sama: IaaS lift-and-shift migration serta testing and development; PaaS development framework serta analytics and business intelligence; SaaS email and messaging (Microsoft 365, Teams, Outlook), productivity applications (Word, Excel, PowerPoint online), serta finance and expense tracking | Skenario PaaS dan SaaS sebelumnya belum diajarkan. Fakta baru `f-u03-paas-scenarios` dan `f-u03-saas-scenarios`, kartu "Kapan memakai PaaS" dan "Kapan memakai SaaS", lima soal baru, dan soal sort `u03-l3-e4` memakai nama skenario resmi | `training/modules/describe-cloud-service-types/` |
+| Halaman modul tidak bisa dibuka dari lingkungan pengembangan | Isi di dua baris di atas dicocokkan ke screenshot pengguna, kata demi kata untuk lapisan dan skenarionya | Screenshot pengguna |
 
 ## CCNA 200-301 v2.0 (3 Oktober 2026)
 

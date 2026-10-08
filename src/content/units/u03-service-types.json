@@ -14,18 +14,19 @@
             "iaas"
           ],
           "title": "IaaS",
-          "body": "IaaS (Infrastructure as a Service) menyewakan infrastruktur: VM (Virtual Machine), jaringan, dan storage. Contohnya Azure Virtual Machines. Microsoft mengurus infrastruktur fisiknya. Kamu mengurus sistem operasi di VM, aplikasi, dan konfigurasinya, termasuk firewall di VM. Dari semua jenis layanan cloud, IaaS memberi kontrol paling besar.",
+          "body": "IaaS (Infrastructure as a Service) memberi kontrol paling besar: kamu menyewa hardware di datacenter cloud, dan apa yang kamu lakukan dengannya terserah kamu. Penyedia mengelola server, storage, dan jaringan fisiknya. Kamu mengelola sistem operasi, middleware, runtime, data, dan aplikasi di VM (Virtual Machine), termasuk konfigurasinya seperti firewall di VM. Contohnya Azure Virtual Machines.",
           "keyPoints": [
             "Contoh IaaS: Azure Virtual Machines",
-            "Microsoft: fisik. Kamu: sistem operasi ke atas",
-            "Kontrol paling besar, kerja juga paling banyak"
+            "Penyedia: server, storage, jaringan",
+            "Kamu: sistem operasi sampai aplikasi"
           ],
           "visual": "ServiceModelsStack",
           "link": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/",
           "teaches": [
             "f-u03-iaas-def",
             "f-u03-iaas-example",
-            "f-u03-iaas-split"
+            "f-u03-iaas-split",
+            "f-u03-iaas-stack"
           ]
         },
         {
@@ -83,6 +84,25 @@
           ]
         },
         {
+          "id": "u03-l1-e9",
+          "type": "choice",
+          "concept": "iaas",
+          "prompt": "A company runs its app on Azure virtual machines. The app needs a specific runtime and middleware. Who installs and manages them?",
+          "options": [
+            "Microsoft, because it manages the hosts of the virtual machines",
+            "The company",
+            "Microsoft, because the runtime is part of the Azure platform",
+            "The people who use the app"
+          ],
+          "answer": 1,
+          "explanation": "Di IaaS (Infrastructure as a Service), customer mengelola aplikasi, data, runtime, middleware, dan sistem operasi. Penyedia mengelola server, storage, dan jaringan.",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-stack",
+            "f-u03-iaas-example"
+          ]
+        },
+        {
           "id": "u03-l1-m1",
           "type": "learn",
           "concepts": [
@@ -128,6 +148,10 @@
               "bucket": 1
             },
             {
+              "text": "Install and update the runtime and middleware",
+              "bucket": 1
+            },
+            {
               "text": "Install and update applications",
               "bucket": 1
             },
@@ -139,7 +163,8 @@
           "explanation": "Di IaaS (Infrastructure as a Service), Microsoft mengurus fisiknya. Mulai dari OS (Operating System) ke atas, termasuk aplikasi dan firewall di VM (Virtual Machine), adalah urusanmu.",
           "requires": [
             "f-u03-iaas-split",
-            "f-u01-sr-microsoft-always"
+            "f-u01-sr-microsoft-always",
+            "f-u03-iaas-stack"
           ]
         },
         {
@@ -172,11 +197,11 @@
             "lift-and-shift"
           ],
           "title": "Lift-and-shift",
-          "body": "Lift-and-shift (rehost) memindahkan server on-premises ke Azure apa adanya, biasanya ke VM (Virtual Machine), tanpa mengubah kodenya. Caranya cepat dan risikonya rendah. Kalau aplikasinya ditulis ulang supaya memakai layanan cloud, itu modernisasi, bukan lift-and-shift. IaaS (Infrastructure as a Service) cocok untuk lift-and-shift, dan juga untuk lingkungan test dan development yang butuh kontrol penuh.",
+          "body": "Lift-and-shift (rehost) memindahkan server on-premises ke Azure apa adanya, biasanya ke VM (Virtual Machine), tanpa mengubah kodenya. Caranya cepat dan risikonya rendah. Kalau aplikasinya ditulis ulang supaya memakai layanan cloud, itu modernisasi. Dua skenario umum IaaS (Infrastructure as a Service) adalah lift-and-shift migration dan testing and development, karena lingkungan dev/test bisa direplikasi, dinyalakan, dan dimatikan dengan cepat dengan kontrol penuh.",
           "keyPoints": [
             "Lift-and-shift = pindah apa adanya, tanpa ubah kode",
             "Menulis ulang aplikasi = modernisasi",
-            "Kegunaan IaaS: lift-and-shift, test, dan development"
+            "Skenario IaaS: lift-and-shift, testing and development"
           ],
           "link": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/plan/select-cloud-migration-strategy",
           "teaches": [
@@ -255,17 +280,18 @@
             "paas"
           ],
           "title": "PaaS",
-          "body": "PaaS (Platform as a Service) menyediakan platform siap pakai untuk menjalankan aplikasi. Penyedia mengurus hardware, sistem operasi, dan runtime. Kamu fokus ke kode aplikasi dan data. Contohnya Azure App Service untuk menjalankan web app dan API (Application Programming Interface).",
+          "body": "PaaS (Platform as a Service) ada di tengah: kamu fokus ke aplikasi dan data, dan membangun di atas platform tanpa repot mengurus infrastruktur. Penyedia mengelola runtime, middleware, sistem operasi, server, storage, dan jaringan. Contohnya Azure App Service untuk menjalankan web app dan API (Application Programming Interface).",
           "keyPoints": [
             "Contoh PaaS: Azure App Service",
-            "Penyedia: hardware, sistem operasi, runtime",
-            "Kamu: kode dan data"
+            "Penyedia: runtime dan middleware sampai jaringan",
+            "Kamu: aplikasi dan data"
           ],
           "visual": "ServiceModelsStack",
           "link": "https://learn.microsoft.com/en-us/azure/app-service/overview",
           "teaches": [
             "f-u03-paas-def",
-            "f-u03-paas-example"
+            "f-u03-paas-example",
+            "f-u03-paas-stack"
           ]
         },
         {
@@ -382,6 +408,10 @@
               "bucket": 0
             },
             {
+              "text": "Middleware",
+              "bucket": 0
+            },
+            {
               "text": "Physical servers",
               "bucket": 0
             },
@@ -402,7 +432,8 @@
           "requires": [
             "f-u03-paas-patching",
             "f-u03-paas-customer",
-            "f-u01-sr-microsoft-always"
+            "f-u01-sr-microsoft-always",
+            "f-u03-paas-stack"
           ]
         },
         {
@@ -477,6 +508,86 @@
           "requires": [
             "f-u03-paas-customer"
           ]
+        },
+        {
+          "id": "u03-l2-m2",
+          "type": "learn",
+          "concepts": [
+            "paas-uses"
+          ],
+          "title": "Kapan memakai PaaS",
+          "body": "Modul AZ-900 menyebut dua skenario umum PaaS (Platform as a Service). Pertama, development framework: developer membangun aplikasi cloud dari komponen bawaan, dan fitur seperti scalability dan high availability sudah tersedia. Kedua, analytics dan business intelligence: tool yang disediakan platform dipakai untuk menganalisis dan menggali data, menemukan insight, dan memprediksi hasil.",
+          "keyPoints": [
+            "Development framework: bangun aplikasi dari komponen bawaan",
+            "Analytics dan business intelligence: olah data dengan tool platform"
+          ],
+          "link": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/",
+          "teaches": [
+            "f-u03-paas-scenarios"
+          ]
+        },
+        {
+          "id": "u03-l2-e9",
+          "type": "multi",
+          "concept": "paas-uses",
+          "prompt": "A company is planning several cloud projects. Which two scenarios are common uses of PaaS (Platform as a Service)? Choose two.",
+          "options": [
+            "Lift-and-shift migration",
+            "Analytics and business intelligence",
+            "Development framework",
+            "Email and messaging"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Development framework serta analytics dan business intelligence adalah skenario umum PaaS (Platform as a Service). Lift-and-shift migration adalah skenario IaaS (Infrastructure as a Service), dan email serta messaging adalah skenario SaaS (Software as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-scenarios",
+            "f-u03-iaas-uses"
+          ]
+        },
+        {
+          "id": "u03-l2-e10",
+          "type": "choice",
+          "concept": "paas-uses",
+          "prompt": "The developers at a company want to build cloud-based apps from built-in components, with scalability and high availability included. They do not want to manage the operating system or the middleware. Which cloud service type fits best?",
+          "options": [
+            "IaaS (Infrastructure as a Service)",
+            "PaaS (Platform as a Service)",
+            "SaaS (Software as a Service)",
+            "On-premises servers"
+          ],
+          "answer": 1,
+          "explanation": "Ini skenario development framework: developer membangun aplikasi di atas platform, dan penyedia mengelola sistem operasi serta middleware. Di IaaS (Infrastructure as a Service), sistem operasi dan middleware diurus customer, dan SaaS (Software as a Service) adalah aplikasi jadi yang tidak dibangun sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-scenarios",
+            "f-u03-paas-stack",
+            "f-u03-iaas-stack",
+            "f-u01-sr-saas"
+          ]
+        },
+        {
+          "id": "u03-l2-e11",
+          "type": "choice",
+          "concept": "paas-uses",
+          "prompt": "A company wants its developers to analyze and mine sales data, find insights, and predict outcomes by using tools that a cloud platform provides. The developers do not want to manage servers or the operating system. Which cloud service type fits best?",
+          "options": [
+            "IaaS (Infrastructure as a Service)",
+            "PaaS (Platform as a Service)",
+            "On-premises servers",
+            "A private cloud that the company runs itself"
+          ],
+          "answer": 1,
+          "explanation": "Analytics dan business intelligence dengan tool platform adalah skenario umum PaaS (Platform as a Service). Di IaaS (Infrastructure as a Service) dan on-premises, server dan sistem operasi tetap diurus customer.",
+          "examReady": true,
+          "requires": [
+            "f-u03-paas-scenarios",
+            "f-u03-paas-stack",
+            "f-u03-iaas-stack"
+          ]
         }
       ]
     },
@@ -491,17 +602,18 @@
             "saas"
           ],
           "title": "SaaS",
-          "body": "SaaS (Software as a Service) adalah aplikasi jadi yang tinggal dipakai lewat internet, misalnya Microsoft 365 untuk email dan dokumen. Penyedia mengurus infrastruktur, server, dan update aplikasinya. Tapi data, device, serta account dan identity tetap tanggung jawabmu.",
+          "body": "SaaS (Software as a Service) memberi kontrol paling kecil: kamu tinggal memakai aplikasi jadi yang dikelola penuh penyedia, misalnya Microsoft 365 untuk email dan dokumen. Penyedia mengelola aplikasi sampai jaringan, termasuk update aplikasinya. Di diagram jenis layanan, yang kamu kelola hanya data. Menurut shared responsibility model, device serta account dan identity juga tetap tanggung jawabmu.",
           "keyPoints": [
             "Contoh SaaS: Microsoft 365",
-            "Penyedia: server dan update aplikasi",
-            "Tetap tugasmu: data, device, account dan identity"
+            "Penyedia: aplikasi sampai jaringan",
+            "Kamu: data, ditambah device dan akun"
           ],
           "visual": "ServiceModelsStack",
           "link": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility",
           "teaches": [
             "f-u03-saas-def",
-            "f-u03-saas-provider"
+            "f-u03-saas-provider",
+            "f-u03-saas-stack"
           ]
         },
         {
@@ -586,6 +698,68 @@
           ]
         },
         {
+          "id": "u03-l3-m2",
+          "type": "learn",
+          "concepts": [
+            "saas-uses"
+          ],
+          "title": "Kapan memakai SaaS",
+          "body": "Skenario umum SaaS (Software as a Service) menurut modul AZ-900: email dan messaging, misalnya Microsoft 365, Teams, dan Outlook; aplikasi produktivitas seperti Word, Excel, dan PowerPoint online; serta finance dan expense tracking dengan tool manajemen keuangan berbasis cloud. Polanya sama: aplikasinya sudah jadi, kamu tinggal memakainya.",
+          "keyPoints": [
+            "Email dan messaging: Microsoft 365, Teams, Outlook",
+            "Produktivitas: Word, Excel, PowerPoint online",
+            "Finance dan expense tracking"
+          ],
+          "link": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/",
+          "teaches": [
+            "f-u03-saas-scenarios"
+          ]
+        },
+        {
+          "id": "u03-l3-e9",
+          "type": "choice",
+          "concept": "saas-uses",
+          "prompt": "A company wants cloud-based software to track employee expenses. It does not want to build, install, or maintain the software. Which cloud service type fits best?",
+          "options": [
+            "PaaS (Platform as a Service)",
+            "SaaS (Software as a Service)",
+            "IaaS (Infrastructure as a Service)",
+            "On-premises servers"
+          ],
+          "answer": 1,
+          "explanation": "Finance dan expense tracking adalah skenario umum SaaS (Software as a Service): aplikasinya sudah jadi dan dikelola penyedia. Di PaaS (Platform as a Service) dan IaaS (Infrastructure as a Service), customer membangun atau menjalankan aplikasinya sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u03-saas-scenarios",
+            "f-u03-saas-def",
+            "f-u03-paas-stack",
+            "f-u03-iaas-stack"
+          ]
+        },
+        {
+          "id": "u03-l3-e10",
+          "type": "multi",
+          "concept": "saas-uses",
+          "prompt": "A company is choosing a service type for several needs. Which two are common uses of SaaS (Software as a Service)? Choose two.",
+          "options": [
+            "Development framework",
+            "Finance and expense tracking",
+            "Email and messaging",
+            "Lift-and-shift migration"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Email dan messaging serta finance dan expense tracking adalah skenario umum SaaS (Software as a Service). Development framework adalah skenario PaaS (Platform as a Service), dan lift-and-shift migration adalah skenario IaaS (Infrastructure as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-saas-scenarios",
+            "f-u03-paas-scenarios",
+            "f-u03-iaas-uses"
+          ]
+        },
+        {
           "id": "u03-l3-m1",
           "type": "learn",
           "concepts": [
@@ -594,7 +768,7 @@
             "saas"
           ],
           "title": "Membandingkan jenis layanan",
-          "body": "Makin ke kanan, makin sedikit yang kamu urus. Di on-premises, semuanya urusanmu. Di IaaS (Infrastructure as a Service), kamu mengurus sistem operasi ke atas. Di PaaS (Platform as a Service), kamu mengurus kode dan data. Di SaaS (Software as a Service), kamu tinggal memakai aplikasinya.",
+          "body": "Makin ke kanan, makin sedikit yang kamu urus. Di on-premises, semuanya urusanmu. IaaS (Infrastructure as a Service) memberi kontrol paling besar: kamu mengurus sistem operasi ke atas. PaaS (Platform as a Service) ada di tengah: kamu mengurus aplikasi dan data. SaaS (Software as a Service) memberi kontrol paling kecil: kamu memakai aplikasi jadi dan mengurus datanya.",
           "keyPoints": [
             "Urutan tanggung jawab: on-premises > IaaS > PaaS > SaaS",
             "Data dan akun selalu milikmu di semua jenis"
@@ -673,32 +847,36 @@
               "bucket": 0
             },
             {
-              "text": "Move existing servers as they are",
+              "text": "Lift-and-shift migration of existing servers",
               "bucket": 0
             },
             {
-              "text": "Deploy code to a managed web platform",
+              "text": "Testing and development with full control",
+              "bucket": 0
+            },
+            {
+              "text": "A development framework with built-in components",
               "bucket": 1
             },
             {
-              "text": "Build apps without patching the operating system",
+              "text": "Analytics and business intelligence on platform tools",
               "bucket": 1
             },
             {
-              "text": "Use a finished email service in the browser",
+              "text": "Email and messaging",
               "bucket": 2
             },
             {
-              "text": "Use online accounting software",
+              "text": "Finance and expense tracking",
               "bucket": 2
             }
           ],
-          "explanation": "Kontrol penuh atas mesin = IaaS (Infrastructure as a Service). Platform siap pakai untuk kodemu = PaaS (Platform as a Service). Aplikasi jadi = SaaS (Software as a Service).",
+          "explanation": "Skenario umum IaaS (Infrastructure as a Service): lift-and-shift migration serta testing and development. PaaS (Platform as a Service): development framework serta analytics dan business intelligence. SaaS (Software as a Service): email dan messaging, aplikasi produktivitas, serta finance dan expense tracking.",
           "requires": [
             "f-u03-iaas-def",
-            "f-u03-lift-shift",
-            "f-u03-paas-def",
-            "f-u03-saas-def"
+            "f-u03-iaas-uses",
+            "f-u03-paas-scenarios",
+            "f-u03-saas-scenarios"
           ]
         },
         {
@@ -1295,7 +1473,7 @@
     },
     {
       "id": "f-u03-iaas-uses",
-      "statement": "IaaS cocok untuk lingkungan test dan development yang butuh kontrol penuh dan cepat dibuat ulang, serta untuk memindahkan server yang ada dengan perubahan minimal.",
+      "statement": "Skenario umum IaaS: lift-and-shift migration, yaitu menyiapkan resource cloud yang mirip on-premises lalu memindahkan workload ke IaaS, serta testing dan development, yaitu mereplikasi lingkungan dev/test dengan cepat dan menyalakan atau mematikannya dengan kontrol penuh.",
       "source": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/"
     },
     {
@@ -1367,6 +1545,31 @@
       "id": "f-u03-serverless-paas",
       "statement": "Serverless bukan jenis layanan cloud keempat: shared responsibility model Microsoft hanya mengenal tiga jenis layanan cloud, yaitu IaaS, PaaS, dan SaaS, dan Azure Functions digolongkan sebagai PaaS.",
       "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
+    },
+    {
+      "id": "f-u03-iaas-stack",
+      "statement": "Di IaaS, customer mengelola aplikasi, data, runtime, middleware, dan sistem operasi, sedangkan penyedia mengelola server, storage, dan jaringan. IaaS memberi kontrol paling besar: kamu menyewa hardware, dan apa yang kamu lakukan dengannya terserah kamu.",
+      "source": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/"
+    },
+    {
+      "id": "f-u03-paas-stack",
+      "statement": "Di PaaS, customer mengelola aplikasi dan data, sedangkan penyedia mengelola runtime, middleware, sistem operasi, server, storage, dan jaringan. Customer membangun di atas platform tanpa repot mengurus infrastruktur.",
+      "source": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/"
+    },
+    {
+      "id": "f-u03-saas-stack",
+      "statement": "Di SaaS, customer mengelola data, sedangkan penyedia mengelola aplikasi, runtime, middleware, sistem operasi, server, storage, dan jaringan. SaaS memberi kontrol paling kecil: customer memakai aplikasi yang dikelola penuh.",
+      "source": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/"
+    },
+    {
+      "id": "f-u03-paas-scenarios",
+      "statement": "Skenario umum PaaS: development framework, yaitu membangun aplikasi cloud dari komponen bawaan dengan scalability dan high availability, serta analytics dan business intelligence, yaitu menganalisis dan menggali data, menemukan insight, dan memprediksi hasil dengan tool platform.",
+      "source": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/"
+    },
+    {
+      "id": "f-u03-saas-scenarios",
+      "statement": "Skenario umum SaaS: email dan messaging (misalnya Microsoft 365, Teams, dan Outlook), aplikasi produktivitas (Word, Excel, dan PowerPoint online), serta finance dan expense tracking dengan tool manajemen keuangan berbasis cloud.",
+      "source": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/"
     }
   ]
 }

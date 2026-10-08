@@ -182,7 +182,7 @@ Urutan "lebih dulu" dihitung dari urutan unit, urutan lesson, lalu urutan item d
 | 1 | `CapexVsOpex` | Beli di depan vs bayar sesuai pemakaian |
 | 2 | `ScaleUpVsOut` | Satu mesin makin besar vs mesin makin banyak |
 | 2 | `AvailabilityVsReliability` | Tetap hidup sekarang vs pulih dari bencana |
-| 3 | `ServiceModelsStack` | Siapa mengelola apa di on-premises, IaaS, PaaS, SaaS, dengan contoh layanan. Serverless ditulis sebagai bagian PaaS, bukan kolom sendiri (koreksi 8 Oktober 2026, lihat `docs/BUGS_LOG.md`) |
+| 3 | `ServiceModelsStack` | Siapa mengelola apa di on-premises, IaaS, PaaS, SaaS, dengan delapan lapisan modul AZ-900 resmi (aplikasi sampai jaringan) dan contoh layanan. Serverless ditulis sebagai bagian PaaS, bukan kolom sendiri (koreksi 8 Oktober 2026, lihat `docs/BUGS_LOG.md`) |
 | 4 | `ZonesInRegion` | 3 availability zone di dalam satu region |
 | 4 | `RegionPair` | Dua region berpasangan di satu geografi |
 | 4 | `ResourceHierarchy` | Management group, subscription, resource group, resource |

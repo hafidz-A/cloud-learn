@@ -384,11 +384,11 @@
             "saas"
           ],
           "title": "IaaS, PaaS, dan SaaS",
-          "body": "Pembagian tugas bergeser sesuai jenis layanan. Di IaaS (Infrastructure as a Service), kamu menyewa VM (Virtual Machine) dan mengurus sistem operasi, kontrol jaringan, serta aplikasinya sendiri. Di PaaS (Platform as a Service), penyedia mengurus sistem operasi, sedangkan aplikasi dan kontrol jaringan diurus bersama. Di SaaS (Software as a Service), kamu tinggal memakai aplikasi jadi seperti Microsoft 365.",
+          "body": "Pembagian tugas bergeser sesuai jenis layanan. Di IaaS (Infrastructure as a Service), kamu menyewa VM (Virtual Machine) dan mengurus sistem operasi, middleware, runtime, data, dan aplikasinya. Di PaaS (Platform as a Service), penyedia mengurus sistem operasi, middleware, dan runtime, jadi kamu fokus ke aplikasi dan data. Di SaaS (Software as a Service), kamu memakai aplikasi jadi seperti Microsoft 365 dan mengurus datanya. Diagram shared responsibility menandai aplikasi di PaaS sebagai bersama karena platform di bawah aplikasimu diurus Microsoft.",
           "keyPoints": [
-            "IaaS: sistem operasi urusanmu",
-            "PaaS: sistem operasi urusan penyedia, aplikasi dibagi",
-            "SaaS: aplikasi jadi, contohnya Microsoft 365",
+            "IaaS: sistem operasi sampai aplikasi urusanmu",
+            "PaaS: kamu fokus ke aplikasi dan data",
+            "SaaS: kamu memakai aplikasi jadi dan mengurus datanya",
             "Di ketiganya, data dan akun tetap urusanmu"
           ],
           "visual": "ServiceModelsStack",
