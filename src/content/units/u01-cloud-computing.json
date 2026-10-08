@@ -272,11 +272,12 @@
             "shared-responsibility"
           ],
           "title": "Shared responsibility",
-          "body": "Di cloud, tanggung jawab keamanan dibagi antara kamu (customer) dan penyedia cloud. Microsoft selalu menjaga datacenter fisik, jaringan fisik, dan host fisik. Kamu selalu bertanggung jawab atas data, device yang dipakai, serta account dan identity. Sisanya, seperti sistem operasi dan aplikasi, tergantung jenis layanan.",
+          "body": "Di cloud, tanggung jawab keamanan dibagi antara kamu (customer) dan penyedia cloud. Microsoft selalu menjaga datacenter fisik, jaringan fisik, dan host fisik. Kamu selalu bertanggung jawab atas data, device yang dipakai, serta account dan identity. Sisanya tergantung jenis layanan: infrastruktur identitas, aplikasi, kontrol jaringan, dan sistem operasi. Sebagian bahkan dibagi dua, misalnya aplikasi dan kontrol jaringan di PaaS (Platform as a Service).",
           "keyPoints": [
             "Selalu customer: data, device, account dan identity",
             "Selalu Microsoft: datacenter, jaringan, dan host fisik",
-            "Tergantung jenis layanan: sistem operasi dan aplikasi"
+            "Tergantung jenis layanan: identitas, aplikasi, jaringan, sistem operasi",
+            "Sebagian dibagi, misalnya aplikasi di PaaS"
           ],
           "visual": "SharedResponsibility",
           "trap": "Pindah ke cloud tidak memindahkan tanggung jawab atas data dan akun ke Microsoft.",
@@ -338,13 +339,40 @@
             {
               "text": "Applications",
               "bucket": 2
+            },
+            {
+              "text": "Network controls",
+              "bucket": 2
             }
           ],
-          "explanation": "Hafalkan polanya: data, device, serta account dan identity selalu milik customer. Datacenter, jaringan, dan host fisik selalu milik Microsoft. Sisanya, seperti OS (Operating System) dan aplikasi, tergantung jenis layanan.",
+          "explanation": "Hafalkan polanya: data, device, serta account dan identity selalu milik customer. Datacenter, jaringan, dan host fisik selalu milik Microsoft. Sisanya, seperti OS (Operating System), kontrol jaringan, dan aplikasi, tergantung jenis layanan.",
           "requires": [
             "f-u01-sr-customer-always",
             "f-u01-sr-microsoft-always",
             "f-u01-sr-depends"
+          ]
+        },
+        {
+          "id": "u01-l2-e9",
+          "type": "multi",
+          "concept": "shared-responsibility",
+          "prompt": "A company is comparing IaaS (Infrastructure as a Service), PaaS (Platform as a Service), and SaaS (Software as a Service). Which two responsibilities change depending on the service type? Choose two.",
+          "options": [
+            "Information and data",
+            "Network controls",
+            "Operating system",
+            "Physical datacenter"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Kontrol jaringan dan sistem operasi tergantung jenis layanan. Data selalu tanggung jawab customer, dan datacenter fisik selalu tanggung jawab Microsoft.",
+          "examReady": true,
+          "requires": [
+            "f-u01-sr-depends",
+            "f-u01-sr-customer-always",
+            "f-u01-sr-microsoft-always"
           ]
         },
         {
@@ -356,12 +384,12 @@
             "saas"
           ],
           "title": "IaaS, PaaS, dan SaaS",
-          "body": "Pembagian tugas bergeser sesuai jenis layanan. Di IaaS (Infrastructure as a Service), kamu menyewa VM (Virtual Machine) dan mengurus sistem operasi serta aplikasinya sendiri. Di PaaS (Platform as a Service), penyedia mengurus sistem operasi, jadi kamu fokus ke aplikasi dan data. Di SaaS (Software as a Service), kamu tinggal memakai aplikasi jadi seperti Microsoft 365.",
+          "body": "Pembagian tugas bergeser sesuai jenis layanan. Di IaaS (Infrastructure as a Service), kamu menyewa VM (Virtual Machine) dan mengurus sistem operasi, kontrol jaringan, serta aplikasinya sendiri. Di PaaS (Platform as a Service), penyedia mengurus sistem operasi, sedangkan aplikasi dan kontrol jaringan diurus bersama. Di SaaS (Software as a Service), kamu tinggal memakai aplikasi jadi seperti Microsoft 365.",
           "keyPoints": [
             "IaaS: sistem operasi urusanmu",
-            "PaaS: sistem operasi urusan penyedia",
+            "PaaS: sistem operasi urusan penyedia, aplikasi dibagi",
             "SaaS: aplikasi jadi, contohnya Microsoft 365",
-            "Di ketiganya, data tetap urusanmu"
+            "Di ketiganya, data dan akun tetap urusanmu"
           ],
           "visual": "ServiceModelsStack",
           "trap": "Makin ke arah SaaS, makin sedikit yang kamu urus. Tapi data dan akun tidak pernah pindah ke Microsoft.",
@@ -431,6 +459,34 @@
           "requires": [
             "f-u01-sr-iaas",
             "f-u01-sr-microsoft-always",
+            "f-u01-sr-customer-always"
+          ]
+        },
+        {
+          "id": "u01-l2-e10",
+          "type": "yesno",
+          "concept": "shared-responsibility",
+          "prompt": "For each statement, select Yes or No.",
+          "scenario": "Contoso plans to move its web app from Azure virtual machines to a PaaS (Platform as a Service) service in Azure.",
+          "statements": [
+            {
+              "text": "Microsoft becomes responsible for the operating system that runs the app.",
+              "answer": true
+            },
+            {
+              "text": "Contoso and Microsoft share responsibility for the network controls of the app.",
+              "answer": true
+            },
+            {
+              "text": "Microsoft becomes responsible for the user accounts of Contoso.",
+              "answer": false
+            }
+          ],
+          "explanation": "Di PaaS (Platform as a Service), sistem operasi diurus Microsoft, sedangkan aplikasi, kontrol jaringan, dan infrastruktur identitas dibagi. Akun pengguna selalu tanggung jawab customer.",
+          "examReady": true,
+          "requires": [
+            "f-u01-sr-paas",
+            "f-u01-sr-depends",
             "f-u01-sr-customer-always"
           ]
         },
@@ -1393,22 +1449,22 @@
     },
     {
       "id": "f-u01-sr-depends",
-      "statement": "Tanggung jawab atas sistem operasi dan aplikasi tergantung jenis layanan (IaaS, PaaS, atau SaaS).",
+      "statement": "Tanggung jawab atas infrastruktur identitas dan direktori, aplikasi, kontrol jaringan, dan sistem operasi tergantung jenis layanan (IaaS, PaaS, atau SaaS). Sebagian dibagi antara customer dan Microsoft, misalnya aplikasi dan kontrol jaringan di PaaS.",
       "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
     },
     {
       "id": "f-u01-sr-iaas",
-      "statement": "Di IaaS (Infrastructure as a Service), customer mengurus sistem operasi, aplikasi, dan data di virtual machine sewaannya; Microsoft mengurus hardware fisik.",
+      "statement": "Di IaaS (Infrastructure as a Service), customer mengurus sistem operasi, kontrol jaringan, aplikasi, dan data di virtual machine sewaannya; Microsoft mengurus host, jaringan, dan datacenter fisik.",
       "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
     },
     {
       "id": "f-u01-sr-paas",
-      "statement": "Di PaaS (Platform as a Service), penyedia mengurus sistem operasi dan platform; customer fokus ke aplikasi dan data.",
+      "statement": "Di PaaS (Platform as a Service), Microsoft mengurus sistem operasi dan platform; aplikasi, kontrol jaringan, serta infrastruktur identitas dibagi antara customer dan Microsoft, dan data serta akun tetap tanggung jawab customer.",
       "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
     },
     {
       "id": "f-u01-sr-saas",
-      "statement": "Di SaaS (Software as a Service), penyedia menjalankan aplikasi jadi, misalnya Microsoft 365; data tetap tanggung jawab customer.",
+      "statement": "Di SaaS (Software as a Service), Microsoft menjalankan aplikasi jadi, misalnya Microsoft 365, termasuk kontrol jaringan dan sistem operasinya; infrastruktur identitas dibagi, dan data, device, serta akun tetap tanggung jawab customer.",
       "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
     },
     {

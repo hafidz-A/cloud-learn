@@ -1,29 +1,35 @@
 import type { FC } from 'react'
 import { useSvgId } from './ids'
 import { Hatch } from './parts'
-import { label } from './styles'
+import { label, quiet } from './styles'
 
-const COLS = ['IaaS', 'PaaS', 'SaaS', 'Serverless']
+// On-premises, then the three cloud service types. Serverless is not a fourth
+// type: Microsoft lists Azure Functions under PaaS, so it is named in the PaaS
+// example line instead of getting a column of its own.
+const COLS = ['On-prem', 'IaaS', 'PaaS', 'SaaS']
 const ROWS: { label: string; you: boolean[] }[] = [
-  { label: 'Data', you: [true, true, true, true] },
-  { label: 'Kode aplikasi', you: [true, true, false, true] },
-  { label: 'Runtime', you: [true, false, false, false] },
-  { label: 'Sistem operasi', you: [true, false, false, false] },
-  { label: 'Hardware', you: [false, false, false, false] },
+  { label: 'Data dan akun', you: [true, true, true, true] },
+  { label: 'Kode aplikasi', you: [true, true, true, false] },
+  { label: 'Runtime', you: [true, true, false, false] },
+  { label: 'Sistem operasi', you: [true, true, false, false] },
+  { label: 'Hardware', you: [true, false, false, false] },
 ]
+const EXAMPLES = ['Contoh IaaS: Azure Virtual Machines', 'Contoh PaaS: App Service, Azure Functions', 'Serverless (Azure Functions) termasuk PaaS', 'Contoh SaaS: Microsoft 365']
 
-/** Who manages each layer in IaaS, PaaS, SaaS, and serverless. Your cells say "Kamu"; provider cells are striped. */
+/** Who manages each layer on-premises and in IaaS, PaaS, and SaaS. Your cells say "Kamu"; provider cells are striped. */
 export const ServiceModelsStack: FC = () => {
   const stackProvider = useSvgId('stack-provider')
   const x0 = 92
   const cw = 51
   const rh = 26
   const top = 24
+  const legendY = top + ROWS.length * rh + 12
+  const examplesY = legendY + 44
   return (
     <svg
-      viewBox="0 0 300 204"
+      viewBox={`0 0 300 ${examplesY + EXAMPLES.length * 16}`}
       role="img"
-      aria-label="Diagram siapa mengelola apa: di IaaS kamu mengelola sistem operasi sampai data; di PaaS kamu mengelola kode aplikasi dan data; di SaaS kamu hanya mengelola data; di serverless kamu mengelola kode dan data; hardware selalu diurus penyedia."
+      aria-label="Diagram siapa mengelola apa: di on-premises kamu mengelola semuanya; di IaaS kamu mengelola sistem operasi sampai data, dan penyedia mengurus hardware; di PaaS kamu mengelola kode aplikasi serta data dan akun; di SaaS kamu hanya mengelola data dan akun. Contoh IaaS Azure Virtual Machines, contoh PaaS App Service dan Azure Functions (serverless termasuk PaaS), contoh SaaS Microsoft 365."
       className="w-full font-display"
     >
       <defs>
@@ -55,7 +61,7 @@ export const ServiceModelsStack: FC = () => {
           })}
         </g>
       ))}
-      <g transform={`translate(0 ${top + ROWS.length * rh + 12})`}>
+      <g transform={`translate(0 ${legendY})`}>
         <rect x={0} y={4} width={16} height={16} rx={3} fill="var(--color-biru-muda)" stroke="var(--color-biru)" strokeWidth={1.5} />
         <text x={22} y={17} fontSize={12} {...label}>
           Kamu yang mengelola
@@ -65,6 +71,11 @@ export const ServiceModelsStack: FC = () => {
           Penyedia
         </text>
       </g>
+      {EXAMPLES.map((line, i) => (
+        <text key={line} x={0} y={examplesY + i * 16} fontSize={12} {...quiet}>
+          {line}
+        </text>
+      ))}
     </svg>
   )
 }

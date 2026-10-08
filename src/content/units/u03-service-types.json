@@ -731,17 +731,19 @@
             "serverless"
           ],
           "title": "Serverless",
-          "body": "Serverless berarti kamu tidak mengelola server sama sekali. Kamu cukup menulis kode, dan penyedia yang menjalankan serta menskalakannya. Kode berjalan saat dipicu event, misalnya request HTTP (Hypertext Transfer Protocol), file baru, atau timer. Di Azure, contohnya Azure Functions.",
+          "body": "Serverless berarti kamu tidak mengelola server sama sekali. Kamu cukup menulis kode, dan penyedia yang menjalankan serta menskalakannya. Kode berjalan saat dipicu event, misalnya request HTTP (Hypertext Transfer Protocol), file baru, atau timer. Di Azure, contohnya Azure Functions, yang Microsoft golongkan sebagai PaaS (Platform as a Service).",
           "keyPoints": [
             "Tidak ada server yang kamu kelola",
             "Kode berjalan saat ada event",
-            "Contoh serverless: Azure Functions"
+            "Azure Functions: serverless, termasuk PaaS"
           ],
           "visual": "ServiceModelsStack",
+          "trap": "Serverless bukan jenis layanan keempat di samping IaaS (Infrastructure as a Service), PaaS, dan SaaS (Software as a Service). Di kisi-kisi AZ-900, serverless ada di bagian cloud computing, sedangkan jenis layanan cloud hanya IaaS, PaaS, dan SaaS.",
           "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview",
           "teaches": [
             "f-u03-serverless-def",
-            "f-u03-functions"
+            "f-u03-functions",
+            "f-u03-serverless-paas"
           ]
         },
         {
@@ -941,32 +943,34 @@
           "id": "u03-l4-e3",
           "type": "match",
           "concept": "serverless",
-          "prompt": "Match each service type with its description.",
+          "prompt": "Match each Azure service with its description.",
           "pairs": [
             [
-              "Serverless",
-              "Code runs on events, and you pay per execution"
+              "Azure Functions",
+              "Runs code on events, and you pay per execution"
             ],
             [
-              "IaaS (Infrastructure as a Service)",
+              "Azure Virtual Machines",
               "You manage the operating system"
             ],
             [
-              "PaaS (Platform as a Service)",
+              "Azure App Service",
               "Managed platform for your web apps"
             ],
             [
-              "SaaS (Software as a Service)",
+              "Microsoft 365",
               "Finished software that you just use"
             ]
           ],
-          "explanation": "Serverless memindahkan urusan server sepenuhnya ke penyedia dan menagih per eksekusi.",
+          "explanation": "Azure Functions adalah layanan serverless yang Microsoft golongkan sebagai PaaS (Platform as a Service). Azure Virtual Machines adalah IaaS (Infrastructure as a Service), App Service adalah PaaS, dan Microsoft 365 adalah SaaS (Software as a Service).",
           "examReady": true,
           "requires": [
-            "f-u03-serverless-def",
+            "f-u03-functions",
             "f-u03-serverless-billing",
+            "f-u03-serverless-paas",
+            "f-u03-iaas-example",
             "f-u03-iaas-split",
-            "f-u03-paas-def",
+            "f-u03-paas-example",
             "f-u03-saas-def"
           ]
         }
@@ -1203,7 +1207,7 @@
           "id": "u03-l5-e11",
           "type": "match",
           "concept": "paas",
-          "prompt": "A company is choosing services for four projects. Match each project with the service type it describes.",
+          "prompt": "A company is choosing where to run four projects. Match each project with the option it describes.",
           "pairs": [
             [
               "Rent a virtual machine and install your own software",
@@ -1218,17 +1222,18 @@
               "SaaS (Software as a Service)"
             ],
             [
-              "Run code only when an event happens",
-              "Serverless"
+              "Keep the app on servers in the company's own building",
+              "On-premises"
             ]
           ],
-          "explanation": "IaaS (Infrastructure as a Service) menyewakan infrastruktur seperti VM (Virtual Machine), PaaS (Platform as a Service) menyediakan platform siap pakai untuk kode, SaaS (Software as a Service) adalah aplikasi jadi, dan serverless menjalankan kode saat dipicu event.",
+          "explanation": "IaaS (Infrastructure as a Service) menyewakan infrastruktur seperti VM (Virtual Machine), PaaS (Platform as a Service) menyediakan platform siap pakai untuk kode, SaaS (Software as a Service) adalah aplikasi jadi, dan on-premises berarti server sendiri di gedung sendiri. Layanan serverless seperti Azure Functions juga termasuk PaaS, bukan jenis keempat.",
           "examReady": true,
           "requires": [
             "f-u03-iaas-def",
             "f-u03-paas-def",
             "f-u03-saas-def",
-            "f-u03-serverless-def"
+            "f-u01-on-premises",
+            "f-u03-serverless-paas"
           ]
         },
         {
@@ -1360,7 +1365,7 @@
     },
     {
       "id": "f-u03-serverless-paas",
-      "statement": "Dalam shared responsibility model, Microsoft menggolongkan Azure Functions sebagai PaaS.",
+      "statement": "Serverless bukan jenis layanan cloud keempat: shared responsibility model Microsoft hanya mengenal tiga jenis layanan cloud, yaitu IaaS, PaaS, dan SaaS, dan Azure Functions digolongkan sebagai PaaS.",
       "source": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility"
     }
   ]

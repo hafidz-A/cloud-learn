@@ -642,6 +642,20 @@ Yang perlu diketahui untuk ujian dan pekerjaan:
 - **VM dan availability set.** VM hanya bisa dimasukkan ke availability set saat dibuat, dan hanya bisa
   memakai virtual network di region dan subscription yang sama.
 
+## AZ-900: koreksi jenis layanan dan shared responsibility (8 Oktober 2026)
+
+Dicek ulang setelah pengguna merasa konsep IaaS, PaaS, dan SaaS di Langit janggal. Sumber: study guide AZ-900
+(kisi-kisi 20 Juli 2026), `security/fundamentals/shared-responsibility.md` (24 Agustus 2026) beserta gambar
+diagramnya, dan halaman indeks dokumentasi Azure Functions.
+
+| Temuan | Dampak ke materi | Sumber |
+|---|---|---|
+| Kisi-kisi menaruh "Describe serverless" (1.1.7) di bagian cloud computing; jenis layanan cloud (1.3) hanya IaaS, PaaS, dan SaaS | Serverless tidak lagi tampil sebagai kolom atau pilihan "service type" keempat; diagram menulis "Serverless (Azure Functions) termasuk PaaS" | Study guide AZ-900 |
+| Halaman shared responsibility memberi contoh: IaaS Azure Virtual Machines, Azure Disk Storage, virtual network; PaaS Azure App Service, Azure Functions, Azure SQL Database, Azure Storage; SaaS Microsoft 365, Dynamics 365 | Fakta `f-u03-serverless-paas` diperjelas | `shared-responsibility.md` |
+| Dokumentasi Azure Functions menyebutnya "managed platform-as-a-service (PaaS) provider" yang bisa memberi "serverless hosting" | Serverless dijelaskan sebagai cara layanan PaaS menjalankan kode | `azure-functions/index.yml` |
+| Diagram resmi: selalu customer (informasi dan data, device, account dan identity); tergantung jenis (infrastruktur identitas dan direktori: IaaS customer, PaaS dan SaaS bersama; aplikasi: IaaS customer, PaaS bersama, SaaS Microsoft; kontrol jaringan: IaaS customer, PaaS bersama, SaaS Microsoft; sistem operasi: IaaS customer, PaaS dan SaaS Microsoft); selalu Microsoft (host, jaringan, dan datacenter fisik) | Diagram `SharedResponsibility` dibuat ulang sel per sel; fakta `f-u01-sr-depends`, `-iaas`, `-paas`, `-saas` menyebut keempat baris yang tergantung jenis layanan dan sel bersamanya | `media/shared-responsibility/shared-responsibility.svg` |
+| Tabel teks di halaman yang sama (diperbarui 24 Agustus 2026) berbeda dari gambarnya: aplikasi dan client devices di SaaS ditulis "Shared", dan baris infrastruktur identitas diganti "Configurations and settings" serta "Identities and users" (selalu customer) | Materi mengikuti gambar diagram, yang juga dipakai di halaman itu. Penjelasan tetap menyebut bahwa pengaturan dan akses aplikasi SaaS adalah tugas customer, jadi tidak bertentangan dengan tabelnya | `shared-responsibility.md` |
+
 ## CCNA 200-301 v2.0 (3 Oktober 2026)
 
 Course CCNA (rencana: `LANGIT_CCNA_PLAN.md`) punya 28 unit, 156 lesson, 940 soal, 338 kartu materi, 21 lab, dan
