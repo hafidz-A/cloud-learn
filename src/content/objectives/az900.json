@@ -136,16 +136,14 @@
               "id": "az900-1.3.2",
               "text": "Describe platform as a service (PaaS)",
               "concepts": [
-                "paas",
-                "paas-uses"
+                "paas"
               ]
             },
             {
               "id": "az900-1.3.3",
               "text": "Describe software as a service (SaaS)",
               "concepts": [
-                "saas",
-                "saas-uses"
+                "saas"
               ]
             },
             {
@@ -154,9 +152,7 @@
               "concepts": [
                 "iaas",
                 "paas",
-                "saas",
-                "paas-uses",
-                "saas-uses"
+                "saas"
               ]
             }
           ]

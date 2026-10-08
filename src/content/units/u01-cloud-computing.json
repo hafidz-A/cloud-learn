@@ -373,7 +373,9 @@
             "f-u01-sr-depends",
             "f-u01-sr-customer-always",
             "f-u01-sr-microsoft-always"
-          ]
+          ],
+          "retired": true,
+          "retiredReason": "Soal tambahan 6 Oktober 2026; dibuang karena pengguna meminta materi diperbaiki, bukan ditambah."
         },
         {
           "id": "u01-l2-m1",
@@ -384,7 +386,7 @@
             "saas"
           ],
           "title": "IaaS, PaaS, dan SaaS",
-          "body": "Pembagian tugas bergeser sesuai jenis layanan. Di IaaS (Infrastructure as a Service), kamu menyewa VM (Virtual Machine) dan mengurus sistem operasi, middleware, runtime, data, dan aplikasinya. Di PaaS (Platform as a Service), penyedia mengurus sistem operasi, middleware, dan runtime, jadi kamu fokus ke aplikasi dan data. Di SaaS (Software as a Service), kamu memakai aplikasi jadi seperti Microsoft 365 dan mengurus datanya. Diagram shared responsibility menandai aplikasi di PaaS sebagai bersama karena platform di bawah aplikasimu diurus Microsoft.",
+          "body": "Pembagian tugas bergeser sesuai jenis layanan. Di IaaS (Infrastructure as a Service), kamu menyewa VM (Virtual Machine) dan mengurus sistem operasi, middleware, runtime, data, dan aplikasinya. Di PaaS (Platform as a Service), penyedia mengurus sistem operasi, middleware, dan runtime, jadi kamu fokus ke aplikasi dan data. Di SaaS (Software as a Service), kamu memakai aplikasi jadi seperti Microsoft 365 dan mengurus datanya.",
           "keyPoints": [
             "IaaS: sistem operasi sampai aplikasi urusanmu",
             "PaaS: kamu fokus ke aplikasi dan data",
@@ -488,7 +490,9 @@
             "f-u01-sr-paas",
             "f-u01-sr-depends",
             "f-u01-sr-customer-always"
-          ]
+          ],
+          "retired": true,
+          "retiredReason": "Soal tambahan 6 Oktober 2026; dibuang karena pengguna meminta materi diperbaiki, bukan ditambah."
         },
         {
           "id": "u01-l2-m2",

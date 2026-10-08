@@ -84,25 +84,6 @@
           ]
         },
         {
-          "id": "u03-l1-e9",
-          "type": "choice",
-          "concept": "iaas",
-          "prompt": "A company runs its app on Azure virtual machines. The app needs a specific runtime and middleware. Who installs and manages them?",
-          "options": [
-            "Microsoft, because it manages the hosts of the virtual machines",
-            "The company",
-            "Microsoft, because the runtime is part of the Azure platform",
-            "The people who use the app"
-          ],
-          "answer": 1,
-          "explanation": "Di IaaS (Infrastructure as a Service), customer mengelola aplikasi, data, runtime, middleware, dan sistem operasi. Penyedia mengelola server, storage, dan jaringan.",
-          "examReady": true,
-          "requires": [
-            "f-u03-iaas-stack",
-            "f-u03-iaas-example"
-          ]
-        },
-        {
           "id": "u03-l1-m1",
           "type": "learn",
           "concepts": [
@@ -266,6 +247,27 @@
             "f-u01-sr-saas",
             "f-u01-sr-paas"
           ]
+        },
+        {
+          "id": "u03-l1-e9",
+          "type": "choice",
+          "concept": "iaas",
+          "prompt": "A company runs its app on Azure virtual machines. The app needs a specific runtime and middleware. Who installs and manages them?",
+          "options": [
+            "Microsoft, because it manages the hosts of the virtual machines",
+            "The company",
+            "Microsoft, because the runtime is part of the Azure platform",
+            "The people who use the app"
+          ],
+          "answer": 1,
+          "explanation": "Di IaaS (Infrastructure as a Service), customer mengelola aplikasi, data, runtime, middleware, dan sistem operasi. Penyedia mengelola server, storage, dan jaringan.",
+          "examReady": true,
+          "requires": [
+            "f-u03-iaas-stack",
+            "f-u03-iaas-example"
+          ],
+          "retired": true,
+          "retiredReason": "Soal tambahan 8 Oktober 2026; dibuang karena pengguna meminta materi diperbaiki, bukan ditambah. Isinya sudah masuk ke kartu dan soal yang ada."
         }
       ]
     },
@@ -280,18 +282,20 @@
             "paas"
           ],
           "title": "PaaS",
-          "body": "PaaS (Platform as a Service) ada di tengah: kamu fokus ke aplikasi dan data, dan membangun di atas platform tanpa repot mengurus infrastruktur. Penyedia mengelola runtime, middleware, sistem operasi, server, storage, dan jaringan. Contohnya Azure App Service untuk menjalankan web app dan API (Application Programming Interface).",
+          "body": "PaaS (Platform as a Service) ada di tengah: kamu fokus ke aplikasi dan data, dan membangun di atas platform tanpa repot mengurus infrastruktur. Penyedia mengelola runtime, middleware, sistem operasi, server, storage, dan jaringan. Skenario umumnya: development framework, yaitu membangun aplikasi cloud dari komponen bawaan, serta analytics dan business intelligence dengan tool platform. Contohnya Azure App Service untuk web app dan API (Application Programming Interface).",
           "keyPoints": [
             "Contoh PaaS: Azure App Service",
             "Penyedia: runtime dan middleware sampai jaringan",
-            "Kamu: aplikasi dan data"
+            "Kamu: aplikasi dan data",
+            "Skenario: development framework, analytics dan business intelligence"
           ],
           "visual": "ServiceModelsStack",
           "link": "https://learn.microsoft.com/en-us/azure/app-service/overview",
           "teaches": [
             "f-u03-paas-def",
             "f-u03-paas-example",
-            "f-u03-paas-stack"
+            "f-u03-paas-stack",
+            "f-u03-paas-scenarios"
           ]
         },
         {
@@ -510,23 +514,6 @@
           ]
         },
         {
-          "id": "u03-l2-m2",
-          "type": "learn",
-          "concepts": [
-            "paas-uses"
-          ],
-          "title": "Kapan memakai PaaS",
-          "body": "Modul AZ-900 menyebut dua skenario umum PaaS (Platform as a Service). Pertama, development framework: developer membangun aplikasi cloud dari komponen bawaan, dan fitur seperti scalability dan high availability sudah tersedia. Kedua, analytics dan business intelligence: tool yang disediakan platform dipakai untuk menganalisis dan menggali data, menemukan insight, dan memprediksi hasil.",
-          "keyPoints": [
-            "Development framework: bangun aplikasi dari komponen bawaan",
-            "Analytics dan business intelligence: olah data dengan tool platform"
-          ],
-          "link": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/",
-          "teaches": [
-            "f-u03-paas-scenarios"
-          ]
-        },
-        {
           "id": "u03-l2-e9",
           "type": "multi",
           "concept": "paas-uses",
@@ -546,7 +533,9 @@
           "requires": [
             "f-u03-paas-scenarios",
             "f-u03-iaas-uses"
-          ]
+          ],
+          "retired": true,
+          "retiredReason": "Soal tambahan 8 Oktober 2026; dibuang karena pengguna meminta materi diperbaiki, bukan ditambah. Isinya sudah masuk ke kartu dan soal yang ada."
         },
         {
           "id": "u03-l2-e10",
@@ -567,7 +556,9 @@
             "f-u03-paas-stack",
             "f-u03-iaas-stack",
             "f-u01-sr-saas"
-          ]
+          ],
+          "retired": true,
+          "retiredReason": "Soal tambahan 8 Oktober 2026; dibuang karena pengguna meminta materi diperbaiki, bukan ditambah. Isinya sudah masuk ke kartu dan soal yang ada."
         },
         {
           "id": "u03-l2-e11",
@@ -587,7 +578,9 @@
             "f-u03-paas-scenarios",
             "f-u03-paas-stack",
             "f-u03-iaas-stack"
-          ]
+          ],
+          "retired": true,
+          "retiredReason": "Soal tambahan 8 Oktober 2026; dibuang karena pengguna meminta materi diperbaiki, bukan ditambah. Isinya sudah masuk ke kartu dan soal yang ada."
         }
       ]
     },
@@ -602,18 +595,19 @@
             "saas"
           ],
           "title": "SaaS",
-          "body": "SaaS (Software as a Service) memberi kontrol paling kecil: kamu tinggal memakai aplikasi jadi yang dikelola penuh penyedia, misalnya Microsoft 365 untuk email dan dokumen. Penyedia mengelola aplikasi sampai jaringan, termasuk update aplikasinya. Di diagram jenis layanan, yang kamu kelola hanya data. Menurut shared responsibility model, device serta account dan identity juga tetap tanggung jawabmu.",
+          "body": "SaaS (Software as a Service) memberi kontrol paling kecil: kamu tinggal memakai aplikasi jadi yang dikelola penuh penyedia. Penyedia mengelola aplikasi sampai jaringan, termasuk update aplikasinya, dan kamu mengelola data. Skenario umumnya: email dan messaging (Microsoft 365, Teams, Outlook), aplikasi produktivitas (Word, Excel, PowerPoint online), serta finance dan expense tracking. Akun dan device penggunamu tetap tanggung jawabmu.",
           "keyPoints": [
             "Contoh SaaS: Microsoft 365",
-            "Penyedia: aplikasi sampai jaringan",
-            "Kamu: data, ditambah device dan akun"
+            "Penyedia: aplikasi sampai jaringan. Kamu: data",
+            "Skenario: email, produktivitas, finance dan expense tracking"
           ],
           "visual": "ServiceModelsStack",
           "link": "https://learn.microsoft.com/en-us/azure/security/fundamentals/shared-responsibility",
           "teaches": [
             "f-u03-saas-def",
             "f-u03-saas-provider",
-            "f-u03-saas-stack"
+            "f-u03-saas-stack",
+            "f-u03-saas-scenarios"
           ]
         },
         {
@@ -695,68 +689,6 @@
           "requires": [
             "f-u01-sr-customer-always",
             "f-u03-saas-provider"
-          ]
-        },
-        {
-          "id": "u03-l3-m2",
-          "type": "learn",
-          "concepts": [
-            "saas-uses"
-          ],
-          "title": "Kapan memakai SaaS",
-          "body": "Skenario umum SaaS (Software as a Service) menurut modul AZ-900: email dan messaging, misalnya Microsoft 365, Teams, dan Outlook; aplikasi produktivitas seperti Word, Excel, dan PowerPoint online; serta finance dan expense tracking dengan tool manajemen keuangan berbasis cloud. Polanya sama: aplikasinya sudah jadi, kamu tinggal memakainya.",
-          "keyPoints": [
-            "Email dan messaging: Microsoft 365, Teams, Outlook",
-            "Produktivitas: Word, Excel, PowerPoint online",
-            "Finance dan expense tracking"
-          ],
-          "link": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/",
-          "teaches": [
-            "f-u03-saas-scenarios"
-          ]
-        },
-        {
-          "id": "u03-l3-e9",
-          "type": "choice",
-          "concept": "saas-uses",
-          "prompt": "A company wants cloud-based software to track employee expenses. It does not want to build, install, or maintain the software. Which cloud service type fits best?",
-          "options": [
-            "PaaS (Platform as a Service)",
-            "SaaS (Software as a Service)",
-            "IaaS (Infrastructure as a Service)",
-            "On-premises servers"
-          ],
-          "answer": 1,
-          "explanation": "Finance dan expense tracking adalah skenario umum SaaS (Software as a Service): aplikasinya sudah jadi dan dikelola penyedia. Di PaaS (Platform as a Service) dan IaaS (Infrastructure as a Service), customer membangun atau menjalankan aplikasinya sendiri.",
-          "examReady": true,
-          "requires": [
-            "f-u03-saas-scenarios",
-            "f-u03-saas-def",
-            "f-u03-paas-stack",
-            "f-u03-iaas-stack"
-          ]
-        },
-        {
-          "id": "u03-l3-e10",
-          "type": "multi",
-          "concept": "saas-uses",
-          "prompt": "A company is choosing a service type for several needs. Which two are common uses of SaaS (Software as a Service)? Choose two.",
-          "options": [
-            "Development framework",
-            "Finance and expense tracking",
-            "Email and messaging",
-            "Lift-and-shift migration"
-          ],
-          "answers": [
-            1,
-            2
-          ],
-          "explanation": "Email dan messaging serta finance dan expense tracking adalah skenario umum SaaS (Software as a Service). Development framework adalah skenario PaaS (Platform as a Service), dan lift-and-shift migration adalah skenario IaaS (Infrastructure as a Service).",
-          "examReady": true,
-          "requires": [
-            "f-u03-saas-scenarios",
-            "f-u03-paas-scenarios",
-            "f-u03-iaas-uses"
           ]
         },
         {
@@ -895,6 +827,54 @@
           "requires": [
             "f-u03-control-order"
           ]
+        },
+        {
+          "id": "u03-l3-e9",
+          "type": "choice",
+          "concept": "saas-uses",
+          "prompt": "A company wants cloud-based software to track employee expenses. It does not want to build, install, or maintain the software. Which cloud service type fits best?",
+          "options": [
+            "PaaS (Platform as a Service)",
+            "SaaS (Software as a Service)",
+            "IaaS (Infrastructure as a Service)",
+            "On-premises servers"
+          ],
+          "answer": 1,
+          "explanation": "Finance dan expense tracking adalah skenario umum SaaS (Software as a Service): aplikasinya sudah jadi dan dikelola penyedia. Di PaaS (Platform as a Service) dan IaaS (Infrastructure as a Service), customer membangun atau menjalankan aplikasinya sendiri.",
+          "examReady": true,
+          "requires": [
+            "f-u03-saas-scenarios",
+            "f-u03-saas-def",
+            "f-u03-paas-stack",
+            "f-u03-iaas-stack"
+          ],
+          "retired": true,
+          "retiredReason": "Soal tambahan 8 Oktober 2026; dibuang karena pengguna meminta materi diperbaiki, bukan ditambah. Isinya sudah masuk ke kartu dan soal yang ada."
+        },
+        {
+          "id": "u03-l3-e10",
+          "type": "multi",
+          "concept": "saas-uses",
+          "prompt": "A company is choosing a service type for several needs. Which two are common uses of SaaS (Software as a Service)? Choose two.",
+          "options": [
+            "Development framework",
+            "Finance and expense tracking",
+            "Email and messaging",
+            "Lift-and-shift migration"
+          ],
+          "answers": [
+            1,
+            2
+          ],
+          "explanation": "Email dan messaging serta finance dan expense tracking adalah skenario umum SaaS (Software as a Service). Development framework adalah skenario PaaS (Platform as a Service), dan lift-and-shift migration adalah skenario IaaS (Infrastructure as a Service).",
+          "examReady": true,
+          "requires": [
+            "f-u03-saas-scenarios",
+            "f-u03-paas-scenarios",
+            "f-u03-iaas-uses"
+          ],
+          "retired": true,
+          "retiredReason": "Soal tambahan 8 Oktober 2026; dibuang karena pengguna meminta materi diperbaiki, bukan ditambah. Isinya sudah masuk ke kartu dan soal yang ada."
         }
       ]
     },
